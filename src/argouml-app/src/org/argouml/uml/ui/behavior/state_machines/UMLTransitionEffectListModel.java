@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,12 +24,8 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import javax.swing.JPopupMenu;
-
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.behavior.common_behavior.ActionNewAction;
-import org.argouml.uml.ui.behavior.common_behavior.PopupMenuNewAction;
 
 /**
  * @since Dec 15, 2002
@@ -59,15 +55,4 @@ public class UMLTransitionEffectListModel extends UMLModelElementListModel2 {
         return element == Model.getFacade().getEffect(getTarget());
     }
 
-    @Override
-    public boolean buildPopup(JPopupMenu popup, int index) {
-        PopupMenuNewAction.buildMenu(popup, 
-                ActionNewAction.Roles.EFFECT, getTarget());
-        return true;
-    }
-
-    @Override
-    protected boolean hasPopup() {
-        return true;
-    }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 
@@ -52,63 +51,55 @@ public class PopupMenuNewAction extends JPopupMenu {
     public PopupMenuNewAction(String role, UMLMutableLinkedList list) {
         super();
 
-        buildMenu(this, role, list.getTarget());
-    }
-    
-    public static void buildMenu(JPopupMenu pmenu, 
-            String role, Object target) {
-      
         JMenu newMenu = new JMenu();
         newMenu.setText(Translator.localize("action.new"));
 
         newMenu.add(ActionNewCallAction.getInstance());
-        ActionNewCallAction.getInstance().setTarget(target);
+        ActionNewCallAction.getInstance().setTarget(list.getTarget());
         ActionNewCallAction.getInstance().putValue(ActionNewAction.ROLE, role);
 
         newMenu.add(ActionNewCreateAction.getInstance());
-        ActionNewCreateAction.getInstance().setTarget(target);
+        ActionNewCreateAction.getInstance().setTarget(list.getTarget());
         ActionNewCreateAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
         newMenu.add(ActionNewDestroyAction.getInstance());
-        ActionNewDestroyAction.getInstance().setTarget(target);
+        ActionNewDestroyAction.getInstance().setTarget(list.getTarget());
         ActionNewDestroyAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
         newMenu.add(ActionNewReturnAction.getInstance());
-        ActionNewReturnAction.getInstance().setTarget(target);
+        ActionNewReturnAction.getInstance().setTarget(list.getTarget());
         ActionNewReturnAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
         newMenu.add(ActionNewSendAction.getInstance());
-        ActionNewSendAction.getInstance().setTarget(target);
+        ActionNewSendAction.getInstance().setTarget(list.getTarget());
         ActionNewSendAction.getInstance().putValue(ActionNewAction.ROLE, role);
 
         newMenu.add(ActionNewTerminateAction.getInstance());
-        ActionNewTerminateAction.getInstance().setTarget(target);
+        ActionNewTerminateAction.getInstance().setTarget(list.getTarget());
         ActionNewTerminateAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
         newMenu.add(ActionNewUninterpretedAction.getInstance());
-        ActionNewUninterpretedAction.getInstance().setTarget(target);
+        ActionNewUninterpretedAction.getInstance().setTarget(list.getTarget());
         ActionNewUninterpretedAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
 
         newMenu.add(ActionNewActionSequence.getInstance());
-        ActionNewActionSequence.getInstance().setTarget(target);
+        ActionNewActionSequence.getInstance().setTarget(list.getTarget());
         ActionNewActionSequence.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
-        pmenu.add(newMenu);
+        add(newMenu);
 
-        pmenu.addSeparator();
+        addSeparator();
 
         // TODO: This needs to be fixed to work for ActionSequences - tfm
         ActionRemoveModelElement.SINGLETON.setObjectToRemove(ActionNewAction
-             .getAction(role, target));
-        ActionRemoveModelElement.SINGLETON.putValue(Action.NAME, 
-                Translator.localize("action.delete-from-model"));
-        pmenu.add(ActionRemoveModelElement.SINGLETON);
+             .getAction(role, list.getTarget()));
+        add(ActionRemoveModelElement.SINGLETON);
     }
 }
