@@ -43,7 +43,7 @@ public class ArgoFigUtil {
     
     /**
      * Find the Project that contains a given figure.  Because we don't have
-     * a single reliable way to do this, we try a bunch of different approachs.
+     * a single reliable way to do this, we try a bunch of different approaches.
      * 
      * @param fig the Fig to return the project of
      * @return the project containing the given fig

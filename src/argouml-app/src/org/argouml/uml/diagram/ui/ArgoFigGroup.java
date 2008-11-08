@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,16 +30,25 @@ import org.argouml.kernel.Project;
 import org.tigris.gef.presentation.FigGroup;
 
 /**
- * A fig which contains other figs.  ArgoUMLs version of GEF's FigGroup.
+ * A fig which contains other figs.  ArgoUMLs version of GEF's FigGroup. <p>
+ * 
+ * Adds the following functionality: Keep track of the project it belongs to. 
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  */
 public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
 
+    /**
+     * The constructor. Create a FigGroup that knows about its Project.
+     */
     public ArgoFigGroup() {
         super();
     }
 
+    /**
+     * The constructor. Create a FigGroup that knows about its Project.
+     * @param arg0 the Figs that make up the Group
+     */
     public ArgoFigGroup(List arg0) {
         super(arg0);
     }
