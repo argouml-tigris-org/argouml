@@ -173,13 +173,12 @@ public class AddToDoItemDialog extends ArgoDialog {
         }
         String desc = descriptionTextArea.getText();
         String moreInfoURL = moreinfoTextField.getText();
-        ToDoItem item =
-	    new UMLToDoItem(designer, headline, priority, desc, moreInfoURL);
         ListSet newOffenders = new ListSet();
         for (int i = 0; i < offenderList.getModel().getSize(); i++) {
             newOffenders.add(offenderList.getModel().getElementAt(i));
         }
-        item.setOffenders(newOffenders);
+        ToDoItem item =
+            new UMLToDoItem(designer, headline, priority, desc, moreInfoURL, newOffenders);
         designer.getToDoList().addElement(item); //? inform()
         Designer.firePropertyChange(Designer.MODEL_TODOITEM_ADDED, null, item);
     }
