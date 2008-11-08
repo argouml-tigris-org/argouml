@@ -41,7 +41,6 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.sequence.ui.FigLifeLine.FigLifeLineHandler;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
@@ -1259,7 +1258,6 @@ public class FigClassifierRole extends FigNodeModelElement
         Rectangle rect = headFig.getBounds();
 
         getStereotypeFig().setOwner(getOwner());
-        ((FigStereotypesCompartment) getStereotypeFig()).populate();
 
         int minWidth = headFig.getMinimumSize().width;
         if (minWidth > rect.width) {

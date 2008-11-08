@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.beans.PropertyChangeEvent;
@@ -38,6 +39,7 @@ import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -58,18 +60,15 @@ import org.tigris.gef.presentation.FigText;
  * class can be used for this.
  * @author Bob Tarling
  */
-public class FigStereotypesCompartment extends FigCompartment {
+public class FigStereotypesGroup extends ArgoFigGroup {
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -1696363445893406130L;
+    private Fig bigPort;
     
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(FigStereotypesCompartment.class);
+        Logger.getLogger(FigStereotypesGroup.class);
 
     /**
      * One UML keyword is allowed. These are not strictly stereotypes but are
@@ -89,8 +88,13 @@ public class FigStereotypesCompartment extends FigCompartment {
      * @param w width
      * @param h height
      */
-    public FigStereotypesCompartment(int x, int y, int w, int h) {
-        super(x, y, w, h);
+    public FigStereotypesGroup(int x, int y, int w, int h) {
+        super();
+        bigPort = new FigRect(x, y, w, h, Color.black, Color.white);
+        addFig(bigPort);
+
+        /* Do not show border line, make transparent: */
+        setLineWidth(0);
         setFilled(false);
     }
 
@@ -111,8 +115,16 @@ public class FigStereotypesCompartment extends FigCompartment {
      */
     @Override
     public void removeFromDiagram() {
+        super.removeFromDiagram();
         Model.getPump()
                 .removeModelEventListener(this, getOwner(), "stereotype");
+    }
+
+    /**
+     * @return the bigport
+     */
+    public Fig getBigPort() {
+        return bigPort;
     }
     
     @Override
@@ -122,16 +134,16 @@ public class FigStereotypesCompartment extends FigCompartment {
             if (event.getPropertyName().equals("stereotype")) {
                 Object stereotype = aae.getChangedValue();
                 if (findFig(stereotype) == null) {
-                    Fig bigPort = this.getBigPort();
+                    Fig theBigPort = this.getBigPort();
                     FigText stereotypeTextFig =
                         new FigStereotype(
-                                bigPort.getX() + 1,
-                                bigPort.getY() + 1
+                                theBigPort.getX() + 1,
+                                theBigPort.getY() + 1
                                 + (++stereotypeCount)
                                 * FigNodeModelElement.ROWHEIGHT,
                                 0,
                                 FigNodeModelElement.ROWHEIGHT - 2,
-                                bigPort,
+                                theBigPort,
                                 stereotype);
                     stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
                     stereotypeTextFig.setEditable(false);
@@ -224,9 +236,9 @@ public class FigStereotypesCompartment extends FigCompartment {
         }
         
         int acounter = 1;
-        Fig bigPort = this.getBigPort();
-        int xpos = bigPort.getX();
-        int ypos = bigPort.getY();
+        Fig theBigPort = this.getBigPort();
+        int xpos = theBigPort.getX();
+        int ypos = theBigPort.getY();
 
         List figs = getFigs();
         CompartmentFigText stereotypeTextFig;
@@ -242,7 +254,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                                 * FigNodeModelElement.ROWHEIGHT,
                             0,
                             FigNodeModelElement.ROWHEIGHT - 2,
-                            bigPort,
+                            theBigPort,
                             null);
                 // bounds not relevant here
                 stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
@@ -267,7 +279,7 @@ public class FigStereotypesCompartment extends FigCompartment {
                             * FigNodeModelElement.ROWHEIGHT,
                             0,
                             FigNodeModelElement.ROWHEIGHT - 2,
-                            bigPort,
+                            theBigPort,
                             stereo);
                 // bounds not relevant here
                 stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
@@ -385,7 +397,24 @@ public class FigStereotypesCompartment extends FigCompartment {
         if (modelElement != null) {
             Collection stereos = Model.getFacade().getStereotypes(modelElement);
             if (stereos.size() > 0 || keyword != null) {
-                dim = super.getMinimumSize();
+                int minWidth = 0;
+                int minHeight = 0;
+                //set new bounds for all included figs
+                Iterator figs = iterator();
+                Fig fig;
+                while (figs.hasNext()) {
+                    fig = (Fig) figs.next();
+                    if (fig.isVisible() && fig != getBigPort()) {
+                        int fw = fig.getMinimumSize().width;
+                        if (fw > minWidth) {
+                            minWidth = fw;
+                        }
+                        minHeight += fig.getMinimumSize().height;
+                    }
+                }
+
+                minHeight += 2; // 2 Pixel padding after compartment
+                dim = new Dimension(minWidth, minHeight);
             }
         }
         if (dim == null) {

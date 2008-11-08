@@ -307,7 +307,7 @@ public abstract class FigNodeModelElement
         nameFig.setRightMargin(4); // margin between text and border
         nameFig.setLeftMargin(4);
 
-        stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
+        stereotypeFig = new FigStereotypesGroup(10, 10, 90, 15);
 
         readyToEdit = false;
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
@@ -1696,10 +1696,10 @@ public abstract class FigNodeModelElement
 	Collection stereos = Model.getFacade().getStereotypes(modelElement);
 	 
 	Fig stereoFig = getStereotypeFig();
-        if (stereoFig instanceof FigStereotypesCompartment) {
+        if (stereoFig instanceof FigStereotypesGroup) {
             boolean hiding = 
                 practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON;
-            ((FigStereotypesCompartment) stereoFig)
+            ((FigStereotypesGroup) stereoFig)
                     .setHidingStereotypesWithIcon(hiding);
         }
 
@@ -1864,9 +1864,9 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Get the Fig containing the stereotype.
+     * Get the Fig containing the stereotype(s).
      * <p>
-     * TODO: Should return FigStereotypesCompartment or at the very least
+     * TODO: Should return FigStereotypesGroup or at the very least
      * a FigGroup
      *
      * @return the stereotype Fig

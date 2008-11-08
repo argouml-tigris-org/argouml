@@ -30,7 +30,7 @@ import java.util.Vector;
 
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
-import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
+import org.argouml.uml.diagram.ui.FigStereotypesGroup;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 
@@ -52,8 +52,8 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
      */
     public FigSignal() {
         super();
-        FigStereotypesCompartment fsc =
-            (FigStereotypesCompartment) getStereotypeFig();
+        FigStereotypesGroup fsc =
+            (FigStereotypesGroup) getStereotypeFig();
         fsc.setKeyword("signal");
 
         addFig(getBigPort());

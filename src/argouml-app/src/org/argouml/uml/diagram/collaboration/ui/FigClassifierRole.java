@@ -38,7 +38,6 @@ import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -197,7 +196,6 @@ public class FigClassifierRole extends FigNodeModelElement {
         int heightWithoutStereo = getHeight() - stereotypeHeight;
 
         getStereotypeFig().setOwner(getOwner());
-        ((FigStereotypesCompartment) getStereotypeFig()).populate();
 
         stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {

@@ -172,7 +172,7 @@ public abstract class FigEdgeModelElement
         nameFig = new FigNameWithAbstract(10, 30, 90, 20, false);
         nameFig.setTextFilled(false);
 
-        stereotypeFig = new FigStereotypesCompartment(10, 10, 90, 15);
+        stereotypeFig = new FigStereotypesGroup(10, 10, 90, 15);
 
         setBetweenNearestPoints(true);
 

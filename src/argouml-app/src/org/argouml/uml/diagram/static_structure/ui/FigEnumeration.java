@@ -39,7 +39,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
-import org.argouml.uml.diagram.ui.FigStereotypesCompartment;
+import org.argouml.uml.diagram.ui.FigStereotypesGroup;
 import org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -68,8 +68,8 @@ public class FigEnumeration extends FigDataType
      */
     public FigEnumeration() {
         super();
-        FigStereotypesCompartment fsc =
-            (FigStereotypesCompartment) getStereotypeFig();
+        FigStereotypesGroup fsc =
+            (FigStereotypesGroup) getStereotypeFig();
         fsc.setKeyword("enumeration");
 
         enableSizeChecking(true);

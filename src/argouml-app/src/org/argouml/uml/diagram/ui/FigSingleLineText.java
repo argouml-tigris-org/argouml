@@ -187,6 +187,7 @@ public class FigSingleLineText extends ArgoFigText
                     getOwner(), 
                     properties);
         }
+        ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
     
     @Override
@@ -241,7 +242,8 @@ public class FigSingleLineText extends ArgoFigText
             /* TODO: Why does it fail for changing 
              * the name of an associationend?
              *  Why should it pass? */
-            //assert Arrays.asList(properties).contains(event.getPropertyName()) 
+            //assert Arrays.asList(properties).contains(
+            //    event.getPropertyName()) 
             //  : event.getPropertyName(); 
             // TODO: Do we really always need to do this or only if
             // notationProvider is null?
