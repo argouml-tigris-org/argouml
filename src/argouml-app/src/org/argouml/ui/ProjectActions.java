@@ -43,7 +43,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
-import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
@@ -184,20 +183,20 @@ public final class ProjectActions
             return;
         }
         Object first = targets.get(0);
-        if (first instanceof Diagram && targets.size() > 1) {
+        if (first instanceof ArgoDiagram && targets.size() > 1) {
             setTarget(first);
             setTarget(targets.get(1));
             return;
         }
-        if (first instanceof Diagram && targets.size() == 1) {
+        if (first instanceof ArgoDiagram && targets.size() == 1) {
             setTarget(first);
             return;
         }
         List<ArgoDiagram> diagrams =
             ProjectManager.getManager().getCurrentProject().getDiagramList();
         Object target = TargetManager.getInstance().getTarget();
-        if ((target instanceof Diagram)
-            && ((Diagram) target).countContained(targets) == targets.size()) {
+        if ((target instanceof ArgoDiagram)
+            && ((ArgoDiagram) target).countContained(targets) == targets.size()) {
             setTarget(first);
             return;
         }
