@@ -214,9 +214,7 @@ public class ToDoItem implements Serializable, WizardItem {
 
     /**
      * Override in subclass to validate the offender is an expected type.
-     * @param dm the offender (why dm?)
-     * TODO: Can someone explain the variable name dm and a more descriptive
-     * alternative?
+     * @param dm the offender aka design material
      */
     protected void checkArgument(Object dm) {
     }
