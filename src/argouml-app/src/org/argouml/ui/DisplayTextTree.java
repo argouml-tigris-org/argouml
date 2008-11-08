@@ -27,12 +27,10 @@ package org.argouml.ui;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
-
 
 import javax.swing.JTree;
 import javax.swing.tree.TreeModel;
@@ -49,8 +47,8 @@ import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
-import org.tigris.gef.base.Diagram;
 
 /**
  * This is the JTree that is the GUI component view of the UML model
@@ -261,8 +259,8 @@ public class DisplayTextTree extends JTree {
             }            
         }
 
-        if (value instanceof Diagram) {
-            return ((Diagram) value).getName();
+        if (value instanceof ArgoDiagram) {
+            return ((ArgoDiagram) value).getName();
         }
 
         if (value != null) {
