@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
+import org.argouml.util.ThreadHelper;
 
 /**
  * An abstract class that serves as a basis for testing listmodels. Only works
@@ -61,7 +62,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
         //MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         buildModel();
         model.setTarget(elem);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
     }
 
     /**
@@ -92,9 +93,9 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     /**
      * Tests the programmatically adding of multiple elements to the list.
      */
-    public void testAddMultiple() {
+    public void testAddMultiple() throws Exception {
         Object[] elements = fillModel();
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(10, model.getSize());
         assertEquals(model.getElementAt(5), elements[5]);
         assertEquals(model.getElementAt(0), elements[0]);
@@ -113,11 +114,11 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     /**
      * Test the removal of several elements from the list.
      */
-    public void testRemoveMultiple() {
+    public void testRemoveMultiple() throws Exception {
         Object[] elements = fillModel();
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         removeHalfModel(elements);
-        Model.getPump().flushModelEvents();
+        ThreadHelper.synchronize();
         assertEquals(5, model.getSize());
         assertEquals(elements[5], model.getElementAt(0));
     }

@@ -39,6 +39,7 @@ import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.cmd.ActionNew;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.util.ThreadHelper;
 
 /**
  * Testing the ProjectBrowser.
@@ -117,7 +118,7 @@ public class GUITestProjectBrowser extends TestCase {
     /**
      * Testing the setTarget method in ProjectBrowser.
      */
-    public void testSetTarget() {
+    public void testSetTarget() throws Exception {
         Project p = ProjectManager.getManager().getCurrentProject();
 	Object package1 =
 	    Model.getModelManagementFactory().buildPackage("test1");
@@ -137,9 +138,10 @@ public class GUITestProjectBrowser extends TestCase {
 	assertEquals("Diagram2 should be the target", diagram2, tm.getTarget());
 
 	p.moveToTrash(package2);
-        Model.getPump().flushModelEvents();
-	assertEquals("The target is not reset to the first diagram",
-            p.getDiagramList().get(0), tm.getTarget());
+	ThreadHelper.synchronize();
+
+        assertEquals("The target is not reset to the first diagram",
+	        p.getDiagramList().get(0), tm.getTarget());
     }
 
     /**
