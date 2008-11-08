@@ -70,9 +70,17 @@ public interface ArgoDiagram {
      */
     public ItemUID getItemUID();
 
-    /** The bean property name denoting the diagram's namespace. 
-     * Value is a String. */
+    /**
+     * The bean property name denoting the diagram's namespace. Value is a
+     * String.
+     */
     public static final String NAMESPACE_KEY = "namespace";
+ 
+    /**
+     * The bean property name denoting the diagram's name. Value is a
+     * String.
+     */
+    public static final String NAME_KEY = "name";
 
     /**
      * TODO: The reference to the method
