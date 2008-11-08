@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.ui.FigStereotypesGroup;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -83,9 +82,7 @@ public class FigInterface extends FigClassifierBox {
      */
     public FigInterface() {
 
-        FigStereotypesGroup fsc =
-            (FigStereotypesGroup) getStereotypeFig();
-        fsc.setKeyword("interface");
+        getStereotypeFig().setKeyword("interface");
 
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.

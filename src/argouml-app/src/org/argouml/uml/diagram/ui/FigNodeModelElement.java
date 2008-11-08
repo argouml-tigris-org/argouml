@@ -206,7 +206,7 @@ public abstract class FigNodeModelElement
      * Use getStereotype() and setStereotype() to change stereotype
      * text.
      */
-    private Fig stereotypeFig;
+    private FigStereotypesGroup stereotypeFig;
 
     /**
      * The <code>FigProfileIcon</code> being currently displayed
@@ -371,6 +371,7 @@ public abstract class FigNodeModelElement
      * Clone this figure. After the base clone method has been called determine
      * which child figs of the clone represent the name, stereotype and port.
      * <p>
+     * TODO: enclosedFigs, encloser and eventSenders may also need to be cloned.
      * 
      * @see java.lang.Object#clone()
      * @return the cloned figure
@@ -387,14 +388,22 @@ public abstract class FigNodeModelElement
             }
             if (thisFig == nameFig) {
                 clone.nameFig = (FigSingleLineText) thisFig;
+                /* TODO: MVW: I think this has to be: 
+                 * clone.nameFig = (FigSingleLineText) cloneFig;
+                 * but have not the means to investigate, 
+                 * since this code is not yet used.
+                 * Enable the menu-items for Copy/Paste to test... 
+                 * BTW: In some other FigNodeModelElement 
+                 * classes I see the same mistake. */
             }
             if (thisFig == stereotypeFig) {
-                clone.stereotypeFig = (Fig) thisFig;
+                clone.stereotypeFig = (FigStereotypesGroup) thisFig;
+                /* Idem here:
+                 * clone.stereotypeFig = (FigStereotypesGroup) cloneFig; */
             }
         }
         return clone;
     }
-// TODO: _enclosedFigs, _encloser and _eventSenders may also need to be cloned
 
     /**
      * Default Reply text to be shown while placing node in diagram.
@@ -1689,19 +1698,15 @@ public abstract class FigNodeModelElement
             this.removeFig(icon);
         }
         floatingStereotypes.clear();
-	
-	
-	int practicalView = getPracticalView();
+
+
+        int practicalView = getPracticalView();
 	Object modelElement = getOwner();
 	Collection stereos = Model.getFacade().getStereotypes(modelElement);
 	 
-	Fig stereoFig = getStereotypeFig();
-        if (stereoFig instanceof FigStereotypesGroup) {
-            boolean hiding = 
-                practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON;
-            ((FigStereotypesGroup) stereoFig)
-                    .setHidingStereotypesWithIcon(hiding);
-        }
+	boolean hiding = 
+	    practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON;
+	getStereotypeFig().setHidingStereotypesWithIcon(hiding);
 
         if (practicalView == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON) {
 
@@ -1865,13 +1870,10 @@ public abstract class FigNodeModelElement
 
     /**
      * Get the Fig containing the stereotype(s).
-     * <p>
-     * TODO: Should return FigStereotypesGroup or at the very least
-     * a FigGroup
      *
-     * @return the stereotype Fig
+     * @return the stereotype FigGroup
      */
-    protected Fig getStereotypeFig() {
+    protected FigStereotypesGroup getStereotypeFig() {
         return stereotypeFig;
     }
 

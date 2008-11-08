@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.ui.FigStereotypesGroup;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -82,9 +81,7 @@ public class FigDataType extends FigClassifierBox {
      */
     public FigDataType() {
 
-        FigStereotypesGroup fsc =
-            (FigStereotypesGroup) getStereotypeFig();
-        fsc.setKeyword("datatype");
+        getStereotypeFig().setKeyword("datatype");
 
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
@@ -126,7 +123,7 @@ public class FigDataType extends FigClassifierBox {
      */
     public FigDataType(GraphModel gm, Object node, String keyword) {
         this(gm, node);        
-        ((FigStereotypesGroup) getStereotypeFig()).setKeyword(keyword);
+        getStereotypeFig().setKeyword(keyword);
     }
     
 

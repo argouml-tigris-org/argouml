@@ -52,9 +52,7 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
      */
     public FigSignal() {
         super();
-        FigStereotypesGroup fsc =
-            (FigStereotypesGroup) getStereotypeFig();
-        fsc.setKeyword("signal");
+        getStereotypeFig().setKeyword("signal");
 
         addFig(getBigPort());
         addFig(getStereotypeFig());

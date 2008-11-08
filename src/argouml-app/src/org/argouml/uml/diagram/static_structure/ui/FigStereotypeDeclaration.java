@@ -45,7 +45,6 @@ import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
-import org.argouml.uml.diagram.ui.FigStereotypesGroup;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -67,9 +66,8 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      * Create a new Fig for a stereotype declaration.
      */
     public FigStereotypeDeclaration() {
-        FigStereotypesGroup fsc =
-            (FigStereotypesGroup) getStereotypeFig();
-        fsc.setKeyword("stereotype");
+
+        getStereotypeFig().setKeyword("stereotype");
 
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
