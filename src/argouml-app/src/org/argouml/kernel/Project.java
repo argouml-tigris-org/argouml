@@ -131,6 +131,7 @@ public interface Project {
      * @return the search path
      * @deprecated by tfmorris for 0.25.4.  Use {@link #getSearchPathList()}.
      */
+    // TODO: Unused?
     @Deprecated
     public Vector<String> getSearchPath();
     
@@ -139,17 +140,20 @@ public interface Project {
      * 
      * @return the search path
      */
+    // TODO: Unused?
     public List<String> getSearchPathList();
 
     /**
      * @param searchPathElement the element to be added to the searchpath
      */
+    // TODO: Unused?
     public void addSearchPath(String searchPathElement);
 
     /**
      * Sets the searchpath.
      * @param theSearchpath The searchpath to set
      */
+    // TODO: Unused?
     public void setSearchPath(final List<String> theSearchpath);
     
     /**
@@ -592,6 +596,7 @@ public interface Project {
      * @return Vector
      * @deprecated for 0.25.4 by tfmorris.  Use {@link #getSearchPathList()}.
      */
+    // TODO: Unused?
     @Deprecated
     public Vector<String> getSearchpath();
 
@@ -612,6 +617,7 @@ public interface Project {
      * @param theSearchpath The searchpath to set
      * @deprecated for 0.25.4 by tfmorris. Use {@link #setSearchPath(List)}.
      */
+    // TODO: Unused?
     @Deprecated
     public void setSearchpath(final Vector<String> theSearchpath);
 

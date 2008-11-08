@@ -73,6 +73,9 @@ class ArgoTokenTable extends XMLTokenTableBase {
         = "defaultshadowwidth";
     private static final String STRING_FONTNAME = "fontname";
     private static final String STRING_FONTSIZE = "fontsize";
+    // The following is deprecated, but can never be removed to preserve 
+    // backward compatibility with old project files
+    @Deprecated
     private static final String STRING_GENERATION_OUTPUT_DIR
         = "generationoutputdir";
     private static final String STRING_ACTIVE_DIAGRAM = "activediagram";
@@ -123,6 +126,7 @@ class ArgoTokenTable extends XMLTokenTableBase {
     /** A token for Font Settings. */
     public static final int    TOKEN_FONTSIZE           = 22;
     /** A token for Generation Settings. */
+    @Deprecated
     public static final int    TOKEN_GENERATION_OUTPUT_DIR     = 23;
     /** A token for Generation Settings. */
     public static final int    TOKEN_SHOWASSOCIATIONNAMES     = 24;
@@ -177,4 +181,4 @@ class ArgoTokenTable extends XMLTokenTableBase {
                 Integer.valueOf(TOKEN_ACTIVE_DIAGRAM));
     }
 
-} /* end class ArgoTokenTable */
+}

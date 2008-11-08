@@ -27,7 +27,6 @@ package org.argouml.kernel;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 
-import org.argouml.application.api.Argo;
 import org.argouml.application.events.ArgoDiagramAppearanceEvent;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -84,7 +83,6 @@ public class ProjectSettings {
     /* Generation preferences: */
     private String headerComment =
         "Your copyright and other header comments";
-    private String generationOutputDir;
 
 
     /**
@@ -150,14 +148,6 @@ public class ProjectSettings {
         /* And initialise some fonts: */
         initFonts();
 
-        /* Generation preferences: */
-        if (System.getProperty("file.separator").equals("/")) {
-            generationOutputDir = "/tmp";
-        } else {
-            generationOutputDir = System.getProperty("java.io.tmpdir");
-        }
-        generationOutputDir = Configuration.getString(
-                Argo.KEY_MOST_RECENT_EXPORT_DIRECTORY, generationOutputDir);
     }
 
     /**
@@ -271,7 +261,9 @@ public class ProjectSettings {
      * @return true if the notation is set - false if it does not exist
      */
     public boolean setNotationLanguage(final String newLanguage) {
-        if (notationLanguage.equals(newLanguage)) return true;
+        if (notationLanguage.equals(newLanguage)) {
+            return true;
+        }
         if (Notation.findNotation(newLanguage) == null) {
             /* This Notation is not available! */
             return false;
@@ -336,7 +328,9 @@ public class ProjectSettings {
      * @param showem <code>true</code> if names are to be shown in bold font.
      */
     public void setShowBoldNames(final boolean showem) {
-        if (showBoldNames == showem) return;
+        if (showBoldNames == showem) {
+            return;
+        }
 
         Memento memento = new Memento() {
             private final ConfigurationKey key = Notation.KEY_SHOW_BOLD_NAMES;
@@ -387,7 +381,9 @@ public class ProjectSettings {
      */
 
     public void setUseGuillemots(final boolean showem) {
-        if (useGuillemots == showem) return;
+        if (useGuillemots == showem) {
+            return;
+        }
 
         Memento memento = new Memento() {
             private final ConfigurationKey key = Notation.KEY_USE_GUILLEMOTS;
@@ -450,7 +446,9 @@ public class ProjectSettings {
      * @param showem <code>true</code> if association names are to be shown.
      */
     public void setShowAssociationNames(final boolean showem) {
-        if (showAssociationNames == showem) return;
+        if (showAssociationNames == showem) {
+            return;
+        }
 
         Memento memento = new Memento() {
             private final ConfigurationKey key = 
@@ -500,7 +498,9 @@ public class ProjectSettings {
      * @param showem <code>true</code> if visibilities are to be shown.
      */
     public void setShowVisibility(final boolean showem) {
-        if (showVisibility == showem) return;
+        if (showVisibility == showem) {
+            return;
+        }
 
         Memento memento = new Memento() {
             private final ConfigurationKey key = Notation.KEY_SHOW_VISIBILITY;
@@ -549,7 +549,9 @@ public class ProjectSettings {
      * @param showem <code>true</code> if the multiplicity is to be shown.
      */
     public void setShowMultiplicity(final boolean showem) {
-        if (showMultiplicity == showem) return;
+        if (showMultiplicity == showem) {
+            return;
+        }
 
         Memento memento = new Memento() {
             private final ConfigurationKey key = Notation.KEY_SHOW_MULTIPLICITY;
@@ -598,7 +600,9 @@ public class ProjectSettings {
      * @param showem <code>true</code> if initial values are to be shown.
      */
     public void setShowInitialValue(final boolean showem) {
-        if (showInitialValue == showem) return;
+        if (showInitialValue == showem) {
+            return;
+        }
 
         Memento memento = new Memento() {
             private final ConfigurationKey key =
@@ -648,7 +652,9 @@ public class ProjectSettings {
      * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowProperties(final boolean showem) {
-        if (showProperties == showem) return;
+        if (showProperties == showem) {
+            return;
+        }
 
         Memento memento = new Memento() {
             private final ConfigurationKey key =
@@ -698,7 +704,9 @@ public class ProjectSettings {
      * @param showem <code>true</code> if types are to be shown.
      */
     public void setShowTypes(final boolean showem) {
-        if (showTypes == showem) return;
+        if (showTypes == showem) {
+            return;
+        }
 
         Memento memento = new Memento() {
             private final ConfigurationKey key = Notation.KEY_SHOW_TYPES;
@@ -748,7 +756,9 @@ public class ProjectSettings {
      * @param showem <code>true</code> if stereotypes are to be shown.
      */
     public void setShowStereotypes(final boolean showem) {
-        if (showStereotypes == showem) return;
+        if (showStereotypes == showem) {
+            return;
+        }
 
         Memento memento = new Memento() {
             private final ConfigurationKey key = Notation.KEY_SHOW_STEREOTYPES;
@@ -797,7 +807,9 @@ public class ProjectSettings {
      * @param showem <code>true</code> if "1" Multiplicities are to be shown.
      */
     public void setShowSingularMultiplicities(final boolean showem) {
-        if (showSingularMultiplicities == showem) return;
+        if (showSingularMultiplicities == showem) {
+            return;
+        }
 
         Memento memento = new Memento() {
             private final ConfigurationKey key =
@@ -853,7 +865,9 @@ public class ProjectSettings {
 
      */
     public void setHideBidirectionalArrows(final boolean hideem) {
-        if (hideBidirectionalArrows == hideem) return;
+        if (hideBidirectionalArrows == hideem) {
+            return;
+        }
 
         Memento memento = new Memento() {
             private final ConfigurationKey key =
@@ -896,7 +910,9 @@ public class ProjectSettings {
      * @param newWidth The Shadow Width.
      */
     public void setDefaultShadowWidth(final int newWidth) {
-        if (defaultShadowWidth == newWidth) return;
+        if (defaultShadowWidth == newWidth) {
+            return;
+        }
 
         final int oldValue = defaultShadowWidth;
 
@@ -946,20 +962,25 @@ public class ProjectSettings {
 
 
     /**
-     * Used by "argo.tee".
-     *
+     * No longer used by "argo.tee". All uses deprecated.
+     * 
      * @return the output directory name
+     * @deprecated for 0.27.2 by tfmorris. This is a user setting, not a project
+     *             setting.
      */
+    @Deprecated
     public String getGenerationOutputDir() {
-        return generationOutputDir;
+        return "";
     }
 
     /**
      * @param od the output directory name
+     * @deprecated for 0.27.2 by tfmorris. This is a user setting, not a project
+     *             setting. Any uses will be ignored.
      */
-    public void setGenerationOutputDir(String od) {
-        generationOutputDir = od;
-        Configuration.setString(Argo.KEY_MOST_RECENT_EXPORT_DIRECTORY, od);
+    @Deprecated
+    public void setGenerationOutputDir(@SuppressWarnings("unused") String od) {
+        // ignored
     }
 
     /**

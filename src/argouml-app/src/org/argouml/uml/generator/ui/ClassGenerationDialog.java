@@ -55,8 +55,6 @@ import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.uml.generator.CodeGenerator;
@@ -216,9 +214,8 @@ public class ClassGenerationDialog
 
         setContent(contentPanel);
 
-        Project p = ProjectManager.getManager().getCurrentProject();
-        outputDirectoryComboBox.getModel().setSelectedItem(
-            p.getProjectSettings().getGenerationOutputDir());
+        // TODO: Get saved default directory
+//        outputDirectoryComboBox.getModel().setSelectedItem(savedDir);
     }
 
     /*
@@ -268,8 +265,9 @@ public class ClassGenerationDialog
         String classpath = System.getProperty("java.class.path");
         Collection<String> entries = new TreeSet<String>();
 
-        Project p = ProjectManager.getManager().getCurrentProject();
-        entries.add(p.getProjectSettings().getGenerationOutputDir());
+        // TODO: What does the output directory have to do with the class path?
+//        Project p = ProjectManager.getManager().getCurrentProject();
+//        entries.add(p.getProjectSettings().getGenerationOutputDir());
 
         final String pathSep = System.getProperty("path.separator");
         StringTokenizer allEntries = new StringTokenizer(classpath, pathSep);
@@ -295,8 +293,9 @@ public class ClassGenerationDialog
             String path =
                 ((String) outputDirectoryComboBox.getModel()
                         .getSelectedItem()).trim();
-            Project p = ProjectManager.getManager().getCurrentProject();
-            p.getProjectSettings().setGenerationOutputDir(path);
+            // TODO: Get default output directory from user settings
+//            Project p = ProjectManager.getManager().getCurrentProject();
+//            p.getProjectSettings().setGenerationOutputDir(path);
             List<String>[] fileNames = new List[languages.size()];
             for (int i = 0; i < languages.size(); i++) {
                 fileNames[i] = new ArrayList<String>();

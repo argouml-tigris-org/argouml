@@ -24,7 +24,6 @@
 
 package org.argouml.persistence;
 
-import java.io.File;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -233,7 +232,7 @@ class ArgoParser extends SAXParserBase {
             handleFontSize(e);
             break;
         case ArgoTokenTable.TOKEN_GENERATION_OUTPUT_DIR:
-            handleGenerationOutputDir(e);
+            // ignored - it shouldn't have been in the project in the 1st place
             break;
         case ArgoTokenTable.TOKEN_SHOWASSOCIATIONNAMES:
             handleShowAssociationNames(e);
@@ -454,17 +453,6 @@ class ArgoParser extends SAXParserBase {
             ps.setFontSize(Integer.parseInt(dsw));
         } catch (NumberFormatException e1) {
             LOG.error("NumberFormatException while parsing Font Size", e1);
-        }
-    }
-
-    /**
-     * @param e the element
-     */
-    protected void handleGenerationOutputDir(XMLElement e) {
-        String dsw = e.getText().trim();
-        File f = new File(dsw);
-        if (f.exists() && f.isDirectory()) {
-            ps.setGenerationOutputDir(dsw);
         }
     }
 
