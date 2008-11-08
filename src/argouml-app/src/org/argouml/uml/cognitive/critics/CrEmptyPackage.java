@@ -65,7 +65,7 @@ public class CrEmptyPackage extends CrUML {
 	}
 	Collection elems = Model.getFacade().getOwnedElements(dm);
 	if (elems.size() == 0) {
-            LOG.debug("Found empty package " + Model.getFacade().toString(dm));
+//            LOG.debug("Found empty package " + Model.getFacade().toString(dm));
             return PROBLEM_FOUND;
         }
 	return NO_PROBLEM;
@@ -74,6 +74,7 @@ public class CrEmptyPackage extends CrUML {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getPackage());

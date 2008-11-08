@@ -86,7 +86,7 @@ public class ChildGenUML implements ChildGenerator {
             if (o == null) {
                 LOG.debug("Object is null");
             } else {
-                LOG.debug("Finding children for " + o.getClass());
+//                LOG.debug("Finding children for " + o.getClass());
             }
         }
 
@@ -188,6 +188,6 @@ public class ChildGenUML implements ChildGenerator {
             return result.iterator();
         }
         
-        return Collections.EMPTY_SET.iterator();
+        return Collections.emptySet().iterator();
     }
 }
