@@ -2164,13 +2164,16 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /*
+    /**
      * This optional method is not implemented.  It will throw an
      * {@link UnsupportedOperationException} if used.  Figs are 
      * added to a GraphModel which is, in turn, owned by a project.<p>
      * 
-     * This method is identical to the one in ArgoFigGroup.
+     * @param project the project
+     * @deprecated
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public void setProject(Project project) {
         throw new UnsupportedOperationException();
     }

@@ -127,8 +127,10 @@ public class ArgoFigText extends FigText
      * added to a GraphModel which is, in turn, owned by a project.
      *
      * @param project the project
-     * @see org.argouml.uml.diagram.ui.ArgoFig#setProject(org.argouml.kernel.Project)
+     * @deprecated
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public void setProject(Project project) {
         throw new UnsupportedOperationException();
     }
@@ -140,9 +142,9 @@ public class ArgoFigText extends FigText
     /**
      * Handles diagram font changing.
      * @param e the event
-     * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
      */
-    public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
+    public void diagramFontChanged(
+            @SuppressWarnings("unused") ArgoDiagramAppearanceEvent e) {
         updateFont();
         setBounds(getBounds());
         damage();

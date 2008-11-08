@@ -38,10 +38,16 @@ import org.argouml.kernel.Project;
 public interface ArgoFig {
 
     /**
-     * Set the owning project for this Fig.
+     * Set the owning project for this Fig. This is an optional operation which
+     * may throw an {@link UnsupportedOperationException} if not implemented.
      * 
      * @param project the project
+     * @deprecated for 0.27.2 by tfmorris. This optional method has never been
+     *             implemented by any concrete class that implements this
+     *             interface and should not be used. Project ownership is
+     *             maintained at a coarser granularity level.
      */
+    @Deprecated
     public void setProject(Project project);
 
     /**

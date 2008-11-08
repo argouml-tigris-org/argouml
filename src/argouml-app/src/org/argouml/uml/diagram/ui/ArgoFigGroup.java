@@ -30,9 +30,11 @@ import org.argouml.kernel.Project;
 import org.tigris.gef.presentation.FigGroup;
 
 /**
- * A fig which contains other figs.  ArgoUMLs version of GEF's FigGroup. <p>
+ * A Fig which contains other Figs.  ArgoUMLs version of GEF's FigGroup. <p>
  * 
- * Adds the following functionality: Keep track of the project it belongs to. 
+ * It implements the additional methods of the ArgoFig interface, which is 
+ * currently just a helper to figure out which project the Fig belongs to
+ * (based on the GraphModel that contains it).t belongs to. 
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  */
@@ -53,13 +55,16 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
         super(arg0);
     }
 
-    /*
+    /**
      * This optional method is not implemented.  It will throw an
      * {@link UnsupportedOperationException} if used.  Figs are 
      * added to a GraphModel which is, in turn, owned by a project.<p>
      * 
-     * This method is identical to the one in FigNodeModelElement.
+     * @param project the project
+     * @deprecated
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public void setProject(Project project) {
         throw new UnsupportedOperationException();
     }
