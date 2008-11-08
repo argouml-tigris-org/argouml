@@ -33,8 +33,8 @@ import java.util.ListIterator;
 import org.apache.log4j.Logger;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.tigris.gef.base.Diagram;
 
 /**
  * List of ProjectMembers. <p>
@@ -112,8 +112,8 @@ class MemberList implements List<ProjectMember> {
 
     public synchronized boolean remove(Object member) {
         LOG.info("Removing a member");
-        if (member instanceof Diagram) {
-            return removeDiagram((Diagram) member);
+        if (member instanceof ArgoDiagram) {
+            return removeDiagram((ArgoDiagram) member);
         }
         ((AbstractProjectMember) member).remove();
         if (model == member) {
@@ -168,7 +168,7 @@ class MemberList implements List<ProjectMember> {
         return temp;
     }
     
-    private boolean removeDiagram(Diagram d) {
+    private boolean removeDiagram(ArgoDiagram d) {
         for (ProjectMemberDiagram pmd : diagramMembers) {
             if (pmd.getDiagram() == d) {
                 pmd.remove();
