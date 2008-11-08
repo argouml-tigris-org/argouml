@@ -122,8 +122,11 @@ public class FigStereotypesGroup extends ArgoFigGroup {
 
     /**
      * @return the bigport
+     * @deprecated for 0.27.2. For backward compatibility only. The visibility
+     *             of this method will be changed to private in the next release
+     *             when FigStereotypesCompartment is removed.
      */
-    public Fig getBigPort() {
+    protected Fig getBigPort() {
         return bigPort;
     }
     
@@ -363,9 +366,6 @@ public class FigStereotypesGroup extends ArgoFigGroup {
      */
     public void setKeyword(String word) {
         keyword = word;
-    }
-
-    protected void createModelElement() {
     }
 
     /**
