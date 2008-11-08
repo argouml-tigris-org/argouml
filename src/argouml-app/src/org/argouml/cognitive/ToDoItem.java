@@ -368,7 +368,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * constructor to set this value.
      */
     @Deprecated
-    protected void setOffenders(ListSet offenders) {
+    public void setOffenders(ListSet offenders) {
         theOffenders = offenders;
     }
 
