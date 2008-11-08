@@ -210,7 +210,11 @@ public class ToDoList extends Observable implements Runnable {
      * synchronized the Designer, otherwise there will be deadlock.
      * 
      * @param removes a list containing the items to be removed
+     * @deprecated in 0.27.2 by Bob Tarling. ToDoList is not designed to be
+     * extended so protected is not required. This method is not used with the
+     * package so scope will become private in future.
      */
+    @Deprecated
     protected synchronized void forceValidityCheck(
             final List<ToDoItem> removes) {
         synchronized (items) {
@@ -676,14 +680,22 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * Re-compute all offenders.
+     * @deprecated in 0.27.2 by Bob Tarling. ToDoList is not designed to be
+     * extended so protected is not required. This method is not used with the
+     * package so scope will become private in future.
      */
+    @Deprecated
     protected void recomputeAllOffenders() {
         allOffenders = null;
     }
 
     /**
      * Reset all posters.
+     * @deprecated in 0.27.2 by Bob Tarling. ToDoList is not designed to be
+     * extended so protected is not required. This method is not used with the
+     * package so scope will become private in future.
      */
+    @Deprecated
     protected void recomputeAllPosters() {
         allPosters = null;
     }
@@ -715,7 +727,11 @@ public class ToDoList extends Observable implements Runnable {
      * parameters passed into the fire method.
      * 
      * @see EventListenerList
+     * @deprecated in 0.27.2 by Bob Tarling. ToDoList is not designed to be
+     * extended so protected is not required. This method is not used with the
+     * package so scope will become private in future.
      */
+    @Deprecated
     protected void fireToDoListChanged() {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
@@ -735,7 +751,11 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * @param item the todo item
+     * @deprecated in 0.27.2 by Bob Tarling. ToDoList is not designed to be
+     * extended so protected is not required. This method is not used with the
+     * package so scope will become private in future.
      */
+    @Deprecated
     protected void fireToDoItemChanged(ToDoItem item) {
         Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;
@@ -756,6 +776,10 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * @param item the todo item
+     * @deprecated in 0.27.2 by Bob Tarling. ToDoList is not designed to be
+     * extended so protected is not required. This method is not used with the
+     * package so scope will become private in future.
+     * @Deprecated
      */
     protected void fireToDoItemAdded(ToDoItem item) {
         List<ToDoItem> l = new ArrayList<ToDoItem>();
@@ -765,7 +789,11 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * @param theItems the todo items
+     * @deprecated in 0.27.2 by Bob Tarling. ToDoList is not designed to be
+     * extended so protected is not required. This method is not used with the
+     * package so scope will become private in future.
      */
+    @Deprecated
     protected void fireToDoItemsAdded(List<ToDoItem> theItems) {
         if (theItems.size() > 0) {
             // Guaranteed to return a non-null array
@@ -787,7 +815,11 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * @param item the todo item
+     * @deprecated in 0.27.2 by Bob Tarling. ToDoList is not designed to be
+     * extended so protected is not required. This method is not used with the
+     * package so scope will become private in future.
      */
+    @Deprecated
     protected void fireToDoItemRemoved(ToDoItem item) {
         List<ToDoItem> l = new ArrayList<ToDoItem>();
         l.add(item);
@@ -796,7 +828,11 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * @param theItems the todo items
+     * @deprecated in 0.27.2 by Bob Tarling. ToDoList is not designed to be
+     * extended so protected is not required. This method is not used with the
+     * package so scope will become private in future.
      */
+    @Deprecated
     protected void fireToDoItemsRemoved(final List<ToDoItem> theItems) {
         if (theItems.size() > 0) {
             // Guaranteed to return a non-null array
