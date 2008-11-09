@@ -65,13 +65,29 @@ import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
- * Class to display graphics for a UML package in a class diagram.
- * <p>
+ * Class to display graphics for a UML package in a class diagram,
+ * consisting of a "tab" and a "body". <p>
  * 
- * The "tab" of the Package Fig is build of 2 pieces: 
+ * The tab of the Package Fig is build of 2 pieces: 
  * the stereotypes at the top, and the name below it. 
  * Both are not transparent, and have a line border. 
- * And there is a blinder for the line in the middle.
+ * And there is a blinder for the line in the middle. <p>
+ * 
+ * The tab of the Package Fig can only be resized by the user horizontally.
+ * The body can be resized horizontally and vertically by the user. <p>
+ * 
+ * Double clicking on the body has a special consequence: 
+ * the user is asked if he wants to create a new class diagram
+ * for this package. <p>
+ * 
+ * ArgoUML does not support the option of showing the name 
+ * of the package in the body, 
+ * as described in the UML standard (chapter Notation - Package). <p>
+ * 
+ * Neither does ArgoUML currently support showing properties in the tab, 
+ * see issue 1214. <p>
+ * 
+ * In front of the name, ArgoUML may optionally show the visibility.
  */
 public class FigPackage extends FigNodeModelElement
     implements StereotypeContainer, VisibilityContainer {
@@ -80,12 +96,19 @@ public class FigPackage extends FigNodeModelElement
      */
     private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
+    /** The minimal height of the name. */
     private static final int MIN_HEIGHT = 21;
+    /** The minimal height of the name. */
+    private static final int MIN_WIDTH = 50;
 
+    /** The initial width of the outer box. */
     private int width = 140;
+    /** The initial height of the outer box. */
     private int height = 100;
+    
+    /** The width of the cut out area at the right top corner. */
     private int indentX = 50;
-    //private int indentY = 20;
+
     private int textH = 20;
 
     /**
@@ -309,16 +332,16 @@ public class FigPackage extends FigNodeModelElement
 
         Rectangle rect = getBounds();
 
-        /* check if stereotype is defined */
+        /* check if any stereotype is defined */
         if (Model.getFacade().getStereotypes(modelElement).isEmpty()) {
             if (getStereotypeFig().isVisible()) {
                 stereoLineBlinder.setVisible(false);
                 getStereotypeFig().setVisible(false);
             }
         } else {
-            /* we got stereotype */
+            /* we got at least one stereotype */
+            /* This populates the stereotypes area: */
             getStereotypeFig().setOwner(getOwner());
-//            ((FigStereotypesCompartment) getStereotypeFig()).populate(); // included in previous line
             if (!stereotypeVisible) {
                 stereoLineBlinder.setVisible(false);
                 getStereotypeFig().setVisible(false);
@@ -362,31 +385,26 @@ public class FigPackage extends FigNodeModelElement
     @Override
     public Dimension getMinimumSize() {
         // Use "aSize" to build up the minimum size. Start with the size of the
-        // name compartment and build up.
+        // name fig and build up.
+        Dimension aSize = new Dimension(getNameFig().getMinimumSize());
+        aSize.height = Math.max(aSize.height, MIN_HEIGHT);
+        aSize.width = Math.max(aSize.width, MIN_WIDTH);
 
-        Dimension aSize = getNameFig().getMinimumSize();
-
-        int w = aSize.width + indentX;
-        if (aSize.height < MIN_HEIGHT) {
-            aSize.height = MIN_HEIGHT;
-        }
-
-        int minWidth = Math.max(0, w + 1 + getShadowSize());
-        if (aSize.width < minWidth) {
-            aSize.width = minWidth;
-        }
-
-        // If we have a stereotype displayed, then allow some space for that
-        // (width and height)
-
+        // If we have any number of stereotypes displayed, then allow 
+        // some space for that (width and height):
         if (getStereotypeFig().isVisible()) {
+            Dimension st = getStereotypeFig().getMinimumSize();
             aSize.width =
-		Math.max(aSize.width,
-			 getStereotypeFig().getMinimumSize().width);
-            aSize.height += STEREOHEIGHT;
+		Math.max(aSize.width, st.width);
+            aSize.height += STEREOHEIGHT + st.height;
         }
+
+        // take into account the tab is not as wide as the body:
+        aSize.width += indentX + 1; 
+
         // we want at least some of the package body to be displayed
-        aSize.height = Math.max(aSize.height, 60);
+        aSize.height += 30;
+
         // And now aSize has the answer
         return aSize;
     }
@@ -396,8 +414,9 @@ public class FigPackage extends FigNodeModelElement
      * {@link #getMinimumSize()}.<p>
      *
      * If the required height is bigger, then the additional height is
-     * equally distributed among all figs (i.e. compartments), such that the
-     * cumulated height of all visible figs equals the demanded height<p>.
+     * not distributed among all figs (i.e. compartments), 
+     * but goes into the body. Hence, the
+     * accumulated height of all visible figs equals the demanded height<p>.
      *
      * Some of this has "magic numbers" hardcoded in. In particular there is
      * a knowledge that the minimum height of a name compartment is 21
@@ -419,29 +438,19 @@ public class FigPackage extends FigNodeModelElement
         // size at various points.
 
         Rectangle oldBounds = getBounds();
-        Dimension aSize = getMinimumSize();
 
-        int newW = Math.max(w, aSize.width);
-        int newH = h;
-
-        // First compute all nessessary height data. Easy if we want less than
-        // the minimum
-
-        if (newH <= aSize.height) {
-            // Just use the mimimum
-            newH = aSize.height;
-        }
+        // The new size can not be smaller than the minimum.
+        Dimension minimumSize = getMinimumSize();
+        int newW = Math.max(w, minimumSize.width);
+        int newH = Math.max(h, minimumSize.height);
 
         // Now resize all sub-figs, including not displayed figs. Start by the
         // name. We override the getMinimumSize if it is less than our view (21
         // pixels hardcoded!). Add in the shared extra, plus in this case the
         // correction.
 
-        int minHeight = getNameFig().getMinimumSize().height;
-
-        if (minHeight < MIN_HEIGHT) {
-            minHeight = MIN_HEIGHT;
-        }
+        Dimension nameMin = getNameFig().getMinimumSize();
+        int minNameHeight = Math.max(nameMin.height, MIN_HEIGHT);
 
         // Now sort out the stereotype display. If the stereotype is displayed,
         // move the upper boundary of the name compartment up and set new
@@ -466,14 +475,14 @@ public class FigPackage extends FigNodeModelElement
                 ya + stereoMin.height,
                 nameWidth - 2,
                 2);
-        getNameFig().setBounds(xa, currentY, nameWidth + 1, minHeight);
+        getNameFig().setBounds(xa, currentY, nameWidth + 1, minNameHeight);
 
         // Advance currentY to where the start of the body box is,
         // remembering that it overlaps the next box by 1 pixel. Calculate the
         // size of the attribute box, and update the Y pointer past it if it is
         // displayed.
 
-        currentY += minHeight - 1; // -1 for 1 pixel overlap
+        currentY += minNameHeight - 1; // -1 for 1 pixel overlap
         body.setBounds(xa, currentY, newW, newH + ya - currentY);
 
         tabHeight = currentY - ya;
