@@ -194,6 +194,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
     public boolean doesAccept(Object objectToAccept) {
         if (Model.getFacade().isAClassifier(objectToAccept)) {
             return true;
+        } else if (Model.getFacade().isAComment(objectToAccept)) {
+        	return true;
         }
         return false;
     }
@@ -270,7 +272,10 @@ public class UMLSequenceDiagram extends UMLDiagram {
         	figNode = makeNewFigCR(droppedObject, location);           
         } else if (Model.getFacade().isAClassifier(droppedObject)){
         	figNode = makeNewFigCR(makeNewCR(droppedObject), location);
+        } else if (Model.getFacade().isAComment(droppedObject)) {
+            figNode = new FigComment(getGraphModel(), droppedObject);
         }
+        
         if (figNode != null) {
             LOG.debug("Dropped object " + droppedObject + " converted to " 
                     + figNode);
