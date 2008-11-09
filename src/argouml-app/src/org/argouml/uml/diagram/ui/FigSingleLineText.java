@@ -314,6 +314,13 @@ public class FigSingleLineText extends ArgoFigText
         if (getOwner() == null) {
             return;
         }
+        /* TODO: There are exceptions when saving a project, 
+         * doing "New", then loading it again. Fix these!
+         * For now, this solution (Yes, this is a hack): */
+        if (Model.getUmlFactory().isRemoved(getOwner())) {
+            ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+            return;
+        }
         /* This is needed for e.g. 
          * guillemet notation change on a class name, 
          * see issue 5419. */
