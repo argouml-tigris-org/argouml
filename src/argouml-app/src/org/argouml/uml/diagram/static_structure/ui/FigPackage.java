@@ -98,7 +98,7 @@ public class FigPackage extends FigNodeModelElement
 
     /** The minimal height of the name. */
     private static final int MIN_HEIGHT = 21;
-    /** The minimal height of the name. */
+    /** The minimal width of the name. */
     private static final int MIN_WIDTH = 50;
 
     /** The initial width of the outer box. */
@@ -392,7 +392,7 @@ public class FigPackage extends FigNodeModelElement
 
         // If we have any number of stereotypes displayed, then allow 
         // some space for that (width and height):
-        if (getStereotypeFig().isVisible()) {
+        if (stereotypeVisible) {
             Dimension st = getStereotypeFig().getMinimumSize();
             aSize.width =
 		Math.max(aSize.width, st.width);
@@ -459,23 +459,24 @@ public class FigPackage extends FigNodeModelElement
 
         int currentY = ya;
 
-        Dimension stereoMin = getStereotypeFig().getMinimumSize();
-        if (getStereotypeFig().isVisible()) {
-            currentY += stereoMin.height;
-        }
+        int tabWidth = newW - indentX;
 
-        getStereotypeFig().setBounds(xa, ya,
-                newW - indentX, stereoMin.height + 1);
-        int nameWidth = newW - indentX;
-        if (nameWidth < stereoMin.width + 1) {
-            nameWidth = stereoMin.width + 2;
-        }
-        stereoLineBlinder.setBounds(
+        if (stereotypeVisible) {
+            Dimension stereoMin = getStereotypeFig().getMinimumSize();
+            currentY += stereoMin.height;
+            getStereotypeFig().setBounds(xa, ya,
+                tabWidth, stereoMin.height + 1);
+
+            if (tabWidth < stereoMin.width + 1) {
+                tabWidth = stereoMin.width + 2;
+            }
+            stereoLineBlinder.setBounds(
                 xa + 1,
                 ya + stereoMin.height,
-                nameWidth - 2,
+                tabWidth - 2,
                 2);
-        getNameFig().setBounds(xa, currentY, nameWidth + 1, minNameHeight);
+        }
+        getNameFig().setBounds(xa, currentY, tabWidth + 1, minNameHeight);
 
         // Advance currentY to where the start of the body box is,
         // remembering that it overlaps the next box by 1 pixel. Calculate the
