@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,11 +27,11 @@ package org.argouml.uml.diagram.activity.ui;
 
 import java.util.Map;
 
-import org.argouml.kernel.ProjectManager;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
@@ -71,12 +71,14 @@ public class ActivityDiagramRenderer extends StateDiagramRenderer {
      *      org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      *      java.lang.Object, java.util.Map)
      */
+    @Override
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
             Map styleAttributes) {
 
         FigNode figNode = null;
-        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
-                .getActiveDiagram();
+        // Although not generally true for GEF, for Argo we know that the layer
+        // is a LayerPerspective which knows the associated diagram
+        Diagram diag = ((LayerPerspective) lay).getDiagram(); 
         if (diag instanceof UMLDiagram
             && ((UMLDiagram) diag).doesAccept(node)) {
             figNode = ((UMLDiagram) diag).drop(node, null);

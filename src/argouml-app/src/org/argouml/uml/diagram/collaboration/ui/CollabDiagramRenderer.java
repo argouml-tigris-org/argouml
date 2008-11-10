@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,16 +27,16 @@ package org.argouml.uml.diagram.collaboration.ui;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
@@ -72,9 +72,7 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
     private static final Logger LOG =
 	Logger.getLogger(CollabDiagramRenderer.class);
 
-    /**
-     * Return a Fig that can be used to represent the given node.
-     *
+    /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
      *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      *         java.lang.Object, java.util.Map)
@@ -83,8 +81,9 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
 				 Object node, Map styleAttributes) {
 
         FigNode figNode = null;
-        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
-                .getActiveDiagram();
+        // Although not generally true for GEF, for Argo we know that the layer
+        // is a LayerPerspective which knows the associated diagram
+        Diagram diag = ((LayerPerspective) lay).getDiagram(); 
         if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(node)) {
             figNode = ((UMLDiagram) diag).drop(node, null);
@@ -97,7 +96,7 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
         return figNode;
     }
 
-    /**
+    /*
      * Return a Fig that can be used to represent the given edge,
      * Generally the same code as for the ClassDiagram, since its
      * very related to it.
@@ -141,4 +140,4 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
         lay.add(newEdge);
         return newEdge;
     }
-} /* end class CollabDiagramRenderer */
+}
