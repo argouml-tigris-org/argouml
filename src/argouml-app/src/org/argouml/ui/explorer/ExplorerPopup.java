@@ -40,19 +40,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.Critic;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProfileConfiguration;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
 import org.argouml.profile.Profile;
-import org.argouml.profile.ProfileException;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.ActionCreateEdgeModelElement;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
@@ -149,25 +147,20 @@ public class ExplorerPopup extends JPopupMenu {
     public ExplorerPopup(Object selectedItem, MouseEvent me) {
         super("Explorer popup menu");
 
-        final Project currentProject =
-            ProjectManager.getManager().getCurrentProject();
-
         /* Check if multiple items are selected. */
         boolean multiSelect =
                 TargetManager.getInstance().getTargets().size() > 1;
 
-        boolean modelElementsOnly = true;
-        for (Iterator it = TargetManager.getInstance().getTargets().iterator();
-                it.hasNext() && modelElementsOnly; ) {
-            Object element = it.next();
+        boolean mutableModelElementsOnly = true;
+        for (Object element : TargetManager.getInstance().getTargets()) {
             if (!Model.getFacade().isAUMLElement(element)
-                    // profile elements are NOT model elements
-                    || isRelatedToProfiles(currentProject, element)) {
-                modelElementsOnly = false;
+                    || Model.getModelManagementHelper().isReadOnly(element)) {
+                mutableModelElementsOnly = false;
+                break;
             }
         }
 
-        final ArgoDiagram activeDiagram = currentProject.getActiveDiagram();
+        final ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();
 
         // TODO: I've made some attempt to rationalize the conditions here
         // and make them more readable. However I'd suggest that the
@@ -187,9 +180,7 @@ public class ExplorerPopup extends JPopupMenu {
         // this.add(action);
         // }
 
-        if (!multiSelect
-                // a profile element is not considered a selection
-                && !isRelatedToProfiles(currentProject, selectedItem)) {
+        if (!multiSelect && mutableModelElementsOnly) {
             initMenuCreateDiagrams();
             this.add(createDiagrams);
         }
@@ -207,16 +198,12 @@ public class ExplorerPopup extends JPopupMenu {
             this.add(new ActionManageProfiles());
         }
 
-        if (modelElementsOnly) {
+        if (mutableModelElementsOnly) {
             initMenuCreateModelElements();
         }
 
-        final Object projectModel = currentProject.getModel();
-        final boolean modelElementSelected = Model.getFacade().isAUMLElement(
-                selectedItem)
-                // avoids modifications on profile models
-                && !isRelatedToProfiles(currentProject, selectedItem);
-
+        final boolean modelElementSelected = 
+            Model.getFacade().isAUMLElement(selectedItem);
 
         if (modelElementSelected) {
             final boolean nAryAssociationSelected =
@@ -259,10 +246,14 @@ public class ExplorerPopup extends JPopupMenu {
                 (activityDiagramActive)
                     ? ((UMLActivityDiagram) activeDiagram).getStateMachine()
                     : null;
-                    
+
+            Collection projectModels = 
+                ProjectManager.getManager().getCurrentProject().getModels();
             if (!multiSelect) {
                 if ((classifierSelected && !relationshipSelected)
-                        || (packageSelected && selectedItem != projectModel)
+                        || (packageSelected 
+                                // TODO: Why can't we add models to a diagram?
+                                && !projectModels.contains(selectedItem))
                         || (stateVertexSelected
                                 && activityDiagramActive
                                 && diagramActivity == selectedStateMachine)
@@ -301,7 +292,11 @@ public class ExplorerPopup extends JPopupMenu {
                 }
             }
 
-            if (modelElementsOnly && selectedItem != projectModel) {
+
+            if (mutableModelElementsOnly 
+                    // Can't delete last top level model
+                    && !(projectModels.size() == 1 
+                            && projectModels.contains(selectedItem))) {
                 // TODO: Shouldn't be creating a new instance here. We should
                 // hold the delete action in some central place.
                 this.add(new ActionDeleteModelElements());
@@ -320,16 +315,11 @@ public class ExplorerPopup extends JPopupMenu {
         }
 
         if (multiSelect) {
-            Collection coll = TargetManager.getInstance().getTargets();
-            Iterator iter = (coll != null) ? coll.iterator() : null;
             List<Object> classifiers = new ArrayList<Object>();
-            while (iter != null && iter.hasNext()) {
-                Object o = iter.next();
+            for (Object o : TargetManager.getInstance().getTargets()) {
+                // TODO: Should be anything allowed by current diagram
                 if (Model.getFacade().isAClassifier(o)
-                     && !Model.getFacade().isARelationship(o)
-
-                     // avoids modifications on profile models
-                     && !isRelatedToProfiles(currentProject, o)) {
+                        && !Model.getFacade().isARelationship(o)) {
                     classifiers.add(o);
                 }
             }
@@ -618,9 +608,10 @@ public class ExplorerPopup extends JPopupMenu {
          * @see javax.swing.Action#isEnabled()
          */
         public boolean isEnabled() {
-            ArgoDiagram dia = ProjectManager.getManager().
-                getCurrentProject().getActiveDiagram();
-            if (dia == null) return false;
+            ArgoDiagram dia = DiagramUtils.getActiveDiagram();
+            if (dia == null) {
+                return false;
+            }
             MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
             return gm.canAddNode(object);
         }
@@ -793,39 +784,5 @@ public class ExplorerPopup extends JPopupMenu {
                 LOG.error("Exception", e1);
             }
         }
-    }
-
-    // TODO: Is this needed now we have ModelManagementHelper.isReadOnly?
-    private boolean isRelatedToProfiles(Project currentProject,
-            Object selectedItem) {
-        boolean found = selectedItem instanceof ProfileConfiguration
-                || selectedItem instanceof Profile
-                || selectedItem instanceof ArgoDiagram
-                || selectedItem instanceof Critic;
-                
-        /* The next statement fixes an exception 
-         * when right-clicking on e.g. an AssociationsNode 
-         * from the class-centric perspective: */
-        if (Model.getFacade().isAUMLElement(selectedItem)) {
-            /* The next presumes we are dealing with a UML object: */
-            if (!found) {
-                for (Profile profile : currentProject.getProfileConfiguration()
-                        .getProfiles()) {
-                    Collection models;
-                    try {
-                        models = profile.getProfilePackages();
-                        for (Object model : models) {
-                            if ((Model.getFacade().getRoot(selectedItem)
-                                    .equals(model))) {
-                                found = true;
-                                break;
-                            }
-                        }
-                    } catch (ProfileException e) {
-                    }
-                }
-            }
-        }
-        return found;
     }
 }
