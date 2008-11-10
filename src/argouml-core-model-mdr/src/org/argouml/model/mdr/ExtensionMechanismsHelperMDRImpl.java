@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -115,7 +115,9 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
     /* TODO: Make this work when the given stereotype
-     * has more than one baseclass. */
+     * has more than one baseclass.
+     * TODO: Currently only works for stereotypes where the baseclass is 
+     * equal to the given one - inheritance does not work.*/
     public Object getStereotype(Object ns, Object stereo) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException("namespace");
@@ -364,6 +366,8 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
             if (isStereotype(object, name, base)) {
                 return true;
             }
+            /* TODO: mvw: do we really look into super-types of the stereotype, 
+             * or should we be looking into super-types of the baseclass? */
             Iterator it = 
                 modelImpl.getCoreHelper().getSupertypes(object).iterator();
             while (it.hasNext()) {

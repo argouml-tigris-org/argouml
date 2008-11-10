@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,8 @@ import java.util.Collection;
  */
 public interface ExtensionMechanismsHelper {
     /**
-     * Returns all stereotypes in a namespace, but not those in a subnamespace.
+     * Returns all stereotypes in a given namespace, 
+     * and all those in any sub-namespace of the given namespace.
      *
      * @param ns is the namespace.
      * @return a Collection with the stereotypes.
@@ -40,13 +41,21 @@ public interface ExtensionMechanismsHelper {
     Collection getStereotypes(Object ns);
 
     /**
-     * Finds a stereotype in some namespace, but not in its subnamespaces.
+     * Finds a stereotype in a given namespace, 
+     * and all those in any sub-namespace of the given namespace.
      * Returns null if no such stereotype is found.
-     *
+     * <p>
      * TODO: What if stereo.getName() or stereo.getBaseClass() is null?
      * Then you know immediately that none will be found, but is that the
      * correct answer?
-     *
+     * Currently, null is returned in these cases. <p>
+     * 
+     * TODO: This function should not take a stereotype object as parameter,
+     * but a name and a baseclass. <p>
+     * TODO: Currently only works for stereotypes with only one baseclass. <p>
+     * TODO: Currently only works for stereotypes where the baseclass is 
+     * equal to the given one - inheritance does not work.
+     * 
      * @return the stereotype found or null.
      * @param ns is the namespace.
      * @param stereo is the stereotype.
@@ -55,11 +64,14 @@ public interface ExtensionMechanismsHelper {
 
     /**
      * Searches for a stereotype just like the given stereotype in all
-     * given models.
+     * given models (and their sub-namespaces).
      * The given stereotype can not have its namespace set yet;
      * otherwise it will be returned itself!
      *
-     * TODO: Should it only search for stereotypes owned by the Model object?
+     * TODO: This function should not take a stereotype object as parameter,
+     * but a name and a baseclass. <p>
+     * TODO: Currently only works for stereotypes with only one baseclass. <p>
+     * TODO: Should it only search for stereotypes owned by the Model object? 
      *
      * @param models a collection of models
      * @param stereo is the given stereotype
@@ -117,10 +129,10 @@ public interface ExtensionMechanismsHelper {
     boolean isValidStereotype(Object theModelElement, Object theStereotype);
 
     /**
-     * Get all stereotypes from all Models in the list.
+     * Get all stereotypes from all Models in the list. <p>
      *
-     * Finds only stereotypes owned by the Model objects themselves.
-     *
+     * Finds also all stereotypes owned by any sub-namespaces of the Model.
+     * 
      * @return the collection of stereotypes in all models
      *         in the current project
      * @param models the models to search
@@ -138,11 +150,12 @@ public interface ExtensionMechanismsHelper {
     void addCopyStereotype(Object modelElement, Object stereotype);
 
     /**
-     * Tests if a stereotype is a stereotype with some name and base class.
+     * Tests if a stereotype has a given name and given base class.
+     * While comparing the baseclass, inheritance is not considered.
      *
      * @param object is the stereotype.
      * @param name is the name of the stereotype.
-     * @param base is the base class of the stereotype.
+     * @param base is a string representing the base class of the stereotype.
      * @return true if object is a stereotype with the desired characteristics.
      */
     boolean isStereotype(Object object, String name, String base);
