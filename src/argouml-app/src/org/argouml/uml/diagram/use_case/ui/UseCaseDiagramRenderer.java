@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,10 +27,10 @@ package org.argouml.uml.diagram.use_case.ui;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
@@ -101,11 +101,11 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
 
         // Create a new version of the relevant fig
 
-        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
-                .getActiveDiagram();
+        ArgoDiagram diag = DiagramUtils.getActiveDiagram();
         if (diag instanceof UMLDiagram
             && ((UMLDiagram) diag).doesAccept(node)) {
-            figNode = (FigNodeModelElement) ((UMLDiagram) diag).drop(node, null);
+            figNode = 
+                (FigNodeModelElement) ((UMLDiagram) diag).drop(node, null);
 
         } else {
             LOG.debug(this.getClass().toString()
@@ -263,4 +263,4 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
         return newEdge;
     }
 
-} /* end class UseCaseDiagramRenderer */
+}
