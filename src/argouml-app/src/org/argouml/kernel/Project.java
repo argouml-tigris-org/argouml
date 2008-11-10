@@ -634,19 +634,28 @@ public interface Project {
     public void setVetoSupport(VetoableChangeSupport theVetoSupport);
 
     /**
-     * Get the current viewed diagram. <p>
+     * Get the current viewed diagram.
+     * <p>
+     * Used by "argo.tee" to save the name of this diagram, so that the same
+     * diagram can be initially shown when reloading this project. This probably
+     * needs to be converted to an ordered list of open diagram windows to
+     * support MDI.
      * 
-     * Used by "argo.tee" to save the name 
-     * of this diagram, so that the same diagram 
-     * can be initially shown when reloading this project..
-     *
      * @return the current viewed diagram
+     * @deprecated for 0.27.2 by tfmorris for all uses other than argo.tee. The
+     *             active diagram is a concept associated with the current
+     *             editing window, not a project. It can be retrieved from
+     *          {@link org.argouml.uml.diagram.DiagramUtils#getActiveDiagram()}.
      */
+    @Deprecated
     public ArgoDiagram getActiveDiagram();
 
     /**
      * @param theDiagram the ArgoDiagram
+     * @deprecated for 0.27.2 by tfmorris.  The active diagram is a concept
+     * associated with the current editing window, not a project.
      */
+    @Deprecated
     public void setActiveDiagram(final ArgoDiagram theDiagram);
     
     /**
