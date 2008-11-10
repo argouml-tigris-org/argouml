@@ -46,6 +46,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.util.ArgoFrame;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.SaveGraphicsAction;
@@ -110,7 +111,7 @@ public class ActionSaveAllGraphics extends AbstractAction {
             return false;
         }
         boolean okSoFar = true;
-        ArgoDiagram activeDiagram = p.getActiveDiagram();
+        ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();
         for (ArgoDiagram d : p.getDiagramList()) {
             tm.setTarget(d);
             okSoFar = trySaveDiagram(d, saveDir);

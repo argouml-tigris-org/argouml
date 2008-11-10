@@ -24,8 +24,8 @@
 
 package org.argouml.ui.cmd;
 
-import org.argouml.kernel.ProjectManager;
-import org.tigris.gef.base.Diagram;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.PrintAction;
 
 /**
@@ -55,9 +55,9 @@ public class PrintManager {
      * Print the active diagram
      */
     public void print() {
-        Object target = ProjectManager.getManager().getCurrentProject()
-                .getActiveDiagram();
-        if (target instanceof Diagram) {
+
+        Object target = DiagramUtils.getActiveDiagram();
+        if (target instanceof ArgoDiagram) {
             printCmd.actionPerformed(null);
         }
     }
@@ -68,4 +68,4 @@ public class PrintManager {
     public void showPageSetupDialog() {
         printCmd.doPageSetup();
     }
-} /* end class ActionPrint */
+}

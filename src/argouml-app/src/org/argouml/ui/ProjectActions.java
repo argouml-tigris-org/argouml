@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,6 +41,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.tigris.gef.base.Editor;
@@ -170,9 +171,8 @@ public final class ProjectActions
     }
 
     /**
-     * Given a list of targets, displays the according diagram.
-     * This method jumps to the diagram showing the targets,
-     * and scrolls to make it visible.
+     * Display the diagram which contains the given list of targets and scroll
+     * to make them visible.
      *
      * @param targets Collection of targets to show
      */ 
@@ -192,8 +192,15 @@ public final class ProjectActions
             setTarget(first);
             return;
         }
-        List<ArgoDiagram> diagrams =
-            ProjectManager.getManager().getCurrentProject().getDiagramList();
+        
+        // TODO: This should get the containing project from the list of
+        // targets, not from some global
+        Project project = ProjectManager.getManager().getCurrentProject();
+        if (project == null) {
+            return;
+        }
+        
+        List<ArgoDiagram> diagrams = project.getDiagramList();
         Object target = TargetManager.getInstance().getTarget();
         if ((target instanceof ArgoDiagram)
             && ((ArgoDiagram) target).countContained(targets) == targets.size()) {
@@ -214,26 +221,22 @@ public final class ProjectActions
             }
         }
         if (bestDiagram != null) {
-            if (!ProjectManager.getManager().getCurrentProject()
-                    .getActiveDiagram().equals(bestDiagram)) {
+            if (!DiagramUtils.getActiveDiagram().equals(bestDiagram)) {
                 setTarget(bestDiagram);
             }
             setTarget(first);
         }
         // making it possible to jump to the modelroots
-        if (ProjectManager.getManager().getCurrentProject().getRoots()
-                .contains(first)) {
+        if (project.getRoots().contains(first)) {
             setTarget(first);
         }
 
         // and finally, adjust the scrollbars to show the Fig
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p != null) {
-            Object f = TargetManager.getInstance().getFigTarget();
-            if (f instanceof Fig) {
-                Globals.curEditor().scrollToShow((Fig) f);
-            }
+        Object f = TargetManager.getInstance().getFigTarget();
+        if (f instanceof Fig) {
+            Globals.curEditor().scrollToShow((Fig) f);
         }
+        
     }
 
     private static void setTarget(Object o) {

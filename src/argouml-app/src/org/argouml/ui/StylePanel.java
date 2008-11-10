@@ -38,11 +38,10 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.LabelledLayout;
 
@@ -95,10 +94,7 @@ public class StylePanel
     public void setTarget(Object t) {
 	if (!(t instanceof Fig)) {
 	    if (Model.getFacade().isAUMLElement(t)) {
-		Project p =
-                    ProjectManager.getManager()
-                        .getCurrentProject();
-                ArgoDiagram diagram = p.getActiveDiagram();
+                ArgoDiagram diagram = DiagramUtils.getActiveDiagram();
                 if (diagram != null) {
                     t = diagram.presentationFor(t);
                 }
@@ -135,9 +131,7 @@ public class StylePanel
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object target) {
-	ArgoDiagram diagram =
-            ProjectManager.getManager()
-                .getCurrentProject().getActiveDiagram();
+	ArgoDiagram diagram = DiagramUtils.getActiveDiagram();
 	target =
             (target instanceof Fig) ? target : diagram.getContainingFig(target);
 	return (target instanceof Fig);

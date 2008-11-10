@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,9 +31,9 @@ import java.awt.dnd.DropTargetDropEvent;
 import java.awt.event.MouseEvent;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Command;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -116,11 +116,10 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
         String instructions = null;
         ModePlace placeMode = null;
         if (object != null) {
-            ArgoDiagram activeDiagram = ProjectManager.getManager().
-                getCurrentProject().getActiveDiagram();
+            ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();
             
-            if (activeDiagram instanceof UMLDiagram &&
-                    ((UMLDiagram) activeDiagram).doesAccept(object)) {
+            if (activeDiagram instanceof UMLDiagram
+                    && ((UMLDiagram) activeDiagram).doesAccept(object)) {
                 instructions = ((UMLDiagram) activeDiagram).
                     getInstructions(object);
                 placeMode = ((UMLDiagram) activeDiagram).
@@ -130,8 +129,8 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
                 // TODO: work here !
                 instructions =
                     Translator.localize(
-                            "misc.message.click-on-diagram-to-add",
-                            new Object[] {Model.getFacade().toString(object),});
+                        "misc.message.click-on-diagram-to-add",
+                        new Object[] {Model.getFacade().toString(object), });
                 placeMode = new ModePlace(this, instructions);       
                 placeMode.setAddRelatedEdges(true);
             }
@@ -184,9 +183,7 @@ public class AddExistingNodeCommand implements Command, GraphFactory {
              * This binds the use of this Command to the
              * current diagram of the current project!
              */
-            ArgoDiagram diagram =
-                ProjectManager.getManager()
-                    .getCurrentProject().getActiveDiagram();
+            ArgoDiagram diagram = DiagramUtils.getActiveDiagram();
             Fig aFig = diagram.presentationFor(object);
             aFig.setSize(aFig.getPreferredSize());
         }

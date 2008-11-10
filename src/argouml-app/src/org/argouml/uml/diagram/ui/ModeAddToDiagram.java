@@ -34,8 +34,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.FigModifyingModeImpl;
 import org.tigris.gef.base.Layer;
@@ -131,8 +131,7 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
         final List<FigNode> placedFigs =
             new ArrayList<FigNode>(modelElements.size());
         
-        ArgoDiagram diag = ProjectManager.getManager().getCurrentProject()
-        	.getActiveDiagram();
+        ArgoDiagram diag = DiagramUtils.getActiveDiagram();
         if (diag instanceof UMLDiagram) {
             for (final Object node : modelElements) {
                 if (((UMLDiagram) diag).doesAccept(node)) {

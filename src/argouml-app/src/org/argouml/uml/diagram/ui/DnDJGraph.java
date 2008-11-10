@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,9 +37,9 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -137,8 +137,7 @@ class DnDJGraph
      */
     public void dragOver(DropTargetDragEvent dtde) {
     	try {
-    	    ArgoDiagram dia = ProjectManager.getManager().
-    	        getCurrentProject().getActiveDiagram();
+    	    ArgoDiagram dia = DiagramUtils.getActiveDiagram();
     	    if (dia instanceof UMLDiagram 
                 /*&& ((UMLDiagram) dia).doesAccept(dtde.getSource())*/) {
     	        dtde.acceptDrag(dtde.getDropAction());
@@ -188,15 +187,14 @@ class DnDJGraph
         //get the model elements that are being transfered.
         Collection modelElements; 
         try {
-            ArgoDiagram diagram = ProjectManager.getManager()
-                .getCurrentProject().getActiveDiagram();
+            ArgoDiagram diagram = DiagramUtils.getActiveDiagram();
             modelElements =
                 (Collection) tr.getTransferData(
                     TransferableModelElements.UML_COLLECTION_FLAVOR);
             
             Iterator i = modelElements.iterator();
             while (i.hasNext()) {
-                FigNode figNode = ((UMLDiagram )diagram).drop(i.next(),
+                FigNode figNode = ((UMLDiagram ) diagram).drop(i.next(),
                         dropTargetDropEvent.getLocation());
                 
                 if (figNode != null) {

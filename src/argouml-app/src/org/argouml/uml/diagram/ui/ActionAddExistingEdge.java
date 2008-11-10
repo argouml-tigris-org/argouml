@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,10 +27,10 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.undo.UndoableAction;
@@ -73,8 +73,8 @@ public class ActionAddExistingEdge extends UndoableAction {
         // 3. Both of the nodes are not yet on the diagram.
         // For the time being we will only implement situation 1.
         // TODO: implement situation 2 and 3.
-        MutableGraphModel gm = (MutableGraphModel) ProjectManager.getManager().
-            getCurrentProject().getActiveDiagram().getGraphModel();
+        MutableGraphModel gm = (MutableGraphModel) DiagramUtils
+                .getActiveDiagram().getGraphModel();
         if (gm.canAddEdge(edge)) { // situation 1
             gm.addEdge(edge);
             if (Model.getFacade().isAAssociationClass(edge)) {
@@ -90,8 +90,7 @@ public class ActionAddExistingEdge extends UndoableAction {
     @Override
     public boolean isEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();
-        ArgoDiagram dia = ProjectManager.getManager().getCurrentProject().
-            getActiveDiagram();
+        ArgoDiagram dia = DiagramUtils.getActiveDiagram();
         if (dia == null) {
             return false;
         }

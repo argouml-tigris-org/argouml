@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,8 +28,8 @@ package org.argouml.uml.diagram.ui;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import org.argouml.kernel.ProjectManager;
 
+import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.toolbar.toolbutton.AbstractButtonAction;
@@ -61,8 +61,7 @@ public class RadioAction extends AbstractButtonAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
-        UMLDiagram diagram = (UMLDiagram)
-            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        UMLDiagram diagram = (UMLDiagram) DiagramUtils.getActiveDiagram();
         if (Globals.getSticky() && diagram.getSelectedAction() == this) {
             // If the user selects an Action that is already selected in sticky
             // mode (double clicked) then we turn off sticky mode and make sure

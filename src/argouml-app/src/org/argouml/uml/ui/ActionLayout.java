@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,10 +30,9 @@ import java.util.Collection;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.UndoableAction;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.activity.layout.ActivityDiagramLayouter;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.layout.Layouter;
@@ -71,15 +70,13 @@ public class ActionLayout extends UndoableAction {
      * @return true if the action is enabled
      * @see org.argouml.ui.ProjectBrowser
      */
+    @Override
     public boolean isEnabled() {
         if (!super.isEnabled()) {
             return false;
         }
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p == null) {
-            return false;
-        }
-        ArgoDiagram d = p.getActiveDiagram();
+
+        ArgoDiagram d = DiagramUtils.getActiveDiagram();
         if (d instanceof UMLClassDiagram 
                 || d instanceof UMLActivityDiagram) {
             return true;
@@ -92,10 +89,10 @@ public class ActionLayout extends UndoableAction {
      * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
-        ArgoDiagram diagram = ProjectManager.getManager()
-                .getCurrentProject().getActiveDiagram();
+        ArgoDiagram diagram = DiagramUtils.getActiveDiagram();
         Layouter layouter;
         if (diagram instanceof UMLClassDiagram) {
             layouter = new ClassdiagramLayouter(diagram);
@@ -112,10 +109,8 @@ public class ActionLayout extends UndoableAction {
         // Create a selection containing all figures in diagram
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
-        Collection nodes =
-            ProjectManager.getManager().getCurrentProject()
-                    .getActiveDiagram()
-                    .getLayer().getContents();                    
+        Collection nodes = DiagramUtils.getActiveDiagram().getLayer()
+                .getContents();                    
         sm.select(nodes);
 
         // Rearrange the diagram layout
@@ -126,4 +121,4 @@ public class ActionLayout extends UndoableAction {
         sm.endTrans(); 
         sm.deselectAll();
     }
-} /* end class ActionLayout */
+}

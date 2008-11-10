@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,9 +32,9 @@ import java.util.List;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -81,8 +81,7 @@ public class ActionEdgesDisplay extends UndoableAction {
     @Override
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
-        ArgoDiagram d = ProjectManager.getManager()
-                .getCurrentProject().getActiveDiagram();
+        ArgoDiagram d = DiagramUtils.getActiveDiagram();
         Editor ce = Globals.curEditor();
         MutableGraphModel mgm = (MutableGraphModel) ce.getGraphModel();
 
@@ -110,8 +109,9 @@ public class ActionEdgesDisplay extends UndoableAction {
                         edge = Model.getFacade().getAssociation(edge);
                     }
                     Fig fig = d.presentationFor(edge);
-                    if (fig != null)
+                    if (fig != null) {
                         fig.removeFromDiagram();
+                    }
                 }
                 //The next does not yet work for comment edges:
 //                Collection c = Model.getFacade().getComments(owner);

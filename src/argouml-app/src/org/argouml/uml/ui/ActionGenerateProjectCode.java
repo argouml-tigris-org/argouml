@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,9 +32,9 @@ import java.util.List;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.generator.GeneratorManager;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 import org.tigris.gef.undo.UndoableAction;
@@ -66,8 +66,7 @@ public class ActionGenerateProjectCode extends UndoableAction {
     public void actionPerformed(ActionEvent ae) {
         super.actionPerformed(ae);
         List classes = new ArrayList();
-	ArgoDiagram activeDiagram =
-	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();
 	if (activeDiagram == null) {
 	    return;
 	}
@@ -103,8 +102,7 @@ public class ActionGenerateProjectCode extends UndoableAction {
      * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
     public boolean isEnabled() {
-        ArgoDiagram activeDiagram = ProjectManager.getManager()
-				.getCurrentProject().getActiveDiagram();
+        ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();
         return super.isEnabled() && (activeDiagram != null);
     }
 

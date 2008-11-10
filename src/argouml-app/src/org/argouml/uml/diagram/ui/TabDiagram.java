@@ -45,11 +45,11 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.ui.ActionCopy;
 import org.argouml.uml.ui.ActionCut;
 import org.tigris.gef.base.Diagram;
@@ -411,8 +411,7 @@ public class TabDiagram
 
     public void propertyChange(PropertyChangeEvent arg0) {
         if ("remove".equals(arg0.getPropertyName())) {
-            ArgoDiagram diagram = ProjectManager.getManager()
-                .getCurrentProject().getActiveDiagram();
+            ArgoDiagram diagram = DiagramUtils.getActiveDiagram();
             TargetManager.getInstance().setTarget(diagram);
         }
     }

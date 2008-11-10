@@ -45,6 +45,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ExceptionDialog;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.util.ArgoFrame;
 import org.argouml.util.SuffixFilter;
 import org.tigris.gef.base.Diagram;
@@ -84,8 +85,7 @@ public class ActionSaveGraphics extends AbstractAction
      * @return true if all went well.
      */
     private boolean trySave() {
-        Object target =
-            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        Object target = DiagramUtils.getActiveDiagram();
 
         if (!(target instanceof Diagram)) {
             return false;

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,10 +30,10 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
@@ -68,8 +68,7 @@ public class ActionAddExistingNodes extends UndoableAction {
      */
     @Override
     public boolean isEnabled() {
-        ArgoDiagram dia = ProjectManager.getManager().getCurrentProject()
-                .getActiveDiagram();
+        ArgoDiagram dia = DiagramUtils.getActiveDiagram();
         if (dia == null) {
             return false;
         }
