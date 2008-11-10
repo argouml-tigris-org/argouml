@@ -222,8 +222,14 @@ public abstract class NotationProvider {
             LOG.warn("Encountered deleted object during delete of " + element);
             return;
         }
-        listeners.add(new Object[] {element, property});
-        Model.getPump().addModelEventListener(listener, element, property);
+        Object[] entry = new Object[] {element, property};
+        if (!listeners.contains(entry)) {
+            listeners.add(entry);
+            Model.getPump().addModelEventListener(listener, element, property);
+        } else {
+            LOG.debug("Attempted duplicate registration of event listener"
+                    + " - Element: " + element + " Listener: " + listener);
+        }
     }
 
     /*
@@ -243,8 +249,14 @@ public abstract class NotationProvider {
             LOG.warn("Encountered deleted object during delete of " + element);
             return;
         }
-        listeners.add(new Object[] {element, property});
-        Model.getPump().addModelEventListener(listener, element, property);
+        Object[] entry = new Object[] {element, property};
+        if (!listeners.contains(entry)) {
+            listeners.add(entry);
+            Model.getPump().addModelEventListener(listener, element, property);
+        } else {
+            LOG.debug("Attempted duplicate registration of event listener"
+                    + " - Element: " + element + " Listener: " + listener);
+        }
     }
     
     /*
