@@ -163,6 +163,11 @@ public interface ArgoDiagram {
      * @param p the project that contains this diagram
      */
     public void setProject(Project p);
+    
+    /**
+     * @return the Project which owns this diagram
+     */
+    public Project getProject();
 
     /**
      * Called when the user releases a dragged FigNode.
