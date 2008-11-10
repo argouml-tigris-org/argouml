@@ -25,8 +25,10 @@
 package org.argouml.uml.diagram;
 
 import org.apache.log4j.Logger;
+import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.base.LayerPerspective;
 
 /**
@@ -58,9 +60,15 @@ public class DiagramUtils {
      *         return null.
      */
     private static LayerPerspective getActiveLayer() {
-        Layer layer = Globals.curEditor().getLayerManager().getActiveLayer();
-        if (layer instanceof LayerPerspective) {
-            return (LayerPerspective) layer;
+        Editor editor = Globals.curEditor();
+        if (editor != null) {
+            LayerManager manager = editor.getLayerManager();
+            if (manager != null) {
+                Layer layer = getActiveLayer();
+                if (layer instanceof LayerPerspective) {
+                    return (LayerPerspective) layer;
+                }
+            }
         }
         return null;
     }
