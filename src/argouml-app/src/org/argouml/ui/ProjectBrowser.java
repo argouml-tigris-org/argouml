@@ -95,7 +95,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
@@ -103,7 +103,6 @@ import org.argouml.uml.ui.TabProps;
 import org.argouml.util.ArgoFrame;
 import org.argouml.util.JavaRuntimeUtility;
 import org.argouml.util.ThreadUtils;
-import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -124,7 +123,7 @@ import org.tigris.toolbar.layouts.DockBorderLayout;
  */
 public final class ProjectBrowser
     extends JFrame
-    implements IStatusBar, PropertyChangeListener, TargetListener {
+    implements PropertyChangeListener, TargetListener {
 
     /**
      * Default width.
@@ -705,9 +704,9 @@ public final class ProjectBrowser
                         .getCurrentProject().getName();
                 }
             }
+            // TODO: Why would this be null?
             if (activeDiagram == null) {
-                activeDiagram = ProjectManager.getManager()
-                    .getCurrentProject().getActiveDiagram();
+                activeDiagram = DiagramUtils.getActiveDiagram();
             }
             String changeIndicator = "";
             if (saveAction != null && saveAction.isEnabled()) {
@@ -797,27 +796,6 @@ public final class ProjectBrowser
         }
     }
 
-    /**
-     * Get the tab page containing the properties.
-     * 
-     * @return the TabProps tabpage
-     * @deprecated for 0.25.5 by tfmorris. No one should need to manipulate the
-     *             properties tab directly. The only place this is currently
-     *             used is in a test.
-     */
-    @Deprecated
-    public TabProps getTabProps() {
-        // In theory there can be multiple details pane (work in
-        // progress). It must first be determined which details
-        // page contains the properties tab. Bob Tarling 7 Dec 2002
-        for (DetailsPane detailsPane : detailsPanesByCompassPoint.values()) {
-            TabProps tabProps = detailsPane.getTabProps();
-            if (tabProps != null) {
-                return tabProps;
-            }
-        }
-        throw new IllegalStateException("No properties tab found");
-    }
 
     /**
      * Get the tab page instance of the given class.
@@ -881,95 +859,6 @@ public final class ProjectBrowser
         return southPane;
     }
 
-    /**
-     * Find the tabpage with the given label and make it the front tab.
-     *
-     * @param tabName The tabpage label
-     * @deprecated for 0.25.5 by tfmorris. This is unused by ArgoUML. If there
-     *             are clients that require this functionality, it should be
-     *             delegated to some place more appropriate like a details
-     *             pane manager.
-     */
-    @Deprecated
-    public void selectTabNamed(String tabName) {
-        for (DetailsPane detailsPane : detailsPanesByCompassPoint.values()) {
-            if (detailsPane.selectTabNamed(Translator.localize(tabName))) {
-                return;
-            }
-        }
-        throw new IllegalArgumentException("No such tab named " + tabName);
-    }
-
-
-    /**
-     * Given a list of targets, displays the corresponding diagram. This method
-     * jumps to the diagram showing the targets, and scrolls to make it visible.
-     * 
-     * @param targets Collection of targets to show
-     * @deprecated for 0.25.5 by tfmorris. This is unused by ArgoUML. If there
-     *             are clients that require this functionality, it should be
-     *             moved some place more appropriate like the Diagram subsystem.
-     */
-    @Deprecated
-    public void jumpToDiagramShowing(Collection targets) {
-
-        if (targets == null || targets.size() == 0) {
-            return;
-        }
-        List dms = new ArrayList(targets);
-        Object first = dms.get(0);
-        if (first instanceof Diagram && dms.size() > 1) {
-            setTarget(first);
-            setTarget(dms.get(1));
-            return;
-        }
-        if (first instanceof Diagram && dms.size() == 1) {
-            setTarget(first);
-            return;
-        }
-        List<ArgoDiagram> diagrams =
-            ProjectManager.getManager().getCurrentProject().getDiagramList();
-        Object target = TargetManager.getInstance().getTarget();
-        if ((target instanceof Diagram)
-            && ((Diagram) target).countContained(dms) == dms.size()) {
-            setTarget(first);
-            return;
-        }
-
-        ArgoDiagram bestDiagram = null;
-        int bestNumContained = 0;
-        for (ArgoDiagram d : diagrams) {
-            int nc = d.countContained(dms);
-            if (nc > bestNumContained) {
-                bestNumContained = nc;
-                bestDiagram = d;
-            }
-            if (nc == dms.size()) {
-                break;
-            }
-        }
-        if (bestDiagram != null) {
-            if (!ProjectManager.getManager().getCurrentProject()
-                    .getActiveDiagram().equals(bestDiagram)) {
-                setTarget(bestDiagram);
-            }
-            setTarget(first);
-        }
-        // making it possible to jump to the modelroot
-        if (first.equals(ProjectManager.getManager().getCurrentProject()
-                         .getRoot())) {
-            setTarget(first);
-        }
-
-        // and finally, adjust the scrollbars to show the Fig
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p != null) {
-            Object f = TargetManager.getInstance().getFigTarget();
-            if (f instanceof Fig) {
-                Globals.curEditor().scrollToShow((Fig) f);
-            }
-        }
-    }
 
     /*
      * @see java.awt.Component#setVisible(boolean)
@@ -982,21 +871,6 @@ public final class ProjectBrowser
         }
     }
 
-    /**
-     * Show a string in the status bar.
-     * 
-     * @param s the new status string
-     * 
-     * @deprecated for 0.26 by tfmorris. Use {@link ArgoEventPump#fireEvent} to
-     *             send a status event instead.  When this method is removed
-     *             also remove the implements clause for GEF's IStatusBar from
-     *             this (ProjectBrowser) class.
-     */
-    @Deprecated
-    public void showStatus(String s) {
-        updateStatus(s);
-    }
-    
     private void updateStatus(String status) {
         ArgoEventPump.fireEvent(new ArgoStatusEvent(ArgoEventTypes.STATUS_TEXT,
                 this, status));
@@ -1626,7 +1500,6 @@ public final class ProjectBrowser
                     persister.addProgressListener(pmw);
                 }
                 
-                DiagramFactory.getInstance().getDiagram().clear();
 
                 project = persister.doLoad(file);
 
@@ -1635,18 +1508,21 @@ public final class ProjectBrowser
                 }
                 ThreadUtils.checkIfInterrupted();
                 
-                if (Model.getDiagramInterchangeModel() != null) {
-                    Collection diagrams =
-                        DiagramFactory.getInstance().getDiagram();
-                    Iterator diag = diagrams.iterator();
-                    while (diag.hasNext()) {
-                        project.addMember(diag.next());
-                    }
-                    if (!diagrams.isEmpty()) {
-                        project.setActiveDiagram(
-                                (ArgoDiagram) diagrams.iterator().next());
-                    }
-                }
+//                if (Model.getDiagramInterchangeModel() != null) {
+                // TODO: This assumes no more than one project at a time
+                // will be loaded.  If it is ever reinstituted, this needs to
+                // be fixed
+//                    Collection diagrams =
+//                        DiagramFactory.getInstance().getDiagram();
+//                    Iterator diag = diagrams.iterator();
+//                    while (diag.hasNext()) {
+//                        project.addMember(diag.next());
+//                    }
+//                    if (!diagrams.isEmpty()) {
+//                        project.setActiveDiagram(
+//                                (ArgoDiagram) diagrams.iterator().next());
+//                    }
+//                }
 
                 // Let's save this project in the mru list
                 this.addFileSaved(file);

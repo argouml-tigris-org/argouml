@@ -24,10 +24,8 @@
 
 package org.argouml.uml.diagram;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.argouml.model.ActivityDiagram;
@@ -79,14 +77,14 @@ public final class DiagramFactory {
     public enum DiagramType {
         Class, UseCase, State, Deployment, Collaboration, Activity, Sequence
     }
-   
-    private List<ArgoDiagram> diagrams = new ArrayList<ArgoDiagram>();
 
     private Map<DiagramType, DiagramFactoryInterface> factories =
         new EnumMap<DiagramType, DiagramFactoryInterface>(DiagramType.class);
 
     private DiagramFactory() {
         super();
+        // TODO: Use our extension registration mechanism for our internal
+        // classes as well, so everything is treated the same
         diagramClasses.put(DiagramType.Class, UMLClassDiagram.class);
         diagramClasses.put(DiagramType.UseCase, UMLUseCaseDiagram.class);
         diagramClasses.put(DiagramType.State, UMLStateDiagram.class);
@@ -102,17 +100,6 @@ public final class DiagramFactory {
      */
     public static DiagramFactory getInstance() {
         return diagramFactory;
-    }
-
-    /**
-     * @return the list of diagrams
-     * @deprecated in 0.26 By Bob Tarling
-     */
-    public List<ArgoDiagram> getDiagram() {
-        // TODO: This list is currently unused in ArgoUML.  Since it's session
-        // wide, it's not clear what value it has since we'll usually want
-        // diagrams per project. - tfm
-        return diagrams;
     }
 
     
@@ -145,9 +132,6 @@ public final class DiagramFactory {
         if (factory != null) {
             final ArgoDiagram diagram =
                 factory.createDiagram(namespace, machine);
-            //keep a reference on it in the case where we must add all the
-            //diagrams as project members (loading)
-            diagrams.add(diagram);
             return diagram;
         } else {
             return createDiagram(diagramClasses.get(type), namespace, machine);
@@ -214,9 +198,6 @@ public final class DiagramFactory {
             ((UMLMutableGraphSupport) diagram.getGraphModel()).setDiDiagram(dd);
         }
 
-        //keep a reference on it in the case where we must add all the diagrams
-        //as project members (loading)
-        diagrams.add(diagram);
         return diagram;
     }
 
@@ -236,26 +217,12 @@ public final class DiagramFactory {
         return diagram;
     }
 
-    // Unused - tfm - 20070706
-//    public DiDiagram getDiDiagram(Object graphModel) {
-//        if (graphModel instanceof UMLMutableGraphSupport) {
-//            return ((UMLMutableGraphSupport) graphModel).getDiDiagram();
-//        }
-//        throw new IllegalArgumentException("graphModel: " + graphModel);
-//    }
-
-    // Unused - tfm 20070706
-//    public void addElement(Object diagram, Object element) {
-//        if (!(diagram instanceof ArgoDiagram)) {
-//            throw new IllegalArgumentException("diagram: " + diagram);
-//        }
-//        if (!(element instanceof Fig)) {
-//            throw new IllegalArgumentException("fig: " + element);
-//        }
-//        ((ArgoDiagram) diagram).add((Fig) element);
-//    }
 
 
+    /**
+     * @deprecated for 0.27.2 by tfmorris.  Undocumented and unused internally.
+     */
+    @Deprecated
     public Object createRenderingElement(Object diagram, Object model) {
         GraphNodeRenderer rend =
             ((Diagram) diagram).getLayer().getGraphNodeRenderer();

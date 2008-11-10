@@ -107,6 +107,8 @@ public abstract class UmlDiagramRenderer
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
      *         java.lang.Object, int, int, java.util.Map)
      */
+    // TODO: Is this supposed to be deprecated?  It's only used by
+    // DiagramFactory.createRenderingElement, which is itself unused
     public FigNode getFigNodeFor(
 	    Object node, int x, int y,
 	    Map styleAttributes) {
