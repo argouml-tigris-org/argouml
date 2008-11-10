@@ -1664,7 +1664,7 @@ public final class ProjectBrowser
                 reportError(
                         pmw,
                         Translator.localize(
-                                "dialog.error.file.version",
+                                "dialog.error.file.version.error",
                                 new Object[] {ex.getMessage()}),
                         showUI);
             } catch (OutOfMemoryError ex) {
