@@ -166,7 +166,10 @@ public interface ModelEventPump {
 
     /**
      * Adds a listener that listens to the event that is named eventName and
-     * that occur to instances of the given modelClass.
+     * that occur to instances of the given modelClass.  If you want to be 
+     * notified of changes on all properties, use 
+     * {@link #addClassModelEventListener(PropertyChangeListener, Object, String[])}
+     * with a null third argument.
      * <p>
      * 
      * @param listener
@@ -179,7 +182,7 @@ public interface ModelEventPump {
      *             if one of the arguments is null or if the modelClass is not a
      *             valid metamodel class.
      * @throws IllegalStateException
-     *             if the listener is already registred.
+     *             if the listener is already registered.
      */
     void addClassModelEventListener(PropertyChangeListener listener,
 				    Object modelClass,
