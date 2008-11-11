@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,9 +52,6 @@ public class FigDependency extends FigEdgeModelElement {
      */
     private FigTextGroup middleGroup = new FigTextGroup(); 
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * Constructor
      */
@@ -74,25 +71,22 @@ public class FigDependency extends FigEdgeModelElement {
 
     /**
      * Constructor that sets the UML element
-     * @param edge the UML element
+     * @param dependency the UML element
      */
-    public FigDependency(Object edge) {
+    public FigDependency(Object dependency) {
         this();
-        setOwner(edge);
+        setOwner(dependency);
     }
 
     /**
-     * @param edge theUML element
+     * @param dependency theUML element
      * @param lay the layer
      */
-    public FigDependency(Object edge, Layer lay) {
+    public FigDependency(Object dependency, Layer lay) {
         this();
-        setOwner(edge);
+        setOwner(dependency);
         setLayer(lay);
     }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
@@ -110,9 +104,6 @@ public class FigDependency extends FigEdgeModelElement {
     protected boolean canEdit(Fig f) {
         return false;
     }
-
-    ////////////////////////////////////////////////////////////////
-    // event handlers
 
     /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
