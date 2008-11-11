@@ -252,7 +252,7 @@ public class ExplorerPopup extends JPopupMenu {
             if (!multiSelect) {
                 if ((classifierSelected && !relationshipSelected)
                         || (packageSelected 
-                                // TODO: Why can't we add models to a diagram?
+                                // TODO: Allow adding models to a diagram - issue 4172.
                                 && !projectModels.contains(selectedItem))
                         || (stateVertexSelected
                                 && activityDiagramActive
