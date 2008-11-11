@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.tigris.gef.base.ModePlace;
 import org.tigris.gef.graph.GraphFactory;
+import org.tigris.gef.persistence.pgml.PgmlUtility;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -65,8 +66,8 @@ public class ModePlaceClassifierRole extends ModePlace {
      * Set height and Y position of the new CR as the already existing CRs.
      */
     private void postProcessing() {
-        List nodes =
-            editor.getLayerManager().getActiveLayer().getContentsNoEdges();
+        List nodes = 
+            PgmlUtility.getContentsNoEdges(editor.getLayerManager().getActiveLayer());
         int i = 0;
         boolean figClassifierRoleFound = false;
         Fig fig = null;
