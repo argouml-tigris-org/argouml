@@ -2313,6 +2313,12 @@ public abstract class FigNodeModelElement
      * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
      */
     public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
+        if (getProject() == null) {
+            /* Temporary fix related to issue 5434.
+             * TODO: However I think this can be removed. See issue 5500 - Bob
+             */
+            return;
+        }        
         updateFont();
         updateBounds();
         damage();
