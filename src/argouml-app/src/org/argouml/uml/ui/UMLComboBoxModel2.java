@@ -771,6 +771,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * the next time the user opens the combo.
      */
     protected void setModelInvalid() {
+        assert isLazy(); // catch callers attempting to use one without other
         modelValid = false;
     }
 
