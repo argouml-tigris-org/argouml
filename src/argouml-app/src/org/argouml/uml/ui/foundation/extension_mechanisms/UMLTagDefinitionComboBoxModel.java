@@ -31,9 +31,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.util.PathComparator;
 
@@ -43,14 +45,57 @@ import org.argouml.uml.util.PathComparator;
  * @since October 27, 2005
  */
 public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
+    
+    private static final Logger LOG = 
+        Logger.getLogger(UMLTagDefinitionComboBoxModel.class);
 
     /**
      * Constructor for UMLTagDefinitionComboBoxModel.
      */
     public UMLTagDefinitionComboBoxModel() {
-        // TODO: What property name do we need here?  
-        // We're forced to have something, but nothing will really work.
-        super("definedTag", false);
+        // stereotypes applied to the target mostly control which TDs
+        // (but see below for other listeners too)
+        super("stereotype", false);
+    }
+
+    @Override
+    protected void addOtherModelEventListeners(Object target) {
+        // Ask to be notified of any changes to TagDefinitions so that we
+        // can track new ones, name changes, etc
+        Model.getPump().addClassModelEventListener(this, 
+                Model.getMetaTypes().getTagDefinition(), (String[]) null);
+    }    
+
+    @Override
+    protected void removeOtherModelEventListeners(Object target) {
+        Model.getPump().addClassModelEventListener(this, 
+                Model.getMetaTypes().getTagDefinition(), (String[]) null);
+    }
+
+    @Override
+    public void modelChanged(UmlChangeEvent evt) {
+        // because we're listening for stereotypes being added and removed
+        // but we're really interested in their owned tag definitions,
+        // the default implementation won't work for us
+        
+        if (Model.getFacade().isATagDefinition(evt.getSource())) {
+            LOG.debug("Got TagDefinition event " + evt.toString());
+            // Just mark for rebuild next time since we use lazy loading
+            setModelInvalid();
+        } else if ("stereotype".equals(evt.getPropertyName())) {
+            LOG.debug("Got stereotype event " + evt.toString());
+            // A stereotype got applied or removed
+            // Just mark for rebuild next time since we use lazy loading
+            setModelInvalid();
+        } else {
+            LOG.debug("Got other event " + evt.toString());
+        }    
+    }
+
+
+    @Override
+    public boolean isLazy() {
+        return true;
     }
 
 
@@ -80,8 +125,8 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        Object t = getTarget();
-        addAll(getApplicableTagDefinitions(t));
+        Object target = getTarget();
+        addAll(getApplicableTagDefinitions(target));
     }
 
     /*
@@ -91,18 +136,20 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         return getSelectedItem();
     }
 
-    private Collection getApplicableTagDefinitions(Object t) {
+    private Collection getApplicableTagDefinitions(Object element) {
         Set<List<String>> paths = new HashSet<List<String>>();
         Set<Object> availableTagDefs = 
             new TreeSet<Object>(new PathComparator());
-        Collection stereotypes = Model.getFacade().getStereotypes(t);
+        Collection stereotypes = Model.getFacade().getStereotypes(element);
         Project project = ProjectManager.getManager().getCurrentProject();
         for (Object model : project.getModels()) {
+            // TODO: Won't our use of PathComparator take care of uniqueness?
             addAllUniqueModelElementsFrom(availableTagDefs, paths,
                     Model.getModelManagementHelper().getAllModelElementsOfKind(
                             model,
                             Model.getMetaTypes().getTagDefinition()));
         }
+        // TODO: Won't our use of PathComparator take care of uniqueness?
         addAllUniqueModelElementsFrom(availableTagDefs, paths, project
                 .getProfileConfiguration().findByMetaType(
                         Model.getMetaTypes().getTagDefinition()));
