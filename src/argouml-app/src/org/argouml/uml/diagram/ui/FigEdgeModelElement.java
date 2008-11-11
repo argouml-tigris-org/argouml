@@ -148,7 +148,7 @@ public abstract class FigEdgeModelElement
     /**
      * Use getStereotypeFig(), no setter should be required.
      */
-    private Fig stereotypeFig;
+    private FigStereotypesGroup stereotypeFig;
 
     private FigEdgePort edgePort;
 
@@ -507,7 +507,7 @@ public abstract class FigEdgeModelElement
      * Getter for stereo, the stereotype Fig
      * @return the stereo Fig
      */
-    protected Fig getStereotypeFig() {
+    protected FigStereotypesGroup getStereotypeFig() {
         return stereotypeFig;
     }
 
