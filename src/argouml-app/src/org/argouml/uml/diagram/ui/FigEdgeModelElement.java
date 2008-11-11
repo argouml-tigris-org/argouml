@@ -889,6 +889,7 @@ public abstract class FigEdgeModelElement
         if (edgePort != null) {
             edgePort.setOwner(getOwner());
         }
+        stereotypeFig.setOwner(owner); // this fixes issue 5414
         initNotationProviders(owner);
         updateListeners(null, owner);
         // TODO: The following is redundant.  It's done when setLayer is 
