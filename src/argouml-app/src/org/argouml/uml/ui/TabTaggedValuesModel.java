@@ -202,7 +202,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             aValue = "";
         }
         
-        if ("".equals(aValue) && columnIndex == 0) {
+        if ((aValue == null || "".equals(aValue)) && columnIndex == 0) {
             removeRow(rowIndex);
             return;
         }
