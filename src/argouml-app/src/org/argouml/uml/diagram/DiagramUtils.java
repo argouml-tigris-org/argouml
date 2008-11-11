@@ -64,7 +64,7 @@ public class DiagramUtils {
         if (editor != null) {
             LayerManager manager = editor.getLayerManager();
             if (manager != null) {
-                Layer layer = getActiveLayer();
+                Layer layer = manager.getActiveLayer();
                 if (layer instanceof LayerPerspective) {
                     return (LayerPerspective) layer;
                 }
