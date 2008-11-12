@@ -94,21 +94,22 @@ document.write("</div>");
 </script>
 
 <script type="text/javascript">
+    var LAST_STABLE_VERSION = "0.26";
     if (navigator.appVersion.indexOf("Win")!=-1) {
-        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-0.26/ArgoUML-0.26-setup.exe' onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-0.26-setup.exe')\">Download ArgoUML 0.26 (Windows)</a>");
+        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-"+LAST_STABLE_VERSION+"/ArgoUML-" + LAST_STABLE_VERSION +"-setup.exe' onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-"+LAST_STABLE_VERSION+"-setup.exe')\">Download ArgoUML "+LAST_STABLE_VERSION + " (Windows)</a>");
     }
     else if (navigator.appVersion.indexOf("Mac")!=-1) {
-        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-0.26/ArgoUML-0.26.app.tgz'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-0.26.app.tgz')\">Download ArgoUML 0.26 (Mac)</a>");
+        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-"+LAST_STABLE_VERSION+"/ArgoUML-" + LAST_STABLE_VERSION +".app.tgz'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-"+LAST_STABLE_VERSION+".app.tgz')\">Download ArgoUML "+LAST_STABLE_VERSION + " (Mac)</a>");
     }
     else if (window.navigator.userAgent.indexOf("X11")!=-1) {
-        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-0.26/ArgoUML-0.26.tar.gz'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-0.26.tar.gz')\">Download ArgoUML 0.26 (Linux/BSD)</a>");
+        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-"+LAST_STABLE_VERSION+"/ArgoUML-" + LAST_STABLE_VERSION +".tar.gz'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-"+LAST_STABLE_VERSION+".tar.gz')\">Download ArgoUML "+LAST_STABLE_VERSION+" (Linux/BSD)</a>");
     }
     else if (window.navigator.userAgent.indexOf("Linux")!=-1) {
-        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-0.26/ArgoUML-0.26.tar.gz'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-0.26.tar.gz')\">Download ArgoUML 0.26 (Linux/BSD)</a>");
+        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-"+LAST_STABLE_VERSION+"/ArgoUML-" + LAST_STABLE_VERSION +".tar.gz'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-"+LAST_STABLE_VERSION+".tar.gz')\">Download ArgoUML "+LAST_STABLE_VERSION+" (Linux/BSD)</a>");
     }
 
     else {
-        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-0.26/ArgoUML-0.26.zip'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-0.26.zip')\">Download ArgoUML 0.26</a>");
+        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-"+LAST_STABLE_VERSION+"/ArgoUML-" + LAST_STABLE_VERSION +".zip'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-"+LAST_STABLE_VERSION+".zip')\">Download ArgoUML "+LAST_STABLE_VERSION+"</a>");
     }
 </script>
 </div>
