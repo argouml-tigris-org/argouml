@@ -286,10 +286,13 @@ public final class ProjectManager implements ModelCommandCreationObserver {
                 creatingCurrentProject = true;
                 LOG.info("making empty project");
                 Project newProject = new ProjectImpl();
+                // Our project isn't really fully initialized yet, but the
+                // UndoManager depends on having the current project set before
+                // we can create our default Model
+                setCurrentProject(newProject);
                 if (addDefaultDiagrams) {
                     createDefaultDiagrams(newProject);
                 }
-                setCurrentProject(newProject);
                 creatingCurrentProject = false;
 
                 Model.getPump().startPumpingEvents();
