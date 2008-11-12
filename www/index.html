@@ -14,7 +14,7 @@ content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gen
 #intro {
     background: url(images/argologo100x100.gif) no-repeat;
     padding: 5px 5px 5px 110px;
-    width: 60%;
+    width: 40%;
     float:left;
 }
     #intro p {
@@ -41,6 +41,28 @@ content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gen
         padding: 100px 5px 2px 2px;
         margin:0 0;
     }
+#downloads-beta {
+    background: url(images/download-beta.png) no-repeat;
+    width:150px;
+    float:left;
+    height:150px;
+    margin-left:15px;
+    style:block;
+}
+    #downloads-beta a{
+        background: none;
+        display:block;
+        width:150px;
+        height:30px;
+        font-size: 12px !important;
+        font-weight:bold;
+        color: #000;
+        text-decoration:none;
+        text-align:center;
+        padding: 100px 5px 2px 2px;
+        margin:0 0;
+    }
+
 #tour {
     width:90%;
 }
@@ -113,6 +135,37 @@ document.write("</div>");
     }
 </script>
 </div>
+
+<div id="downloads-beta">
+<script type="text/javascript">
+document.write("<div style='display:none;'>");
+</script>
+<a href="http://argouml-downloads.tigris.org/argouml-0.26.1.BETA_1/" >Download and test ArgoUML 0.26.1 BETA 1</a>
+<script type="text/javascript">
+document.write("</div>");
+</script>
+
+<script type="text/javascript">
+    var LAST_BETA_VERSION = "0.26.1.BETA_1";
+    if (navigator.appVersion.indexOf("Win")!=-1) {
+        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-"+LAST_BETA_VERSION+"/ArgoUML-" + LAST_BETA_VERSION +"-setup.exe' onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-"+LAST_BETA_VERSION+"-setup.exe')\">Download and test ArgoUML "+LAST_BETA_VERSION + " (Windows)</a>");
+    }
+    else if (navigator.appVersion.indexOf("Mac")!=-1) {
+        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-"+LAST_BETA_VERSION+"/ArgoUML-" + LAST_BETA_VERSION +".app.tgz'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-"+LAST_BETA_VERSION+".app.tgz')\">Download and test ArgoUML "+LAST_BETA_VERSION + " (Mac)</a>");
+    }
+    else if (window.navigator.userAgent.indexOf("X11")!=-1) {
+        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-"+LAST_BETA_VERSION+"/ArgoUML-" + LAST_BETA_VERSION +".tar.gz'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-"+LAST_BETA_VERSION+".tar.gz')\">Download and test ArgoUML "+LAST_BETA_VERSION+" (Linux/BSD)</a>");
+    }
+    else if (window.navigator.userAgent.indexOf("Linux")!=-1) {
+        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-"+LAST_BETA_VERSION+"/ArgoUML-" + LAST_BETA_VERSION +".tar.gz'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-"+LAST_BETA_VERSION+".tar.gz')\">Download and test ArgoUML "+LAST_BETA_VERSION+" (Linux/BSD)</a>");
+    }
+
+    else {
+        document.write("<a href='http://argouml-downloads.tigris.org/nonav/argouml-"+LAST_BETA_VERSION+"/ArgoUML-" + LAST_BETA_VERSION +".zip'  onClick=\"javascript:urchinTracker('DOWNLOAD/ArgoUML-"+LAST_BETA_VERSION+".zip')\">Download and test ArgoUML "+LAST_BETA_VERSION+"</a>");
+    }
+</script>
+</div>
+
 
 <div style="clear:both;" />
 
