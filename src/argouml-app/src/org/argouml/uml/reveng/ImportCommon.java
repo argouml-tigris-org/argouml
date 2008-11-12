@@ -49,6 +49,7 @@ import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
+import org.argouml.util.SuffixFilter;
 import org.tigris.gef.base.Globals;
 
 /**
@@ -95,6 +96,8 @@ public abstract class ImportCommon implements ImportSettingsInternal {
     private DiagramInterface diagramInterface;
 
     private File[] selectedFiles;
+    
+    private SuffixFilter selectedSuffixFilter;
 
     protected ImportCommon() {
         super();
@@ -104,16 +107,15 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                 .getImporters()) {
             modules.put(importer.getName(), importer);
         }
-        if (modules.size() == 0) {
+        if (modules.isEmpty()) {
             throw new RuntimeException("Internal error. "
                     + "No importer modules found.");
         }
-
-        // "Java" is a default module
+        // "Java" is the default module for historical reasons,
+        // but it's not required to be there
         currentModule = modules.get("Java");
         if (currentModule == null) {
-            throw new RuntimeException("Internal error. "
-                       + "Default import module not found");
+            currentModule = modules.elements().nextElement();
         }
     }
 
@@ -162,10 +164,15 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         List<File> files = Arrays.asList(getSelectedFiles());
         if (files.size() == 1) {
             File file = files.get(0);
+            SuffixFilter suffixFilters[] = {selectedSuffixFilter};
+            if (suffixFilters[0] == null) {
+                // not a SuffixFilter selected, so we take all
+                suffixFilters = currentModule.getSuffixFilters();
+            }
             files =
                 FileImportUtils.getList(
-                        file, isDescendSelected(), currentModule
-                        .getSuffixFilters(), monitor);
+                        file, isDescendSelected(),
+                        suffixFilters, monitor);
             if (file.isDirectory()) {
                 setSrcPath(file.getAbsolutePath());
             } else {
@@ -275,6 +282,15 @@ public abstract class ImportCommon implements ImportSettingsInternal {
 
     protected void setSelectedFiles(final File[] files) {
         selectedFiles = files;
+    }
+
+    /**
+     * Set the selected (file) suffix filter.
+     * 
+     * @param suffixFilter the (file) suffix filter
+     */
+    protected void setSelectedSuffixFilter(final SuffixFilter suffixFilter) {
+        selectedSuffixFilter = suffixFilter;
     }
 
     protected File[] getSelectedFiles() {

@@ -609,6 +609,13 @@ public class Import extends ImportCommon implements ImportSettings {
                 }
             }
             theImport.setSelectedFiles(files);
+            try {
+                theImport.setSelectedSuffixFilter(
+                        (SuffixFilter) getFileFilter());
+            } catch (Exception e) {
+                // this is because of the (senseless?) "All files" FileFilter
+                theImport.setSelectedSuffixFilter(null);
+            }
             Globals.setLastDirectory(dir.getPath());
             theImport.disposeDialog();
 

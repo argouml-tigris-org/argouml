@@ -106,12 +106,17 @@ public class SuffixFilter extends FileFilter {
      * @see javax.swing.filechooser.FileFilter#getDescription()
      */
     public String getDescription() {
-        String result = desc + " (";
-        for (int i = 0; i < suffixes.length - 1; i++) {
-            result = result + "." + suffixes[i] + ", ";
+        StringBuffer result = new StringBuffer(desc);
+        result.append(" (");
+        for (int i = 0; i < suffixes.length; i++) {
+            result.append('.');
+            result.append(suffixes[i]);
+            if (i < suffixes.length - 1) {
+                result.append(", ");
+            }
         }
-        result = result + suffixes[suffixes.length - 1] + ")";
-        return result;
+        result.append(')');
+        return result.toString();
     }
 
     /**
