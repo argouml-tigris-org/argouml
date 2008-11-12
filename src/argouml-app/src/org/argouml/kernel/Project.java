@@ -390,12 +390,22 @@ public interface Project {
 
     /**
      * @param m the namespace
+    * @deprecated for 0.27.2 by tfmorris. Since we can now have multiple top
+     *             level packages in the project, there is no concept of a
+     *             single current namespace. To add a new top-level package, use
+     *             {@link #getRoots()}.add(Object).
      */
+    @Deprecated
     public void setCurrentNamespace(final Object m);
 
     /**
      * @return the namespace
+     * @deprecated for 0.27.2 by tfmorris. Since we can now have multiple top
+     *             level packages in the project, there is no concept of a
+     *             single current namespace. Callers should use
+     *             {@link #getRoots()} and be prepared to handle multiple roots.
      */
+    @Deprecated
     public Object getCurrentNamespace();
 
 
@@ -610,7 +620,7 @@ public interface Project {
      * Returns the uUIDRefs.
      * @return HashMap
      */
-    public Map getUUIDRefs();
+    public Map<String, Object> getUUIDRefs();
 
     /**
      * Sets the searchpath.
