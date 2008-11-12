@@ -46,6 +46,9 @@ public final class NotationProviderFactory2 {
     private static final Logger LOG = 
         Logger.getLogger(NotationProviderFactory2.class);
     
+    // TODO: The concept of a single global notation language isn't going to
+    // work with multiple projects (or diagrams with different languages in
+    // the same project)
     private static String currentLanguage;
     
     /**
@@ -195,7 +198,10 @@ public final class NotationProviderFactory2 {
      * @param type the provider type
      * @return the provider
      * @param object the constructor parameter
+     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * {@link #getNotationProvider(int, Object, NotationName)}.
      */
+    @Deprecated
     public NotationProvider getNotationProvider(int type,
             Object object) {
         NotationName name = Notation.findNotation(currentLanguage);
@@ -269,7 +275,10 @@ public final class NotationProviderFactory2 {
      * @param object the constructor parameter
      * @param listener the fig
      * that refreshes after the NotationProvider has changed
+     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * {@link #getNotationProvider(int, Object, PropertyChangeListener, NotationName)}.
      */
+    @Deprecated
     public NotationProvider getNotationProvider(int type,
             Object object, PropertyChangeListener listener) {
     	NotationName name = Notation.findNotation(currentLanguage);
@@ -366,10 +375,13 @@ public final class NotationProviderFactory2 {
     }
 
     /**
-     * Set the notation language currently used in the Project.
+     * Set the default notation language for all users of this factory.
      * 
      * @param theCurrentLanguage the currentLanguage to set
+     * @deprecated for 0.27.2 by tfmorris. Callers should manage the language
+     *             that they want explicitly.
      */
+    @Deprecated
     public static void setCurrentLanguage(String theCurrentLanguage) {
         NotationProviderFactory2.currentLanguage = theCurrentLanguage;
     }
