@@ -29,9 +29,11 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.reveng.Import;
+import org.argouml.uml.reveng.ImporterManager;
 import org.argouml.util.ArgoFrame;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -40,6 +42,12 @@ import org.tigris.gef.undo.UndoableAction;
  * @stereotype singleton
  */
 public class ActionImportFromSources extends UndoableAction {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(ActionImportFromSources.class);
 
     /**
      * The singleton.
@@ -64,9 +72,12 @@ public class ActionImportFromSources extends UndoableAction {
      */
     public void actionPerformed(ActionEvent event) {
     	super.actionPerformed(event);
-    	new Import(ArgoFrame.getInstance());
+    	if (ImporterManager.getInstance().hasImporters()) {
+            new Import(ArgoFrame.getInstance());
+    	} else {
+    	    LOG.info("Import sources dialog not shown: no importers!");
+    	}
     }
-
 
     /**
      * @return Returns the SINGLETON.

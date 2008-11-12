@@ -113,4 +113,11 @@ public final class ImporterManager {
         return Collections.unmodifiableSet(importers);
     }
 
+
+    /**
+     * @return true, if at least one importer exists.
+     */
+    public boolean hasImporters() {
+        return !importers.isEmpty();
+    }
 }
