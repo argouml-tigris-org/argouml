@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -65,28 +65,22 @@ public final class ProjectManager implements ModelCommandCreationObserver {
 
     /**
      * The name of the property that defines the current project.
-     */
-    public static final String CURRENT_PROJECT_PROPERTY_NAME =
-        "currentProject";
-
-    /**
-     * The name of the property that there is no project.
-     * @deprecated in 0.25.4 By Bob Tarling This is unused.
-     */
-    @Deprecated
-    public static final String NO_PROJECT =
-        "noProject";
-
-    /**
-     * The name of the property that defines the save state.
-     * @deprecated in 0.25.4 By Bob Tarling This is unused.
+     * 
+     * @deprecated for 0.27.2 by tfmorris. Listeners of this event which expect
+     *             it to indicate a new project being opened should listen for
+     *             {@link #OPEN_PROJECTS_PROPERTY}. Listeners who think 
+     *             they need to know a single global current project name need
+     *             to be changed to deal with things on a per-project basis.
      */
     @Deprecated
-    public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
+    public static final String CURRENT_PROJECT_PROPERTY_NAME = "currentProject";
 
     /**
-     * Logger.
+     * Property name for list of current open projects.  Old and new property
+     * values are of type Project[] (arrays of Projects).
      */
+    public static final String OPEN_PROJECTS_PROPERTY = "openProjects";
+
     private static final Logger LOG = Logger.getLogger(ProjectManager.class);
 
     /**
@@ -198,6 +192,11 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * about.
      *
      * @param newProject The new project.
+     * @deprecated for 0.27.2 by tfmorris.  There is no longer the concept of
+     * a single global "current" project.  In the future, multiple projects
+     * will be able to be open at a time, so all code should be prepared to deal
+     * with multiple projects and should require a Project to be passed as an
+     * argument if they need access.
      */
     public void setCurrentProject(Project newProject) {
         Project oldProject = currentProject;
@@ -212,6 +211,10 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         }
         firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
                 oldProject, newProject);
+        // TODO: Tentative implementation. Do we want something that updates
+        // the list of open projects or just simple open and close events? -tfm
+        firePropertyChanged(OPEN_PROJECTS_PROPERTY,
+                new Project[] {oldProject}, new Project[] {newProject});
     }
 
     /**
@@ -221,21 +224,36 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * This should only be used by callers who need to know the global state.
      * Most things which need a project want the project that contains them,
      * which they can discover by traversing their containing elements (e.g.
-     * Fig->Diagram->Project).
+     * Fig->Diagram->DiagramSettings).
      * <p>
-     * <em>NOTE:</em>Callers of this method must be prepared to receive a null
-     * return value. Currently, if there is no project, a new one is created
-     * (unless we are busy creating one), but this behavior is not guaranteed
-     * and will change ArgoUML allows multiple open projects (or no open
-     * projects).
      * 
      * @return Project the current project or null if none
+     * @deprecated for 0.27.2 by tfmorris.  There is no longer the concept of
+     * a single global "current" project.  In the future, multiple projects
+     * will be able to be open at a time, so all code should be prepared to deal
+     * with multiple projects and should require a Project to be passed as an
+     * argument if they need access.  To get a list of all currently open
+     * projects, use {@link #getOpenProjects()}.  For settings which affect
+     * renderings in diagrams use 
+     * {@link org.argouml.uml.diagram.ui.ArgoFig#getDiagramSettings()}.
      */
     public Project getCurrentProject() {
         if (currentProject == null && !creatingCurrentProject) {
             makeEmptyProject();
         }
         return currentProject;
+    }
+    
+    /**
+     * @return a list of the currently open Projects in the order they were
+     * opened
+     */
+    public List<Project> getOpenProjects() {
+        List<Project> result = new ArrayList<Project>();
+        if (currentProject != null) {
+            result.add(currentProject);
+        }
+        return result;        
     }
     
     /**
@@ -267,13 +285,11 @@ public final class ProjectManager implements ModelCommandCreationObserver {
                 
                 creatingCurrentProject = true;
                 LOG.info("making empty project");
-                final Project oldProject = currentProject;
-                currentProject = new ProjectImpl();
+                Project newProject = new ProjectImpl();
                 if (addDefaultDiagrams) {
-                    createDefaultDiagrams();
+                    createDefaultDiagrams(newProject);
                 }
-                firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
-                                    oldProject, currentProject);
+                setCurrentProject(newProject);
                 creatingCurrentProject = false;
 
                 Model.getPump().startPumpingEvents();
@@ -289,24 +305,41 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         return currentProject;
     }
 
-    private void createDefaultDiagrams() {
+    /**
+     * Create the default diagrams for the project.  Currently a Class Diagram
+     * and a UseCase diagram.
+     * 
+     * @param project the project to create the diagrams in.
+     */
+    private void createDefaultDiagrams(Project project) {
+        createDefaultModel(project);
+        Object model = project.getRoots().iterator().next();
+        DiagramFactory df = DiagramFactory.getInstance();
+        ArgoDiagram d = df.createDiagram(DiagramFactory.DiagramType.Class,
+                model, null);
+        project.addMember(d);
+        project.addMember(df.createDiagram(
+                DiagramFactory.DiagramType.UseCase, model, null));
+        project.addMember(new ProjectMemberTodoList("",
+                project));
+        project.setActiveDiagram(d);
+    }
+
+    /**
+     * Create the top level model for the project and set it as a root and the
+     * current namespace.
+     * 
+     * @param project the project to create the model in.
+     */
+    private void createDefaultModel(Project project) {
         Object model = Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(model,
                 Translator.localize("misc.untitled-model"));
         Collection roots = new ArrayList();
         roots.add(model);
-        currentProject.setRoots(roots);
-        currentProject.setCurrentNamespace(model);
-        currentProject.addMember(model);
-        DiagramFactory df = DiagramFactory.getInstance();
-        ArgoDiagram d = df.createDiagram(DiagramFactory.DiagramType.Class,
-                model, null);
-        currentProject.addMember(d);
-        currentProject.addMember(df.createDiagram(
-                DiagramFactory.DiagramType.UseCase, model, null));
-        currentProject.addMember(new ProjectMemberTodoList("",
-                currentProject));
-        currentProject.setActiveDiagram(d);
+        project.setRoots(roots);
+        project.setCurrentNamespace(model);
+        project.addMember(model);
     }
     
     /**
