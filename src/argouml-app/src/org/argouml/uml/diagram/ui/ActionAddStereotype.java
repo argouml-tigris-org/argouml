@@ -39,6 +39,9 @@ import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Action to add a stereotype to a model element.
+ * 
+ * TODO: Appears to be unused?
+ * 
  * @author Bob Tarling
  */
 @UmlModelMutator
