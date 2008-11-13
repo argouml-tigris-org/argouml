@@ -158,7 +158,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     
     /*
      * This method is overridden in order to ignore change of the y coordinate
-     * during draging.
+     * during dragging.
      *
      * @see org.tigris.gef.presentation.FigNode#superTranslate(int, int)
      */
