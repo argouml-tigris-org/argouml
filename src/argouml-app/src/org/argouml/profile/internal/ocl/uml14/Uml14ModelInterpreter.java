@@ -53,17 +53,6 @@ public class Uml14ModelInterpreter extends CompositeModelInterpreter {
         addModelInterpreter(new CollectionsModelInterpreter());
     }
 
-    @Override
-    public Object invokeFeature(Map<String, Object> vt, Object subject,
-            String feature, String type, Object[] parameters) {
-        Object ret = super
-                .invokeFeature(vt, subject, feature, type, parameters);
-
-        LOG.debug(toString(subject) + type + feature + " ==> " + toString(ret));
-
-        return ret;
-    }
-
     private String toString(Object obj) {
         if (Model.getFacade().isAModelElement(obj)) {
             return Model.getFacade().getName(obj);
