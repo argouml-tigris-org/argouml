@@ -848,13 +848,13 @@ public abstract class FigEdgeModelElement
             return;
         }
         Object modelElement = getOwner();
-        stereotypeFig.setOwner(modelElement);
+        stereotypeFig.populate();
     }
 
     /**
      * This method should only be called once for any one Fig instance that
      * represents a model element (ie not for a FigEdgeNote). It is called
-     * either by the constructor that takes an model element as an argument or
+     * either by the constructor that takes a model element as an argument or
      * it is called by PGMLStackParser after it has created the Fig by use of
      * the empty constructor.
      * <p>
@@ -868,7 +868,7 @@ public abstract class FigEdgeModelElement
      */
     /*
      * TODO: It is planned to refactor so that there is only one Fig
-     * constructor. When this is achieved this method can refactored out.
+     * constructor. When this is achieved this method can be refactored out.
      */
     @Override
     public void setOwner(Object owner) {

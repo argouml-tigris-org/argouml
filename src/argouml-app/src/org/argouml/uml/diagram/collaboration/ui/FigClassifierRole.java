@@ -195,7 +195,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         }
         int heightWithoutStereo = getHeight() - stereotypeHeight;
 
-        getStereotypeFig().setOwner(getOwner());
+        getStereotypeFig().populate();
 
         stereotypeHeight = 0;
         if (getStereotypeFig().isVisible()) {

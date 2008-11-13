@@ -1420,6 +1420,7 @@ public abstract class FigNodeModelElement
          * of this 1st fig. */
         bindPort(owner, bigPort);
         nameFig.setOwner(owner); // for setting abstract
+        stereotypeFig.setOwner(owner);
         updateListeners(null, owner);
     }
 
@@ -1467,9 +1468,7 @@ public abstract class FigNodeModelElement
                     + this.getClass());
             return;
         }
-
-        Object modelElement = getOwner();
-        stereotypeFig.setOwner(modelElement);
+        stereotypeFig.populate();
     }
 
     /**
