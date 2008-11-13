@@ -32,6 +32,7 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.ui.ExceptionDialog;
 import org.argouml.uml.reveng.Import;
 import org.argouml.uml.reveng.ImporterManager;
 import org.argouml.util.ArgoFrame;
@@ -76,6 +77,12 @@ public class ActionImportFromSources extends UndoableAction {
             new Import(ArgoFrame.getInstance());
     	} else {
     	    LOG.info("Import sources dialog not shown: no importers!");
+            ExceptionDialog ed = new ExceptionDialog(ArgoFrame.getInstance(),
+                Translator.localize("dialog.title.problem"),
+                Translator.localize("dialog.import.no-importers.intro"),
+                Translator.localize("dialog.import.no-importers.message"));
+            ed.setModal(true);
+            ed.setVisible(true);
     	}
     }
 
