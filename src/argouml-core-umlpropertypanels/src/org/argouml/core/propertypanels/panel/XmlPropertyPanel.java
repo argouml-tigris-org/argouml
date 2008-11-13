@@ -139,6 +139,16 @@ public class XmlPropertyPanel extends PropPanel
                 title = Translator.localize("label.pseudostate.junction");
             }
         }
+        // there are other cases that need special treatment, 
+        // like concurrent regions
+        if (Model.getFacade().isAConcurrentRegion(target)) {
+            title = Translator.localize("label.concurrent.region");
+        } else if (Model.getFacade().isConcurrent(target)) {
+            title = Translator.localize("label.concurrent.composite.state");
+        } else if (!Model.getFacade().isASubmachineState(target)) {
+            // PropPanelSubmachine is a subclass that handles its own title
+            title = Translator.localize("label.composite-state");
+        }
         else {
             title = Model.getMetaTypes().getName(target); 
         }            
