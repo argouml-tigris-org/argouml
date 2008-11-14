@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,8 +32,8 @@ import org.argouml.notation.NotationProvider;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * Fig with specific knowledge of Operation display. 
- * Makes the text italic in case the Operation is abstract.
+ * Fig with specific knowledge of Operation and Reception display. 
+ * Makes the text italic in case the Operation or Reception is abstract.
  *
  * @since 0.23.5
  * @author Bob Tarling
@@ -90,7 +90,8 @@ public class FigOperation extends FigFeature {
     }
 
     /*
-     * If the Operation is abstract, then the text will be set to italics.
+     * If the Operation/Reception is abstract, 
+     * then the text will be set to italics.
      */
     @Override
     protected int getFigFontStyle() {

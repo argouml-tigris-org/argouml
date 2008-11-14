@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,6 +39,18 @@ import org.tigris.gef.presentation.Fig;
  */
 public class FigAttribute extends FigFeature {
 
+    /**
+     * Constructor for FigAttribute. 
+     * Build a new compartment figText of the given dimensions, within the
+     * compartment described by <code>aFig</code>.
+     * 
+     * @param x x
+     * @param y x
+     * @param w w
+     * @param h h
+     * @param aFig the figure describing the whole compartment
+     * @param np the notation provider for the text
+     */
     public FigAttribute(int x, int y, int w, int h, Fig aFig, 
             NotationProvider np) {
         super(x, y, w, h, aFig, np);

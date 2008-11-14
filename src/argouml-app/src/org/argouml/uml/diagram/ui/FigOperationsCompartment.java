@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,6 +37,8 @@ import org.argouml.uml.diagram.static_structure.ui.FigOperation;
 import org.tigris.gef.presentation.Fig;
 
 /**
+ * The compartment that contains Operations and/or Receptions.
+ * 
  * @author Bob Tarling
  */
 public class FigOperationsCompartment extends FigEditableCompartment {
@@ -78,7 +80,8 @@ public class FigOperationsCompartment extends FigEditableCompartment {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigEditableCompartment#createFeature()
+     * By default, when double-clicking on the compartment,
+     * we create an Operation (not a Reception).
      */
     protected void createModelElement() {
         Object classifier = getGroup().getOwner();

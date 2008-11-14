@@ -121,11 +121,13 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * Updates the operations box. Called from updateLayout if there is
      * a model event effecting the attributes and from renderingChanged in all
      * cases.
-     * TODO: The above statement means that the entire contents of
-     * FigOperationsCompartment is being rebuilt whenever a add/remove
-     * operation reception or reception is detected. It would be better to
+     * TODO: The above statement means that the entire contents of the
+     * FigOperationsCompartment is being rebuilt whenever an add/remove
+     * of an operation or a reception is detected. It would be better to
      * have FigOperationsCompartment itself listen for add and remove events
-     * and make minimum change rather than entirely rebuild.
+     * and make minimum change rather than entirely rebuild. 
+     * Remark MVW: This is a bit exaggerated, since the populate() 
+     * method is already heavily optimised.
      */
     protected void updateOperations() {
         if (!isOperationsVisible()) {
@@ -133,10 +135,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         }
         operationsFig.populate();
 
-        Rectangle rect = getBounds();
-        // ouch ugly but that's for a next refactoring
-        // TODO: make setBounds, calcBounds and updateBounds consistent
-        setBounds(rect.x, rect.y, rect.width, rect.height);
+        setBounds(getBounds());
         damage();
     }
     
