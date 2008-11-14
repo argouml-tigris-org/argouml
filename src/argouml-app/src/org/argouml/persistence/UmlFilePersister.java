@@ -654,15 +654,35 @@ public class UmlFilePersister extends AbstractFilePersister {
 
         private static final int BUFFER_SIZE = 120;
         
+        
+        /**
+         * The following three fields make up a doubly mapped buffer with two
+         * sets of pointers (the ByteBuffer objects), one for input and one for
+         * output. Bytes are written into the buffer using outBB which advances
+         * the current position. The following ASCII art shows what the buffer
+         * looks like.<code>
+         *           vp       vl
+         * xxxxxx++++..........
+         *       ^p  ^l
+         * </code> vp & vl are the output (buffer writing) position and limit,
+         * respectively and show the free space that can receive bytes. The ^p
+         * and ^l pointers show the input (buffer reading) position and limit.
+         * They point to valid bytes which have not yet been converted to
+         * characters. The xxx bytes have been both written in and read back
+         * out. The +++ bytes have been written into the buffer, but not read
+         * out yet.
+         */
         private byte[] bytes = new byte[BUFFER_SIZE * 2];
         private ByteBuffer outBB = ByteBuffer.wrap(bytes);
-        // An input view of the same bytes that we can read from
         private ByteBuffer inBB = ByteBuffer.wrap(bytes);
 
+        // Buffer containing characters which have been decoded from the bytes
+        // in inBB.
         private CharBuffer outCB = CharBuffer.allocate(BUFFER_SIZE);
         
+        // RegEx pattern for XML declaration and, optionally, DOCTYPE
         // Backslashes are doubled up - one for Java, one for Regex
-        private final Pattern pattern = Pattern.compile(
+        private final Pattern xmlDeclarationPattern = Pattern.compile(
                 "\\s*<\\?xml.*\\?>\\s*(<!DOCTYPE.*>\\s*)?");
 
         /**
@@ -678,8 +698,7 @@ public class UmlFilePersister extends AbstractFilePersister {
         }
 
         /**
-         * Construct a filtered output stream using the given character set 
-         * name.
+         * Construct a filtered output stream using the given character set.
          * 
          * @param outputStream source output stream to filter
          * @param charset character set to use for encoding
@@ -738,10 +757,10 @@ public class UmlFilePersister extends AbstractFilePersister {
                     throw new RuntimeException(
                             "Unknown character decoding error");
                 }
+                
                 // This will have problems if the smallest possible
                 // data segment is smaller than the size of the buffer
                 // needed for regex matching
-
                 if (outCB.position() == outCB.limit()) {
                     processHeader();
                 }
@@ -753,16 +772,20 @@ public class UmlFilePersister extends AbstractFilePersister {
             headerProcessed = true;
             outCB.position(0); // rewind our character buffer
             
-            Matcher matcher = pattern.matcher(outCB);
-            String headerString = matcher.replaceAll("");
+            Matcher matcher = xmlDeclarationPattern.matcher(outCB);
+            // Remove anything that matches our pattern
+            String headerRemainder = matcher.replaceAll("");
+
+            // Reencode the remaining characters as bytes again
+            ByteBuffer bb = decoder.charset().encode(headerRemainder);
             
-            ByteBuffer bb = decoder.charset().encode(headerString);
-            
+            // and write them to our output stream
             byte[] outBytes = new byte[bb.limit()];
             bb.get(outBytes);
             out.write(outBytes, 0, outBytes.length);
 
-            // Write any left over bytes from a partial character
+            // Write any left over bytes in the input buffer
+            // (perhaps from a partially decoded character)
             if (inBB.remaining() > 0) {
                 out.write(inBB.array(), inBB.position(), 
                         inBB.remaining());
