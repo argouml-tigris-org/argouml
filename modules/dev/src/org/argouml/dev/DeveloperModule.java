@@ -79,6 +79,7 @@ public final class DeveloperModule implements ModuleInterface,
         JMenu editMenu = ProjectBrowser.getInstance().getJMenuBar().getMenu(1);
         editMenu.getMenuComponent(0).setVisible(true);
         editMenu.getMenuComponent(1).setVisible(true);
+        // TODO: Modify to handle per-project undo
         UndoManager.getInstance().setUndoMax(10);
 
         JTabbedPane devPanel = new JTabbedPane();
@@ -118,6 +119,7 @@ public final class DeveloperModule implements ModuleInterface,
 
         editMenu.getMenuComponent(0).setVisible(false);
         editMenu.getMenuComponent(1).setVisible(false);
+        // TODO: Modify to handle per-project undo
         UndoManager.getInstance().empty();
         UndoManager.getInstance().setUndoMax(0);
 
