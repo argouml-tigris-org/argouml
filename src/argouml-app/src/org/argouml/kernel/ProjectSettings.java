@@ -37,6 +37,7 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramAppearance;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.undo.Memento;
 import org.tigris.gef.undo.UndoManager;
 
@@ -47,7 +48,7 @@ import org.tigris.gef.undo.UndoManager;
  * This is also the reason all these attributes
  * are not part of a Map or something. <p>
  *
- * TODO: The header comment is curently not used - this function
+ * TODO: The header comment is currently not used - this function
  * is not completely implemented yet. How do we store this in the project?
  * Where should the user enter his header comment? See issue 4813.
  *
@@ -55,30 +56,9 @@ import org.tigris.gef.undo.UndoManager;
  */
 public class ProjectSettings {
 
-    /* The notation settings with project scope: */
-    private String notationLanguage;
-    private boolean showBoldNames;
-    private boolean useGuillemots;
-    private boolean showAssociationNames;
-    private boolean showVisibility;
-    private boolean showMultiplicity;
-    private boolean showInitialValue;
-    private boolean showProperties;
-    private boolean showTypes;
-    private boolean showStereotypes;
-    private boolean showSingularMultiplicities;
-    private int defaultShadowWidth;
-    private int defaultStereotypeView;
+    // Default diagram settings
+    private DiagramSettings diaDefault;
 
-    /* Diagram appearance settings with project scope: */
-    private String fontName;
-    private int fontSize;
-    private boolean hideBidirectionalArrows;
-    /* Keep some fonts around depending on the above settings: */
-    private Font fontPlain;
-    private Font fontItalic;
-    private Font fontBold;
-    private Font fontBoldItalic;
 
     /* Generation preferences: */
     private String headerComment =
@@ -95,150 +75,109 @@ public class ProjectSettings {
     ProjectSettings() {
         super();
 
-        notationLanguage =
+        diaDefault = new DiagramSettings();
+        
+        String notationLanguage =
             Notation.getConfiguredNotation().getConfigurationValue();
+        // TODO: The concept of a single global notation language doesn't
+        // work with multiple projects
         NotationProviderFactory2.setCurrentLanguage(notationLanguage);
-        showBoldNames = Configuration.getBoolean(
-                Notation.KEY_SHOW_BOLD_NAMES);
-        useGuillemots = Configuration.getBoolean(
-                Notation.KEY_USE_GUILLEMOTS, false);
+        diaDefault.setNotationLanguage(notationLanguage);
+        
+        diaDefault.setShowBoldNames(Configuration.getBoolean(
+                Notation.KEY_SHOW_BOLD_NAMES));
+        diaDefault.setUseGuillemets(Configuration.getBoolean(
+                Notation.KEY_USE_GUILLEMOTS, false));
         /*
          * The next one defaults to TRUE, to stay compatible with older
          * ArgoUML versions that did not have this setting:
          */
-        showAssociationNames = Configuration.getBoolean(
-                Notation.KEY_SHOW_ASSOCIATION_NAMES, true);
-        showVisibility = Configuration.getBoolean(
-                Notation.KEY_SHOW_VISIBILITY);
-        showMultiplicity = Configuration.getBoolean(
-                Notation.KEY_SHOW_MULTIPLICITY);
-        showInitialValue = Configuration.getBoolean(
-                Notation.KEY_SHOW_INITIAL_VALUE);
-        showProperties = Configuration.getBoolean(
-                Notation.KEY_SHOW_PROPERTIES);
+        diaDefault.setShowAssociationNames(Configuration.getBoolean(
+                Notation.KEY_SHOW_ASSOCIATION_NAMES, true));
+        diaDefault.setShowVisibility(Configuration.getBoolean(
+                Notation.KEY_SHOW_VISIBILITY));
+        diaDefault.setShowMultiplicity(Configuration.getBoolean(
+                Notation.KEY_SHOW_MULTIPLICITY));
+        diaDefault.setShowInitialValue(Configuration.getBoolean(
+                Notation.KEY_SHOW_INITIAL_VALUE));
+        diaDefault.setShowProperties(Configuration.getBoolean(
+                Notation.KEY_SHOW_PROPERTIES));
         /*
          * The next ones defaults to TRUE, to stay compatible with older
          * ArgoUML versions that did not have this setting:
          */
-        showTypes = Configuration.getBoolean(Notation.KEY_SHOW_TYPES, true);
-        hideBidirectionalArrows = Configuration.getBoolean(
-                Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS, true);
+        diaDefault.setShowTypes(Configuration.getBoolean(
+                Notation.KEY_SHOW_TYPES, true));
+        diaDefault.setShowBidirectionalArrows(!Configuration.getBoolean(
+                Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS, true));
         
-        showStereotypes = Configuration.getBoolean(
-                Notation.KEY_SHOW_STEREOTYPES);
+        diaDefault.setShowStereotypes(Configuration.getBoolean(
+                Notation.KEY_SHOW_STEREOTYPES));
         /*
          * The next one defaults to TRUE, despite that this is
          * NOT compatible with older ArgoUML versions
          * (before 0.24) that did
          * not have this setting - see issue 1395 for the rationale:
          */
-        showSingularMultiplicities = Configuration.getBoolean(
-                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true);
-        defaultShadowWidth = Configuration.getInteger(
-                Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
-        defaultStereotypeView = Configuration.getInteger(
+        diaDefault.setShowSingularMultiplicities(Configuration.getBoolean(
+                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true));
+        diaDefault.setDefaultShadowWidth(Configuration.getInteger(
+                Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
+        diaDefault.setDefaultStereotypeView(Configuration.getInteger(
                 ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
-                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL);
+                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL));
 
         /*
          * Diagram appearance settings:
          */
-        fontName = DiagramAppearance.getInstance().getConfiguredFontName();
-        fontSize = Configuration.getInteger(DiagramAppearance.KEY_FONT_SIZE);
-        /* And initialise some fonts: */
-        initFonts();
+        diaDefault.setFontName(
+                DiagramAppearance.getInstance().getConfiguredFontName());
+        diaDefault.setFontSize(
+                Configuration.getInteger(DiagramAppearance.KEY_FONT_SIZE));
+
 
     }
 
     /**
-     * Send all events... <p>
-     * This code fixes the following problem when loading a project:
-     * In the ProjectBrowser, the new project is loaded, 
-     * and only when successful, the old one is removed.
-     * While loading, the Figs read the notation settings to be able
-     * to draw themselves correctly from the wrong project,
-     * since the old project is still the "current" one.
-     * Hence, after the ProjectBrowser finished loading,
-     * it sets the current project to the new one, removes the
-     * old project, and then calls this init() method, to set 
-     * all notation settings right - which refreshes the screen. <p>
-     * TODO: Find a better way, 
-     * which does not cause the diagrams to be drawn wrongly
-     * first, and then corrected.  
+     * Send all events required for post-load of project.<p>
+     * @deprecated for 0.27.2 by tfmorris.  No replacement.  Diagrams/Figs are
+     * now created with the correct initial settings.
      */
+    @Deprecated
     public void init() {
-        /* Since this is (hopefully) a temporary solution,
-         * and nobody ever looks at the type of notation event,
-         * we can simplify from sending every existing event
-         * to one event only. But since there is no 
-         * catch-all event defined, we just make one up.
-         * Rationale: reduce the number of total 
-         * refreshes of the drawing. */
+        /*
+         * Since this is (hopefully) a temporary solution, and nobody ever looks
+         * at the type of notation event, we can simplify from sending every
+         * existing event to one event only. But since there is no catch-all
+         * event defined, we just make one up. Rationale: reduce the number of
+         * total refreshes of the drawing.
+         */
         init(true, Configuration.makeKey("notation", "all"));
 
-        /* The above hence replaces the following statements. 
-         * If ever someone needs to dissect notation events, 
-         * we may need to add these again. */
-//        init(notationLanguage, 
-//                Notation.KEY_DEFAULT_NOTATION);
-//        init(showBoldNames, 
-//                Notation.KEY_SHOW_BOLD_NAMES);
-//        init(useGuillemots, 
-//                Notation.KEY_USE_GUILLEMOTS);
-//        init(showAssociationNames, 
-//                Notation.KEY_SHOW_ASSOCIATION_NAMES);
-//        init(showVisibility,
-//                Notation.KEY_SHOW_VISIBILITY);
-//        init(showMultiplicity,
-//                Notation.KEY_SHOW_MULTIPLICITY);
-//        init(showInitialValue, 
-//                Notation.KEY_SHOW_INITIAL_VALUE);
-//        init(showProperties,
-//                Notation.KEY_SHOW_PROPERTIES);
-//        init(showTypes, 
-//                Notation.KEY_SHOW_TYPES);
-//        init(showStereotypes, 
-//                Notation.KEY_SHOW_STEREOTYPES);
-//        init(showSingularMultiplicities, 
-//                Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES);
-//        init(defaultShadowWidth,
-//                Notation.KEY_DEFAULT_SHADOW_WIDTH);
-
-        /* Since this is (hopefully) a temporary solution,
-         * and nobody ever looks at the type of the
-         * diagram appearance event,
-         * we can simplify from sending every existing event
-         * to one event only. But since there is no 
-         * catch-all event defined, we just use one.
-         * Rationale: reduce the number of total 
-         * refreshes of the drawing. */
+        /*
+         * Since this is (hopefully) a temporary solution, and nobody ever looks
+         * at the type of the diagram appearance event, we can simplify from
+         * sending every existing event to one event only. But since there is no
+         * catch-all event defined, we just use one. Rationale: reduce the
+         * number of total refreshes of the drawing.
+         */
         fireDiagramAppearanceEvent(
                 Configuration.makeKey("diagramappearance", "all"), 
                 0, 0);
 
-        /* The above hence replaces the following statements. 
-         * If ever someone needs to dissect 
-         * diagram-appearance events, 
-         * we may need to add these again. */
-//        fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_NAME, 
-//                fontName, fontName);
-//        fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_SIZE, 
-//                fontSize, fontSize);
-    }
-
-    @SuppressWarnings("unused")
-    private void init(String value, ConfigurationKey key) {
-        fireNotationEvent(key, value, value);
     }
 
     private void init(boolean value, ConfigurationKey key) {
         fireNotationEvent(key, value, value);
     }
-
-    @SuppressWarnings("unused")
-    private void init(int value, ConfigurationKey key) {
-        fireNotationEvent(key, value, value);
+    
+    /**
+     * @return the default diagram settings
+     */
+    public DiagramSettings getDefaultDiagramSettings() {
+        return diaDefault;
     }
+
 
     /**
      * Used by "argo.tee".
@@ -246,14 +185,14 @@ public class ProjectSettings {
      * @return Returns the notation language.
      */
     public String getNotationLanguage() {
-        return notationLanguage;
+        return diaDefault.getNotationLanguage();
     }
 
     /**
      * @return Returns the notation language.
      */
     public NotationName getNotationName() {
-        return Notation.findNotation(notationLanguage);
+        return Notation.findNotation(getNotationLanguage());
     }
 
     /**
@@ -261,7 +200,7 @@ public class ProjectSettings {
      * @return true if the notation is set - false if it does not exist
      */
     public boolean setNotationLanguage(final String newLanguage) {
-        if (notationLanguage.equals(newLanguage)) {
+        if (getNotationLanguage().equals(newLanguage)) {
             return true;
         }
         if (Notation.findNotation(newLanguage) == null) {
@@ -269,29 +208,35 @@ public class ProjectSettings {
             return false;
         }
 
-        final String oldLanguage = notationLanguage;
+        final String oldLanguage = getNotationLanguage();
 
         Memento memento = new Memento() {
             private final ConfigurationKey key = Notation.KEY_DEFAULT_NOTATION;
 
             public void redo() {
-                notationLanguage = newLanguage;
+                diaDefault.setNotationLanguage(newLanguage);
                 NotationProviderFactory2.setCurrentLanguage(newLanguage);
                 fireNotationEvent(key, oldLanguage, newLanguage);
             }
 
             public void undo() {
-                notationLanguage = oldLanguage;
+                diaDefault.setNotationLanguage(oldLanguage);
                 NotationProviderFactory2.setCurrentLanguage(oldLanguage);
                 fireNotationEvent(key, newLanguage, oldLanguage);
             }
         };
+        doUndoable(memento);
+        return true;
+    }
+
+    private void doUndoable(Memento memento) {
+        // TODO: This needs to be managing undo on a per-project basis
+        // instead of using GEF's global undo manager
         if (UndoManager.getInstance().isGenerateMementos()) {
             UndoManager.getInstance().addMemento(memento);
         }
         memento.redo();
         ProjectManager.getManager().setSaveEnabled(true);
-        return true;
     }
 
     /**
@@ -307,28 +252,34 @@ public class ProjectSettings {
      * @return Returns "true" if we show bold names.
      */
     public String getShowBoldNames() {
-        return Boolean.toString(showBoldNames);
+        return Boolean.toString(getShowBoldNamesValue());
     }
 
     /**
      * @return Returns <code>true</code> if we show bold names.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public boolean getShowBoldNamesValue() {
-        return showBoldNames;
+        return diaDefault.isShowBoldNames();
     }
 
     /**
      * @param showbold <code>true</code> if names are to be shown in bold font.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowBoldNames(String showbold) {
         setShowBoldNames(Boolean.valueOf(showbold).booleanValue());
     }
 
     /**
      * @param showem <code>true</code> if names are to be shown in bold font.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowBoldNames(final boolean showem) {
-        if (showBoldNames == showem) {
+        if (diaDefault.isShowBoldNames() == showem) {
             return;
         }
 
@@ -336,52 +287,56 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_SHOW_BOLD_NAMES;
 
             public void redo() {
-                showBoldNames = showem;
+                diaDefault.setShowBoldNames(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                showBoldNames = !showem;
+                diaDefault.setShowBoldNames(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
     /**
      * Used by "argo.tee".
      *
-     * @return Returns "true" if we show guillemots.
+     * @see #getUseGuillemotsValue()
+     * @return Returns "true" if we show guillemets.
      */
     public String getUseGuillemots() {
-        return Boolean.toString(useGuillemots);
+        return Boolean.toString(getUseGuillemotsValue());
     }
 
     /**
-     * @return Returns <code>true</code> if we show guillemots.
+     * Get setting controlling whether guillemets (the double angle brackets
+     * quotation mark characters from Unicode) are to be used for formatting
+     * instead of two individual characters for each quote mark (e.g. >>). NOTE:
+     * This affects not only the Diagrams, but also display in the explorer view
+     * and other places.
+     * 
+     * @return Returns <code>true</code> if we show guillemets.
      */
     public boolean getUseGuillemotsValue() {
-        return useGuillemots;
+        return diaDefault.isUseGuillemets();
     }
     
 
     /**
-     * @param showem <code>true</code> if guillemots are to be shown.
+     * @see #getUseGuillemotsValue()
+     * @param showem <code>true</code> if guillemets are to be used.
      */
     public void setUseGuillemots(String showem) {
         setUseGuillemots(Boolean.valueOf(showem).booleanValue());
     }
 
     /**
-     * @param showem <code>true</code> if guillemots are to be shown.
+     * @see #getUseGuillemotsValue()
+     * @param showem <code>true</code> if guillemets are to be shown.
      */
-
     public void setUseGuillemots(final boolean showem) {
-        if (useGuillemots == showem) {
+        if (getUseGuillemotsValue() == showem) {
             return;
         }
 
@@ -389,64 +344,76 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_USE_GUILLEMOTS;
 
             public void redo() {
-                useGuillemots = showem;
+                diaDefault.setUseGuillemets(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                useGuillemots = !showem;
+                diaDefault.setUseGuillemets(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
     /**
-     * @return the left pointing guillemot, i.e. << or the one-character symbol
+     * @return the left pointing guillemet, i.e. << or the one-character symbol
+     * @deprecated for 0.27.2 by tfmorris. There's no need for a separate method
+     *             for this. It can be easily handled in a format string using
+     *             the results of {@link DiagramSettings#isUseGuillemets()}.
      */
+    @Deprecated
     public String getLeftGuillemot() {
-        return useGuillemots ? "\u00ab" : "<<";
+        return getUseGuillemotsValue() ? "\u00ab" : "<<";
     }
 
     /**
-     * @return the right pointing guillemot, i.e. >> or the one-character symbol
+     * @return the right pointing guillemet, i.e. >> or the one-character symbol
+     * @deprecated for 0.27.2 by tfmorris. There's no need for a separate method
+     *             for this. It can be easily handled in a format string using
+     *             the results of {@link DiagramSettings#isUseGuillemets()}.
      */
+    @Deprecated
     public String getRightGuillemot() {
-        return useGuillemots ? "\u00bb" : ">>";
+        return getUseGuillemotsValue() ? "\u00bb" : ">>";
     }
 
     /**
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show association names.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getShowAssociationNames() {
-        return Boolean.toString(showAssociationNames);
+        return Boolean.toString(getShowAssociationNamesValue());
     }
 
     /**
      * @return Returns <code>true</code> if we show association names.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public boolean getShowAssociationNamesValue() {
-        return showAssociationNames;
+        return diaDefault.isShowAssociationNames();
     }
 
     /**
      * @param showem <code>true</code> if association names are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowAssociationNames(String showem) {
         setShowAssociationNames(Boolean.valueOf(showem).booleanValue());
     }
 
     /**
      * @param showem <code>true</code> if association names are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowAssociationNames(final boolean showem) {
-        if (showAssociationNames == showem) {
+        if (diaDefault.isShowAssociationNames() == showem) {
             return;
         }
 
@@ -455,50 +422,54 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_ASSOCIATION_NAMES;
 
             public void redo() {
-                showAssociationNames = showem;
+                diaDefault.setShowAssociationNames(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                showAssociationNames = !showem;
+                diaDefault.setShowAssociationNames(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
     /**
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show visibilities.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getShowVisibility() {
-        return Boolean.toString(showVisibility);
+        return Boolean.toString(getShowVisibilityValue());
     }
 
     /**
      * @return Returns <code>true</code> if we show visibilities.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
      */
+    @Deprecated
     public boolean getShowVisibilityValue() {
-        return showVisibility;
+        return diaDefault.isShowVisibility();
     }
 
     /**
      * @param showem <code>true</code> if visibilities are to be shown.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowVisibility(String showem) {
         setShowVisibility(Boolean.valueOf(showem).booleanValue());
     }
 
     /**
      * @param showem <code>true</code> if visibilities are to be shown.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowVisibility(final boolean showem) {
-        if (showVisibility == showem) {
+        if (diaDefault.isShowVisibility() == showem) {
             return;
         }
 
@@ -506,50 +477,54 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_SHOW_VISIBILITY;
 
             public void redo() {
-                showVisibility = showem;
+                diaDefault.setShowVisibility(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                showVisibility = !showem;
+                diaDefault.setShowVisibility(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
     /**
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show multiplicities.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getShowMultiplicity() {
-        return Boolean.toString(showMultiplicity);
+        return Boolean.toString(getShowMultiplicityValue());
     }
 
     /**
      * @return Returns <code>true</code> if we show multiplicities.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public boolean getShowMultiplicityValue() {
-        return showMultiplicity;
+        return diaDefault.isShowMultiplicity();
     }
 
     /**
      * @param showem <code>true</code> if multiplicity is to be shown.
+      * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowMultiplicity(String showem) {
         setShowMultiplicity(Boolean.valueOf(showem).booleanValue());
     }
 
     /**
      * @param showem <code>true</code> if the multiplicity is to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowMultiplicity(final boolean showem) {
-        if (showMultiplicity == showem) {
+        if (diaDefault.isShowMultiplicity() == showem) {
             return;
         }
 
@@ -557,50 +532,54 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_SHOW_MULTIPLICITY;
 
             public void redo() {
-                showMultiplicity = showem;
+                diaDefault.setShowMultiplicity(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                showMultiplicity = !showem;
+                diaDefault.setShowMultiplicity(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
     /**
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show initial values.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getShowInitialValue() {
-        return Boolean.toString(showInitialValue);
+        return Boolean.toString(getShowInitialValueValue());
     }
 
     /**
      * @return Returns <code>true</code> if we show initial values.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public boolean getShowInitialValueValue() {
-        return showInitialValue;
+        return diaDefault.isShowInitialValue();
     }
 
     /**
      * @param showem <code>true</code> if initial values are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowInitialValue(String showem) {
         setShowInitialValue(Boolean.valueOf(showem).booleanValue());
     }
 
     /**
      * @param showem <code>true</code> if initial values are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowInitialValue(final boolean showem) {
-        if (showInitialValue == showem) {
+        if (diaDefault.isShowInitialValue() == showem) {
             return;
         }
 
@@ -609,50 +588,54 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_INITIAL_VALUE;
 
             public void redo() {
-                showInitialValue = showem;
+                diaDefault.setShowInitialValue(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                showInitialValue = !showem;
+                diaDefault.setShowInitialValue(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
     /**
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show properties.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getShowProperties() {
-        return Boolean.toString(showProperties);
+        return Boolean.toString(getShowPropertiesValue());
     }
 
     /**
      * @return Returns <code>true</code> if we show properties.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public boolean getShowPropertiesValue() {
-        return showProperties;
+        return diaDefault.isShowProperties();
     }
 
     /**
      * @param showem <code>true</code> if properties are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowProperties(String showem) {
         setShowProperties(Boolean.valueOf(showem).booleanValue());
     }
 
     /**
      * @param showem <code>true</code> if properties are to be shown.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowProperties(final boolean showem) {
-        if (showProperties == showem) {
+        if (diaDefault.isShowProperties() == showem) {
             return;
         }
 
@@ -661,50 +644,54 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_PROPERTIES;
 
             public void redo() {
-                showProperties = showem;
+                diaDefault.setShowProperties(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                showProperties = !showem;
+                diaDefault.setShowProperties(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
     /**
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show types.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getShowTypes() {
-        return Boolean.toString(showTypes);
+        return Boolean.toString(getShowTypesValue());
     }
 
     /**
      * @return Returns <code>true</code> if we show types.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
      */
+    @Deprecated
     public boolean getShowTypesValue() {
-        return showTypes;
+        return diaDefault.isShowTypes();
     }
 
     /**
      * @param showem <code>true</code> if types are to be shown.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowTypes(String showem) {
         setShowTypes(Boolean.valueOf(showem).booleanValue());
     }
 
     /**
      * @param showem <code>true</code> if types are to be shown.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowTypes(final boolean showem) {
-        if (showTypes == showem) {
+        if (diaDefault.isShowTypes() == showem) {
             return;
         }
 
@@ -712,20 +699,16 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_SHOW_TYPES;
 
             public void redo() {
-                showTypes = showem;
+                diaDefault.setShowTypes(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                showTypes = !showem;
+                diaDefault.setShowTypes(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
 
@@ -733,30 +716,41 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show stereotypes.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getShowStereotypes() {
-        return Boolean.toString(showStereotypes);
+        return Boolean.toString(getShowStereotypesValue());
     }
 
     /**
+     * TODO: Is this used in places other than on Diagrams?  If so, it needs to
+     * stay in ProjectSettings (as well as being a DiagramSetting).
+     * 
      * @return Returns <code>true</code> if we show stereotypes.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public boolean getShowStereotypesValue() {
-        return showStereotypes;
+        return diaDefault.isShowStereotypes();
     }
 
     /**
      * @param showem <code>true</code> if stereotypes are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowStereotypes(String showem) {
         setShowStereotypes(Boolean.valueOf(showem).booleanValue());
     }
 
     /**
      * @param showem <code>true</code> if stereotypes are to be shown.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowStereotypes(final boolean showem) {
-        if (showStereotypes == showem) {
+        if (diaDefault.isShowStereotypes() == showem) {
             return;
         }
 
@@ -764,50 +758,54 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_SHOW_STEREOTYPES;
 
             public void redo() {
-                showStereotypes = showem;
+                diaDefault.setShowStereotypes(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                showStereotypes = !showem;
+                diaDefault.setShowStereotypes(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
     /**
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show "1" Multiplicities.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getShowSingularMultiplicities() {
-        return Boolean.toString(showSingularMultiplicities);
+        return Boolean.toString(getShowSingularMultiplicitiesValue());
     }
 
     /**
      * @return Returns <code>true</code> if we show  "1" Multiplicities.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public boolean getShowSingularMultiplicitiesValue() {
-        return showSingularMultiplicities;
+        return diaDefault.isShowSingularMultiplicities();
     }
 
     /**
      * @param showem <code>true</code> if "1" Multiplicities are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowSingularMultiplicities(String showem) {
         setShowSingularMultiplicities(Boolean.valueOf(showem).booleanValue());
     }
 
     /**
      * @param showem <code>true</code> if "1" Multiplicities are to be shown.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setShowSingularMultiplicities(final boolean showem) {
-        if (showSingularMultiplicities == showem) {
+        if (diaDefault.isShowSingularMultiplicities() == showem) {
             return;
         }
 
@@ -816,20 +814,16 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES;
 
             public void redo() {
-                showSingularMultiplicities = showem;
+                diaDefault.setShowSingularMultiplicities(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                showSingularMultiplicities = !showem;
+                diaDefault.setShowSingularMultiplicities(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
     /**
@@ -837,24 +831,30 @@ public class ProjectSettings {
      *
      * @return Returns "true" if we show the arrows when
      * both association ends of an association are navigable.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getHideBidirectionalArrows() {
-        return Boolean.toString(hideBidirectionalArrows);
+        return Boolean.toString(getHideBidirectionalArrowsValue());
     }
 
     /**
      * @return Returns <code>true</code> if we show the arrows when
      * both association ends of an association are navigable.
 
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public boolean getHideBidirectionalArrowsValue() {
-        return hideBidirectionalArrows;
+        return !diaDefault.isShowBidirectionalArrows();
     }
 
     /**
      * @param hideem <code>true</code> if both arrows are to be shown when
      * both association ends of an association are navigable.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setHideBidirectionalArrows(String hideem) {
         setHideBidirectionalArrows(Boolean.valueOf(hideem).booleanValue());
     }
@@ -862,10 +862,11 @@ public class ProjectSettings {
     /**
      * @param hideem <code>true</code> if both arrows are to be shown when
      * both association ends of an association are navigable.
-
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setHideBidirectionalArrows(final boolean hideem) {
-        if (hideBidirectionalArrows == hideem) {
+        if (diaDefault.isShowBidirectionalArrows() == !hideem) {
             return;
         }
 
@@ -874,72 +875,71 @@ public class ProjectSettings {
                 Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS;
 
             public void redo() {
-                hideBidirectionalArrows = hideem;
+                diaDefault.setShowBidirectionalArrows(!hideem);
                 fireNotationEvent(key, !hideem, hideem);
             }
 
             public void undo() {
-                hideBidirectionalArrows = !hideem;
+                diaDefault.setShowBidirectionalArrows(hideem);
                 fireNotationEvent(key, hideem, !hideem);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
     
     /**
      * Used by "argo.tee".
      *
      * @return Returns the shadow width.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getDefaultShadowWidth() {
-        return Integer.valueOf(defaultShadowWidth).toString();
+        return Integer.valueOf(getDefaultShadowWidthValue()).toString();
     }
 
     /**
      * @return Returns the shadow width.
+      * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public int getDefaultShadowWidthValue() {
-        return defaultShadowWidth;
+        return diaDefault.getDefaultShadowWidth();
     }
 
     /**
      * @param newWidth The Shadow Width.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setDefaultShadowWidth(final int newWidth) {
-        if (defaultShadowWidth == newWidth) {
+        final int oldValue = diaDefault.getDefaultShadowWidth();
+        if (oldValue == newWidth) {
             return;
         }
-
-        final int oldValue = defaultShadowWidth;
 
         Memento memento = new Memento() {
             private final ConfigurationKey key =
                 Notation.KEY_DEFAULT_SHADOW_WIDTH;
 
             public void redo() {
-                defaultShadowWidth = newWidth;
+                diaDefault.setDefaultShadowWidth(newWidth);
                 fireNotationEvent(key, oldValue, newWidth);
             }
 
             public void undo() {
-                defaultShadowWidth = oldValue;
+                diaDefault.setDefaultShadowWidth(oldValue);
                 fireNotationEvent(key, newWidth, oldValue);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
     /**
      * @param width The shadow width to set.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setDefaultShadowWidth(String width) {
         setDefaultShadowWidth(Integer.parseInt(width));
     }
@@ -948,16 +948,20 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return Returns the default stereotype view
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getDefaultStereotypeView() {
-        return Integer.valueOf(defaultStereotypeView).toString();
+        return Integer.valueOf(getDefaultStereotypeViewValue()).toString();
     }
 
     /**
      * @return Returns the default stereotype view
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public int getDefaultStereotypeViewValue() {
-        return defaultStereotypeView;
+        return diaDefault.getDefaultStereotypeViewInt();
     }
 
 
@@ -992,34 +996,30 @@ public class ProjectSettings {
 
     /**
      * @param newView the default stereotype view
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setDefaultStereotypeView(final int newView) {
-
-        if (defaultStereotypeView == newView) {
+        final int oldValue = diaDefault.getDefaultStereotypeViewInt();
+        if (oldValue == newView) {
             return;
         }
-
-        final int oldValue = defaultStereotypeView;
 
         Memento memento = new Memento() {
             private final ConfigurationKey key =
                 ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW;
 
             public void redo() {
-                defaultStereotypeView = newView;
+                diaDefault.setDefaultStereotypeView(newView);
                 fireNotationEvent(key, oldValue, newView);
             }
 
             public void undo() {
-                defaultStereotypeView = oldValue;
+                diaDefault.setDefaultStereotypeView(oldValue);
                 fireNotationEvent(key, newView, oldValue);
             }
         };
-        if (UndoManager.getInstance().isGenerateMementos()) {
-            UndoManager.getInstance().addMemento(memento);
-        }
-        memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        doUndoable(memento);
     }
 
     /**
@@ -1104,22 +1104,25 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return diagram font name.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public String getFontName() {
-        return fontName;
+        return diaDefault.getFontName();
     }
 
     /**
      * Diagram font name.
      * @param newFontName diagram font name.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setFontName(String newFontName) {
-        String old = fontName;
-        fontName = newFontName;
-        initFonts();
+        String old = diaDefault.getFontName();
+        diaDefault.setFontName(newFontName);
 
         fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_NAME, old,
-                this.fontName);
+                newFontName);
     }
 
     /**
@@ -1128,40 +1131,38 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return diagram font size.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public int getFontSize() {
-        return fontSize;
+        return diaDefault.getFontSize();
     }
 
     /**
      * Diagram font size.
      * @param newFontSize diagram font size.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public void setFontSize(int newFontSize) {
-        int old = fontSize;
-        fontSize = newFontSize;
-        initFonts();
+        int old = diaDefault.getFontSize();
+        diaDefault.setFontSize(newFontSize);
 
         fireDiagramAppearanceEvent(DiagramAppearance.KEY_FONT_SIZE, old,
-                this.fontSize);
+                newFontSize);
     }
 
-    private void initFonts() {
-        fontPlain = new Font(fontName, Font.PLAIN, fontSize);
-        fontItalic = new Font(fontName, Font.ITALIC, fontSize + 2);
-        fontBold = new Font(fontName, Font.BOLD, fontSize + 2);
-        fontBoldItalic = new Font(fontName,
-                Font.BOLD | Font.ITALIC, fontSize + 2);
-    }
 
     /**
      * Returns the Plain diagram font which corresponds
      * to selected parameters.
      *
      * @return plain diagram font
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public Font getFontPlain() {
-        return fontPlain;
+        return diaDefault.getFontPlain();
     }
 
     /**
@@ -1169,9 +1170,11 @@ public class ProjectSettings {
      * to selected parameters.
      *
      * @return italic diagram font
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public Font getFontItalic() {
-        return fontItalic;
+        return diaDefault.getFontItalic();
     }
 
     /**
@@ -1179,9 +1182,11 @@ public class ProjectSettings {
      * to selected parameters.
      *
      * @return bold diagram font
+      * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public Font getFontBold() {
-        return fontBold;
+        return diaDefault.getFontBold();
     }
 
     /**
@@ -1189,9 +1194,11 @@ public class ProjectSettings {
      * to selected parameters.
      *
      * @return bold-italic diagram font
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public Font getFontBoldItalic() {
-        return fontBoldItalic;
+        return diaDefault.getFontBoldItalic();
     }
 
     /**
@@ -1199,20 +1206,10 @@ public class ProjectSettings {
      *
      * @param fontStyle the style; see the predefined constants in Font
      * @return the Font that corresponds to the style
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
      */
+    @Deprecated
     public Font getFont(int fontStyle) {
-        if ((fontStyle & Font.ITALIC) != 0) {
-            if ((fontStyle & Font.BOLD) != 0) {
-                return fontBoldItalic;
-            } else {
-                return fontItalic;
-            }
-        } else {
-            if ((fontStyle & Font.BOLD) != 0) {
-                return fontBold;
-            } else {
-                return fontPlain;
-            }
-        }
+        return diaDefault.getFont(fontStyle);
     }
 }
