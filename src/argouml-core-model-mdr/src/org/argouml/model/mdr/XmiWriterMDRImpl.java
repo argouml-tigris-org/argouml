@@ -153,8 +153,10 @@ class XmiWriterMDRImpl implements XmiWriter {
         try {
             OutputStream stream;
             if (oStream == null) {
+                LOG.debug("XMI writer using wrapped output writer");
                 stream = new WriterOuputStream(writer);                
             } else {
+                LOG.debug("XMI writer using native stream");
                 stream = oStream;
             }
             RefPackage extent = ((RefObject) model).refOutermostPackage();
