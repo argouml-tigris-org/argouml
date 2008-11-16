@@ -92,6 +92,7 @@ public class SaveSwingWorker extends SwingWorker {
         super.finished();
         if (result) {
             ProjectBrowser.getInstance().buildTitleWithCurrentProjectName();
+            // TODO: Why isn't this done in save?
             UndoManager.getInstance().empty();
         }
     }
