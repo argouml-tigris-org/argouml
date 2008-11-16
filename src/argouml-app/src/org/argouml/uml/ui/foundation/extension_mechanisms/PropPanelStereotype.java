@@ -312,6 +312,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            // TODO: Use per-project undo manager, not global
             UndoManager.getInstance().startChain();
             Object baseclass = getObjectToRemove();
             if (baseclass != null) {
