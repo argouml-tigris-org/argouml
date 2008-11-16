@@ -113,6 +113,7 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
             }
             return;
         }
+        // TODO: Use per-project undo manager, not global
         UndoManager.getInstance().addMementoLock(this);
         start();
     	MutableGraphModel gm = (MutableGraphModel) editor.getGraphModel();
@@ -142,6 +143,7 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
                         LOG.debug("mouseMoved: Location set ("
                                 + pers.getX() + "," + pers.getY() + ")");
                     }
+                    // TODO: Use per-project undo manager, not global
                     UndoManager.getInstance().startChain();
                     editor.add(pers);
                     gm.addNode(node);
@@ -181,6 +183,7 @@ public class ModeAddToDiagram extends FigModifyingModeImpl {
             }
         }
         
+        // TODO: Use per-project undo manager, not global
         UndoManager.getInstance().removeMementoLock(this);
         if (UndoManager.getInstance().isGenerateMementos()) {
             AddToDiagramMemento memento =
@@ -215,6 +218,7 @@ class AddToDiagramMemento extends Memento {
     }
     
     public void undo() {
+        // TODO: Use per-project undo manager, not global
     	UndoManager.getInstance().addMementoLock(this);
         for (FigNode figNode : nodesPlaced) {
             mgm.removeNode(figNode.getOwner());
@@ -223,6 +227,7 @@ class AddToDiagramMemento extends Memento {
         UndoManager.getInstance().removeMementoLock(this);
     }
     public void redo() {
+        // TODO: Use per-project undo manager, not global
         UndoManager.getInstance().addMementoLock(this);
         for (FigNode figNode : nodesPlaced) {
             editor.add(figNode);
