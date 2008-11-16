@@ -27,8 +27,8 @@ package org.argouml.persistence;
 import java.awt.Component;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.OutputStream;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -40,6 +40,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
+import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
@@ -330,7 +331,7 @@ public final class PersistenceManager {
      * @return The whole model in a String.
      */
     public String getQuickViewDump(Project project) {
-        OutputStream stream = new ByteArrayOutputStream();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
         try {
             quickViewDump.writeProject(project, stream, null);
         } catch (Exception e) {
@@ -339,7 +340,11 @@ public final class PersistenceManager {
             // useful feedback.
             e.printStackTrace(new PrintStream(stream));
         }
-        return stream.toString();
+        try {
+            return stream.toString(Argo.getEncoding());
+        } catch (UnsupportedEncodingException e) {
+            return e.toString();
+        }
     }
 
     /**
