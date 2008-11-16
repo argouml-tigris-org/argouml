@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -194,9 +194,19 @@ public abstract class UMLDiagram
         }
     }
 
-    /*
+    /**
+     * Method called by PGML parser to initialize a diagram after it's been
+     * constructed.  Order of method invocations currently is: <ul>
+     * <li>0-arg constructor
+     * <li>initialize(Object) // UML element representing owner/home model
+     * <li>setName(String)
+     * <li>setScale(double)
+     * <li>setShowSingleMultiplicity(boolean)
+     * <ul>
+     * @param owner UML model element representing owner/namespace/home model
      * @see org.tigris.gef.base.Diagram#initialize(java.lang.Object)
      */
+    @Override
     public void initialize(Object owner) {
         super.initialize(owner);
         /* The following is the default implementation
@@ -541,7 +551,8 @@ public abstract class UMLDiagram
      * @see org.argouml.ui.explorer.Relocatable#relocate(java.lang.Object)
      */
     public abstract boolean relocate(Object base);
-    
+
+    @Override
     public final void setProject(Project p) {
 	super.setProject(p);
 	UMLMutableGraphSupport gm = (UMLMutableGraphSupport) getGraphModel();
@@ -607,7 +618,7 @@ public abstract class UMLDiagram
      * main app, and should use their own implementation of ModePlace if it's
      * required.
      * @param gf TODO
-     * @param instructions
+     * @param instructions a help string for the user
      * @return The created ModePlace.
      */
     public ModePlace getModePlace(GraphFactory gf, String instructions) {
