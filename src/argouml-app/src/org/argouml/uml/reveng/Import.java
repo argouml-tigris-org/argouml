@@ -234,8 +234,12 @@ public class Import extends ImportCommon implements ImportSettings {
             addSourceEncoding(general);
 
             tab.add(general, Translator.localize("action.import-general"));
-            tab.add(getConfigPanelExtension(),
-                    ((ModuleInterface) getCurrentModule()).getName());
+
+            ImportInterface current = getCurrentModule();
+            if (current != null) {
+                tab.add(getConfigPanelExtension(),
+                        current.getName());            
+            }
             configPanel = tab;
         }
         return configPanel;
@@ -366,7 +370,11 @@ public class Import extends ImportCommon implements ImportSettings {
      * Get the extension panel for the configuration settings.
      */
     private JComponent getConfigPanelExtension() {
-        List<Setting> settings = getCurrentModule().getImportSettings();
+        List<Setting> settings = null;
+        ImportInterface current = getCurrentModule();
+        if (current != null) {
+            settings = current.getImportSettings();
+        }
         return  new ConfigPanelExtension(settings);
     }
 
@@ -504,8 +512,11 @@ public class Import extends ImportCommon implements ImportSettings {
         final JFileChooser chooser = new ImportFileChooser(this, directory);
 
         chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-        updateFilters(chooser, null, getCurrentModule().getSuffixFilters());
+        ImportInterface current = getCurrentModule();
 
+        if (current != null) {
+            updateFilters(chooser, null, current.getSuffixFilters());
+        }
         return chooser;
     }
 
