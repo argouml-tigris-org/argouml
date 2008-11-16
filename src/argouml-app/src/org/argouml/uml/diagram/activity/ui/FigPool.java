@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.presentation.Fig;
@@ -54,6 +55,19 @@ public class FigPool extends FigNodeModelElement {
         addFig(getBigPort());
 
         setBounds(r);
+    }
+    
+    /**
+     * Constructor used by PGML parser when loading.
+     * 
+     * @param owner ignored
+     * @param bounds bounding box rectangle
+     * @param settings diagram settings (unused)
+     */
+    public FigPool(@SuppressWarnings("unused") Object owner, 
+            Rectangle bounds, 
+            @SuppressWarnings("unused") DiagramSettings settings) {
+        this(bounds);
     }
 
 
