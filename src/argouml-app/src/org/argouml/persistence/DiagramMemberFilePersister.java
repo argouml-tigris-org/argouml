@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,10 +29,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URL;
 
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
@@ -138,14 +141,21 @@ class DiagramMemberFilePersister extends MemberFilePersister {
         } catch (ExpansionException e) {
             throw new SaveException(e);
         }
-        PrintWriter pw = new PrintWriter(outStream);
+        OutputStreamWriter outputWriter;
+        try {
+            outputWriter = 
+                new OutputStreamWriter(outStream, Argo.getEncoding());
+        } catch (UnsupportedEncodingException e1) {
+            throw new SaveException("Bad encoding", e1);
+        }
+        PrintWriter printWriter = new PrintWriter(outputWriter);
         try {
             // WARNING: the OutputStream version of this doesn't work! - tfm
-            expander.expand(pw, diagramMember.getDiagram());
+            expander.expand(printWriter, diagramMember.getDiagram());
         } catch (ExpansionException e) {
             throw new SaveException(e);
         } finally {
-            pw.flush();
+            printWriter.flush();
         }
         
     }
