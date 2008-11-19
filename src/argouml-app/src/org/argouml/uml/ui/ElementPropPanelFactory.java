@@ -121,7 +121,11 @@ class ElementPropPanelFactory implements PropPanelFactory {
 
     public PropPanel createPropPanel(Object element) {
         if (Model.getFacade().isAElement(element)) {
-            if (Model.getFacade().isAClassifier(element)) {
+            // A Subsytem is a Classifier also, so it needs to come before
+            // the classifier check
+            if (Model.getFacade().isASubsystem(element)) {
+                return new PropPanelSubsystem();
+            } else if (Model.getFacade().isAClassifier(element)) {
                 return getClassifierPropPanel(element);
             } else if (Model.getFacade().isARelationship(element)) {
                 return getRelationshipPropPanel(element);
@@ -196,8 +200,6 @@ class ElementPropPanelFactory implements PropPanelFactory {
                 return new PropPanelStereotype();
             } else if (Model.getFacade().isAStimulus(element)) {
                 return new PropPanelStimulus();
-            } else if (Model.getFacade().isASubsystem(element)) {
-                return new PropPanelSubsystem();
             } else if (Model.getFacade().isATaggedValue(element)) {
                 return new PropPanelTaggedValue();
             } else if (Model.getFacade().isATagDefinition(element)) {
@@ -253,6 +255,13 @@ class ElementPropPanelFactory implements PropPanelFactory {
         } else if (Model.getFacade().isAUseCase(element)) {
             return new PropPanelUseCase();
         } 
+        
+        // TODO: A Subsystem is a Classifier, but its PropPanel is derived from
+        // PropPanelPackage
+//        else if (Model.getFacade().isASubsystem(element)) {
+//            return new PropPanelSubsystem();
+//        }
+
         
         // TODO: In UML 2.x Associations will fall through here because they
         // are Classifiers as well as Relationships, but we test for Classifier
