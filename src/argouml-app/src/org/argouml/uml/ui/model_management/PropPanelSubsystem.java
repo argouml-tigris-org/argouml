@@ -41,6 +41,10 @@ import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 
 /**
  * A property panel for UML subsystems.
+ * <p>
+ * TODO: This is unused and only partially complete. It needs to implement all
+ * Classifier properties as well as the Subsystem specific isInstantiable
+ * property.
  */
 public class PropPanelSubsystem extends PropPanelPackage {
 
@@ -85,6 +89,7 @@ public class PropPanelSubsystem extends PropPanelPackage {
         /*
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
+        @Override
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (Model.getFacade().isAClassifier(target)) {
