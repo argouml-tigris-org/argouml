@@ -26,12 +26,12 @@ package org.argouml.uml.diagram.sequence2.ui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.SelectionRerouteEdge;
-import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.Handle;
 
 /**
@@ -92,6 +92,20 @@ public class SelectionMessage extends SelectionRerouteEdge {
             (FigClassifierRole) figMessage.getSourceFigNode();
         FigClassifierRole dest = 
             (FigClassifierRole) figMessage.getDestFigNode();
+        
+        // if the edge is near the bottom of the classifier roles,
+        // we enlarge all the FigClassifierRoles in the diagram.
+        if (figMessage.getFinalY() < 
+                source.getY() + source.getHeight() - 10) {
+            final int newHeight = source.getHeight() + 10;
+            final List<Fig> figs = getContent().getLayer().getContents();
+                        
+            for (Fig workOnFig : figs) {
+                if (workOnFig instanceof FigClassifierRole) {
+                    workOnFig.setHeight(newHeight);
+                }
+            }
+        }
         
         // if it is a create action, relocate its dest node.
         if (figMessage.isCreateAction()) {
