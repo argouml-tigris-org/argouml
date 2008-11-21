@@ -253,6 +253,7 @@ public class PathItemPlacement extends PathConv {
 
         // Check for a collision between our computed position and the edge
         if (useCollisionCheck) {
+            double scaleFactor = 1.2; // increase offset by 20% at a time
 
             // TODO: The size of text figs, which is what we care about most,
             // isn't computed correctly by GEF. If we got ambitious, we could
@@ -265,8 +266,8 @@ public class PathItemPlacement extends PathConv {
             Point[] points = fp.getPoints();
             if (intersects(points, result, size)) {
 
-                // increase offset by 50% at a time until we're clear
-                int scaledOffset = vectorOffset;
+                // increase offset by 20% at a time until we're clear
+                int scaledOffset = (int) (vectorOffset * scaleFactor);
                 // If offset is zero, use a default based on the size of the fig
                 if (scaledOffset == 0) {
                     scaledOffset = (size.width + size.height) / 4;
@@ -277,8 +278,7 @@ public class PathItemPlacement extends PathConv {
                 // limit our retries in case its too hard to get free
                 while (intersects(points, result, size) && count++ < limit) {
                     applyOffset(slope, scaledOffset, result);
-                    // Add double our offset every try
-                    scaledOffset *= 2;
+                    scaledOffset *= scaleFactor;
                 }
                 // If we timed out, give it one more try on the other side
                 if (false /* count >= limit */) {
@@ -293,6 +293,7 @@ public class PathItemPlacement extends PathConv {
                     while (intersects(points, result, size) 
                             && count++ < limit) {
                         applyOffset(slope, scaledOffset, result);
+                        scaledOffset *= scaleFactor;
                     }
                 }
 //                LOG.debug("Final point #" + count + " " + result
