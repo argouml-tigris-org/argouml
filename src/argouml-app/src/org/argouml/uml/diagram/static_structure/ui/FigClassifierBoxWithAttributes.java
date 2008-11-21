@@ -239,10 +239,8 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         }
         attributesFigCompartment.populate();
 
-        Rectangle rect = getBounds();
-        // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
-        setBounds(rect.x, rect.y, rect.width, rect.height);
+        setBounds(getBounds());
     }
     
     /**
@@ -251,32 +249,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
      * @see org.argouml.uml.diagram.AttributesCompartmentContainer#setAttributesVisible(boolean)
      */
     public void setAttributesVisible(boolean isVisible) {
-        Rectangle rect = getBounds();
-        if (getAttributesFig().isVisible()) {
-            if (!isVisible) {  // hide compartment
-                damage();
-                Iterator it = getAttributesFig().getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(false);
-                }
-                getAttributesFig().setVisible(false);
-                Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y,
-                          (int) aSize.getWidth(), (int) aSize.getHeight());
-            }
-        } else {
-            if (isVisible) { // show compartment
-                Iterator it = getAttributesFig().getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(true);
-                }
-                getAttributesFig().setVisible(true);
-                Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y,
-                          (int) aSize.getWidth(), (int) aSize.getHeight());
-                damage();
-            }
-        }
+        setCompartmentVisible(attributesFigCompartment, isVisible);
     }
     @Override
     public Dimension getMinimumSize() {
@@ -294,24 +267,6 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         aSize.width = Math.max(60, aSize.width);
 
         return aSize;
-    }
-
-    /**
-     * Add size of a child component to overall size.  Width is maximized
-     * with child's width and child's height is added to the overall height.
-     * If the child figure is not visible, it's size is not added.
-     * 
-     * @param size current dimensions
-     * @param child child figure
-     * @return new Dimension with child size added
-     */
-    protected Dimension addChildDimensions(Dimension size, Fig child) {
-        if (child.isVisible()) {
-            Dimension childSize = child.getMinimumSize();
-            size.width = Math.max(size.width, childSize.width);
-            size.height += childSize.height;
-        }
-        return size;
     }
 
     /**

@@ -216,32 +216,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#setOperationsVisible(boolean)
      */
     public void setOperationsVisible(boolean isVisible) {
-        Rectangle rect = getBounds();
-        if (isOperationsVisible()) { // if displayed
-            if (!isVisible) {
-                damage();
-                Iterator it = getOperationsFig().getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(false);
-                }
-                getOperationsFig().setVisible(false);
-                Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y,
-                          (int) aSize.getWidth(), (int) aSize.getHeight());
-            }
-        } else {
-            if (isVisible) {
-                Iterator it = getOperationsFig().getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(true);
-                }
-                getOperationsFig().setVisible(true);
-                Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y,
-                    (int) aSize.getWidth(), (int) aSize.getHeight());
-                damage();
-            }
-        }
+        setCompartmentVisible(operationsFig, isVisible);
     }
     
     /*

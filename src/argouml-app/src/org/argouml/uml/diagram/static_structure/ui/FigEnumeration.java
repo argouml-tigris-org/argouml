@@ -202,11 +202,7 @@ public class FigEnumeration extends FigDataType
         // Start with the minimum for our parent
         Dimension aSize = super.getMinimumSize();
 
-        if (literalsCompartment.isVisible()) {
-            Dimension literalsMin = literalsCompartment.getMinimumSize();
-            aSize.width = Math.max(aSize.width, literalsMin.width);
-            aSize.height += literalsMin.height;
-        }
+        aSize = addChildDimensions(aSize, literalsCompartment);
         
         return aSize;
     }
@@ -304,32 +300,7 @@ public class FigEnumeration extends FigDataType
      * @param isVisible true will show the enumeration literal compartment
      */
     public void setEnumLiteralsVisible(boolean isVisible) {
-        Rectangle rect = getBounds();
-        if (literalsCompartment.isVisible()) {
-            if (!isVisible) {
-                damage();
-                Iterator it = literalsCompartment.getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(false);
-                }
-                literalsCompartment.setVisible(false);
-                Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y,
-                          (int) aSize.getWidth(), (int) aSize.getHeight());
-            }
-        } else {
-            if (isVisible) {
-                Iterator it = literalsCompartment.getFigs().iterator();
-                while (it.hasNext()) {
-                    ((Fig) (it.next())).setVisible(true);
-                }
-                literalsCompartment.setVisible(true);
-                Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y,
-                          (int) aSize.getWidth(), (int) aSize.getHeight());
-                damage();
-            }
-        }
+        setCompartmentVisible(literalsCompartment, isVisible);
     }
     
     /**

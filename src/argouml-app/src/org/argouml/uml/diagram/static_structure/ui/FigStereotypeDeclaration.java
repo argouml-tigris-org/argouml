@@ -160,11 +160,9 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
     @Override
     public Dimension getMinimumSize() {
         Dimension aSize = getNameFig().getMinimumSize();
-        if (getStereotypeFig().isVisible()) {
-            Dimension stereoMin = getStereotypeFig().getMinimumSize();
-            aSize.width = Math.max(aSize.width, stereoMin.width);
-            aSize.height += stereoMin.height;
-        }
+        
+        //TODO: Why does this differ from the other Figs?
+        aSize = addChildDimensions(aSize, getStereotypeFig());
 
         // TODO: Allow space for each of the Tags & Constraints we have
 

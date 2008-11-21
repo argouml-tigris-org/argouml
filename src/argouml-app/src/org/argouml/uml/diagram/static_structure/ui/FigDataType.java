@@ -149,27 +149,13 @@ public class FigDataType extends FigClassifierBox {
         Dimension aSize = getNameFig().getMinimumSize();
 
         // +2 padding before and after name
-
         aSize.height += 4;
-
-        if (aSize.height < 21) {
-            aSize.height = 21;
-        }
+        aSize.height = Math.max(21, aSize.height);
 
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
-
-        if (getStereotypeFig().isVisible()) {
-            Dimension stereoMin = getStereotypeFig().getMinimumSize();
-            aSize.width = Math.max(aSize.width, stereoMin.width);
-            aSize.height += stereoMin.height;
-        }
-
-        if (getOperationsFig().isVisible()) {
-            Dimension operMin = getOperationsFig().getMinimumSize();
-            aSize.width = Math.max(aSize.width, operMin.width);
-            aSize.height += operMin.height;
-        }
+        aSize = addChildDimensions(aSize, getStereotypeFig());
+        aSize = addChildDimensions(aSize, getOperationsFig());
 
         // we want to maintain a minimum width for datatypes
         aSize.width = Math.max(40, aSize.width);

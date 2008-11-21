@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,9 +25,11 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -209,5 +211,56 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     
     protected Fig getBorderFig() {
 	return borderFig;
+    }
+
+    /**
+     * Add size of a child component to overall size.  Width is maximized
+     * with child's width and child's height is added to the overall height.
+     * If the child figure is not visible, it's size is not added.
+     * 
+     * @param size current dimensions
+     * @param child child figure
+     * @return new Dimension with child size added
+     */
+    protected Dimension addChildDimensions(Dimension size, Fig child) {
+        if (child.isVisible()) {
+            Dimension childSize = child.getMinimumSize();
+            size.width = Math.max(size.width, childSize.width);
+            size.height += childSize.height;
+        }
+        return size;
+    }
+    
+    /**
+     * @param compartment the compartment to be changed
+     * @param isVisible true if the attribute compartment is visible
+     *
+     * @see org.argouml.uml.diagram.AttributesCompartmentContainer#setAttributesVisible(boolean)
+     */
+    protected void setCompartmentVisible(FigCompartment compartment, boolean isVisible) {
+        Rectangle rect = getBounds();
+        if (compartment.isVisible()) {
+            if (!isVisible) {  // hide compartment
+                damage();
+                for (Object f : compartment.getFigs()) {
+                    ((Fig) f).setVisible(false);
+                }
+                compartment.setVisible(false);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y,
+                          (int) aSize.getWidth(), (int) aSize.getHeight());
+            }
+        } else {
+            if (isVisible) { // show compartment
+                for (Object f : compartment.getFigs()) {
+                    ((Fig) f).setVisible(true);
+                }
+                compartment.setVisible(true);
+                Dimension aSize = this.getMinimumSize();
+                setBounds(rect.x, rect.y,
+                          (int) aSize.getWidth(), (int) aSize.getHeight());
+                damage();
+            }
+        }
     }
 }
