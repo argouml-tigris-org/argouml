@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.sequence2.ui;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.SelectionRerouteEdge;
@@ -40,7 +41,12 @@ import org.tigris.gef.presentation.Handle;
  */
 public class SelectionMessage extends SelectionRerouteEdge {
 
-    
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(SelectionMessage.class);
+
     /**
      * The constructor
      * @param feme the fig.
@@ -77,23 +83,25 @@ public class SelectionMessage extends SelectionRerouteEdge {
             super.dragHandle(x, y, w, h, handle);
             handleMovement();
         }
+        
     }
     
     private void handleMovement() {
         FigMessage figMessage = (FigMessage) getContent();
+        FigClassifierRole source = 
+            (FigClassifierRole) figMessage.getSourceFigNode();
+        FigClassifierRole dest = 
+            (FigClassifierRole) figMessage.getDestFigNode();
         
         // if it is a create action, relocate its dest node.
         if (figMessage.isCreateAction()) {
-            ((FigClassifierRole) figMessage.getDestFigNode()).relocate();
+            dest.relocate();
         }
         
-        // we recalculate all the activations
-        FigNode source = figMessage.getSourceFigNode();
-        ((FigClassifierRole) source).createActivations();
-        
-        FigNode dest = figMessage.getDestFigNode();
+        // we recalculate all the activations        
+        source.createActivations();        
         if (!figMessage.isSelfMessage()) {
-            ((FigClassifierRole) dest).createActivations();
+            dest.createActivations();
         }
     }
     
