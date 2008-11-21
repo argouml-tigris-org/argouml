@@ -1411,6 +1411,8 @@ public abstract class FigNodeModelElement
                     + owner.getClass().getName());
         }
         super.setOwner(owner);
+        nameFig.setOwner(owner); // for setting abstract
+        stereotypeFig.setOwner(owner);
         initNotationProviders(owner);
         readyToEdit = true;
         renderingChanged();
@@ -1419,8 +1421,6 @@ public abstract class FigNodeModelElement
          * is the previous port - and consequently nullifies the owner 
          * of this 1st fig. */
         bindPort(owner, bigPort);
-        nameFig.setOwner(owner); // for setting abstract
-        stereotypeFig.setOwner(owner);
         updateListeners(null, owner);
     }
 
