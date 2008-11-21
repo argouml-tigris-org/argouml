@@ -252,15 +252,23 @@ public class FigClassifierRole extends FigNodeModelElement {
     public void removeFigEdge(FigEdge edge) {
         super.removeFigEdge(edge);
 
+        if (! (edge instanceof FigMessage)) {
+            return;
+        }
+        final FigMessage figMessage = (FigMessage) edge;
+
         // if the removed edge is a Create Message it will affect the position
         // of the ClassifierRole so it should be repositioned
-        if (edge instanceof FigMessage) {
-            final FigMessage figMessage = (FigMessage) edge;
-            if (equals(figMessage.getDestFigNode())
-                    && !equals(figMessage.getSourceFigNode())  
-                    && figMessage.isCreateAction()) {
-                relocate();
-            }
+        if (equals(figMessage.getDestFigNode())
+                && !equals(figMessage.getSourceFigNode())  
+                && figMessage.isCreateAction()) {
+            relocate();
+        }
+
+        // in any case we need to update the activations of this fig
+        ((FigClassifierRole)figMessage.getDestFigNode()).createActivations();
+        if (! figMessage.isSelfMessage()){
+            ((FigClassifierRole)figMessage.getSourceFigNode()).createActivations();
         }
     }
     
