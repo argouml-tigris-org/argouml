@@ -99,14 +99,15 @@ public class FigStereotypesGroup extends ArgoFigGroup {
     }
 
     /*
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     * Beware: The owner here is NOT the stereotype(s), 
+     * but the extended element!
      */
     @Override
     public void setOwner(Object own) {
         if (own != null) {
             super.setOwner(own);
-            populate();
             Model.getPump().addModelEventListener(this, own, "stereotype");
+            populate();
         }
     }
     
