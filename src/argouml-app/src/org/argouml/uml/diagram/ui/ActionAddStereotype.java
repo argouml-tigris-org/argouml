@@ -34,6 +34,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
+import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.tigris.gef.undo.UndoableAction;
 
 
@@ -43,7 +44,10 @@ import org.tigris.gef.undo.UndoableAction;
  * TODO: Appears to be unused?
  * 
  * @author Bob Tarling
+ * @deprecated for 0.27.2 by tfmorris.  Use 
+ * {@link org.argouml.uml.ActionAddStereotype}.
  */
+@Deprecated
 @UmlModelMutator
 class ActionAddStereotype extends UndoableAction {
     private Object modelElement;
@@ -68,9 +72,8 @@ class ActionAddStereotype extends UndoableAction {
     private static String buildString(Object st) {
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
-        return ps.getLeftGuillemot() 
-            + Model.getFacade().getName(st)
-            + ps.getRightGuillemot();
+        return NotationUtilityUml.generateStereotype(st, 
+                ps.getDefaultDiagramSettings().isUseGuillemets());
     }
 
     /*
