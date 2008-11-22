@@ -178,16 +178,44 @@ public class TestXmi extends TestCase {
         // TODO: 
     }
     
-    public void notestXmiRoseUml13() {
-        // TODO: http://argouml.tigris.org/issues/show_bug.cgi?id=4919
+    /**
+     * Test a UML 1.3/XMI 1.1 file to make sure that it gets converted properly.
+     * <p>
+     * TODO: Our UML 1.3 converter currently only handles XMI 1.0. 
+     * @throws FileNotFoundException indicates a test configuration problem
+     * @throws UmlException if it fails to open the file
+     */
+    public void notestXmiRoseUml13() throws FileNotFoundException, 
+            UmlException {
+        // http://argouml.tigris.org/issues/show_bug.cgi?id=4919
+        readAndCheckXmi("/testmodels/uml13/issue4919-Rose-uml13-xmi11.xmi",
+                "AAA_5.1.1_K2", 7);
+        // This throws 
+        // org.argouml.model.XmiException: Unknown element in XMI file : Model
+        // because the UML 1.3->1.4 converter can only handle XMI 1.0, not 1.1
     }
-    
+
     public void notestXmiRoseUml14() {
-        // TODO: 
+        // TODO:
     }
-    
-    public void notestPoseidonHybrid() {
-        // TODO: http://argouml.tigris.org/issues/show_bug.cgi?id=4440
+
+    /**
+     * Test weird hybrid Poseidon file to make sure that it throws a reasonable
+     * exception when we try to load it.
+     * 
+     * @throws FileNotFoundException indicates a test configuration problem
+     */
+    public void notestPoseidonHybrid() throws FileNotFoundException {
+        // http://argouml.tigris.org/issues/show_bug.cgi?id=4440
+        try {
+            readAndCheckXmi("/testmodels/uml14/issue4440-Poseidon-hybrid.xmi",
+                    "model 2", 99);
+        } catch (UmlException e) {
+            if (!(e instanceof XmiException) 
+                    || !e.getMessage().contains("Unknown element")) {
+                fail("Expected exception not thrown");
+            }
+        }
     }
     
  

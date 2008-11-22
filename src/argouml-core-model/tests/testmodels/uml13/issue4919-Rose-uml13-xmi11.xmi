@@ -1,0 +1,40 @@
+<?xml version = '1.0' encoding = 'ISO-8859-1'?>
+<!-- <!DOCTYPE XMI SYSTEM 'UML1311.dtd' > -->
+<XMI xmi.version = '1.1' xmlns:UML='href://org.omg/UML/1.3' timestamp = 'Fri Nov 23 09:13:06 2007' >
+ <XMI.header>
+  <XMI.documentation>
+   <XMI.exporter>Unisys.JCR.1</XMI.exporter>
+   <XMI.exporterVersion>1.3.6</XMI.exporterVersion>
+  </XMI.documentation>
+  <XMI.metamodel xmi.name = 'UML' xmi.version = '1.3'/>
+ </XMI.header>
+<XMI.content>
+<!-- ==================== AAA_5.1.1_K2    [Model] ==================== -->
+<Model xmi.id = 'G.0' xmi.uuid = '3E84830A0194' 
+  name = 'AAA_5.1.1_K2' visibility = 'public' isSpecification = 'false' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' >
+  <Namespace.ownedElement>
+
+  </Namespace.ownedElement>
+</Model>
+<TaggedValue xmi.id = 'XX.23.911.54.2' 
+  tag = 'RationalRose:Tool#0' value = 'AAA' 
+  modelElement = 'G.0' />
+<TaggedValue xmi.id = 'XX.23.911.54.3' 
+  tag = 'RationalRose$AAA:AAAVersion' value = '5.1.1_K' 
+  modelElement = 'S.326.0911.50.2' />
+<TaggedValue xmi.id = 'XX.23.911.54.4' 
+  tag = 'RationalRose$AAA:Organisation' value = 'ISO/TC 211' 
+  modelElement = 'S.326.0911.50.2' />
+<TaggedValue xmi.id = 'XX.23.911.54.5' 
+  tag = 'RationalRose$AAA:Datum' value = '07.10.2004' 
+  modelElement = 'S.326.0911.50.2' />
+<TaggedValue xmi.id = 'XX.23.911.54.6' 
+  tag = 'RationalRose:Tool#4' value = 'NAS' 
+  modelElement = 'G.0' />
+<TaggedValue xmi.id = 'foo' 
+  tag = 'documentation' value = 'My documentation' 
+  modelElement = 'G.0' />
+</XMI.content>
+</XMI>
+
