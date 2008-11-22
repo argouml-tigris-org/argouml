@@ -690,10 +690,17 @@ public class DnDExplorerTree
             /* If the destination is not a NameSpace, then reject: */
             if (!Model.getFacade().isANamespace(dest)) {
                 if (LOG.isDebugEnabled()) {
+                    String name;
+                    if (Model.getFacade().isAUMLElement(dest)) {
+                        name = Model.getFacade().getName(dest);
+                    } else if (dest == null) {
+                        name = "<null>";
+                    } else {
+                        name = dest.toString();
+                    }
                     LOG.debug("No valid Drag: "
                             + (Model.getFacade().isAUMLElement(dest) 
-                                    ? Model.getFacade().getName(dest)
-                                            + " not a namespace."
+                                    ? name + " not a namespace."
                                     :  " not a UML element."));
                 }
                 dropTargetDragEvent.rejectDrag();
