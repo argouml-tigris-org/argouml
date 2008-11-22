@@ -77,15 +77,15 @@ public class XmiException extends UmlException {
      *                 the error or warning.
      * @param systemId The system identifier of the entity that generated
      *                 the error or warning.
-     * @param lineNumber The line number of the end of the text that
+     * @param line The line number of the end of the text that
      *                   caused the error or warning.
-     * @param columnNumber The column number of the end of the text that
+     * @param column The column number of the end of the text that
      *                     cause the error or warning.
      */
     public XmiException(String message, String publicId, String systemId,
-            int lineNumber, int columnNumber) {
+            int line, int column) {
         super(message);
-        init(publicId, systemId, lineNumber, columnNumber);
+        init(publicId, systemId, line, column);
     }
     
     
@@ -98,16 +98,16 @@ public class XmiException extends UmlException {
      *                error or warning.
      * @param systemId The system identifier of the entity that generated the
      *                error or warning.
-     * @param lineNumber The line number of the end of the text that caused the
+     * @param line The line number of the end of the text that caused the
      *                error or warning.
-     * @param columnNumber The column number of the end of the text that cause
+     * @param column The column number of the end of the text that cause
      *                the error or warning.
      * @param e Another exception to embed in this one.
      */
     public XmiException(String message, String publicId, String systemId,
-            int lineNumber, int columnNumber, Exception e) {
+            int line, int column, Exception e) {
         super(message, e);
-        init(publicId, systemId, lineNumber, columnNumber);
+        init(publicId, systemId, line, column);
     }
 
 
@@ -118,15 +118,15 @@ public class XmiException extends UmlException {
      *                exception, or null.
      * @param systemId The system identifier of the entity which generated the
      *                exception, or null.
-     * @param lineNumber The line number of the error, or -1.
-     * @param columnNumber The column number of the error, or -1.
+     * @param line The line number of the error, or -1.
+     * @param column The column number of the error, or -1.
      */
-    private void init(String publicId, String systemId, int lineNumber,
-            int columnNumber) {
+    private void init(String publicId, String systemId, int line,
+            int column) {
         this.publicId = publicId;
         this.systemId = systemId;
-        this.lineNumber = lineNumber;
-        this.columnNumber = columnNumber;
+        lineNumber = line;
+        columnNumber = column;
     }
     
     
