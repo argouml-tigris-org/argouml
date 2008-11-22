@@ -456,9 +456,7 @@ public class PathItemPlacement extends PathConv {
         // give screwy results near bends in the path
         int d1 = Math.max(0, pathDistance - slopeSegLen / 2);
         // If our position was clamped, try to make it up on the other end
-        int d2 = Math.max(slopeSegLen / 2, slopeSegLen - d1);
-        d2 = Math.max(pathLength - 1, pathDistance + d2);
-
+        int d2 = Math.min(pathLength - 1, d1 + slopeSegLen);
         // Can't get the slope of a point.  Just return an arbitrary point.
         if (d1 == d2) {
             return 0;
