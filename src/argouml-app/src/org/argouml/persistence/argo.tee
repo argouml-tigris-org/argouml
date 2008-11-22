@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!DOCTYPE TemplateSet [
+  <!ELEMENT TemplateSet (macro | template)* >
+  <!ELEMENT macro (#PCDATA)>
+  <!ATTLIST macro name ID #REQUIRED>
+  <!ELEMENT template (#PCDATA)>
+  <!ATTLIST template class CDATA #REQUIRED
+                     guard CDATA #IMPLIED>
+]>
+<!-- This is argo.tee, for ArgoUML to save project files.-->
+<!-- "tee" = Template with Embedded Expressions. -->
+
+<!-- Original Author: jrobbins@ics.uci.edu -->
+<!-- $Id$ -->
+<!--
+Copyright (c) 1996-2008 The Regents of the University of California. All
+Rights Reserved. Permission to use, copy, modify, and distribute this
+software and its documentation without fee, and without a written
+agreement is hereby granted, provided that the above copyright notice
+and this paragraph appear in all copies.  This software program and
+documentation are copyrighted by The Regents of the University of
+California. The software program and documentation are supplied "AS
+IS", without any accompanying services from The Regents. The Regents
+does not warrant that the operation of the program will be
+uninterrupted or error-free. The end-user understands that the program
+was developed for research purposes and is advised not to rely
+exclusively on the program for any reason.  IN NO EVENT SHALL THE
+UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+-->
+
+<TemplateSet>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="org.argouml.kernel.ProjectImpl">
+<![CDATA[
+<argo version="<ocl>self.persistenceVersion</ocl>">
+  <documentation>
+    <authorname><ocl>self.authorname</ocl></authorname>
+    <authoremail><ocl>self.authoremail</ocl></authoremail>
+    <version><ocl>self.version</ocl></version>
+    <description>
+      <ocl>self.description</ocl>
+    </description>
+  </documentation>
+  <settings>
+    <notationlanguage><ocl>self.projectSettings.notationLanguage</ocl></notationlanguage>
+    <showboldnames><ocl>self.projectSettings.showBoldNames</ocl></showboldnames>
+    <useguillemots><ocl>self.projectSettings.useGuillemots</ocl></useguillemots>
+    <showassociationnames><ocl>self.projectSettings.showAssociationNames</ocl></showassociationnames>
+    <showvisibility><ocl>self.projectSettings.showVisibility</ocl></showvisibility>
+    <showmultiplicity><ocl>self.projectSettings.showMultiplicity</ocl></showmultiplicity>
+    <showinitialvalue><ocl>self.projectSettings.showInitialValue</ocl></showinitialvalue>
+    <showproperties><ocl>self.projectSettings.showProperties</ocl></showproperties>
+    <showtypes><ocl>self.projectSettings.showTypes</ocl></showtypes>
+    <showstereotypes><ocl>self.projectSettings.showStereotypes</ocl></showstereotypes>
+    <showsingularmultiplicities><ocl>self.projectSettings.showSingularMultiplicities</ocl></showsingularmultiplicities>
+    <defaultshadowwidth><ocl>self.projectSettings.defaultShadowWidth</ocl></defaultshadowwidth>
+    <hidebidirectionalarrows><ocl>self.projectSettings.hideBidirectionalArrows</ocl></hidebidirectionalarrows>    
+    <fontname><ocl>self.projectSettings.fontName</ocl></fontname>
+    <fontsize><ocl>self.projectSettings.fontSize</ocl></fontsize>
+    <defaultstereotypeview><ocl>self.projectSettings.defaultStereotypeView</ocl></defaultstereotypeview>
+    <activediagram><ocl>self.activeDiagram.name</ocl></activediagram>
+  </settings>
+
+  <searchpath href="<ocl>self.searchPathList</ocl>" />
+
+  <members>
+    <ocl>self.members</ocl>
+  </members>
+
+  <historyfile name="<ocl>self.historyFile</ocl>" />
+
+</argo>
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Write out the ProjectMember data. Note that this is not         -->
+<!-- required to reload a project for ArgoUML but is used by at      -->
+<!-- least one 3rd party tool. See -                                 -->
+<!-- http://argouml.tigris.org/issues/show_bug.cgi?id=4491           -->
+<template class="org.argouml.uml.diagram.ProjectMemberDiagram">
+<![CDATA[
+<member type="<ocl>self.type</ocl>"
+        name="<ocl>self.zipName</ocl>"
+        diagramclass="<ocl>self.diagram.class.name</ocl>"
+        diagramname="<ocl>self.diagram.name</ocl>" />
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<!-- Write out the ProjectMember data. Note that this is not         -->
+<!-- required to reload a project for ArgoUML but is used by at      -->
+<!-- least one 3rd party tool. See -                                 -->
+<!-- http://argouml.tigris.org/issues/show_bug.cgi?id=4491           -->
+<template class="org.argouml.kernel.AbstractProjectMember">
+<![CDATA[
+<member type="<ocl>self.type</ocl>"
+        name="<ocl>self.zipName</ocl>" />
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+</TemplateSet>
+
+<!-- -  End of File  - - - - - - - - - - - - - - - - - - - - - - - - -->

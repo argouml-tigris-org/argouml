@@ -1,0 +1,431 @@
+// $Id$
+// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.kernel;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.swing.Action;
+import javax.swing.event.EventListenerList;
+
+import org.apache.log4j.Logger;
+import org.argouml.cognitive.Designer;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.model.ModelCommand;
+import org.argouml.model.ModelCommandCreationObserver;
+import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
+
+/**
+ * This class manages the projects loaded in argouml,
+ * and what the current project is. <p>
+ *
+ * Classes in ArgoUML can ask this class for the current
+ * project and set the current project.  Since we only have one
+ * project in ArgoUML at the moment, this class does not manage a list
+ * of projects like one would expect. This could be a nice extension
+ * for the future of ArgoUML.  As soon as the current project is
+ * changed, a property changed event is fired. <p>
+ * 
+ * TODO: Move everything related to the creation of a project 
+ * into the ProjectFactory.
+ *
+ * @since Nov 17, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
+ */
+public final class ProjectManager implements ModelCommandCreationObserver {
+
+    /**
+     * The name of the property that defines the current project.
+     * 
+     * @deprecated for 0.27.2 by tfmorris. Listeners of this event which expect
+     *             it to indicate a new project being opened should listen for
+     *             {@link #OPEN_PROJECTS_PROPERTY}. Listeners who think 
+     *             they need to know a single global current project name need
+     *             to be changed to deal with things on a per-project basis.
+     */
+    @Deprecated
+    public static final String CURRENT_PROJECT_PROPERTY_NAME = "currentProject";
+
+    /**
+     * Property name for list of current open projects.  Old and new property
+     * values are of type Project[] (arrays of Projects).
+     */
+    public static final String OPEN_PROJECTS_PROPERTY = "openProjects";
+
+    private static final Logger LOG = Logger.getLogger(ProjectManager.class);
+
+    /**
+     * The singleton instance of this class.
+     */
+    private static ProjectManager instance = new ProjectManager();
+
+    /**
+     * The project that is visible in the projectbrowser.
+     */
+    private static Project currentProject;
+
+    /**
+     * Flag to indicate we are creating a new current project.
+     * TODO: This isn't a thread-safe way of doing mutual exclusion.
+     */
+    private boolean creatingCurrentProject;
+
+    private Action saveAction;
+    
+    /**
+     * The listener list.
+     */
+    private EventListenerList listenerList = new EventListenerList();
+
+    /**
+     * The event to fire.
+     *
+     * TODO: Investigate! Is the purpose really to let the next call to
+     * {@link #firePropertyChanged(String, Object, Object)} fire the old
+     * event again if the previous invocation resulted in an exception?
+     * If so, please document why. If not, fix it.
+     */
+    private PropertyChangeEvent event;
+
+    /**
+     * The singleton accessor method of this class.
+     *
+     * @return The singleton.
+     */
+    public static ProjectManager getManager() {
+        return instance;
+    }
+
+    /**
+     * Constructor for ProjectManager.
+     */
+    private ProjectManager() {
+        super();
+        Model.setModelCommandCreationObserver(this);
+    }
+
+    /**
+     * Adds a listener to the listener list.
+     *
+     * @param listener The listener to add.
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        listenerList.add(PropertyChangeListener.class, listener);
+    }
+
+    /**
+     * Removes a listener from the listener list.
+     *
+     * @param listener The listener to remove.
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        listenerList.remove(PropertyChangeListener.class, listener);
+    }
+
+    /**
+     * Fire an event to all members of the listener list.
+     *
+     * @param propertyName The name of the event.
+     * @param oldValue The old value.
+     * @param newValue The new value.
+     */
+    void firePropertyChanged(String propertyName,
+                                     Object oldValue, Object newValue) {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == PropertyChangeListener.class) {
+                // Lazily create the event:
+                if (event == null) {
+                    event =
+                        new PropertyChangeEvent(
+                            this,
+                            propertyName,
+                            oldValue,
+                            newValue);
+                }
+                ((PropertyChangeListener) listeners[i + 1]).propertyChange(
+                    event);
+            }
+        }
+        event = null;
+    }
+
+    /**
+     * Sets the current project (the project that is viewable in the
+     * projectbrowser).
+     * Sets the current diagram for the project (if one exists).
+     * This method fires a propertychanged event.<p>
+     *
+     * If the argument is null, then the current project will be forgotten
+     * about.
+     *
+     * @param newProject The new project.
+     * @deprecated for 0.27.2 by tfmorris.  There is no longer the concept of
+     * a single global "current" project.  In the future, multiple projects
+     * will be able to be open at a time, so all code should be prepared to deal
+     * with multiple projects and should require a Project to be passed as an
+     * argument if they need access.
+     */
+    public void setCurrentProject(Project newProject) {
+        Project oldProject = currentProject;
+        currentProject = newProject;
+        if (currentProject != null
+            && currentProject.getActiveDiagram() == null) {
+            List<ArgoDiagram> diagrams = currentProject.getDiagramList();
+            if (diagrams != null && !diagrams.isEmpty()) {
+                ArgoDiagram activeDiagram = diagrams.get(0);
+                currentProject.setActiveDiagram(activeDiagram);
+            }
+        }
+        firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
+                oldProject, newProject);
+        // TODO: Tentative implementation. Do we want something that updates
+        // the list of open projects or just simple open and close events? -tfm
+        firePropertyChanged(OPEN_PROJECTS_PROPERTY,
+                new Project[] {oldProject}, new Project[] {newProject});
+    }
+
+    /**
+     * Returns the current project (ie the project which must recently had the
+     * user focus) or null if there is no current project.
+     * <p>
+     * This should only be used by callers who need to know the global state.
+     * Most things which need a project want the project that contains them,
+     * which they can discover by traversing their containing elements (e.g.
+     * Fig->Diagram->DiagramSettings).
+     * <p>
+     * 
+     * @return Project the current project or null if none
+     * @deprecated for 0.27.2 by tfmorris.  There is no longer the concept of
+     * a single global "current" project.  In the future, multiple projects
+     * will be able to be open at a time, so all code should be prepared to deal
+     * with multiple projects and should require a Project to be passed as an
+     * argument if they need access.  To get a list of all currently open
+     * projects, use {@link #getOpenProjects()}.  For settings which affect
+     * renderings in diagrams use 
+     * {@link org.argouml.uml.diagram.ui.ArgoFig#getDiagramSettings()}.
+     */
+    public Project getCurrentProject() {
+        if (currentProject == null && !creatingCurrentProject) {
+            makeEmptyProject();
+        }
+        return currentProject;
+    }
+    
+    /**
+     * @return a list of the currently open Projects in the order they were
+     * opened
+     */
+    public List<Project> getOpenProjects() {
+        List<Project> result = new ArrayList<Project>();
+        if (currentProject != null) {
+            result.add(currentProject);
+        }
+        return result;        
+    }
+    
+    /**
+     * Makes an empty project.
+     * @return Project the empty project
+     */
+    public Project makeEmptyProject() {
+        return makeEmptyProject(true);
+    }
+
+    /**
+     * Make a new empty project optionally including default diagrams.
+     * <p>
+     * Historically new projects have been created with two default diagrams
+     * (Class and Use Case). NOTE: ArgoUML currently requires at least one
+     * diagram for proper operation.
+     * 
+     * @param addDefaultDiagrams
+     *            if true the project will be be created with the two standard
+     *            default diagrams (Class and Use Case)
+     * @return Project the newly created project
+     */
+    public Project makeEmptyProject(final boolean addDefaultDiagrams) {    
+        final Command cmd = new NonUndoableCommand() {
+
+            @Override
+            public Object execute() {
+                Model.getPump().stopPumpingEvents();
+                
+                creatingCurrentProject = true;
+                LOG.info("making empty project");
+                Project newProject = new ProjectImpl();
+                // Our project isn't really fully initialized yet, but the
+                // UndoManager depends on having the current project set before
+                // we can create our default Model
+                setCurrentProject(newProject);
+                if (addDefaultDiagrams) {
+                    createDefaultDiagrams(newProject);
+                }
+                creatingCurrentProject = false;
+
+                Model.getPump().startPumpingEvents();
+                
+                if (saveAction != null) {
+                    saveAction.setEnabled(false);
+                }
+                return null;
+            }
+        };
+        cmd.execute();
+        currentProject.getUndoManager().addCommand(cmd);
+        return currentProject;
+    }
+
+    /**
+     * Create the default diagrams for the project.  Currently a Class Diagram
+     * and a UseCase diagram.
+     * 
+     * @param project the project to create the diagrams in.
+     */
+    private void createDefaultDiagrams(Project project) {
+        createDefaultModel(project);
+        Object model = project.getRoots().iterator().next();
+        DiagramFactory df = DiagramFactory.getInstance();
+        ArgoDiagram d = df.createDiagram(DiagramFactory.DiagramType.Class,
+                model, null);
+        project.addMember(d);
+        project.addMember(df.createDiagram(
+                DiagramFactory.DiagramType.UseCase, model, null));
+        project.addMember(new ProjectMemberTodoList("",
+                project));
+        project.setActiveDiagram(d);
+    }
+
+    /**
+     * Create the top level model for the project and set it as a root and the
+     * current namespace.
+     * 
+     * @param project the project to create the model in.
+     */
+    private void createDefaultModel(Project project) {
+        Object model = Model.getModelManagementFactory().createModel();
+        Model.getCoreHelper().setName(model,
+                Translator.localize("misc.untitled-model"));
+        Collection roots = new ArrayList();
+        roots.add(model);
+        project.setRoots(roots);
+        project.setCurrentNamespace(model);
+        project.addMember(model);
+    }
+    
+    /**
+     * Set the save action.
+     * 
+     * @param save the action to be used
+     */
+    public void setSaveAction(Action save) {
+        this.saveAction = save;
+        // Register with the save action with other subsystems so that
+        // any changes in those subsystems will enable the
+        // save button/menu item etc.
+        Designer.setSaveAction(save);
+    }
+    
+    /**
+     * @return true is the save action is currently enabled
+     * <p>
+     * TODO: This needs to get the save-enabled status for the current project.
+     */
+    public boolean isSaveActionEnabled() {
+        return this.saveAction.isEnabled();
+    }
+
+    /**
+     * Notify the gui that the
+     * current project's save state has changed. There are 2 receivers:
+     * the SaveProject tool icon and the title bar (for showing a *).
+     * <p>
+     * TODO: This needs to be managed on a per-project basis.
+     * @param newValue The new state.
+     */
+    public void setSaveEnabled(boolean newValue) {
+        if (saveAction != null) {
+            saveAction.setEnabled(newValue);
+        }
+    }
+    
+
+    /**
+     * Remove the project.
+     *
+     * @param oldProject The project to be removed.
+     */
+    public void removeProject(Project oldProject) {
+
+        if (currentProject == oldProject) {
+            currentProject = null;
+        }
+
+        oldProject.remove();
+    }
+
+    /**
+     * Called when the model subsystem creates a command.
+     * We must add this to the UndoManager.
+     *
+     * @param command the command.
+     * @return result of the command, if any
+     * @see org.argouml.model.ModelCommandCreationObserver#execute(ModelCommand)
+     */
+    public Object execute(final ModelCommand command) {
+        if (saveAction != null) {
+            saveAction.setEnabled(true);
+        }
+        AbstractCommand wrappedCommand = new AbstractCommand() {
+            private ModelCommand modelCommand = command;
+            public void undo() {
+                modelCommand.undo();
+            }
+            public boolean isUndoable() {
+                return modelCommand.isUndoable();
+            }
+            public boolean isRedoable() {
+                return modelCommand.isRedoable();
+            }
+            public Object execute() {
+                return modelCommand.execute();
+            }
+            public String toString() {
+                return modelCommand.toString();
+            }
+        };
+        return getCurrentProject().getUndoManager().execute(wrappedCommand);
+    }
+}

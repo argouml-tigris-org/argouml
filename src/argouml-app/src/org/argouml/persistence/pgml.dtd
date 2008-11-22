@@ -1,0 +1,389 @@
+<!-- Document Type Definition for the Precision Graphics
+     Markup Language, PGML.
+     version = 1.0 status = draft date = 23.March.1998
+     syntax = XML author = jnava@adobe.com-->
+<!-- =============================================================== -->
+<!-- Begin Graphics State attributes
+    The gs_ prefix is added to stand for Graphics State, whose
+    scoping rules are as follows:
+    When the PGML interpreter encounters a new pgml, group,
+    path, text, textspan or predefined graphic element,
+    the Graphics State is "saved." Any changes in the Graphics State
+    that occur during processing these elements apply only to the
+    graphics defined within the element. When the PGML interpreter
+    encounters the end of the element the Graphics State is "restored"
+    to its prior condition.
+-->
+<!--
+    The value of the concat attribute is a sequence of 6 numbers
+    separated by spaces which represents an arbitrary 2x3 matrix
+    in the form of six values: a b c d e f. The given matrix is
+    concatenated with the current transformation matrix to produce
+    a new transformation matrix.
+-->
+<!ENTITY % gs_general_attributes
+          'concat CDATA #IMPLIED
+           clippath CDATA #IMPLIED'
+>
+
+<!-- jer 99/03/10: changed stroke default from "0" to "1"  -->
+<!-- this helps with backward compatability to v0.6.0 -->
+
+<!ENTITY % gs_fillstroke_attributes
+          'fill (0 | 1)  "1"
+           fillrule (nonzero | evenodd)  "nonzero"
+           fillcolor CDATA "black"
+           fillcolorspace CDATA "sRGB"
+           fillpaintserver CDATA "color"
+           fillparams CDATA #IMPLIED
+           fillname CDATA #IMPLIED
+           stroke (0 | 1)  "1"
+           strokecolor CDATA "black"
+           strokecolorspace CDATA "sRGB"
+           strokepaintserver CDATA "color"
+           strokeparams CDATA #IMPLIED
+           strokename CDATA #IMPLIED
+           opacity CDATA "1"
+           antialias (0 | 1)  "1"'
+>
+<!ENTITY % gs_stroking_attributes
+          'linecap (0 | 1 | 2)  "0"
+           linejoin (0 | 1 | 2)  "0"
+           miterlimit CDATA "10"
+           dasharray CDATA "solid"
+           dashoffset CDATA "0"
+           linewidth CDATA "1"'
+>
+<!ENTITY % gs_font_attribute 'font CDATA #IMPLIED' >
+<!ENTITY % gs_text_attributes
+          '%gs_font_attribute;
+           textsize CDATA #IMPLIED
+           charspacing CDATA "0"
+           wordspacing CDATA "0"
+           textrise CDATA "0"'
+>
+<!ENTITY % gs_all_attributes
+          '%gs_general_attributes;
+           %gs_fillstroke_attributes;
+           %gs_stroking_attributes;
+           %gs_text_attributes;'
+>
+<!--
+    End of Graphics State attributes
+-->
+<!-- =============================================================== -->
+<!ENTITY % event_handler_attributes
+          'onmousedown     CDATA #IMPLIED
+           onmouseup       CDATA #IMPLIED
+           onclick         CDATA #IMPLIED
+           ondblclick      CDATA #IMPLIED
+           onmouseover     CDATA #IMPLIED
+           onmousemove     CDATA #IMPLIED
+           onmouseout      CDATA #IMPLIED
+           onkeydown       CDATA #IMPLIED
+           onkeypress      CDATA #IMPLIED
+           onkeyup         CDATA #IMPLIED
+           onload          CDATA #IMPLIED
+           onunload        CDATA #IMPLIED'
+>
+<!-- =============================================================== -->
+<!ENTITY % base_content_model
+         '(pgml | group |  path | img | text | rectangle |
+           circle | ellipse | piewedge | script | private |
+          drawobject | animation)*'
+>
+
+<!-- jer 99/03/10: changed name from ID to CDATA to allow spaces  -->
+
+<!ENTITY % base_content_attributes
+          '%gs_all_attributes;
+            name           CDATA    #IMPLIED
+            description    CDATA    #IMPLIED
+            visibility   (0 | 1)  "1"
+            xml:link       CDATA #FIXED "simple"
+            href       CDATA #IMPLIED
+            refx       CDATA #IMPLIED
+            refy       CDATA #IMPLIED
+            dynobjects      CDATA #IMPLIED'
+>
+<!-- =============================================================== -->
+<!--
+    boundingbox takes values for x, y, width and height separated
+    by a space.
+-->
+<!ENTITY % gs_bounding_box_attribute 'boundingbox CDATA #IMPLIED' >
+<!--
+    The base_content_model; pgml and head elements
+-->
+<!ELEMENT pgml (head?, %base_content_model;) >
+<!ATTLIST pgml %base_content_attributes;
+               %gs_bounding_box_attribute;
+               %event_handler_attributes;
+               preserveaspectratio (0 | 1)  "1"
+               x            CDATA #IMPLIED
+               y            CDATA #IMPLIED
+               width        CDATA #IMPLIED
+               height       CDATA #IMPLIED
+               src          CDATA #IMPLIED
+>
+<!-- =============================================================== -->
+<!--
+    head element .
+-->
+<!ELEMENT head (extension | objectserver | paintserver | 
+                 colorspaceserver | filterserver |
+                 script | private |
+                 graphic | lineargradient | animation)*>
+
+<!-- =============================================================== -->
+<!--
+    group element
+-->
+<!ELEMENT group (%base_content_model;) >
+<!ATTLIST group %base_content_attributes;
+                %event_handler_attributes;
+>
+<!-- =============================================================== -->
+<!--
+    path element and it's sub-elements
+-->
+<!ELEMENT path (private?, (moveto | lineto | curveto | arc | closepath)*) >
+<!ATTLIST path    %base_content_attributes;
+                  %event_handler_attributes;
+                  data CDATA #IMPLIED
+>
+<!ELEMENT moveto EMPTY >
+<!ATTLIST moveto  x       CDATA #IMPLIED
+                  y       CDATA #IMPLIED
+                  dx      CDATA #IMPLIED
+                  dy      CDATA #IMPLIED
+>
+<!ELEMENT lineto EMPTY >
+<!ATTLIST lineto  x       CDATA #IMPLIED
+                  y       CDATA #IMPLIED
+                  dx      CDATA #IMPLIED
+                  dy      CDATA #IMPLIED
+>
+<!ELEMENT curveto EMPTY >
+<!ATTLIST curveto x       CDATA #IMPLIED
+                  y       CDATA #IMPLIED
+                  x1      CDATA #IMPLIED
+                  y1      CDATA #IMPLIED
+                  x2      CDATA #IMPLIED
+                  y2      CDATA #IMPLIED
+                  dx      CDATA #IMPLIED
+                  dy      CDATA #IMPLIED
+                  dx1     CDATA #IMPLIED
+                  dy1     CDATA #IMPLIED
+                  dx2     CDATA #IMPLIED
+                  dy2     CDATA #IMPLIED
+>
+
+<!ELEMENT arc EMPTY >
+<!ATTLIST arc     x       CDATA #IMPLIED
+                  y       CDATA #IMPLIED
+                  dx      CDATA #IMPLIED
+                  dy      CDATA #IMPLIED
+                  r       CDATA #IMPLIED
+                  ang1    CDATA #IMPLIED
+                  ang2    CDATA #IMPLIED
+                  clockwise (0 | 1)  "0"
+>
+<!ELEMENT closepath EMPTY >
+<!-- =============================================================== -->
+<!--
+    predefined graphic elements
+-->
+<!ELEMENT rectangle EMPTY >
+<!ATTLIST rectangle %base_content_attributes;
+                    %event_handler_attributes;
+                    x            CDATA #IMPLIED
+                    y            CDATA #IMPLIED
+                    width        CDATA #IMPLIED
+                    height       CDATA #IMPLIED
+                    rounding     CDATA #IMPLIED
+>
+<!ELEMENT circle EMPTY >
+<!ATTLIST circle    %base_content_attributes;
+                    %event_handler_attributes;
+                    cx           CDATA #IMPLIED
+                    cy           CDATA #IMPLIED
+                    r            CDATA #IMPLIED
+>
+<!ELEMENT ellipse EMPTY >
+<!ATTLIST ellipse   %base_content_attributes;
+                    %event_handler_attributes;
+                    x            CDATA #IMPLIED
+                    y            CDATA #IMPLIED
+                    rx           CDATA #IMPLIED
+                    ry           CDATA #IMPLIED
+>
+<!ELEMENT piewedge EMPTY >
+<!ATTLIST piewedge  %base_content_attributes;
+                    %event_handler_attributes;
+                    x            CDATA #IMPLIED
+                    y            CDATA #IMPLIED
+                    r            CDATA #IMPLIED
+                    ang1         CDATA #IMPLIED
+                    ang2         CDATA #IMPLIED
+>
+<!-- =============================================================== -->
+<!--
+    img element
+    Below, the ATTLIST only shows x, y, width, height and src, 
+    but the actual ATTLIST would have (nearly) everything
+    that HTML's <img> element has.
+-->
+<!ELEMENT img EMPTY >
+<!ATTLIST img       %event_handler_attributes;
+                    %gs_general_attributes;
+                    x            CDATA #IMPLIED
+                    y            CDATA #IMPLIED
+                    width        CDATA #IMPLIED
+                    height       CDATA #IMPLIED
+                    src          CDATA #IMPLIED
+>
+<!-- =============================================================== -->
+<!--
+    text and textspan elements
+-->
+<!-- <!ELEMENT text      (private?,(#PCDATA|textspan)*) > -->
+<!ELEMENT text      (#PCDATA|textspan)* >
+<!ATTLIST text      %base_content_attributes;
+                    %event_handler_attributes;
+                    x            CDATA #IMPLIED
+                    y            CDATA #IMPLIED
+>
+<!-- <!ELEMENT textspan (private?,(#PCDATA|textspan)*) > -->
+<!ELEMENT textspan (#PCDATA|textspan)* >
+<!ATTLIST textspan  %base_content_attributes;
+                    %event_handler_attributes;
+                    altchars     CDATA #IMPLIED
+                    altglyph     CDATA #IMPLIED
+                    altglyphid   CDATA #IMPLIED
+>
+<!-- =============================================================== -->
+<!--
+    drawobject element
+-->
+<!ELEMENT drawobject (private?) >
+<!ATTLIST drawobject objectserver  CDATA #IMPLIED
+                     params        CDATA #IMPLIED
+                     objectref     IDREF #IMPLIED
+                     x             CDATA #IMPLIED
+                     y             CDATA #IMPLIED
+                     width         CDATA #IMPLIED
+                     height        CDATA #IMPLIED
+>
+<!-- =============================================================== -->
+<!--
+    script element
+    Below, the ATTLIST is specified as EMPTY, but the actual
+    ATTLIST would match what HTML's <script> element has.
+-->
+<!ELEMENT script (#PCDATA) >
+
+<!-- =============================================================== -->
+<!--
+    private element
+    For application-specific private data.
+-->
+<!ELEMENT private (#PCDATA) >
+
+<!-- =============================================================== -->
+<!--
+    animation element
+-->
+<!ELEMENT animation (private?) >
+<!ATTLIST animation  target           CDATA #IMPLIED
+                     starttime        CDATA #IMPLIED
+                     duration         CDATA #IMPLIED
+                     repetitions      CDATA #IMPLIED
+                     motion           CDATA #IMPLIED
+                     motionspeed      CDATA #IMPLIED
+                     autorotate       CDATA #IMPLIED
+                     scale            CDATA #IMPLIED
+                     scalespeed       CDATA #IMPLIED
+                     rotate           CDATA #IMPLIED
+                     rotatespeed      CDATA #IMPLIED
+                     xtranslate       CDATA #IMPLIED
+                     xtranslatespeed  CDATA #IMPLIED
+                     ytranslate       CDATA #IMPLIED
+                     ytranslatespeed  CDATA #IMPLIED
+                     xshear           CDATA #IMPLIED
+                     xshearspeed      CDATA #IMPLIED
+                     yshear           CDATA #IMPLIED
+                     yshearspeed      CDATA #IMPLIED
+                     opacity          CDATA #IMPLIED
+                     opacityspeed     CDATA #IMPLIED
+                     red              CDATA #IMPLIED
+                     redspeed         CDATA #IMPLIED
+                     green            CDATA #IMPLIED
+                     greenspeed       CDATA #IMPLIED
+                     blue             CDATA #IMPLIED
+                     bluespeed        CDATA #IMPLIED
+                     hue              CDATA #IMPLIED
+                     huespeed         CDATA #IMPLIED
+                     saturation       CDATA #IMPLIED
+                     saturationspeed  CDATA #IMPLIED
+                     brightness       CDATA #IMPLIED
+                     brightnessspeed  CDATA #IMPLIED
+>
+<!-- =============================================================== -->
+<!--
+    extension element
+-->
+<!ELEMENT extension EMPTY >
+<!ATTLIST extension name       ID    #IMPLIED
+                    applet     CDATA #IMPLIED
+                    class      CDATA #IMPLIED
+                    proc       CDATA #IMPLIED
+>
+<!-- =============================================================== -->
+<!--
+    objectserver, paintserver, colorspaceserver and filterserver elements
+-->
+<!ELEMENT objectserver      EMPTY >
+<!ATTLIST objectserver      name       ID    #IMPLIED
+                            extension  IDREF #IMPLIED
+>
+<!ELEMENT paintserver       EMPTY >
+<!ATTLIST paintserver       name       ID    #IMPLIED
+                            extension  IDREF #IMPLIED
+>
+<!ELEMENT colorspaceserver  EMPTY >
+<!ATTLIST colorspaceserver  name       ID    #IMPLIED
+                            extension  IDREF #IMPLIED
+>
+<!ELEMENT filterserver      EMPTY >
+<!ATTLIST filterserver      name       ID    #IMPLIED
+                            extension  IDREF #IMPLIED
+>
+<!-- =============================================================== -->
+<!--
+    graphic element
+-->
+<!ELEMENT graphic (%base_content_model;) >
+
+<!-- <!ATTLIST graphic  fill      (0 | 1)  "0"> -->
+<!ATTLIST graphic  %base_content_attributes;
+                   painttype (0 | 1)  "0"
+                   boundingbox       CDATA #IMPLIED
+                   xstep             CDATA #IMPLIED
+                   ystep             CDATA #IMPLIED
+>
+<!-- =============================================================== -->
+<!--
+    lineargradient element and it's sub-elements
+-->
+<!ELEMENT lineargradient ((gradientstop)*) >
+<!ATTLIST lineargradient    name        ID    #IMPLIED>
+<!ELEMENT gradientstop EMPTY >
+<!ATTLIST gradientstop  offset       CDATA #IMPLIED
+                        midoffset    CDATA #IMPLIED
+                        color        CDATA #IMPLIED
+>
+<!-- =============================================================== -->
+<!--
+    End of DTD for PGML
+-->
