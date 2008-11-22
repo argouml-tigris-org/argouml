@@ -47,6 +47,7 @@ import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
 
@@ -158,10 +159,8 @@ public class DisplayTextTree extends JTree {
                         new HashMap<String, Object>();
                     Project p = ProjectManager.getManager().getCurrentProject();
                     if (p != null) {
-                        npArguments.put("rightGuillemot", 
-                                p.getProjectSettings().getRightGuillemot());
-                        npArguments.put("leftGuillemot", 
-                                p.getProjectSettings().getLeftGuillemot());
+                        npArguments.put("useGuillemets", p.getProjectSettings()
+                                .getDefaultDiagramSettings().isUseGuillemets());
                     }
                     name = notationProvider.toString(value, npArguments);
                 } else if (Model.getFacade().isAComment(value)) {
@@ -322,29 +321,11 @@ public class DisplayTextTree extends JTree {
      * @return a string representing the given stereotype(s)
      */
     public static String generateStereotype(Collection<Object> st) {
-        if (st == null) {
-            return "";
-        }
-        StringBuilder sb = new StringBuilder(10);
-        boolean first = true;
-        for (Object o : st) {
-            if (!first) {
-                sb.append(',');
-            }
-            if (o != null) {
-                sb.append(Model.getFacade().getName(o));
-                first = false;
-            }
-        }
-        if (!first) {
-            Project project =
-                ProjectManager.getManager().getCurrentProject();
-            ProjectSettings ps = project.getProjectSettings();
-            return ps.getLeftGuillemot()
-                + sb.toString()
-                + ps.getRightGuillemot();
-        }
-        return "";
+        Project project =
+            ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = project.getProjectSettings();
+        return NotationUtilityUml.generateStereotype(st, 
+                ps.getDefaultDiagramSettings().isUseGuillemets());
     }
 
     public static final String getModelElementDisplayName(Object modelElement) {
