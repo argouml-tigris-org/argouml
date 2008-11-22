@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.Action;
@@ -43,7 +42,6 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * A Fig for a ClassifierBox that adds an attributes compartment.
@@ -195,38 +193,6 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         }
     }
 
-    @Override
-    protected void updateStereotypeText() {
-
-        Rectangle rect = getBounds();
-
-        int stereotypeHeight = 0;
-        if (getStereotypeFig().isVisible()) {
-            stereotypeHeight = getStereotypeFig().getHeight();
-        }
-        int heightWithoutStereo = getHeight() - stereotypeHeight;
-
-        getStereotypeFig().populate();
-
-        stereotypeHeight = 0;
-        if (getStereotypeFig().isVisible()) {
-            stereotypeHeight = getStereotypeFig().getHeight();
-        }
-
-        int minWidth = this.getMinimumSize().width;
-        if (minWidth > rect.width) {
-            rect.width = minWidth;
-        }
-
-        setBounds(
-                rect.x,
-                rect.y,
-                rect.width,
-                heightWithoutStereo + stereotypeHeight);
-        calcBounds();
-    }
-
-    
     /**
      * Updates the attributes in the fig. Called from modelchanged if there is
      * a modelevent effecting the attributes and from renderingChanged in all
