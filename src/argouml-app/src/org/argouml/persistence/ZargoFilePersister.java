@@ -244,7 +244,7 @@ class ZargoFilePersister extends UmlFilePersister {
 
         progressMgr.nextPhase();
 
-        p.setURI(file.toURI());
+        PersistenceManager.getInstance().setProjectURI(file.toURI(), p);
         return p;
 
     }
