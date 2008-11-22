@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import org.argouml.kernel.Project;
+import org.argouml.uml.diagram.DiagramSettings;
 
 /**
  * An interface that all ArgoUML Figs are required to interface. It provides a
@@ -53,8 +54,34 @@ public interface ArgoFig {
     /**
      * Get the owning project for this fig.
      * 
-     * @return the project
+     * @return the owning project
+     * @deprecated for 0.27.2 by tfmorris. Implementations should have all the
+     *             information that they require in the DiagramSettings object.
      */
+    @Deprecated
     public Project getProject();
+    
+    /**
+     * Rerender the entire fig.
+     * <p>
+     * This may be an expensive operation for subclasses which are complex,
+     * so should be used sparingly.  It is only intended to be used when 
+     * some global change to the rendering defaults is made at the ArgoDiagram
+     * level.
+     */
+    public void renderingChanged();
 
+    /**
+     * @return the rendering settings for the Fig
+     */
+    public DiagramSettings getSettings();
+    
+    /**
+     * Set the rendering settings to be used for this fig. Currently this
+     * normally will be a diagram-wide or project-wide settings object that is
+     * shared by all Figs.
+     * 
+     * @param settings the rendering settings to use
+     */
+    public void setSettings(DiagramSettings settings);
 }

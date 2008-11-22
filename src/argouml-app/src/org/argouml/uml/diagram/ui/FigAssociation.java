@@ -173,7 +173,7 @@ public class FigAssociation extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
     @Override
-    protected void renderingChanged() {
+    public void renderingChanged() {
         /* This fixes issue 4987: */
         srcMult.update();
         destMult.update();

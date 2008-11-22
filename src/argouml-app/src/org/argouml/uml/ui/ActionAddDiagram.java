@@ -38,6 +38,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -81,7 +82,13 @@ public abstract class ActionAddDiagram extends UndoableAction {
 
         if (ns != null && isValidNamespace(ns)) {
             super.actionPerformed(e);
+            DiagramSettings settings = 
+                p.getProjectSettings().getDefaultDiagramSettings();
+            // TODO: We should really be passing the default settings to
+            // the diagram factory so they get set at creation time
             ArgoDiagram diagram = createDiagram(ns);
+            diagram.setDiagramSettings(settings);
+                    
             p.addMember(diagram);
             //TODO: make the explorer listen to project member property
             //changes...  to eliminate coupling on gui.

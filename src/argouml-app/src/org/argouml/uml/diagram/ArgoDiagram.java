@@ -32,6 +32,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.application.events.ArgoDiagramAppearanceEventListener;
+import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.kernel.Project;
 import org.argouml.util.ItemUID;
 import org.tigris.gef.base.LayerPerspective;
@@ -52,8 +54,21 @@ import org.tigris.gef.presentation.FigNode;
  * @author Tom Morris <tfmorris@gmail.com>
  * @since 0.25.4 when it replaced the implementation class of the same name
  */
-public interface ArgoDiagram {
+public interface ArgoDiagram extends ArgoNotationEventListener,
+    ArgoDiagramAppearanceEventListener {
 
+    /**
+     * Set the rendering settings for this diagram.
+     * 
+     * @param settings the new diagram settings
+     */
+    public void setDiagramSettings(DiagramSettings settings);
+    
+    /**
+     * @return the current DiagramSettings object
+     */
+    public DiagramSettings getDiagramSettings();
+    
     /*
      * @see org.tigris.gef.base.Diagram#setName(java.lang.String)
      */
@@ -268,6 +283,7 @@ public interface ArgoDiagram {
      */
     @Deprecated
     public Enumeration elements();
+    
     /**
      * @param listener
      * @see org.tigris.gef.base.Diagram#addVetoableChangeListener(VetoableChangeListener)

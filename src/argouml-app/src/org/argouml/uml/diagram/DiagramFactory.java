@@ -28,6 +28,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ActivityDiagram;
 import org.argouml.model.ClassDiagram;
 import org.argouml.model.CollaborationDiagram;
@@ -78,8 +79,11 @@ public final class DiagramFactory {
         Class, UseCase, State, Deployment, Collaboration, Activity, Sequence
     }
 
-    private Map<DiagramType, DiagramFactoryInterface> factories =
-        new EnumMap<DiagramType, DiagramFactoryInterface>(DiagramType.class);
+    private Map<DiagramType, Object> factories =
+        new EnumMap<DiagramType, Object>(DiagramType.class);
+    // TODO: This can be typed again when the deprecation period has expired
+//    private Map<DiagramType, DiagramFactoryInterface2> factories =
+//        new EnumMap<DiagramType, DiagramFactoryInterface2>(DiagramType.class);
 
     private DiagramFactory() {
         super();
@@ -122,20 +126,66 @@ public final class DiagramFactory {
      * @param machine The StateMachine for the diagram
      *                         (only: statemachine - activitygraph)
      * @return the newly instantiated class diagram
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #createDiagram(DiagramType, Object, Object, DiagramSettings)}.
+     */
+    @Deprecated
+    public ArgoDiagram createDiagram(final DiagramType type,
+            final Object namespace, final Object machine) {
+        
+        DiagramSettings settings = ProjectManager.getManager()
+                .getCurrentProject().getProjectSettings()
+                .getDefaultDiagramSettings();
+        
+        final ArgoDiagram diagram;
+        
+        Object factory = factories.get(type);
+        if (factory != null) {
+            if (factory instanceof DiagramFactoryInterface2) {
+                diagram = ((DiagramFactoryInterface2) factory).createDiagram(
+                        machine, null, settings);
+            } else {
+                diagram = ((DiagramFactoryInterface) factory).createDiagram(
+                        namespace, machine);
+                diagram.setDiagramSettings(settings);
+            }
+        } else {
+            diagram = createDiagram(diagramClasses.get(type), namespace,
+                    machine);
+            diagram.setDiagramSettings(settings);
+        }
+
+        return diagram;
+    }
+
+    /**
+     * Factory method to create a new instance of an ArgoDiagram.
+     * 
+     * @param type The class of rendering diagram to create
+     * @param owner the owning UML element. For most diagrams this is a
+     *            namespace, but for the state diagram it is the state machine
+     *            and for the activity diagram it is the context.
+     * @param settings default rendering settings for the diagram
+     * @return the newly instantiated class diagram
      */
     public ArgoDiagram createDiagram(
-            final DiagramType type, 
-            final Object namespace,
-            final Object machine) {
+            final DiagramType type,
+            final Object owner,
+            final DiagramSettings settings) {
         
-        DiagramFactoryInterface factory = factories.get(type);
-        if (factory != null) {
-            final ArgoDiagram diagram =
-                factory.createDiagram(namespace, machine);
-            return diagram;
+        final ArgoDiagram diagram;
+        
+        Object factory = factories.get(type);
+        if (factory != null && factory instanceof DiagramFactoryInterface2) {
+            diagram = ((DiagramFactoryInterface2) factory).createDiagram(owner,
+                    null, settings);
         } else {
-            return createDiagram(diagramClasses.get(type), namespace, machine);
+            // TODO: Convert all to use standard factory registration
+            diagram = createDiagram(diagramClasses.get(type), owner, null);
+            diagram.setDiagramSettings(settings);
         }
+
+        return diagram;
     }
     
     /**
@@ -148,7 +198,7 @@ public final class DiagramFactory {
      *                         (only: statemachine - activitygraph)
      * @return the newly instantiated class diagram
      * @deprecated for 0.25.4 by tfmorris.  Use 
-     * {@link #createDiagram(DiagramType, Object, Object)}.
+     * {@link #createDiagram(DiagramType, Object, Object, DiagramSettings)}.
      */
     @Deprecated
     public ArgoDiagram createDiagram(Class type, Object namespace,
@@ -157,6 +207,7 @@ public final class DiagramFactory {
         ArgoDiagram diagram = null;
         Class diType = null;
 
+        // TODO: Convert all to use standard factory registration
         if (type == UMLClassDiagram.class) {
             diagram = new UMLClassDiagram(namespace);
             diType = ClassDiagram.class;
@@ -202,10 +253,10 @@ public final class DiagramFactory {
     }
 
     /**
-     * Factory method to create a new instance of a Class Diagram.
+     * Factory method to remove a diagram.
      *
      * @param diagram the diagram
-     * @return the newly instantiated class diagram
+     * @return the diagram that was removed
      */
     public ArgoDiagram removeDiagram(ArgoDiagram diagram) {
 
@@ -236,10 +287,25 @@ public final class DiagramFactory {
      * specific diagram type
      * @param type the diagram type
      * @param factory the factory instance
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #registerDiagramFactory(DiagramType, DiagramFactoryInterface2)}.
      */
+    @Deprecated
     public void registerDiagramFactory(
             final DiagramType type,
             final DiagramFactoryInterface factory) {
+        factories.put(type, factory);
+    }
+    
+    /**
+     * Register a specific factory class to create diagram instances for a
+     * specific diagram type
+     * @param type the diagram type
+     * @param factory the factory instance
+     */
+    public void registerDiagramFactory(
+            final DiagramType type,
+            final DiagramFactoryInterface2 factory) {
         factories.put(type, factory);
     }
 }

@@ -25,27 +25,23 @@
 package org.argouml.uml.diagram;
 
 /**
- * An interface to be implemented by an factories for a specific diagram type.
+ * An interface to be implemented by factories for a specific diagram type.
  * 
- * @author Bob Tarling
- * @deprecated for 0.27.3 by tfmorris. Use {@link DiagramFactoryInterface2}
- *             which provides the default diagram settings to the factory when
- *             the create method is invoked..
+ * @since 0.27.3 when it replaced DiagramFactoryInterface
  */
-@Deprecated
-public interface DiagramFactoryInterface  {
+public interface DiagramFactoryInterface2  {
 
     /**
      * Factory method to create a new instance of an ArgoDiagram.
      * 
-     * @param namespace The namespace that (in)directly 
-     *                        owns the elements on the diagram
-     * @param machine The StateMachine for the diagram
-     *                         (only: statemachine - activitygraph)
+     * @param owner the owning element. This can be the owning namespace for a
+     *            Class diagram or an owning Statemachine for a State Diagram or
+     *            any other interpretation that the diagram type wants to apply.
+     * @param name the name of the diagram. This may be null if the caller would
+     *            like the factory to provide a default name.
+     * @param settings default rendering settings for the diagram
      * @return the newly instantiated diagram
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link DiagramFactoryInterface2#createDiagram(Object, Object, DiagramSettings)}.
      */
-    @Deprecated
-    public ArgoDiagram createDiagram(Object namespace, final Object machine);
+    public ArgoDiagram createDiagram(final Object owner, final String name,
+            DiagramSettings settings);
 }

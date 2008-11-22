@@ -54,7 +54,6 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.ArgoEventListener;
 import org.argouml.application.events.ArgoDiagramAppearanceEvent;
 import org.argouml.application.events.ArgoDiagramAppearanceEventListener;
 import org.argouml.application.events.ArgoEventPump;
@@ -71,8 +70,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
@@ -90,7 +87,9 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramAppearance;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.PathContainer;
+import org.argouml.uml.diagram.DiagramSettings.StereotypeStyle;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.util.IItemUID;
 import org.argouml.util.ItemUID;
@@ -111,6 +110,10 @@ import org.tigris.gef.presentation.FigText;
  * Abstract class to display diagram icons for UML ModelElements that
  * look like nodes and that have editable names and can be
  * resized.
+ * <p>
+ * NOTE: This will drop the ArgoNotationEventListener and 
+ * ArgoDiagramAppearanceEventListener interfaces in the next release.  
+ * The corresponding methods have been marked as deprecated.
  *
  * @author abonner
  */
@@ -139,7 +142,8 @@ public abstract class FigNodeModelElement
     private DiElement diElement;
 
     private NotationProvider notationProviderName;
-    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
+    // TODO: Use lazy initialization and/or remove
+    private HashMap<String, Object> npArguments;
     
     /**
      * True if an instance is allowed to be
@@ -226,7 +230,8 @@ public abstract class FigNodeModelElement
      * @see DiagramAppearance#STEREOTYPE_VIEW_SMALL_ICON
      * @see DiagramAppearance#STEREOTYPE_VIEW_BIG_ICON
      */
-    private int stereotypeView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;   
+    private DiagramSettings.StereotypeStyle stereotypeStyle = 
+        DiagramSettings.StereotypeStyle.TEXTUAL;   
     
     /**
      * The width of the profile icons when viewed at the small icon mode.
@@ -287,14 +292,28 @@ public abstract class FigNodeModelElement
     // TODO: A more strongly typed data structure could be used here.
     private Set<Object[]> listeners = new HashSet<Object[]>();
 
+    /**
+     * Settings which affect rendering (color, font, line width, etc);
+     */
+    private DiagramSettings settings;
 
     /**
-     * The main constructor. <p>
-     * 
-     * The owner nor the Layer (which has a 1..1 relation to the Diagram)
-     * are set in this stage of the creation of the Fig.
+     * The default constructor. <p>
+     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * {@link #FigNodeModelElement(Object, Rectangle, DiagramSettings)}.
      */
+    @Deprecated
     protected FigNodeModelElement() {
+        // We'll fall back to using the project settings during the transition
+        this(null);
+    }
+    
+    /**
+     * Construct an unplaced Fig with no owner using the given 
+     * rendering settings.
+     */
+    private FigNodeModelElement(DiagramSettings renderSettings) {
+        settings = renderSettings;
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
         bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
@@ -310,31 +329,24 @@ public abstract class FigNodeModelElement
         stereotypeFig = new FigStereotypesGroup(10, 10, 90, 15);
 
         readyToEdit = false;
-        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-        ArgoEventPump.addListener(
-                ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
-        
 
-        Project project = getProject();
-        ProjectSettings ps = project.getProjectSettings();
-
-        setShadowSize(ps.getDefaultShadowWidthValue());
+        setShadowSize(getSettings().getDefaultShadowWidth());
         /* TODO: how to handle changes in shadowsize 
          * from the project properties? */
         
-        stereotypeView = ps.getDefaultStereotypeViewValue();
+        stereotypeStyle = getSettings().getDefaultStereotypeView();
     }
 
     /**
      * Construct a figure at a specific position for a given model element. <p>
      * 
-     * The Layer (which has a 1..1 relation to the Diagram)
-     * is not yet set in this stage of the creation of the Fig.
-     * 
      * @param element ModelElement associated with figure
      * @param x horizontal location
      * @param y vertical location
+     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * {@link #FigNodeModelElement(Object, Rectangle, DiagramSettings)}.
      */
+    @Deprecated
     protected FigNodeModelElement(Object element, int x, int y) {
         this();
         setOwner(element);
@@ -343,6 +355,62 @@ public abstract class FigNodeModelElement
         setLocation(x, y);
     }
 
+    /**
+     * Construct a figure at a specific position for a given model element
+     * with the given settings. This is the constructor used by the PGML
+     * parser when loading a diagram from a file.<p>
+     * 
+     * @param element ModelElement associated with figure
+     * @param bounds x & y are used to set position, width & height are ignored
+     * @param renderSettings  the rendering settings to use for the Fig
+     */
+    protected FigNodeModelElement(Object element, Rectangle bounds, 
+            DiagramSettings renderSettings) {
+        this(renderSettings);
+        if (element == null) {
+            throw new IllegalArgumentException("An owner must be supplied");
+        }
+        if (!Model.getFacade().isAUMLElement(element)) {
+            throw new IllegalArgumentException(
+                    "The owner must be a model element - got a "
+                    + element.getClass().getName());
+        }
+        super.setOwner(element);
+        nameFig.setOwner(element); // for setting abstract
+        nameFig.setText(placeString());
+        stereotypeFig.setOwner(element);
+
+        notationProviderName =
+            NotationProviderFactory2.getInstance().getNotationProvider(
+                    getNotationProviderType(), element, this);
+        putNotationArgument("pathVisible", 
+                Boolean.valueOf(isPathVisible()));
+
+        /* This next line presumes that the 1st fig with this owner 
+         * is the previous port - and consequently nullifies the owner 
+         * of this 1st fig. */
+        bindPort(element, bigPort);
+
+        // Add a listener for changes to any property
+        addElementListener(element);
+
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
+        
+        // TODO: The following is carried over from setOwner, but probably 
+        // isn't needed
+//        renderingChanged();
+        // It does the following (add as needed):
+//        updateNameText();
+//        updateStereotypeText();
+//        updateStereotypeIcon();        
+//        updateBounds();
+//        damage();
+        
+        readyToEdit = true;
+    }
+    
     /**
      * This is the final call at creation time of the Fig, i.e. here
      * it is put on a Diagram.
@@ -356,16 +424,6 @@ public abstract class FigNodeModelElement
         determineDefaultPathVisible();
     }
 
-    /*
-     * @see java.lang.Object#finalize()
-     */
-    @Override
-    protected void finalize() throws Throwable {
-        ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-        ArgoEventPump.removeListener(
-                ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
-        super.finalize();
-    }
 
     /**
      * Clone this figure. After the base clone method has been called determine
@@ -1098,13 +1156,14 @@ public abstract class FigNodeModelElement
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp(notationProviderName.getParsingHelp());
-            ft.setText(notationProviderName.toString(getOwner(), npArguments));
+            ft.setText(notationProviderName.toString(getOwner(), 
+                    getNotationArguments()));
         }
         if (ft instanceof CompartmentFigText) {
             final CompartmentFigText figText = (CompartmentFigText) ft;
             showHelp(figText.getNotationProvider().getParsingHelp());
             figText.setText(figText.getNotationProvider().toString(
-                    figText.getOwner(), npArguments));
+                    figText.getOwner(), getNotationArguments()));
         }
     }
 
@@ -1142,13 +1201,14 @@ public abstract class FigNodeModelElement
                 return;
             }
             notationProviderName.parse(getOwner(), ft.getText());
-            ft.setText(notationProviderName.toString(getOwner(), npArguments));
+            ft.setText(notationProviderName.toString(getOwner(), 
+                    getNotationArguments()));
         }
         if (ft instanceof CompartmentFigText) {
             final CompartmentFigText figText = (CompartmentFigText) ft;
             figText.getNotationProvider().parse(ft.getOwner(), ft.getText());
             ft.setText(figText.getNotationProvider().toString(
-                    ft.getOwner(), npArguments));
+                    ft.getOwner(), getNotationArguments()));
         }
     }
 
@@ -1162,9 +1222,11 @@ public abstract class FigNodeModelElement
      *
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseClicked(MouseEvent me) {
         if (!readyToEdit) {
             if (Model.getFacade().isAModelElement(getOwner())) {
+                // TODO: Why is this clearing the name?!?! - tfm
                 Model.getCoreHelper().setName(getOwner(), "");
                 readyToEdit = true;
             } else {
@@ -1396,6 +1458,8 @@ public abstract class FigNodeModelElement
      * @throws IllegalArgumentException if the owner given is not a model
      * element
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     * @deprecated for 0.27.3 by tfmorris.  Owner must be provided in 
+     * constructor and may not be changed afterwards.
      */
     public void setOwner(Object owner) {
         if (owner == null) {
@@ -1427,7 +1491,12 @@ public abstract class FigNodeModelElement
     /**
      * Create the NotationProviders.
      * 
-     * @param own the current owner
+     * @param own owning UML element
+     * @deprecated for 0.27.3 by tfmorris. Initialization of notation providers
+     *             and any later needed updates must be separated.
+     *             Initialization must be done in a way that can't be overridden
+     *             since the subclasses constructors won't have completed by the
+     *             time the subclass implementation is run.
      */
     protected void initNotationProviders(Object own) {
         if (notationProviderName != null) {
@@ -1437,17 +1506,12 @@ public abstract class FigNodeModelElement
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         getNotationProviderType(), own, this);
-            npArguments.put("pathVisible", Boolean.valueOf(isPathVisible()));
-            Project p = getProject();
-            if (p != null) {
-                npArguments.put("rightGuillemot", 
-                        p.getProjectSettings().getRightGuillemot());
-                npArguments.put("leftGuillemot", 
-                        p.getProjectSettings().getLeftGuillemot());
-            }
+            putNotationArgument("pathVisible", 
+                    Boolean.valueOf(isPathVisible()));
         }
     }
 
+ 
     /**
      * Overrule this for subclasses 
      * that need a different NotationProvider.
@@ -1481,11 +1545,9 @@ public abstract class FigNodeModelElement
             }
             if (notationProviderName != null) {
                 nameFig.setText(notationProviderName.toString(
-                        getOwner(), npArguments));
-                Project p = getProject();
-                if (p != null) {
-                    updateFont();
-                }
+                        getOwner(), getNotationArguments()));
+                // TODO: Why does the font need updating? - tfm
+                updateFont();
                 updateBounds();
             }
         }
@@ -1511,7 +1573,7 @@ public abstract class FigNodeModelElement
         firePropChange("pathVisible", !visible, visible);
         pathVisible = visible;
         if (notationProviderName != null) {
-            npArguments.put("pathVisible", Boolean.valueOf(visible));
+            putNotationArgument("pathVisible", Boolean.valueOf(visible));
         }
         if (readyToEdit) {
             renderingChanged();
@@ -1544,8 +1606,9 @@ public abstract class FigNodeModelElement
             Object elementNs = Model.getFacade().getNamespace(modelElement);
             Object diagramNs = diagram.getNamespace();
             if (elementNs != null) {
-                boolean visible = elementNs != diagramNs; 
-                npArguments.put("pathVisible", Boolean.valueOf(visible));
+                boolean visible = elementNs != diagramNs;
+                // TODO: Pass argument directly
+                putNotationArgument("pathVisible", Boolean.valueOf(visible));
                 pathVisible = visible;
                 renderingChanged();
                 damage();
@@ -1611,14 +1674,16 @@ public abstract class FigNodeModelElement
 
     }
 
-    /*
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris. Changes to notatation provider are
+     *             now handled by the owning diagram.
      */
+    @Deprecated
     public void notationChanged(ArgoNotationEvent event) {
         if (getOwner() == null) {
             return;
         }
-        initNotationProviders(getOwner());
         try {
             renderingChanged();
         } catch (Exception e) {
@@ -1626,44 +1691,52 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /*
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
      */
+    @Deprecated
     public void notationAdded(ArgoNotationEvent event) {
         // Default is to do nothing
     }
 
-    /*
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
      */
+    @Deprecated
     public void notationRemoved(ArgoNotationEvent event) {
         // Default is to do nothing
     }
 
-    /*
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
      */
+    @Deprecated
     public void notationProviderAdded(ArgoNotationEvent event) {
         // Default is to do nothing
     }
 
-    /*
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
      */
+    @Deprecated
     public void notationProviderRemoved(ArgoNotationEvent event) {
         // Default is to do nothing
     }
 
     /**
-     * Rerenders the entire fig.
+     * Rerender the entire fig.
      * <p>
      * This is may be an expensive operation for subclasses which are complex,
      * so should be used sparingly. This functionality was originally the
      * functionality of modelChanged but modelChanged takes the event now into
-     * account. <p>
-     * TODO: Does this have to be public?
+     * account.
      */
     public void renderingChanged() {
+        initNotationProviders(getOwner());
         updateNameText();
         updateStereotypeText();
         updateStereotypeIcon();        
@@ -1713,8 +1786,8 @@ public abstract class FigNodeModelElement
 
             if (stereos.size() == 1) {
                 Object stereo = stereos.iterator().next();
-                // TODO: Should we not use getProject here?
-                replaceIcon = ProjectManager.getManager().getCurrentProject()
+                // TODO: Find a way to replace this dependency on Project
+                replaceIcon = getProject()
                         .getProfileConfiguration().getFigNodeStrategy()
                         .getIconForStereotype(stereo);
             }
@@ -1747,8 +1820,8 @@ public abstract class FigNodeModelElement
             int i = this.getX() + this.getWidth() - ICON_WIDTH - 2;
 
             for (Object stereo : stereos) {
-                // TODO: Should we not use getProject here?
-                Image icon = ProjectManager.getManager().getCurrentProject()
+                // TODO: Find a way to replace this dependency on Project
+                Image icon = getProject()
                         .getProfileConfiguration().getFigNodeStrategy()
                         .getIconForStereotype(stereo);
                 if (icon != null) {
@@ -1845,26 +1918,9 @@ public abstract class FigNodeModelElement
         if (notationProviderName != null) { //This test needed for a FigPool
             notationProviderName.cleanListener(this, getOwner());
         }
-        ArgoEventPump.removeListener(this);
         removeAllElementListeners();
         setShadowSize(0);
         super.removeFromDiagram();
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#postLoad()
-     */
-    @Override
-    public void postLoad() {
-        ArgoEventPump.addListener(this);
-        for (Object fig : getFigs()) {
-            if (fig instanceof ArgoEventListener) {
-                // cannot do the adding of listeners recursive since
-                // some are not children of FigNodeModelELement or
-                // FigEdgeModelElement
-                ArgoEventPump.addListener((ArgoEventListener) fig);
-            }
-        }
     }
 
     /**
@@ -1876,23 +1932,6 @@ public abstract class FigNodeModelElement
         return stereotypeFig;
     }
 
-    /**
-     * @deprecated by MVW in V0.25.4. Use ProjectSettings instead.
-     * @return the diagram font
-     */
-    @Deprecated
-    public Font getLabelFont() {
-        return getProject().getProjectSettings().getFontPlain();
-    }
-
-    /**
-     * @deprecated by MVW in V0.25.4. Use ProjectSettings instead.
-     * @return the italic diagram font
-     */
-    @Deprecated
-    public Font getItalicLabelFont() {
-        return getProject().getProjectSettings().getFontItalic();
-    }
 
     /**
      * @param bp the bigPort, which is the port where edges connect to this node
@@ -2155,12 +2194,20 @@ public abstract class FigNodeModelElement
         addElementListeners(adds);
     }
     
+    /**
+     * @return the current notation arguments or null if none are set
+     */
     protected HashMap<String, Object> getNotationArguments() {
         return npArguments;
     }
 
+
     protected void putNotationArgument(String key, Object value) {
         if (notationProviderName != null) {
+            // Lazily initialize if not done yet
+            if (npArguments == null) {
+                npArguments = new HashMap<String, Object>();
+            }
             npArguments.put(key, value);
         }
     }
@@ -2180,11 +2227,13 @@ public abstract class FigNodeModelElement
     }
     
     /**
-     * This method is identical to the one in ArgoFigGroup.
+     * @deprecated for 0.27.2 by tfmorris.  Implementations should have all
+     * the information that they require in the DiagramSettings object.
      * 
-     * @return the project
+     * @return the owning project
      * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
      */
+    @Deprecated
     public Project getProject() {
         return ArgoFigUtil.getProject(this);
     }
@@ -2202,9 +2251,17 @@ public abstract class FigNodeModelElement
     
     /**
      * @return current stereotype view
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link #getStereotypeStyle()}.
      */
     public int getStereotypeView() {
-        return stereotypeView;
+        return stereotypeStyle.ordinal();
+    }
+    
+    /**
+     * @return the rendering style for stereotypes
+     */
+    public StereotypeStyle getStereotypeStyle() {
+        return stereotypeStyle;
     }
 
     /**
@@ -2228,6 +2285,8 @@ public abstract class FigNodeModelElement
                     && (stereos == null 
                             || stereos.size() != 1 
                             ||  (stereos.size() == 1 
+                                    // TODO: Find a way to replace 
+                                    // this dependency on Project
                                     && getProject().getProfileConfiguration()
                                     .getFigNodeStrategy().getIconForStereotype(
                                             stereos.iterator().next()) 
@@ -2242,14 +2301,21 @@ public abstract class FigNodeModelElement
      * Sets the stereotype view.
      * 
      * @param s the stereotype view to be set
+     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * {@link #setStereotypeStyle(StereotypeStyle)}.
      */
     public void setStereotypeView(int s) {
-        this.stereotypeView = s;
-        try {
-            renderingChanged();
-        } catch (Exception e) {
-            // TODO: Why is this ignored?
-        }
+        setStereotypeStyle(StereotypeStyle.getEnum(s));
+    }
+
+    /**
+     * Set the stereotype style to be used for rendering this fig.
+     * 
+     * @param style the stereotype style to be set
+     */
+    public void setStereotypeStyle(StereotypeStyle style) {
+        stereotypeStyle = style;
+        renderingChanged();
     }
     
     /**
@@ -2261,6 +2327,7 @@ public abstract class FigNodeModelElement
      * 
      * {@inheritDoc}
      */
+    @Override
     protected void setBoundsImpl(final int x, final int y, final int w,
             final int h) {
 
@@ -2310,14 +2377,10 @@ public abstract class FigNodeModelElement
      * Handles diagram font changing.
      * @param e the event or null
      * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
+     * @deprecated for 0.27.2 by tfmorris.  The owning diagram manages global
+     * changes to rendering defaults.
      */
     public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
-        if (getProject() == null) {
-            /* Temporary fix related to issue 5434.
-             * TODO: However I think this can be removed. See issue 5500 - Bob
-             */
-            return;
-        }        
         updateFont();
         updateBounds();
         damage();
@@ -2333,7 +2396,7 @@ public abstract class FigNodeModelElement
      */
     protected void updateFont() {
         int style = getNameFigFontStyle();
-        Font f = getProject().getProjectSettings().getFont(style);
+        Font f = getSettings().getFont(style);
         nameFig.setFont(f);
         deepUpdateFont(this);
     }
@@ -2347,18 +2410,9 @@ public abstract class FigNodeModelElement
      * @return the font style for the nameFig.
      */
     protected int getNameFigFontStyle() {
-    	showBoldName = false;
-    	Project p = getProject();
-
-        /**
-         *  When and why p could be NULL?
-         *  See issue 4911.
-         */
-        if (p != null) {
-            ProjectSettings ps = p.getProjectSettings();
-            showBoldName = ps.getShowBoldNamesValue();
-        }
-        
+        // TODO: Why do we need this when we can just change the font and 
+        // achieve the same effect?
+        showBoldName = getSettings().isShowBoldNames();
         return showBoldName ? Font.BOLD : Font.PLAIN;
     }
 
@@ -2389,4 +2443,23 @@ public abstract class FigNodeModelElement
             fg.calcBounds();
         }
     }
+    
+
+    public DiagramSettings getSettings() {
+        // TODO: This is a temporary crutch to use until all Figs are updated
+        // to use the constructor that accepts a DiagramSettings object
+        if (settings == null) {
+            Project p = getProject();
+            if (p != null) {
+                return p.getProjectSettings().getDefaultDiagramSettings();
+            }
+        }
+        return settings;
+    }
+    
+    public void setSettings(DiagramSettings renderSettings) {
+        settings = renderSettings;
+        renderingChanged();
+    }
+
 }

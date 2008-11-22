@@ -26,6 +26,8 @@ package org.argouml.persistence;
 
 import java.awt.Rectangle;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -34,13 +36,14 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ExtensionsCompartmentContainer;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.PathContainer;
 import org.argouml.uml.diagram.StereotypeContainer;
 import org.argouml.uml.diagram.VisibilityContainer;
-import org.argouml.uml.diagram.activity.ui.FigPool;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigEdgePort;
 import org.tigris.gef.base.Diagram;
@@ -76,12 +79,17 @@ class PGMLStackParser
     
     private LinkedHashMap<FigEdge, Object> modelElementsByFigEdge =
         new LinkedHashMap<FigEdge, Object>(50);
+
+    private DiagramSettings diagramSettings;
     
     /**
      * Constructor.
      * @param modelElementsByUuid a map of model elements indexed
      *                            by a unique string identifier.
+     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * {@link #PGMLStackParser(Map, DiagramSettings)}/
      */
+    @Deprecated
     public PGMLStackParser(Map modelElementsByUuid) {
         super(modelElementsByUuid);
         // TODO: Use stylesheet to convert or wait till we use Fig
@@ -110,6 +118,22 @@ class PGMLStackParser
         addTranslation(
                 "org.argouml.uml.diagram.deployment.ui.FigMNodeInstance",
                 "org.argouml.uml.diagram.deployment.ui.FigNodeInstance");
+    }
+    
+    /**
+     * Construct a PGML parser with the given HREF/Object map and default
+     * diagram settings.
+     * 
+     * @param modelElementsByUuid map of HREF ids to objects used to associate
+     *            Figs with their owning model elements
+     * @param defaultSettings default diagram settings to use for newly created
+     *            diagram and its contained Figs
+     */
+    public PGMLStackParser(Map<String, Object> modelElementsByUuid, 
+            DiagramSettings defaultSettings) {
+        // TODO: Move addTranslation here when deprecated constructor is removed
+        this(modelElementsByUuid);
+        diagramSettings = defaultSettings;
     }
 
     /*
@@ -295,9 +319,29 @@ class PGMLStackParser
             }
         }
     }
+
+    /**
+     * Read and parse the input stream to create a new diagram and return it.
+     * 
+     * @param is the input stream
+     * @param closeStream true to close the stream when parsing is complete
+     * @return the diagram created as a result of the parse
+     * @throws SAXException
+     */
+    public ArgoDiagram readArgoDiagram(InputStream is, boolean closeStream)
+        throws SAXException {
+
+        return (ArgoDiagram) readDiagram(is, closeStream);
+    }
     
+    @Override
     public Diagram readDiagram(InputStream is, boolean closeStream)
         throws SAXException {
+        
+        // TODO: we really want to be able replace the initial content handler
+        // which is passed to SAX, but we can't do this without cloning a
+        // whole bunch of code because it's private in the super class.
+        
         Diagram d = super.readDiagram(is, closeStream);
         
         attachEdges(d);
@@ -527,21 +571,119 @@ class PGMLStackParser
         }
     }
 
+    /**
+     * Construct a new instance of the named Fig with the owner represented
+     * by the given href and the bounds parsed from the PGML file.  We look
+     * for constructors of the form Fig(Object owner, Rectangle
+     * bounds, DiagramSettings settings) which is typically used for subclasses
+     * of FigNodeModelElement, then Fig(Object owner, DiagramSettings settings)
+     * which is used for subclasses of FigEdgeModelElement.
+     * <p>
+     * If we fail to find any of the constructors that we know about, we'll
+     * call GEF's version of this method to see if it can find a constructor.
+     * 
+     * @param className fully qualified name of class to instantiate
+     * @param href string representing UUID of owning element
+     * @param bounds position and size of figure
+     * @return
+     * @throws SAXException
+     * @see org.tigris.gef.persistence.pgml.PGMLStackParser#constructFig(java.lang.String, java.lang.String, java.awt.Rectangle)
+     */
     @Override
     protected Fig constructFig(String className, String href, Rectangle bounds)
         throws SAXException {
 	
 	Fig f = null;
-	
-	// TODO: This low level parser shouldn't have a dependency on a specific
-	// activity diagram fig.  Whatever is special about FigPool needs to
-	// be represented by a core interface that we can look for. - tfm
-        if (className.equals(FigPool.class.getName())) {
-            f = new FigPool(bounds);
-        } else {
-            f = super.constructFig(className, href, bounds);
+
+        try {
+            Class figClass = Class.forName(className);
+            for (Constructor constructor : figClass.getConstructors()) {
+                Class[] parameterTypes = constructor.getParameterTypes();
+                // FigNodeModelElements should match here
+                if (parameterTypes.length == 3
+                        && parameterTypes[0].equals(Object.class)
+                        && parameterTypes[1].equals(Rectangle.class)
+                        && parameterTypes[2].equals(DiagramSettings.class)
+                ) {
+                    Object parameters[] = new Object[3];
+                    Object owner = null;
+                    if (href != null) {
+                        owner = findOwner(href);
+                    }
+                    parameters[0] = owner;
+                    parameters[1] = bounds;
+                    parameters[2] = 
+                        ((ArgoDiagram) getDiagram()).getDiagramSettings();
+
+                    f =  (Fig) constructor.newInstance(parameters);
+                }
+                // FigEdgeModelElements should match here (they have no bounds)
+                if (parameterTypes.length == 2
+                        && parameterTypes[0].equals(Object.class)
+                        && parameterTypes[1].equals(DiagramSettings.class)
+                ) {
+                    Object parameters[] = new Object[2];
+                    Object owner = null;
+                    if (href != null) {
+                        owner = findOwner(href);
+                    }
+                    parameters[0] = owner;
+                    parameters[1] = 
+                        ((ArgoDiagram) getDiagram()).getDiagramSettings();
+
+                    f =  (Fig) constructor.newInstance(parameters);
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            throw new SAXException(e);
+        } catch (IllegalAccessException e) {
+            throw new SAXException(e);
+        } catch (InstantiationException e) {
+            throw new SAXException(e);
+        } catch (InvocationTargetException e) {
+            throw new SAXException(e);
         }
 
+        // Fall back to GEF's handling if we couldn't find an appropriate
+        // constructor
+        if (f == null) {
+            // TODO: Convert this to a warning or error when all the Figs
+            // have been upgraded.
+            LOG.debug("No ArgoUML constructor found for " + className
+                    + " falling back to GEF's default constructors");
+            f = super.constructFig(className, href, bounds);
+        }
+        
 	return f;
+    }
+    
+    /**
+     * Save the newly created Diagram for use by the parser.  We take the 
+     * opportunity to attach our default diagram settings to it so we'll have
+     * them if needed when constructing Figs.
+     * <p>
+     * Diagrams are created in GEF's PGMLHandler.initDiagram() which is private
+     * and can't be overridden.  Initialization sequence is:<ul> 
+     * <li>load diagram class using name in PGML file
+     * <li>instantiate using 0-arg constructor
+     * <li>invoke this method (setDiagram(<newDiagramInstance))
+     * <li>invoke diagram's initialize(Object owner) method
+     * <li>diagram.setName()
+     * <li>diagram.setScale()
+     * <li>diagram.setShowSingleMultiplicity() 
+     *     (?!why does GEF care about multiplicity?!)
+     * </ul>
+     * @param diagram the new diagram
+     * @see org.tigris.gef.persistence.pgml.PGMLStackParser#setDiagram(org.tigris.gef.base.Diagram)
+     */
+    @Override
+    public void setDiagram(Diagram diagram) {
+        // TODO: We could generalize this to initialize more stuff if needed
+        ((ArgoDiagram) diagram).setDiagramSettings(diagramSettings);
+        super.setDiagram(diagram);
+    }
+    
+    public DiagramSettings getDiagramSettings() {
+        return diagramSettings;
     }
 }

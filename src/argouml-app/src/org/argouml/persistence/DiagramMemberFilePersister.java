@@ -38,8 +38,9 @@ import java.net.URL;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
@@ -65,8 +66,12 @@ class DiagramMemberFilePersister extends MemberFilePersister {
             // keyed by their UUID. This is used to allocate
             // figs to their owner using the "href" attribute
             // in PGML.
-            PGMLStackParser parser = new PGMLStackParser(project.getUUIDRefs());
-            Diagram d = parser.readDiagram(inputStream, false);
+            DiagramSettings defaultSettings = 
+                project.getProjectSettings().getDefaultDiagramSettings();
+            // TODO: We need the project specific diagram settings here
+            PGMLStackParser parser = new PGMLStackParser(project.getUUIDRefs(),
+                    defaultSettings);
+            ArgoDiagram d = parser.readArgoDiagram(inputStream, false);
             inputStream.close();
             project.addMember(d);
         } catch (Exception e) {

@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 
 import javax.management.ListenerNotFoundException;
@@ -38,6 +39,7 @@ import javax.management.NotificationListener;
 import org.argouml.application.events.ArgoDiagramAppearanceEvent;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -51,6 +53,8 @@ public class ArgoFigText extends FigText
     private NotificationBroadcasterSupport notifier = 
         new NotificationBroadcasterSupport();
 
+    private DiagramSettings settings;
+    
     /**
      * The constructor.
      * 
@@ -58,7 +62,10 @@ public class ArgoFigText extends FigText
      * @param y initial location
      * @param w initial width
      * @param h initial height
+     * @deprecated 0.27.2 by tfmorris.  Uses one of the constructors which takes
+     * a DiagramSettings.
      */
+    @Deprecated
     public ArgoFigText(int x, int y, int w, int h) {
         super(x, y, w, h);
         setFontFamily("dialog");
@@ -72,10 +79,31 @@ public class ArgoFigText extends FigText
      * @param w initial width
      * @param h initial height
      * @param expandOnly true if this fig is supposed to grow only
+     * @deprecated 0.27.2 by tfmorris.  Uses one of the constructors which takes
+     * a DiagramSettings.
      */
+    @Deprecated
     public ArgoFigText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
         setFontFamily("dialog"); /* TODO: Is this needed?*/
+    }
+    
+    /**
+     * Construct a text fig owned by the given UML element.
+     * 
+     * @param owner owning model element or null
+     * @param bounds rectangle describing bounds of figure
+     * @param renderSettings render settings
+     * @param expandOnly true if Fig should never shrink
+     */
+    public ArgoFigText(Object owner, Rectangle bounds,
+            DiagramSettings renderSettings, boolean expandOnly) {
+        this(bounds.x, bounds.y, bounds.width, bounds.height, expandOnly);
+        settings = renderSettings;
+        setFontFamily(settings.getFontName());
+        setFontSize(settings.getFontSize());
+        super.setOwner(owner);
+        Model.getPump().addModelEventListener(this, owner, "remove");
     }
     
     /*
@@ -135,19 +163,33 @@ public class ArgoFigText extends FigText
         throw new UnsupportedOperationException();
     }
     
+    /**
+     * @return the owning project
+     * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
+     * @deprecated for 0.27.2 by tfmorris.  Implementations should have all
+     * the information that they require in the DiagramSettings object.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public Project getProject() {
         return ArgoFigUtil.getProject(this);
+    }
+
+    public void renderingChanged() {
+        updateFont();
+        setBounds(getBounds());
+        damage();        
     }
 
     /**
      * Handles diagram font changing.
      * @param e the event
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link #renderingChanged()}.
      */
+    @Deprecated
     public void diagramFontChanged(
             @SuppressWarnings("unused") ArgoDiagramAppearanceEvent e) {
-        updateFont();
-        setBounds(getBounds());
-        damage();
+        renderingChanged();
     }
 
     /**
@@ -156,12 +198,7 @@ public class ArgoFigText extends FigText
      * and apply it by calling FigText.setFont().
      */
     protected void updateFont() {
-        int style = getFigFontStyle();
-        Project p = getProject();
-        if (p != null) {
-            Font f = getProject().getProjectSettings().getFont(style);
-            setFont(f);
-        }
+        setFont(getSettings().getFont(getFigFontStyle()));
     }
 
     /**
@@ -176,12 +213,31 @@ public class ArgoFigText extends FigText
         return Font.PLAIN;
     }
 
+    /**
+     * Set owning UML element.
+     * 
+     * @param own uml element
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     * @deprecated for 0.27.3 by tfmorris. The owner must be specified in the
+     *             constructor and never changed.
+     */
     @Override
+    @Deprecated
     public void setOwner(Object own) {
         super.setOwner(own);
         updateListeners(null, own);
     }
     
+    /**
+     * Update listeners for a new owner. Obsolete since owner is not allow to
+     * change.
+     * 
+     * @param oldOwner the old owner
+     * @param newOwner the new owner
+     * @deprecated for 0.27.3 by tfmorris. The owner must be specified in the
+     *             constructor and never changed.
+     */
+    @Deprecated
     protected void updateListeners(Object oldOwner, Object newOwner) {
         if (oldOwner == newOwner) {
             return;
@@ -201,6 +257,24 @@ public class ArgoFigText extends FigText
                 && (pce.getSource() == getOwner())) {
             deleteFromModel();
         }
+    }
+    
+
+    public DiagramSettings getSettings() {
+        // TODO: This is a temporary crutch to use until all Figs are updated
+        // to use the constructor that accepts a DiagramSettings object
+        if (settings == null) {
+            Project p = getProject();
+            if (p != null) {
+                return p.getProjectSettings().getDefaultDiagramSettings();
+            }
+        }
+        return settings;
+    }
+    
+    public void setSettings(DiagramSettings renderSettings) {
+        settings = renderSettings;
+        renderingChanged();
     }
 
 }

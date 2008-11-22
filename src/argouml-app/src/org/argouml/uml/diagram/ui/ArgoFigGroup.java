@@ -27,34 +27,65 @@ package org.argouml.uml.diagram.ui;
 import java.util.List;
 
 import org.argouml.kernel.Project;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
 /**
  * A Fig which contains other Figs.  ArgoUMLs version of GEF's FigGroup. <p>
  * 
- * It implements the additional methods of the ArgoFig interface, which is 
- * currently just a helper to figure out which project the Fig belongs to
- * (based on the GraphModel that contains it).t belongs to. 
+ * It implements the additional methods of the ArgoFig interface.
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  */
 public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
 
+    private DiagramSettings settings;
+    
     /**
-     * The constructor. Create a FigGroup that knows about its Project.
+     * Default constructor.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #ArgoFigGroup(DiagramSettings)}.
      */
+    @Deprecated
     public ArgoFigGroup() {
         super();
     }
 
     /**
-     * The constructor. Create a FigGroup that knows about its Project.
-     * @param arg0 the Figs that make up the Group
+     * Construct an empty FigGroup with the given DiagramSettings.
+     * object.
+     * @param renderSettings render settings to use
      */
-    public ArgoFigGroup(List arg0) {
+    public ArgoFigGroup(DiagramSettings renderSettings) {
+        super();
+        settings = renderSettings;
+    }
+    
+    /**
+     * Construct a FigGroup which contains the listed figs.
+     * 
+     * @param arg0 the Figs that make up the Group
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #ArgoFigGroup(List, DiagramSettings)}.
+     */
+    @Deprecated
+    public ArgoFigGroup(List<ArgoFig> arg0) {
         super(arg0);
     }
 
+    /**
+     * Construct a FigGroup with the given list of Figs and DiagramSettings
+     * object.
+     * 
+     * @param figs the Figs that make up the Group
+     * @param renderSettings render settings to use
+     */
+    public ArgoFigGroup(List<ArgoFig> figs, DiagramSettings renderSettings) {
+        super(figs);
+        settings = renderSettings;
+    }
+    
     /**
      * This optional method is not implemented.  It will throw an
      * {@link UnsupportedOperationException} if used.  Figs are 
@@ -70,13 +101,43 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
     }
     
     /**
-     * This method is identical to the one in FigNodeModelElement.
+     * @deprecated for 0.27.2 by tfmorris.  Implementations should have all
+     * the information that they require in the DiagramSettings object.
      * 
-     * @return the project 
+     * @return the owning project
      * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public Project getProject() {
         return ArgoFigUtil.getProject(this);
+    }
+    
+    public void renderingChanged() {
+        // Get all our sub Figs and hit them with the big stick too
+        for (Fig fig : (List<Fig>) getFigs()) {
+            if (fig instanceof ArgoFig) {
+                ((ArgoFig) fig).renderingChanged();
+            }
+        }
+    }
+
+    
+    public DiagramSettings getSettings() {
+        // TODO: This is a temporary crutch to use until all Figs are updated
+        // to use the constructor that accepts a DiagramSettings object
+        if (settings == null) {
+            Project p = getProject();
+            if (p != null) {
+                return p.getProjectSettings().getDefaultDiagramSettings();
+            }
+        }
+        return settings;
+    }
+    
+    public void setSettings(DiagramSettings renderSettings) {
+        settings = renderSettings;
+        renderingChanged();
     }
 
 }

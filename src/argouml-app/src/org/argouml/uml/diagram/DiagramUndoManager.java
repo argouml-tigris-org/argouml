@@ -36,7 +36,9 @@ import org.tigris.gef.undo.UndoManager;
  * This class is a temporary wrapper around the GEF UndoManager.
  * This will be changed when GEF is modified to create commands and
  * provide an observer interface for ArgoUML to receive them.
- *
+ * <p>
+ * TODO: How does this relate to {@link org.argouml.kernel.DefaultUndoManager}?
+ * 
  * @author Bob Tarling
  */
 public class DiagramUndoManager extends UndoManager {
@@ -54,24 +56,39 @@ public class DiagramUndoManager extends UndoManager {
         startChain = true;
     }
     
+
+    @Override
+    public boolean isGenerateMementos() {
+        // TODO: This shouldn't depend on the current project, but for now
+        // just make sure it's defined and that we have an undo manager
+        Project p = ProjectManager.getManager().getCurrentProject();
+        return super.isGenerateMementos() && p != null 
+                && p.getUndoManager() != null;
+    }
+    
     /**
      * @param memento the GEF memento
      * @see org.tigris.gef.undo.UndoManager#addMemento(org.tigris.gef.undo.Memento)
      */
     @Override
     public void addMemento(final Memento memento) {
+        // TODO: This shouldn't be referencing the current project.  Instead
+        // the appropriate UndoManager should have already been retrieved from
+        // the correct project.
         Project p = ProjectManager.getManager().getCurrentProject();
-        org.argouml.kernel.UndoManager undo = p.getUndoManager();
+        if (p != null) {
+            org.argouml.kernel.UndoManager undo = p.getUndoManager();
+            if (undo != null) {
+                if (startChain) {
+                    //TODO i18n: GEF needs to pass us back the description
+                    // of what is being done.
+                    undo.startInteraction("Diagram Interaction");
+                }
+                undo.addCommand(new DiagramCommand(memento));
 
-        if (startChain) {
-            //TODO i18n: GEF needs to pass us back the description of what is
-            // being done.
-            undo.startInteraction("Diagram Interaction");
+                startChain = false;
+            }
         }
-        
-        undo.addCommand(new DiagramCommand(memento));
-        
-        startChain = false;
     }
     
     public void addPropertyChangeListener(PropertyChangeListener listener) {

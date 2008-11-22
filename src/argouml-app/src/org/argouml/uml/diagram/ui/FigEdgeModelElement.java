@@ -65,7 +65,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -81,6 +80,7 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.util.IItemUID;
 import org.argouml.util.ItemUID;
@@ -101,6 +101,11 @@ import org.tigris.gef.presentation.FigText;
  * look like lines.
  * This Fig is prepared to show a (possibly editable) name,
  * and/or multiple stereotypes.
+ * <p>
+ * NOTE: This will drop the ArgoNotationEventListener and 
+ * ArgoDiagramAppearanceEventListener
+ * interfaces in the next release.  The corresponding methods have been marked
+ * as deprecated.
  */
 public abstract class FigEdgeModelElement
     extends FigEdgePoly
@@ -133,12 +138,12 @@ public abstract class FigEdgeModelElement
     **/
     private static int popupAddOffset;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     private NotationProvider notationProviderName;
-    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
-
+    // TODO: Having a HashMap per Fig, each containing two string entries, just
+    // to store what is basically just a boolean (useGuillmets) is expensive
+    // Also, the opaqueness of the string keys prevents us finding uses
+    private HashMap<String, Object> npArguments;
     /**
      * The Fig that displays the name of this model element.
      * Use getNameFig(), no setter should be required.
@@ -159,15 +164,34 @@ public abstract class FigEdgeModelElement
      */
     private Set<Object[]> listeners = new HashSet<Object[]>();
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    /** 
-     * Partially construct a new FigEdge.  This method creates the
-     * name element that holds the name of the model element and adds
-     * itself as a listener. Also a stereotype is constructed. 
+    private DiagramSettings settings;
+    
+    /**
+     * Construct a default FigEdgeElement.
+     * 
+     * @deprecated for 0.27.2 by tfmorris. The default constructor will become
+     *             private so that it can't be used externally. All concrete
+     *             subclasses must invoke an explicit constructor which passes
+     *             an owner and render s settings
+     *             {@link #FigEdgeModelElement(Object, DiagramSettings)}.
      */
     public FigEdgeModelElement() {
+        this(null, null);
+    }
+    
+    /**
+     * Construct a new FigEdge. This method creates the name element that holds
+     * the name of the model element and adds itself as a listener. Also a
+     * stereotype is constructed.
+     * <p>
+     * This constructor is only intended for use by concrete subclasses.
+     * 
+     * @param element owning uml element
+     * @param renderSettings rendering settings
+     */
+    protected FigEdgeModelElement(Object element, 
+            DiagramSettings renderSettings) {
+        settings = renderSettings;
 
         nameFig = new FigNameWithAbstract(10, 30, 90, 20, false);
         nameFig.setTextFilled(false);
@@ -176,18 +200,39 @@ public abstract class FigEdgeModelElement
 
         setBetweenNearestPoints(true);
 
-        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-        ArgoEventPump.addListener(
-                ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
+        if (element != null) {
+            if (!Model.getFacade().isAUMLElement(element)) {
+                throw new IllegalArgumentException(
+                        "The owner must be a model element - got a "
+                        + element.getClass().getName());
+            }
+            super.setOwner(element);
+            nameFig.setOwner(element); // for setting abstract
+            if (edgePort != null) {
+                edgePort.setOwner(getOwner());
+            }
+            stereotypeFig.setOwner(element); // this fixes issue 5414
+            notationProviderName =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        getNotationProviderType(), element, this);
+            // TODO: defer setting this up until needed
+            // (or just use value from settings)
+            putNotationArgument("useGuillemets", 
+                    Boolean.valueOf(getSettings().isUseGuillemets()));
+            addElementListener(element, "remove");
+        }
+
     }
 
     /**
      * The constructor that hooks the Fig into the UML model element.
      *
      * @param edge the UML element
+     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * {@link #FigEdgeModelElement(Object, DiagramSettings)}.
      */
     public FigEdgeModelElement(Object edge) {
-        this();
+        this(null, null);
         setOwner(edge);
     }
 
@@ -622,7 +667,8 @@ public abstract class FigEdgeModelElement
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
             showHelp(notationProviderName.getParsingHelp());
-            ft.setText(notationProviderName.toString(getOwner(), npArguments));
+            ft.setText(notationProviderName.toString(getOwner(), 
+                    getNotationArguments()));
         }
     }
     
@@ -667,7 +713,8 @@ public abstract class FigEdgeModelElement
                 return;
             }
             notationProviderName.parse(getOwner(), ft.getText());
-            ft.setText(notationProviderName.toString(getOwner(), npArguments));
+            ft.setText(notationProviderName.toString(getOwner(), 
+                    getNotationArguments()));
         }
     }
 
@@ -772,7 +819,7 @@ public abstract class FigEdgeModelElement
      * Rerenders the attached elements of the fig. <p>
      * 
      * Warning: The purpose of this function is NOT 
-     * to redraw the whole Fig everytime
+     * to redraw the whole Fig every time
      * something changes. That would be inefficient.<p>
      * 
      * Instead, this function should only be called
@@ -783,7 +830,10 @@ public abstract class FigEdgeModelElement
      * Overrule this function for subclasses that add extra
      * or remove graphical parts.
      */
-    protected void renderingChanged() {
+    public void renderingChanged() {
+        // TODO: This needs to use a different method than that used by the
+        // constructor if it wants to allow the method to be overridden
+        initNotationProviders(getOwner());
         updateNameText();
         updateStereotypeText();
         damage();
@@ -829,12 +879,9 @@ public abstract class FigEdgeModelElement
         }
         if (notationProviderName != null) {
             String nameStr = notationProviderName.toString(
-                    getOwner(), npArguments);
+                    getOwner(), getNotationArguments());
             nameFig.setText(nameStr);
-            Project p = getProject();
-            if (p != null) {
-                updateFont();
-            }
+            updateFont();
             calcBounds();
             setBounds(getBounds());
         }
@@ -865,10 +912,8 @@ public abstract class FigEdgeModelElement
      * @throws IllegalArgumentException if the owner given is not a model
      *                 element
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    /*
-     * TODO: It is planned to refactor so that there is only one Fig
-     * constructor. When this is achieved this method can be refactored out.
+     * @deprecated for 0.27.3 by tfmorris.  Owner must be specified in the
+     * constructor and can't be changed afterwards.
      */
     @Override
     public void setOwner(Object owner) {
@@ -894,34 +939,36 @@ public abstract class FigEdgeModelElement
         updateListeners(null, owner);
         // TODO: The following is redundant.  It's done when setLayer is 
         // called after initialization complete
-        renderingChanged();
+//        renderingChanged();
     }
+
+
 
     /**
      * Create the NotationProviders.
      * 
      * @param own the current owner
+     * @deprecated for 0.27.3 by tfmorris.  Separate initialization of 
+     * notation providers from any later updates which are required. 
+     * Initialization must be done in the constructor using methods which 
+     * can't be overriden.
      */
     protected void initNotationProviders(Object own) {
         if (notationProviderName != null) {
             notationProviderName.cleanListener(this, own);
         }
         /* This should NOT be looking for a NamedElement, 
-	 * since this is not always about the name of this 
-	 * modelelement alone.*/
+         * since this is not always about the name of this 
+         * modelelement alone.*/
         if (Model.getFacade().isAModelElement(own)) {
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         getNotationProviderType(), own, this);
-            Project p = getProject();
-            if (p != null) {
-                npArguments.put("rightGuillemot", 
-                        p.getProjectSettings().getRightGuillemot());
-                npArguments.put("leftGuillemot", 
-                        p.getProjectSettings().getLeftGuillemot());
-            }
+            putNotationArgument("useGuillemets", 
+                    Boolean.valueOf(getSettings().isUseGuillemets()));
         }
     }
+
 
     /**
      * Overrule this for subclasses 
@@ -1008,41 +1055,51 @@ public abstract class FigEdgeModelElement
         super.deleteFromModel();
     }
 
-    /*
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris. Changes to notatation provider are
+     *             now handled by the owning diagram.
      */
+    @Deprecated
     public void notationChanged(ArgoNotationEvent event) {
         if (getOwner() == null) {
             return;
         }
-        initNotationProviders(getOwner());
         renderingChanged();
     }
 
-    /*
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
      */
+    @Deprecated
     public void notationAdded(ArgoNotationEvent event) {
         // Default implementation is to do nothing
     }
 
-    /*
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
      */
+    @Deprecated
     public void notationRemoved(ArgoNotationEvent event) {
         // Default implementation is to do nothing
     }
 
-    /*
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
      */
+    @Deprecated
     public void notationProviderAdded(ArgoNotationEvent event) {
         // Default implementation is to do nothing
     }
 
-    /*
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
+     * @deprecated for 0.27.2 by tfmorris.
      */
+    @Deprecated
     public void notationProviderRemoved(ArgoNotationEvent event) {
         // Default implementation is to do nothing
     }
@@ -1096,7 +1153,6 @@ public abstract class FigEdgeModelElement
         if (o != null) {
             removeElementListener(o);
         }
-        ArgoEventPump.removeListener(this);
         if (notationProviderName != null) {
             notationProviderName.cleanListener(this, getOwner());
         }
@@ -1268,33 +1324,6 @@ public abstract class FigEdgeModelElement
         return null;
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#postLoad()
-     */
-    @Override
-    public void postLoad() {
-        ArgoEventPump.addListener(this);
-    }
-
-    /**
-     * @deprecated by mvw for 0.25.4. Use {@link ProjectSettings#getFontPlain()}
-     *             et al.
-     * @return Returns the plain font.
-     */
-    @Deprecated
-    public Font getLabelFont() {
-        return getProject().getProjectSettings().getFontPlain();
-    }
-
-    /**
-     * @deprecated by mvw for 0.25.4. Use {@link ProjectSettings#getFontPlain()}
-     *             et al.
-     * @return Returns the italic font.
-     */
-    @Deprecated
-    public Font getItalicLabelFont() {
-        return getProject().getProjectSettings().getFontItalic();
-    }
 
     /**
      * @param allowed true if the function RemoveFromDiagram is allowed
@@ -1441,10 +1470,23 @@ public abstract class FigEdgeModelElement
         addElementListeners(adds);
     }
 
+    /**
+     * @return the current notation arguments or null if none have been set
+     */
     protected HashMap<String, Object> getNotationArguments() {
         return npArguments;
     }
 
+    protected void putNotationArgument(String key, Object element) {
+        if (notationProviderName != null) {
+            // Lazily initialize if not done yet
+            if (npArguments == null) {
+                npArguments = new HashMap<String, Object>();
+            }
+            npArguments.put(key, element);
+        }
+    }
+    
     /**
      * This optional method is not implemented.  It will throw an
      * {@link UnsupportedOperationException} if used. Figs are 
@@ -1458,22 +1500,28 @@ public abstract class FigEdgeModelElement
         throw new UnsupportedOperationException();
     }
     
+    /**
+     * @deprecated for 0.27.2 by tfmorris.  Implementations should have all
+     * the information that they require in the DiagramSettings object.
+     * 
+     * @return the owning project
+     * @see org.argouml.uml.diagram.ui.ArgoFig#getProject()
+     */
+    @Deprecated
     public Project getProject() {
         return ArgoFigUtil.getProject(this);
     }
     
     /**
      * Handles diagram font changing.
+     * 
      * @param e the event
      * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
+     * @deprecated for 0.27.2 by tfmorris. Global rendering changes are now
+     *             managed at the diagram level.
      */
+    @Deprecated
     public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
-        if (getProject() == null) {
-            /* Temporary fix related to issue 5434.
-             * TODO: However I think this can be removed. See issue 5500 - Bob
-             */
-            return;
-        }        
         updateFont();
         calcBounds(); //TODO: Does this help?
         redraw();
@@ -1485,12 +1533,8 @@ public abstract class FigEdgeModelElement
      * and apply it by calling FigText.setFont().
      */
     protected void updateFont() {
-        Project p = getProject();
-        if (p == null) {
-            return;
-        }
         int style = getNameFigFontStyle();
-        Font f = p.getProjectSettings().getFont(style);
+        Font f = getSettings().getFont(style);
         nameFig.setFont(f);
         deepUpdateFont(this);
     }
@@ -1508,7 +1552,7 @@ public abstract class FigEdgeModelElement
     }
 
     private void deepUpdateFont(FigEdge fe) {
-        Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
+        Font f = getSettings().getFont(Font.PLAIN);
         for (Object pathFig : fe.getPathItemFigs()) {
             deepUpdateFontRecursive(f, pathFig);
         }
@@ -1536,5 +1580,23 @@ public abstract class FigEdgeModelElement
                 deepUpdateFontRecursive(f, fge);
             }
         }
+    }
+    
+
+    public DiagramSettings getSettings() {
+        // TODO: This is a temporary crutch to use until all Figs are updated
+        // to use the constructor that accepts a DiagramSettings object
+        if (settings == null) {
+            Project p = getProject();
+            if (p != null) {
+                return p.getProjectSettings().getDefaultDiagramSettings();
+            }
+        }
+        return settings;
+    }
+    
+    public void setSettings(DiagramSettings renderSettings) {
+        settings = renderSettings;
+        renderingChanged();
     }
 }

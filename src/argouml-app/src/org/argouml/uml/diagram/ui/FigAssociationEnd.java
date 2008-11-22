@@ -254,7 +254,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
      */
     @Override
-    protected void renderingChanged() {
+    public void renderingChanged() {
         updateEnd(srcMult, srcOrdering);
         srcMult.calcBounds();
         srcGroup.calcBounds();
