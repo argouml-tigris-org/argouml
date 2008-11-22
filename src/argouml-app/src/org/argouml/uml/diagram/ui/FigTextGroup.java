@@ -158,12 +158,14 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
      * {@inheritDoc}
      */
     public void mouseClicked(MouseEvent me) {
-        if (me.isConsumed())
+        if (me.isConsumed()) {
             return;
+        }
         if (me.getClickCount() >= 2) {
             Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
-            if (f instanceof MouseListener)
-		((MouseListener) f).mouseClicked(me);
+            if (f instanceof MouseListener) {
+                ((MouseListener) f).mouseClicked(me);
+            }
         }
         me.consume();
     }
