@@ -405,9 +405,13 @@ public final class NotationUtilityUml {
     /**
      * Returns a visibility String either for a MVisibilityKind (according to
      * the definition in NotationProvider2), but also for a model element.
-     *
+     * 
      * @param o a modelelement or a visibilitykind
-     * @return a string, guaranteed not null
+     * @return a string.  May be the empty string, but guaranteed not to be null
+     * @deprecated for 0.27.2 by tfmorris. Use
+     *             {@link #generateVisibility2(Object)} and only invoke when
+     *             a visibility is actually needed (instead of depending on
+     *             project settings).
      */
     public static String generateVisibility(Object o) {
         if (o == null) {
@@ -415,7 +419,22 @@ public final class NotationUtilityUml {
         }
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
-        if (!ps.getShowVisibilityValue()) {
+        if (ps.getShowVisibilityValue()) {
+            return generateVisibility2(o);
+        } else {
+            return "";
+        }
+    }
+    
+    /**
+     * Returns a visibility String either for a VisibilityKind or a model
+     * element.
+     * 
+     * @param o a modelelement or a visibilitykind
+     * @return a string. May be the empty string, but guaranteed not to be null
+     */
+    public static String generateVisibility2(Object o) {
+        if (o == null) {
             return "";
         }
         if (Model.getFacade().isAModelElement(o)) {
@@ -639,15 +658,17 @@ public final class NotationUtilityUml {
             }
 
             if (value != null) {
+                // TODO: Find a better default language
+                // TODO: We should know the notation language, since it is us
                 Project project =
                     ProjectManager.getManager().getCurrentProject();
                 ProjectSettings ps = project.getProjectSettings();
+                String notationLanguage = ps.getNotationLanguage();
 
                 Object initExpr =
                     Model.getDataTypesFactory()
                         .createExpression(
-                                // TODO: Find a better default language
-                                ps.getNotationLanguage(),
+                                notationLanguage,
                                 value.toString().trim());
                 Model.getCoreHelper().setDefaultValue(p, initExpr);
             }
@@ -915,7 +936,7 @@ public final class NotationUtilityUml {
      *                 or a collection of stereotypes
      *                 or a modelelement of which the stereotypes are retrieved
      * @param args arguments that may determine the notation
-     * The values of "leftGuillemot" and "rightGuillemot" influence the outcome.
+     * The value of "useGuillemets" influences the outcome.
      * @return a string representing the given stereotype(s)
      */
     public static String generateStereotype(Object st, Map args) {
@@ -968,24 +989,107 @@ public final class NotationUtilityUml {
         if (name == null || name.length() == 0) {
             return "";
         }
+        Boolean useGuillemets = null;
         if (args != null) {
-            if (args.get("leftGuillemot") != null 
-                    && args.get("rightGuillemot") != null) {
-                return args.get("leftGuillemot") + name 
-                    + args.get("rightGuillemot");
+            useGuillemets = (Boolean) args.get("useGuillemets");
+            if (useGuillemets == null) {
+                // TODO: Temporary code for backward compatibility
+                String left = (String) args.get("leftGuillemot");
+                if (left != null) {
+                    useGuillemets = left.equals("\u00ab");
+                }
             }
         }
-        return "<<" + name + ">>";
+        if (useGuillemets == null) {
+            // Default is false for historical compatibility only
+            useGuillemets = false;
+        }
+        return formatStereotype(name, useGuillemets);
     }
 
+    /**
+     * Generate the text for one or more stereotype(s).
+     * 
+     * @param st One of:
+     *            <ul>
+     *            <li>a stereotype UML object</li>
+     *            <li>a string</li>
+     *            <li>a collection of stereotypes</li>
+     *            <li>a modelelement of which the stereotypes are retrieved</li>
+     *            </ul>
+     * @param useGuillemets true if Unicode double angle bracket quote
+     *            characters should be used.
+     * @return fully formatted string with list of stereotypes separated by
+     *         commas and surround in brackets
+     */
+    public static String generateStereotype(Object st, boolean useGuillemets) {
+        if (st == null) {
+            return "";
+        }
+
+        if (st instanceof String) {
+            return formatStereotype((String) st, useGuillemets);
+        }
+        if (Model.getFacade().isAStereotype(st)) {
+            return formatStereotype(Model.getFacade().getName(st),
+                    useGuillemets);
+        }
+
+        if (Model.getFacade().isAModelElement(st)) {
+            st = Model.getFacade().getStereotypes(st);
+        }
+        
+        if (st instanceof Collection) {
+            String result = null;
+            boolean found = false;
+            for (Object stereotype : (Collection) st) {
+                String name =  Model.getFacade().getName(stereotype);
+                if (!found) {
+                    result = name;
+                    found = true;
+                } else {
+                    // Allow concatenation order and separator to be localized
+                    result = Translator.localize("misc.stereo.concatenate",
+                            new Object[] {result, name});
+                }
+            }
+            if (found) {
+                return formatStereotype(result, useGuillemets);
+            }
+        }
+        return "";
+    }
+    
+    /**
+     * Create a string representation of a stereotype, keyword or comma separate
+     * list of names. This method just wraps the string in <<angle brackets>> or
+     * guillemets (double angle bracket characters) depending on the setting
+     * of the flag <code>useGuillemets</code>.
+     * 
+     * @param name the name of the stereotype
+     * @param useGuillemets true if Unicode double angle bracket quote
+     *            characters should be used.
+     * @return the string representation
+     */
+    public static String formatStereotype(String name, boolean useGuillemets) {
+        if (name == null || name.length() == 0) {
+            return "";
+        }
+
+        String key = "misc.stereo.guillemets."
+                + Boolean.toString(useGuillemets);
+        return Translator.localize(key, new Object[] {name});
+    }
+    
     /**
      * @param st a stereotype UML object
      *                 or a string
      *                 or a collection of stereotypes
      *                 or a modelelement of which the stereotypes are retrieved
      * @return a string representing the given stereotype(s)
-     * @deprecated by mvw in V0.25.5. Use the previous method instead,
-     * with the arguments Map.
+     * @deprecated by mvw in V0.25.5. Use 
+     * {@link #generateStereotype(Object, boolean)} or 
+     * {@link #generateStereotype(Object, Map).
      * Rationale: Use the args Map instead of accessing the Project from here.
      */
     @Deprecated
@@ -1023,9 +1127,8 @@ public final class NotationUtilityUml {
                 }
             }
             if (!first) {
-                return ps.getLeftGuillemot()
-                    + sb.toString()
-                    + ps.getRightGuillemot();
+                return formatStereotype(sb.toString(), 
+                        ps.getDefaultDiagramSettings().isUseGuillemets());
             }
         }
         return "";
@@ -1036,7 +1139,8 @@ public final class NotationUtilityUml {
         if (name == null || name.length() == 0) {
             return "";
         }
-        return ps.getLeftGuillemot() + name + ps.getRightGuillemot();
+        return formatStereotype(name, 
+                ps.getDefaultDiagramSettings().isUseGuillemets());
     }
 
     /**
@@ -1096,6 +1200,7 @@ public final class NotationUtilityUml {
 
     private static String generateKind(Object /*Parameter etc.*/ kind) {
         StringBuffer s = new StringBuffer();
+        // TODO: I18N
         if (kind == null /* "in" is the default */
                 || kind == Model.getDirectionKind().getInParameter()) {
             s.append(/*"in"*/ ""); /* See issue 3421. */
@@ -1124,11 +1229,37 @@ public final class NotationUtilityUml {
 
     /**
      * Generate the text of a multiplicity.
+     * 
+     * @param element a multiplicity or an element which has a multiplicity
+     * @param showSingularMultiplicity if false return the empty string for 1..1
+     *            multiplicities.
+     * @return a string containing the formatted multiplicity,
+     * or the empty string
+     */
+    public static String generateMultiplicity(Object element, 
+            boolean showSingularMultiplicity) {
+        Object multiplicity;
+        if (!Model.getFacade().isAMultiplicity(element)) { 
+            multiplicity = element;
+        } else if (Model.getFacade().isAUMLElement(element)) {
+            multiplicity = Model.getFacade().getMultiplicity(element);
+        } else {
+            throw new IllegalArgumentException();
+        }
+        int upper = Model.getFacade().getUpper(multiplicity);
+        int lower = Model.getFacade().getLower(multiplicity);
+        if (lower != 1 || upper != 1 || showSingularMultiplicity) {
+            // TODO: I18N
+            return Model.getFacade().toString(multiplicity);
+        }
+        return "";
+    }
+    
+    /**
+     * Generate the text of a multiplicity.
      * <p>
-     * @deprecated by mvw in V0.25.5. Use the next method instead.
-     * We needed to remove the use of the Project to obtain 
-     * its settings. Instead, make use of the args Map
-     * provided by the Fig.
+     * @deprecated by mvw in V0.25.5. Use 
+     * {@link #generateMultiplicity(Object, boolean)}.
      *
      * @param m the given multiplicity
      * @return a string (guaranteed not null)
@@ -1203,6 +1334,7 @@ public final class NotationUtilityUml {
             while (it.hasNext()) {
                 Object arg = it.next();
                 if (!first) {
+                    // TODO: I18N
                     p.append(", ");
                 }
 
@@ -1227,6 +1359,7 @@ public final class NotationUtilityUml {
             return s;
         }
 
+        // TODO: I18N
         return s + " (" + p + ")";
     }
 
