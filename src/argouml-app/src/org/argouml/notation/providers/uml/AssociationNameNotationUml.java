@@ -25,9 +25,7 @@
 package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
-import java.util.Collection;
 import java.util.Map;
-import java.util.Iterator;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -114,26 +112,7 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
      * @return a string which represents the stereotypes
      */
     protected static String generateStereotypes(Object modelElement) {
-        Collection c = Model.getFacade().getStereotypes(modelElement);
-        StringBuffer sb = new StringBuffer(50);
-        Iterator i = c.iterator();
-        boolean first = true;
-        while (i.hasNext()) {
-            Object o = i.next();
-            if (!first) {
-                sb.append(',');
-            }
-            if (o != null) {
-                sb.append(Model.getFacade().getName(o));
-                first = false;
-            }
-        }
-        Project project =
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
-        return first ? "" : ps.getLeftGuillemot()
-            + sb.toString()
-            + ps.getRightGuillemot();
+        return NotationUtilityUml.generateStereotype(modelElement);
     }
 
     /**

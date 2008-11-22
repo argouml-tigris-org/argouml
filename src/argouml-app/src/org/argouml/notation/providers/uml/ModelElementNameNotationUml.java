@@ -25,18 +25,13 @@
 package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
-import java.util.Collection;
 import java.util.Map;
-import java.util.Iterator;
 import java.util.Stack;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.ModelElementNameNotation;
 
@@ -109,26 +104,7 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
      * @return a string which represents the stereotypes
      */
     protected String generateStereotypes(Object modelElement, Map args) {
-        Collection c = Model.getFacade().getStereotypes(modelElement);
-        StringBuffer sb = new StringBuffer(50);
-        Iterator i = c.iterator();
-        boolean first = true;
-        while (i.hasNext()) {
-            Object o = i.next();
-            if (!first) {
-                sb.append(',');
-            }
-            if (o != null) {
-                sb.append(Model.getFacade().getName(o));
-                first = false;
-            }
-        }
-        Project project = 
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
-        return first ? "" : ps.getLeftGuillemot()
-            + sb.toString()
-            + ps.getRightGuillemot();
+        return NotationUtilityUml.generateStereotype(modelElement, args);
     }
 
     /**
