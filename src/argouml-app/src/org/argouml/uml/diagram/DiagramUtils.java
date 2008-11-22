@@ -42,6 +42,13 @@ public class DiagramUtils {
     private static final Logger LOG = Logger.getLogger(DiagramUtils.class);
     
     /**
+     * Instantiation not allowed.  Static methods only.
+     */
+    private DiagramUtils() {
+        // not allowed
+    }
+    
+    /**
      * @return the diagram containing the mouse (or which most recently
      *         contained the mouse).
      */
