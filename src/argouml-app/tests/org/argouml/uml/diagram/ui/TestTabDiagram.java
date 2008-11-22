@@ -30,11 +30,23 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.notation.InitNotation;
+import org.argouml.notation.providers.java.InitNotationJava;
+import org.argouml.notation.providers.uml.InitNotationUml;
+import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
+import org.argouml.uml.diagram.collaboration.ui.InitCollaborationDiagram;
+import org.argouml.uml.diagram.deployment.ui.InitDeploymentDiagram;
+import org.argouml.uml.diagram.sequence.ui.InitSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.InitStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.InitClassDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram;
 import org.tigris.gef.graph.presentation.JGraph;
 
 /**
@@ -63,6 +75,20 @@ public class TestTabDiagram extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        InitializeModel.initializeDefault();
+        (new InitNotation()).init();
+        (new InitNotationUml()).init();
+        (new InitNotationJava()).init();
+        (new InitDiagramAppearanceUI()).init();
+        (new InitActivityDiagram()).init();
+        (new InitCollaborationDiagram()).init();
+        (new InitDeploymentDiagram()).init();
+        (new InitSequenceDiagram()).init();
+        (new InitStateDiagram()).init();
+        (new InitClassDiagram()).init();
+        (new InitUseCaseDiagram()).init();
+        (new InitProfileSubsystem()).init();
+        ProjectManager.getManager().makeEmptyProject();
         diagram = new UMLClassDiagram();
     }
 
