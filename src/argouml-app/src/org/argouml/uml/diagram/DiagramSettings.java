@@ -138,6 +138,7 @@ public class DiagramSettings {
      */
     public DiagramSettings() {
         super();
+        recomputeFonts();
         parent = null;
     }
     
