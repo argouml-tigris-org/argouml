@@ -105,6 +105,9 @@ public class TempFileUtils {
                     // cpp generator, which always creates backup files (it's a
                     // bug).
                     if (!f.isDirectory() && !f.getName().endsWith(".bak")) {
+                        // TODO: This is using the default platform character
+                        // encoding.  Specifying an encoding will produce more 
+                        // predictable results
                         FileReader fr = new FileReader(f);
                         BufferedReader bfr = new BufferedReader(fr);
                         try { 
