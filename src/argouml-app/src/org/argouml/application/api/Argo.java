@@ -50,13 +50,6 @@ import org.argouml.configuration.ConfigurationKey;
 public final class Argo {
 
     /**
-     * Key for argo resource directory.
-     * @deprecated for 0.25.4 by tfmorris.  Unused directory.
-     */
-    @Deprecated
-    public static final String RESOURCEDIR = "/org/argouml/resource/";
-
-    /**
      * argo.ini path.
      * @deprecated for 0.25.4 by tfmorris.  No longer used.
      */

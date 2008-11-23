@@ -82,20 +82,6 @@ public final class Translator {
     private Translator() {
     }
 
-    /**
-     * Alternate initialization entry point for use by ArgoEclipse.
-     * It leaves out telling GEF about bundles that it won't be able
-     * to access.
-
-     * NOTE: This must be called *before* any other methods are called to
-     * work properly.
-     * 
-     * @deprecated by MVW in V0.25, replaced by initForEclipse(String).
-     */
-    @Deprecated
-    public static void initForEclipse() {
-        initInternal(""/*Configuration.getString(Argo.KEY_LOCALE)*/);
-    }
 
     /**
      * Alternate initialization entry point for use by ArgoEclipse.
@@ -111,19 +97,6 @@ public final class Translator {
         initInternal(locale);
     }
 
-    /**
-     * Default Locale is set and resources Bundles are loaded.
-     * @deprecated by MVW in V0.25.3, replaced by init(String locale).
-     */
-    @Deprecated
-    public static void init () {
-        initInternal(""/*Configuration.getString(Argo.KEY_LOCALE)*/);
-        /* TODO: This is an uplevel reference from GEF to ArgoUML - tfm
-         * What is this bundle used for?  Is it used? 
-         * MVW: Move into Main? */
-        Localizer.addResource("UMLMenu",
-			      "org.argouml.i18n.UMLResourceBundle");
-    }
 
     /**
      * Initialise the locale.

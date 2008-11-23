@@ -258,17 +258,6 @@ public interface Project {
      */
     public void setHistoryFile(final String s);
 
-
-    /**
-     * Returns all models defined by the user. I.e. this does not return the
-     * default model but all other models.
-     * 
-     * @return A Vector of all user defined models.
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #getUserDefinedModelList()}.
-     */
-    @Deprecated
-    public Vector getUserDefinedModels();
     
     /**
      * Returns all models defined by the user. I.e. this does not return any
