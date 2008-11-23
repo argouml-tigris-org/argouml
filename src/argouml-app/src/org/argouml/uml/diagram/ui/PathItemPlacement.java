@@ -24,10 +24,14 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
 import org.apache.log4j.Logger;
@@ -579,12 +583,27 @@ public class PathItemPlacement extends PathConv {
     /**
      * Paint the virtual connection from the edge to where the path item
      * is placed according to this path item placement algorithm.
-     * TODO: Yet to implement
      * 
      * @param g the Graphics object
      * @see org.tigris.gef.base.PathConv#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
-        
+        final float[] dashes = {1.0f, 4.0f};
+        final float phase = 5f;
+        final Point p1 = getAnchorPosition();
+        final Point p2 = getPoint();
+        g.setColor(Color.RED);
+        if (g instanceof Graphics2D) {
+            final Graphics2D g2d = (Graphics2D) g;
+            BasicStroke dashedStroke = new BasicStroke(
+                    1, 
+                    BasicStroke.CAP_SQUARE, 
+                    BasicStroke.JOIN_MITER, 
+                    10.0f, 
+                    dashes, 
+                    phase);
+            g2d.setStroke(dashedStroke);
+        }
+        g.drawLine(p1.x, p1.y, p2.x, p2.y);
     }
 }
