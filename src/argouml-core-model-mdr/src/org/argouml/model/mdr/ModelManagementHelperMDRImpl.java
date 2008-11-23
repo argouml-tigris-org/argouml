@@ -161,17 +161,19 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         }
         Class kind = (Class) type;
         Collection ret = getAllModelElementsOfKind(model, kind);
-        if (kind.isAssignableFrom(model.getClass())) {
+        if (kind.isAssignableFrom(model.getClass()) && !ret.contains(model)) {
+            // TODO: It doesn't really make sense that a namespace would be
+            // returned as part of its own contents, but that's the historical
+            // behavior.
             ret = new ArrayList(ret);
-            if (!ret.contains(model)) {
-                ret.add(model);
-            }
+            ret.add(model);
         }
         return ret;
     }
     
 
-    public Collection getAllModelElementsOfKind(Object nsa, Object type) {
+    public Collection getAllModelElementsOfKind(Object nsa, Object type) {        
+        // TODO: Performance critical method
         long startTime = System.currentTimeMillis();
         if (nsa == null || type == null) {
             return Collections.EMPTY_LIST;
@@ -222,6 +224,8 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
 
         // Remove any elements not in requested namespace
         Collection returnElements = new ArrayList();
+        // TODO: Perhaps use a HashSet or other collection with faster lookup
+        // performance in case our callers are doing naive .contains() lookups
         for (Iterator i = allOfType.iterator(); i.hasNext();) {
             Object me = i.next();
             // TODO: Optimize for root model case? - tfm
