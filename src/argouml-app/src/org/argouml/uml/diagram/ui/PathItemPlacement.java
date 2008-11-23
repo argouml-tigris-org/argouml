@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
@@ -574,5 +575,16 @@ public class PathItemPlacement extends PathConv {
         
         return result;
     }
-
+    
+    /**
+     * Paint the virtual connection from the edge to where the path item
+     * is placed according to this path item placement algorithm.
+     * TODO: Yet to implement
+     * 
+     * @param g the Graphics object
+     * @see org.tigris.gef.base.PathConv#paint(java.awt.Graphics)
+     */
+    public void paint(Graphics g) {
+        
+    }
 }

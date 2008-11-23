@@ -26,8 +26,12 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Graphics;
 
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.PathItemPlacementStrategy;
+import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.base.SelectionReshape;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 
 /**
  *
@@ -46,14 +50,27 @@ public class SelectionEdgeClarifiers extends SelectionReshape {
      */
     public SelectionEdgeClarifiers(Fig f) { super(f); }
 
-    /** Paint the handles at the four corners and midway along each edge
-     * of the bounding box.
+    /**
+     * This extends the standard selection painting to also highlight
+     * the editable text labels and their placement strategies should
+     * there be only one selected item.
      *
      * @see org.tigris.gef.base.Selection#paint(java.awt.Graphics)
+     * @param g the graphics object
      */
+    @Override
     public void paint(Graphics g) {
-	((FigEdgeModelElement) getContent()).paintClarifiers(g);
-	super.paint(g);
+        super.paint(g);
+        int selectionCount =
+            Globals.curEditor().getSelectionManager().selections().size();
+        if (selectionCount == 1) {
+            FigEdgeModelElement edge = (FigEdgeModelElement) getContent();
+            edge.paintClarifiers(g);
+	    for (PathItemPlacementStrategy strategy
+	            : edge.getPathItemStrategies()) {
+	        strategy.paint(g);
+	    }
+	}
     }
 
 } /* end class SelectionEdgeClarifiers */
