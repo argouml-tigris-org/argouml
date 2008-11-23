@@ -64,20 +64,6 @@ public interface CoreHelper {
      */
     Collection getSupertypes(Object generalizableElement);
 
-    /**
-     * Return all AssociationEnds of a given Classifier. Same as
-     * {@link Facade#getAssociationEnds(Object)}.
-     * 
-     * @param classifier
-     *            the classifier for which to get the association ends
-     * 
-     * @return a collection of the associationends
-     * @see Facade#getAssociationEnds(Object)
-     * @deprecated for 0.25.4 by tfmorris.  Use 
-     *          {@link Facade#getAssociationEnds(Object)}.
-     */
-    @Deprecated
-    Collection getAssociateEnds(Object classifier);
 
     /**
      * Return all AssociationEnds of a given Classifier plus all 
@@ -177,18 +163,6 @@ public interface CoreHelper {
      * @return an operation, or null.
      */
     Object getSpecification(Object object);
-
-    /**
-     * Return all Interfaces of which this class is a realization.
-     * 
-     * @param classifier
-     *            the class you want to have the interfaces for
-     * @return a collection of the Interfaces
-     * @deprecated for 0.25.2 by tfmorris. Use
-     *             {@link Facade#getSpecifications(Object)}.
-     */
-    @Deprecated
-    Collection getSpecifications(Object classifier);
 
     /**
      * Return all Classifiers of which this class is a
@@ -363,17 +337,6 @@ public interface CoreHelper {
      */
     Object getAssociationEnd(Object type, Object assoc);
 
-    /**
-     * Returns the contents (owned elements) of this Namespace and all its
-     * parents as specified in section 2.5.3.8 of the UML 1.3 spec.
-     * 
-     * @param namespace is the classifier
-     * @return Collection
-     * @deprecated for 0.25.1 by tfmorris. Use
-     *             {@link ModelManagementHelper#getAllContents(Object)}.
-     */
-    @Deprecated
-    Collection getAllContents(Object namespace);
 
     /**
      * Return all Attributes of a Classifier and of its parents.
@@ -811,16 +774,6 @@ public interface CoreHelper {
      */
     void addSupplierDependency(Object supplier, Object dependency);
 
-    /**
-     * Add a TaggedValue to a ModelElement.
-     * 
-     * @param handle ModelElement
-     * @param taggedValue TaggedValue
-     * @deprecated for 0.25.1 by tfmorris. Use
-     *         {@link ExtensionMechanismsHelper#addTaggedValue(Object, Object)}.
-     */
-    @Deprecated
-    void addTaggedValue(Object handle, Object taggedValue);
 
     /**
      * Add a target flow to a ModelElement.
@@ -1356,16 +1309,6 @@ public interface CoreHelper {
     @Deprecated
     void setTaggedValue(Object handle, String tag, String value);
 
-    /**
-     * Set the TaggedValues of a ModelElement.
-     *
-     * @param handle ModelElement
-     * @param taggedValues Collection of TaggedValues
-     * @deprecated for 0.25.1 by tfmorris. Use 
-     *     {@link ExtensionMechanismsHelper#setTaggedValue(Object, Collection)}.
-     */
-    @Deprecated
-    void setTaggedValues(Object handle, Collection taggedValues);
 
     /**
      * Set the targetScope of an AssociationEnd or StructuralFeature.

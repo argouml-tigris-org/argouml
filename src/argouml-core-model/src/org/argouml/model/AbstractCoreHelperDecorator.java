@@ -79,11 +79,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         return impl.getSupertypes(generalizableElement);
     }
 
-    @Deprecated
-    public Collection getAssociateEnds(Object classifier) {
-        return impl.getAssociateEnds(classifier);
-    }
-
     public Collection getAssociateEndsInh(Object classifier1) {
         return impl.getAssociateEndsInh(classifier1);
     }
@@ -122,11 +117,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
 
     public Object getSpecification(Object object) {
         return impl.getSpecification(object);
-    }
-
-    @Deprecated
-    public Collection getSpecifications(Object classifier) {
-        return impl.getSpecifications(classifier);
     }
 
     public Collection getSubtypes(Object cls) {
@@ -207,11 +197,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
 
     public Object getAssociationEnd(Object type, Object assoc) {
         return impl.getAssociationEnd(type, assoc);
-    }
-
-    @Deprecated
-    public Collection getAllContents(Object clazz) {
-        return impl.getAllContents(clazz);
     }
 
     public Collection getAllAttributes(Object clazz) {
@@ -416,11 +401,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.addSupplierDependency(supplier, dependency);
     }
 
-    @Deprecated
-    public void addTaggedValue(Object handle, Object taggedValue) {
-        impl.addTaggedValue(handle, taggedValue);
-    }
-
     public void addTargetFlow(Object handle, Object flow) {
         impl.addTargetFlow(handle, flow);
     }
@@ -550,11 +530,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     @Deprecated
     public void setTaggedValue(Object handle, String tag, String value) {
         impl.setTaggedValue(handle, tag, value);
-    }
-
-    @Deprecated
-    public void setTaggedValues(Object handle, Collection taggedValues) {
-        impl.setTaggedValues(handle, taggedValues);
     }
 
     public void setType(Object handle, Object type) {

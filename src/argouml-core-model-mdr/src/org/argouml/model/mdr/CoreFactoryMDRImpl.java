@@ -376,28 +376,12 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    @SuppressWarnings("deprecation")
-    public Primitive createPrimitive() {
-        return createPrimitiveType();
-    }
-
-
     public Primitive createPrimitiveType() {
         Primitive obj = getCorePackage().getPrimitive().createPrimitive();
         super.initialize(obj);
         return obj;
     }
     
-
-    @SuppressWarnings("deprecation")
-    public ProgrammingLanguageDataType createProgrammingLanguageDataType() {
-        ProgrammingLanguageDataType obj = getCorePackage()
-                .getProgrammingLanguageDataType()
-                .createProgrammingLanguageDataType();
-        super.initialize(obj);
-        return obj;
-    }
-
 
     public TemplateArgument createTemplateArgument() {
         TemplateArgument obj = getCorePackage().getTemplateArgument()
@@ -745,22 +729,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    @SuppressWarnings("deprecation")
-    public Attribute buildAttribute(Object handle, Object model, Object type) {
-        Attribute attr = buildAttribute(model, type);
-        if (handle instanceof Classifier) {
-            Classifier cls = (Classifier) handle;
-            cls.getFeature().add(attr);
-        } else if (handle instanceof AssociationEnd) {
-            AssociationEnd assend = (AssociationEnd) handle;
-            assend.getQualifier().add(attr);
-        } else {
-            throw new IllegalArgumentException();            
-        }
-        return attr;
-    }
-    
-
     public Attribute buildAttribute2(Object handle, Object type) {
         Attribute attr = buildAttribute2(type);
         if (handle instanceof Classifier) {
@@ -927,31 +895,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return dep;
     }
 
-    
-    @SuppressWarnings("deprecation")
-    public Permission buildPermission(Object client, Object supplier) {
-        if (!(client instanceof ModelElement) 
-                || !(supplier instanceof ModelElement)) {
-            throw new IllegalArgumentException("client is not a Namespace"
-                    + " or supplier is not a Package");
-        }
-        // Warn about historical usage which is not compliant with UML spec.
-        if (!(client instanceof Namespace) 
-                || !(supplier instanceof UmlPackage)) {
-            LOG.warn("buildPermission called with client that is not a "
-                    + "Namespace or supplier that is not a Package");
-        }
-        Permission per = buildPermissionInternal((ModelElement) client, 
-                (ModelElement) supplier);
 
-        // TODO: This should fetch the stereotype from our profile
-        modelImpl.getExtensionMechanismsFactory().buildStereotype(per, 
-                ModelManagementHelper.IMPORT_STEREOTYPE,
-                per.getNamespace());
-        return per;
-    }
-    
-    
     public Permission buildPackageImport(Object client, Object supplier) {
         if (!(client instanceof Namespace) 
                 || !(supplier instanceof UmlPackage)) {
@@ -997,21 +941,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 ModelManagementHelper.ACCESS_STEREOTYPE,
                 per.getNamespace());
         return per;
-    }
-
-    @Deprecated
-    public Generalization buildGeneralization(Object child, Object parent, 
-            String name) {
-        if (child == null || parent == null
-                || !(child instanceof GeneralizableElement)
-                || !(parent instanceof GeneralizableElement)) {
-            throw new IllegalArgumentException();
-        }
-        Generalization gen = buildGeneralization(child, parent);
-        if (gen != null) {
-            gen.setName(name);
-        }
-        return gen;
     }
 
 
@@ -1080,13 +1009,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    @SuppressWarnings("deprecation")
-    public Operation buildOperation(Object classifier, Object model,
-            Object returnType) {
-        return buildOperation(classifier, returnType);
-    }
-
-
     public Operation buildOperation(Object classifier, Object returnType) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException("Handle is not a classifier");
@@ -1110,13 +1032,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    @SuppressWarnings("deprecation")
-    public Operation buildOperation(Object cls, Object model, Object returnType,
-            String name) {
-        return buildOperation2(cls, returnType, name);
-    }
-    
-
     public Operation buildOperation2(Object cls, Object returnType, 
             String name) {
         Operation oper = buildOperation(cls, returnType);
@@ -1139,12 +1054,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return param;
     }
 
-
-    @SuppressWarnings("deprecation")
-    public Parameter buildParameter(Object o, Object model, Object type) {
-        return buildParameter(o, type);
-    }
-    
 
     public Parameter buildParameter(Object o, Object type) {
         if (o instanceof Event) {

@@ -270,20 +270,7 @@ public interface CoreFactory extends Factory {
      */
     Object createPermission();
     
-    /**
-     * Create a UML Primitive.
-     * 
-     * @since UML 1.4
-     * @return an initialized UML Primitive instance.
-     * @deprecated for 0.25.4 by tfmorris. Removed from UML 2.x. Use
-     *             {@link #createPrimitiveType()}. This can be scheduled for
-     *             speedy removal since it was just introduced with UML 1.4 and
-     *             is unused by ArgoUML.
-     */
-    @Deprecated
-    public Object createPrimitive();
 
-    
     /**
      * Create a UML PrimitiveType.
      * 
@@ -294,17 +281,6 @@ public interface CoreFactory extends Factory {
      */
     public Object createPrimitiveType();
     
-    /**
-     * Create a UML ProgrammingLanguageDataType.
-     * 
-     * @since UML 1.4
-     * @return an initialized ProgrammingLanguageDataType *
-     * @deprecated for 0.25.4 by tfmorris. Removed from UML 2.x. This can be
-     *             scheduled for speedy removal since it was just introduced
-     *             with UML 1.4 and is unused by ArgoUML.
-     */
-    @Deprecated
-    public Object createProgrammingLanguageDataType();
 
     /**
      * Create a UML TemplateArgument.
@@ -441,18 +417,6 @@ public interface CoreFactory extends Factory {
      */
     Object buildAttribute2(Object type);
     
-    /**
-     * Builds an attribute owned by a classifier. 
-     *
-     * @param classifier the classifier to own the new attribute
-     * @param model the enclosing model
-     * @param type the type
-     * @return the newly built attribute
-     * @deprecated for 0.25.2 by tfmorris - use the side effect free version
-     * {@link #buildAttribute2(Object, Object)}
-     */
-    @Deprecated
-    Object buildAttribute(Object classifier, Object model, Object type);
 
     /**
      * Builds an attribute of the given type owned by a classifier.
@@ -575,22 +539,6 @@ public interface CoreFactory extends Factory {
      */
     Object buildDependency(Object clientObj, Object supplierObj);
 
-    /**
-     * Builds a Permission between two Namespaces. For backward compatibility
-     * with pre 0.25.4 versions of ArgoUML, this builds an import (a Permission
-     * with the <<import>> stereotype).
-     * 
-     * @param client
-     *                is the client package
-     * @param supplier
-     *                is the supplier
-     * @return Permission
-     * @see CoreFactory#buildPackageImport(Object, Object)
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #buildPackageImport(Object, Object)}.
-     */
-    @Deprecated
-    Object buildPermission(Object client, Object supplier);
 
     /**
      * Build an import Permission between a Namespace and a Package. All model
@@ -637,22 +585,6 @@ public interface CoreFactory extends Factory {
 
     
     /**
-     * Builds a generalization between a parent and a child with a given name.
-     * 
-     * @param child
-     *            is the child
-     * @param parent
-     *            is the parent
-     * @param name
-     *            is the given name
-     * @return generalization
-     * @deprecated for 0.25.4 by tfmorris. Generalizations are unnamed in UML
-     *             2.x. Use {@link #buildGeneralization(Object, Object)}.
-     */
-    @Deprecated
-    Object buildGeneralization(Object child, Object parent, String name);
-
-    /**
      * Builds a generalization between a parent and a child. Does not check if
      * multiple inheritance is allowed for the current notation.
      *
@@ -673,18 +605,6 @@ public interface CoreFactory extends Factory {
      */
     Object buildMethod(String name);
 
-    /**
-     * Builds an operation for a classifier.
-     * 
-     * @param classifier is the given classifier
-     * @param model is the model to which the class belongs
-     * @param returnType the type of the return parameter
-     * @return the operation
-     * @deprecated for 0.25.2 by tfmorris. Use
-     *             {@link #buildOperation(Object, Object)}.
-     */
-    @Deprecated
-    Object buildOperation(Object classifier, Object model, Object returnType);
 
     /**
      * Builds an operation for a classifier.
@@ -694,21 +614,6 @@ public interface CoreFactory extends Factory {
      * @return the operation
      */
     Object buildOperation(Object classifier, Object returnType);
-
-    /**
-     * Builds an operation with a given name for classifier.
-     * 
-     * @param cls is the classifier that shall own the operation
-     * @param model is the model that contains the class
-     * @param returnType the type of the return parameter
-     * @param name the given name for the operation
-     * @return the operation
-     * @deprecated for 0.25.2 by tfmorris. Use
-     *             {@link #buildOperation2(Object, Object, String)}.
-     */
-    @Deprecated
-    Object buildOperation(Object cls, Object model, Object returnType,
-            String name);
 
 
     /**
@@ -728,22 +633,6 @@ public interface CoreFactory extends Factory {
      */
     Object buildOperation2(Object cls, Object returnType, String name);
 
-    /**
-     * Adds a parameter initialized to default values to a given event or
-     * behavioral feature.
-     * 
-     * @param o
-     *            an event or behavioral feature
-     * @param model
-     *            the model to which the event or behavioral feature belongs
-     * @param type
-     *            the type of the parameter
-     * @return the parameter
-     * @deprecated for 0.25.2 by tfmorris. Use
-     *             {@link #buildParameter(Object, Object)}.
-     */
-    @Deprecated
-    Object buildParameter(Object o, Object model, Object type);
 
     /**
      * Adds a parameter initialized to default values to a given event
@@ -891,7 +780,8 @@ public interface CoreFactory extends Factory {
 
     /**
      * Create a generalization in the given extent.
-     *
+     * 
+     * @extent the extent in which the generalization should be created
      * @return A generalization.
      */
     Object createGeneralization(Object extent);

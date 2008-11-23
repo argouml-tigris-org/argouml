@@ -448,11 +448,6 @@ class CoreHelperEUMLImpl implements CoreHelper {
         addSupplier(dependency, supplier);
     }
 
-    public void addTaggedValue(Object handle, Object taggedValue) {
-        // TODO: implement
-        throw new NotYetImplementedException();
-    }
-
     public void addTargetFlow(Object handle, Object flow) {
         // TODO: implement
         throw new NotYetImplementedException();
@@ -521,14 +516,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, org.eclipse.uml2.uml.Component.class);
     }
 
-    public Collection getAllContents(Object namespace) {
-        return modelImpl.getModelManagementHelper().getAllContents(namespace);
-    }
-
     public Collection getAllDataTypes(Object ns) {
         return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, DataType.class);
     }
-
     
     public Collection getAllInterfaces(Object ns) {
         return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, Interface.class);
@@ -610,9 +600,6 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return result;
     }
 
-    public Collection getAssociateEnds(Object classifier) {
-        return modelImpl.getFacade().getAssociationEnds(classifier);
-    }
 
     public Collection getAssociateEndsInh(Object classifier) {
         if (!(classifier instanceof Classifier)) {
@@ -620,9 +607,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     "classifier must be instance of Classifier"); //$NON-NLS-1$
         }
         Collection result = new ArrayList();
-        result.addAll(getAssociateEnds(classifier));
+        result.addAll(modelImpl.getFacade().getAssociationEnds(classifier));
         for (Classifier o : ((Classifier) classifier).allParents()) {
-            result.addAll(getAssociateEnds(o));
+            result.addAll(modelImpl.getFacade().getAssociationEnds(o));
         }
         return result;
     }
@@ -973,10 +960,6 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Object getSpecification(Object object) {
         // In UML2 the metaclass Method does not exists
         throw new NotYetImplementedException();
-    }
-
-    public Collection getSpecifications(Object classifier) {
-        return getRealizedInterfaces(classifier);
     }
 
     public Collection<Element> getSubtypes(Object cls) {
@@ -1618,10 +1601,6 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setTaggedValue(Object handle, String tag, String value) {
-        throw new NotYetImplementedException();
-    }
-
-    public void setTaggedValues(Object handle, Collection taggedValues) {
         throw new NotYetImplementedException();
     }
 

@@ -408,10 +408,6 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return property;
     }
 
-    @SuppressWarnings("deprecation")
-    public Property buildAttribute(Object handle, Object model, Object type) {
-        return buildAttribute2(handle, type);
-    }
 
     public Property buildAttribute2(final Object handle, final Object type) {
         if (!(handle instanceof Type) || !(type instanceof Type)) {
@@ -752,12 +748,6 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return (EnumerationLiteral) run.getParams().get(0);
     }
 
-    @SuppressWarnings("deprecation")
-    public Generalization buildGeneralization(Object child, Object parent,
-            String name) {
-        // Generalizations are unnamed in UML 2.x
-        return buildGeneralization(parent, child);
-    }
 
     public Generalization buildGeneralization(final Object child,
             final Object parent) {
@@ -836,21 +826,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         throw new NotImplementedException();
     }
 
-    @SuppressWarnings("deprecation")
-    public Operation buildOperation(Object classifier, Object model,
-            Object returnType) {
-        return buildOperation2(classifier, returnType, null);
-    }
-
     public Operation buildOperation(Object classifier, Object returnType) {
         return buildOperation2(classifier, returnType, null);
     }
 
-    @SuppressWarnings("deprecation")
-    public Operation buildOperation(Object cls, Object model,
-            Object returnType, String name) {
-        return buildOperation2(cls, returnType, name);
-    }
 
     public Operation buildOperation2(final Object cls, final Object returnType,
             final String name) {
@@ -883,10 +862,6 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return (Operation) run.getParams().get(0);
     }
 
-    @SuppressWarnings("deprecation")
-    public Parameter buildParameter(Object o, Object model, Object type) {
-        return buildParameter(o, type);
-    }
 
     public Parameter buildParameter(final Object o, final Object type) {
         // TODO: In UML2.x Event has no parameters. The Event metaclass in
@@ -916,13 +891,6 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return (Parameter) run.getParams().get(0);
     }
 
-    /**
-     * Removed from UML2.x, use buildPackageImport instead.
-     */
-    @Deprecated
-    public PackageImport buildPermission(Object client, Object supplier) {
-        return buildPackageImport(client, supplier);
-    }
 
     public PackageImport buildPackageAccess(Object client, Object supplier) {
         return buildPackageImport(
@@ -1172,19 +1140,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return UMLFactory.eINSTANCE.createPackageImport();
     }
 
-    @SuppressWarnings("deprecation")
-    public Object createPrimitive() {
-        return createPrimitiveType();
-    }
-
     public PrimitiveType createPrimitiveType() {
         return UMLFactory.eINSTANCE.createPrimitiveType();
-    }
-
-    @SuppressWarnings("deprecation")
-    public Object createProgrammingLanguageDataType() {
-        // Removed from UML 2.x & unused by ArgoUML.
-        throw new NotImplementedException();
     }
 
     public Object createTemplateArgument() {

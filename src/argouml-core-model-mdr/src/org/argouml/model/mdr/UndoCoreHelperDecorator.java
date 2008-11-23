@@ -501,11 +501,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         Model.execute(new DummyModelCommand());
     }
 
-    public void addTaggedValue(Object handle, Object taggedValue) {
-        super.addTaggedValue(handle, taggedValue);
-        Model.execute(new DummyModelCommand());
-    }
-
     public void addTargetFlow(Object handle, Object flow) {
         super.addTargetFlow(handle, flow);
         Model.execute(new DummyModelCommand());
@@ -766,11 +761,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
     public void setTaggedValue(Object handle, String tag, String value) {
         super.setTaggedValue(handle, tag, value);
-        Model.execute(new DummyModelCommand());
-    }
-
-    public void setTaggedValues(Object handle, Collection taggedValues) {
-        super.setTaggedValues(handle, taggedValues);
         Model.execute(new DummyModelCommand());
     }
 

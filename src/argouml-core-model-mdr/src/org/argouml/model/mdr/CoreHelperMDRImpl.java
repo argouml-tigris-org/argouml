@@ -239,13 +239,6 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public Collection<AssociationEnd> getAssociateEnds(Object classifier) {
-        return Model.getFacade().getAssociationEnds(classifier);
-    }
-
-
     public Collection<AssociationEnd> getAssociateEndsInh(Object classifier1) {
         if (!(classifier1 instanceof Classifier)) {
             throw new IllegalArgumentException();
@@ -254,7 +247,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         Classifier classifier = (Classifier) classifier1;
         Collection<AssociationEnd> result = new ArrayList<AssociationEnd>();
         try {
-            result.addAll(getAssociateEnds(classifier));
+            result.addAll(modelImpl.getFacade().getAssociationEnds(classifier));
             for (Generalization gen : classifier.getGeneralization()) {
                 Object parent = gen.getParent();
                 result.addAll(getAssociateEndsInh(parent));
@@ -507,16 +500,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
-    @SuppressWarnings("deprecation")
-    public Collection<Interface> getSpecifications(Object classifier) {
-        try {
-            return getRealizedInterfaces(classifier);
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-    }
-
-
+    
     public Collection<GeneralizableElement> getSubtypes(Object cls) {
         if (!(cls instanceof Classifier)) {
             throw new IllegalArgumentException();
@@ -971,19 +955,6 @@ class CoreHelperMDRImpl implements CoreHelper {
             throw new InvalidElementException(e);
         }
         return null;
-    }
-
-
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public Collection getAllContents(Object clazz) {
-        if (clazz == null) {
-            return Collections.emptySet();
-        }
-        if (!(clazz instanceof Classifier)) {
-            throw new IllegalArgumentException();
-        }
-        return modelImpl.getModelManagementHelper().getAllContents(clazz);
     }
 
 
@@ -2497,13 +2468,6 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
-    @SuppressWarnings("deprecation")
-    public void addTaggedValue(Object handle, Object taggedValue) {
-        modelImpl.getExtensionMechanismsHelper().addTaggedValue(handle,
-                taggedValue);
-    }
-
-
     public void addTargetFlow(Object handle, Object flow) {
         if (handle instanceof ModelElement && flow instanceof Flow) {
             ((ModelElement) handle).getTargetFlow().add((Flow) flow);
@@ -3272,13 +3236,6 @@ class CoreHelperMDRImpl implements CoreHelper {
             return;
         }
         throw new IllegalArgumentException("handle: " + handle);
-    }
-
-
-    @Deprecated
-    public void setTaggedValues(Object handle, Collection taggedValues) {
-        Model.getExtensionMechanismsHelper().setTaggedValue(handle,
-                taggedValues);
     }
 
 
