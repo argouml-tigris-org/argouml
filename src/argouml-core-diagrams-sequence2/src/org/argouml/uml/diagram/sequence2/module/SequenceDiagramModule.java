@@ -65,7 +65,7 @@ public class SequenceDiagramModule implements ModuleInterface {
         PropPanelFactoryManager.removePropPanelFactory(propPanelFactory);
 
         DiagramFactory.getInstance().registerDiagramFactory(
-                DiagramType.Sequence, null);
+                DiagramType.Sequence, (SequenceDiagramFactory) null);
 
         LOG.info("SequenceDiagram Module disabled.");
         return true;
