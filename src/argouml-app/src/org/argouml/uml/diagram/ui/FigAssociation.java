@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -56,13 +57,15 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadComposite;
 import org.tigris.gef.presentation.ArrowHeadDiamond;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadNone;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 
@@ -106,24 +109,34 @@ public class FigAssociation extends FigEdgeModelElement {
         if (getNameFig() != null) {
             middleGroup.addFig(getNameFig());
         }
+        
         middleGroup.addFig(getStereotypeFig());
+        // Placed perpendicular to midpoint of edge
         addPathItem(middleGroup,
-                new PathConvPercent2(this, middleGroup, 50, 25));
-
+                new PathItemPlacement(this, middleGroup, 50, 25));
+        markPosition(50, 0, 90, 25, Color.yellow);
+        
         srcMult = new FigMultiplicity();
-        addPathItem(srcMult, new PathConvPercentPlusConst(this, 0, 15, 15));
+        // Placed at a 45 degree angle close to the end
+        addPathItem(srcMult, 
+                new PathItemPlacement(this, srcMult, 0, 5, 135, 5));
+        markPosition(0, 5, 135, 5, Color.green);
         
         srcGroup = new FigAssociationEndAnnotation(this);
-        addPathItem(srcGroup, new PathConvPercentPlusConst(this, 0, 35, -15));
+        addPathItem(srcGroup, 
+                new PathItemPlacement(this, srcGroup, 0, 5, -135, 15));
+        markPosition(0, 5, -135, 15, Color.blue);
 
         destMult = new FigMultiplicity();
         addPathItem(destMult,
-		    new PathConvPercentPlusConst(this, 100, -15, 15));
+                new PathItemPlacement(this, destMult, 100, -5, 45, 5));
+        markPosition(100, -5, 45, 5, Color.red);
         
         destGroup = new FigAssociationEndAnnotation(this);
         addPathItem(destGroup,
-		    new PathConvPercentPlusConst(this, 100, -35, -15));
-
+                new PathItemPlacement(this, destGroup, 100, -5, -45, 15));
+        markPosition(100, -5, -45, 15, Color.orange);
+                
         setBetweenNearestPoints(true);
         
         // next line necessary for loading
@@ -140,6 +153,32 @@ public class FigAssociation extends FigEdgeModelElement {
 
     }
 
+    
+    /*
+     * Add pretty little markers for debugging purposes. We use three markers so
+     * you can see the anchor, the computed target position, and how collision
+     * detection affects a largish box.
+     */
+    private void markPosition(int pct, int delta, int angle, int offset,
+            Color color) {
+        // set this to true on to enable debugging figs
+        if (false) {
+            Fig f;
+            f = new FigCircle(0, 0, 5, 5, color, Color.red);
+            // anchor position
+            addPathItem(f, new PathItemPlacement(this, f, pct, delta, angle, 
+                    0));
+            f = new FigRect(0, 0, 100, 20, color, Color.red);
+            f.setFilled(false);
+            addPathItem(f, new PathItemPlacement(this, f, pct, delta, angle,
+                    offset));
+            f = new FigCircle(0, 0, 5, 5, color, Color.blue);
+            addPathItem(f, new PathItemPlacement(this, f, pct, delta, angle,
+                    offset));
+        }
+    }
+
+    
     /**
      * Constructor that hooks the Fig to an existing UML element.
      *
