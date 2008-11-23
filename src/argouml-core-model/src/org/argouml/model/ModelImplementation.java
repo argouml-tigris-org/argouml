@@ -275,25 +275,6 @@ public interface ModelImplementation {
      */
     XmiReader getXmiReader() throws UmlException;
 
-    /**
-     * A factory method that creates a new instance of an XmiWriter on each
-     * call.
-     * 
-     * @param model
-     *            the project member model
-     * @param writer
-     *            the writer
-     * @param version
-     *            the version of ArgoUML
-     * @return the object implementing the XmiWriter interface
-     * @throws UmlException
-     *             on any error while writing
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #getXmiWriter(Object, OutputStream, String)}.
-     */
-    @Deprecated
-    XmiWriter getXmiWriter(Object model, Writer writer, String version)
-        throws UmlException;
 
     /**
      * A factory method that creates a new instance of an XmiWriter on each

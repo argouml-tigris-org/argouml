@@ -24,15 +24,11 @@
 
 package org.argouml.persistence;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.net.URL;
 
 import org.argouml.application.api.Argo;
@@ -98,42 +94,6 @@ class DiagramMemberFilePersister extends MemberFilePersister {
 
 
     @Override
-    @Deprecated
-    public void save(ProjectMember member, Writer writer, boolean xmlFragment)
-    	throws SaveException {
-
-        ProjectMemberDiagram diagramMember = (ProjectMemberDiagram) member;
-        OCLExpander expander;
-        try {
-            expander =
-                new OCLExpander(TemplateReader.getInstance().read(PGML_TEE));
-        } catch (ExpansionException e) {
-            throw new SaveException(e);
-        }
-        if (!xmlFragment) {
-            try {
-                expander.expand(writer, diagramMember.getDiagram());
-            } catch (ExpansionException e) {
-                throw new SaveException(e);
-            }
-        } else {
-            try {
-                File tempFile = File.createTempFile("pgml", null);
-                tempFile.deleteOnExit();
-                FileWriter w = new FileWriter(tempFile);
-                expander.expand(w, diagramMember.getDiagram());
-                w.close();
-                addXmlFileToWriter((PrintWriter) writer, tempFile);
-            } catch (ExpansionException e) {
-                throw new SaveException(e);
-            } catch (IOException e) {
-                throw new SaveException(e);
-            }
-        }
-    }
-    
-
-    @Override
     public void save(ProjectMember member, OutputStream outStream)
         throws SaveException {
 
@@ -153,14 +113,18 @@ class DiagramMemberFilePersister extends MemberFilePersister {
         } catch (UnsupportedEncodingException e1) {
             throw new SaveException("Bad encoding", e1);
         }
-        PrintWriter printWriter = new PrintWriter(outputWriter);
+        
         try {
             // WARNING: the OutputStream version of this doesn't work! - tfm
-            expander.expand(printWriter, diagramMember.getDiagram());
+            expander.expand(outputWriter, diagramMember.getDiagram());
         } catch (ExpansionException e) {
             throw new SaveException(e);
         } finally {
-            printWriter.flush();
+            try {
+                outputWriter.flush();
+            } catch (IOException e) {
+                throw new SaveException(e);
+            }
         }
         
     }

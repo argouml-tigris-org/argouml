@@ -41,7 +41,6 @@ package org.argouml.model.euml;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -520,11 +519,6 @@ public class EUMLModelImplementation implements ModelImplementation {
 
     public XmiReaderEUMLImpl getXmiReader() throws UmlException {
         return new XmiReaderEUMLImpl(this);
-    }
-
-    public XmiWriterEUMLImpl getXmiWriter(Object model, Writer writer,
-            String version) throws UmlException {
-        return new XmiWriterEUMLImpl(this, model, writer, version);
     }
 
     public XmiWriterEUMLImpl getXmiWriter(Object model, OutputStream stream,

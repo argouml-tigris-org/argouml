@@ -692,12 +692,6 @@ public class MDRModelImplementation implements ModelImplementation {
         return reader;
     }
 
-    @SuppressWarnings("deprecation")
-    public XmiWriter getXmiWriter(Object model, Writer writer, String version)
-        throws UmlException {
-        return new XmiWriterMDRImpl(this, model, writer, version);
-    }
-
 
     public XmiWriter getXmiWriter(Object model, OutputStream stream,
             String version) throws UmlException {

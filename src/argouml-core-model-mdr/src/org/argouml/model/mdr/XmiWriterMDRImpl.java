@@ -27,7 +27,6 @@ package org.argouml.model.mdr;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Arrays;
 
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
@@ -96,30 +95,7 @@ class XmiWriterMDRImpl implements XmiWriter {
                 .getObjectToId()));
         config.setHeaderProvider(new XmiHeaderProviderImpl(version));
     }
-    
-    /**
-     * Create an XMI writer for the given model.
-     * 
-     * @param theParent
-     *            The ModelImplementation
-     * @param theModel
-     *            The Model to write. If null, write all top-level model
-     *            elements.
-     * @param theWriter
-     *            The writer to write to
-     * @param version the ArgoUML version
-     * @throws IllegalArgumentException if no writer provided
-     * @deprecated for 0.25.4 by tfmorris.  Use 
-     * {@link #XmiWriterMDRImpl(MDRModelImplementation, Object, OutputStream, String)}.
-     */
-    public XmiWriterMDRImpl(MDRModelImplementation theParent, Object theModel,
-            Writer theWriter, String version) {
-        this(theParent, theModel, version);
-        if (theWriter == null) {
-            throw new IllegalArgumentException("A writer must be provided");
-        }
-        writer = theWriter;
-    }
+
     
     /**
      * Create an XMI writer for the given model.
@@ -151,126 +127,12 @@ class XmiWriterMDRImpl implements XmiWriter {
         XMIWriter xmiWriter = XMIWriterFactory.getDefault().createXMIWriter(
                 config);
         try {
-            OutputStream stream;
-            if (oStream == null) {
-                LOG.debug("XMI writer using wrapped output writer");
-                stream = new WriterOuputStream(writer);                
-            } else {
-                LOG.debug("XMI writer using native stream");
-                stream = oStream;
-            }
             RefPackage extent = ((RefObject) model).refOutermostPackage();
-            xmiWriter.write(stream, "file:///ThisIsADummyName.xmi", extent,
+            xmiWriter.write(oStream, "file:///ThisIsADummyName.xmi", extent,
                     XMI_VERSION);
         } catch (IOException e) {
             throw new UmlException(e);
-        }
-    }
-
-    /**
-     * Class which wraps a Writer into an OutputStream.
-     * 
-     * TODO: This entire class can go away when we remove
-     * the Writer based interface.
-     * 
-     * @author lmaitre
-     * @deprecated for 0.25.4 by tfmorris
-     */
-    private class WriterOuputStream extends OutputStream {
-
-        private Writer myWriter;
-        private boolean inTag = false;
-        private char tagName[] = new char[12];
-        private int tagLength = 0;
-
-        /**
-         * Constructor.
-         * @param wrappedWriter The myWriter which will be wrapped
-         */
-        public WriterOuputStream(Writer wrappedWriter) {
-            if (wrappedWriter == null) {
-                throw new IllegalArgumentException("No writer provided");
-            }
-            this.myWriter = wrappedWriter;
-        }
-
-        /*
-         * @see java.io.OutputStream#close()
-         */
-        public void close() throws IOException {
-            myWriter.close();
-        }
-
-        /*
-         * @see java.io.OutputStream#flush()
-         */
-        public void flush() throws IOException {
-            myWriter.flush();
-        }
-
-        /*
-         * @see java.io.OutputStream#write(byte[], int, int)
-         */
-        public void write(byte[] b, int off, int len) throws IOException {
-            char[] c = new String(b, off, len, ENCODING).toCharArray();
-            if (xmiExtensionWriter != null) {
-                write(c);
-            } else {
-                myWriter.write(c, 0, c.length);
-            }
-        }
-
-        /*
-         * @see java.io.OutputStream#write(byte[])
-         */
-        public void write(byte[] b) throws IOException {
-            write(b, 0, b.length);
-        }
-
-        /*
-         * @see java.io.OutputStream#write(int)
-         */
-        public void write(int b) throws IOException {
-            write(new byte[] {(byte) (b & 255)}, 0, 1);
-        }
-        
-        /*
-         * @see java.io.OutputStream#write(int)
-         */
-        private void write(char[] ca) throws IOException {
-            
-            int len = ca.length;
-            for (int i = 0; i < len; ++i) {
-                char ch = ca[i];
-                if (inTag) {
-                    if (ch == '>') {
-                        inTag = false;
-                        if (Arrays.equals(tagName, TARGET)) {
-                            if (i > 0) {
-                                myWriter.write(ca, 0, i + 1);
-                            }
-                            xmiExtensionWriter.write(myWriter);
-                            xmiExtensionWriter = null;
-                            if (i + 1 != len - 1) {
-                                myWriter.write(ca, i + 1, (len - i) - 1);
-                            }
-                            return;
-                        }
-                    } else if (tagLength == 12) {
-                        inTag = false;
-                    } else {
-                        tagName[tagLength++] = ch;
-                    }
-                }
-                
-                if (ch == '<') {
-                    inTag = true;
-                    Arrays.fill(tagName, ' ');
-                    tagLength = 0;
-                }
-            }
-            myWriter.write(ca, 0, ca.length);
-        }
+        } 
     }
 
     public void setXmiExtensionWriter(XmiExtensionWriter theWriter) {

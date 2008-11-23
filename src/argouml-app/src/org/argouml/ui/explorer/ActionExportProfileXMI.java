@@ -1,5 +1,5 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
-// Copyright (c) 2007 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,8 +26,9 @@ package org.argouml.ui.explorer;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 
 import javax.swing.AbstractAction;
@@ -73,10 +74,7 @@ public class ActionExportProfileXMI extends AbstractAction {
         this.selectedProfile = profile;
     }
 
-    /**
-     * @param arg0
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
+    
     public void actionPerformed(ActionEvent arg0) {
         try {
             final Collection profilePackages = 
@@ -99,14 +97,14 @@ public class ActionExportProfileXMI extends AbstractAction {
         }
     }
 
-    @SuppressWarnings("deprecation")
+
     private void saveModel(File destiny, Object model) throws IOException,
             UmlException {
-        FileWriter w = new FileWriter(destiny);
-
-        XmiWriter xmiWriter = Model.getXmiWriter(model, w, ApplicationVersion
-                .getVersion()
-                + "(" + UmlFilePersister.PERSISTENCE_VERSION + ")");
+        OutputStream stream = new FileOutputStream(destiny);
+        XmiWriter xmiWriter = 
+            Model.getXmiWriter(model, stream, 
+                    ApplicationVersion.getVersion() + "("
+                        + UmlFilePersister.PERSISTENCE_VERSION + ")");
         xmiWriter.write();
     }
 
@@ -122,11 +120,10 @@ public class ActionExportProfileXMI extends AbstractAction {
         chooser.setFileFilter(new FileFilter() {
 
             public boolean accept(File file) {
-                return file.isDirectory()
-                        || (file.isFile() 
-                                && (file.getName().toLowerCase().endsWith(".xml") 
-                                      || file.getName().toLowerCase().endsWith(".xmi")));
+                return file.isDirectory() || isXmiFile(file);
             }
+
+
 
             public String getDescription() {
                 return "*.XMI";
@@ -155,5 +152,10 @@ public class ActionExportProfileXMI extends AbstractAction {
         
         return null;
     }
-
+    
+    private static boolean isXmiFile(File file) {
+        return file.isFile()
+                && (file.getName().toLowerCase().endsWith(".xml") 
+                        || file.getName().toLowerCase().endsWith(".xmi"));
+    }
 }

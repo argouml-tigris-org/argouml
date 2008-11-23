@@ -28,11 +28,9 @@ package org.argouml.model.euml;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.argouml.model.NotImplementedException;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiExtensionWriter;
 import org.argouml.model.XmiWriter;
@@ -56,14 +54,6 @@ class XmiWriterEUMLImpl implements XmiWriter {
     private OutputStream oStream;
     
     private org.eclipse.uml2.uml.Package model;
-    
-    /**
-     * Old style constructor.  Unsupported (and shouldn't get called)
-     */
-    public XmiWriterEUMLImpl(EUMLModelImplementation implementation,
-            Object model, Writer writer, String version) {
-        throw new NotImplementedException();
-    }
     
     /**
      * Constructor.
