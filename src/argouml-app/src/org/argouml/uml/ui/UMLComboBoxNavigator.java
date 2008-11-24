@@ -51,30 +51,10 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
     private static ImageIcon icon = ResourceLoaderWrapper
             .lookupIconResource("ComboNav");
 
-    private UMLUserInterfaceContainer theContainer;
-
     private JComboBox theComboBox;
 
     private JButton theButton;
 
-    /**
-     * Constructor.
-     * 
-     * @deprecated by MVW in 0.25.3. Use other constructor instead.
-     * 
-     * @param container
-     *            Container, typically a PropPanel
-     * @param tooltip
-     *            Tooltip key for button
-     * @param box
-     *            Associated combo box
-     */
-    @Deprecated
-    public UMLComboBoxNavigator(UMLUserInterfaceContainer container,
-            String tooltip, JComboBox box) {
-        this(tooltip, box);
-        theContainer = container;
-    }
 
     /**
      * Constructor
@@ -110,7 +90,9 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
      * this component to resize in error.
      * See issue 4333 - Sun has now fixed this bug in JRE6 and so this
      * method can be removed once JRE5 is no longer supported.
+     * @return the preferred size
      */
+    @Override
     public Dimension getPreferredSize() {
         return new Dimension(
                 super.getPreferredSize().width,
@@ -129,15 +111,7 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
         // button action:
         if (event.getSource() == theButton) {
             Object item = theComboBox.getSelectedItem();
-            if (item instanceof UMLComboBoxEntry) {
-                UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
-                if (!entry.isPhantom()) {
-                    Object/* MModelElement */target = entry.getElement(null);
-                    if (target != null) {
-                        TargetManager.getInstance().setTarget(target);
-                    }
-                }
-            } else if (item != null) {
+            if (item != null) {
                 TargetManager.getInstance().setTarget(item);
             }
 
@@ -157,16 +131,7 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
     }
 
     private void setButtonEnabled(Object item) {
-        if (item instanceof UMLComboBoxEntry) {
-            UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
-            if (!entry.isPhantom()) {
-                Object/* MModelElement */target = entry.getElement(null);
-                if (target != null) {
-                    theButton.setEnabled(true);
-                } else
-                    theButton.setEnabled(false);
-            }
-        } else if (item != null) {
+        if (item != null) {
             theButton.setEnabled(true);
         } else {
             theButton.setEnabled(false);
