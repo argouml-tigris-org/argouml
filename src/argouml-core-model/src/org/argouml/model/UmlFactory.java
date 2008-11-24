@@ -90,25 +90,7 @@ public interface UmlFactory {
      */
     boolean isConnectionType(Object connectionType);
     
-    /**
-     * Checks if some type of UML model element is valid to
-     * connect two other existing UML model elements.<p>
-     * 
-     * This version of the method may also enforce well-formedness rules from
-     * the UML spec.  To control use behavior use 
-     * {@link #isConnectionValid(Object, Object, Object, boolean)}.<p>
-     * 
-     * @deprecated for 0.25.1 by tfmorris use 4 arg version 
-     *          {@link #isConnectionValid(Object, Object, Object, boolean)}
-     * @param connectionType  the UML object type of the connection
-     * @param fromElement     the UML object type of the "from"
-     * @param toElement       the UML object type of the "to"
-     * @return true if valid
-     */
-    @Deprecated
-    boolean isConnectionValid(Object connectionType, Object fromElement,
-            Object toElement);
-    
+
     /**
      * Checks if the given type of UML model element is valid to connect two
      * other existing UML model elements, optionally checking UML

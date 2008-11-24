@@ -143,35 +143,6 @@ public interface ModelManagementHelper {
      */
     Object getElement(List<String> path, Object theRootNamespace);
     
-    /**
-     * Finds the absolute path of a ModelElement. Ie the name of each namespace
-     * starting at the root (the Model) and ending with the name of the element.
-     * <p>
-     * The returned Vector implicitly starts at the <em>innermost</em>
-     * containing model and follows element's chain of owning namespaces back
-     * down to element. The first element will thus be the name of the namespace
-     * contained the Model, and the last element will be the name of element
-     * itself. Note thus that for the model the path will be empty.
-     * <p>
-     * <em>NOTE:</em>In the case of nested Models (ie a top level UML Model
-     * that contains other UML Models, this may not produce the expected
-     * results, but the historical behavior has been retained for backward
-     * compatibility. All new code should use {@link #getPathList(Object)}.
-     * 
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getPathList(Object)} but
-     *             be aware that the implementations are not 100% compatible.
-     *             Read the Javadoc for the new method to understand the
-     *             difference.
-     * @param element
-     *                is the object to resolve the path for.
-     * @return A Vector as described above.
-     * @throws IllegalArgumentException
-     *                 if element isn't a ModelElement properly owned by
-     *                 namespaces and a model.
-     * 
-     */
-    @Deprecated
-    Vector<String> getPath(Object element);
 
     /**
      * Find the absolute path of a ModelElement. Ie the name of each namespace
@@ -200,63 +171,6 @@ public interface ModelManagementHelper {
      */
     List<String> getPathList(Object element);
     
-    /**
-     * Get local equivalent to a profile ModelElement. Equivalent to calling
-     * getCorrespondingElement(Object, Object, boolean) with a value of
-     * <code>true</code> for the third parameter.
-     * <p>
-     * This function may fail and return null eg if some required object doesn't
-     * exist in the target model and cannot be copied.
-     * 
-     * @param elem is some element.
-     * @param model is the model the returned object shall belong to.
-     * @return An element of the same type and at the same position in the model
-     *         as elem, or if that would turn out impossible then null.
-     * @deprecated for 0.25.4 by tfmorris. Unnecessary because Model
-     *             implementation maintains cross XMI file references now.
-     */
-    @Deprecated
-    Object getCorrespondingElement(Object elem, Object model);
-
-    /**
-     * Utility function for managing several overlaid models, eg a user model to
-     * which elements from some profile models is imported when needed. This
-     * version of the function will only copy objects if canCreate is true, but
-     * may then also copy other missing elements.
-     * <p>
-     * This function may fail and return null eg if the required object doesn't
-     * exist in the target model and canCreate is false or some required object
-     * doesn't exist in the target model and cannot be copied.
-     * 
-     * @param elem is some element.
-     * @param model is the model the returned object shall belong to.
-     * @param canCreate determines if objects can be copied into model.
-     * @return An element of the same type and at the same position in the model
-     *         as elem, or if that would turn out impossible then null.
-     * 
-     * @deprecated for 0.25.4 by tfmorris. Unnecessary because Model
-     *             implementation maintains cross XMI file references now.
-     */
-    @Deprecated
-    Object getCorrespondingElement(Object elem, Object model,
-            			   boolean canCreate);
-
-    /**
-     * Tests if two objects are of the same type, have the same name and the
-     * same relative position in the model.
-     *
-     * Same relative position implies either:<ul>
-     * <li>their owners correspond to each other.
-     * <li>they are both owned by model objects.
-     * </ul>
-     *
-     * @param obj1 is an object.
-     * @param obj2 is another object.
-     * @return true if obj1 corresponds to obj2, false otherwise.
-     * @deprecated for 0.25.4 by tfmorris.  Equivalent to obj1.equals(obj2).
-     */
-    @Deprecated
-    boolean corresponds(Object obj1, Object obj2);
 
     /**
      * Checks if a child for some ownership relationship (as in a

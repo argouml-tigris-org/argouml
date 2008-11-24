@@ -64,16 +64,6 @@ public interface UseCasesFactory extends Factory {
      */
     Object createUseCase();
 
-    /**
-     * Create an empty but initialized instance of a UseCaseInstance.
-     * 
-     * @return an initialized UseCaseInstance instance.
-     * @deprecated for 0.25.4 by tfmorris. UseCaseInstances have been removed
-     *             from UML 2.x. Use an InstanceSpecification with a UseCase as
-     *             its Classifier.
-     */
-    @Deprecated
-    Object createUseCaseInstance();
 
     /**
      * Build an extend relationship with a newly created extension point.

@@ -110,14 +110,6 @@ public interface Facade {
     boolean isAAction(Object handle);
 
     /**
-     * Recognizer for ActionExpression.
-     *
-     * @param handle candidate
-     * @return true if handle is an ActionExpression
-     */
-    boolean isAActionExpression(Object handle);
-
-    /**
      * Recognizer for ActionSequence.
      *
      * @param handle candidate
@@ -507,84 +499,6 @@ public interface Facade {
      */
     boolean isAExpression(Object handle);
 
-    /**
-     * Recognizer for ArgListsExpression.
-     *
-     * @param handle candidate
-     * @return true if handle is an ArgListsExpression
-     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
-     */
-    @Deprecated
-    boolean isAArgListsExpression(Object handle);
-    
-    /**
-     * Recognizer for BooleanExpression.
-     *
-     * @param handle candidate
-     * @return true if handle is an BooleanExpression
-     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
-     */
-    @Deprecated
-    boolean isABooleanExpression(Object handle);
-    
-    /**
-     * Recognizer for IterationExpression.
-     *
-     * @param handle candidate
-     * @return true if handle is an IterationExpression
-     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
-     */
-    @Deprecated
-    boolean isAIterationExpression(Object handle);
-    
-    /**
-     * Recognizer for MappingExpression.
-     *
-     * @param handle candidate
-     * @return true if handle is an MappingExpression
-     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
-     */
-    @Deprecated
-    boolean isAMappingExpression(Object handle);
-    
-    /**
-     * Recognizer for ObjectSetExpression.
-     *
-     * @param handle candidate
-     * @return true if handle is an ObjectSetExpression
-     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
-     */
-    @Deprecated
-    boolean isAObjectSetExpression(Object handle);
-    /**
-     * Recognizer for ProcedureExpression.
-     *
-     * @param handle candidate
-     * @return true if handle is an ProcedureExpression
-     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
-     */
-    @Deprecated
-    boolean isAProcedureExpression(Object handle);
-    
-    /**
-     * Recognizer for TimeExpression.
-     *
-     * @param handle candidate
-     * @return true if handle is an TimeExpression
-     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
-     */
-    @Deprecated
-    boolean isATimeExpression(Object handle);
-    
-    /**
-     * Recognizer for TypeExpression.
-     *
-     * @param handle candidate
-     * @return true if handle is an TypeExpression
-     * @deprecated for 0.25.4 by tfmorris.  Removed from UML 2.x.
-     */
-    @Deprecated
-    boolean isATypeExpression(Object handle);
 
     /**
      * Recognizer for Extend.
@@ -874,18 +788,6 @@ public interface Facade {
     boolean isAPackage(Object handle);
 
     /**
-     * Recognizer for Primitive.
-     * 
-     * @param handle
-     *            candidate
-     * @return true if handle is a Primitive
-     * @deprecated for 0.25.4 by tfmorris. Renamed in UML 2.x. Use
-     *             {@link #isAPrimitiveType(Object)}.
-     */
-    @Deprecated
-    boolean isAPrimitive(Object handle);
-
-    /**
      * Recognizer for PrimitiveType.
      *
      * @param handle candidate
@@ -893,17 +795,6 @@ public interface Facade {
      */
     boolean isAPrimitiveType(Object handle);
     
-    /**
-     * Recognizer for ProgrammingLanguageDataType.
-     * 
-     * @param handle
-     *            candidate
-     * @return true if handle is a ProgrammingLanguageDataType
-     * @deprecated for 0.25.4 by tfmorris. Removed from UML 2.x. Use
-     *             {@link #isAPrimitiveType(Object)}.
-     */
-    @Deprecated
-    boolean isAProgrammingLanguageDataType(Object handle);
 
     /**
      * Recognizer for Pseudostate.
@@ -920,16 +811,6 @@ public interface Facade {
      * @return true if handle is a PseudostateKind
      */
     boolean isAPseudostateKind(Object handle);
-
-    /**
-     * Return the Kind of a Pseudostate.
-     *
-     * @param handle the Pseudostate
-     * @return the Kind
-     * @deprecated by tfmorris for 0.25.3 - use {@link #getKind(Object)}
-     */
-    @Deprecated
-    Object getPseudostateKind(Object handle);
 
     /**
      * Return the Kind of a Pseudostate or Parameter.
@@ -1196,17 +1077,6 @@ public interface Facade {
      */
     boolean isAUseCase(Object handle);
 
-
-    /**
-     * Recognizer for a UseCaseInstance.
-     *
-     * @param handle candidate
-     * @return true if handle is a UseCaseInstance
-     * @deprecated for 0.25.4 by tfmorris. UseCaseInstances have been removed
-     *             from UML 2.x.
-     */
-    @Deprecated
-    boolean isAUseCaseInstance(Object handle);
     
     /**
      * Recognizer for VisibilityKind.
@@ -1224,32 +1094,6 @@ public interface Facade {
      */
     boolean isActive(Object handle);
 
-    /**
-     * Recognizer for StructuralFeatures and AssociationEnds that are
-     * changeable.
-     * 
-     * @param handle
-     *            candidate
-     * @return true if handle is changeable
-     * @deprecated for 0.25.4 by tfmorris - use {@link #isReadOnly(Object)}.
-     *             Note that isChangeable() != !isReadOnly() because UML 1.4
-     *             also has an enum point of ADD_ONLY. This has been removed in
-     *             UML 2.x.
-     */
-    @Deprecated
-    boolean isChangeable(Object handle);
-
-    /**
-     * Recognizer for Attributes and Features with classifier scope.
-     * 
-     * @param handle candidate
-     * @return true if handle has classifier scope.
-     * @deprecated for 0.25.4 by tfmorris - use {@link #isStatic(Object)} which
-     *             has the same semantics, but is compatible with the UML 2.x
-     *             naming.
-     */
-    @Deprecated
-    boolean isClassifierScope(Object handle);
 
     /**
      * Recognizer for concurrent CompositeState.
@@ -1315,18 +1159,6 @@ public interface Facade {
      * @return true if the attribute is initialized.
      */
     boolean isInitialized(Object handle);
-
-    /**
-     * Recognizer for attributes with instance scope.
-     * 
-     * @param handle
-     *            candidate
-     * @return true if handle has instance scope.
-     * @deprecated for 0.25.4 by tfmorris - use !{@link #isStatic(Object)}
-     *             which is compatible with the UML 2.x naming.
-     */
-    @Deprecated
-    boolean isInstanceScope(Object handle);
 
     /**
      * Recognizer for internal transitions.  An internal Transition has
@@ -2464,18 +2296,6 @@ public interface Facade {
     //////// Javadoc reviewed above this point - tfm /////////////
 
     
-    /**
-     * Return the "opposite" end of an AssociationEnd.  This just 
-     * calls {@link #getNextEnd(Object)}, so for an Association
-     * with more than two AssociationEnds, this returns the nextEnd in 
-     * sequence.
-     *
-     * @param handle the association end
-     * @return Object the opposite end.
-     * @deprecated for 0.25.2 by tfmorris. Use {@link #getNextEnd(Object)}.
-     */
-    @Deprecated
-    Object getOppositeEnd(Object handle);
 
     /**
      * Return the next AssociationEnd in the owning Association. If this is the

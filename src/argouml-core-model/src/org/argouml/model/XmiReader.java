@@ -42,20 +42,7 @@ public interface XmiReader {
     * by the implementation to be garbage collected when an XmiReader instance
     * falls out of scope.
     */
-    
-    /**
-     * Parse a given inputsource to a collection of top level model elements.
-     * All model elements will be modifiable (ie equivalent to parse(InputSource,
-     * false).
-     * 
-     * @param pIs the input source for parsing
-     * @return a collection of top level elements
-     * @throws UmlException on any error
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #parse(InputSource, boolean)}.
-     */
-    @Deprecated
-    Collection parse(InputSource pIs) throws UmlException;
+
 
     /**
      * Parse a given inputsource to a collection of top level model elements.

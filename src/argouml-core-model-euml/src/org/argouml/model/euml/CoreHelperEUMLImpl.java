@@ -1290,10 +1290,6 @@ class CoreHelperEUMLImpl implements CoreHelper {
         throw new NotImplementedException();
     }
 
-    @SuppressWarnings("deprecation")
-    public void setChangeable(Object handle, boolean changeable) {
-        setReadOnly(handle, !changeable);
-    }
 
     public void setChild(final Object handle, final Object child) {
         if (!(handle instanceof Generalization)) {
@@ -1468,12 +1464,6 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setOwner(Object handle, Object owner) {
         throw new NotYetImplementedException();
-    }
-
-    @SuppressWarnings("deprecation")
-    public void setOwnerScope(Object feature, Object scopeKind) {
-        // Don't implement - deprecated method in interface.
-        throw new NotImplementedException();
     }
 
     public void setParameter(Object handle, Object parameter) {

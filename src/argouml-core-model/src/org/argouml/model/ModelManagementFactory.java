@@ -85,20 +85,6 @@ public interface ModelManagementFactory extends Factory {
      */
     Object createPackage();
 
-    /**
-     * Build an empty but initialized instance of a UML Package with a given
-     * name, and set it's UUID, if it doesn't exist.
-     * 
-     * @param name is the given name
-     * @param uuid is the UUID.
-     * @return an initialized UML Package instance.
-     * @deprecated for 0.25.4 by tfmorris. Current implementations ignore the
-     *             uuid parameter if null and will throw an exception if it's
-     *             non-null. Use single argument form
-     *             {@link #buildPackage(String)}.
-     */
-    @Deprecated
-    Object buildPackage(String name, String uuid);
 
     /**
      * Build an empty but initialized instance of a UML Package

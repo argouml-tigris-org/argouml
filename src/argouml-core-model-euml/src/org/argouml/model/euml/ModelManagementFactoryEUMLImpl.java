@@ -67,7 +67,9 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
         editingDomain = implementation.getEditingDomain();
     }
 
-    public ElementImport buildElementImport(final Object pack, final Object me) {
+    public ElementImport buildElementImport(final Object pack, 
+            final Object me) {
+        
         if (!(pack instanceof Namespace)) {
             throw new IllegalArgumentException(
                     "pack must be instance of Namespace"); //$NON-NLS-1$
@@ -90,19 +92,6 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
         return (ElementImport) run.getParams().get(0);
     }
 
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    public org.eclipse.uml2.uml.Package buildPackage(String name, String uuid) {
-        org.eclipse.uml2.uml.Package pkg =
-                (org.eclipse.uml2.uml.Package) createPackage();
-        if (name != null) {
-            pkg.setName(name);
-        }
-        // We could throw an exception if uuid is not null, but since the
-        // Javadoc technically says that it is only used if the element doesn't
-        // already have one set, we're going to assume we can ignore it.
-        return pkg;
-    }
 
     public org.eclipse.uml2.uml.Package buildPackage(String name) {
         org.eclipse.uml2.uml.Package pkg =

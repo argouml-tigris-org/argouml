@@ -412,21 +412,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         }
         return element;
     }
-    
-    
-    @Deprecated
-    public Vector<String> getPath(Object element) {
-        Vector<String> path;
 
-        if (element == null || element instanceof Model) {
-            return new Vector<String>();
-        }
-
-        path = getPath(modelImpl.getFacade().getModelElementContainer(element));
-        path.add(modelImpl.getFacade().getName(element));
-
-        return path;
-    }
 
     public List<String> getPathList(Object element) {
 
@@ -444,22 +430,6 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
         return path;
     }
     
-    @Deprecated
-    public Object getCorrespondingElement(Object elem, Object model) {
-        return elem;
-    }
-
-    @Deprecated
-    public Object getCorrespondingElement(Object elem, Object model,
-            boolean canCreate) {
-        return elem;
-    }
-
-    @Deprecated
-    public boolean corresponds(Object obj1, Object obj2) {
-        return obj1.equals(obj2);
-    }
-
 
     public boolean isCyclicOwnership(Object parent, Object child) {
         return (getOwnerShipPath(parent).contains(child) || parent == child);

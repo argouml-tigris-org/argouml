@@ -74,11 +74,6 @@ public abstract class AbstractUseCasesHelperDecorator
         return impl.getExtendedUseCases(ausecase);
     }
 
-    @SuppressWarnings("deprecation")
-    public Collection getExtendingUseCases(Object usecase) {
-        return impl.getExtendingUseCases(usecase);
-    }
-
     public Object getExtends(Object abase, Object anextension) {
         return impl.getExtends(abase, anextension);
     }

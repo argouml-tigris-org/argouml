@@ -902,21 +902,6 @@ public interface CoreHelper {
     void setChangeability(Object handle, Object ck);
 
     /**
-     * Set the changeability of a StructuralFeature or AssociationEnd. A
-     * convenience method which is equivalent to invoking 
-     * {{@link #setChangeability(Object, Object)} with values of Changeable
-     * or Frozen.
-     * 
-     * @param handle
-     *            is the feature
-     * @param changeable true for Changeable and false for Frozen.
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #setReadOnly(Object, boolean)} with a negated value.
-     */
-    @Deprecated
-    void setChangeable(Object handle, boolean changeable);
-
-    /**
      * Set the isReadOnly (UML 2.x) or changeable (UML 1.x) attribute of a
      * StructuralFeature or AssociationEnd.
      * 
@@ -1115,19 +1100,6 @@ public interface CoreHelper {
      * @param owner Classifier or null
      */
     void setOwner(Object handle, Object owner);
-
-    /**
-     * Set the ownerScope of a Feature.
-     * 
-     * @param feature
-     *            Feature
-     * @param scopeKind
-     *            a {@link ScopeKind} of Instance or Classifier
-     *            {@link Model#getScopeKind()}.
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #setStatic}.
-     */
-    @Deprecated
-    void setOwnerScope(Object feature, Object scopeKind);
 
     /**
      * Set the isStatic (UML 2.x) or ownerScope (UML 1.x) attribute of a

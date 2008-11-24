@@ -58,14 +58,9 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
      * @param implementation
      *                The ModelImplementation.
      */
-    public ModelManagementHelperEUMLImpl(EUMLModelImplementation implementation) {
+    public ModelManagementHelperEUMLImpl(
+            EUMLModelImplementation implementation) {
         modelImpl = implementation;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean corresponds(Object obj1, Object obj2) {
-        // TODO: Auto-generated method stub
-        return false;
     }
 
     public Collection getAllBehavioralFeatures(Object ns) {
@@ -205,16 +200,6 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         return result;
     }
 
-    public Object getCorrespondingElement(Object elem, Object model) {
-        // TODO: Auto-generated method stub
-        return null;
-    }
-
-    public Object getCorrespondingElement(Object elem, Object model,
-            boolean canCreate) {
-        // TODO: Auto-generated method stub
-        return null;
-    }
 
     public Object getElement(List<String> path) {
         return getElement(path, null);
@@ -223,13 +208,6 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     public Object getElement(List<String> path, Object theRootNamespace) {
         // TODO: Auto-generated method stub
         return null;
-    }
-    
-    public Vector<String> getPath(Object element) {
-        // TODO: Needs completing - stub implementation only! - tfm
-        Vector<String> path = new Vector<String>();
-        path.add(modelImpl.getFacade().getName(element));
-        return path;
     }
 
     public List<String> getPathList(Object element) {

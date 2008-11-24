@@ -293,13 +293,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    @Deprecated
-    public boolean isValidStereoType(Object theModelElement,
-            Object theStereotype) {
-        return isValidStereotype(theModelElement, theStereotype);
-    }
-
-
     public boolean isValidStereotype(Object theModelElement,
             Object theStereotype) {
         if (theModelElement == null) {
@@ -526,12 +519,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         }
         throw new IllegalArgumentException("handle: " + handle + " or type: "
                 + type);
-    }
-
-
-    @Deprecated
-    public boolean hasStereoType(Object handle, String name) {
-        return hasStereotype(handle, name);
     }
 
 

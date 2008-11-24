@@ -56,12 +56,6 @@ class DataTypesHelperMDRImpl implements DataTypesHelper {
     }
 
     
-    @SuppressWarnings("deprecation")
-    public void copyTaggedValues(Object from, Object to) {
-        modelImpl.getExtensionMechanismsFactory().copyTaggedValues(from, to);
-    }
-
-    
     public boolean equalsINITIALKind(Object kind) {
         if (!(kind instanceof PseudostateKind)) {
             throw new IllegalArgumentException();

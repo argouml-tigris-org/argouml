@@ -80,14 +80,6 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         return impl.getAllPossibleStereotypes(models, modelElement);
     }
 
-    /*
-     * @deprecated Use {@link #isValidStereotype(Object,Object)} instead
-     */
-    @Deprecated
-    public boolean isValidStereoType(Object theModelElement,
-            Object theStereotype) {
-        return isValidStereotype(theModelElement, theStereotype);
-    }
 
     public boolean isValidStereotype(Object theModelElement,
             Object theStereotype) {
@@ -153,14 +145,6 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
 
     public void setTaggedValue(Object handle, Collection taggedValues) {
         impl.setTaggedValue(handle, taggedValues);
-    }
-
-    /*
-     * @deprecated Use {@link #hasStereotype(Object,String)} instead
-     */
-    @Deprecated
-    public boolean hasStereoType(Object handle, String name) {
-        return hasStereotype(handle, name);
     }
 
     public boolean hasStereotype(Object handle, String name) {

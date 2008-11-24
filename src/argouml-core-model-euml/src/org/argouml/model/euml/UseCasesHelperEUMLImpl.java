@@ -29,7 +29,6 @@ package org.argouml.model.euml;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.argouml.model.NotImplementedException;
 import org.argouml.model.UseCasesHelper;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.uml2.uml.Actor;
@@ -148,12 +147,6 @@ class UseCasesHelperEUMLImpl implements UseCasesHelper {
             result.add(extend.getExtension());
         }
         return result;
-    }
-
-    @SuppressWarnings("deprecation")
-    public Collection<UseCase> getExtendingUseCases(Object usecase) {
-        // TODO: association is not navigable in this direction
-        throw new NotImplementedException();
     }
 
     public Extend getExtends(Object abase, Object anextension) {

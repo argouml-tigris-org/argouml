@@ -39,7 +39,6 @@ import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.xml.type.AnyType;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Action;
 import org.eclipse.uml2.uml.ActivityPartition;
@@ -898,10 +897,6 @@ class FacadeEUMLImpl implements Facade {
         return result;
     }
 
-    public Object getOppositeEnd(Object handle) {
-        return getNextEnd(handle);
-    }
-
     public Object getOrdering(Object handle) {
         if (handle instanceof MultiplicityElement) {
             if (((MultiplicityElement) handle).isOrdered()) {
@@ -1013,11 +1008,6 @@ class FacadeEUMLImpl implements Facade {
 
     public Collection getPredecessors(Object handle) {
         throw new NotYetImplementedException();
-    }
-
-    @SuppressWarnings("deprecation")
-    public Object getPseudostateKind(Object handle) {
-        throw new NotImplementedException();
     }
 
     public List<Property> getQualifiers(Object handle) {
@@ -1396,11 +1386,6 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof Action;
     }
 
-    public boolean isAActionExpression(Object handle) {
-        // TODO: Fallback for UML 1.4
-        return isAExpression(handle);
-    }
-
     public boolean isAActionSequence(Object handle) {
         // TODO: gone in UML 2.x
         return false;
@@ -1424,12 +1409,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAAggregationKind(Object handle) {
         return handle instanceof AggregationKind;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isAArgListsExpression(Object handle) {
-        // TODO: Fallback for UML 1.4
-        return isAExpression(handle);
     }
 
     public boolean isAArgument(Object modelElement) {
@@ -1487,11 +1466,6 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
-    @SuppressWarnings("deprecation")
-    public boolean isABooleanExpression(Object handle) {
-        // TODO: Fallback for UML 1.4
-        return isAExpression(handle);
-    }
 
     public boolean isACallAction(Object handle) {
         return handle instanceof CallAction;
@@ -1680,12 +1654,6 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof Interface;
     }
 
-    @SuppressWarnings("deprecation")
-    public boolean isAIterationExpression(Object handle) {
-        // TODO: Fallback for UML 1.4
-        return isAExpression(handle);
-    }
-
     public boolean isALink(Object handle) {
         // TODO: check semantics here - tfm
         if (!(handle instanceof InstanceSpecification)) {
@@ -1704,12 +1672,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isALinkObject(Object handle) {
         throw new NotYetImplementedException();
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isAMappingExpression(Object handle) {
-        // TODO: Fallback for UML 1.4
-        return isAExpression(handle);
     }
 
     public boolean isAMessage(Object handle) {
@@ -1772,12 +1734,6 @@ class FacadeEUMLImpl implements Facade {
         return false;
     }
 
-    @SuppressWarnings("deprecation")
-    public boolean isAObjectSetExpression(Object handle) {
-        // TODO: Fallback for UML 1.4
-        return isAExpression(handle);
-    }
-
     public boolean isAOperation(Object handle) {
         return handle instanceof Operation;
     }
@@ -1812,18 +1768,6 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof PrimitiveType;
     }
     
-    @SuppressWarnings("deprecation")
-    public boolean isAProcedureExpression(Object handle) {
-        // TODO: Fallback for UML 1.4
-        return isAExpression(handle);
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isAProgrammingLanguageDataType(Object handle) {
-        // TODO: Not in UML 2.x.  Fall back to PrimitiveType.
-        return isAPrimitiveType(handle);
-    }
-
     public boolean isAPseudostate(Object handle) {
         return handle instanceof Pseudostate;
     }
@@ -1950,20 +1894,8 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof TimeEvent;
     }
 
-    @SuppressWarnings("deprecation")
-    public boolean isATimeExpression(Object handle) {
-        // TODO: Fallback for UML 1.4
-        return isAExpression(handle);
-    }
-
     public boolean isATransition(Object handle) {
         return handle instanceof Transition;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isATypeExpression(Object handle) {
-        // TODO: Fallback for UML 1.4
-        return isAExpression(handle);
     }
 
     public boolean isAUMLElement(Object handle) {
@@ -1981,11 +1913,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAUseCase(Object handle) {
         return handle instanceof UseCase;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isAUseCaseInstance(Object handle) {
-        throw new NotImplementedException();
     }
 
     public boolean isAVisibilityKind(Object handle) {
@@ -2018,18 +1945,6 @@ class FacadeEUMLImpl implements Facade {
         return !((CallAction) handle).isSynchronous();
     }
 
-    @SuppressWarnings("deprecation")
-    public boolean isChangeable(Object handle) {
-        return !isReadOnly(handle);
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isClassifierScope(Object handle) {
-        // Removed from UML 2.x and deprecated in Model API
-        // so we won't implement it
-        throw new NotImplementedException();
-    }
-
     public boolean isComposite(Object handle) {
         return AggregationKind.COMPOSITE_LITERAL.equals(((Property) handle)
                 .getAggregation());
@@ -2051,13 +1966,6 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isInitialized(Object handle) {
         throw new NotYetImplementedException();
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isInstanceScope(Object handle) {
-        // Removed from UML 2.x and deprecated in Model API
-        // so we won't implement it
-        throw new NotImplementedException();
     }
 
     public boolean isInternal(Object handle) {

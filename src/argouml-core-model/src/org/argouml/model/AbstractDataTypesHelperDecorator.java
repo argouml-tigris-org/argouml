@@ -53,14 +53,6 @@ public abstract class AbstractDataTypesHelperDecorator
         return impl;
     }
 
-    /*
-     * @see org.argouml.model.DataTypesHelper#copyTaggedValues(java.lang.Object, java.lang.Object)
-     */
-    @SuppressWarnings("deprecation")
-    public void copyTaggedValues(Object from, Object to) {
-        impl.copyTaggedValues(from, to);
-    }
-
     public boolean equalsINITIALKind(Object kind) {
         return impl.equalsINITIALKind(kind);
     }

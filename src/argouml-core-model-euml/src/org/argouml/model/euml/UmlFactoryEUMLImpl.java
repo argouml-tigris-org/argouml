@@ -349,10 +349,6 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         throw new NotYetImplementedException();
     }
 
-    public boolean isConnectionValid(Object connectionType, Object fromElement,
-            Object toElement) {
-        return isConnectionValid(connectionType, fromElement, toElement, true);
-    }
 
     public boolean isConnectionValid(Object connectionType, Object fromElement,
             Object toElement, boolean checkWFR) {

@@ -2677,11 +2677,6 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
 
-    @SuppressWarnings("deprecation")
-    public void setChangeable(Object handle, boolean flag) {
-        setReadOnly(handle, !flag);
-    }
-
     public void setReadOnly(Object handle, boolean isReadOnly) {
         setChangeability(handle, isReadOnly ? ChangeableKindEnum.CK_FROZEN
                 : ChangeableKindEnum.CK_CHANGEABLE);
@@ -3028,17 +3023,6 @@ class CoreHelperMDRImpl implements CoreHelper {
                 + owner);
     }
 
-
-    @Deprecated
-    public void setOwnerScope(Object handle, Object os) {
-        if (handle instanceof Feature
-                && (os == null || os instanceof ScopeKind)) {
-            ((Feature) handle).setOwnerScope((ScopeKind) os);
-            return;
-        }
-        throw new IllegalArgumentException("handle: " + handle + " or os: "
-                + os);
-    }
 
     public void setStatic(Object handle, boolean isStatic) {
         if (handle instanceof Feature) {

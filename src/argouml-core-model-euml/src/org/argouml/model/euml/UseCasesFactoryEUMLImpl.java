@@ -182,9 +182,5 @@ class UseCasesFactoryEUMLImpl implements UseCasesFactory, AbstractModelFactory {
         return UMLFactory.eINSTANCE.createUseCase();
     }
 
-    @SuppressWarnings("deprecation")
-    public InstanceSpecification createUseCaseInstance() {
-        throw new NotImplementedException();
-    }
 
 }

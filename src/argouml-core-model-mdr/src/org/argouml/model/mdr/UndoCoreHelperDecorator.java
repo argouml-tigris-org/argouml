@@ -238,15 +238,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     }
 
     @Override
-    public void setChangeable(final Object handle, boolean flag) {
-        createCommand(new BooleanSetter() {
-            public void set(boolean value) {
-                getComponent().setChangeable(handle, value);
-            }
-        }, flag, Model.getFacade().isChangeable(handle));
-    }
-
-    @Override
     public void setReadOnly(final Object handle, boolean flag) {
         createCommand(new BooleanSetter() {
             public void set(boolean value) {
@@ -710,11 +701,6 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         Model.execute(new DummyModelCommand());
     }
 
-    public void setOwnerScope(Object handle, Object os) {
-        super.setOwnerScope(handle, os);
-        Model.execute(new DummyModelCommand());
-    }
-    
     public void setStatic(Object handle, boolean isStatic) {
         super.setStatic(handle, isStatic);
         Model.execute(new DummyModelCommand());

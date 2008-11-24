@@ -31,15 +31,6 @@ package org.argouml.model;
  * Created from the old DataTypesHelper.
  */
 public interface DataTypesHelper {
-    
-    /**
-     * @param from source
-     * @param to destination
-     * @deprecated for 0.25.2 by tfmorris. Use
-     *      {@link ExtensionMechanismsFactory#copyTaggedValues(Object, Object)}.
-     */
-    @Deprecated
-    void copyTaggedValues(Object from, Object to);
 
     /**
      * @param kind the pseudostate kind

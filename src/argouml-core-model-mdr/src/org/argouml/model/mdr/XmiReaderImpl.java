@@ -139,11 +139,6 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         modelImpl = parentModelImplementation;
     }
     
-    @Deprecated
-    public Collection parse(InputSource inputSource) throws UmlException {
-        return parse(inputSource, false);
-    }
-
     public Collection parse(InputSource inputSource, boolean readOnly)
         throws UmlException {
         

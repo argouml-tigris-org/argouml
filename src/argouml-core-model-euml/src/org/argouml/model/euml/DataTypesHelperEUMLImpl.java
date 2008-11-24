@@ -49,10 +49,6 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
         modelImpl = implementation;
     }
 
-    public void copyTaggedValues(Object from, Object to) {
-        throw new NotYetImplementedException();
-    }
-
     public boolean equalsCHOICEKind(Object kind) {
         // TODO: Auto-generated method stub
         return false;

@@ -99,21 +99,6 @@ public interface ExtensionMechanismsHelper {
     Collection getAllPossibleStereotypes(Collection models,
             				 Object modelElement);
 
-    /**
-     * Returns true if the given stereotype has a baseclass that equals the
-     * baseclass of the given modelelement or one of the superclasses of the
-     * given modelelement.
-     * 
-     * @param theModelElement
-     *                is the model element
-     * @param theStereotype
-     *                is the stereotype
-     * @return boolean
-     * @deprecated Deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #isValidStereotype(Object,Object)} instead (note
-     *             different capitalization),
-     */
-    boolean isValidStereoType(Object theModelElement, Object theStereotype);
 
     /**
      * Returns <code>true</code> if the given stereotype has a baseclass that
@@ -274,17 +259,6 @@ public interface ExtensionMechanismsHelper {
      * @param taggedValues A Collection of tagged values.
      */
     void setTaggedValue(Object handle, Collection taggedValues);
-
-    /**
-     * Returns true if the given object has a stereotype with the given name.
-     * 
-     * @param handle the given object
-     * @param name the given name
-     * @return true if there is such a stereotype
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #hasStereotype(Object,String)} instead
-     */
-    boolean hasStereoType(Object handle, String name);
 
     /**
      * Returns <code>true</code> if the given ModelElement has a Stereotype

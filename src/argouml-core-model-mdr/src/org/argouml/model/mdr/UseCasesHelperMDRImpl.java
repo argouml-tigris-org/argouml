@@ -132,24 +132,6 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
     }
 
 
-    public Collection<UseCase> getExtendingUseCases(Object usecase) {
-        if (usecase == null) {
-            return new ArrayList<UseCase>();
-        }
-        List<UseCase> list = new ArrayList<UseCase>();
-        try {
-            for (Extend ext : (Collection<Extend>) Model.getFacade()
-                    .getExtenders(usecase)) {
-                UseCase extension = ext.getExtension();
-                list.add(extension);
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-        return list;
-    }
-
-
     public Extend getExtends(Object abase, Object anextension) {
         if (!(abase instanceof UseCase)
                 || !(anextension instanceof UseCase)) {

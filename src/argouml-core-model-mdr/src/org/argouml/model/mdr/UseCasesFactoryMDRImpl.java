@@ -105,15 +105,6 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
-    @SuppressWarnings("deprecation")
-    public UseCaseInstance createUseCaseInstance() {
-        UseCaseInstance myUseCaseInstance = modelImpl.getUmlPackage().
-            getUseCases().getUseCaseInstance().createUseCaseInstance();
-        super.initialize(myUseCaseInstance);
-        return myUseCaseInstance;
-    }
-
-
     public Extend buildExtend(Object abase, Object anextension) {
         return buildExtend(abase, anextension, null);
     }

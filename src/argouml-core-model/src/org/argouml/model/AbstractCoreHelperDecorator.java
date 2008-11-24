@@ -486,11 +486,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.setOwner(handle, owner);
     }
 
-    @Deprecated
-    public void setOwnerScope(Object handle, Object os) {
-        impl.setOwnerScope(handle, os);
-    }
-    
     public void setStatic(Object handle, boolean isStatic) {
         impl.setStatic(handle, isStatic);
     }
@@ -559,11 +554,6 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
     @Deprecated
     public void setChangeability(Object handle, Object ck) {
         impl.setChangeability(handle, ck);
-    }
-
-    @Deprecated
-    public void setChangeable(Object handle, boolean flag) {
-        impl.setChangeable(handle, flag);
     }
     
     public void setReadOnly(Object handle, boolean isReadOnly) {

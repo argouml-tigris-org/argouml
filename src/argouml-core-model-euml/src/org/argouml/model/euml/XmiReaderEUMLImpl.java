@@ -94,12 +94,10 @@ class XmiReaderEUMLImpl implements XmiReader {
         return map;
     }
 
-    public Collection parse(InputSource inputSource) throws UmlException {
-        return parse(inputSource, false);
-    }
 
     public Collection parse(InputSource inputSource, boolean readOnly)
-            throws UmlException {
+        throws UmlException {
+        
         if (inputSource == null) {
             throw new NullPointerException(
                     "The input source must be non-null."); //$NON-NLS-1$

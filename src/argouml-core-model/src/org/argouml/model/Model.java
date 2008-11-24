@@ -25,7 +25,6 @@
 package org.argouml.model;
 
 import java.io.OutputStream;
-import java.io.Writer;
 
 
 /**
