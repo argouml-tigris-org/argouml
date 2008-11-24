@@ -91,38 +91,12 @@ class XmiInputStream extends BufferedInputStream {
         xmiExtensionParser  = extParser;
         progressMgr  = prgrssMgr;
     }
-    
-    /**
-     * Construct a new XmlInputStream.
-     *
-     * @param inputStream the input stream to wrap.
-     * @param extParser the parser to call to read any
-     *                           XMI.extension elements
-     * @param len the expected length of the input stream
-     * @param spacing the number of characters to read before
-     *        firing a progress event.
-     * @param prgrssMgr the progress manager
-     * @deprecated by Linus Tolke for 0.25.3.
-     *        Use the constructor 
-     *        {@link #XmiInputStream(InputStream, XmiExtensionParser,
-     *        long, ProgressMgr)} that doesn't specify length
-     */
-    @Deprecated
-    public XmiInputStream(
-            InputStream inputStream,
-            XmiExtensionParser extParser,
-            long len,
-            long spacing,
-            ProgressMgr prgrssMgr) {
-        super(inputStream);
-        eventSpacing = spacing;
-        xmiExtensionParser  = extParser;
-        progressMgr  = prgrssMgr;
-    }
+
 
     /*
      * @see java.io.InputStream#read()
      */
+    @Override
     public synchronized int read() throws IOException {
 
         if (endFound) {
@@ -214,6 +188,7 @@ class XmiInputStream extends BufferedInputStream {
     /*
      * @see java.io.InputStream#read(byte[], int, int)
      */
+    @Override
     public synchronized int read(byte[] b, int off, int len)
         throws IOException {
 
@@ -243,6 +218,7 @@ class XmiInputStream extends BufferedInputStream {
      * Use realClose() to finally close the stream for real.
      * @throws IOException to satisfy ancestor but will never happen.
      */
+    @Override
     public void close() throws IOException {
     }
 
