@@ -834,7 +834,7 @@ public abstract class FigNodeModelElement
      */
     @Override
     public Selection makeSelection() {
-        return new SelectionNodeClarifiers(this);
+        return new SelectionDefaultClarifiers(this);
     }
 
     /**
@@ -2462,4 +2462,45 @@ public abstract class FigNodeModelElement
         renderingChanged();
     }
 
+    
+    /**
+     * A default "clarifier" to be used for selection if the subclass doesn't
+     * override makeSelection and provide its own.
+     */
+    class SelectionDefaultClarifiers extends SelectionNodeClarifiers2 {
+        
+        /** Construct a new SelectionNodeClarifiers for the given Fig
+         *
+         * @param f the given Fig
+         */
+        private SelectionDefaultClarifiers(Fig f) {
+            super(f);
+        }
+
+        @Override
+        protected Icon[] getIcons() {
+            return null;
+        }
+
+        @Override
+        protected String getInstructions(int index) {
+            return null;
+        }
+
+        @Override
+        protected Object getNewNodeType(int index) {
+            return null;
+        }
+
+        @Override
+        protected Object getNewEdgeType(int index) {
+            return null;
+        }
+
+        @Override
+        protected boolean isReverseEdge(int index) {
+            return false;
+        }
+
+    }
 }
