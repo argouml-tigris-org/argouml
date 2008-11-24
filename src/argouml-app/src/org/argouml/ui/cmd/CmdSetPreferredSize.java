@@ -47,49 +47,13 @@ import org.argouml.i18n.Translator;
 public class CmdSetPreferredSize extends Cmd {
 
     /**
-     * Constant to indicate command should set preferred size of Fig.
-     * @deprecated by mvw for 0.24.alpha3. Nobody uses this...
-     */
-    @Deprecated
-    public static final int PREFERRED_SIZE = 0;
-
-    /** constant for MINIMUM_SIZE */
-    public static final int MINIMUM_SIZE = 1;
-
-    private int mode;
-
-    /**
      * Default constructor - set minimum size command.
      */
     public CmdSetPreferredSize() {
-        this(MINIMUM_SIZE);
-    }
-    
-    /**
-     * Constructor for the command.
-     * @deprecated by MVW in V0.25.3. Use {@link #CmdSetPreferredSize()}.
-     *
-     * @param theMode one of the defined constants
-     */
-    @Deprecated
-    public CmdSetPreferredSize(int theMode) {
 //        super(Translator.localize("action.size-to-fit-contents"));
-	super(Translator.localize("action.set-" + wordFor(theMode) + "-size"));
-        mode = theMode;
+	super(Translator.localize("action.set-minimum-size"));
     }
 
-    private static String wordFor(int r) {
-        switch (r) {
-        case PREFERRED_SIZE: 
-            return "preferred";
-        case MINIMUM_SIZE: 
-            return "minimum";
-        default:
-            throw new IllegalArgumentException(
-                    "CmdSetPreferredSize invoked with " 
-                            + "incompatible mode: " + r);
-        }
-    }
 
     /**
      * Set the fig to be resized.
@@ -132,7 +96,9 @@ public class CmdSetPreferredSize extends Cmd {
             return;
         }
         int size = figs.size();
-        if (size == 0) return;
+        if (size == 0) {
+            return;
+        }
 
         for (int i = 0; i < size; i++) {
             Fig fi = figs.get(i);
@@ -144,11 +110,7 @@ public class CmdSetPreferredSize extends Cmd {
                      * does not take enclosed objects into account: */
                     && (fi.getEnclosedFigs() == null 
                             || fi.getEnclosedFigs().size() == 0)) {
-                if (mode == PREFERRED_SIZE) {
-                    fi.setSize(fi.getPreferredSize());
-                } else {
-                    fi.setSize(fi.getMinimumSize());
-                }
+                fi.setSize(fi.getMinimumSize());
                 /* TODO: Beautify the 2nd part of this string: */
                 Globals.showStatus("Setting size for " + fi);
             }
