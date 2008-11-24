@@ -265,7 +265,8 @@ class XmiFilePersister extends AbstractFilePersister
                 defaultProjectFile =
                         new File(file.getPath() + "." + i + ".zargo");
             }
-            p.setURI(defaultProjectFile.toURI());
+            PersistenceManager.getInstance().setProjectURI(
+                    defaultProjectFile.toURI(), p);
             progressMgr.nextPhase();
             ProjectManager.getManager().setSaveEnabled(false);
             return p;

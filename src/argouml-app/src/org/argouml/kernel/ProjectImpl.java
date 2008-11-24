@@ -187,16 +187,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         addSearchPath("PROJECT_DIR");
     }
 
-    /*
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link PersistenceManager#getProjectBaseName(Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public String getBaseName() {
-        return PersistenceManager.getInstance().getProjectBaseName(this);
-    }
-
 
     public String getName() {
         // TODO: maybe separate name
@@ -204,17 +194,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
             return UNTITLED_FILE;
         }
         return new File(uri).getName();
-    }
-
-    /*
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link PersistenceManager#setProjectName(String, Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public void setName(final String n)
-        throws URISyntaxException {
-        PersistenceManager.getInstance().setProjectName(n, this);
     }
 
 
@@ -225,16 +204,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public URI getURI() {
         return uri;
-    }
-
-    /*
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link PersistenceManager#setProjectUri(URI, Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public void setURI(URI theUri) {
-        PersistenceManager.getInstance().setProjectURI(theUri, this);
     }
 
     /**
@@ -260,12 +229,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         }
 
         uri = theProjectUri;
-    }
-
-
-    @SuppressWarnings("deprecation")
-    public Vector<String> getSearchPath() {
-        return new Vector<String>(searchpath);
     }
 
 
@@ -647,6 +610,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @Deprecated
     public void setCurrentNamespace(final Object m) {
 
         if (m != null && !Model.getFacade().isANamespace(m)) {
@@ -657,14 +621,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @Deprecated
     public Object getCurrentNamespace() {
         return currentNamespace;
-    }
-
-
-    @SuppressWarnings("deprecation")
-    public Vector<ArgoDiagram> getDiagrams() {
-        return new Vector<ArgoDiagram>(diagrams);
     }
 
     public List<ArgoDiagram> getDiagramList() {

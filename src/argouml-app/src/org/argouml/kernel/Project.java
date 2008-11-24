@@ -27,14 +27,13 @@ package org.argouml.kernel;
 import java.beans.VetoableChangeSupport;
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.profile.Profile;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -52,19 +51,6 @@ import org.tigris.gef.presentation.Fig;
  */
 public interface Project {
 
-    /**
-     * Find the base name of this project.<p>
-     *
-     * This is the name minus any valid file extension.
-     *
-     * @return The name (a String).
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link org.argouml.persistence.PersistenceManager
-     *     #getProjectBaseName(Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public String getBaseName();
 
     /**
      * Get the project name. This is just the name part of the full filename.
@@ -72,19 +58,6 @@ public interface Project {
      */
     public String getName();
 
-    /**
-     * Set the project URI.
-     *
-     * @param n The new URI (as a String).
-     * @throws URISyntaxException if the argument cannot be converted to
-     *         an URI.
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link org.argouml.persistence.PersistenceManager
-     *     #setProjectName(String, Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public void setName(final String n) throws URISyntaxException;
 
     /**
      * Get the URI for this project.
@@ -92,18 +65,6 @@ public interface Project {
      * @return The URI.
      */
     public URI getURI();
-
-    /**
-     * Set the URI for this project.
-     *
-     * @param theUri The URI to set.
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link org.argouml.persistence.PersistenceManager
-     *     #setProjectURI(URI, Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public void setURI(final URI theUri);
 
     /**
      * Set the URI for this project. <p>
@@ -125,15 +86,6 @@ public interface Project {
      */
     public void setFile(final File file);
 
-    /**
-     * Not used by "argo.tee" any more.
-     * 
-     * @return the search path
-     * @deprecated by tfmorris for 0.25.4.  Use {@link #getSearchPathList()}.
-     */
-    // TODO: Unused?
-    @Deprecated
-    public Vector<String> getSearchPath();
     
     /**
      * Used by "argo.tee".
@@ -397,13 +349,6 @@ public interface Project {
     @Deprecated
     public Object getCurrentNamespace();
 
-
-    /**
-     * @return the diagrams
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getDiagramList()}.
-     */
-    @Deprecated
-    public Vector<ArgoDiagram> getDiagrams();
     
     /**
      * @return the diagrams
