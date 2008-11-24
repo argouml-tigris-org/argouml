@@ -72,6 +72,7 @@ public abstract class ActionNewDiagram extends UndoableAction {
      * @see java.awt.event.ActionListener#actionPerformed(
      *      java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
 
@@ -130,26 +131,12 @@ public abstract class ActionNewDiagram extends UndoableAction {
      * Utility function to create a collaboration.
      * 
      * @return a new collaboration
-     * @deprecated by MVW in V0.25.3. Replaced by createCollaboration(Object
-     *             namespace)
-     */
-    @Deprecated
-    protected static Object createCollaboration() {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Object namespace = p.getRoot(); // the root model
-        return createCollaboration(namespace);
-    }
-
-    /**
-     * Utility function to create a collaboration.
-     * 
-     * @return a new collaboration
      * @param namespace the back-up namespace to put the collaboration in
      */
     protected static Object createCollaboration(Object namespace) {
         Object target = TargetManager.getInstance().getModelTarget();
-            if (Model.getFacade().isAUMLElement(target) 
-                    && Model.getModelManagementHelper().isReadOnly(target)) {
+        if (Model.getFacade().isAUMLElement(target) 
+                && Model.getModelManagementHelper().isReadOnly(target)) {
             target = namespace;
         }
         Object collaboration = null;

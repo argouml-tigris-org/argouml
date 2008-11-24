@@ -38,8 +38,6 @@ import javax.management.ListenerNotFoundException;
 import javax.management.Notification;
 import javax.management.NotificationEmitter;
 import javax.management.NotificationListener;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
@@ -825,74 +823,6 @@ public final class TargetManager {
 
     private void endTargetTransaction() {
         inTransaction = false;
-    }
-
-    /**
-     * Get the Action for creating and adding a new attribute to the single
-     * selected target (or its owner).
-     * 
-     * @deprecated in 0.25.3 by Bob Tarling Use the
-     *             {@link org.argouml.uml.ui.foundation.core.ActionAddAttribute}
-     *             constructor instead.
-     * @return null
-     */
-    @Deprecated
-    public Action getAddAttributeAction() {
-        return null;
-    }
-
-    /**
-     * Get the Action for creating and adding a new operation to the single
-     * selected target (or its owner).
-     * 
-     * @deprecated in 0.25.3 by Bob Tarling. Instantiate the action
-     *             {@link org.argouml.uml.ui.foundation.core.ActionAddOperation}
-     *             directly instead.
-     * @return null
-     */
-    @Deprecated
-    public Action getAddOperationAction() {
-        return null;
-    }
-
-    /**
-     * Get the Action for creating and adding a new operation to the single
-     * selected target (or its owner).
-     * 
-     * @deprecated in 0.25.3 by Michiel. Instantiate the AddMessageAction
-     *             directly instead.
-     * @return null
-     */
-    @Deprecated
-    public Action getAddMessageAction() {
-        return null;
-    }
-
-    /**
-     * Get the Action for deleting the target list.
-     * 
-     * @deprecated in 0.25.3 by Michiel. Instantiate the AddMessageAction
-     *             directly instead.
-     * @return null
-     */
-    @Deprecated
-    public AbstractAction getDeleteAction() {
-        return null;
-    }
-
-    /**
-     * Get the Action class for creating and adding a new EnumerationLiteral for
-     * the single selected target (or its owner).
-     * 
-     * @deprecated by tfmorris for 0.25.3 - use new
-     * {@link org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral}()
-     *             This was only introduced in 0.24, so it can be removed
-     *             quickly.
-     * @return null
-     */
-    @Deprecated
-    public Action getAddEnumerationLiteralAction() {
-        return null;
     }
 
     /**

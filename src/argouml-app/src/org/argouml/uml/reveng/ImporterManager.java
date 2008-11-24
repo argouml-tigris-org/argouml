@@ -63,17 +63,6 @@ public final class ImporterManager {
         // private constructor to enforce singleton
     }
 
-    /**
-     * Register a new source language importer.
-     * 
-     * @param importer The ImportInterface object to register.
-     * @deprecated for 0.25.3 by tfmorris. Use
-     *             {@link #addImporter(ImportInterface)} instead.
-     */
-    @Deprecated
-    public void addimporter(ImportInterface importer) {
-        addImporter(importer);
-    }
 
     /**
      * Register a new source language importer. 
