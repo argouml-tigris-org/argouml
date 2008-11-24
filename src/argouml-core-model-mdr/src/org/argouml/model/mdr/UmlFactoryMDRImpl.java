@@ -585,9 +585,11 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             // build all other elements using existing buildNode
             element = buildNode(elementType);
             
-            if (container instanceof Namespace && element instanceof Namespace)
+            if (container instanceof Namespace 
+                    && element instanceof Namespace) {
                 ((Namespace) element).setNamespace(
                         ((Namespace) container).getNamespace());
+            }
             
             this.modelImpl.getCoreHelper().addOwnedElement(container, element);
         }
@@ -600,13 +602,6 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return (validConnectionMap.get(connectionType) != null);
     }
 
-
-    @SuppressWarnings("deprecation")
-    public boolean isConnectionValid(Object connectionType, Object fromElement,
-            Object toElement) {
-        return isConnectionValid(connectionType, fromElement, toElement, true);
-    }
-    
 
     public boolean isConnectionValid(Object connectionType, Object fromElement,
             Object toElement, boolean checkWFR) {
@@ -958,8 +953,6 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             // end our transaction
             modelImpl.getRepository().endTrans();
         }
-
-
 
         synchronized (lock) {
             // Elements which will be deleted when their container is deleted

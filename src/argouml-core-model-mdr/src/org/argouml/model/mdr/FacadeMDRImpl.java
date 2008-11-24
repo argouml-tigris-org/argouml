@@ -441,46 +441,6 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof Expression;
     }
 
-    @SuppressWarnings("deprecation")
-    public boolean isAArgListsExpression(Object handle) {
-        return handle instanceof ArgListsExpression;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isABooleanExpression(Object handle) {
-        return handle instanceof BooleanExpression;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isAIterationExpression(Object handle) {
-        return handle instanceof IterationExpression;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isAMappingExpression(Object handle) {
-        return handle instanceof MappingExpression;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isAObjectSetExpression(Object handle) {
-        return handle instanceof ObjectSetExpression;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isAProcedureExpression(Object handle) {
-        return handle instanceof ProcedureExpression;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isATimeExpression(Object handle) {
-        return handle instanceof TimeExpression;
-    }
-
-    @SuppressWarnings("deprecation")
-    public boolean isATypeExpression(Object handle) {
-        return handle instanceof TypeExpression;
-    }
-
     public boolean isAExtend(Object handle) {
         return handle instanceof Extend;
     }
@@ -622,18 +582,8 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof UmlPackage;
     }
     
-    @SuppressWarnings("deprecation")
-    public boolean isAPrimitive(Object handle) {
-        return handle instanceof Primitive;
-    }
-
     public boolean isAPrimitiveType(Object handle) {
         return handle instanceof Primitive;
-    }
-    
-    @SuppressWarnings("deprecation")
-    public boolean isAProgrammingLanguageDataType(Object handle) {
-        return handle instanceof ProgrammingLanguageDataType;
     }
 
     public boolean isAPseudostate(Object handle) {
@@ -642,19 +592,6 @@ class FacadeMDRImpl implements Facade {
 
     public boolean isAPseudostateKind(Object handle) {
         return handle instanceof PseudostateKind;
-    }
-
-
-    @SuppressWarnings("deprecation")
-    public Object getPseudostateKind(Object handle) {
-        if (handle instanceof Pseudostate) {
-            try {
-                return ((Pseudostate) handle).getKind();
-            } catch (InvalidObjectException e) {
-                throw new InvalidElementException(e);
-            }
-        }
-        return illegalArgumentObject(handle);
     }
 
 
@@ -829,11 +766,7 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof UseCase;
     }
 
-    @SuppressWarnings("deprecation")
-    public boolean isAUseCaseInstance(Object handle) {
-        return handle instanceof UseCaseInstance;
-    }
-
+    
     public boolean isAVisibilityKind(Object handle) {
         return handle instanceof VisibilityKind;
     }
@@ -843,44 +776,6 @@ class FacadeMDRImpl implements Facade {
         try {
             if (handle instanceof UmlClass) {
                 return ((UmlClass) handle).isActive();
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-        return illegalArgumentBoolean(handle);
-    }
-
-
-    @SuppressWarnings("deprecation")
-    public boolean isChangeable(Object handle) {
-        try {
-            if (handle instanceof StructuralFeature) {
-                ChangeableKind changeability =
-                    ((StructuralFeature) handle).getChangeability();
-                return ChangeableKindEnum.CK_CHANGEABLE.equals(changeability);
-            }
-            if (handle instanceof AssociationEnd) {
-                ChangeableKind changeability =
-                    ((AssociationEnd) handle).getChangeability();
-                return ChangeableKindEnum.CK_CHANGEABLE.equals(changeability);
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-        return illegalArgumentBoolean(handle);
-    }
-
-
-    @SuppressWarnings("deprecation")
-    public boolean isClassifierScope(Object handle) {
-        try {
-            if (handle instanceof Attribute) {
-                Attribute a = (Attribute) handle;
-                return ScopeKindEnum.SK_CLASSIFIER.equals(a.getOwnerScope());
-            }
-            if (handle instanceof Feature) {
-                Feature f = (Feature) handle;
-                return ScopeKindEnum.SK_CLASSIFIER.equals(f.getOwnerScope());
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -1000,21 +895,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentBoolean(handle);
     }
 
-
-    @SuppressWarnings("deprecation")
-    public boolean isInstanceScope(Object handle) {
-        try {
-            if (handle instanceof Feature) {
-                Feature a = (Feature) handle;
-                return ScopeKindEnum.SK_INSTANCE.equals(a.getOwnerScope());
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-        return illegalArgumentBoolean(handle);
-    }
-
-
+    
     public boolean isInternal(Object handle) {
         try {
             if (handle instanceof Transition) {
@@ -2831,13 +2712,7 @@ class FacadeMDRImpl implements Facade {
         }
         return opsAndReceps;
     }
-    
 
-    @SuppressWarnings("deprecation")
-    public Object getOppositeEnd(Object handle) {
-        return getNextEnd(handle);
-    }
-    
 
     public Object getNextEnd(Object handle) {
         try {
