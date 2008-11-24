@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
 <!--
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,16 +38,31 @@ Standards for writing documentation (manual, cookbook, quickguide).
     <title>Introduction</title>
 
     <para>
-The documentation
-      (currently manual, cookbook, and quickguide)
-      is written using
+      The documentation is written using
       <ulink url="http://www.oasis-open.org/docbook"><application>DocBook
-        XML V4.1.2</application></ulink>. This section covers some
+        XML V4.1.2</application></ulink>.
+      This is the User Manual and the Quick Guide.
+      This section covers some
       conventions for use of DocBook and for the documentation in general. It
 also includes some information 
 for tooling configuration, e.g. 
 for Emacs with the psgml package.
-</para>
+    </para>
+
+    <para>
+      The documentation is developed in the Tigris project
+      argouml-documentation at
+      <ulink url="http://argouml-documetation.tigris.org/">
+        argouml-documentation
+      </ulink>.
+    </para>
+
+    <para>
+      This Cookbook is currently also written in DocBook 
+      but still (November 2008) resides in the main argouml project.
+      Sometimes in December 2008 this will be moved into a wiki on
+      the ArgoUML web site and the DocBook source and tools can be removed.
+    </para>
   </sect1>
 
   <!-- Conventions for the document in general -->
@@ -109,7 +124,34 @@ each section dealing with a single topic.
   <sect1>
     <title>Document Conventions</title>
 
+    <para>
+      The Quick Guide and the User Manual source contain
+      the source for all supported languages in the same file.
+      The choice of languages is controlled by the existance
+      and value of the <parameter>lang</parameter> parameter
+      in the low-level docbook tag (para, title, phrase, indexterm, ...).
+    </para>
+
     <itemizedlist>
+      <listitem>
+	<para>
+          Set the <parameter>lang</parameter> parameter on a low level
+          in the document.
+          The structure of the document shall be the same in all languages
+          so the paragraph level is the appropriate one.
+        </para>
+      </listitem>
+
+      <listitem>
+	<para>
+          For each para, title, phrase, or indexterm
+          always use the same order for the languages namely
+            English, the source language, 
+            followed then by the other languages in alphabetic order.
+          Example en, de, es.
+        </para>
+      </listitem>
+
       <listitem>
 	<para>
 All titles of chapters, sections etc. are capitalized throughout.
@@ -135,22 +177,6 @@ Use full URLs throughout all documents!
 Rationale: 
 These documents may also be published in other formats than 
 html on the &argouml; web site.
-</para>
-      </listitem>
-
-      <listitem>
-	<para>
-Do not include lists of what changes have been done to the files.
-This information is kept by the version control tool.
-This is changed since Jeremy Bennet did the work for 
-the 0.9/0.10 User Manual and there might still exist such lists.
-Remove them while changing the files!
-</para>
-        <para>
-The Cookbook has a Change Log 
-(See <xref linkend="changelog"/>)
-that is updated for every significant
-change but that is for the purpose of making it easier for the readers.
 </para>
       </listitem>
 
@@ -192,7 +218,7 @@ Add indexterms while doing changes.
 Creating the index is a good idea 
 and we eventually should have indexterms all over. 
 Initially, the manual was written without
-useing indexterms at all. 
+using indexterms at all. 
 They have been added 
 generously on certain parts but that makes the index
 strangely biased.
