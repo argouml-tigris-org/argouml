@@ -404,6 +404,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         if (Model.getFacade().isAFeature(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("ownerScope")) {
+                    // TODO: This needs to be switched to use isStatic(), but
+                    // what type of value is the caller expecting?
                     return Model.getFacade().getOwnerScope(subject);
                 }
                 if (feature.equals("visibility")) {
@@ -660,13 +662,14 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
 
         /* 4.5.2.35 ProgrammingLanguageDataType */          
         
-        if (Model.getFacade().isAProgrammingLanguageDataType(subject)) {
-            if (type.equals(".")) {
-                if (feature.equals("expression")) {
-                    return Model.getFacade().getExpression(subject);
-                }
-            }
-        }                
+        // Gone from UML 2.x, so unsupported here
+//        if (Model.getFacade().isAProgrammingLanguageDataType(subject)) {
+//            if (type.equals(".")) {
+//                if (feature.equals("expression")) {
+//                    return Model.getFacade().getExpression(subject);
+//                }
+//            }
+//        }                
 
         /* 4.5.2.37 StructuralFeature */
 
