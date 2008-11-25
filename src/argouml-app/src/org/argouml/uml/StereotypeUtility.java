@@ -41,13 +41,15 @@ import org.argouml.uml.util.PathComparator;
 import org.argouml.util.MyTokenizer;
 
 /**
+ * Utility classes for use in diagram popup menus for stereotypes.
+ * 
  * @author Bob Tarling
  *
  */
 public class StereotypeUtility {
 
     /**
-     * Utility classes for 
+     * Private default constructor.
      */
     private StereotypeUtility() {
         super();
@@ -70,7 +72,7 @@ public class StereotypeUtility {
     }
 
     /**
-     * Returns a set of all unique available stereotypes 
+     * Returns a set of all unique applicable stereotypes 
      * for a given modelelement.
      * 
      * @param modelElement the given modelelement
@@ -149,6 +151,7 @@ public class StereotypeUtility {
     private static void getApplicableStereotypesInNamespace(
             Object modelElement, Set<List> paths,
             Set<Object> availableStereotypes, Object namespace) {
+        
         Collection allProfiles = getAllProfilePackages(Model.getFacade()
                 .getModel(modelElement));
         Collection<Object> allAppliedProfiles = new ArrayList<Object>();
@@ -167,10 +170,10 @@ public class StereotypeUtility {
         }
         
         addAllUniqueModelElementsFrom(availableStereotypes, paths,
-                getAppliableStereotypes(modelElement, allAppliedProfiles));
+                getApplicableStereotypes(modelElement, allAppliedProfiles));
     }
     
-    private static Collection<Object> getAppliableStereotypes(
+    private static Collection<Object> getApplicableStereotypes(
             Object modelElement, Collection<Object> allAppliedProfiles) {
         Collection<Object> ret = new ArrayList<Object>();
         for (Object profile : allAppliedProfiles) {
@@ -302,20 +305,19 @@ public class StereotypeUtility {
     }
 
     /**
-     * Finds a stereotype named name either in the subtree of the model rooted
-     * at root, or in the the ProfileJava model.
-     *
-     * @param obj
-     *            A ModelElement to find a suitable stereotype for.
-     * @param name
-     *            The name of the stereotype to search for.
+     * Finds a stereotype with the given name either in the user model, or in
+     * one of the profiles' models.  If it's not found, a new stereotype will
+     * be created in the root model.
+     * 
+     * @param obj A ModelElement to find a suitable stereotype for.
+     * @param name The name of the stereotype to search for.
      * @return A stereotype named name, or possibly null.
      */
     private static Object getStereotype(Object obj, String name) {
         Object root = Model.getFacade().getModel(obj);
         Object stereo;
 
-        stereo = recFindStereotype(obj, root, name);
+        stereo = findStereotype(obj, null, name);
         if (stereo != null) {
             return stereo;
         }
@@ -338,8 +340,42 @@ public class StereotypeUtility {
     }
 
     /**
-     * Recursively search a hive of a model for a stereotype with the name given
-     * in name.
+     * Search for a stereotype with the name given in name.
+     * 
+     * @param obj The model element to be suitable for.
+     * @param namespace The namespace to start search at. If null, the namespace
+     *                of the given model element will be used as the starting
+     *                point.
+     * @param name The name of the stereotype to search for.
+     * @return An stereotype named name, or null if none is found.
+     */
+    private static Object findStereotype(
+            final Object obj, final Object namespace, final String name) {
+        Object ns = namespace;
+        if (ns == null) {
+            ns = Model.getFacade().getNamespace(obj);
+        }
+        
+        Collection ownedElements = 
+            Model.getFacade().getOwnedElements(ns);
+        for (Object element : ownedElements) {
+            if (Model.getFacade().isAStereotype(element) &&
+                    name.equals(Model.getFacade().getName(element))) {
+                return element;
+            }
+        }
+        ns = Model.getFacade().getNamespace(ns);
+        if (namespace != null) {
+            return findStereotype(obj, ns, name);
+        }
+
+        return null;
+    }
+    
+    /**
+     * Search descending recursively for a stereotype with the name given
+     * in name.  NOTE: You probably don't want to use this because it's 
+     * searching the wrong direction!
      *
      * @param obj
      *            The model element to be suitable for.
@@ -349,14 +385,14 @@ public class StereotypeUtility {
      *            The name of the stereotype to search for.
      * @return An stereotype named name, or null if none is found.
      */
-    private static Object recFindStereotype(
+    private static Object findStereotypeContained(
             Object obj, Object root, String name) {
         Object stereo;
 
         if (root == null) {
             return null;
         }
-
+        
         if (Model.getFacade().isAStereotype(root)
                 && name.equals(Model.getFacade().getName(root))) {
             if (Model.getExtensionMechanismsHelper().isValidStereotype(obj,
@@ -380,7 +416,7 @@ public class StereotypeUtility {
         Iterator iter = ownedElements.iterator();
 
         while (iter.hasNext()) {
-            stereo = recFindStereotype(obj, iter.next(), name);
+            stereo = findStereotypeContained(obj, iter.next(), name);
             if (stereo != null) {
                 return stereo;
             }
