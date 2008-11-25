@@ -119,7 +119,7 @@ class ArgoParser extends SAXParserBase {
     }
 
     private void logError(String projectName, SAXException e) {
-        LOG.error("Exception reading project================");
+        LOG.error("Exception reading project================", e);
         LOG.error(projectName);
     }
 
@@ -170,6 +170,7 @@ class ArgoParser extends SAXParserBase {
      * @see org.argouml.persistence.SAXParserBase#handleEndElement(
      *         org.argouml.persistence.XMLElement)
      */
+    @SuppressWarnings("deprecation")
     public void handleEndElement(XMLElement e) throws SAXException {
         if (DBG) {
             LOG.debug("NOTE: ArgoParser handleEndTag:" + e.getName() + ".");
@@ -266,21 +267,22 @@ class ArgoParser extends SAXParserBase {
     /**
      * @param e the element
      */
-    protected void handleArgo(XMLElement e) {
+    protected void handleArgo(@SuppressWarnings("unused") XMLElement e) {
         /* do nothing */
     }
 
     /**
      * @param e the element
      */
-    protected void handleDocumentation(XMLElement e) {
+    protected void handleDocumentation(
+            @SuppressWarnings("unused") XMLElement e) {
         /* do nothing */
     }
 
     /**
      * @param e the element
      */
-    protected void handleSettings(XMLElement e) {
+    protected void handleSettings(@SuppressWarnings("unused") XMLElement e) {
         /* do nothing */
     }
 
@@ -365,7 +367,7 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowBoldNames(XMLElement e) {
         String ug = e.getText().trim();
-        diagramDefaults.setShowBoldNames(Boolean.getBoolean(ug));
+        diagramDefaults.setShowBoldNames(Boolean.parseBoolean(ug));
     }
 
     /**
@@ -381,7 +383,7 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowVisibility(XMLElement e) {
         String showVisibility = e.getText().trim();
-        diagramDefaults.setShowVisibility(Boolean.getBoolean(showVisibility));
+        diagramDefaults.setShowVisibility(Boolean.parseBoolean(showVisibility));
     }
 
     /**
@@ -390,7 +392,7 @@ class ArgoParser extends SAXParserBase {
     protected void handleShowMultiplicity(XMLElement e) {
         String showMultiplicity = e.getText().trim();
         diagramDefaults.setShowMultiplicity(
-                Boolean.getBoolean(showMultiplicity));
+                Boolean.parseBoolean(showMultiplicity));
     }
 
     /**
@@ -399,7 +401,7 @@ class ArgoParser extends SAXParserBase {
     protected void handleShowInitialValue(XMLElement e) {
         String showInitialValue = e.getText().trim();
         diagramDefaults.setShowInitialValue(
-                Boolean.getBoolean(showInitialValue));
+                Boolean.parseBoolean(showInitialValue));
     }
 
     /**
@@ -407,7 +409,7 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowProperties(XMLElement e) {
         String showproperties = e.getText().trim();
-        diagramDefaults.setShowProperties(Boolean.getBoolean(showproperties));
+        diagramDefaults.setShowProperties(Boolean.parseBoolean(showproperties));
     }
 
     /**
@@ -415,7 +417,7 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowTypes(XMLElement e) {
         String showTypes = e.getText().trim();
-        diagramDefaults.setShowTypes(Boolean.getBoolean(showTypes));
+        diagramDefaults.setShowTypes(Boolean.parseBoolean(showTypes));
     }
 
     /**
@@ -423,7 +425,8 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowStereotypes(XMLElement e) {
         String showStereotypes = e.getText().trim();
-        diagramDefaults.setShowStereotypes(Boolean.getBoolean(showStereotypes));
+        diagramDefaults.setShowStereotypes(
+                Boolean.parseBoolean(showStereotypes));
     }
 
     /**
@@ -432,7 +435,7 @@ class ArgoParser extends SAXParserBase {
     protected void handleShowSingularMultiplicities(XMLElement e) {
         String showSingularMultiplicities = e.getText().trim();
         diagramDefaults.setShowSingularMultiplicities(
-                Boolean.getBoolean(showSingularMultiplicities));
+                Boolean.parseBoolean(showSingularMultiplicities));
     }
 
     /**
@@ -469,7 +472,7 @@ class ArgoParser extends SAXParserBase {
     protected void handleShowAssociationNames(XMLElement e) {
         String showAssociationNames = e.getText().trim();
         diagramDefaults.setShowAssociationNames(
-                Boolean.getBoolean(showAssociationNames));
+                Boolean.parseBoolean(showAssociationNames));
     }
 
     /**
@@ -480,7 +483,7 @@ class ArgoParser extends SAXParserBase {
         // NOTE: For historical reasons true == hide, so we need to invert
         // the sense of this
         diagramDefaults.setShowBidirectionalArrows(!
-                Boolean.getBoolean(hideBidirectionalArrows));
+                Boolean.parseBoolean(hideBidirectionalArrows));
     }
     
     
