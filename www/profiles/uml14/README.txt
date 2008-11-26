@@ -19,3 +19,5 @@ PROFILES
        profile, importing all MagicDraw "modules", and writing out as "rich"
        XMI file which was then imported into ArgoUML and written back out again
        to strip all MagicDraw extensions.
+
+- metaprofile.xmi - contains the elements needed to create profiles with ArgoUML.
