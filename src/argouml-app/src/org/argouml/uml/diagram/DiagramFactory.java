@@ -28,6 +28,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ActivityDiagram;
 import org.argouml.model.ClassDiagram;
@@ -55,6 +56,13 @@ import org.tigris.gef.graph.GraphNodeRenderer;
 */
 public final class DiagramFactory {
 
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(DiagramFactory.class);
+    
     private final Map noStyleProperties = new HashMap();
 
     /**
@@ -181,7 +189,7 @@ public final class DiagramFactory {
                     null, settings);
         } else {
             // TODO: Convert all to use standard factory registration
-            diagram = createDiagram(diagramClasses.get(type), owner, null);
+            diagram = createDiagram(type, owner, (Object) null);
             diagram.setDiagramSettings(settings);
         }
 
