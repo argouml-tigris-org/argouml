@@ -174,9 +174,15 @@ public final class DiagramFactory {
         
         Object factory = factories.get(type);
         if (factory != null) {
+            Object owner;
+            if (machine != null) {
+                owner = machine;
+            } else {
+                owner = namespace;
+            }
             if (factory instanceof DiagramFactoryInterface2) {
                 diagram = ((DiagramFactoryInterface2) factory).createDiagram(
-                        machine, (String) null, settings);
+                        owner, (String) null, settings);
             } else if (factory instanceof DiagramFactoryInterface) {
                 diagram = ((DiagramFactoryInterface) factory).createDiagram(
                         namespace, machine);
