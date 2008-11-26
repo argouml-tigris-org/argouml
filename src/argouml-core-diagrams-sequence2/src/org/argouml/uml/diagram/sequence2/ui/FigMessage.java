@@ -233,4 +233,12 @@ public class FigMessage extends FigEdgeModelElement {
     protected boolean determineFigNodes() {
         return true;
     }
+
+    @Override
+    public void translate(int dx, int dy) {
+        if (isSelfMessage()) {
+            ((FigMessageSpline)getFig()).translateFig(dx, dy);
+        }        
+        super.translate(dx, dy);
+    }
 }
