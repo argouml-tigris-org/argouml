@@ -451,7 +451,7 @@ public class PathItemPlacement extends PathConv {
      */
     private double getSlope() {
 
-        final int slopeSegLen = 10; // segment size for computing slope
+        final int slopeSegLen = 40; // segment size for computing slope
 
         int pathLength = _pathFigure.getPerimeterLength();
         int pathDistance = getPathDistance();
@@ -591,7 +591,8 @@ public class PathItemPlacement extends PathConv {
         final float[] dashes = {1.0f, 4.0f};
         final float phase = 5f;
         final Point p1 = getAnchorPosition();
-        final Point p2 = getPoint();
+        Point p2 = getPoint();
+        Rectangle r = itemFig.getBounds();
         g.setColor(Color.RED);
         if (g instanceof Graphics2D) {
             final Graphics2D g2d = (Graphics2D) g;
@@ -604,6 +605,50 @@ public class PathItemPlacement extends PathConv {
                     phase);
             g2d.setStroke(dashedStroke);
         }
+        if (r.contains(p2)) {
+            g.drawRect(r.x, r.y, r.width, r.height);
+            p2 = getRectLineIntersection(r, p1, p2);     
+        }
         g.drawLine(p1.x, p1.y, p2.x, p2.y);
+    }
+    
+    /**
+     * Finds the point where a rectangle and line intersect.
+     * Finds the intersection point between the border of a Rectangle r and 
+     * a line drawn between two Points pOut (outside the rectangle) and pIn 
+     * (inside the rectangle).
+     * Actually, we just do a cheat and find the midpoint of the edge which
+     * the the line crosses.
+     * If the pIn is not inside the rectangle, or if any other problem occurs,
+     * pIn is returned. 
+     * @param r Rectangle to find the intersection of.
+     * @param pOut Point outside the rectangle.
+     * @param pIn Point inside the rectangle.
+     * @return The intersection between Line(pOut, pIn) and Rectangle r.
+     */
+    private Point getRectLineIntersection(Rectangle r, Point pOut, Point pIn) {
+        Line2D.Double m, n;
+        m = new Line2D.Double(pOut, pIn);
+        n = new Line2D.Double(r.x, r.y, r.x + r.width, r.y);
+        if (m.intersectsLine(n)) {
+            return new Point(r.x + r.width / 2, r.y);
+        }
+        n = new Line2D.Double(r.x + r.width, r.y, r.x + r.width, 
+                r.y + r.height);
+        if (m.intersectsLine(n)) {
+            return new Point(r.x + r.width, r.y + r.height / 2);
+        }
+        n = new Line2D.Double(r.x, r.y + r.height, r.x + r.width, 
+                r.y + r.height);
+        if (m.intersectsLine(n)) {
+            return new Point(r.x + r.width / 2, r.y + r.height);
+        }
+        n = new Line2D.Double(r.x, r.y, r.x, r.y + r.width);
+        if (m.intersectsLine(n)) {
+            return new Point(r.x, r.y + r.height / 2);
+        }
+        // Should never get here.  If we do, return the inner point.
+        LOG.warn("Could not find rectangle intersection, using inner point.");
+        return pIn;
     }
 }
