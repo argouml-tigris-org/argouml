@@ -716,7 +716,7 @@ public class FigPackage extends FigNodeModelElement
 
             ArgoDiagram classDiagram =
                 DiagramFactory.getInstance().
-                    createDiagram(DiagramType.Class, namespace, null);
+                    create(DiagramType.Class, namespace, null);
 
             String diagramName = defaultName + "_" + classDiagram.getName();
 

@@ -52,7 +52,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
      */
     public ArgoDiagram createDiagram(Object ns) {
         if (Model.getFacade().isANamespace(ns)) {
-            return DiagramFactory.getInstance().createDiagram(
+            return DiagramFactory.getInstance().create(
                     DiagramFactory.DiagramType.Class,
                     ns,
                     null);

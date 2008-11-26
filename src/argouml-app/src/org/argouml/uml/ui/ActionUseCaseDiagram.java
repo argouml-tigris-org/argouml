@@ -54,7 +54,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + namespace + "is not a namespace.");
         }
-        return DiagramFactory.getInstance().createDiagram(
+        return DiagramFactory.getInstance().create(
                 DiagramFactory.DiagramType.UseCase,
                 namespace,
                 null);

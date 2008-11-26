@@ -61,7 +61,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
 					       "The argument " + namespace
 					       + "is not a namespace.");
         }
-        return DiagramFactory.getInstance().createDiagram(
+        return DiagramFactory.getInstance().create(
                 DiagramFactory.DiagramType.Deployment,
                 namespace,
                 null);

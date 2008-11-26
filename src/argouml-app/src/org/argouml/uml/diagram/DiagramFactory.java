@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ActivityDiagram;
 import org.argouml.model.ClassDiagram;
@@ -56,13 +55,6 @@ import org.tigris.gef.graph.GraphNodeRenderer;
 */
 public final class DiagramFactory {
 
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(DiagramFactory.class);
-    
     private final Map noStyleProperties = new HashMap();
 
     /**
@@ -122,7 +114,7 @@ public final class DiagramFactory {
      * @return the newly instantiated class diagram
      */
     public ArgoDiagram createDefaultDiagram(Object namespace) {
-        return createDiagram(DiagramType.Class, namespace, null);
+        return create(DiagramType.Class, namespace, null);
     }
 
     /**
@@ -135,7 +127,10 @@ public final class DiagramFactory {
      *                         (only: statemachine - activitygraph)
      * @return the newly instantiated class diagram
      * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #createDiagram(DiagramType, Object, Object, DiagramSettings)}.
+     * {@link #create(DiagramType, Object, DiagramSettings)}.  The 'owner'
+     * argument should be the 'machine' for a state diagram or activity diagram
+     * (which can figure out the correct namespace from that) and the 
+     * 'namespace' for all others.
      */
     @Deprecated
     public ArgoDiagram createDiagram(final DiagramType type,
@@ -145,26 +140,9 @@ public final class DiagramFactory {
                 .getCurrentProject().getProjectSettings()
                 .getDefaultDiagramSettings();
         
-        final ArgoDiagram diagram;
-        
-        Object factory = factories.get(type);
-        if (factory != null) {
-            if (factory instanceof DiagramFactoryInterface2) {
-                diagram = ((DiagramFactoryInterface2) factory).createDiagram(
-                        machine, null, settings);
-            } else {
-                diagram = ((DiagramFactoryInterface) factory).createDiagram(
-                        namespace, machine);
-                diagram.setDiagramSettings(settings);
-            }
-        } else {
-            diagram = createDiagram(diagramClasses.get(type), namespace,
-                    machine);
-            diagram.setDiagramSettings(settings);
-        }
-
-        return diagram;
+        return createInternal(type, namespace, machine, settings);
     }
+
 
     /**
      * Factory method to create a new instance of an ArgoDiagram.
@@ -176,20 +154,41 @@ public final class DiagramFactory {
      * @param settings default rendering settings for the diagram
      * @return the newly instantiated class diagram
      */
-    public ArgoDiagram createDiagram(
+    public ArgoDiagram create(
             final DiagramType type,
             final Object owner,
             final DiagramSettings settings) {
         
+        return  createInternal(type, owner, null, settings);
+    }
+
+
+    /*
+     * Create a diagram.  This 4-arg version is only for internal use.  The
+     * 'namespace' argument is deprecated and not used in the new APIs.
+     */
+    private ArgoDiagram createInternal(final DiagramType type,
+            final Object namespace, final Object machine,
+            DiagramSettings settings) {
         final ArgoDiagram diagram;
         
         Object factory = factories.get(type);
-        if (factory != null && factory instanceof DiagramFactoryInterface2) {
-            diagram = ((DiagramFactoryInterface2) factory).createDiagram(owner,
-                    null, settings);
+        if (factory != null) {
+            if (factory instanceof DiagramFactoryInterface2) {
+                diagram = ((DiagramFactoryInterface2) factory).createDiagram(
+                        machine, (String) null, settings);
+            } else if (factory instanceof DiagramFactoryInterface) {
+                diagram = ((DiagramFactoryInterface) factory).createDiagram(
+                        namespace, machine);
+                diagram.setDiagramSettings(settings);
+            } else {
+                // This shouldn't be possible, but just in case
+                throw new IllegalStateException(
+                        "Unknown factory type registered");
+            }
         } else {
-            // TODO: Convert all to use standard factory registration
-            diagram = createDiagram(type, owner, (Object) null);
+            diagram = createDiagram(diagramClasses.get(type), namespace,
+                    machine);
             diagram.setDiagramSettings(settings);
         }
 
@@ -206,7 +205,10 @@ public final class DiagramFactory {
      *                         (only: statemachine - activitygraph)
      * @return the newly instantiated class diagram
      * @deprecated for 0.25.4 by tfmorris.  Use 
-     * {@link #createDiagram(DiagramType, Object, Object, DiagramSettings)}.
+     * {@link #create(DiagramType, Object, DiagramSettings)}.  The 'owner'
+     * argument should be the 'machine' for a state diagram or activity diagram
+     * (which can figure out the correct namespace from that) and the 
+     * 'namespace' for all others.
      */
     @Deprecated
     public ArgoDiagram createDiagram(Class type, Object namespace,
@@ -275,8 +277,6 @@ public final class DiagramFactory {
         }
         return diagram;
     }
-
-
 
     /**
      * @deprecated for 0.27.2 by tfmorris.  Undocumented and unused internally.

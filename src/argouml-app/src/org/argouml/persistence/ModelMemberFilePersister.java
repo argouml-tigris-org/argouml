@@ -366,7 +366,7 @@ class ModelMemberFilePersister extends MemberFilePersister
         // ISSUE 3516 : Make sure there is at least one diagram because
         // ArgoUML requires it for correct operation
         if (atLeastOne && project.getDiagramCount() < 1) {
-            ArgoDiagram d = diagramFactory.createDiagram(
+            ArgoDiagram d = diagramFactory.create(
                     DiagramType.Class, curModel, null);
             project.addMember(d);
         }

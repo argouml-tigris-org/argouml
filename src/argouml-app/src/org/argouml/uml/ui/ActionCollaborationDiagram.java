@@ -43,7 +43,7 @@ public class ActionCollaborationDiagram extends ActionNewDiagram {
      * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
      */
     public ArgoDiagram createDiagram(Object namespace) {
-        return DiagramFactory.getInstance().createDiagram(
+        return DiagramFactory.getInstance().create(
                 DiagramFactory.DiagramType.Collaboration,
                 createCollaboration(namespace),
                 null);
