@@ -28,6 +28,8 @@ import org.apache.log4j.Logger;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.proppanel.sequence2.SequenceDiagramPropPanelFactory;
 import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramFactoryInterface;
+import org.argouml.uml.diagram.DiagramFactoryInterface2;
 import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 import org.argouml.uml.ui.PropPanelFactoryManager;
 
@@ -52,9 +54,10 @@ public class SequenceDiagramModule implements ModuleInterface {
         propPanelFactory =
             new SequenceDiagramPropPanelFactory();
         PropPanelFactoryManager.addPropPanelFactory(propPanelFactory);
-        
+        // TODO: Remove the casting to DiagramFactoryInterface2
+        // as soon as DiagramFactoryInterface is removed.
         DiagramFactory.getInstance().registerDiagramFactory(
-                DiagramType.Sequence, new SequenceDiagramFactory());
+                DiagramType.Sequence, (DiagramFactoryInterface2) new SequenceDiagramFactory());
 
         LOG.info("SequenceDiagram Module enabled.");
         return true;
@@ -64,8 +67,10 @@ public class SequenceDiagramModule implements ModuleInterface {
 
         PropPanelFactoryManager.removePropPanelFactory(propPanelFactory);
 
+        // TODO: Remove the casting to DiagramFactoryInterface2
+        // as soon as DiagramFactoryInterface is removed.
         DiagramFactory.getInstance().registerDiagramFactory(
-                DiagramType.Sequence, (SequenceDiagramFactory) null);
+                DiagramType.Sequence, (DiagramFactoryInterface2) null);
 
         LOG.info("SequenceDiagram Module disabled.");
         return true;
