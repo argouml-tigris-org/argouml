@@ -593,20 +593,10 @@ public class PathItemPlacement extends PathConv {
         final Point p1 = getAnchorPosition();
         Point p2 = getPoint();
         Rectangle r = itemFig.getBounds();
-        g.setColor(Color.RED);
-        if (g instanceof Graphics2D) {
-            final Graphics2D g2d = (Graphics2D) g;
-            BasicStroke dashedStroke = new BasicStroke(
-                    1, 
-                    BasicStroke.CAP_SQUARE, 
-                    BasicStroke.JOIN_MITER, 
-                    10.0f, 
-                    dashes, 
-                    phase);
-            g2d.setStroke(dashedStroke);
-        }
+        g.setColor(new Color(255,128,128,100));
+        r.grow(2, 2);
+        g.fillRoundRect(r.x, r.y, r.width, r.height, 8, 8);
         if (r.contains(p2)) {
-            g.drawRect(r.x, r.y, r.width, r.height);
             p2 = getRectLineIntersection(r, p1, p2);     
         }
         g.drawLine(p1.x, p1.y, p2.x, p2.y);
