@@ -30,6 +30,7 @@ import java.util.List;
 
 import javax.swing.Icon;
 
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.Handle;
@@ -106,7 +107,8 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
             
             // 1. Remember current message paths
             for (Fig workOnFig : figs) {
-                if (workOnFig instanceof FigMessage) {
+                if (workOnFig instanceof FigMessage && 
+                		!((FigMessage) workOnFig).isSelfMessage()) {
                     polygonsByFig.put(
                     		workOnFig,
                     		((FigMessage) workOnFig).getPolygon());
@@ -124,9 +126,14 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
             // 3. Now reposition messages based on their original position
             for (Fig workOnFig : figs) {
                 if (workOnFig instanceof FigMessage) {
-                    polygonsByFig.get(workOnFig).translate(0, deltaY);
-                    ((FigMessage) workOnFig).setPolygon(
-                    		polygonsByFig.get(workOnFig));
+                	if (((FigMessage) workOnFig).isSelfMessage()) {
+                		((FigMessageSpline) ((FigMessage) workOnFig).getFig())
+                				.translateFig(0, deltaY);
+                	} else {
+                		polygonsByFig.get(workOnFig).translate(0, deltaY);
+                		((FigMessage) workOnFig).setPolygon(
+                				polygonsByFig.get(workOnFig));
+                	}
                 }
             }
             break;
@@ -146,6 +153,15 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
         }
 
         final Fig workOnFig = getContent();
+        
+        int oldCenterX = 0;
+        int newCenterX = 0;
+        // Compute the initial center position of the CR
+        if (workOnFig instanceof FigClassifierRole) {
+        	FigClassifierRole f = (FigClassifierRole) workOnFig;
+        	oldCenterX = f.getWidth() / 2 + f.getX();
+        }
+        
         // horizontal resizing
         switch (hand.index) {
         case Handle.NORTHWEST:
@@ -159,6 +175,24 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
             break;
         default:
         }
+
+        // Compute the final center position of the CR
+        if (workOnFig instanceof FigClassifierRole) {
+        	FigClassifierRole f = (FigClassifierRole) workOnFig;
+        	newCenterX = f.getWidth() / 2 + f.getX();
+        }
+        
+        // Self messages act differently so it is needed to move them separetly.
+        // Only self messages of selected CR should be horizontally translated.
+        for (Fig fig : figs) {
+        	if (fig instanceof FigMessage && ((FigMessage) fig).isSelfMessage()
+        			&& Model.getCoreHelper().getDestination(fig.getOwner()).
+        					equals(workOnFig.getOwner())) {
+        		((FigMessageSpline) ((FigMessage) fig).getFig())
+	        			.translateFig(newCenterX - oldCenterX, 0);
+        	}
+		}
+        
     }
 
     @Override

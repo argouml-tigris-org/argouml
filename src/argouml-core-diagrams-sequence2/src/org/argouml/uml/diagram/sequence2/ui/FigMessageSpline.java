@@ -59,4 +59,27 @@ public class FigMessageSpline extends FigSpline {
 	super.addPoint(end);
     }
     
+    /**
+     * This method is overridden in order to ignore change of the y coordinate
+     * during draging. Use translateFig(int dx, int dy) to force change of the
+     * y coordinate.
+     * @param dx the x offset
+     * @param dy the y offset - IGNORED
+     * @see org.tigris.gef.presentation.Fig#translate(int, int)
+     */
+    public void translate(int dx, int dy) {
+    	super.translate(dx, 0);
+    }
+    
+    /**
+     * Used in order to force translation of both X and Y coordiante.
+     * 
+     * @param dx the x offset
+     * @param dy the y offset
+     * @see org.tigris.gef.presentation.Fig#translate(int, int)
+     */
+    public void translateFig(int dx, int dy) {
+    	super.translate(dx, dy);
+    }
+    
 }
