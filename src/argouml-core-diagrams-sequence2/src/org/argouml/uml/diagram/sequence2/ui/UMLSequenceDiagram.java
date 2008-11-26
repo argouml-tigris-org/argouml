@@ -269,7 +269,9 @@ public class UMLSequenceDiagram extends UMLDiagram {
         if (Model.getFacade().isAComment(droppedObject)) {
             figNode = new FigComment(getGraphModel(), droppedObject);
         } else if (Model.getFacade().isAClassifierRole(droppedObject)) {
-            figNode = makeNewFigCR(droppedObject, location);           
+            if (! getGraphModel().getNodes().contains(droppedObject)) {
+                figNode = makeNewFigCR(droppedObject, location);  
+            }
         } else if (Model.getFacade().isAClassifier(droppedObject)){
             figNode = makeNewFigCR(makeNewCR(droppedObject), location);
         } else if (Model.getFacade().isAComment(droppedObject)) {
