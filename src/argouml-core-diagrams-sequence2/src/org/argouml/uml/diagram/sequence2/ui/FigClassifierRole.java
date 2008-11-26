@@ -265,7 +265,8 @@ public class FigClassifierRole extends FigNodeModelElement {
             relocate();
         }
 
-        // in any case we need to update the activations of this fig
+        // in any case we need to update the activations of both 
+        // classifier roles.
         ((FigClassifierRole)figMessage.getDestFigNode()).createActivations();
         if (! figMessage.isSelfMessage()){
             ((FigClassifierRole)figMessage.getSourceFigNode()).createActivations();
