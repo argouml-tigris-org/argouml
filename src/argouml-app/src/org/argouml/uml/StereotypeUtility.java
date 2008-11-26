@@ -317,7 +317,10 @@ public class StereotypeUtility {
         Object root = Model.getFacade().getModel(obj);
         Object stereo;
 
-        stereo = findStereotype(obj, null, name);
+        stereo = findStereotypeContained(obj, root, name);
+        // TODO: The following rather than the above is probably the correct
+        // way to search
+//        stereo = findStereotype(obj, null, name);
         if (stereo != null) {
             return stereo;
         }
@@ -340,7 +343,8 @@ public class StereotypeUtility {
     }
 
     /**
-     * Search for a stereotype with the name given in name.
+     * Search for a stereotype with the name given in a namespace and its
+     * containing namespaces.
      * 
      * @param obj The model element to be suitable for.
      * @param namespace The namespace to start search at. If null, the namespace
@@ -354,16 +358,22 @@ public class StereotypeUtility {
         Object ns = namespace;
         if (ns == null) {
             ns = Model.getFacade().getNamespace(obj);
+            if (ns == null) {
+                return null;
+            }
         }
+
         
         Collection ownedElements = 
             Model.getFacade().getOwnedElements(ns);
         for (Object element : ownedElements) {
-            if (Model.getFacade().isAStereotype(element) &&
-                    name.equals(Model.getFacade().getName(element))) {
+            if (Model.getFacade().isAStereotype(element)
+                    && name.equals(Model.getFacade().getName(element))) {
                 return element;
             }
         }
+        
+        // If not found, try the parent namespace
         ns = Model.getFacade().getNamespace(ns);
         if (namespace != null) {
             return findStereotype(obj, ns, name);
@@ -407,16 +417,9 @@ public class StereotypeUtility {
 
         Collection ownedElements = Model.getFacade().getOwnedElements(root);
 
-        if (ownedElements == null) {
-            return null;
-        }
-
         // Loop through each element in the namespace, recursing.
-
-        Iterator iter = ownedElements.iterator();
-
-        while (iter.hasNext()) {
-            stereo = findStereotypeContained(obj, iter.next(), name);
+        for (Object ownedElement : ownedElements) {
+            stereo = findStereotypeContained(obj, ownedElement, name);
             if (stereo != null) {
                 return stereo;
             }
