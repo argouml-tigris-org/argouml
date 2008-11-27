@@ -35,6 +35,7 @@ import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
 import org.apache.log4j.Logger;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConv;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -593,7 +594,10 @@ public class PathItemPlacement extends PathConv {
         final Point p1 = getAnchorPosition();
         Point p2 = getPoint();
         Rectangle r = itemFig.getBounds();
-        g.setColor(new Color(255,128,128,100));
+        // Load the standard colour, just add an alpha channel.
+        Color c = Globals.getPrefs().handleColorFor(itemFig);
+        c = new Color(c.getRed(), c.getGreen(), c.getBlue(), 30);
+        g.setColor(c);
         r.grow(2, 2);
         g.fillRoundRect(r.x, r.y, r.width, r.height, 8, 8);
         if (r.contains(p2)) {
