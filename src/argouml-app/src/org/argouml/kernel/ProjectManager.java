@@ -294,7 +294,10 @@ public final class ProjectManager implements ModelCommandCreationObserver {
                     createDefaultDiagrams(newProject);
                 }
                 creatingCurrentProject = false;
-
+                // The explorer appears to be listing for this in order
+                // to refresh the project node.
+                firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
+                    null, currentProject);
                 Model.getPump().startPumpingEvents();
                 
                 if (saveAction != null) {
