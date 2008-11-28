@@ -27,6 +27,7 @@ package org.argouml.uml.diagram;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -86,7 +87,8 @@ import org.tigris.gef.undo.UndoManager;
  * the namespace of its statemachine.
  */
 public abstract class ArgoDiagramImpl extends Diagram 
-    implements PropertyChangeListener, ArgoDiagram, IItemUID {
+    implements PropertyChangeListener, VetoableChangeListener, ArgoDiagram, 
+    IItemUID {
 
     private ItemUID id;
 
@@ -184,6 +186,9 @@ public abstract class ArgoDiagramImpl extends Diagram
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
         ArgoEventPump.addListener(
                 ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
+
+        // Listen for name changes so we can veto them if we don't like them
+        addVetoableChangeListener(this);
     }
     
 
@@ -663,6 +668,29 @@ public abstract class ArgoDiagramImpl extends Diagram
 
     public void notationRemoved(ArgoNotationEvent e) {
         // Do nothing
+    }
+
+
+    /**
+     * Receive vetoable change event. GEF will call this method with the 'name'
+     * property when it attempts to set the name. If this will be a duplicate
+     * for the project, we can veto the requested change.
+     * 
+     * @param evt the change event
+     * @throws PropertyVetoException if the name is illegal. Usuallly this means
+     *             a duplicate in the project.
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
+    public void vetoableChange(PropertyChangeEvent evt)
+        throws PropertyVetoException {
+        
+        if ("name".equals(evt.getPropertyName())) {
+            if (project != null) {
+                if (!project.isValidDiagramName((String) evt.getNewValue())) {
+                    throw new PropertyVetoException("Invalid name", evt);
+                }
+            }
+        }    
     }
     
 }

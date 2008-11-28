@@ -30,6 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
 
 import org.apache.log4j.Logger;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -56,8 +57,11 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
     private JTextField field;
     private boolean stopEvents = false;
 
+    private Object highlightTag = null;
+
     /**
      * The constructor.
+     * @param theField the input text field
      */
     public DiagramNameDocument(JTextField theField) {
         field = theField;
@@ -143,9 +147,22 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
                     /* Prevent triggering too many events by setName(). */
                     if (!oldName.equals(newName)) {
                         d.setName(newName);
+                        if (highlightTag != null) {
+                            field.getHighlighter()
+                                    .removeHighlight(highlightTag);
+                            highlightTag = null;
+                        }
                     }
                 } catch (PropertyVetoException pe) {
-                    LOG.debug(pe);
+                    // Provide feedback to the user that their name was
+                    // not accepted
+                    try {
+                        highlightTag  = field.getHighlighter().addHighlight(0, 
+                                field.getText().length(), 
+                                DefaultHighlighter.DefaultPainter);
+                    } catch (BadLocationException e1) {
+                        LOG.debug("Nested exception", e1);
+                    }
                 } catch (BadLocationException ble) {
                     LOG.debug(ble);
                 }

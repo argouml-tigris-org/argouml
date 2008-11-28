@@ -42,7 +42,6 @@ import org.argouml.gefext.ArgoModeCreateFigRect;
 import org.argouml.gefext.ArgoModeCreateFigSpline;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.UUIDHelper;
@@ -96,15 +95,6 @@ public abstract class UMLDiagram
     implements Relocatable {
 
     private static final Logger LOG = Logger.getLogger(UMLDiagram.class);
-
-    /**
-     * The serial number for new diagrams.
-     * Used to create an unique number for the name of the diagram.
-     * <p>
-     * TODO: How is this going to work if it's not static and this isn't a 
-     * singleton class?
-     */
-    private int diagramSerial = 1;
 
     /**
      * Tool to add a comment node.
@@ -561,18 +551,22 @@ public abstract class UMLDiagram
     }
 
     /**
-     * Reset the diagram serial counter to the initial value.
-     * This should e.g. be done when the menuitem File->New is activated.
+     * Reset the diagram serial counter to the initial value. This should e.g.
+     * be done when the menuitem File->New is activated.
+     * 
+     * @deprecated for 0.27.3 by tfmorris. This is a noop. Diagram name
+     *             duplication is checked for and managed at the project level.
      */
     public void resetDiagramSerial() {
-        diagramSerial = 1;
     }
 
     /**
      * @return Returns the diagramSerial.
+     * @deprecated for 0.27.3 by tfmorris. This is always returns 1. Diagram
+     *             naming is managed at the project level.
      */
     protected int getNextDiagramSerial() {
-        return diagramSerial++;
+        return 1;
     }
 
     /**
@@ -602,19 +596,13 @@ public abstract class UMLDiagram
      * @return String
      */
     protected String getNewDiagramName() {
-        String name = getLabelName() + " " + getNextDiagramSerial();
-        Project project = getProject();
-        // If this gets called from the constructor the project
-        // won't be set yet, so we'll allow anything
-        if (project != null && !project.isValidDiagramName(name)) {
-            name = getNewDiagramName();
-        }
-        return name;
+        // TODO: Add "unnamed" or "new" or something? (Localized, of course)
+        return /*"unnamed " + */ getLabelName();
     }
 
     /**
      * Method to test it the diagram can accept a certain object.
-     * This should be overriden by any diagram that wants to accept a certain
+     * This should be overridden by any diagram that wants to accept a certain
      * type of object. All other diagrams should not bother since the default
      * answer is false, ie. don't accept the object.
      * @param objectToAccept The object which acceptability will be checked.

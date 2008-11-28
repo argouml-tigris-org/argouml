@@ -29,9 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
-import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -145,33 +144,6 @@ public class TestActionCollaborationDiagram extends TestCase {
         assertNotNull("The diagram has no name", diagram.getName());
     }
 
-    /**
-     * Tests if two diagrams created have different names.
-     */
-    public void testDifferentNames() {
-        action.actionPerformed(null);
-        Object d = TargetManager.getInstance().getTarget();
-        assertTrue("No diagram generated", d instanceof ArgoDiagram);
-        Model.getPump().flushModelEvents();
-        ArgoDiagram diagram1 = (ArgoDiagram) d;
-        // This next line is needed to register the diagram in the project,
-        // since creating a next diagram will need the new name to be compared
-        // with existing diagrams in the project, to validate
-        // there are no duplicates.
-        ProjectManager.getManager().getCurrentProject().addMember(diagram1);
-
-        TargetManager.getInstance().setTarget(ns);
-        action.actionPerformed(null);
-        d = TargetManager.getInstance().getTarget();
-        assertTrue("No diagram generated", d instanceof ArgoDiagram);
-        Model.getPump().flushModelEvents();
-        ArgoDiagram diagram2 = (ArgoDiagram) d;
-
-        Model.getPump().flushModelEvents();
-        assertTrue(
-                   "The created diagrams have the same name",
-                   !(diagram1.getName().equals(diagram2.getName())));
-    }
 
     /**
      * Tests if the list with namespaces defined in getValidNamespaceClasses

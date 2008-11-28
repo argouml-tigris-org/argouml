@@ -26,10 +26,10 @@ package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeSupport;
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -48,7 +48,6 @@ import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
@@ -253,6 +252,15 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * @param d the diagram
      */
     private void addDiagramMember(ArgoDiagram d) {
+        // Check for duplicate name and rename if necessary
+        int serial = getDiagramCount();
+        while (!isValidDiagramName(d.getName())) {
+            try {
+                d.setName(d.getName() + " " + serial);
+            } catch (PropertyVetoException e) {
+                serial++;            
+            }
+        }
         ProjectMember pm = new ProjectMemberDiagram(d, this);
         addDiagram(d);
         // if diagram added successfully, add the member too
