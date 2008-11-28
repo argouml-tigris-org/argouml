@@ -166,8 +166,10 @@ public abstract class ArgoDiagramImpl extends Diagram
     private void constructorInit() {
         // TODO: These should get replaced immediately by the creating
         // initialization code, but make sure we've got a default just in case.
-        settings = ProjectManager.getManager().getCurrentProject()
-                .getProjectSettings().getDefaultDiagramSettings();
+        Project project = ProjectManager.getManager().getCurrentProject();
+        if (project != null) {
+            settings = project.getProjectSettings().getDefaultDiagramSettings();
+        }
         // TODO: we should be given an Undo manager to use rather than looking
         // for a global one
         if (!(UndoManager.getInstance() instanceof DiagramUndoManager)) {

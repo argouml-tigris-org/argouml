@@ -603,11 +603,10 @@ public abstract class UMLDiagram
      */
     protected String getNewDiagramName() {
         String name = getLabelName() + " " + getNextDiagramSerial();
-        //        Project project = getProject();
-        // TODO: If this gets called from the constructor the project
-        // won't be set yet. Figure out another way to handle it
-        Project project = ProjectManager.getManager().getCurrentProject();
-        if (!project.isValidDiagramName(name)) {
+        Project project = getProject();
+        // If this gets called from the constructor the project
+        // won't be set yet, so we'll allow anything
+        if (project != null && !project.isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;
