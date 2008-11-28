@@ -153,6 +153,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
      *
      * @return a new unique name.
      */
+    // TODO: Why isn't this using the superclass implementation? - tfm
     protected String getNewDiagramName() {
         String name = getLabelName() + " " + getNextDiagramSerial();
         if (!(ProjectManager.getManager().getCurrentProject()
