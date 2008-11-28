@@ -203,8 +203,13 @@ public final class ExplorerEventAdaptor
         } else if (pce instanceof DeleteInstanceEvent) {
             treeModel.modelElementRemoved(((DeleteInstanceEvent) pce)
                     .getSource());
-        } else if (pce.getPropertyName()
-                .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
+        } else if (pce.getPropertyName().equals(
+                // TODO: No one should be sending the deprecated event
+                // from outside ArgoUML, but keep responding to it for now
+                // just in case
+                ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)
+                || pce.getPropertyName().equals(
+                        ProjectManager.OPEN_PROJECTS_PROPERTY)) {
             // project events
             if (pce.getNewValue() != null) {
                 treeModel.structureChanged();
