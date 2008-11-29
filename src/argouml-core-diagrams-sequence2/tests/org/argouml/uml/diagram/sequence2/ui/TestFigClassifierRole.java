@@ -24,14 +24,20 @@
 
 package org.argouml.uml.diagram.sequence2.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
+
 import junit.framework.TestCase;
 
 import org.argouml.model.InitializeModel;
+import org.argouml.model.Model;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.presentation.Fig;
 
 /**
  * Tests the FigClassifierRole class.
@@ -65,24 +71,26 @@ public class TestFigClassifierRole extends TestCase {
 
         assertEquals(1, 1);
         
-//        Object cr = Model.getUmlFactory().buildNode(
-//                Model.getMetaTypes().getClassifierRole());
-//        
-//        Object figCR = renderer.getFigNodeFor(gm, layer, cr, null);
-//
-//        Object clazz = Model.getUmlFactory().buildNode(
-//                Model.getMetaTypes().getUMLClass());        
-//                
-//        Model.getCollaborationsHelper().setBase(cr, clazz);
-//                
-//        FigClassifierRole fig = new FigClassifierRole(cr);      
-//     
-//        int count = 0;
-//        count = diagram.getLayer().getContents().size();
-//        assertTrue(count == 0);
-//        diagram.add(fig);
-//        count = diagram.getLayer().getContents().size();
-//        assertTrue(count + "", count == 1);
+        Object cr = Model.getUmlFactory().buildNode(
+                Model.getMetaTypes().getClassifierRole());
+        Model.getCoreHelper().setName(cr, "classifier");
+        Object clazz = Model.getUmlFactory().buildNode(
+                Model.getMetaTypes().getUMLClass());
+        Model.getCoreHelper().setName(clazz, "MyClass");
+        List<Object> bases = new ArrayList<Object>();
+        bases.add(clazz);
+        Model.getCollaborationsHelper().setBases(cr, bases);
+                
+        FigClassifierRole fig = new FigClassifierRole(cr);      
+     
+        int count = 0;
+        count = diagram.getLayer().getContents().size();
+        assertEquals(0,count);
+        diagram.add(fig);
+        count = diagram.getLayer().getContents().size();
+        assertEquals(1, count);
         
+        // debugging and looking at fig.headFig.figs[1]._currText 
+        // I can see that it's working, but how to test it?       
     }
 }
