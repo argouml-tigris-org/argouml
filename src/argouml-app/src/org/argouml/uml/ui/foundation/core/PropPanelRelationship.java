@@ -26,11 +26,9 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.ImageIcon;
 
-import org.tigris.swidgets.Orientation;
-
 /**
  * Added this class to give as much information to the user as possible
- * if the lookup mechanisme for proppanels fails.
+ * if the lookup mechanism for proppanels fails.
  *
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -48,41 +46,12 @@ public class PropPanelRelationship extends PropPanelModelElement {
         super(name, icon);
     }
     
-    /**
-     * The constructor.
-     *
-     * @param name The name of the panel to be shown at the top.
-     * @param orientation The orientation of the panel.
-     * @param icon The icon to be shown next to the name.
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelRelationship(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelRelationship(String name, ImageIcon icon,
-            Orientation orientation) {
-        super(name, icon, orientation);
-    }
 
     /**
      * Constructor for PropPanelRelationship.
      */
     public PropPanelRelationship() {
         super("label.relationship", lookupIcon("Relationship"));
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param name the name of the panel to be shown at the top
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelRelationship(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelRelationship(String name, Orientation orientation) {
-        super(name, orientation);
     }
 
     /**

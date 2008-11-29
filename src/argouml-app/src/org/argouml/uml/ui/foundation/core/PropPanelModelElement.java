@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for a modelelement.
@@ -99,38 +97,6 @@ public abstract class PropPanelModelElement extends PropPanel {
     private static UMLModelElementTargetFlowListModel targetFlowListModel =
 	new UMLModelElementTargetFlowListModel();
 
-    /**
-     * Construct a property panel for a model element with the given name, icon,
-     * and orientation.
-     * 
-     * @param name the name of the properties panel
-     * @param icon the icon to be shown next to the name
-     * @param orientation the orientation
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelModelElement(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelModelElement(String name, ImageIcon icon,
-            Orientation orientation) {
-        super(name, icon);
-        setOrientation(orientation);
-    }
-
-    /**
-     * Construct a property panel for a model element with the given name and
-     * icon.
-     * 
-     * @param name the name of the properties panel
-     * @param orientation the orientation
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelModelElement(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelModelElement(String name, Orientation orientation) {
-        super(name, orientation);
-    }
 
     /**
      * The constructor.
@@ -213,11 +179,11 @@ public abstract class PropPanelModelElement extends PropPanel {
         List actions = super.getActions();
         if (Model.getFacade().isAUMLElement(getTarget())
                 && Model.getModelManagementHelper().isReadOnly(getTarget())) {
-            final List filteredActions = new ArrayList(2);
+            final List<Action> filteredActions = new ArrayList<Action>(2);
             for (Object o : actions) {
                 if (o instanceof Action && !o.getClass().isAnnotationPresent(
                         UmlModelMutator.class)) {
-                    filteredActions.add(o);
+                    filteredActions.add((Action) o);
                 }
             }
             return filteredActions;

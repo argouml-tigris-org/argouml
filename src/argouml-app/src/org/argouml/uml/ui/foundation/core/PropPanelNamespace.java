@@ -30,7 +30,6 @@ import javax.swing.JScrollPane;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ScrollList;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The abstract properties panel for a Namespace.
@@ -51,36 +50,6 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      */
     public PropPanelNamespace(String panelName, ImageIcon icon) {
         super(panelName, icon);
-    }
-    
-    /**
-     * The constructor.
-     *
-     * @param panelName the name of the panel to be shown at the top
-     * @param icon the icon to be shown next to the name
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelNamespace(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelNamespace(String panelName, ImageIcon icon,
-            Orientation orientation) {
-        super(panelName, icon, orientation);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param title the name of the panel to be shown at the top
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelNamespace(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelNamespace(String title, Orientation orientation) {
-    	super(title, orientation);
     }
 
 

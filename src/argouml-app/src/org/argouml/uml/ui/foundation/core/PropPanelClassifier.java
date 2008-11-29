@@ -32,7 +32,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The abstract properties panel for Classifiers.
@@ -93,37 +92,6 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
         initialize();
     }
     
-    /**
-     * The constructor.
-     *
-     * @param title the title of the properties panel
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelClassifier(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelClassifier(String title, Orientation orientation) {
-        super(title, orientation);
-        initialize();
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param name the title of the properties panel
-     * @param orientation the orientation of the panel
-     * @param icon the icon shown next to the name
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelClassifier(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelClassifier(String name, ImageIcon icon,
-            Orientation orientation) {
-        super(name, icon, orientation);
-        initialize();
-    }
 
     /**
      * Initialize the panel with the common fields and stuff.

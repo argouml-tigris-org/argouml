@@ -32,7 +32,6 @@ import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
-import org.tigris.swidgets.Orientation;
 
 /**
  * @since Nov 6, 2002
@@ -50,24 +49,10 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
     /**
      * Constructor for PropPanelStructuralFeature.
      * @param name the name of the panel, to be shown at the top
+     * @param icon the icon for the property panel
      */
     protected PropPanelStructuralFeature(String name, ImageIcon icon) {
         super(name, icon);
-
-    }
-    
-    /**
-     * Constructor for PropPanelStructuralFeature.
-     * @param name the name of the panel, to be shown at the top
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelStructuralFeature(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    protected PropPanelStructuralFeature(String name,
-					 Orientation orientation) {
-	super(name, orientation);
     }
 
     /**
