@@ -47,7 +47,7 @@ public class PropPanelClass extends PropPanelClassifier {
         addField("label.namespace", getNamespaceSelector());
         getModifiersPanel().add(new UMLClassActiveCheckBox());
         add(getModifiersPanel());
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
 
         addSeparator();
 

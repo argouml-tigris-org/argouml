@@ -45,7 +45,7 @@ public class PropPanelElementResidence extends PropPanelModelElement {
     public PropPanelElementResidence() {
         super("label.element-residence", lookupIcon("ElementResidence"));
 
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
         addSeparator();
 
         addField(Translator.localize("label.container"),

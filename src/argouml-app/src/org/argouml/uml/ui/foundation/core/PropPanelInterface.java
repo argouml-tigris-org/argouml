@@ -49,7 +49,7 @@ public class PropPanelInterface extends PropPanelClassifier {
                 getNamespaceSelector());
         
         add(getModifiersPanel());
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
         
         addSeparator();
         

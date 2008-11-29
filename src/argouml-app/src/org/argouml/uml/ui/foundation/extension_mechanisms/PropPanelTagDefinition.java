@@ -96,7 +96,7 @@ public class PropPanelTagDefinition extends PropPanelModelElement {
                 getTDNamespaceSelector());
         addField(Translator.localize("label.multiplicity"),
                 getMultiplicityComboBox());
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
 
         addSeparator();
 

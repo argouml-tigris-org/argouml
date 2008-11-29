@@ -83,7 +83,7 @@ public class PropPanelSignal extends PropPanelClassifier {
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
         add(getModifiersPanel());
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
         
         addSeparator();
         

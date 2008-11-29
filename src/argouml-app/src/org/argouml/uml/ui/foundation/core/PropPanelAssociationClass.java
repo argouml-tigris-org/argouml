@@ -71,7 +71,7 @@ public class PropPanelAssociationClass extends PropPanelClassifier {
                 getNamespaceSelector());
         getModifiersPanel().add(new UMLClassActiveCheckBox());
         add(getModifiersPanel());
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
 
         addSeparator();
 

@@ -125,7 +125,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
         addField("label.name", getNameTextField());
         addField("label.namespace", getNamespaceSelector());
 
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
 
         add(getModifiersPanel());
         

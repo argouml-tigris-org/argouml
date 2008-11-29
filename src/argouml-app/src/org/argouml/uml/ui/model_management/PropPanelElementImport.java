@@ -62,7 +62,7 @@ public class PropPanelElementImport extends PropPanelModelElement {
         addField(Translator.localize("label.alias"),
                 getAliasTextField());
 
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
 
         add(getModifiersPanel());
 

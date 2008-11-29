@@ -134,7 +134,7 @@ public abstract class PropPanelModelElement extends PropPanel {
 
         addField("label.constraints",
                 getConstraintScroll());
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
         
         addField("label.derived",
                 new UMLDerivedCheckBox());
@@ -297,15 +297,7 @@ public abstract class PropPanelModelElement extends PropPanel {
         }
         return visibilityPanel;
     }
-    
-    /**
-     * @deprecated for 0.26 by penyaskito. Use
-     *             {@link #getVisibilityPanel()} instead.
-     * @return a panel for the visibility
-     */
-    protected JComponent getNamespaceVisibilityPanel() {        
-        return getVisibilityPanel();
-    }
+
     
     /**
      * @return a scrollpane for residence
