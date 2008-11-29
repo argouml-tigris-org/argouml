@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -196,7 +196,8 @@ public class MessageNotationUml extends MessageNotation {
                     + number;
             }
 
-            action = generateAction(act);
+            action = NotationUtilityUml.generateActionSequence(act);
+
             /* Dirty fix for issue 1758 (Needs to be amended
              * when we start supporting parameters):
              */
@@ -340,78 +341,6 @@ public class MessageNotationUml extends MessageNotation {
         return Model.getFacade().getBody(expr).toString();
     }
 
-    private String generateAction(Object theAction) {
-        Collection arguments;
-        Iterator it;
-        String s;
-        StringBuilder p;
-        boolean first;
-
-        Object script = Model.getFacade().getScript(theAction);
-
-        if ((script != null) && (Model.getFacade().getBody(script) != null)) {
-            s = Model.getFacade().getBody(script).toString();
-        } else {
-            s = "";
-        }
-
-        p = new StringBuilder();
-        arguments = Model.getFacade().getActualArguments(theAction);
-        if (arguments != null) {
-            it = arguments.iterator();
-            first = true;
-            while (it.hasNext()) {
-                Object arg = it.next();
-                if (!first) {
-                    p.append(", ");
-                }
-
-                if (Model.getFacade().getValue(arg) != null) {
-                    p.append(generateExpression(
-                            Model.getFacade().getValue(arg)));
-                }
-                first = false;
-            }
-        }
-        if (s.length() == 0 && p.length() == 0) {
-            return "";
-        }
-
-        /* If there are no arguments, then do not show the ().
-         * This solves issue 1758.
-         * Arguments are not supported anyhow in the UI yet.
-         * These brackets are easily confused with the brackets
-         * for the Operation of a CallAction.
-         */
-        if (p.length() == 0) {
-            return s;
-        }
-
-        return s + " (" + p.toString() + ")";
-    }
-
-    private String generateExpression(Object expr) {
-        if (Model.getFacade().isAExpression(expr)) {
-            return generateUninterpreted(
-                    (String) Model.getFacade().getBody(expr));
-        } else if (Model.getFacade().isAConstraint(expr)) {
-            return generateExpression(Model.getFacade().getBody(expr));
-        }
-        return "";
-    }
-
-    /**
-     * Make a string non-null.
-     *
-     * @param un the String or null
-     * @return a string, guaranteed to be not null
-     */
-    private String generateUninterpreted(String un) {
-        if (un == null) {
-            return "";
-        }
-        return un;
-    }
 
     /**
      * Parse a Message textual description.<p>
@@ -988,9 +917,11 @@ public class MessageNotationUml extends MessageNotation {
 
             root = null;
             if (pname.length() > 0) {
-                root = findMsg(Model.getFacade().getSender(mes), pname.toString());
+                root = findMsg(Model.getFacade().getSender(mes), 
+                        pname.toString());
                 if (root == null) {
-                    root = findMsg(Model.getFacade().getReceiver(mes), pname.toString());
+                    root = findMsg(Model.getFacade().getReceiver(mes), 
+                            pname.toString());
                     if (root != null) {
                         swapRoles = true;
                     }
