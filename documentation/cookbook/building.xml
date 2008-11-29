@@ -2595,6 +2595,7 @@ Select 'The Eclipse Project Updates', click Finish.
 Select The Eclipse Project > Eclipse SDK Eclipse 3.3.1.1 
 > Eclipse PDE Plug-in Developer Resources 3.3.2......., Next, Next, Install.
 </para>
+              <para>Remark MVW: I had to install "Eclipse Plug-in Development Environment", too.</para>
             </listitem>
             <listitem>
               <para>Restart Eclipse.</para>
