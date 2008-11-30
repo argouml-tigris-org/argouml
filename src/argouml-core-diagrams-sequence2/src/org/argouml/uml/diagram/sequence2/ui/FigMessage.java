@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Point;
 
 import org.argouml.model.Model;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
 import org.tigris.gef.base.PathConvPercent;
@@ -57,7 +58,7 @@ public class FigMessage extends FigEdgeModelElement {
     private Object action = null;
     
     /**
-     * Contructs a new figlink and sets the owner of the figlink.
+     * Constructs a new figlink and sets the owner of the figlink.
      *
      * @param owner is the owner.
      */
@@ -70,6 +71,24 @@ public class FigMessage extends FigEdgeModelElement {
         setOwner(owner);
     }
     
+    @Override
+    protected int getNotationProviderType() {
+        /* Use the same notation as Messages on a collaboration diagram: */
+        return NotationProviderFactory2.TYPE_MESSAGE;
+    }
+    
+    /* This next argument may be used to switch off 
+     * the generation of sequence numbers - this is 
+     * still to be implemented.
+     * They are less desired in sequence diagrams, 
+     * since they do not add any information. 
+     * In collaboration diagrams they are needed, 
+     * and they are still optional in sequence diagrams. */
+    protected void initNotationProviders(Object own) {
+        super.initNotationProviders(own);
+        putNotationArgument("showSequenceNrs", Boolean.FALSE);
+    }
+
     @Override
     public void setOwner(Object owner) {       
         super.setOwner(owner);
