@@ -955,7 +955,7 @@ public abstract class FigEdgeModelElement
      * TODO: MVW: NotationProviders can not be updated - they
      * are lightweight throw-away objects. Hence there is functionally
      * only this method to create a (new) NotationProvider whenever
-     * any setting changes. E.g. when the notation language is 
+     * needed. E.g. when the notation language is 
      * changed by the user, then the NPs are to be re-created.
      * So, why split this in 2 methods?
      */
