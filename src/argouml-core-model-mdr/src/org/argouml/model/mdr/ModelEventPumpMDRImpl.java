@@ -59,7 +59,6 @@ import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
 import org.netbeans.api.mdr.MDRManager;
-import org.netbeans.api.mdr.MDRObject;
 import org.netbeans.api.mdr.MDRepository;
 import org.netbeans.api.mdr.events.AssociationEvent;
 import org.netbeans.api.mdr.events.AttributeEvent;
@@ -352,7 +351,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             fire(event);
             // Unregister deleted instances after all events have been delivered
             if (event instanceof DeleteInstanceEvent) {
-                elements.unregister(null, ((MDRObject) event.getSource())
+                elements.unregister(null, ((RefBaseObject) event.getSource())
                         .refMofId(), null);
             }
         }
@@ -444,7 +443,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
      * Fire an event to any registered listeners.
      */
     private void fire(UmlChangeEvent event) {
-        String mofId = ((MDRObject) event.getSource()).refMofId();
+        String mofId = ((RefBaseObject) event.getSource()).refMofId();
         String className  = getClassName(event.getSource());
 
         // Any given listener is only called once even if it is
@@ -466,7 +465,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                     + " source "
                     + modelImpl.getMetaTypes().getName(
                             event.getSource())
-                    + " [" + ((MDRObject) event.getSource()).refMofId()
+                    + " [" + ((RefBaseObject) event.getSource()).refMofId()
                     + "]."  + event.getPropertyName()
                     + "," + formatElement(event.getOldValue())
                     + "->" + formatElement(event.getNewValue()));
@@ -490,7 +489,7 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                         + modelImpl.getMetaTypes().getName(
                                 event.getSource())
                         + " ["
-                        + ((MDRObject) event.getSource()).refMofId() + "]."
+                        + ((RefBaseObject) event.getSource()).refMofId() + "]."
                         + event.getPropertyName() + "," + event.getOldValue()
                         + "->" + event.getNewValue());
             }
@@ -511,9 +510,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         }
 
         // Fetch the key before going in synchronized mode
-        String mofId = ((MDRObject) modelElement).refMofId();
+        String mofId = ((RefBaseObject) modelElement).refMofId();
         try {
-            verifyAttributeNames(((MDRObject) modelElement).refMetaObject(),
+            verifyAttributeNames(((RefBaseObject) modelElement).refMetaObject(),
                     propertyNames);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -541,12 +540,12 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
                     + ")! [Property names: " + propertyNames + "]");
             return;
         }
-        if (!(modelElement instanceof MDRObject)) {
-            LOG.error("Ignoring non-MDRObject received by "
+        if (!(modelElement instanceof RefBaseObject)) {
+            LOG.error("Ignoring non-RefBaseObject received by "
                     + "unregisterModelEvent - " + modelElement);
             return;
         }
-        String mofId = ((MDRObject) modelElement).refMofId();
+        String mofId = ((RefBaseObject) modelElement).refMofId();
         if (LOG.isDebugEnabled()) {
             LOG.debug("Unregister ["
                     + " element:" + formatElement(modelElement)
@@ -719,9 +718,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
     private String formatElement(Object element) {
         try {
-            if (element instanceof MDRObject) {
+            if (element instanceof RefBaseObject) {
                 return modelImpl.getMetaTypes().getName(element)
-                        + "<" + ((MDRObject) element).refMofId() + ">";
+                        + "<" + ((RefBaseObject) element).refMofId() + ">";
             } else if (element != null) {
                 return element.toString();
             }
