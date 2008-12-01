@@ -951,7 +951,13 @@ public abstract class FigEdgeModelElement
      * @deprecated for 0.27.3 by tfmorris.  Separate initialization of 
      * notation providers from any later updates which are required. 
      * Initialization must be done in the constructor using methods which 
-     * can't be overriden.
+     * can't be overriden. <p>
+     * TODO: MVW: NotationProviders can not be updated - they
+     * are lightweight throw-away objects. Hence there is functionally
+     * only this method to create a (new) NotationProvider whenever
+     * any setting changes. E.g. when the notation language is 
+     * changed by the user, then the NPs are to be re-created.
+     * So, why split this in 2 methods?
      */
     protected void initNotationProviders(Object own) {
         if (notationProviderName != null) {
