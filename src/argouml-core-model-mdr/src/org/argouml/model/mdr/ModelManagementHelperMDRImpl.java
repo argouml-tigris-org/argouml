@@ -31,7 +31,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.jmi.model.MofClass;
 import javax.jmi.reflect.InvalidObjectException;
@@ -53,7 +52,6 @@ import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Permission;
 import org.omg.uml.foundation.datatypes.VisibilityKindEnum;
 import org.omg.uml.modelmanagement.ElementImport;
-import org.omg.uml.modelmanagement.Model;
 import org.omg.uml.modelmanagement.Subsystem;
 import org.omg.uml.modelmanagement.UmlPackage;
 
