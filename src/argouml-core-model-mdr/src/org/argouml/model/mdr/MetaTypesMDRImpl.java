@@ -75,6 +75,7 @@ import org.omg.uml.foundation.core.AssociationClass;
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Attribute;
 import org.omg.uml.foundation.core.BehavioralFeature;
+import org.omg.uml.foundation.core.Binding;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Comment;
 import org.omg.uml.foundation.core.Component;
@@ -95,6 +96,8 @@ import org.omg.uml.foundation.core.Permission;
 import org.omg.uml.foundation.core.Stereotype;
 import org.omg.uml.foundation.core.TagDefinition;
 import org.omg.uml.foundation.core.TaggedValue;
+import org.omg.uml.foundation.core.TemplateArgument;
+import org.omg.uml.foundation.core.TemplateParameter;
 import org.omg.uml.foundation.core.UmlAssociation;
 import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.foundation.core.Usage;
@@ -213,6 +216,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getBehavioralFeature() {
         return BehavioralFeature.class;    
+    }
+    
+    public Object getBinding() {
+        return Binding.class;
     }
 
     public Object getBooleanExpression() {
@@ -478,6 +485,14 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getSynchState() {
         return SynchState.class;
+    }
+    
+    public Object getTemplateArgument() {
+        return TemplateArgument.class;
+    }
+    
+    public Object getTemplateParameter() {
+        return TemplateParameter.class;
     }
 
     public Object getTerminateAction() {

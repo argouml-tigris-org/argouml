@@ -77,6 +77,9 @@ import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Stereotype;
+import org.eclipse.uml2.uml.TemplateBinding;
+import org.eclipse.uml2.uml.TemplateParameter;
+import org.eclipse.uml2.uml.TemplateParameterSubstitution;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.UseCase;
@@ -171,6 +174,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 
     public Object getBehavioralFeature() {
         return BehavioralFeature.class;
+    }
+    
+    public Object getBinding() {
+        return TemplateBinding.class;
     }
 
     public Object getBooleanExpression() {
@@ -508,6 +515,15 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 
     public Object getTaggedValue() {
         throw new NotYetImplementedException();
+    }
+    
+    public Object getTemplateArgument() {
+        // TODO: Check that this is correct
+        return TemplateParameterSubstitution.class;
+    }
+
+    public Object getTemplateParameter() {
+        return TemplateParameter.class;
     }
     
     public Object getTerminateAction() {

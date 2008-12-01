@@ -24,6 +24,7 @@
 
 package org.argouml.model;
 
+
 /**
  * This interface contains methods to retrieve objects that represent the
  * different UML types. These objects are use as tokens used to create
@@ -122,6 +123,11 @@ public interface MetaTypes {
      */
     Object getBehavioralFeature();
 
+    /**
+     * @return the implementation class representing a Binding
+     */
+    Object getBinding();
+    
     /**
      * @return Returns the BooleanExpression.
      */
@@ -475,7 +481,17 @@ public interface MetaTypes {
      * 
      * @return Returns the TaggedValue class
      */
-    Object getTaggedValue();
+    Object getTaggedValue();  
+    
+    /**
+     * @return the implementation class representing a TemplateArgument
+     */
+    public Object getTemplateArgument();
+    
+    /**
+     * @return the implementation class representing a TemplateParameter
+     */
+    public Object getTemplateParameter();
     
     /**
      * @return Returns the TerminateAction.
