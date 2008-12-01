@@ -654,7 +654,12 @@ public interface Facade {
     boolean isAModel(Object handle);
 
     /**
-     * Recognizer for ModelElement.
+     * Recognizer for ModelElement.  <em>NOTE:</em> Consider using {@link
+     * Facade#isAUMLElement(Object)} instead since it is more likely to do what
+     * you want.  This is strictly for subtypes of ModelElement which excludes
+     * many UML types such as Multiplicities, TemplateParameters, etc.  It also
+     * will fail to work for UML 2 types which are subtypes of Element, but
+     * not ModelElement.
      *
      * @param handle candidate
      * @return true if handle is a ModelElement
@@ -1528,10 +1533,11 @@ public interface Facade {
     Collection getClients(Object handle);
 
     /**
-     * Get the client dependencies of a ModelElement.
+     * Get the client dependencies of a ModelElement (i.e. those Dependencies
+     * in which this ModelElement participates as a client).
      *
      * @param handle the ModelElement.
-     * @return an iterator with all client dependencies.
+     * @return a collection of all client dependencies.
      */
     Collection getClientDependencies(Object handle);
 
