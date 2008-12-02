@@ -26,14 +26,12 @@ package org.argouml.model.mdr;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -187,7 +185,7 @@ public class MDRModelImplementation implements ModelImplementation {
      * Set of extents and their read-only status. 
      */
     private Map<UmlPackage, Boolean> extents = 
-        new ConcurrentHashMap<UmlPackage, Boolean>(10, (float).5, 1);
+        new ConcurrentHashMap<UmlPackage, Boolean>(10, (float) .5, 1);
 
     /**
      * @return Returns the root UML Factory package for user model.
@@ -196,7 +194,7 @@ public class MDRModelImplementation implements ModelImplementation {
      *             additional infrastructure work is required in the ArgoUML app
      *             before this will be possible.
      */
-    UmlPackage getUmlPackage() {
+    public UmlPackage getUmlPackage() {
         if (umlPackage == null) {
             LOG.debug("umlPackage is null - no current extent");
         }
@@ -256,7 +254,7 @@ public class MDRModelImplementation implements ModelImplementation {
     /**
      * @return MOF Package containing UML metamodel (M2).
      */
-    MofPackage getMofPackage() {
+    public MofPackage getMofPackage() {
         return mofPackage;
     }
 
@@ -283,19 +281,46 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     static final String METAMODEL_URL = "mof/01-02-15_Diff.xml";
 
+
+    /**
+     * Constructor intended for use by decorators which need to override some of
+     * the bootstrapping logic. Decorators must call
+     * {@link #initializeFactories} on the new model after loading the default
+     * extent.
+     * 
+     * @param r the underlying repository implementation
+     * @throws UmlException on any fatal error. Actual cause will be inclused as
+     *             a nested exception
+     */
+    public MDRModelImplementation(MDRepository r) throws UmlException {
+        repository = r;
+        initializeM2();
+    }
+    
     /**
      * Constructor.
      *
      * @throws UmlException if construction fails.  Some possible nested 
      * exceptions include:
      * <ul>
-     * <el>CreationFailedException - If the creation of the Extend fail</el>
-     * <el>MalformedXMIException If the XMI is bad formed</el>
+     * <el>CreationFailedException - If the creation of the Extent fail</el>
+     * <el>MalformedXMIException If the metamodel XMI is badly formed</el>
      * <el>IOException If there is a problem opening a file</el>
      * </ul>
      */
     public MDRModelImplementation() throws UmlException {
+        this(getDefaultRepository());
 
+        createDefaultExtent();
+        if (umlPackage == null) {
+            throw new UmlException("Could not create UML extent");
+        }
+        LOG.debug("MDR Init - created UML extent");
+
+        initializeFactories(umlPackage);
+    }
+
+    private static MDRepository getDefaultRepository() {
         LOG.debug("Starting MDR system initialization");
 
         String storageImplementation =
@@ -320,12 +345,16 @@ public class MDRModelImplementation implements ModelImplementation {
                 UUIDManager.getInstance().getNewUUID());
 
         // Connect to the repository
-        repository = MDRManager.getDefault().getDefaultRepository();
+        MDRepository defaultRepository = 
+            MDRManager.getDefault().getDefaultRepository();
         LOG.debug("MDR Init - got default repository");
+        return defaultRepository;
+    }
 
+
+    private void initializeM2() throws UmlException {
         mofExtent = (ModelPackage) repository.getExtent(MOF_EXTENT_NAME);
         LOG.debug("MDR Init - tried to get MOF extent");
-
 
         // Create an extent and read in our metamodel (M2 model)
         if (mofExtent == null) {
@@ -353,23 +382,26 @@ public class MDRModelImplementation implements ModelImplementation {
         }
 
         mofPackage = null;
-        for (Iterator iter =
-                mofExtent.getMofPackage().refAllOfClass().iterator();
-            iter.hasNext();) {
-            MofPackage pkg = (MofPackage) iter.next();
+        for (MofPackage pkg : (Collection<MofPackage>) mofExtent
+                .getMofPackage().refAllOfClass()) {
             if ("UML".equals(pkg.getName())) {
                 mofPackage = pkg;
                 break;
             }
         }
+    }
 
-        createDefaultExtent();
-        LOG.debug("MDR Init - created UML extent");
-
-        if (umlPackage == null) {
-            throw new UmlException("Could not create UML extent");
-        }
-
+    /**
+     * Initialize factories and other sub-objects.  The default constructor
+     * takes care of this automatically, but decorating implementations
+     * using the non-default constructor need to call it after they
+     * have loaded the default extent.
+     *
+     * @param up default UmlPackage instance which has been created or loaded
+     */
+    public void initializeFactories(UmlPackage up) {
+        umlPackage = up;
+        
         // Create and start event pump first so it's available for all others
         theModelEventPump = new ModelEventPumpMDRImpl(this, repository);
         theModelEventPump.startPumpingEvents();
