@@ -30,6 +30,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.Action;
+
 import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ExtensionsCompartmentContainer;
@@ -180,8 +182,8 @@ public class ActionCompartmentDisplay extends UndoableAction {
      * @return Only returns the actions for the menu-items that make sense for
      *         the current selection.
      */
-    public static Collection getActions() {
-        Collection actions = new ArrayList();
+    public static Collection<Action> getActions() {
+        Collection<Action> actions = new ArrayList<Action>();
         Editor ce = Globals.curEditor();
 
         int present = 0;
@@ -298,6 +300,7 @@ public class ActionCompartmentDisplay extends UndoableAction {
      *
      * @param ae  The event that triggered us.
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
 	Iterator i =
             Globals.curEditor().getSelectionManager().selections().iterator();
@@ -307,14 +310,16 @@ public class ActionCompartmentDisplay extends UndoableAction {
 
             // Perform the action
             if ((cType & COMPARTMENT_ATTRIBUTE) != 0) {
-		if (f instanceof AttributesCompartmentContainer)
+		if (f instanceof AttributesCompartmentContainer) {
 		    ((AttributesCompartmentContainer) f)
                         .setAttributesVisible(display);
+		}
             }
             if ((cType & COMPARTMENT_OPERATION) != 0) {
-		if (f instanceof OperationsCompartmentContainer)
+		if (f instanceof OperationsCompartmentContainer) {
 		    ((OperationsCompartmentContainer) f)
                         .setOperationsVisible(display);
+		}
             }
 
             if ((cType & COMPARTMENT_EXTENSIONPOINT) != 0) {
