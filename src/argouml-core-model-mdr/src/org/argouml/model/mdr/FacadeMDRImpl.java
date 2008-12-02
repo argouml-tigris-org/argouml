@@ -103,7 +103,6 @@ import org.omg.uml.behavioralelements.usecases.Extend;
 import org.omg.uml.behavioralelements.usecases.ExtensionPoint;
 import org.omg.uml.behavioralelements.usecases.Include;
 import org.omg.uml.behavioralelements.usecases.UseCase;
-import org.omg.uml.behavioralelements.usecases.UseCaseInstance;
 import org.omg.uml.foundation.core.Abstraction;
 import org.omg.uml.foundation.core.Artifact;
 import org.omg.uml.foundation.core.AssociationClass;
@@ -134,7 +133,6 @@ import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.core.Parameter;
 import org.omg.uml.foundation.core.Permission;
 import org.omg.uml.foundation.core.Primitive;
-import org.omg.uml.foundation.core.ProgrammingLanguageDataType;
 import org.omg.uml.foundation.core.Relationship;
 import org.omg.uml.foundation.core.Stereotype;
 import org.omg.uml.foundation.core.StructuralFeature;
@@ -148,28 +146,20 @@ import org.omg.uml.foundation.core.Usage;
 import org.omg.uml.foundation.datatypes.ActionExpression;
 import org.omg.uml.foundation.datatypes.AggregationKind;
 import org.omg.uml.foundation.datatypes.AggregationKindEnum;
-import org.omg.uml.foundation.datatypes.ArgListsExpression;
-import org.omg.uml.foundation.datatypes.BooleanExpression;
 import org.omg.uml.foundation.datatypes.CallConcurrencyKind;
 import org.omg.uml.foundation.datatypes.CallConcurrencyKindEnum;
 import org.omg.uml.foundation.datatypes.ChangeableKind;
 import org.omg.uml.foundation.datatypes.ChangeableKindEnum;
 import org.omg.uml.foundation.datatypes.Expression;
-import org.omg.uml.foundation.datatypes.IterationExpression;
-import org.omg.uml.foundation.datatypes.MappingExpression;
 import org.omg.uml.foundation.datatypes.Multiplicity;
 import org.omg.uml.foundation.datatypes.MultiplicityRange;
-import org.omg.uml.foundation.datatypes.ObjectSetExpression;
 import org.omg.uml.foundation.datatypes.OrderingKind;
 import org.omg.uml.foundation.datatypes.OrderingKindEnum;
 import org.omg.uml.foundation.datatypes.ParameterDirectionKind;
 import org.omg.uml.foundation.datatypes.ParameterDirectionKindEnum;
-import org.omg.uml.foundation.datatypes.ProcedureExpression;
 import org.omg.uml.foundation.datatypes.PseudostateKind;
 import org.omg.uml.foundation.datatypes.ScopeKind;
 import org.omg.uml.foundation.datatypes.ScopeKindEnum;
-import org.omg.uml.foundation.datatypes.TimeExpression;
-import org.omg.uml.foundation.datatypes.TypeExpression;
 import org.omg.uml.foundation.datatypes.VisibilityKind;
 import org.omg.uml.foundation.datatypes.VisibilityKindEnum;
 import org.omg.uml.modelmanagement.ElementImport;
@@ -1452,13 +1442,11 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    public Collection getClientDependencies(Object handle) {
+    public Collection<Dependency> getClientDependencies(Object handle) {
         try {
             if (handle instanceof ModelElement) {
                 ModelElement me = (ModelElement) handle;
-                return ((org.omg.uml.UmlPackage) me.refOutermostPackage())
-                        .getCore().getAClientClientDependency()
-                        .getClientDependency((ModelElement) handle);
+                return me.getClientDependency();
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -3893,9 +3881,6 @@ class FacadeMDRImpl implements Facade {
             if (handle instanceof TagDefinition) {
                 return ((TagDefinition) handle).getOwner();
             }
-            if (handle instanceof TemplateParameter) {
-                return ((TemplateParameter) handle).getTemplate();
-            }
             return illegalArgumentObject(handle);
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -4265,11 +4250,45 @@ class FacadeMDRImpl implements Facade {
             if (modelElement instanceof Multiplicity) {
                 return org.argouml.model.Model.getDataTypesHelper()
                         .multiplicityToString(modelElement);
-            } else if (modelElement instanceof ModelElement) {
+            } else if (modelElement instanceof Expression) {
+                Expression exp = (Expression) modelElement;
+                String result = getUMLClassName(modelElement);
+                String language = exp.getLanguage();
+                String body = exp.getBody();
+                // TODO: I18N
+                if (language != null && language.length() > 0) {
+                    result += " (" + language + ")";
+                }
+                if (body != null && body.length() > 0) {
+                    result += ": " + body;
+                }
+                return result;
+            } else if (modelElement instanceof ElementImport) {
+                ElementImport ei = (ElementImport) modelElement;
+                ModelElement me = ei.getImportedElement();
+                String typeName = getUMLClassName(me);
+                String elemName = toString(me);
+                String alias = ei.getAlias();
+                if (alias != null && alias.length() > 0) {
+                    // TODO: I18N This needs to be localized, but we don't
+                    // have any localization capabilities in the model subsystem
+//                    Object[] args = { typeName, elemName, alias };
+//                  misc.name.element-import.alias = Imported {0}: {1} alias {2}
+//                    return Translator.localize(
+//                            "misc.name.element-import.alias", args);
+                    return "Imported " + typeName + ": " + elemName + " alias "
+                            + alias;
+                } else {
+//                    Object[] args = { typeName, elemName };
+//                  misc.name.element-import = Imported {0}: {1}
+//                    return Translator
+//                            .localize("misc.name.element-import", args);
+                    return "Imported " + typeName + ": " + elemName;
+                }
+            } else if (isAUMLElement(modelElement)) {
                 return getUMLClassName(modelElement) + ": "
                         + getName(modelElement);
-            }
-            if (modelElement == null) {
+            } else if (modelElement == null) {
                 return "";
             }
         } catch (InvalidObjectException e) {
