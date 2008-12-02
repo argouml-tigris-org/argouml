@@ -57,6 +57,12 @@ import org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram;
 
 
 /**
+ * TODO: This whole class needs to be updated to remove use of deprecated
+ * methods and (hopefully) test multi-root and multi-project methods.
+ * 
+ * TODO: This whole class needs to be updated to remove use of deprecated
+ * methods and (hopefully) test multi-root and multi-project methods.
+ * 
  * @since Nov 17, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -75,7 +81,7 @@ public class TestProject extends TestCase {
      * Test the makeUntitledProject() function.
      */
     public void testMakeUntitledProject() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         assertEquals(2, p.getDiagramList().size());
         assertEquals(Translator.localize("misc.untitled-model"), 
                 Model.getFacade().getName(p.getModel()));
@@ -123,7 +129,7 @@ public class TestProject extends TestCase {
      * Test the moveToTrash function for package and content.
      */
     public void testTrashcanPackageContent() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         // test with a class in a package
         Object package1 =
             Model.getModelManagementFactory().buildPackage("test1");
@@ -160,7 +166,7 @@ public class TestProject extends TestCase {
      * Test the moveToTrash function for class and content.
      */
     public void testTrashcanClassContent() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         // test with a class and an inner class
         Object aClass = Model.getCoreFactory().buildClass("Test", p.getRoot());
         Object cls1 = Model.getCoreFactory().buildClass(aClass);
@@ -193,7 +199,7 @@ public class TestProject extends TestCase {
      * The diagram should be deleted, too.
      */
     public void testDeletePackageWithClassDiagram() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         assertEquals(2, p.getDiagramList().size());
         assertEquals(Translator.localize("misc.untitled-model"), 
                 Model.getFacade().getName(p.getModel()));
@@ -225,7 +231,7 @@ public class TestProject extends TestCase {
      * The diagram should be deleted, too.
      */
     public void testDeleteClassWithStateDiagram() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
@@ -264,7 +270,7 @@ public class TestProject extends TestCase {
      * Test deleting a statechart diagram directly.
      */
     public void testDeleteStateDiagram() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
@@ -299,7 +305,7 @@ public class TestProject extends TestCase {
      * The inner class should be deleted, too.
      */
     public void testDeleteClassWithInnerClass() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         assertEquals(2, p.getDiagramList().size());
 
         // test with a class and an inner class
@@ -319,7 +325,7 @@ public class TestProject extends TestCase {
      * The class should be deleted, too.
      */
     public void testDeletePackageWithClass() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         assertEquals(2, p.getDiagramList().size());
 
         // test with a class and class diagram
@@ -340,7 +346,7 @@ public class TestProject extends TestCase {
      * The diagram should be deleted, too.
      */
     public void testDeletePackageWithStateDiagram() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
@@ -379,7 +385,7 @@ public class TestProject extends TestCase {
      * The diagram should be deleted, too.
      */
     public void testDeleteOperationWithStateDiagram() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
@@ -427,7 +433,7 @@ public class TestProject extends TestCase {
      * The diagram should be deleted, too.
      */
     public void testDeletePackageWithClassWithActivityDiagram() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
@@ -466,7 +472,7 @@ public class TestProject extends TestCase {
      * The diagram should be deleted, too.
      */
     public void testDeletePackageWithPackageWithActivityDiagram() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         assertEquals(2, p.getDiagramList().size());
 
         int sizeMembers = p.getMembers().size();
@@ -506,7 +512,7 @@ public class TestProject extends TestCase {
      * See issue 1671.
      */
     public void testAddSearchPath() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().getOpenProjects().get(0);
         assertNotNull(p.getSearchPathList());
         assertTrue(p.getSearchPathList().size() == 1);
         
@@ -527,7 +533,6 @@ public class TestProject extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
-        ProjectManager.getManager().setCurrentProject(null);
         (new InitNotation()).init();
         (new InitNotationUml()).init();
         (new InitNotationJava()).init();
@@ -540,5 +545,6 @@ public class TestProject extends TestCase {
         (new InitClassDiagram()).init();
         (new InitUseCaseDiagram()).init();
         (new InitProfileSubsystem()).init();
+        ProjectManager.getManager().makeEmptyProject();
     }
 }

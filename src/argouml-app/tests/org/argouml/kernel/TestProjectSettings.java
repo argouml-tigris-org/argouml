@@ -374,7 +374,7 @@ public class TestProjectSettings extends TestCase {
         (new InitNotationUml()).init();
         (new InitNotationJava()).init();
         /* Needed for initialisations: */
-        ProjectManager.getManager().getCurrentProject();
+        ProjectManager.getManager().makeEmptyProject();
     }
 
     /**

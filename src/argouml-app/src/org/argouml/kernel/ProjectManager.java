@@ -28,6 +28,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.Action;
@@ -94,6 +95,8 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * The project that is visible in the projectbrowser.
      */
     private static Project currentProject;
+    
+    private static LinkedList<Project> openProjects = new LinkedList<Project>();
 
     /**
      * Flag to indicate we are creating a new current project.
@@ -203,6 +206,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     public void setCurrentProject(Project newProject) {
         Project oldProject = currentProject;
         currentProject = newProject;
+        addProject(newProject);
         if (currentProject != null
             && currentProject.getActiveDiagram() == null) {
             List<ArgoDiagram> diagrams = currentProject.getDiagramList();
@@ -363,7 +367,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     /**
      * @return true is the save action is currently enabled
      * <p>
-     * TODO: This needs to get the save-enabled status for the current project.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link Project#isDirty()}.
      */
     public boolean isSaveActionEnabled() {
         return this.saveAction.isEnabled();
@@ -374,8 +378,8 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * current project's save state has changed. There are 2 receivers:
      * the SaveProject tool icon and the title bar (for showing a *).
      * <p>
-     * TODO: This needs to be managed on a per-project basis.
-     * @param newValue The new state.
+     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * {@link Project#setDirty(boolean)}.
      */
     public void setSaveEnabled(boolean newValue) {
         if (saveAction != null) {
@@ -383,14 +387,25 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         }
     }
 
+    private void addProject(Project newProject) {
+        openProjects.addLast(newProject);
+    }
+    
     /**
      * Remove the project.
      *
      * @param oldProject The project to be removed.
      */
     public void removeProject(Project oldProject) {
+        openProjects.remove(oldProject);
+        
+        // TODO: This code can be removed when getCurrentProject is removed
         if (currentProject == oldProject) {
-            currentProject = null;
+            if (openProjects.size() > 0) {
+                currentProject = openProjects.getLast();
+            } else {
+                currentProject = null;
+            }
         }
         oldProject.remove();
     }
