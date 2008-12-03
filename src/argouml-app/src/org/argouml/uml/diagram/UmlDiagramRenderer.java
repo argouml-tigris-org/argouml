@@ -103,12 +103,13 @@ import org.tigris.gef.presentation.FigNode;
 public abstract class UmlDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
 
-    /*
-     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     *         java.lang.Object, int, int, java.util.Map)
+
+    /**
+     * @deprecated for 0.27.3 by tfmorris. Only used by
+     *             {@link DiagramFactory#createRenderingElement(Object, Object)}
+     *             which is itself unused (and now deprecated).
      */
-    // TODO: Is this supposed to be deprecated?  It's only used by
-    // DiagramFactory.createRenderingElement, which is itself unused
+    @Deprecated
     public FigNode getFigNodeFor(
 	    Object node, int x, int y,
 	    Map styleAttributes) {
@@ -240,9 +241,13 @@ public abstract class UmlDiagramRenderer
     }
 
 
-    /*
+
+    /**
+     * @deprecated for 0.27.3 by tfmorris.  Use method of same name which takes
+     * a GraphModel argument in the subclasses of this class.
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(java.lang.Object, java.util.Map)
      */
+    @Deprecated
     public FigEdge getFigEdgeFor(Object edge, Map styleAttributes) {
         if (edge == null) {
             throw new IllegalArgumentException("A model edge must be supplied");
