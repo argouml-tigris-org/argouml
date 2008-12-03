@@ -118,6 +118,8 @@ class PGMLStackParser
         addTranslation(
                 "org.argouml.uml.diagram.deployment.ui.FigMNodeInstance",
                 "org.argouml.uml.diagram.deployment.ui.FigNodeInstance");
+        addTranslation("org.argouml.uml.diagram.ui.FigRealization",
+                "org.argouml.uml.diagram.ui.FigAbstraction");
     }
     
     /**
@@ -362,7 +364,9 @@ class PGMLStackParser
             
             Object modelElement = modelElementsByFigEdge.get(edge);
             if (modelElement != null) {
-                edge.setOwner(modelElement);
+                if (edge.getOwner() == null) {
+                    edge.setOwner(modelElement);
+                }
             }
         }
         
