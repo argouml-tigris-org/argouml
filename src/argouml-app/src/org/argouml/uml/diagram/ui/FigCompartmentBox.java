@@ -29,7 +29,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -69,7 +68,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
 
-        borderFig = new FigEmptyRect(10, 10, 0, 0);
+        borderFig = new FigEmptyRect(X0, Y0, 0, 0);
         borderFig.setLineWidth(1);
         borderFig.setLineColor(Color.black);
 

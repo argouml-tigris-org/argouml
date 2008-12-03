@@ -85,10 +85,9 @@ public class FigExtend extends FigEdgeModelElement {
         // The <<extend>> label.
         // It's not a true stereotype, so don't use the stereotype support
         //int y = getNameFig().getBounds().height;
-        int y = 0;
         int h = 20;
-        y = y + 30;
-        label = new FigText(10, y, 90, h);
+        int y = Y0 + h;
+        label = new FigText(X0, y, 90, h);
         y = y + h;
         label.setTextColor(Color.black);
         label.setTextFilled(false);
@@ -103,7 +102,7 @@ public class FigExtend extends FigEdgeModelElement {
         label.calcBounds();
 
         // Set up FigText to hold the condition.
-        condition = new FigText(10, y, 90, h);
+        condition = new FigText(X0, y, 90, h);
         y = y + h;
         condition.setTextColor(Color.black);
         condition.setTextFilled(false);

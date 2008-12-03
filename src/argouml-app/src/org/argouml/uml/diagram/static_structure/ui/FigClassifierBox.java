@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -81,7 +80,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         // are inside it
         operationsFig =
             new FigOperationsCompartment(
-                    10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
+                    X0, Y0 + 21 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
@@ -92,7 +91,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
 
-        borderFig = new FigEmptyRect(10, 10, 0, 0);
+        borderFig = new FigEmptyRect(X0, Y0, 0, 0);
         borderFig.setLineWidth(1);
         borderFig.setLineColor(Color.black);
 

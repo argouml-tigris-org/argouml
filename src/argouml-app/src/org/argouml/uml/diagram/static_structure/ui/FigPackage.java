@@ -176,8 +176,8 @@ public class FigPackage extends FigNodeModelElement
         // display is linked to whether to display the stereotype.
 
         // TODO: Do we really still need this? - Bob
-        stereoLineBlinder =
-            new FigRect(11, 10 + STEREOHEIGHT, 58, 2, Color.white, Color.white);
+        stereoLineBlinder = new FigRect(X0 + 1, Y0 + STEREOHEIGHT, WIDTH - 2,
+                2, Color.white, Color.white);
         stereoLineBlinder.setLineWidth(1);
         stereoLineBlinder.setVisible(false);
 
@@ -188,7 +188,7 @@ public class FigPackage extends FigNodeModelElement
         addFig(stereoLineBlinder);
         addFig(body);
 
-        setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisible unless mouse enters
         
         setLocation(x, y);
         

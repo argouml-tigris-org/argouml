@@ -85,7 +85,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
 
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
-        setBounds(10, 10, 60, 22 + 2 * ROWHEIGHT);
+        setBounds(X0, Y0, WIDTH, 22 + 2 * ROWHEIGHT);
     }
 
     /**
@@ -167,7 +167,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         // TODO: Allow space for each of the Tags & Constraints we have
 
         // we want to maintain a minimum width for the class
-        aSize.width = Math.max(60, aSize.width);
+        aSize.width = Math.max(WIDTH, aSize.width);
 
         return aSize;
     }

@@ -43,31 +43,20 @@ import org.tigris.gef.presentation.FigCircle;
  */
 public class FigBranchState extends FigStateVertex {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
-    private static final int X = 10;
-    private static final int Y = 10;
     private static final int WIDTH = 24;
     private static final int HEIGHT = 24;
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private FigCircle head;
     private FigCircle bp;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Constructor.
      */
     public FigBranchState() {
         setEditable(false);
-        bp = new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan);
+        bp = new FigCircle(X0, Y0, WIDTH, HEIGHT, Color.cyan, Color.cyan);
         setBigPort(bp);
-        head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
+        head = new FigCircle(X0, Y0, WIDTH, HEIGHT, Color.black, Color.white);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
@@ -92,6 +81,7 @@ public class FigBranchState extends FigStateVertex {
      *
      * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
      */
+    @Override
     public Point getClosestPoint(Point anotherPt) {
         Point p = bp.connectionPoint(anotherPt);
         return p;
@@ -100,6 +90,7 @@ public class FigBranchState extends FigStateVertex {
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigBranchState figClone = (FigBranchState) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -108,14 +99,13 @@ public class FigBranchState extends FigStateVertex {
         return figClone;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // Fig accessors
 
     /**
      * Choice states are fixed size.
      *
      * @return false
      */
+    @Override
     public boolean isResizable() {
         return false;
     }
@@ -123,6 +113,7 @@ public class FigBranchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         head.setLineColor(col);
     }
@@ -130,6 +121,7 @@ public class FigBranchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return head.getLineColor();
     }
@@ -137,6 +129,7 @@ public class FigBranchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         head.setFillColor(col);
     }
@@ -144,6 +137,7 @@ public class FigBranchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return head.getFillColor();
     }
@@ -152,10 +146,12 @@ public class FigBranchState extends FigStateVertex {
      * Ignored - figure has a fixed rendering.
      * @param f ignored
      */
+    @Override
     public void setFilled(boolean f) {
         // ignored - fixed rendering
     }
 
+    @Override
     public boolean isFilled() {
         return true;
     }
@@ -163,6 +159,7 @@ public class FigBranchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         head.setLineWidth(w);
     }
@@ -170,6 +167,7 @@ public class FigBranchState extends FigStateVertex {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return head.getLineWidth();
     }
@@ -180,6 +178,7 @@ public class FigBranchState extends FigStateVertex {
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseClicked(MouseEvent me) {
         // ignored
     }
@@ -209,4 +208,4 @@ public class FigBranchState extends FigStateVertex {
      */
     static final long serialVersionUID = 6572261327347541373L;
 
-} /* end class FigBranchState */
+}

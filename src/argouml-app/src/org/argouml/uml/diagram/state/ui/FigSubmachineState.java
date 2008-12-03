@@ -74,7 +74,7 @@ public class FigSubmachineState extends FigState {
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
                         Color.black);
 
-        include = new FigSingleLineText(10, 10, 90, 21, true);
+        include = new FigSingleLineText(X0, Y0, 90, 21, true);
         include.setText(placeString());
         include.setBounds(getInitialX() + 2, getInitialY() + 2,
                 getInitialWidth() - 4, include.getBounds().height);

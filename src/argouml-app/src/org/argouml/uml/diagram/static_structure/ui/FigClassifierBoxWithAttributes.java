@@ -59,7 +59,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
     public FigClassifierBoxWithAttributes() {
         super();
         attributesFigCompartment =
-            new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
+            new FigAttributesCompartment(X0, Y0 + 20, WIDTH, ROWHEIGHT + 2);
         
     }
 

@@ -535,7 +535,7 @@ class FigMultiplicity extends FigSingleLineText
     private HashMap<String, Object> npArguments = new HashMap<String, Object>();
     
     FigMultiplicity() {
-        super(10, 10, 90, 20, false, "multiplicity");
+        super(X0, Y0, 90, 20, false, "multiplicity");
 
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
@@ -610,7 +610,7 @@ class FigOrdering extends FigSingleLineText {
     private static final long serialVersionUID = 5385230942216677015L;
 
     FigOrdering() {
-        super(10, 10, 90, 20, false, "ordering");
+        super(X0, Y0, 90, 20, false, "ordering");
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
         setEditable(false);
@@ -661,7 +661,7 @@ class FigRole extends FigSingleLineText
     private HashMap<String, Object> npArguments = new HashMap<String, Object>();
 
     FigRole() {
-        super(10, 10, 90, 20, false/*, 
+        super(X0, Y0, 90, 20, false/*, 
         // no need to listen to these property changes - the 
         // notationProvider takes care of this.
                 new String[] {"name", "visibility", "stereotype"}*/);

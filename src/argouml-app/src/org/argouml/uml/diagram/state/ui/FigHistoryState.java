@@ -42,8 +42,8 @@ import org.tigris.gef.presentation.FigText;
  */
 public abstract class FigHistoryState extends FigStateVertex {
 
-    private static final int X = 10;
-    private static final int Y = 10;
+    private static final int X = X0;
+    private static final int Y = Y0;
     private static final int WIDTH = 24;
     private static final int HEIGHT = 24;
 

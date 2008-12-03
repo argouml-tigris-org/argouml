@@ -54,7 +54,7 @@ public class FigGeneralization extends FigEdgeModelElement {
     /**
      * Text box for discriminator.
      */
-    private FigText discriminator = new FigText(10, 30, 90, 20);
+    private FigText discriminator = new FigText(X0, Y0 + 20, 90, 20);
 
     private ArrowHeadTriangle endArrow;
 

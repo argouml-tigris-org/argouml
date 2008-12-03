@@ -35,15 +35,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
-
-import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 /**
  * Class to display graphics for an Actor in a diagram.
@@ -76,14 +75,14 @@ public class FigActor extends FigNodeModelElement {
      */
     public FigActor() {
         // Put this rectangle behind the rest, so it goes first
-        FigRect bigPort = new ActorPortFigRect(10, 10, 0, 0, this);
+        FigRect bigPort = new ActorPortFigRect(X0, Y0, 0, 0, this);
         FigCircle head =
-            new FigCircle(12, 10, 16, 15, Color.black, Color.white);
-        FigLine body = new FigLine(20, 25, 20, 40, Color.black);
-        FigLine arms = new FigLine(10, 30, 30, 30, Color.black);
-        FigLine leftLeg = new FigLine(20, 40, 15, 55, Color.black);
-        FigLine rightLeg = new FigLine(20, 40, 25, 55, Color.black);
-        getNameFig().setBounds(10, 55, 20, 20);
+            new FigCircle(X0 + 2, Y0, 16, 15, Color.black, Color.white);
+        FigLine body = new FigLine(X0 + 10, Y0 + 15, 20, 40, Color.black);
+        FigLine arms = new FigLine(X0, Y0 + 20, 30, 30, Color.black);
+        FigLine leftLeg = new FigLine(X0 + 10, Y0 + 30, 15, 55, Color.black);
+        FigLine rightLeg = new FigLine(X0 + 10, Y0 + 30, 25, 55, Color.black);
+        getNameFig().setBounds(X0, Y0 + 45, 20, 20);
 
         getNameFig().setTextFilled(false);
         getNameFig().setFilled(false);

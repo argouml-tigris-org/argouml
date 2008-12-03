@@ -67,7 +67,7 @@ public class FigInclude extends FigEdgeModelElement {
 
         // The <<include>> label.
         // It's not a true stereotype, so don't use the stereotype support
-        label = new FigSingleLineText(10, 30, 90, 20, false);
+        label = new FigSingleLineText(X0, Y0 + 20, 90, 20, false);
         label.setTextColor(Color.black);
         label.setTextFilled(false);
         label.setFilled(false);
@@ -103,13 +103,6 @@ public class FigInclude extends FigEdgeModelElement {
         setOwner(edge);
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Accessors
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
      * <p>Set a new fig to represent this edge.</p>
      *
@@ -118,7 +111,7 @@ public class FigInclude extends FigEdgeModelElement {
      *
      * @param f  The fig to use.
      */
-
+    @Override
     public void setFig(Fig f) {
         super.setFig(f);
 
@@ -135,24 +128,17 @@ public class FigInclude extends FigEdgeModelElement {
      *
      * @return   <code>false</code> under all circumstances.
      */
-
+    @Override
     protected boolean canEdit(Fig f) {
         return false;
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Event handlers
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
     /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
+    @Override
     public void paint(Graphics g) {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
     }
-} /* end class FigInclude */
-
+}

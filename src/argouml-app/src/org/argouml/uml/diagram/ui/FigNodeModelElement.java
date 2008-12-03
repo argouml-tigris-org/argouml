@@ -133,11 +133,14 @@ public abstract class FigNodeModelElement
         Clarifiable,
         ArgoFig {
 
-    /**
-     * Logger.
-     */
+
     private static final Logger LOG =
         Logger.getLogger(FigNodeModelElement.class);
+    
+    /**
+     * Default width for a node fig
+     */
+    protected static final int WIDTH = 60;
 
     private DiElement diElement;
 
@@ -316,9 +319,9 @@ public abstract class FigNodeModelElement
         settings = renderSettings;
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
-        bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
+        bigPort = new FigRect(X0, Y0, 0, 0, Color.cyan, Color.cyan);
 
-        nameFig = new FigNameWithAbstractAndBold(10, 10, 90, 21, true);
+        nameFig = new FigNameWithAbstractAndBold(X0, Y0, 90, 21, true);
         nameFig.setLineWidth(1);
         nameFig.setFilled(true);
         nameFig.setText(placeString());
@@ -326,7 +329,7 @@ public abstract class FigNodeModelElement
         nameFig.setRightMargin(4); // margin between text and border
         nameFig.setLeftMargin(4);
 
-        stereotypeFig = new FigStereotypesGroup(10, 10, 90, 15);
+        stereotypeFig = new FigStereotypesGroup(X0, Y0, 90, 15);
 
         readyToEdit = false;
 

@@ -51,10 +51,9 @@ import org.tigris.gef.presentation.FigLine;
  */
 public abstract class FigEditableCompartment extends FigCompartment {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger.getLogger(FigCompartment.class);
+
+    private static final int MIN_HEIGHT = 21;
 
     private FigSeperator compartmentSeperator;
 
@@ -63,7 +62,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * 
      * Two figs are added to this FigGroup:
      * The bigPort (i.e. a box that encloses all compartments),
-     * and a seperator.
+     * and a separator.
      *
      * @param x x
      * @param y y
@@ -72,7 +71,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
      */
     public FigEditableCompartment(int x, int y, int w, int h) {
         super(x, y, w, h); // This adds bigPort, i.e. number 1
-        compartmentSeperator = new FigSeperator(10, 10, 11);
+        compartmentSeperator = new FigSeperator(X0, Y0, 11);
         addFig(compartmentSeperator); // number 2
     }
 
@@ -283,8 +282,8 @@ public abstract class FigEditableCompartment extends FigCompartment {
      */
     public Dimension getMinimumSize() {
         Dimension d = super.getMinimumSize();
-        if (d.height < 21) {
-            d.height = 21;
+        if (d.height < MIN_HEIGHT) {
+            d.height = MIN_HEIGHT;
         }
         return d;
     }

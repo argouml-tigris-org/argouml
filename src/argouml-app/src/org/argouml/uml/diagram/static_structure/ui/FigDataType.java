@@ -97,7 +97,7 @@ public class FigDataType extends FigClassifierBox {
 
         // Set the bounds of the figure to the total of the above (hardcoded)
         enableSizeChecking(true);
-        setBounds(10, 10, 60, 21 + ROWHEIGHT);
+        setBounds(X0, Y0, WIDTH, 21 + ROWHEIGHT);
     }
 
     /**

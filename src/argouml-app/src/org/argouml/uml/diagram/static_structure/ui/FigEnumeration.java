@@ -283,8 +283,8 @@ public class FigEnumeration extends FigDataType
         // Set bounds will be called from our superclass constructor before
         // our constructor has run, so make sure this gets set up if needed.
         if (literalsCompartment == null) {
-            literalsCompartment = new FigEnumLiteralsCompartment(10, 30, 60,
-                    ROWHEIGHT + 2);
+            literalsCompartment = new FigEnumLiteralsCompartment(X0, Y0 + 20,
+                    60, ROWHEIGHT + 2);
         }
         return literalsCompartment;
     }

@@ -38,6 +38,17 @@ import org.argouml.uml.diagram.DiagramSettings;
  */
 public interface ArgoFig {
 
+    // TODO: These have been used for most instances of new FigFoo(X0, Y0, ...
+    // but additional work is required to extract the constant from
+    // calculations, etc.
+    
+    /** Default X offset of origin used when building figs */
+    static final int X0 = 10;
+
+    /** Default Y offset of origin used when building figs */
+    static final int Y0 = 10;
+
+
     /**
      * Set the owning project for this Fig. This is an optional operation which
      * may throw an {@link UnsupportedOperationException} if not implemented.

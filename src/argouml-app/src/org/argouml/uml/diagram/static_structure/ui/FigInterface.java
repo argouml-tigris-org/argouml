@@ -98,7 +98,7 @@ public class FigInterface extends FigClassifierBox {
 
         // Set the bounds of the figure to the total of the above (hardcoded)
         enableSizeChecking(true);
-        setBounds(10, 10, 60, 21 + ROWHEIGHT);
+        setBounds(X0, Y0, WIDTH, 21 + ROWHEIGHT);
     }
 
     /**
@@ -184,7 +184,7 @@ public class FigInterface extends FigClassifierBox {
         aSize = addChildDimensions(aSize, getOperationsFig());
 
         // we want to maintain a minimum width for Interfaces
-        aSize.width = Math.max(60, aSize.width);
+        aSize.width = Math.max(WIDTH, aSize.width);
 
         return aSize;
     }

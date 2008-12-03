@@ -50,13 +50,11 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigActionState extends FigStateVertex {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
+    private static final int HEIGHT = 25;
+
+    private static final int WIDTH = 90;
 
     private static final int PADDING = 8;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     private FigRRect cover;
 
@@ -65,22 +63,20 @@ public class FigActionState extends FigStateVertex {
      */
     private NotationProvider notationProvider;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * Constructor FigActionState.
      */
     public FigActionState() {
-        setBigPort(new FigRRect(10 + 1, 10 + 1, 90 - 2, 25 - 2, Color.cyan,
+        setBigPort(new FigRRect(X0 + 1, Y0 + 1, WIDTH - 2, HEIGHT - 2, Color.cyan,
                 Color.cyan));
         ((FigRRect) getBigPort()).setCornerRadius(getBigPort().getHeight() / 2);
-        cover = new FigRRect(10, 10, 90, 25, Color.black, Color.white);
+        cover = new FigRRect(X0, Y0, WIDTH, HEIGHT, Color.black, Color.white);
         cover.setCornerRadius(getHeight() / 2);
 
         // overrule the single-line namefig created by the parent
-        setNameFig(new FigMultiLineTextWithBold(10 + PADDING, 10, 
-                90 - PADDING * 2, 25,
+        setNameFig(new FigMultiLineTextWithBold(X0 + PADDING, Y0, 
+                WIDTH - PADDING * 2, HEIGHT,
                 true));
         getNameFig().setText(placeString());
         getNameFig().setBotMargin(7); // make space for the clarifier
@@ -325,4 +321,4 @@ public class FigActionState extends FigStateVertex {
      * The UID.
      */
     private static final long serialVersionUID = -3526461404860044420L;
-} /* end class FigActionState */
+}

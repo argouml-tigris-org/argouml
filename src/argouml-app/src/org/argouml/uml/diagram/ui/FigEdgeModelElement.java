@@ -193,10 +193,10 @@ public abstract class FigEdgeModelElement
             DiagramSettings renderSettings) {
         settings = renderSettings;
 
-        nameFig = new FigNameWithAbstract(10, 30, 90, 20, false);
+        nameFig = new FigNameWithAbstract(X0, Y0 + 20, 90, 20, false);
         nameFig.setTextFilled(false);
 
-        stereotypeFig = new FigStereotypesGroup(10, 10, 90, 15);
+        stereotypeFig = new FigStereotypesGroup(X0, Y0, 90, 15);
 
         setBetweenNearestPoints(true);
 

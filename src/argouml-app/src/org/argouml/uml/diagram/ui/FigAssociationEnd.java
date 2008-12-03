@@ -77,7 +77,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     public FigAssociationEnd() {
         super();
 
-        srcMult = new FigText(10, 10, 90, 20);
+        srcMult = new ArgoFigText(X0, Y0, 90, 20);
         srcMult.setTextColor(Color.black);
         srcMult.setTextFilled(false);
         srcMult.setFilled(false);
@@ -85,7 +85,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         srcMult.setReturnAction(FigText.END_EDITING);
         srcMult.setJustification(FigText.JUSTIFY_CENTER);
 
-        srcOrdering = new FigText(10, 10, 90, 20);
+        srcOrdering = new ArgoFigText(X0, Y0, 90, 20);
         srcOrdering.setTextColor(Color.black);
         srcOrdering.setTextFilled(false);
         srcOrdering.setFilled(false);

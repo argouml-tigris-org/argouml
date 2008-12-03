@@ -83,8 +83,8 @@ public class FigClassifierRole extends FigNodeModelElement {
     public FigClassifierRole() {
         // The big port and cover. Color of the big port is irrelevant
 
-        setBigPort(new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan));
-        cover   = new FigRect(10, 10, 90, 50, Color.black, Color.white);
+        setBigPort(new FigRect(X0, Y0, 90, 50, Color.cyan, Color.cyan));
+        cover   = new FigRect(X0, Y0, 90, 50, Color.black, Color.white);
 
         // The stereotype. Width is the same as the cover, height is whatever
         // its minimum permitted is. The text should be centred.
@@ -95,7 +95,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         getStereotypeFig().setVisible(true);
         //getStereotypeFig().setFilled(false);
         getStereotypeFig().setFillColor(Color.red);
-        getStereotypeFig().setBounds(10, 10, 90, stereoMin.height);
+        getStereotypeFig().setBounds(X0, Y0, 90, stereoMin.height);
 
         // The name. Width is the same as the cover, height is whatever its
         // minimum permitted is. The text of the name will be centred by
@@ -110,7 +110,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         getNameFig().setFilled(false);
         getNameFig().setUnderline(true);
 
-        getNameFig().setBounds(10, 10, 90, nameMin.height);
+        getNameFig().setBounds(X0, Y0, 90, nameMin.height);
 
         // add Figs to the FigNode in back-to-front order
 
