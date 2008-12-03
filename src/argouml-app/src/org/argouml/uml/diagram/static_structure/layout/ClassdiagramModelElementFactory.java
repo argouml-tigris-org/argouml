@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,10 +28,10 @@ import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.layout.LayoutedObject;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.argouml.uml.diagram.ui.FigAbstraction;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.FigRealization;
 import org.tigris.gef.presentation.FigNode;
 
 /** a class to get the proper layouter for a Fig.
@@ -59,18 +59,19 @@ public class ClassdiagramModelElementFactory
      * @return Layouter for the Edge or Classnode or null if none exists.
      */
     public LayoutedObject getInstance(Object f) {
-        if (f instanceof FigComment)
+        if (f instanceof FigComment) {
             return (new ClassdiagramNote((FigComment) f));
-        if (f instanceof FigNodeModelElement)
+        } else if (f instanceof FigNodeModelElement) {
             return (new ClassdiagramNode((FigNode) f));
-        if (f instanceof FigGeneralization)
+        } else if (f instanceof FigGeneralization) {
             return new ClassdiagramGeneralizationEdge((FigGeneralization) f);
-        if (f instanceof FigRealization)
-            return (new ClassdiagramRealizationEdge((FigRealization) f));
-        if (f instanceof FigAssociation)
+        } else if (f instanceof FigAbstraction) {
+            return (new ClassdiagramRealizationEdge((FigAbstraction) f));
+        } else if (f instanceof FigAssociation) {
             return (new ClassdiagramAssociationEdge((FigAssociation) f));
-        if (f instanceof FigEdgeNote)
+        } else if (f instanceof FigEdgeNote) {
             return (new ClassdiagramNoteEdge((FigEdgeNote) f));
+        }
         LOG.debug("Do not know how to deal with: " + f.getClass().getName()
                 + "\nUsing standard layout");
         return null;
