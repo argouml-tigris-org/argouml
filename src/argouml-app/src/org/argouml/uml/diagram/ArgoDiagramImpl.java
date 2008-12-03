@@ -595,8 +595,10 @@ public abstract class ArgoDiagramImpl extends Diagram
                 && "remove".equals(evt.getPropertyName())) {
 
             Model.getPump().removeModelEventListener(this, namespace, "remove");
-
-            getProject().moveToTrash(this);
+            
+            if (getProject() != null) {
+                getProject().moveToTrash(this);
+            }
         }
     }
 
