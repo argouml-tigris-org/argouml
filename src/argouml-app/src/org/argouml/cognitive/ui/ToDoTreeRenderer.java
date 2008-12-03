@@ -138,7 +138,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
                 if (newValue instanceof Fig) {
                     newValue = ((Fig) value).getOwner();
                 }
-                if (Model.getFacade().isAModelElement(newValue)) {
+                if (Model.getFacade().isAUMLElement(newValue)) {
                     return treeCellRenderer.getTreeCellRendererComponent(
                             tree, newValue, sel, expanded, leaf, row,
                             hasTheFocus);
