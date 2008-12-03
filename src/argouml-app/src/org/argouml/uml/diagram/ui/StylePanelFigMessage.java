@@ -72,7 +72,7 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
         super.refresh();
         int direction = ((FigMessage) getPanelTarget()).getArrow();
         arrowField.setSelectedItem(FigMessage.getArrowDirections()
-                .elementAt(direction));
+                .get(direction));
     }
 
     /**
