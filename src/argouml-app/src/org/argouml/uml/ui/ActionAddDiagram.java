@@ -76,7 +76,9 @@ public abstract class ActionAddDiagram extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
+        // TODO: The project should be bound to the action when it is created?
         Project p = ProjectManager.getManager().getCurrentProject();
         Object ns = findNamespace();
 
@@ -152,9 +154,29 @@ public abstract class ActionAddDiagram extends UndoableAction {
     /**
      * Creates the diagram. Classes derived from this class should implement any
      * specific behaviour to create the diagram.
-     *
+     * 
      * @param ns The namespace the UMLDiagram should get.
      * @return UMLDiagram
+     * @deprecated for 0.27.3 by tfmorris. Subclasses should override
+     *             {@link #createDiagram(Object, DiagramSettings)}.
      */
+    @Deprecated
     public abstract ArgoDiagram createDiagram(Object ns);
+    
+    /**
+     * Create a new diagram. To be implemented by subclasses. It will become
+     * abstract after 0.28 to enforce this requirement.
+     * 
+     * @param owner owner of the diagram. May be a namespace, statemachine, or
+     *            collaboration depending on the type of diagram.
+     * @param settings default rendering settings for all figs in the new
+     *            diagram
+     * @return newly created diagram
+     */
+    public ArgoDiagram createDiagram(Object owner, DiagramSettings settings) {
+        ArgoDiagram d = createDiagram(owner);
+        d.setDiagramSettings(settings);
+        return d;
+    }
+
 }
