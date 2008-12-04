@@ -589,14 +589,12 @@ public class PathItemPlacement extends PathConv {
      * @see org.tigris.gef.base.PathConv#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
-        final float[] dashes = {1.0f, 4.0f};
-        final float phase = 5f;
         final Point p1 = getAnchorPosition();
         Point p2 = getPoint();
         Rectangle r = itemFig.getBounds();
         // Load the standard colour, just add an alpha channel.
         Color c = Globals.getPrefs().handleColorFor(itemFig);
-        c = new Color(c.getRed(), c.getGreen(), c.getBlue(), 30);
+        c = new Color(c.getRed(), c.getGreen(), c.getBlue(), 100);
         g.setColor(c);
         r.grow(2, 2);
         g.fillRoundRect(r.x, r.y, r.width, r.height, 8, 8);
