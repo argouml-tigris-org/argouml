@@ -229,13 +229,15 @@ public class FigClassifierRole extends FigNodeModelElement {
      */
     private void updateMinimumHeight() {
         int yMax = getY();
-        List<Fig> figs = getEdges();
+        List<FigEdge> figsEdges = getEdges();
         FigMessage createMessage = getFirstCreateFigMessage();
         
-        if (figs.size() == 1 && createMessage != null) {
+        // TODO: Is this next line safe? What happens if there is just one
+        // comment edge or a comment edge and a single message?
+        if (figsEdges.size() == 1 && createMessage != null) {
             minimumHeight = headFig.getMinimumSize().height + offset + 10;
         } else {
-            for (Fig fig : figs) {
+            for (Fig fig : figsEdges) {
                 if ( fig instanceof FigMessage
                         // we need the edge to be complete
                         && ((FigMessage) fig).getDestFigNode() != null
