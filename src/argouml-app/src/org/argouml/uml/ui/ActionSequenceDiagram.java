@@ -43,7 +43,7 @@ public final class ActionSequenceDiagram extends ActionNewDiagram {
      * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
      */
     public ArgoDiagram createDiagram(Object namespace) {
-        return DiagramFactory.getInstance().create(
+        return DiagramFactory.getInstance().createDiagram(
                 DiagramFactory.DiagramType.Sequence,
                 createCollaboration(namespace),
                 null);

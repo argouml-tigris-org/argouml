@@ -248,7 +248,7 @@ public class DiagramInterface {
     public void addClassDiagram(Object ns, String name) {
         Project p = ProjectManager.getManager().getCurrentProject();
 
-        ArgoDiagram d = DiagramFactory.getInstance().create(
+        ArgoDiagram d = DiagramFactory.getInstance().createDiagram(
                 DiagramFactory.DiagramType.Class,
                 ns == null ? p.getRoot() : ns, null);
 

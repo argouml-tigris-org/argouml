@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,9 +34,6 @@ import org.argouml.uml.diagram.ArgoDiagram;
  */
 public class ActionClassDiagram extends ActionAddDiagram {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG =
                 Logger.getLogger(ActionClassDiagram.class);
 
@@ -52,7 +49,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
      */
     public ArgoDiagram createDiagram(Object ns) {
         if (Model.getFacade().isANamespace(ns)) {
-            return DiagramFactory.getInstance().create(
+            return DiagramFactory.getInstance().createDiagram(
                     DiagramFactory.DiagramType.Class,
                     ns,
                     null);
