@@ -611,8 +611,8 @@ public abstract class ArgoDiagramImpl extends Diagram
         return new EnumerationIterator(elements());
     }
     
-    public void setDiagramSettings(DiagramSettings settings) {
-        settings = settings;
+    public void setDiagramSettings(DiagramSettings newSettings) {
+        settings = newSettings;
     }
     
     public DiagramSettings getDiagramSettings() {
