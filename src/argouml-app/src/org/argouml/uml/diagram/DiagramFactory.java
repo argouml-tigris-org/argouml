@@ -114,7 +114,7 @@ public final class DiagramFactory {
      * @return the newly instantiated class diagram
      */
     public ArgoDiagram createDefaultDiagram(Object namespace) {
-        return create(DiagramType.Class, namespace, null);
+        return createDiagram(DiagramType.Class, namespace, null);
     }
 
     /**
@@ -171,6 +171,11 @@ public final class DiagramFactory {
             final Object namespace, final Object machine,
             DiagramSettings settings) {
         final ArgoDiagram diagram;
+
+        if (settings == null) {
+            throw new IllegalArgumentException(
+                    "DiagramSettings may not be null");
+        }
         
         Object factory = factories.get(type);
         if (factory != null) {
@@ -193,8 +198,14 @@ public final class DiagramFactory {
                         "Unknown factory type registered");
             }
         } else {
-            diagram = createDiagram(diagramClasses.get(type), namespace,
-                    machine);
+            if ((type == DiagramType.State || type == DiagramType.Activity)
+                    && machine == null) {
+                diagram = createDiagram(diagramClasses.get(type), null,
+                        namespace);
+            } else {
+                diagram = createDiagram(diagramClasses.get(type), namespace,
+                        machine);
+            }
             diagram.setDiagramSettings(settings);
         }
 
