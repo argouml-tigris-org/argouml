@@ -25,18 +25,20 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.presentation.FigText;
@@ -62,7 +64,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     /**
      * Group for the FigTexts concerning the association end.
      */
-    private FigTextGroup srcGroup = new FigTextGroup();
+    private FigTextGroup srcGroup;
     private FigText srcMult; 
     private FigText srcOrdering;
 
@@ -73,11 +75,21 @@ public class FigAssociationEnd extends FigEdgeModelElement {
 
     /**
      * The constructor.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigAssociationEnd(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigAssociationEnd() {
         super();
+        srcGroup = new FigTextGroup();
+        srcMult = new FigText(X0, Y0, 90, 20);
+        srcOrdering = new FigText(X0, Y0, 90, 20);        
+        constructFigs();
+    }
 
-        srcMult = new ArgoFigText(X0, Y0, 90, 20);
+    private void constructFigs() {
+        
         srcMult.setTextColor(Color.black);
         srcMult.setTextFilled(false);
         srcMult.setFilled(false);
@@ -85,7 +97,6 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         srcMult.setReturnAction(FigText.END_EDITING);
         srcMult.setJustification(FigText.JUSTIFY_CENTER);
 
-        srcOrdering = new ArgoFigText(X0, Y0, 90, 20);
         srcOrdering.setTextColor(Color.black);
         srcOrdering.setTextFilled(false);
         srcOrdering.setFilled(false);
@@ -101,9 +112,6 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         addPathItem(srcGroup, new PathConvPercentPlusConst(this, 100, -40, 20));
 
         setBetweenNearestPoints(true);
-        // next line necessary for loading
-        setLayer(ProjectManager.getManager().getCurrentProject()
-                .getActiveDiagram().getLayer());
     }
 
     /**
@@ -111,7 +119,11 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      *
      * @param edge the UML object: association-end
      * @param lay the layer that contains this Fig
+      * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigAssociationEnd(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigAssociationEnd(Object edge, Layer lay) {
         this();
         setLayer(lay);
@@ -119,6 +131,22 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         if (Model.getFacade().isAAssociationEnd(edge)) {
             addElementListener(edge);
         }
+    }
+    
+    /**
+     * Construct Fig.
+     * 
+     * @param edge owning UML element
+     * @param settings rendering settings
+     */
+    public FigAssociationEnd(Object edge, DiagramSettings settings) {
+        super(edge, settings);
+        srcGroup = new FigTextGroup(settings);
+        srcMult = new ArgoFigText(edge, new Rectangle(X0, Y0, 90, 20), 
+                settings, false);
+        srcOrdering = new ArgoFigText(edge, new Rectangle(X0, Y0, 90, 20), 
+                settings, false);        
+        constructFigs();    
     }
 
     /*
@@ -141,14 +169,10 @@ public class FigAssociationEnd extends FigEdgeModelElement {
                         NotationProviderFactory2.TYPE_MULTIPLICITY, own, this);
             Project p = getProject();
             if (p != null) {
-                boolean value = p.getProjectSettings()
-                    .getShowSingularMultiplicitiesValue();
-                getNotationArguments().put("singularMultiplicityVisible", 
-                        value);
-                getNotationArguments().put("rightGuillemot", 
-                        p.getProjectSettings().getRightGuillemot());
-                getNotationArguments().put("leftGuillemot", 
-                        p.getProjectSettings().getLeftGuillemot());
+                putNotationArgument("singularMultiplicityVisible", 
+                        getSettings().isShowSingularMultiplicities());
+                putNotationArgument("useGuillemets", 
+                        getSettings().isUseGuillemets());
             }
         }
     }
@@ -250,15 +274,18 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
-     */
+
     @Override
     public void renderingChanged() {
+        super.renderingChanged();
+        
+        // Fonts and colors should get updated automatically for contained figs
+        
+        // Do we really need to update the text?  Why should it have changed?
         updateEnd(srcMult, srcOrdering);
+        
         srcMult.calcBounds();
         srcGroup.calcBounds();
-        super.renderingChanged();
     }
 
     /*

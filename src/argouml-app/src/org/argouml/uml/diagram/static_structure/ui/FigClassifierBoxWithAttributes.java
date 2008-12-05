@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,6 +40,7 @@ import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 
@@ -55,12 +56,34 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
 
     /**
      * The constructor.
+     * 
+     * @deprecated for 0.27.3 by tfmorris. Use
+     * {@link #FigClassifierBoxWithAttributes(Object, Rectangle, DiagramSettings)}
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigClassifierBoxWithAttributes() {
         super();
-        attributesFigCompartment =
-            new FigAttributesCompartment(X0, Y0 + 20, WIDTH, ROWHEIGHT + 2);
-        
+        attributesFigCompartment = new FigAttributesCompartment(
+                DEFAULT_COMPARTMENT_BOUNDS.x, 
+                DEFAULT_COMPARTMENT_BOUNDS.y,
+                DEFAULT_COMPARTMENT_BOUNDS.width, 
+                DEFAULT_COMPARTMENT_BOUNDS.height);
+    }
+
+    
+    /**
+     * Construct a Fig with owner, bounds, and settings.
+     * 
+     * @param owner the model element that owns this fig
+     * @param bounds the rectangle defining the bounds
+     * @param settings the rendering settings
+     */
+    public FigClassifierBoxWithAttributes(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        attributesFigCompartment = new FigAttributesCompartment(
+                DEFAULT_COMPARTMENT_BOUNDS, settings);
     }
 
     /**
@@ -76,7 +99,8 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
     }
 
     public boolean isAttributesVisible() {
-        return attributesFigCompartment.isVisible();
+        return attributesFigCompartment != null 
+            && attributesFigCompartment.isVisible();
     }
     
     /*
@@ -151,10 +175,11 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
     
     @Override
     public void renderingChanged() {
+        super.renderingChanged();
         if (getOwner() != null) {
+            // TODO: We shouldn't actually have to do all this work
             updateAttributes();
         }
-        super.renderingChanged();
     }
     
     /*
@@ -266,7 +291,9 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
 
         // set bounds of big box
         getBigPort().setBounds(x, y, w, h);
-        borderFig.setBounds(x, y, w, h);
+        if (borderFig != null) {
+            borderFig.setBounds(x, y, w, h);
+        }
         
         // Save our old boundaries (needed later), and get minimum size
         // info. "whitespace" will be used to maintain a running calculation
@@ -291,7 +318,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
         currentHeight += nameHeight;
 
-        if (attributesFigCompartment.isVisible()) {
+        if (isAttributesVisible()) {
             int attributesHeight = 
                 attributesFigCompartment.getMinimumSize().height;
             if (isOperationsVisible()) {
@@ -305,7 +332,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
             currentHeight += attributesHeight;
         }
 
-        if (getOperationsFig().isVisible()) {
+        if (isOperationsVisible()) {
             int operationsY = y + currentHeight;
             int operationsHeight = (h + y) - operationsY - 1;
             if (operationsHeight < getOperationsFig().getMinimumSize().height) {

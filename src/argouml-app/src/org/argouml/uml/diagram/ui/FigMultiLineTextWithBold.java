@@ -25,9 +25,9 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Font;
+import java.awt.Rectangle;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectSettings;
+import org.argouml.uml.diagram.DiagramSettings;
 
 /**
  * A FigMultiLineText that handles cases where the projectsettings 
@@ -46,20 +46,29 @@ public class FigMultiLineTextWithBold extends FigMultiLineText {
      * @param w width
      * @param h height
      * @param expandOnly impacts behavior
+     * @deprecated for 0.27.3 by tfmorris.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigMultiLineTextWithBold(int x, int y, int w, int h,
             boolean expandOnly) {
         super(x, y, w, h, expandOnly);
     }
 
+    /**
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     * @param expandOnly true if fig should never shrink
+     */
+    public FigMultiLineTextWithBold(Object owner, Rectangle bounds, 
+            DiagramSettings settings, boolean expandOnly) {
+        super(owner, bounds, settings, expandOnly);
+    }
+    
     @Override
     protected int getFigFontStyle() {
-        boolean showBoldName = false;
-        Project p = getProject();
-        if (p != null) {
-            ProjectSettings ps = p.getProjectSettings();
-            showBoldName = ps.getShowBoldNamesValue();
-        }
+        boolean showBoldName = getSettings().isShowBoldNames();
         int boldStyle =  showBoldName ? Font.BOLD : Font.PLAIN;
 
         return super.getFigFontStyle() | boldStyle;

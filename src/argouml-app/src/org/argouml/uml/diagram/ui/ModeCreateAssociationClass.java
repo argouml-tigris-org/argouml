@@ -28,8 +28,11 @@ import java.awt.Rectangle;
 
 import org.apache.log4j.Logger;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -105,9 +108,14 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
         int x = tee.getX();
         int y = tee.getY();
 
+        DiagramSettings settings = ((ArgoDiagram) ((LayerPerspective) lay)
+                .getDiagram()).getDiagramSettings();
+        
         LOG.info("Creating Class box for association class");
         FigClassAssociationClass figNode =
-            new FigClassAssociationClass(thisFig.getOwner());
+            new FigClassAssociationClass(thisFig.getOwner(), 
+            		new Rectangle(x, y, 0, 0),
+            		settings);
         y = y - DISTANCE;
         if (y < 0) {
             y = tee.getY() + figNode.getHeight() + DISTANCE;
@@ -119,7 +127,7 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
         lay.add(figNode);
 
         FigEdgeAssociationClass dashedEdge =
-            new FigEdgeAssociationClass(figNode, thisFig);
+            new FigEdgeAssociationClass(figNode, thisFig, settings);
         dashedEdge.setOwner(thisFig.getOwner());
         lay.add(dashedEdge);
 

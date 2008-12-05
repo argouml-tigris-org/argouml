@@ -24,15 +24,27 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
+import java.awt.Rectangle;
+
 import junit.framework.TestCase;
+
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
+import org.argouml.model.Model;
+import org.argouml.notation.InitNotation;
+import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.uml.diagram.DiagramSettings;
 
 /**
  * Test if a Fig is cloneable.
  */
 public class TestFigClonable extends TestCase {
 
+    // Some arbitrary bounds and settings - unused in test
+    private Rectangle bounds = new Rectangle(10, 10, 20, 20);
+    private DiagramSettings settings = new DiagramSettings();
+    
     /**
      * The constructor.
      *
@@ -45,29 +57,37 @@ public class TestFigClonable extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        ProjectManager.getManager().makeEmptyProject();
+        new InitNotation().init();
+        new InitNotationUml().init();
     }
 
     /**
      * Try to clone {@link FigUseCase}.
      */
     public void testUseCaseClonable() {
-	FigUseCase usecase = new FigUseCase();
+        Object uc = Model.getUseCasesFactory().createUseCase();
+	FigUseCase usecase = new FigUseCase(uc, bounds, settings);
 	FigUseCase usecaseclone;
 
 	usecaseclone = (FigUseCase) usecase.clone();
+	Model.getUmlFactory().delete(uc);
     }
 
     /**
      * Try to clone {@link FigActor}.
      */
     public void testActorClonable() {
-	FigActor actor = new FigActor();
+        Object act = Model.getUseCasesFactory().createActor();
+	FigActor actor = new FigActor(act, bounds, settings);
 	FigActor actorclone;
 
 	actorclone = (FigActor) actor.clone();
+	Model.getUmlFactory().delete(act);
     }
 }

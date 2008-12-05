@@ -25,16 +25,16 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Rectangle;
 import java.util.Collection;
 
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigOperation;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * The compartment that contains Operations and/or Receptions.
@@ -54,9 +54,24 @@ public class FigOperationsCompartment extends FigEditableCompartment {
      * @param y y
      * @param w width
      * @param h height
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigOperationsCompartment(Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigOperationsCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);
+    }
+    
+    /**
+     * Constructor for an Operations compartment.
+     * 
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigOperationsCompartment(Rectangle bounds, 
+            DiagramSettings settings) {
+        super(bounds, settings);
     }
 
     /*
@@ -74,22 +89,25 @@ public class FigOperationsCompartment extends FigEditableCompartment {
         return NotationProviderFactory2.TYPE_OPERATION;
     }
 
-    protected FigSingleLineText createFigText(
-	    int x, int y, int w, int h, Fig aFig, NotationProvider np) {
-        return new FigOperation(x, y, w, h, aFig, np);
-    }
 
+    @Override
+    protected FigSingleLineText createFigText(Object owner, Rectangle bounds,
+            DiagramSettings settings, NotationProvider np) {
+        return new FigOperation(owner, bounds, settings, np);
+    }
+    
     /*
      * By default, when double-clicking on the compartment,
      * we create an Operation (not a Reception).
      */
     protected void createModelElement() {
         Object classifier = getGroup().getOwner();
-        Project project = ProjectManager.getManager().getCurrentProject();
+        Project project = getProject();
 
         Object returnType = project.getDefaultReturnType();
         Object oper = Model.getCoreFactory().buildOperation(classifier,
                 returnType);
         TargetManager.getInstance().setTarget(oper);
     }
+
 }

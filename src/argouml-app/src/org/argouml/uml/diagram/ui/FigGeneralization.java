@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,10 +29,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
@@ -60,8 +59,16 @@ public class FigGeneralization extends FigEdgeModelElement {
 
     /**
      * The constructor.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigGeneralization(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigGeneralization() {
+        initialize();
+    }
+
+    private void initialize() {
         // UML spec for Generalizations doesn't call for name or stereotype
 
 	discriminator.setFilled(false);
@@ -73,12 +80,8 @@ public class FigGeneralization extends FigEdgeModelElement {
         endArrow = new ArrowHeadTriangle();
 	endArrow.setFillColor(Color.white);
 	setDestArrowHead(endArrow);
+	
 	setBetweenNearestPoints(true);
-
-	if (getLayer() == null) {
-	    setLayer(ProjectManager.getManager()
-		     .getCurrentProject().getActiveDiagram().getLayer());
-	}
     }
 
     /**
@@ -86,18 +89,36 @@ public class FigGeneralization extends FigEdgeModelElement {
      *
      * @param edge the UML element
      * @param lay the layer
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigGeneralization(Object, DiagramSettings)}.
      */
+    @Deprecated
     public FigGeneralization(Object edge, Layer lay) {
 	this();
 	setLayer(lay);
 	setOwner(edge);
-
+    }
+    
+    /**
+     * Construct a new generalization edge with the given model element as the
+     * owner.
+     * 
+     * @param owner owning model element
+     * @param settings render settings
+     */
+    public FigGeneralization(Object owner, DiagramSettings settings) {
+        super(owner, settings);
+        initialize();
+        fixup(owner);
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
      */
-    protected boolean canEdit(Fig f) { return false; }
+    @Override
+    protected boolean canEdit(Fig f) {
+        return false;
+    }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
@@ -141,11 +162,7 @@ public class FigGeneralization extends FigEdgeModelElement {
   	if (disc == null) {
 	    disc = "";
   	}
-        Project p = getProject();
-        if (p != null) {
-            Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
-            discriminator.setFont(f);
-        }
+  	discriminator.setFont(getSettings().getFont(Font.PLAIN));
   	discriminator.setText(disc);
     }
 
@@ -161,31 +178,40 @@ public class FigGeneralization extends FigEdgeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(Object)
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void setOwner(Object own) {
         super.setOwner(own);
-        if (Model.getFacade().isAGeneralization(own)) {
-            Object gen = own;	// MGeneralization
-            Object subType =
-        	Model.getFacade().getSpecific(gen); // GeneralizableElement
-            Object superType =
-        	Model.getFacade().getGeneral(gen); // GeneralizableElement
-            // Due to errors in earlier releases of argouml it can
-            // happen that there is a generalization without a child
-            // or parent.
-            // TODO: Move into XSL. We should not remove from the graph model
-            // while we're writing to it or we have a possible cause of
-            // concurrent modification exception.
+        fixup(own);
+    }
+
+    /**
+     * Fix up bad figs.
+     * <p>
+     * Due to errors in earlier releases of argouml it can happen that there is
+     * a generalization without a child or parent.
+     * <p>
+     * TODO: Move into XSL. We should not remove from the graph model while
+     * we're writing to it or we have a possible cause of concurrent
+     * modification exception.
+     * 
+     * @param owner
+     */
+    private void fixup(Object owner) {
+        if (Model.getFacade().isAGeneralization(owner)) {
+            Object subType = Model.getFacade().getSpecific(owner);
+            Object superType = Model.getFacade().getGeneral(owner);
+
             if (subType == null || superType == null) {
                 // TODO: We should warn the user we have removed something - tfm
                 removeFromDiagram();
         	return;
             }
             updateDiscriminatorText(); // show it
-        } else if (own != null) {
+        } else if (owner != null) {
             throw new IllegalStateException(
                     "FigGeneralization has an illegal owner of "
-                    + own.getClass().getName());
+                    + owner.getClass().getName());
         }
     }
 }

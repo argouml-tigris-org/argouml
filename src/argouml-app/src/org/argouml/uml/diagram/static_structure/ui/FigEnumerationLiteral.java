@@ -24,7 +24,10 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import java.awt.Rectangle;
+
 import org.argouml.notation.NotationProvider;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.tigris.gef.presentation.Fig;
 
@@ -50,11 +53,27 @@ public class FigEnumerationLiteral extends CompartmentFigText {
      * @param h Height of the FigText.
      * @param aFig The figure describing the whole compartment
      * @param np The notationProvider. See NotationProviderFactory2.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigEnumerationLiteral(Object, Rectangle, DiagramSettings, NotationProvider)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigEnumerationLiteral(int x, int y, int w, int h, Fig aFig, 
             NotationProvider np) {
         super(x, y, w, h, aFig, np);
-
     }
 
+    /**
+     * Build a new Enumeration Literal figText of the given dimensions, 
+     * within the compartment described by <code>aFig</code>.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     * @param np The notationProvider. See NotationProviderFactory2.
+     */
+    public FigEnumerationLiteral(Object owner, Rectangle bounds,
+            DiagramSettings settings, NotationProvider np) {
+        super(owner, bounds, settings, np);
+    }
 }

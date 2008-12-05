@@ -32,6 +32,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.SelectionClass;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -48,6 +49,12 @@ import org.tigris.gef.presentation.FigGroup;
 public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     /**
+     * Default bounds for a compartment.
+     */
+    protected static final Rectangle DEFAULT_COMPARTMENT_BOUNDS = new Rectangle(
+            X0, Y0 + 20, WIDTH, ROWHEIGHT + 2);
+    
+    /**
      * Text highlighted by mouse actions on the diagram.<p>
      */
     private static CompartmentFigText highlightedFigText = null;
@@ -56,9 +63,20 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     
     /**
      * Constructor.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigCompartmentBox(Object, Rectangle, DiagramSettings)}
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigCompartmentBox() {
+        super();
+        initialize();
+    }
 
+    /**
+     * Initialization shared by all constructors.
+     */
+    private void initialize() {
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
@@ -74,24 +92,40 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
         getBigPort().setLineWidth(0);
         getBigPort().setFillColor(Color.white);
-
     }
 
+    /**
+     * Construct a Fig with owner, bounds, and settings.
+     * 
+     * @param owner the model element that owns this fig
+     * @param bounds the rectangle defining the bounds
+     * @param settings the rendering settings
+     */
+    public FigCompartmentBox(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initialize();
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
+    @Override
     public void translate(int dx, int dy) {
         super.translate(dx, dy);
         Editor ce = Globals.curEditor();
-        Selection sel = ce.getSelectionManager().findSelectionFor(this);
-        if (sel instanceof SelectionClass) {
-            ((SelectionClass) sel).hideButtons();
+        if (ce != null) {
+            Selection sel = ce.getSelectionManager().findSelectionFor(this);
+            if (sel instanceof SelectionClass) {
+                ((SelectionClass) sel).hideButtons();
+            }
         }
     }
 
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseClicked(MouseEvent mouseEvent) {
 
         if (mouseEvent.isConsumed()) {
@@ -104,9 +138,11 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         }
 
         Editor ce = Globals.curEditor();
-        Selection sel = ce.getSelectionManager().findSelectionFor(this);
-        if (sel instanceof SelectionClass) {
-            ((SelectionClass) sel).hideButtons();
+        if (ce != null) {
+            Selection sel = ce.getSelectionManager().findSelectionFor(this);
+            if (sel instanceof SelectionClass) {
+                ((SelectionClass) sel).hideButtons();
+            }
         }
         unhighlight();
 
@@ -236,7 +272,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      *
      * @see org.argouml.uml.diagram.AttributesCompartmentContainer#setAttributesVisible(boolean)
      */
-    protected void setCompartmentVisible(FigCompartment compartment, boolean isVisible) {
+    protected void setCompartmentVisible(FigCompartment compartment, 
+            boolean isVisible) {
         Rectangle rect = getBounds();
         if (compartment.isVisible()) {
             if (!isVisible) {  // hide compartment

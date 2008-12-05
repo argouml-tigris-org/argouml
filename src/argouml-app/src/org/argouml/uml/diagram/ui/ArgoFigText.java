@@ -62,8 +62,8 @@ public class ArgoFigText extends FigText
      * @param y initial location
      * @param w initial width
      * @param h initial height
-     * @deprecated 0.27.2 by tfmorris.  Uses one of the constructors which takes
-     * a DiagramSettings.
+     * @deprecated 0.27.2 by tfmorris.  Use 
+     * {@link #ArgoFigText(Object, Rectangle, DiagramSettings, boolean)}.
      */
     @Deprecated
     public ArgoFigText(int x, int y, int w, int h) {
@@ -79,8 +79,8 @@ public class ArgoFigText extends FigText
      * @param w initial width
      * @param h initial height
      * @param expandOnly true if this fig is supposed to grow only
-     * @deprecated 0.27.2 by tfmorris.  Uses one of the constructors which takes
-     * a DiagramSettings.
+     * @deprecated 0.27.2 by tfmorris.  Use 
+     * {@link #ArgoFigText(Object, Rectangle, DiagramSettings, boolean)}.
      */
     @Deprecated
     public ArgoFigText(int x, int y, int w, int h, boolean expandOnly) {

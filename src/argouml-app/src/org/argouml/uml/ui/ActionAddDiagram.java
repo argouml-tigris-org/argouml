@@ -88,8 +88,7 @@ public abstract class ActionAddDiagram extends UndoableAction {
                 p.getProjectSettings().getDefaultDiagramSettings();
             // TODO: We should really be passing the default settings to
             // the diagram factory so they get set at creation time
-            ArgoDiagram diagram = createDiagram(ns);
-            diagram.setDiagramSettings(settings);
+            ArgoDiagram diagram = createDiagram(ns, settings);
                     
             p.addMember(diagram);
             //TODO: make the explorer listen to project member property
@@ -158,10 +157,14 @@ public abstract class ActionAddDiagram extends UndoableAction {
      * @param ns The namespace the UMLDiagram should get.
      * @return UMLDiagram
      * @deprecated for 0.27.3 by tfmorris. Subclasses should override
-     *             {@link #createDiagram(Object, DiagramSettings)}.
+     *             {@link #createDiagram(Object, DiagramSettings)}.  This method
+     *             is no longer abstract, so implementing classes may remove it.
      */
     @Deprecated
-    public abstract ArgoDiagram createDiagram(Object ns);
+    public ArgoDiagram createDiagram(@SuppressWarnings("unused") Object ns) {
+        // Do nothing during the deprecation period, then it can be removed.
+        return null;
+    }
     
     /**
      * Create a new diagram. To be implemented by subclasses. It will become

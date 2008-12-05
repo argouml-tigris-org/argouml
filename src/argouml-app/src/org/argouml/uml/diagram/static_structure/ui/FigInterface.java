@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -46,9 +47,6 @@ import org.tigris.gef.presentation.Fig;
  */
 public class FigInterface extends FigClassifierBox {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
 
     /**
@@ -79,9 +77,21 @@ public class FigInterface extends FigClassifierBox {
      * that does enableSizeChecking(false), all others must set it true.
      * This is because this constructor is the only one called when loading
      * a project. In this case, the parsed size must be maintained.<p>
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigInterface(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigInterface() {
 
+        initialize();
+    }
+
+    /**
+     * Initialization common to multiple constructors.  This can be merged back
+     * into the last constructor when the deprecated ones have been removed.
+     */
+    private void initialize() {
         getStereotypeFig().setKeyword("interface");
 
         // Put all the bits together, suppressing bounds calculations until
@@ -108,13 +118,31 @@ public class FigInterface extends FigClassifierBox {
      * @param gm   Not actually used in the current implementation
      *
      * @param node The UML object being placed.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigInterface(Object, Rectangle, DiagramSettings)}.
      */
-    public FigInterface(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigInterface(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
         enableSizeChecking(true);
     }
 
+    /**
+     * Construct an Interface fig
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigInterface(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initialize();
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
@@ -212,9 +240,11 @@ public class FigInterface extends FigClassifierBox {
     public void translate(int dx, int dy) {
         super.translate(dx, dy);
         Editor ce = Globals.curEditor();
-        Selection sel = ce.getSelectionManager().findSelectionFor(this);
-        if (sel instanceof SelectionClass) {
-            ((SelectionClass) sel).hideButtons();
+        if (ce != null) {
+            Selection sel = ce.getSelectionManager().findSelectionFor(this);
+            if (sel instanceof SelectionClass) {
+                ((SelectionClass) sel).hideButtons();
+            }
         }
     }
 

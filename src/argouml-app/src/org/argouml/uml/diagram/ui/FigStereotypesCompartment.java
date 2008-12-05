@@ -49,14 +49,16 @@ public class FigStereotypesCompartment extends FigStereotypesGroup {
     
     /**
      * The constructor.
-     *
+     * 
      * @param x x
      * @param y y
      * @param w width
      * @param h height
-     * @deprecated for 0.27.2 by mvw.  Use 
-     * {@link FigStereotypesGroup#FigStereotypesGroup(int, int, int, int)}.
+     * @deprecated for 0.27.2 by mvw. Use
+     *             {@link FigStereotypesGroup#FigStereotypesGroup(Object, 
+     *             java.awt.Rectangle, org.argouml.uml.diagram.DiagramSettings)}
      */
+    @SuppressWarnings("deprecation")
     @Deprecated
     public FigStereotypesCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);

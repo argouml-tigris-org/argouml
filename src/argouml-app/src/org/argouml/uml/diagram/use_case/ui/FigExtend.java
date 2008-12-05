@@ -30,10 +30,9 @@ import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
+import org.argouml.notation.providers.uml.NotationUtilityUml;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadGreater;
@@ -77,34 +76,39 @@ public class FigExtend extends FigEdgeModelElement {
 
     /**
      * The default constructor, but should never be called directly
-     * (use {@link #FigExtend(Object)}, since that sets the
-     * owner. However we can't mark it as private, since GEF expects
-     * to be able to call this when creating the diagram.<p>
+     * (use {@link #FigExtend(Object, DiagramSettings)}, since that sets the
+     * owner. <p>
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigExtend(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigExtend() {
+        initialize();
+    }
+
+
+    private void initialize() {
         // The <<extend>> label.
         // It's not a true stereotype, so don't use the stereotype support
         //int y = getNameFig().getBounds().height;
+        Color textColor = getLineColor()/*Color.black*/;
         int h = 20;
         int y = Y0 + h;
         label = new FigText(X0, y, 90, h);
         y = y + h;
-        label.setTextColor(Color.black);
+        label.setTextColor(textColor);
         label.setTextFilled(false);
         label.setFilled(false);
         label.setLineWidth(0);
         label.setEditable(false);
-        Project project = 
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
-        label.setText(ps.getLeftGuillemot() + "extend" 
-                + ps.getRightGuillemot());        
+        label.setText(getLabel());        
         label.calcBounds();
 
         // Set up FigText to hold the condition.
         condition = new FigText(X0, y, 90, h);
         y = y + h;
-        condition.setTextColor(Color.black);
+        condition.setTextColor(textColor);
         condition.setTextFilled(false);
         condition.setFilled(false);
         condition.setLineWidth(0);
@@ -115,9 +119,7 @@ public class FigExtend extends FigEdgeModelElement {
         fg = new FigGroup();
 
         // UML spec for Extend doesn't call for name nor stereotype
-        //fg.addFig(getNameFig());
         fg.addFig(label);
-        //fg.addFig(getStereotypeFig());
         fg.addFig(condition);
         fg.calcBounds();
 
@@ -143,13 +145,27 @@ public class FigExtend extends FigEdgeModelElement {
      * given edge object its owner.<p>
      *
      * @param edge  The edge that will own the fig
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigExtend(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigExtend(Object edge) {
         this();
         setOwner(edge);
     }
 
-
+    /**
+     * Construct an Extend fig.
+     * 
+     * @param owner uml element
+     * @param settings rendering settings
+     */
+    public FigExtend(Object owner, DiagramSettings settings) {
+        super(owner, settings);
+        initialize();
+    }
+    
     /**
      * Set a new fig to represent this edge.<p>
      *
@@ -224,16 +240,11 @@ public class FigExtend extends FigEdgeModelElement {
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
-     */
     @Override
     public void renderingChanged() {
-        if (getOwner() != null) {
-            updateConditionText();
-            updateLabel();
-        }
         super.renderingChanged();
+        updateConditionText();
+        updateLabel();
     }
 
     /**
@@ -264,12 +275,12 @@ public class FigExtend extends FigEdgeModelElement {
     }
     
     protected void updateLabel() {
-        /* The notation may change the use of guillemets: */
-        Project project = 
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
-        label.setText(ps.getLeftGuillemot() + "extend" 
-                + ps.getRightGuillemot());
+        label.setText(getLabel());
+    }
+    
+    private String getLabel() {
+        return NotationUtilityUml.formatStereotype(
+                "extend", getSettings().isUseGuillemets());
     }
 
 }

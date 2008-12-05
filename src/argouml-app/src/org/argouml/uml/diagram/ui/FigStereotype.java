@@ -25,11 +25,13 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.uml.NotationUtilityUml;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
@@ -53,11 +55,20 @@ public class FigStereotype extends CompartmentFigText {
     * @param h h
     * @param figCompartment the fig
     * @param owner the UML element
+    * @deprecated for 0.27.3 by tfmorris.  Use 
+    * {@link #FigStereotype(Object, Rectangle, DiagramSettings)}.
     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigStereotype(int x, int y, int w, int h, Fig figCompartment, 
             Object owner) {
         super(x, y, w, h, figCompartment, "name");
 
+        initialize();
+        setOwner(owner);
+    }
+
+    private void initialize() {
         setFilled(false);
         setLineWidth(0);
         setTextColor(Color.black);
@@ -66,9 +77,24 @@ public class FigStereotype extends CompartmentFigText {
         setReturnAction(FigText.END_EDITING);
         setRightMargin(3);
         setLeftMargin(3);
-        setOwner(owner);
     }
 
+    /**
+     * Construct a Stereotype fig.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigStereotype(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        
+        super(owner, bounds, settings, "name");
+        
+        initialize();
+    }
+     
+    @Override
     public void propertyChange(PropertyChangeEvent event) {
         super.propertyChange(event);
         if (event instanceof AttributeChangeEvent) {

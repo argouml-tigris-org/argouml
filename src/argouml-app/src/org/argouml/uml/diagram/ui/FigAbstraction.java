@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 
 /**
@@ -50,10 +51,18 @@ public class FigAbstraction extends FigDependency {
 
     /**
      * The constructor.
-     *
+     * 
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigAbstraction(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigAbstraction() {
         super();
+        constructFigs();
+    }
+
+    private void constructFigs() {
         endArrow = new ArrowHeadTriangle();
         endArrow.setFillColor(Color.white);
         setDestArrowHead(endArrow);
@@ -61,13 +70,26 @@ public class FigAbstraction extends FigDependency {
 
     /**
      * The constructor.
-     *
+     * 
      * @param edge the owning UML element
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigAbstraction(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigAbstraction(Object edge) {
         this();
         setOwner(edge);
     }
 
+    /**
+     * Construct a Fig.
+     * 
+     * @param owner owning UML element
+     * @param settings render settings
+     */
+    public FigAbstraction(Object owner, DiagramSettings settings) {
+        super(owner, settings);
+    }
 }
 

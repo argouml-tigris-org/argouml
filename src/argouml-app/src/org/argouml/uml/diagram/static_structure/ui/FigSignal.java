@@ -24,13 +24,14 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
-import org.argouml.uml.diagram.ui.FigStereotypesGroup;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 
@@ -49,9 +50,17 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
 
     /**
      * Default constructor for a {@link FigSignal}.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigSignal(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigSignal() {
         super();
+        constructFigs();
+    }
+
+    private void constructFigs() {
         getStereotypeFig().setKeyword("signal");
 
         addFig(getBigPort());
@@ -73,13 +82,28 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
      * @param gm   Not actually used in the current implementation
      *
      * @param node The UML object being placed.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigSignal(Object, Rectangle, DiagramSettings)}.
      */
-    public FigSignal(@SuppressWarnings("unused")
-    GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigSignal(@SuppressWarnings("unused") GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
 
+    /**
+     * Construct a Fig representing a Signal.
+     * 
+     * @param owner owning Signal
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigSignal(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, bounds, settings);
+        constructFigs();
+    }
+    
     /*
      * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#makeSelection()
      */

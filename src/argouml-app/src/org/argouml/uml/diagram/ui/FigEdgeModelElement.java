@@ -88,6 +88,7 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
+import org.tigris.gef.persistence.pgml.PgmlUtility;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigEdgePoly;
@@ -175,8 +176,11 @@ public abstract class FigEdgeModelElement
      *             an owner and render s settings
      *             {@link #FigEdgeModelElement(Object, DiagramSettings)}.
      */
+    @Deprecated
     public FigEdgeModelElement() {
-        this(null, null);
+        nameFig = new FigNameWithAbstract(X0, Y0 + 20, 90, 20, false);
+        stereotypeFig = new FigStereotypesGroup(X0, Y0, 90, 15);
+        initFigs();
     }
     
     /**
@@ -193,13 +197,32 @@ public abstract class FigEdgeModelElement
             DiagramSettings renderSettings) {
         settings = renderSettings;
 
-        nameFig = new FigNameWithAbstract(X0, Y0 + 20, 90, 20, false);
+        nameFig = new FigNameWithAbstract(element, 
+                new Rectangle(X0, Y0 + 20, 90, 20), 
+                renderSettings, false);
+        stereotypeFig = new FigStereotypesGroup(element, 
+                new Rectangle(X0, Y0, 90, 15),
+                settings);
+      
+        initFigs();
+        initOwner(element);
+
+        // TODO: defer setting this up until needed
+        // (or just use value from settings)
+        putNotationArgument("useGuillemets", 
+                Boolean.valueOf(getSettings().isUseGuillemets()));
+
+    }
+
+
+
+    private void initFigs() {
         nameFig.setTextFilled(false);
-
-        stereotypeFig = new FigStereotypesGroup(X0, Y0, 90, 15);
-
         setBetweenNearestPoints(true);
-
+    }
+    
+    
+    private void initOwner(Object element) {
         if (element != null) {
             if (!Model.getFacade().isAUMLElement(element)) {
                 throw new IllegalArgumentException(
@@ -215,14 +238,11 @@ public abstract class FigEdgeModelElement
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         getNotationProviderType(), element, this);
-            // TODO: defer setting this up until needed
-            // (or just use value from settings)
-            putNotationArgument("useGuillemets", 
-                    Boolean.valueOf(getSettings().isUseGuillemets()));
+
             addElementListener(element, "remove");
         }
-
     }
+
 
     /**
      * The constructor that hooks the Fig into the UML model element.
@@ -231,8 +251,9 @@ public abstract class FigEdgeModelElement
      * @deprecated for 0.27.2 by tfmorris.  Use 
      * {@link #FigEdgeModelElement(Object, DiagramSettings)}.
      */
+    @Deprecated
     public FigEdgeModelElement(Object edge) {
-        this(null, null);
+        this();
         setOwner(edge);
     }
 
@@ -356,7 +377,7 @@ public abstract class FigEdgeModelElement
             if (stereoActions != null && stereoActions.length > 0) {
                 popUpActions.add(0, new JSeparator());
                 ArgoJMenu stereotypes = new ArgoJMenu(
-                "menu.popup.apply-stereotypes");
+                        "menu.popup.apply-stereotypes");
                 for (int i = 0; i < stereoActions.length; ++i) {
                     stereotypes.addCheckItem(stereoActions[i]);
                 }
@@ -915,6 +936,7 @@ public abstract class FigEdgeModelElement
      * @deprecated for 0.27.3 by tfmorris.  Owner must be specified in the
      * constructor and can't be changed afterwards.
      */
+    @Deprecated
     @Override
     public void setOwner(Object owner) {
         if (owner == null) {
@@ -1063,7 +1085,7 @@ public abstract class FigEdgeModelElement
 
     /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
-     * @deprecated for 0.27.2 by tfmorris. Changes to notatation provider are
+     * @deprecated for 0.27.2 by tfmorris. Changes to notation provider are
      *             now handled by the owning diagram.
      */
     @Deprecated
@@ -1256,7 +1278,8 @@ public abstract class FigEdgeModelElement
         if (element == null) {
             throw new IllegalArgumentException("Can't search for a null owner");
         }
-        List contents = getLayer().getContentsNoEdges();
+        
+        List contents = PgmlUtility.getContentsNoEdges(getLayer());
         int figCount = contents.size();
         for (int figIndex = 0; figIndex < figCount; ++figIndex) {
             Fig fig = (Fig) contents.get(figIndex);
@@ -1593,6 +1616,7 @@ public abstract class FigEdgeModelElement
         // TODO: This is a temporary crutch to use until all Figs are updated
         // to use the constructor that accepts a DiagramSettings object
         if (settings == null) {
+            LOG.debug("Falling back to project-wide settings");
             Project p = getProject();
             if (p != null) {
                 return p.getProjectSettings().getDefaultDiagramSettings();

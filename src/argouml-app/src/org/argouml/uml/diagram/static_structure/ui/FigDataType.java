@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -48,11 +49,7 @@ import org.tigris.gef.presentation.Fig;
  */
 public class FigDataType extends FigClassifierBox {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger.getLogger(FigDataType.class);
-
 
     /**
      * Main constructor for a {@link FigDataType}.
@@ -78,14 +75,19 @@ public class FigDataType extends FigClassifierBox {
      * that does enableSizeChecking(false), all others must set it true.
      * This is because this constructor is the only one called when loading
      * a project. In this case, the parsed size must be maintained.<p>
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigDataType(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigDataType() {
+        constructFigs();
+    }
 
+    private void constructFigs() {
         getStereotypeFig().setKeyword("datatype");
 
-        // Put all the bits together, suppressing bounds calculations until
-        // we're all done for efficiency.
-        enableSizeChecking(false);
+
         setSuppressCalcBounds(true);
         addFig(getBigPort());
         addFig(getStereotypeFig());
@@ -107,13 +109,47 @@ public class FigDataType extends FigClassifierBox {
      * @param gm   Not actually used in the current implementation
      *
      * @param node The UML object being placed.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigDataType(Object, Rectangle, DiagramSettings)}.
      */
-    public FigDataType(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigDataType(@SuppressWarnings("unused") GraphModel gm, Object node) {
         this();
         setOwner(node);
         enableSizeChecking(true);
     }
 
+    /**
+     * Primary constructor for a {@link FigDataType}.
+     *
+     * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
+     * will have created the main box {@link #getBigPort()} and
+     * its name {@link #getNameFig()} and stereotype
+     * (@link #getStereotypeFig()}. This constructor
+     * creates a box for the operations.<p>
+     *
+     * The properties of all these graphic elements are adjusted
+     * appropriately. The main boxes are all filled and have outlines.<p>
+     * 
+     * <em>Warning</em>. Much of the graphics positioning is hard coded. The
+     * overall figure is placed at location (10,10). The name compartment (in
+     * the parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
+     * is 21 pixels high. The stereotype compartment is created 15 pixels high
+     * in the parent, but we change it to 19 pixels, 1 more than
+     * ({@link #STEREOHEIGHT} here. The operations box is created at 19 pixels,
+     * 2 more than {@link #ROWHEIGHT}.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigDataType(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        constructFigs();
+    }
+    
     /**
      * Constructor that allows specification of keyword to be used for figure.
      * 
@@ -130,6 +166,7 @@ public class FigDataType extends FigClassifierBox {
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         return new SelectionDataType(this);
     }
@@ -142,6 +179,7 @@ public class FigDataType extends FigClassifierBox {
      *
      * @return  the size of the minimum bounding box.
      */
+    @Override
     public Dimension getMinimumSize() {
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
@@ -167,6 +205,7 @@ public class FigDataType extends FigClassifierBox {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         borderFig.setLineWidth(w);
     }
@@ -174,6 +213,7 @@ public class FigDataType extends FigClassifierBox {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return borderFig.getLineWidth();
     }
@@ -246,6 +286,7 @@ public class FigDataType extends FigClassifierBox {
      * @return the class name and bounds together with compartment
      * visibility.
      */
+    @Override
     public String classNameAndBounds() {
         return super.classNameAndBounds()
                 + "operationsVisible=" + isOperationsVisible();
@@ -273,6 +314,7 @@ public class FigDataType extends FigClassifierBox {
      * @param h  Desired height of the figure
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setStandardBounds(final int x, final int y, final int w,
             final int h) {
 
@@ -327,4 +369,4 @@ public class FigDataType extends FigClassifierBox {
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-} /* end class FigInterface */
+}

@@ -50,6 +50,17 @@ public interface ArgoFig {
 
 
     /**
+     * min. 17, used to calculate y pos of FigText items in a compartment
+     */
+    public static final int ROWHEIGHT = 17;
+    /**
+     * min. 18, used to calculate y pos of stereotype FigText items
+     * in a compartment
+     */
+    public static final int STEREOHEIGHT = 18;
+
+
+    /**
      * Set the owning project for this Fig. This is an optional operation which
      * may throw an {@link UnsupportedOperationException} if not implemented.
      * 

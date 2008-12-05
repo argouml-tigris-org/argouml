@@ -36,6 +36,7 @@ import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
 /**
@@ -127,17 +128,25 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
 
 	ArgoDiagram diagram = action.createDiagram(ns);
         Model.getPump().flushModelEvents();
-	assertNotNull(
-		      "The diagram has no namespace",
-		      diagram.getNamespace());
-	checkNamespace(diagram);
-	assertNotNull(
-		      "The diagram has no graphmodel",
-		      diagram.getGraphModel());
-	assertTrue("The graphmodel of the diagram is not a "
-		   + "UMLMutableGraphSupport",
-		   diagram.getGraphModel() instanceof UMLMutableGraphSupport);
-	assertNotNull("The diagram has no name", diagram.getName());
+	checkDiagram(diagram);
+
+        diagram = action.createDiagram(ns, new DiagramSettings());
+        Model.getPump().flushModelEvents();
+        checkDiagram(diagram);
+    }
+
+    private void checkDiagram(ArgoDiagram diagram) {
+        assertNotNull(
+        	      "The diagram has no namespace",
+        	      diagram.getNamespace());
+        checkNamespace(diagram);
+        assertNotNull(
+        	      "The diagram has no graphmodel",
+        	      diagram.getGraphModel());
+        assertTrue("The graphmodel of the diagram is not a "
+        	   + "UMLMutableGraphSupport",
+        	   diagram.getGraphModel() instanceof UMLMutableGraphSupport);
+        assertNotNull("The diagram has no name", diagram.getName());
     }
 
     /**

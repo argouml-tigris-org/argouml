@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 
@@ -33,6 +34,7 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
 import org.argouml.uml.diagram.deployment.ui.FigMNode;
@@ -61,14 +63,8 @@ import org.tigris.gef.presentation.FigNode;
  */
 public class UMLClassDiagram extends UMLDiagram {
 
-    /**
-     * The UID.
-     */
     private static final long serialVersionUID = -9192325790126361563L;
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger.getLogger(UMLClassDiagram.class);
 
     ////////////////
@@ -99,30 +95,36 @@ public class UMLClassDiagram extends UMLDiagram {
     private Action actionException;
 
     /**
-     * Constructor used by reflection in persistence
+     * Construct a Class Diagram. Default constructor used by PGML parser during
+     * diagram load. It should not be used by other callers.
+     * @deprecated only for use by PGML parser
      */
+    @Deprecated
     public UMLClassDiagram() {
-        super();
-        // TODO: All super constructors should take a GraphModel
-        setGraphModel(createGraphModel());
+        super(new ClassDiagramGraphModel());
     }
 
+
     /**
-     * Constructor.
+     * Construct a new class diagram with the given name, owned by the given
+     * namespace.
      *
      * @param name the name for the new diagram
      * @param namespace the namespace for the new diagram
      */
     public UMLClassDiagram(String name, Object namespace) {
-        super(name, namespace);
+        super(name, namespace, new ClassDiagramGraphModel());
     }
 
     /**
-     * The constructor. A default unique diagram name is constructed.
+     * Construct a Class Diagram owned by the given namespace. A default unique
+     * diagram name is constructed.
+     * 
      * @param m the namespace
      */
     public UMLClassDiagram(Object m) {
-        super(m);
+        // We're going to change the name immediately, so just use ""
+        super("", m, new ClassDiagramGraphModel());
         String name = getNewDiagramName();
         try {
             setName(name);
@@ -145,7 +147,7 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         boolean init = (null == getNamespace());
         super.setNamespace(ns);
-        ClassDiagramGraphModel gm = createGraphModel();
+        ClassDiagramGraphModel gm = (ClassDiagramGraphModel) getGraphModel();
         gm.setHomeModel(ns);
         if (init) {
             LayerPerspective lay =
@@ -157,23 +159,12 @@ public class UMLClassDiagram extends UMLDiagram {
         }
     }
     
-    // TODO: Needs to be tidied up after stable release. Graph model
-    // should be created in constructor
-    private ClassDiagramGraphModel createGraphModel() {
-	if ((getGraphModel() instanceof ClassDiagramGraphModel)) {
-	    return (ClassDiagramGraphModel) getGraphModel();
-	} else {
-	    return new ClassDiagramGraphModel();
-	}
-    }
-    
-
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
         Object[] actions = {
-            getActionPackage(),
+            getPackageActions(),
             getActionClass(),
             null,
             getAssociationActions(),
@@ -212,18 +203,24 @@ public class UMLClassDiagram extends UMLDiagram {
         return actions;
     }
 
-    // TODO: To enable models and subsystems,
-    // replace getActionPackage() in the function getUmlActions() above
-    // with getPackageActions(). Work started by Markus I believe
-    // where does this stand? - Bob.
-    private Object[] getPackageActions() {
-        Object[] actions = {
-            getActionPackage(),
-            getActionModel(),
-            getActionSubsystem(),
-        };
-        ToolBarUtility.manageDefault(actions, "diagram.class.package");
-        return actions;
+    private Object getPackageActions() {
+        // TODO: To enable models and subsystems, change this flag
+        // Work started by Markus I believe where does this stand? - Bob.
+        
+        // Status as of Nov. 2008 - Figs created, property panels exist, more
+        // work required on explorer and assumptions about models not being
+        // nested - tfm
+        if (false) {
+            Object[] actions = {
+                    getActionPackage(),
+                    getActionModel(),
+                    getActionSubsystem(),
+            };
+            ToolBarUtility.manageDefault(actions, "diagram.class.package");
+            return actions;
+        } else {
+            return getActionPackage();
+        }
     }
 
     /**
@@ -590,7 +587,6 @@ public class UMLClassDiagram extends UMLDiagram {
     	return Model.getFacade().isANamespace(base);
     }
 
-    @SuppressWarnings("unchecked")
     public Collection getRelocationCandidates(Object root) {
         return 
         Model.getModelManagementHelper().getAllModelElementsOfKindWithModel(
@@ -659,36 +655,45 @@ public class UMLClassDiagram extends UMLDiagram {
     @Override
     public FigNode drop(Object droppedObject, Point location) {        
         FigNode figNode = null;
-        GraphModel gm = getGraphModel();
+        GraphModel gm = getGraphModel();        
+        
+        // If location is non-null, convert to a rectangle that we can use
+        Rectangle bounds = null;
+        if (location != null) {
+            bounds = new Rectangle(location.x, location.y, 0, 0);
+        }
+
+        DiagramSettings settings = getDiagramSettings();
         
         if (Model.getFacade().isAClass(droppedObject)) {
-            figNode = new FigClass(gm, droppedObject);
+            figNode = new FigClass(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAInterface(droppedObject)) {
-            figNode = new FigInterface(gm, droppedObject);
+            figNode = new FigInterface(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAModel(droppedObject)) {
-            figNode = new FigModel(gm, droppedObject);
+            figNode = new FigModel(droppedObject, bounds, settings);
         } else if (Model.getFacade().isASubsystem(droppedObject)) {
-            figNode = new FigSubsystem(gm, droppedObject);
+            figNode = new FigSubsystem(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAPackage(droppedObject)) {
-            figNode = new FigPackage(gm, droppedObject);
+            figNode = new FigPackage(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(gm, droppedObject);
+            figNode = new FigComment(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAAssociation(droppedObject)) {
             figNode = new FigNodeAssociation(gm, droppedObject);
         } else if (Model.getFacade().isAEnumeration(droppedObject)) {
             figNode = new FigEnumeration(gm, droppedObject);
         } else if (Model.getFacade().isADataType(droppedObject)) {
-            figNode = new FigDataType(gm, droppedObject);
+            figNode = new FigDataType(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAStereotype(droppedObject)) {
-            figNode = new FigStereotypeDeclaration(gm, droppedObject);
+            figNode = new FigStereotypeDeclaration(droppedObject, bounds, 
+                    settings);
         } else if (Model.getFacade().isAException(droppedObject)) {
-            figNode = new FigException(gm, droppedObject);
+            figNode = new FigException(droppedObject, bounds, settings);
         } else if (Model.getFacade().isASignal(droppedObject)) {
-            figNode = new FigSignal(gm, droppedObject);
+            figNode = new FigSignal(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAActor(droppedObject)) {
-            figNode = new FigActor(gm, droppedObject);
+            figNode = new FigActor(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAUseCase(droppedObject)) {
-            figNode = new FigUseCase(gm, droppedObject);
+            figNode = new FigUseCase(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAObject(droppedObject)) {
             figNode = new FigObject(gm, droppedObject);
         } else if (Model.getFacade().isANodeInstance(droppedObject)) {
@@ -715,4 +720,4 @@ public class UMLClassDiagram extends UMLDiagram {
         return figNode;
     }
     
-} /* end class UMLClassDiagram */
+}

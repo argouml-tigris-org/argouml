@@ -136,6 +136,12 @@ public abstract class FigNodeModelElement
 
     private static final Logger LOG =
         Logger.getLogger(FigNodeModelElement.class);
+
+    // TODO: There are lots and LOTS of magic numbers used in calculating 
+    // positions and sizes.  Any time you see Figs being placed at 10,10 use
+    // these constants instead.  If you can reliably interpret calculations,
+    // you can factor them out of there as well.  Add additional constants
+    // as needed to express other common factors - tfm 20081201
     
     /**
      * Default width for a node fig
@@ -156,16 +162,6 @@ public abstract class FigNodeModelElement
      */
     protected boolean invisibleAllowed = false;
 
-    /**
-     * min. 17, used to calculate y pos of FigText items in a compartment
-     */
-    protected static final int ROWHEIGHT = 17;
-
-    /**
-     * min. 18, used to calculate y pos of stereotype FigText items
-     * in a compartment
-     */
-    protected static final int STEREOHEIGHT = 18;
 
     /**
      * Needed for loading. Warning: if false, a too small size might look bad!
@@ -307,29 +303,28 @@ public abstract class FigNodeModelElement
      */
     @Deprecated
     protected FigNodeModelElement() {
-        // We'll fall back to using the project settings during the transition
-        this(null);
+        // this rectangle marks the whole modelelement figure; everything
+        // is inside it:
+        bigPort = new FigRect(X0, Y0, 0, 0, Color.cyan, Color.cyan);
+        
+        nameFig = new FigNameWithAbstractAndBold(X0, Y0, 90, 21, true);
+        stereotypeFig = new FigStereotypesGroup(X0, Y0, 90, 15);
+        constructFigs();
     }
     
     /**
      * Construct an unplaced Fig with no owner using the given 
      * rendering settings.
      */
-    private FigNodeModelElement(DiagramSettings renderSettings) {
-        settings = renderSettings;
-        // this rectangle marks the whole modelelement figure; everything
-        // is inside it:
-        bigPort = new FigRect(X0, Y0, 0, 0, Color.cyan, Color.cyan);
+    private void constructFigs() {
 
-        nameFig = new FigNameWithAbstractAndBold(X0, Y0, 90, 21, true);
+
         nameFig.setLineWidth(1);
         nameFig.setFilled(true);
         nameFig.setText(placeString());
         nameFig.setBotMargin(7); // make space for the clarifier
         nameFig.setRightMargin(4); // margin between text and border
         nameFig.setLeftMargin(4);
-
-        stereotypeFig = new FigStereotypesGroup(X0, Y0, 90, 15);
 
         readyToEdit = false;
 
@@ -369,7 +364,16 @@ public abstract class FigNodeModelElement
      */
     protected FigNodeModelElement(Object element, Rectangle bounds, 
             DiagramSettings renderSettings) {
-        this(renderSettings);
+        super();
+        settings = renderSettings;
+        // this rectangle marks the whole modelelement figure; everything
+        // is inside it:
+        bigPort = new FigRect(X0, Y0, 0, 0, Color.cyan, Color.cyan);
+        nameFig = new FigNameWithAbstractAndBold(element, 
+                new Rectangle(X0, Y0, 90, 21), getSettings(), true);
+        stereotypeFig = new FigStereotypesGroup(element, 
+                new Rectangle(X0, Y0, 90, 15), settings);
+        constructFigs();
         if (element == null) {
             throw new IllegalArgumentException("An owner must be supplied");
         }
@@ -1941,6 +1945,7 @@ public abstract class FigNodeModelElement
      */
     protected void setBigPort(Fig bp) {
         this.bigPort = bp;
+        bindPort(getOwner(), bigPort);
     }
 
     /**
@@ -2431,11 +2436,13 @@ public abstract class FigNodeModelElement
      * @param fg the FigGroup to change the font of.
      */
     private void deepUpdateFont(FigGroup fg) {
+        // TODO: Fonts shouldn't be handled any differently than other 
+        // rendering attributes
         boolean changed = false;
         List<Fig> figs = fg.getFigs();
         for (Fig f : figs) {
             if (f instanceof ArgoFigText) {
-                ((ArgoFigText) f).diagramFontChanged(null);
+                ((ArgoFigText) f).renderingChanged();
                 changed = true;
             }
             if (f instanceof FigGroup) {
@@ -2452,6 +2459,7 @@ public abstract class FigNodeModelElement
         // TODO: This is a temporary crutch to use until all Figs are updated
         // to use the constructor that accepts a DiagramSettings object
         if (settings == null) {
+            LOG.debug("Falling back to project-wide settings");
             Project p = getProject();
             if (p != null) {
                 return p.getProjectSettings().getDefaultDiagramSettings();

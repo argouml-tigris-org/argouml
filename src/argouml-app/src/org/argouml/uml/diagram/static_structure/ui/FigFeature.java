@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.beans.PropertyChangeEvent;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
@@ -85,22 +86,44 @@ public abstract class FigFeature extends CompartmentFigText {
     }
 
     /**
-    * Constructor for FigFeature.
-    * @param x x
-    * @param y x
-    * @param w w
-    * @param h h
-    * @param aFig the fig
-    * @param np the notation provider for the text
-    */
+     * Constructor for FigFeature.
+     * 
+     * @param x x
+     * @param y x
+     * @param w w
+     * @param h h
+     * @param aFig the fig
+     * @param np the notation provider for the text
+     * @deprecated for 0.27.3 by tfmorris. Use
+     * {@link #FigFeature(Object, Rectangle, DiagramSettings, NotationProvider)}
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigFeature(int x, int y, int w, int h, Fig aFig, 
             NotationProvider np) {
         super(x, y, w, h, aFig, np);
+    }
+    
+    /**
+     * Construct a Feature fig
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     * @param np notation provider
+     */
+    public FigFeature(Object owner, Rectangle bounds, DiagramSettings settings,
+            NotationProvider np) {
+        super(owner, bounds, settings, np);
+        updateOwnerScope(Model.getFacade().isStatic(owner));
+        Model.getPump().addModelEventListener(this, owner, EVENT_NAME);
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#setOwner(java.lang.Object)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public void setOwner(Object owner) {
         super.setOwner(owner);

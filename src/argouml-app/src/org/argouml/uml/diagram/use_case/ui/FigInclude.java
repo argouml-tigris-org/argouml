@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,9 @@ package org.argouml.uml.diagram.use_case.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
 import org.tigris.gef.base.PathConvPercent;
@@ -57,17 +59,24 @@ public class FigInclude extends FigEdgeModelElement {
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
 
     /**
-     * <p>The default constructor, but should never be called directly (use
-     *   {@link #FigInclude(Object)}, since that sets the owner. However we
-     *   can't mark it as private, since GEF expects to be able to call this
-     *   when creating the diagram.</p>
+     * The default constructor, but should never be called directly (use
+     * {@link #FigInclude(Object, DiagramSettings)}. However we can't
+     * mark it as private, since GEF expects to be able to call this when
+     * creating the diagram.
+     * 
+     * @deprecated only for use by PGML parser
      */
-
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigInclude() {
+        label = new FigSingleLineText(X0, Y0 + 20, 90, 20, false);
+        initialize();
+    }
 
+
+    private void initialize() {
         // The <<include>> label.
         // It's not a true stereotype, so don't use the stereotype support
-        label = new FigSingleLineText(X0, Y0 + 20, 90, 20, false);
         label.setTextColor(Color.black);
         label.setTextFilled(false);
         label.setFilled(false);
@@ -87,7 +96,7 @@ public class FigInclude extends FigEdgeModelElement {
 
         // Make the edge go between nearest points
 
-        setBetweenNearestPoints(true);
+        setBetweenNearestPoints(true);    
     }
 
 
@@ -96,13 +105,29 @@ public class FigInclude extends FigEdgeModelElement {
      *   edge object its owner.</p>
      *
      * @param edge  The edge that will own the fig
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigInclude(Object, DiagramSettings)}.
      */
-
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigInclude(Object edge) {
         this();
         setOwner(edge);
     }
 
+    /**
+     * Construct a fig owned by the given UML element with the provided render
+     * settings.
+     * @param edge owning UML element
+     * @param settings rendering settings
+     */
+    public FigInclude(Object edge, DiagramSettings settings) {
+        super(edge, settings);
+        label = new FigSingleLineText(edge, new Rectangle(X0, Y0 + 20, 90, 20), 
+                settings, false);
+        initialize();
+    }
+    
     /**
      * <p>Set a new fig to represent this edge.</p>
      *
@@ -114,9 +139,6 @@ public class FigInclude extends FigEdgeModelElement {
     @Override
     public void setFig(Fig f) {
         super.setFig(f);
-
-        // Make sure the line is dashed
-
         setDashed(true);
     }
 
@@ -142,3 +164,4 @@ public class FigInclude extends FigEdgeModelElement {
         super.paint(g);
     }
 }
+

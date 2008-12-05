@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,8 +26,10 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.util.Iterator;
+import java.awt.Rectangle;
+import java.util.Collection;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 
@@ -45,8 +47,17 @@ public abstract class FigCompartment extends ArgoFigGroup {
      * @param y y
      * @param w width
      * @param h height
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigCompartment(Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigCompartment(int x, int y, int w, int h) {
+        constructFigs(x, y, w, h);
+    }
+
+    private void constructFigs(int x, int y, int w, int h) {
+        // TODO: Don't hardcode colors
         bigPort = new FigRect(x, y, w, h, Color.black, Color.white);
         bigPort.setFilled(true);
         setFilled(true);
@@ -54,6 +65,17 @@ public abstract class FigCompartment extends ArgoFigGroup {
         bigPort.setLineWidth(0);
         setLineWidth(0);
         addFig(bigPort);
+    }
+    
+    /**
+     * Construct a new FigCompartment.
+     * 
+     * @param bounds rectangle describing bounds of compartment
+     * @param settings render settings
+     */
+    public FigCompartment(Rectangle bounds, DiagramSettings settings) {
+        super(settings);
+        constructFigs(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
     /**
@@ -70,14 +92,11 @@ public abstract class FigCompartment extends ArgoFigGroup {
      * 2 pixel padding.
      * @return the minimum width
      */
+    @Override
     public Dimension getMinimumSize() {
         int minWidth = 0;
         int minHeight = 0;
-        //set new bounds for all included figs
-        Iterator figs = iterator();
-        Fig fig;
-        while (figs.hasNext()) {
-            fig = (Fig) figs.next();
+        for (Fig fig : (Collection<Fig>) getFigs()) {
             if (fig.isVisible() && fig != getBigPort()) {
                 int fw = fig.getMinimumSize().width;
                 if (fw > minWidth) {
@@ -94,18 +113,17 @@ public abstract class FigCompartment extends ArgoFigGroup {
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setBoundsImpl(int x, int y, int w, int h) {
         int newW = w;
         int newH = h;
 
-        Iterator figs = iterator();
-        Fig fig;
         int fw;
         int yy = y;
-        while (figs.hasNext()) {
-            fig = (Fig) figs.next();
+        for  (Fig fig : (Collection<Fig>) getFigs()) {
             if (fig.isVisible() && fig != getBigPort()) {
                 fw = fig.getMinimumSize().width;
+                //set new bounds for all included figs
                 fig.setBounds(x + 1, yy + 1, fw, fig.getMinimumSize().height);
                 if (newW < fw + 2) {
                     newW = fw + 2;

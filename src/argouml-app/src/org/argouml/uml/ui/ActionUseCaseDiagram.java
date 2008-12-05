@@ -26,8 +26,9 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramSettings;
 
 /**
  * Action to create a new use case diagram.
@@ -44,9 +45,13 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
         super("action.usecase-diagram");
     }
 
+    
     /*
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    @Override
     public ArgoDiagram createDiagram(Object namespace) {
         if (!Model.getFacade().isANamespace(namespace)) {
             LOG.error("No namespace as argument");
@@ -59,16 +64,32 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
                 namespace,
                 null);
     }
+    
+    
+    /*
+     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
+     */
+    @Override
+    public ArgoDiagram createDiagram(Object namespace, 
+            DiagramSettings settings) {
+        if (!Model.getFacade().isANamespace(namespace)) {
+            LOG.error("No namespace as argument");
+            LOG.error(namespace);
+            throw new IllegalArgumentException(
+                "The argument " + namespace + "is not a namespace.");
+        }
+        return DiagramFactory.getInstance().create(
+                DiagramFactory.DiagramType.UseCase,
+                namespace,
+                settings);
+    }
 
     /*
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(Object)
      */
     public boolean isValidNamespace(Object handle) {
-        boolean validNamespace = false;
-        if (Model.getFacade().isAPackage(handle)
-                || Model.getFacade().isAClassifier(handle))
-            validNamespace = true;
-        return validNamespace;
+        return (Model.getFacade().isAPackage(handle)
+                || Model.getFacade().isAClassifier(handle));
     }
 
 }

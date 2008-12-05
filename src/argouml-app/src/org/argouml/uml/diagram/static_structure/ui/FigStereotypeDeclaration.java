@@ -30,7 +30,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
@@ -40,6 +39,7 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
@@ -64,9 +64,16 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
     
     /**
      * Create a new Fig for a stereotype declaration.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigStereotypeDeclaration(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigStereotypeDeclaration() {
+        constructFigs();
+    }
 
+    private void constructFigs() {
         getStereotypeFig().setKeyword("stereotype");
 
         // Put all the bits together, suppressing bounds calculations until
@@ -93,15 +100,32 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      * node in the metamodel.
      *
      * @param gm   Not actually used in the current implementation
-     *
      * @param node The UML object being placed.
+     * {@link #FigStereotypeDeclaration(Object, Rectangle, DiagramSettings)}.
      */
-    public FigStereotypeDeclaration(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigStereotypeDeclaration(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
         enableSizeChecking(true);
     }
 
+    /**
+     * Construct a Fig for a Stereotype on a diagram.
+     * 
+     * @param owner owning stereotype
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigStereotypeDeclaration(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        constructFigs();
+        enableSizeChecking(true);
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
@@ -132,9 +156,8 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
 
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
-        Iterator i = ActionCompartmentDisplay.getActions().iterator();
-        while (i.hasNext()) {
-            showMenu.add((Action) i.next());
+        for (Action action : ActionCompartmentDisplay.getActions()) {
+            showMenu.add(action);
         }
         if (showMenu.getComponentCount() > 0) {
             popUpActions.add(popUpActions.size() - getPopupAddOffset(),

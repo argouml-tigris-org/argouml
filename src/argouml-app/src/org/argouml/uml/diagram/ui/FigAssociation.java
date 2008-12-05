@@ -45,9 +45,6 @@ import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
@@ -55,7 +52,7 @@ import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadComposite;
@@ -91,7 +88,7 @@ public class FigAssociation extends FigEdgeModelElement {
      * Group for the FigTexts concerning the name and stereotype of the
      * association itself.
      */
-    private FigTextGroup middleGroup = new FigTextGroup();
+    private FigTextGroup middleGroup;
 
     private FigMultiplicity srcMult;
     private FigMultiplicity destMult;
@@ -100,10 +97,21 @@ public class FigAssociation extends FigEdgeModelElement {
      * Don't call this constructor directly. It is public since this
      * is necessary for loading. Use the FigAssociation(Object, Layer)
      * constructor instead!
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigAssociation(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigAssociation() {
         super();
 
+        middleGroup = new FigTextGroup();
+        
+        //////////////////////////////////////////////////////////////////
+        // NOTE: If this needs to be updated during the deprecation period
+        // also update the constructor below
+        //////////////////////////////////////////////////////////////////
+        
         // let's use groups to construct the different text sections at
         // the association
         if (getNameFig() != null) {
@@ -138,22 +146,58 @@ public class FigAssociation extends FigEdgeModelElement {
         markPosition(100, -5, -45, 15, Color.orange);
                 
         setBetweenNearestPoints(true);
-        
-        // next line necessary for loading
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p != null) {
-            ArgoDiagram d = p.getActiveDiagram();
-            if (d != null) {
-                Layer l = d.getLayer();
-                if (l != null) {
-                    setLayer(l);                    
-                }
-            }
+    }
+
+    /**
+     * Constructor used by PGML parser.
+     * 
+     * @param owner owning uml element
+     * @param settings rendering settings
+     */
+    public FigAssociation(Object owner, DiagramSettings settings) {
+        super(owner, settings);
+
+        middleGroup = new FigTextGroup(settings);
+
+        // let's use groups to construct the different text sections at
+        // the association
+        if (getNameFig() != null) {
+            middleGroup.addFig(getNameFig());
         }
+        middleGroup.addFig(getStereotypeFig());
+        addPathItem(middleGroup,
+                new PathItemPlacement(this, middleGroup, 50, 25));
+        markPosition(50, 0, 90, 25, Color.yellow);
+        
+        Object[] ends = 
+            Model.getFacade().getConnections(owner).toArray();
+        
+        srcMult = new FigMultiplicity(ends[0], settings);
+        addPathItem(srcMult, 
+                new PathItemPlacement(this, srcMult, 0, 5, 135, 5));
+        markPosition(0, 5, 135, 5, Color.green);
+        
+        srcGroup = new FigAssociationEndAnnotation(this, ends[0], settings);
+        addPathItem(srcGroup, 
+                new PathItemPlacement(this, srcGroup, 0, 5, -135, 15));
+        markPosition(0, 5, -135, 15, Color.blue);
+
+        destMult = new FigMultiplicity(ends[1], settings);
+        addPathItem(destMult,
+                new PathItemPlacement(this, destMult, 100, -5, 45, 5));
+        markPosition(100, -5, 45, 5, Color.red);
+        
+        destGroup = new FigAssociationEndAnnotation(this, ends[1], settings);
+        addPathItem(destGroup,
+                new PathItemPlacement(this, destGroup, 100, -5, -45, 15));
+        markPosition(100, -5, -45, 15, Color.orange);
+
+        setBetweenNearestPoints(true);
+        
+        initializeNotationProvidersInternal(owner);
 
     }
 
-    
     /*
      * Add pretty little markers for debugging purposes. We use three markers so
      * you can see the anchor, the computed target position, and how collision
@@ -182,15 +226,28 @@ public class FigAssociation extends FigEdgeModelElement {
     /**
      * Constructor that hooks the Fig to an existing UML element.
      *
-     * @param edge the UMl element
+     * @param edge the UML element
      * @param lay the layer
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigAssociation(Object, DiagramSettings)}.
      */
+    @Deprecated
     public FigAssociation(Object edge, Layer lay) {
         this();
         setOwner(edge);
         setLayer(lay);
     }
 
+
+    /**
+     * Set the owner.
+     * 
+     * @param owner ignored
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#setOwner(java.lang.Object)
+     * @deprecated for 0.27.3 by tfmorris.  Set the owner in the constructor.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public void setOwner(Object owner) {
         super.setOwner(owner);
@@ -208,19 +265,21 @@ public class FigAssociation extends FigEdgeModelElement {
         destMult.setOwner(dest);
     }
 
-    /**
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
-     */
+
     @Override
     public void renderingChanged() {
+        super.renderingChanged();
         /* This fixes issue 4987: */
         srcMult.update();
         destMult.update();
-        super.renderingChanged();
     }
 
     @Override
     protected void initNotationProviders(Object own) {
+        initializeNotationProvidersInternal(own);
+    }
+
+    private void initializeNotationProvidersInternal(Object own) {
         super.initNotationProviders(own);
         Object[] ends = 
             Model.getFacade().getConnections(own).toArray();
@@ -309,11 +368,8 @@ public class FigAssociation extends FigEdgeModelElement {
     protected void applyArrowHeads() {
         int sourceArrowType = srcGroup.getArrowType();
         int destArrowType = destGroup.getArrowType();
-        
-        Project p = getProject();
-        ProjectSettings ps = p.getProjectSettings();
-        
-        if (ps.getHideBidirectionalArrowsValue()
+
+        if (!getSettings().isShowBidirectionalArrows()
                 && sourceArrowType > 2
                 && destArrowType > 2) {
             sourceArrowType -= 3;
@@ -520,7 +576,7 @@ public class FigAssociation extends FigEdgeModelElement {
 } /* end class FigAssociation */
 
 /**
- * A Fig representing the multiplicty of some model element.
+ * A Fig representing the multiplicity of some model element.
  * This has potential reuse for other edges showing multiplicity. <p>
  * 
  * The owner is an AssociationEnd.
@@ -533,14 +589,21 @@ class FigMultiplicity extends FigSingleLineText
     private NotationProvider multiplicityNotationProvider;
     private static final long serialVersionUID = 5385230942216677015L;
     private HashMap<String, Object> npArguments = new HashMap<String, Object>();
-    
+
+    @Deprecated
     FigMultiplicity() {
         super(X0, Y0, 90, 20, false, "multiplicity");
-
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
     }
 
+    FigMultiplicity(Object owner, DiagramSettings settings) {
+        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false,
+                "multiplicity");
+        setTextFilled(false);
+        setJustification(FigText.JUSTIFY_CENTER);
+    }
+    
     @Override
     protected void setText() {
         assert getOwner() != null;
@@ -587,8 +650,7 @@ class FigMultiplicity extends FigSingleLineText
             multiplicityNotationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_MULTIPLICITY, own, this);
-            boolean value = getProject().getProjectSettings()
-                .getShowSingularMultiplicitiesValue();
+            boolean value = getSettings().isShowSingularMultiplicities();
             npArguments.put("singularMultiplicityVisible", value);
         }
     }
@@ -609,13 +671,22 @@ class FigOrdering extends FigSingleLineText {
 
     private static final long serialVersionUID = 5385230942216677015L;
 
+    @Deprecated
     FigOrdering() {
         super(X0, Y0, 90, 20, false, "ordering");
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
         setEditable(false);
     }
-
+    
+    FigOrdering(Object owner, DiagramSettings settings) {
+        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false, 
+                "ordering");
+        setTextFilled(false);
+        setJustification(FigText.JUSTIFY_CENTER);
+        setEditable(false);
+    }
+    
     @Override
     protected void setText() {
         assert getOwner() != null;
@@ -642,7 +713,7 @@ class FigOrdering extends FigSingleLineText {
         if ("unordered".equals(Model.getFacade().getName(orderingKind))) {
             return "";
         }
-        
+        // TODO: I18N
         return "{" + Model.getFacade().getName(orderingKind) + "}";
     }
 }
@@ -655,22 +726,46 @@ class FigOrdering extends FigSingleLineText {
 class FigRole extends FigSingleLineText 
     implements ArgoNotationEventListener {
 
+    private static final Logger LOG = Logger.getLogger(FigRole.class);
+    
     private static final long serialVersionUID = 5385230942216677015L;
 
     private NotationProvider notationProviderRole;
     private HashMap<String, Object> npArguments = new HashMap<String, Object>();
 
+    /**
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link FigRole#FigRole(Object, DiagramSettings)}/
+     */
+    @Deprecated
     FigRole() {
-        super(X0, Y0, 90, 20, false/*, 
+        super(X0, Y0, 90, 20, false, (String[]) null 
         // no need to listen to these property changes - the 
         // notationProvider takes care of this.
-                new String[] {"name", "visibility", "stereotype"}*/);
+                /*, new String[] {"name", "visibility", "stereotype"}*/
+                );
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
+    }
+    
+    FigRole(Object owner, DiagramSettings settings) {
+        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false, 
+                (String[]) null 
+        // no need to listen to these property changes - the 
+        // notationProvider takes care of this.
+                /*, new String[] {"name", "visibility", "stereotype"}*/
+                );
+        setTextFilled(false);
+        setJustification(FigText.JUSTIFY_CENTER);
+        setOwnerInternal(owner);
     }
 
     @Override
     public void setOwner(Object owner) {
+        setOwnerInternal(owner);
+    }
+
+    private void setOwnerInternal(Object owner) {
         super.setOwner(owner);
         getNewNotation();
     }
@@ -686,6 +781,8 @@ class FigRole extends FigSingleLineText
                         getOwner(),
                         this);
             initNotationArguments();
+        } else {
+            LOG.debug("Null owner when initialization notation providers");
         }
     }
     
@@ -729,9 +826,9 @@ class FigRole extends FigSingleLineText
      */
     @Override
     public void removeFromDiagram() {
-        notationProviderRole.cleanListener(this, getOwner());
-        ArgoEventPump.removeListener(
-                ArgoEventTypes.ANY_NOTATION_EVENT, this);
+        if (notationProviderRole != null) {
+            notationProviderRole.cleanListener(this, getOwner());
+        }
         super.removeFromDiagram();
     }
 
@@ -739,14 +836,18 @@ class FigRole extends FigSingleLineText
      * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationAdded(ArgoNotationEvent e) {
-        getNewNotation();
-        setText();
+        renderingChanged();
     }
 
     /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationChanged(ArgoNotationEvent e) {
+        renderingChanged();
+    }
+    
+    public void renderingChanged() {
+        super.renderingChanged();
         getNewNotation();
         setText();
     }
@@ -755,24 +856,21 @@ class FigRole extends FigSingleLineText
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderAdded(ArgoNotationEvent e) {
-        getNewNotation();
-        setText();
+        renderingChanged();
     }
 
     /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationProviderRemoved(ArgoNotationEvent e) {
-        getNewNotation();
-        setText();
+        renderingChanged();
     }
 
     /*
      * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationRemoved(ArgoNotationEvent e) {
-        getNewNotation();
-        setText();
+        renderingChanged();
     }
 }
 
@@ -812,14 +910,26 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     private FigOrdering ordering;
     private int arrowType = 0;
     private FigEdgeModelElement figEdge;
-    
-    public FigAssociationEndAnnotation(FigEdgeModelElement edge) {
+
+    @Deprecated
+    FigAssociationEndAnnotation(FigEdgeModelElement edge) {
         figEdge = edge;
         
         role = new FigRole();
         addFig(role);
 
         ordering = new FigOrdering();
+        addFig(ordering);
+    }
+    
+    FigAssociationEndAnnotation(FigEdgeModelElement edge, Object owner,
+            DiagramSettings settings) {
+        figEdge = edge;
+        
+        role = new FigRole(owner, settings);
+        addFig(role);
+
+        ordering = new FigOrdering(owner, settings);
         addFig(ordering);
     }
     

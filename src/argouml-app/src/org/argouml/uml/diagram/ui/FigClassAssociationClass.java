@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,9 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.Iterator;
+import java.awt.Rectangle;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.tigris.gef.presentation.Fig;
 
@@ -47,7 +48,11 @@ public class FigClassAssociationClass extends FigClass {
      * @param y the y of the initial location
      * @param w the initial width
      * @param h the initial height
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigClassAssociationClass(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigClassAssociationClass(Object owner, int x, int y, int w, int h) {
         super(owner, x, y, w, h);
         enableSizeChecking(true);
@@ -57,24 +62,39 @@ public class FigClassAssociationClass extends FigClass {
      * The constructor.
      *
      * @param owner the owner UML object
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigClassAssociationClass(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigClassAssociationClass(Object owner) {
         super(null, owner);
     }
     
+    /**
+     * Construct the Class box piece of a complex association class fig.
+     * 
+     * @param owner owning model element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigClassAssociationClass(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        enableSizeChecking(true);
+    }
+    
     protected Fig getRemoveDelegate() {
         // Look for the dashed edge
-        Iterator it = getFigEdges().iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof FigEdgeAssociationClass) {
+        for (Object fig : getFigEdges()) {
+            if (fig instanceof FigEdgeAssociationClass) {
                 // We have the dashed edge now find the opposite FigNode
                 FigEdgeAssociationClass dashedEdge =
-                    (FigEdgeAssociationClass) o;
+                    (FigEdgeAssociationClass) fig;
                 return dashedEdge.getRemoveDelegate();
             }
         }
         return null;
     }
 
-} /* end class FigClassAssociationClass */
+}

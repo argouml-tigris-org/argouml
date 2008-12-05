@@ -25,8 +25,10 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Font;
+import java.awt.Rectangle;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 
 /**
  * A FigSingleLineText that represents the name of a modelelement,
@@ -44,9 +46,27 @@ class FigNameWithAbstract extends FigSingleLineText {
      * @param w width
      * @param h height
      * @param expandOnly impacts behavior
+     * @deprecated for 0.27.3 by tfmorris. Use
+     * {@link #FigNameWithAbstract(Object, Rectangle, DiagramSettings, boolean)}
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigNameWithAbstract(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
+    }
+    
+    /**
+     * Construct a name Fig that shows whether associated item is abstract
+     * (italics) or bold.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     * @param expandOnly true if fig should never contract
+     */
+    public FigNameWithAbstract(Object owner, Rectangle bounds,
+            DiagramSettings settings, boolean expandOnly) {
+        super(owner, bounds, settings, expandOnly);
     }
 
     @Override

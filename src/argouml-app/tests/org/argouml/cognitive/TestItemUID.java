@@ -25,12 +25,18 @@
 package org.argouml.cognitive;
 
 // Diagrams
+import java.awt.Rectangle;
+
 import junit.framework.TestCase;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.notation.InitNotation;
+import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.FigClassifierRole;
@@ -53,14 +59,15 @@ import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
 import org.argouml.uml.diagram.state.ui.FigTransition;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
+import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.FigActor;
 import org.argouml.uml.diagram.use_case.ui.FigExtend;
 import org.argouml.uml.diagram.use_case.ui.FigInclude;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
+import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.util.ItemUID;
 
 
@@ -69,6 +76,10 @@ import org.argouml.util.ItemUID;
  *
  */
 public class TestItemUID extends TestCase {
+
+    // Arbitrary settings - not used used for testing
+    private DiagramSettings settings = new DiagramSettings();
+    private Rectangle bounds = new Rectangle(10, 10, 20, 20);
 
     /**
      * The constructor.
@@ -82,10 +93,14 @@ public class TestItemUID extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @Override
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        ProjectManager.getManager().makeEmptyProject();
+        new InitNotation().init();
+        new InitNotationUml().init();
     }
 
     /**
@@ -127,16 +142,30 @@ public class TestItemUID extends TestCase {
      * Test assigning IDs to objects.
      */
     public void testAssignIDsToObjects() {
+
         Object testmc = Model.getCoreFactory().buildClass();
+        checkAssignIDToObject(testmc, true, true);
+        Model.getUmlFactory().delete(testmc);
+
+        Object namespace = Model.getModelManagementFactory().createModel();
         CommentEdge commentedge = new CommentEdge();
         UMLActivityDiagram actdiag = new UMLActivityDiagram();
-        UMLClassDiagram classdiag = new UMLClassDiagram();
+        UMLClassDiagram classdiag = new UMLClassDiagram(namespace);
         UMLCollaborationDiagram colldiag = new UMLCollaborationDiagram();
         UMLDeploymentDiagram depdiag = new UMLDeploymentDiagram();
         UMLSequenceDiagram seqdiag = new UMLSequenceDiagram();
         UMLStateDiagram statediag = new UMLStateDiagram();
-        UMLUseCaseDiagram ucdiag = new UMLUseCaseDiagram();
 
+        checkAssignIDToObject(commentedge, false, true);
+        checkAssignIDToObject(actdiag, true, true);
+        checkAssignIDToObject(classdiag, true, true);
+        checkAssignIDToObject(colldiag, true, true);
+        checkAssignIDToObject(depdiag, true, true);
+        checkAssignIDToObject(seqdiag, true, true);
+        checkAssignIDToObject(statediag, true, true);
+        
+        Model.getUmlFactory().delete(namespace);
+        
         FigActionState figactionstate = new FigActionState();
 
         // FigAssociationRole figassociationrole = new FigAssociationRole();
@@ -160,27 +189,34 @@ public class TestItemUID extends TestCase {
             new FigShallowHistoryState();
         //FigState figstate = new FigState();
         FigTransition figtransition = new FigTransition();
+        
+        // TODO: Someone apparently disabled this test rather than fixing it!
+//        Object clazz = Model.getCoreFactory().createClass();
+//        FigClass figclass = new FigClass(clazz, bounds, settings);
+//        checkAssignIDToObject(figclass, true, true);
+//        Model.getUmlFactory().delete(clazz);
 
-//        FigClass figclass = new FigClass();
         FigEdgeNote figedgenote = new FigEdgeNote();
-        FigInterface figinterface = new FigInterface();
+        checkAssignIDToObject(figedgenote, true, true);
+//      Model.getUmlFactory().delete(clazz);
+        
+        // TODO: Someone apparently disabled this test rather than fixing it!
+//        Object iface = Model.getCoreFactory().createInterface();
+//        FigInterface figinterface = new FigInterface(iface, bounds, settings);
+//        checkAssignIDToObject(figinterface, true, true);
+//        Model.getUmlFactory().delete(iface);
+
+        Object link = Model.getCommonBehaviorFactory().createLink();
         FigLink figlink = new FigLink();
-//        FigPackage figpackage = new FigPackage();
+        checkAssignIDToObject(figlink, true, true);
+        Model.getUmlFactory().delete(link);
+        
+        Object pkg = Model.getModelManagementFactory().createPackage();
+        FigPackage figpackage = new FigPackage(pkg, bounds, settings);
+        checkAssignIDToObject(figpackage, true, true);
+        Model.getUmlFactory().delete(pkg);
 
-        FigActor figactor = new FigActor();
-        FigExtend figextend = new FigExtend();
-        FigInclude figinclude = new FigInclude();
-        FigUseCase figusecase = new FigUseCase();
 
-        checkAssignIDToObject(testmc, true, true);
-        checkAssignIDToObject(commentedge, false, true);
-        checkAssignIDToObject(actdiag, true, true);
-        checkAssignIDToObject(classdiag, true, true);
-        checkAssignIDToObject(colldiag, true, true);
-        checkAssignIDToObject(depdiag, true, true);
-        checkAssignIDToObject(seqdiag, true, true);
-        checkAssignIDToObject(statediag, true, true);
-        checkAssignIDToObject(ucdiag, true, true);
 
         checkAssignIDToObject(figactionstate, true, true);
 
@@ -205,16 +241,36 @@ public class TestItemUID extends TestCase {
         //checkAssignIDToObject(figstate, true, true);
         checkAssignIDToObject(figtransition, true, true);
 
-//        checkAssignIDToObject(figclass, true, true);
-        checkAssignIDToObject(figedgenote, true, true);
-        checkAssignIDToObject(figinterface, true, true);
-        checkAssignIDToObject(figlink, true, true);
-        //checkAssignIDToObject(figpackage, true, true);
+    }
 
+    /**
+     * Test ID assignment for UseCase diagram and figs
+     */
+    public void testUseCaseIDs() {
+        Object namespace = Model.getModelManagementFactory().createModel();
+        UMLUseCaseDiagram ucdiag = new UMLUseCaseDiagram(namespace);
+        checkAssignIDToObject(ucdiag, true, true);
+        Model.getUmlFactory().delete(namespace);
+        
+        Object actor = Model.getUseCasesFactory().createActor();
+        FigActor figactor = new FigActor(actor, bounds, settings);  
         checkAssignIDToObject(figactor, true, true);
+        Model.getUmlFactory().delete(actor);
+
+        Object extend = Model.getUseCasesFactory().createExtend();
+        FigExtend figextend = new FigExtend(extend, settings);
         checkAssignIDToObject(figextend, true, true);
+        Model.getUmlFactory().delete(extend);
+        
+        Object include = Model.getUseCasesFactory().createInclude();
+        FigInclude figinclude = new FigInclude(include, settings);
         checkAssignIDToObject(figinclude, true, true);
+        Model.getUmlFactory().delete(include);
+
+        Object useCase = Model.getUseCasesFactory().createUseCase();
+        FigUseCase figusecase = new FigUseCase(useCase, bounds, settings);     
         checkAssignIDToObject(figusecase, true, true);
+        Model.getUmlFactory().delete(useCase);
     }
 
     private void checkAssignIDToObject(
