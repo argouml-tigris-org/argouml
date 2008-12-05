@@ -488,19 +488,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         assoc.setName("");
         assoc.setNamespace(ns);
 
-        boolean nav1 = true;
-        boolean nav2 = true;
-
-        if (from instanceof Interface) {
-            nav2 = false;
-            agg2 = agg1;
-            agg1 = null;
-        } else if (to instanceof Interface) {
-            nav1 = false;
-        } else {
-            nav1 = !Boolean.TRUE.equals(unidirectional);
-            nav2 = true;
-        }
+        final boolean nav1 = !unidirectional;
+        final boolean nav2 = true;
 
         buildAssociationEnd(assoc, null, from, null, null, nav1, null, agg1,
                 null, null, null);
@@ -592,25 +581,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("VisibilityKind");
         }
 
-        if (type instanceof DataType || type instanceof Interface) {
-            if (!navigable) {
-                throw new IllegalArgumentException(
-                        "Wellformedness rule 2.5.3.3 [1] is broken. "
-                                + "The Classifier of an AssociationEnd cannot"
-                                + "be an Interface or a DataType if the "
-                                + "association is navigable away from "
-                                + "that end.");
-            }
-            List<AssociationEnd> ends = new ArrayList<AssociationEnd>();
-            ends.addAll(((UmlAssociation) assoc).getConnection());
-            for (AssociationEnd end : ends) {
-                if (end.isNavigable()) {
-                    throw new IllegalArgumentException("type is either "
-                            + "datatype or " + "interface and is "
-                            + "navigable to");
-                }
-            }
-        }
         if (aggregation != null
                 && aggregation.equals(AggregationKindEnum.AK_COMPOSITE)
                 && multi != null && getMaxUpper((Multiplicity) multi) > 1) {
