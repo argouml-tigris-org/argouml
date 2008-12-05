@@ -124,8 +124,8 @@ public class FigTransition extends FigEdgeModelElement {
 
     @Override
     public void renderingChanged() {
-        updateDashed();
         super.renderingChanged();
+        updateDashed();
     }
     
     /**

@@ -276,6 +276,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     @Override
     public void renderingChanged() {
+        super.renderingChanged();
         updateClassifierText();
         updateStateText();
         updateBounds();

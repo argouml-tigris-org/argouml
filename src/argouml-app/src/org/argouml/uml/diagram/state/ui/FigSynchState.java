@@ -235,7 +235,7 @@ public class FigSynchState extends FigStateVertex {
     @Override
     protected void updateFont() {
         super.updateFont();
-        Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
+        Font f = getSettings().getFont(Font.PLAIN);
         bound.setFont(f);
     }
 

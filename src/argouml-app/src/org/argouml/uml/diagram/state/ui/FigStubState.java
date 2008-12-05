@@ -89,6 +89,7 @@ public class FigStubState extends FigStateVertex {
                 Color.black);
 
         referenceFig = new FigText(0, 0, width, height, true);
+        referenceFig.setFont(getSettings().getFont(Font.PLAIN));
         referenceFig.setTextColor(Color.black);
         referenceFig.setReturnAction(FigText.END_EDITING);
         referenceFig.setTabAction(FigText.END_EDITING);
@@ -333,8 +334,8 @@ public class FigStubState extends FigStateVertex {
      */
     @Override
     public void renderingChanged() {
-        updateReferenceText();
         super.renderingChanged();
+        updateReferenceText();
     }
     
     /**
@@ -457,7 +458,7 @@ public class FigStubState extends FigStateVertex {
     @Override
     protected void updateFont() {
         super.updateFont();
-        Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
+        Font f = getSettings().getFont(Font.PLAIN);
         referenceFig.setFont(f);
     }
 

@@ -84,6 +84,7 @@ public abstract class FigState extends FigStateVertex {
                     getInitialY() + 2 + 21 + 4,
                     getInitialWidth() - 4,
                     getInitialHeight() - (getInitialY() + 2 + 21 + 4));
+        internal.setFont(getSettings().getFont(Font.PLAIN));
         internal.setTextColor(Color.black);
         internal.setLineWidth(0);
         internal.setFilled(false);
@@ -155,6 +156,7 @@ public abstract class FigState extends FigStateVertex {
      */
     @Override
     public void renderingChanged() {
+        super.renderingChanged();
         Object state = getOwner();
         if (state == null) {
             return;
@@ -163,7 +165,6 @@ public abstract class FigState extends FigStateVertex {
             internal.setText(notationProviderBody.toString(getOwner(), 
                     getNotationArguments()));
         }
-        super.renderingChanged();
         calcBounds();
         setBounds(getBounds());
     }
@@ -237,7 +238,7 @@ public abstract class FigState extends FigStateVertex {
     @Override
     protected void updateFont() {
         super.updateFont();
-        Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
+        Font f = getSettings().getFont(Font.PLAIN);
         internal.setFont(f);
     }
 

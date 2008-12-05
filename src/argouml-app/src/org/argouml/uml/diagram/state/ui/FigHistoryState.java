@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
@@ -62,6 +63,7 @@ public abstract class FigHistoryState extends FigStateVertex {
         setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan));
         head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
         h = new FigText(X, Y, WIDTH - 10, HEIGHT - 10);
+        h.setFont(getSettings().getFont(Font.PLAIN));
         h.setText(getH());
         h.setTextColor(Color.black);
         h.setFilled(false);
