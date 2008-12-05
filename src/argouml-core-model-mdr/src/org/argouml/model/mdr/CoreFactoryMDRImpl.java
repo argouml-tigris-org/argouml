@@ -473,7 +473,12 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Classifier to = (Classifier) toClassifier;
         AggregationKind agg1 = (AggregationKind) aggregationKind1;
         AggregationKind agg2 = (AggregationKind) aggregationKind2;
-
+        
+        // Watch out for nulls which are possible due to dumb API design!
+        if (unidirectional == null) {
+            unidirectional = Boolean.FALSE;
+        }
+        
         Namespace ns = from.getNamespace();
         if (ns == null || modelImpl.getModelManagementHelper().isReadOnly(ns)) {
             ns = to.getNamespace();
