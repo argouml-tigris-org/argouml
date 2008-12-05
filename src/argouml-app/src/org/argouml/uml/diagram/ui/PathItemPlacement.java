@@ -24,14 +24,11 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.awt.geom.Line2D;
 
 import org.apache.log4j.Logger;
@@ -57,7 +54,7 @@ import org.tigris.gef.presentation.FigEdge;
  * <li>itemFig must return correct size information for this to work properly,
  * which is not currently true of all GEF figs (eg. text figs).
  * <li>Only the path is considered, so you can still get overlaps with the
- * connected nodes on the ends of the edges other labels on the same edge or
+ * connected nodes on the ends of the edges or other labels on the same edge or
  * other figs in the diagram. Using a displacement angle of 135 or -135 degrees
  * is a good way to help avoid the connected nodes.
  * </ul>
@@ -104,7 +101,7 @@ public class PathItemPlacement extends PathConv {
     
     /**
      * Construct a new path to coordinate conversion object which positions at a
-     * percentage along a path with an offset distance perpendicular to the path
+     * percentage along a path with a given distance perpendicular to the path
      * at the anchor point.
      * 
      * @param pathFig fig representing the edge which will be used for
@@ -124,9 +121,9 @@ public class PathItemPlacement extends PathConv {
 
     
     /**
-     * Construct a new path to coordinate conversion object which positions at a
-     * percentage along a path with an offset distance perpendicular to the path
-     * at the anchor point.
+     * Construct a new path to coordinate conversion object which positions
+     * an anchor point on the path at a percentage along a path with an offset, 
+     * and from the anchor point at a distance measured at a given angle.
      * 
      * @param pathFig fig representing the edge which will be used for
      *            positioning.
@@ -153,9 +150,9 @@ public class PathItemPlacement extends PathConv {
     }
 
     /**
-     * Construct a new path to coordinate conversion object which positions at a
-     * percentage along a path with an offset distance perpendicular to the path
-     * at the anchor point.
+     * Construct a new path to coordinate conversion object which positions
+     * an anchor point on the path at a percentage along a path with an offset, 
+     * and from the anchor point at a distance measured in X, Y coordinates.
      * 
      * @param pathFig fig representing the edge which will be used for
      *            positioning.
