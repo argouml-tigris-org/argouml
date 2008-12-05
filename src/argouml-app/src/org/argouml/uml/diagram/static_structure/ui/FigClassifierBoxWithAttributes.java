@@ -82,7 +82,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
     public FigClassifierBoxWithAttributes(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        attributesFigCompartment = new FigAttributesCompartment(
+        attributesFigCompartment = new FigAttributesCompartment(owner,
                 DEFAULT_COMPARTMENT_BOUNDS, settings);
     }
 

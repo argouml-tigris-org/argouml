@@ -117,7 +117,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
      */
     public FigStereotypesGroup(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
-        super(settings);
+        super(owner, settings);
         constructFigs(bounds.x, bounds.y, bounds.width, bounds.height);
         Model.getPump().addModelEventListener(this, owner, "stereotype");
         populate();
@@ -127,7 +127,9 @@ public class FigStereotypesGroup extends ArgoFigGroup {
      * Beware: The owner here is NOT the stereotype(s), 
      * but the extended element!
      */
+    @SuppressWarnings("deprecation")
     @Override
+    @Deprecated
     public void setOwner(Object own) {
         if (own != null) {
             super.setOwner(own);
@@ -276,7 +278,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
             if (figs.size() <= acounter) {
                 ++stereotypeCount;
                 stereotypeTextFig =
-                    new FigStereotype(modelElement, new Rectangle(
+                    new FigStereotype(null, new Rectangle(
                             xpos + 1,
                             ypos + 1
                             + (acounter - 1)
@@ -315,7 +317,6 @@ public class FigStereotypesGroup extends ArgoFigGroup {
             } else {
                 stereotypeTextFig = (CompartmentFigText) figs.get(acounter);
             }
-            stereotypeTextFig.setOwner(stereo);
 
             acounter++;
         }
@@ -391,6 +392,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
      */
     public void setKeyword(String word) {
         keyword = word;
+        populate();
     }
 
     /**

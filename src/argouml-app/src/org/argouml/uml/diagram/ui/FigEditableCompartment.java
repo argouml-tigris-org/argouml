@@ -70,7 +70,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * @param w width
      * @param h height
      * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigEditableCompartment(Rectangle, DiagramSettings)}.
+     * {@link #FigEditableCompartment(Object, Rectangle, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -89,11 +89,13 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * encloses the entire group for use in attaching edges, etc and a
      * separator.
      * 
+     * @param owner owning UML element
      * @param bounds bounding rectangle of fig
      * @param settings render settings
      */
-    public FigEditableCompartment(Rectangle bounds, DiagramSettings settings) {
-        super(bounds, settings); // This adds bigPort, i.e. number 1
+    public FigEditableCompartment(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings); // This adds bigPort, i.e. number 1
         constructFigs();
     }
     

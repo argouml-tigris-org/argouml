@@ -82,6 +82,9 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     @Deprecated
     FigClassifierBox() {
         super();
+        Rectangle bounds = getDefaultBounds();
+        operationsFig = new FigOperationsCompartment(bounds.x, bounds.y,
+                bounds.width, bounds.height);
         constructFigs();
     }
 
@@ -89,13 +92,6 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * Initialization shared by all constructors.
      */
     private void constructFigs() {
-        // this rectangle marks the operation section; all operations
-        // are inside it
-        Rectangle bounds = new Rectangle(DEFAULT_COMPARTMENT_BOUNDS);
-        // 2nd compartment, so adjust Y appropriately
-        bounds.y = DEFAULT_COMPARTMENT_BOUNDS.y + ROWHEIGHT + 1;
-        operationsFig = new FigOperationsCompartment(bounds, getSettings());
-
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
@@ -113,6 +109,15 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         getBigPort().setFillColor(Color.white);
     }
 
+    private Rectangle getDefaultBounds() {
+        // this rectangle marks the operation section; all operations
+        // are inside it
+        Rectangle bounds = new Rectangle(DEFAULT_COMPARTMENT_BOUNDS);
+        // 2nd compartment, so adjust Y appropriately
+        bounds.y = DEFAULT_COMPARTMENT_BOUNDS.y + ROWHEIGHT + 1;
+        return bounds;
+    }
+
     /**
      * Construct a Fig with owner, bounds, and settings.
      * 
@@ -123,6 +128,8 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     public FigClassifierBox(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
+        operationsFig = new FigOperationsCompartment(owner, getDefaultBounds(),
+                getSettings());
         constructFigs();
     }
 

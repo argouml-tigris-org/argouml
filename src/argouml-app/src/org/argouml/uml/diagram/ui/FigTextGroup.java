@@ -45,7 +45,7 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
 
     /**
      * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigTextGroup(DiagramSettings)}.
+     *             {@link #FigTextGroup(Object, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -56,10 +56,11 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
     /**
      * Construct a FigGroup with the given render settings.
      * 
+     * @param owner owning UML element
      * @param settings rendering settigns
      */
-    public FigTextGroup(DiagramSettings settings) {
-        super(settings);
+    public FigTextGroup(Object owner, DiagramSettings settings) {
+        super(owner, settings);
     }
     
     /**

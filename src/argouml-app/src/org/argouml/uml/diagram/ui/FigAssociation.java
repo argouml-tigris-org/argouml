@@ -157,7 +157,7 @@ public class FigAssociation extends FigEdgeModelElement {
     public FigAssociation(Object owner, DiagramSettings settings) {
         super(owner, settings);
 
-        middleGroup = new FigTextGroup(settings);
+        middleGroup = new FigTextGroup(owner, settings);
 
         // let's use groups to construct the different text sections at
         // the association

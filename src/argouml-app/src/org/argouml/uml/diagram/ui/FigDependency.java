@@ -115,7 +115,7 @@ public class FigDependency extends FigEdgeModelElement {
      */
     public FigDependency(Object owner, DiagramSettings settings) {
         super(owner, settings);
-        middleGroup = new FigTextGroup(settings);
+        middleGroup = new FigTextGroup(owner, settings);
         constructFigs();
     }
     

@@ -51,7 +51,7 @@ public class FigAssociationRole extends FigAssociation {
      */
     private static final long serialVersionUID = -6543020797101620194L;
     
-    private FigMessageGroup messages = new FigMessageGroup();
+    private FigMessageGroup messages;
 
     /**
      * Main Constructor
@@ -63,6 +63,7 @@ public class FigAssociationRole extends FigAssociation {
     @Deprecated
     public FigAssociationRole() {
         super();
+        messages = new FigMessageGroup();
         addPathItem(messages, new PathConvPercent(this, 50, 10));
     }
 
@@ -91,6 +92,8 @@ public class FigAssociationRole extends FigAssociation {
      */
     public FigAssociationRole(Object owner, DiagramSettings settings) {
         super(owner, settings);
+        messages = new FigMessageGroup(owner, settings);
+        addPathItem(messages, new PathConvPercent(this, 50, 10));
     }
     
     /*
@@ -119,7 +122,7 @@ class FigMessageGroup extends ArgoFigGroup {
     /**
      * Constructor for FigMessageGroup.
      * @deprecate for 0.27.3 by tfmorris. Use
-     *            {@link #FigMessageGroup(DiagramSettings)}.
+     *            {@link #FigMessageGroup(Object, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -132,7 +135,7 @@ class FigMessageGroup extends ArgoFigGroup {
      * 
      * @param figs
       * @deprecate for 0.27.3 by tfmorris. Use
-     *            {@link #FigMessageGroup(DiagramSettings)}.
+     *            {@link #FigMessageGroup(Object, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -140,8 +143,8 @@ class FigMessageGroup extends ArgoFigGroup {
         super(figs);
     }
     
-    public FigMessageGroup(DiagramSettings settings) {
-        super(settings);
+    public FigMessageGroup(Object owner, DiagramSettings settings) {
+        super(owner, settings);
     }
 
     private void updateFigPositions() {

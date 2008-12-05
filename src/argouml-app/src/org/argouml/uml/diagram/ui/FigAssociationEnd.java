@@ -141,7 +141,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      */
     public FigAssociationEnd(Object edge, DiagramSettings settings) {
         super(edge, settings);
-        srcGroup = new FigTextGroup(settings);
+        srcGroup = new FigTextGroup(edge, settings);
         srcMult = new ArgoFigText(edge, new Rectangle(X0, Y0, 90, 20), 
                 settings, false);
         srcOrdering = new ArgoFigText(edge, new Rectangle(X0, Y0, 90, 20), 

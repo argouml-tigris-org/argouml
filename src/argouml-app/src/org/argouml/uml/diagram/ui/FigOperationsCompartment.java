@@ -66,12 +66,13 @@ public class FigOperationsCompartment extends FigEditableCompartment {
     /**
      * Constructor for an Operations compartment.
      * 
+     * @param owner owning UML element
      * @param bounds position and size
      * @param settings render settings
      */
-    public FigOperationsCompartment(Rectangle bounds, 
+    public FigOperationsCompartment(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
-        super(bounds, settings);
+        super(owner, bounds, settings);
     }
 
     /*

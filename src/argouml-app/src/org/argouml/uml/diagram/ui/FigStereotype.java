@@ -80,18 +80,22 @@ public class FigStereotype extends CompartmentFigText {
     }
 
     /**
-     * Construct a Stereotype fig.
+     * Construct a fig for a Stereotype or a keyword (which visually resembles a
+     * stereotype).
      * 
-     * @param owner owning UML element
+     * @param owner owning UML element or null if this fig is being used for a
+     *            keyword.
      * @param bounds position and size
      * @param settings render settings
      */
     public FigStereotype(Object owner, Rectangle bounds,
             DiagramSettings settings) {
-        
-        super(owner, bounds, settings, "name");
-        
+        super(owner, bounds, settings, 
+                owner != null ? new String[] {"name"} : (String[]) null);
         initialize();
+        if (owner != null) {
+            setText();
+        }
     }
      
     @Override
@@ -105,7 +109,11 @@ public class FigStereotype extends CompartmentFigText {
     }
     
     protected void setText() {
-        setText(Model.getFacade().getName(getOwner()));
+        if (getOwner() != null) {
+            setText(Model.getFacade().getName(getOwner()));
+        } else {
+            setText("");
+        }
     }
     
     /**

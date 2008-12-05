@@ -48,7 +48,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
      * @param w width
      * @param h height
      * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigCompartment(Rectangle, DiagramSettings)}.
+     * {@link #FigCompartment(Object, Rectangle, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -70,11 +70,12 @@ public abstract class FigCompartment extends ArgoFigGroup {
     /**
      * Construct a new FigCompartment.
      * 
+     * @param owner owning UML element
      * @param bounds rectangle describing bounds of compartment
      * @param settings render settings
      */
-    public FigCompartment(Rectangle bounds, DiagramSettings settings) {
-        super(settings);
+    public FigCompartment(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, settings);
         constructFigs(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
@@ -139,4 +140,5 @@ public abstract class FigCompartment extends ArgoFigGroup {
      * Create a new model element for the compartment.
      */
     protected abstract void createModelElement();
+    
 }

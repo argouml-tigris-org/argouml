@@ -52,7 +52,7 @@ public class FigAttributesCompartment extends FigEditableCompartment {
      * @param w width
      * @param h height
      * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigAttributesCompartment(Rectangle, DiagramSettings)}.
+     * {@link #FigAttributesCompartment(Object, Rectangle, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -63,12 +63,13 @@ public class FigAttributesCompartment extends FigEditableCompartment {
     /**
      * Constructor.
      * 
+     * @param owner owning UML element
      * @param bounds bounding rectangle
      * @param settings render settings
      */
-    public FigAttributesCompartment(Rectangle bounds, 
+    public FigAttributesCompartment(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
-        super(bounds, settings);
+        super(owner, bounds, settings);
     }
     
     /*

@@ -65,12 +65,13 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
     /**
      * Constructor.
      * 
+     * @param owner owning UML element
      * @param bounds bounding rectangle
      * @param settings render settings
      */
-    public FigEnumLiteralsCompartment(Rectangle bounds, 
+    public FigEnumLiteralsCompartment(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
-        super(bounds, settings);
+        super(owner, bounds, settings);
     }
     
     /*

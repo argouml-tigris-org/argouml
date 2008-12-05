@@ -48,20 +48,23 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
     /**
      * Default constructor.
      * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #ArgoFigGroup(DiagramSettings)}.
+     * {@link #ArgoFigGroup(Object, DiagramSettings)}.
      */
     @Deprecated
     public ArgoFigGroup() {
         super();
     }
 
+
     /**
      * Construct an empty FigGroup with the given DiagramSettings.
      * object.
+     * @param owner owning UML element
      * @param renderSettings render settings to use
      */
-    public ArgoFigGroup(DiagramSettings renderSettings) {
+    public ArgoFigGroup(Object owner, DiagramSettings renderSettings) {
         super();
+        super.setOwner(owner);
         settings = renderSettings;
     }
     
@@ -77,17 +80,6 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
         super(arg0);
     }
 
-    /**
-     * Construct a FigGroup with the given list of Figs and DiagramSettings
-     * object.
-     * 
-     * @param figs the Figs that make up the Group
-     * @param renderSettings render settings to use
-     */
-    public ArgoFigGroup(List<ArgoFig> figs, DiagramSettings renderSettings) {
-        super(figs);
-        settings = renderSettings;
-    }
     
     /**
      * This optional method is not implemented.  It will throw an
@@ -143,6 +135,19 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
     public void setSettings(DiagramSettings renderSettings) {
         settings = renderSettings;
         renderingChanged();
+    }
+    
+    /**
+     * Setting the owner of the Fig must be done in the constructor and
+     * not changed aftewards for all ArgoUML figs.
+     * 
+     * @param owner owning UML element
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     * @deprecated for 0.27.3 by tfmorris.  Set owner in constructor.
+     */
+    @Deprecated
+    public void setOwner(Object owner) {
+        super.setOwner(owner);
     }
 
 }

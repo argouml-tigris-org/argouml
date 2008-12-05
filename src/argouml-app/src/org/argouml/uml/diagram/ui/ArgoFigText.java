@@ -102,8 +102,12 @@ public class ArgoFigText extends FigText
         settings = renderSettings;
         setFontFamily(settings.getFontName());
         setFontSize(settings.getFontSize());
-        super.setOwner(owner);
-        Model.getPump().addModelEventListener(this, owner, "remove");
+        // Certain types of fixed text (e.g. a FigStereotype with a keyword)
+        // may not have an owner
+        if (owner != null) {
+            super.setOwner(owner);
+            Model.getPump().addModelEventListener(this, owner, "remove");
+        }
     }
     
     /*
@@ -225,7 +229,6 @@ public class ArgoFigText extends FigText
     @Deprecated
     public void setOwner(Object own) {
         super.setOwner(own);
-        updateListeners(null, own);
     }
     
     /**

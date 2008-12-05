@@ -239,7 +239,9 @@ public class FigSingleLineText extends ArgoFigText
     }
 
     private void addModelListener() {
-        Model.getPump().addModelEventListener(this, getOwner(), properties);
+        if (properties != null && getOwner() != null) {
+            Model.getPump().addModelEventListener(this, getOwner(), properties);
+        }
     }
     
     @Override
