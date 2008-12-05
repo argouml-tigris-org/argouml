@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
@@ -40,6 +41,8 @@ import org.tigris.gef.presentation.FigGroup;
  */
 public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
 
+    private static final Logger LOG = Logger.getLogger(ArgoFigGroup.class);
+    
     private DiagramSettings settings;
     
     /**
@@ -118,6 +121,8 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
         for (Fig fig : (List<Fig>) getFigs()) {
             if (fig instanceof ArgoFig) {
                 ((ArgoFig) fig).renderingChanged();
+            } else {
+                LOG.debug("Found non-Argo fig nested");
             }
         }
     }
