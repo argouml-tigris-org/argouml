@@ -383,10 +383,8 @@ public abstract class FigNodeModelElement
                     + element.getClass().getName());
         }
         super.setOwner(element);
-        nameFig.setOwner(element); // for setting abstract
         nameFig.setText(placeString());
-        stereotypeFig.setOwner(element);
-
+        
         notationProviderName =
             NotationProviderFactory2.getInstance().getNotationProvider(
                     getNotationProviderType(), element, this);
