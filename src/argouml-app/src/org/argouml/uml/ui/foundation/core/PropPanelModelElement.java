@@ -73,7 +73,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     private JScrollPane elementResidenceScroll;
 
     private JTextField nameTextField;
-
+    
     private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel =
 	new UMLModelElementNamespaceComboBoxModel();
 
@@ -96,6 +96,16 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     private static UMLModelElementTargetFlowListModel targetFlowListModel =
 	new UMLModelElementTargetFlowListModel();
+
+//    private JScrollPane templateParameterScroll;
+//    
+//    private UMLModelElementTemplateParameterListModel templateParameterListModel
+//        = new UMLModelElementTemplateParameterListModel();
+//    
+//    private UMLModelElementTemplateBindingComboBoxModel 
+//    templateBindingComboBoxModel;
+//
+//    private JComboBox templateBindingSelector;
 
 
     /**
@@ -329,4 +339,42 @@ public abstract class PropPanelModelElement extends PropPanel {
         return nameDocument;
     }
 
+    /**
+     * @return a scrollpane for template parameters
+     */
+//    protected JComponent getTemplateParameterScroll() {
+//        if (templateParameterScroll == null) {
+//
+//            templateParameterScroll = new ScrollList(
+//                    templateParameterListModel, false, false);
+//
+//            // TODO: Use some kind of list to allow user to select type for
+//            // new parameters to be added
+////            JList list = new UMLMutableLinkedList(
+////                    templateParameterListModel,
+////                    new ActionAddClientDependencyAction(),
+////                    null,
+////                    null,
+////                    true);
+////            templateParameterScroll = new JScrollPane(list);
+//        }
+//        return templateParameterScroll;
+//    }
+    
+    /**
+     * Returns the template selector. This is a component which allows the
+     * user to select a single item as the template to be used.
+     *
+     * @return a component for selecting the template binding
+     */
+//    protected JComponent getTemplateBindingSelector() {
+//        if (templateBindingSelector == null) {
+//            templateBindingSelector = new UMLSearchableComboBox(
+//                    templateBindingComboBoxModel,
+//                    new ActionSetModelElementTemplateBinding(), true);
+//        }
+//        return new UMLComboBoxNavigator(
+//                Translator.localize("label.namespace.navigate.tooltip"),
+//                templateBindingSelector);
+//    }
 }
