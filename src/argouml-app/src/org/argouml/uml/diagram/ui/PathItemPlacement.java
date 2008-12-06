@@ -420,10 +420,10 @@ public class PathItemPlacement extends PathConv {
 
     /**
      * Set distance along displacement vector to place the figure.
-     * @param newOffset distance in units of the drawing coordinate system
+     * @param newDistance distance in units of the drawing coordinate system
      */
-    public void setDisplacementDistance(int newOffset) {
-        vectorOffset = newOffset;
+    public void setDisplacementDistance(int newDistance) {
+        vectorOffset = newDistance;
         useAngle = true;
     }
     
