@@ -58,12 +58,13 @@ public class ActionBooleanTaggedValue extends UndoableAction {
         tagName = theTagName;
     }
 
-    /*
+    /**
      * set the taggedvalue according to the condition of the checkbox. The
      * taggedvalue will be created if not existing.
      *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (!(e.getSource() instanceof UMLCheckBox2)) {
