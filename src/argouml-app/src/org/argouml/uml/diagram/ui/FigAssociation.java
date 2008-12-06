@@ -130,20 +130,30 @@ public class FigAssociation extends FigEdgeModelElement {
                 new PathItemPlacement(this, srcMult, 0, 5, 135, 5));
         markPosition(0, 5, 135, 5, Color.green);
         
+        //////////////////////////////////////////////////////////////////
+        // NOTE: If this needs to be updated during the deprecation period
+        // also update the constructor below
+        //////////////////////////////////////////////////////////////////
+        
         srcGroup = new FigAssociationEndAnnotation(this);
         addPathItem(srcGroup, 
                 new PathItemPlacement(this, srcGroup, 0, 5, -135, 5));
-        markPosition(0, 5, -135, 15, Color.blue);
+        markPosition(0, 5, -135, 5, Color.blue);
 
         destMult = new FigMultiplicity();
         addPathItem(destMult,
                 new PathItemPlacement(this, destMult, 100, -5, 45, 5));
         markPosition(100, -5, 45, 5, Color.red);
         
+        //////////////////////////////////////////////////////////////////
+        // NOTE: If this needs to be updated during the deprecation period
+        // also update the constructor below
+        //////////////////////////////////////////////////////////////////
+                
         destGroup = new FigAssociationEndAnnotation(this);
         addPathItem(destGroup,
                 new PathItemPlacement(this, destGroup, 100, -5, -45, 5));
-        markPosition(100, -5, -45, 15, Color.orange);
+        markPosition(100, -5, -45, 5, Color.orange);
                 
         setBetweenNearestPoints(true);
     }
@@ -179,8 +189,8 @@ public class FigAssociation extends FigEdgeModelElement {
         
         srcGroup = new FigAssociationEndAnnotation(this, ends[0], settings);
         addPathItem(srcGroup, 
-                new PathItemPlacement(this, srcGroup, 0, 5, -135, 15));
-        markPosition(0, 5, -135, 15, Color.blue);
+                new PathItemPlacement(this, srcGroup, 0, 5, -135, 5));
+        markPosition(0, 5, -135, 5, Color.blue);
 
         destMult = new FigMultiplicity(ends[1], settings);
         addPathItem(destMult,
@@ -189,8 +199,8 @@ public class FigAssociation extends FigEdgeModelElement {
         
         destGroup = new FigAssociationEndAnnotation(this, ends[1], settings);
         addPathItem(destGroup,
-                new PathItemPlacement(this, destGroup, 100, -5, -45, 15));
-        markPosition(100, -5, -45, 15, Color.orange);
+                new PathItemPlacement(this, destGroup, 100, -5, -45, 5));
+        markPosition(100, -5, -45, 5, Color.orange);
 
         setBetweenNearestPoints(true);
         
