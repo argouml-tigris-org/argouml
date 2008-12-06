@@ -606,8 +606,6 @@ public class PathItemPlacement extends PathConv {
      * Finds the intersection point between the border of a Rectangle r and 
      * a line drawn between two Points pOut (outside the rectangle) and pIn 
      * (inside the rectangle).
-     * Actually, we just do a cheat and find the midpoint of the edge which
-     * the the line crosses.
      * If the pIn is not inside the rectangle, or if any other problem occurs,
      * pIn is returned. 
      * @param r Rectangle to find the intersection of.
@@ -620,24 +618,46 @@ public class PathItemPlacement extends PathConv {
         m = new Line2D.Double(pOut, pIn);
         n = new Line2D.Double(r.x, r.y, r.x + r.width, r.y);
         if (m.intersectsLine(n)) {
-            return new Point(r.x + r.width / 2, r.y);
+            return intersection(m, n);
         }
         n = new Line2D.Double(r.x + r.width, r.y, r.x + r.width, 
                 r.y + r.height);
         if (m.intersectsLine(n)) {
-            return new Point(r.x + r.width, r.y + r.height / 2);
+            return intersection(m, n);
         }
         n = new Line2D.Double(r.x, r.y + r.height, r.x + r.width, 
                 r.y + r.height);
         if (m.intersectsLine(n)) {
-            return new Point(r.x + r.width / 2, r.y + r.height);
+            return intersection(m, n);
         }
         n = new Line2D.Double(r.x, r.y, r.x, r.y + r.width);
         if (m.intersectsLine(n)) {
-            return new Point(r.x, r.y + r.height / 2);
+            return intersection(m, n);
         }
         // Should never get here.  If we do, return the inner point.
         LOG.warn("Could not find rectangle intersection, using inner point.");
         return pIn;
+    }
+    
+    /**
+     * Finds the intersection point of two lines.
+     * It is surprising that this method isn't already available in the base 
+     * Line2D class of Java.  If a stock method exists or is implemented in
+     * future, feel free replace this code with it.
+     * @param m First line.
+     * @param n Second line.
+     * @return Intersection point of first and second line.
+     */
+    private Point intersection(Line2D m, Line2D n) {
+        double d = (n.getY2() - n.getY1()) * (m.getX2() - m.getX1()) 
+                - (n.getX2() - n.getX1()) * (m.getY2() - m.getY1());
+        double a = (n.getX2() - n.getX1()) * (m.getY1() - n.getY1()) 
+                - (n.getY2() - n.getY1()) * (m.getX1() - n.getX1());
+        
+        double as = a / d;
+        
+        double x = m.getX1() + as * (m.getX2() - m.getX1());
+        double y = m.getY1() + as * (m.getY2() - m.getY1());
+        return new Point((int) x, (int) y);
     }
 }
