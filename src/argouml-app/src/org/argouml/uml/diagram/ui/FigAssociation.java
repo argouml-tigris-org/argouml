@@ -48,6 +48,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
@@ -657,9 +659,10 @@ class FigMultiplicity extends FigSingleLineText
             multiplicityNotationProvider.cleanListener(this, own);
         }
         if (Model.getFacade().isAModelElement(own)) {
+            NotationName notation = Notation.findNotation(getSettings().getNotationLanguage());
             multiplicityNotationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_MULTIPLICITY, own, this);
+                        NotationProviderFactory2.TYPE_MULTIPLICITY, own, this, notation);
             boolean value = getSettings().isShowSingularMultiplicities();
             npArguments.put("singularMultiplicityVisible", value);
         }
