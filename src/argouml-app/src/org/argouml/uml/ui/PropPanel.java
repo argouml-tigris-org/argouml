@@ -66,9 +66,7 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.GridLayout2;
-import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Orientation;
-import org.tigris.swidgets.Vertical;
 import org.tigris.toolbar.ToolBarFactory;
 
 /**
@@ -126,19 +124,11 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
      * <p>
      * @param icon The icon to display for the panel
      * @param label The label for the title of the panel (to be localized).
-     * @param orientation the orientation
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanel(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
      */
-    @Deprecated
-    public PropPanel(String label, ImageIcon icon, Orientation orientation) {
+    public PropPanel(String label, ImageIcon icon) {
         super(Translator.localize(label));
-        
-        setOrientation(orientation);
-        
-        LabelledLayout layout =
-            new LabelledLayout(orientation == Vertical.getInstance());
+
+        LabelledLayout layout = new LabelledLayout();
         layout.setHgap(5);
         setLayout(layout);
 
@@ -155,31 +145,6 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         addComponentListener(this);
     }
 
-    /**
-     * Constructs a new Proppanel without an icon. If there is an icon it's
-     * updated at runtime via settarget.
-     * <p>
-     * @param label The label for the title of the PropPanel (to be localized).
-     * @param orientation the orientation
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanel(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanel(String label, Orientation orientation) {
-        this(label, (ImageIcon) null, orientation);
-    }
-    
-    /**
-     * Constructs a new Proppanel with default orientation.<p>
-     *
-     * @param label
-     *            The label for the title of the PropPanel (to be localized).
-     * @param icon icon to use for panel
-     */
-    public PropPanel(String label, ImageIcon icon) {
-        this(label, icon, Horizontal.getInstance());
-    }
 
     /*
      * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)

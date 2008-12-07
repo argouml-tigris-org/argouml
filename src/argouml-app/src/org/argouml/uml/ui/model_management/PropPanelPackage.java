@@ -57,7 +57,6 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.argouml.util.ArgoFrame;
 import org.tigris.gef.undo.UndoableAction;
-import org.tigris.swidgets.Orientation;
 
 
 /**
@@ -99,23 +98,6 @@ public class PropPanelPackage extends PropPanelNamespace  {
         placeElements();
     }
     
-    /**
-     * Construct a property panel for UML Packages with the given parameters.
-     * 
-     * @param title the title for this panel
-     * @param orientation the orientation
-     * @param icon the icon to show next to the title
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelPackage(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelPackage(String title, ImageIcon icon,
-            Orientation orientation) {
-        super(title, icon);
-        setOrientation(orientation);
-        placeElements();
-    }
 
     /**
      * Via this method, the GUI elements are added to the proppanel. Subclasses

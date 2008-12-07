@@ -32,7 +32,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for a Dependency.
@@ -80,20 +79,6 @@ public class PropPanelDependency extends PropPanelRelationship {
         addAction(new ActionNewStereotype());
         addAction(getDeleteAction());
     }
-
-    /**
-     * Constructor that should be used by subclasses to initialize the
-     * attributes a dependency has.
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelDependency(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    protected PropPanelDependency(String name, Orientation orientation) {
-        this(name, lookupIcon(name));
-        setOrientation(orientation);
-    }
-    
 
     /**
      * Constructor that should be used by subclasses to initialize the

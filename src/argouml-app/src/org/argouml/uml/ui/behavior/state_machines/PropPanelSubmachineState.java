@@ -45,27 +45,6 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
      */
     private static final long serialVersionUID = 2384673708664550264L;
 
-    /**
-     * Construct a property panel for SubmachineState elements with the given
-     * params.
-     *
-     * @param name
-     *            the name of the properties panel
-     * @param icon
-     *            the icon to be shown next to the name
-     * @param orientation
-     *            the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelSubmachineState(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelSubmachineState(final String name, final ImageIcon icon,
-            final Orientation orientation) {
-        super(name, icon);
-        setOrientation(orientation);
-        initialize();
-    }
 
     /**
      * Construct a property panel for SubmachineState elements with the given

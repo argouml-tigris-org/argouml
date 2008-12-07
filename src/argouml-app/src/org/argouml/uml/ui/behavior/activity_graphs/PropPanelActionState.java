@@ -28,7 +28,6 @@ import javax.swing.ImageIcon;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
-import org.tigris.swidgets.Orientation;
 
 /**
  * User interface panel shown at the bottom of the screen that allows the user
@@ -48,22 +47,6 @@ public class PropPanelActionState extends AbstractPropPanelState {
         this("label.action-state", lookupIcon("ActionState"));
     }
 
-    /**
-     * Construct a property panel for an Action State with the given params.
-     *
-     * @param name the name of the properties panel
-     * @param icon the icon to be shown next to the name
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelActionState(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelActionState(String name, ImageIcon icon,
-            Orientation orientation) {
-        this(name, icon);
-        setOrientation(orientation);
-    }
     
     /**
      * Construct a property panel for an Action State with the given params.
