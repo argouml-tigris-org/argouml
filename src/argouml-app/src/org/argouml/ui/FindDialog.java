@@ -306,27 +306,6 @@ public class FindDialog extends ArgoDialog
         help.add(new JScrollPane(helpText), BorderLayout.CENTER);
     }
 
-    /**
-     * Init the tab with the tagged values.
-     */
-    private void initTagValsTab() {
-        //TODO: This tab does not work currently.
-    }
-
-    /**
-     * Init the Last Modified tab.
-     */
-    private void initModifiedTab() {
-        // TODO: This tab does not work currently.
-    }
-
-    /**
-     * Init the Constraints tab.
-     */
-    private void initConstraintsTab() {
-        // TODO: This tab does not work currently.
-    }
-
 
     /**
      * Init the modelelement types that we can look for.
@@ -551,8 +530,9 @@ public class FindDialog extends ArgoDialog
     }
 
     /**
-     * Reset the user interface to its initial state.  Use this if a new project
-     * has been loaded and the Find dialog is being displayed with stale results.
+     * Reset the user interface to its initial state. Use this if a new project
+     * has been loaded and the Find dialog is being displayed with stale
+     * results.
      */
     public void reset() {
         doClearTabs();
@@ -561,12 +541,8 @@ public class FindDialog extends ArgoDialog
     
     /**
      * Clear the tabs.
-     * 
-     * @deprecated for 0.25.4 by tfmorris. The visibility of this will be
-     *             reduced in the future. Use {@link #reset()}.
      */
-    @Deprecated
-    public void doClearTabs() {
+    private void doClearTabs() {
         int numTabs = resultTabs.size();
         for (int i = 0; i < numTabs; i++) {
             results.remove(resultTabs.get(i));
@@ -584,11 +560,8 @@ public class FindDialog extends ArgoDialog
      * 
      * @param complete if true, reset all 3 fields (element name, diagram name,
      *                and location), otherwise only the last is reset.
-     * @deprecated for 0.25.4 by tfmorris. The visibility of this will be
-     *             reduced in the future. Use {@link #reset()}.
      */
-    @Deprecated
-    public void doResetFields(boolean complete) {
+    private void doResetFields(boolean complete) {
         if (complete) {
             elementName.removeAllItems();
             diagramName.removeAllItems();
@@ -598,17 +571,6 @@ public class FindDialog extends ArgoDialog
         location.removeAllItems();
         location.addItem(
                 Translator.localize("dialog.find.comboboxitem.entire-project"));
-    }
-
-    /**
-     * Reset all 3 fields.
-     * 
-     * @deprecated for 0.25.4 by tfmorris. The visibility of this will be
-     *             reduced in the future. Use {@link #reset()}.
-     */
-    @Deprecated
-    public void doResetFields() {
-        doResetFields(true);
     }
 
     /**
