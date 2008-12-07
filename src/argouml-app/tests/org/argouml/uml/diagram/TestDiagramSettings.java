@@ -205,7 +205,7 @@ public class TestDiagramSettings extends TestCase {
     
     public void testNotationLanguage() {
         assertEquals("NotationLanguage default is not correct",
-                "UML", settings.getNotationLanguage());
+                "UML 1.4", settings.getNotationLanguage());
         
     }
     
