@@ -762,19 +762,6 @@ public interface Facade {
     boolean isAPartition(Object handle);
 
     /**
-     * Recognizer for Permission.
-     * 
-     * @param handle
-     *                candidate
-     * @return true if handle is an Permission
-     * @deprecated for 0.25.4 by tfmorris. Removed from UML 2.x. Use
-     *             {@link #isAPackageImport(Object)}.
-     * 
-     */
-    @Deprecated
-    boolean isAPermission(Object handle);
-
-    /**
      * Recognizer for PackageImport (was Permission in UML 1.x).
      * 
      * @param handle
@@ -1460,17 +1447,6 @@ public interface Facade {
     @Deprecated
     Object getChangeability(Object handle);
 
-    /**
-     * Get the child of a generalization.
-     * 
-     * @param handle
-     *            generalization.
-     * @return the child.
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSpecific(Object)}
-     *             which matches the UML 2.x terminology.
-     */
-    @Deprecated
-    Object getChild(Object handle);
 
     /**
      * Get the specific end of a generalization. This was getChild() in UML 1.x.
@@ -1946,18 +1922,6 @@ public interface Facade {
     Object getMultiplicity(Object handle);
 
     /**
-     * Get the Ranges from a Multiplicity.
-     * 
-     * @param handle
-     *            multiplicity to retrieve from.
-     * @return iterator containing ranges
-     * @deprecated for 0.25.4 by tfmorris. Multiplicities in UML 2.x only have a
-     *             single range.
-     */
-    @Deprecated
-    Iterator getRanges(Object handle);
-
-    /**
      * Get the Comments which annotate a ModelElement.
      *
      * @param handle the ModelElement that we are getting the comments of
@@ -2358,19 +2322,6 @@ public interface Facade {
     Collection getOwnedElements(Object handle);
 
     /**
-     * Get the owner scope of a feature.
-     * 
-     * @param handle
-     *            feature
-     * @return owner scope
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #isStatic(Object)}. The
-     *             ScopeKind with only two enumerated values has been replaced
-     *             by a boolean in UML 2.x.
-     */
-    @Deprecated
-    Object getOwnerScope(Object handle);
-
-    /**
      * Get the powertype of a generalization.
      *
      * @param handle generalization
@@ -2462,17 +2413,6 @@ public interface Facade {
      */
     List getParametersList(Object handle);
 
-    /**
-     * Get the parent of a generalization.
-     * 
-     * @param handle
-     *            generalization.
-     * @return the parent.
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getGeneral(Object)} which
-     *             matches the UML 2.x terminology.
-     */
-    @Deprecated
-    Object getParent(Object handle);
 
     /**
      * Get the general end of a generalization. This was getParent in UML 1.x.

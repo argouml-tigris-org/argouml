@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.argouml.model.Facade;
-import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -339,11 +338,6 @@ class FacadeEUMLImpl implements Facade {
         return ((StructuralFeature) handle).isReadOnly() ? modelImpl
                 .getChangeableKind().getFrozen() : modelImpl
                 .getChangeableKind().getChangeable();
-    }
-
-    @SuppressWarnings("deprecation")
-    public Object getChild(Object handle) {
-        return getSpecific(handle);
     }
 
     public Object getSpecific(Object handle) {
@@ -940,14 +934,6 @@ class FacadeEUMLImpl implements Facade {
         return ((Element) handle).getOwner();
     }
 
-    @SuppressWarnings("deprecation")
-    public Object getOwnerScope(Object handle) {
-        // Removed from UML 2.x and deprecated in Model API
-        // so we won't implement it
-//        throw new NotImplementedException();
-        return null;
-    }
-
     public Namespace getPackage(Object handle) {
         if (!(handle instanceof ElementImport)) {
             throw new IllegalArgumentException();
@@ -977,14 +963,6 @@ class FacadeEUMLImpl implements Facade {
         }
         // TODO: implement remaining supported types
         throw new NotYetImplementedException();
-    }
-
-    @SuppressWarnings("deprecation")
-    public Classifier getParent(Object handle) {
-        if (!(handle instanceof Generalization)) {
-            throw new IllegalArgumentException();
-        }
-        return ((Generalization) handle).getGeneral();
     }
 
     public Classifier getGeneral(Object handle) {
@@ -1019,11 +997,6 @@ class FacadeEUMLImpl implements Facade {
 
     public Collection getRaisedSignals(Object handle) {
         throw new NotYetImplementedException();
-    }
-
-    public Iterator getRanges(Object handle) {
-        // Multiplicities only have a single range in UML 2.x
-        throw new NotImplementedException();
     }
 
     public Collection getReceivedMessages(Object handle) {
@@ -1120,7 +1093,8 @@ class FacadeEUMLImpl implements Facade {
         if (!(handle instanceof Classifier)) {
             throw new IllegalArgumentException();
         }
-        return ((Classifier) handle).getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION);
+        return ((Classifier) handle).getTargetDirectedRelationships(
+                UMLPackage.Literals.GENERALIZATION);
     }
 
     public String getSpecification(Object handle) {
@@ -1749,19 +1723,9 @@ class FacadeEUMLImpl implements Facade {
     public boolean isAPartition(Object handle) {
         return handle instanceof ActivityPartition;
     }
-
-    @SuppressWarnings("deprecation")
-    public boolean isAPermission(Object handle) {
-        return handle instanceof PackageImport;
-    }
     
     public boolean isAPackageImport(Object handle) {
         return handle instanceof PackageImport;
-    }
-    
-    @SuppressWarnings("deprecation")
-    public boolean isAPrimitive(Object handle) {
-        return isAPrimitiveType(handle);
     }
 
     public boolean isAPrimitiveType(Object handle) {

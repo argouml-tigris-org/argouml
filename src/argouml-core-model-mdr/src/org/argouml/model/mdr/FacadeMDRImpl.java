@@ -559,11 +559,6 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof Partition;
     }
 
-    @SuppressWarnings("deprecation")
-    public boolean isAPermission(Object handle) {
-        return handle instanceof Permission;
-    }
-
     public boolean isAPackageImport(Object handle) {
         return handle instanceof Permission;
     }
@@ -1340,13 +1335,6 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    
-    @SuppressWarnings("deprecation")
-    public Object getChild(Object handle) {
-        return getSpecific(handle);
-    }
-
-
     public Object getSpecific(Object handle) {
         try {
             if (handle instanceof Generalization) {
@@ -2113,21 +2101,6 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentObject(handle);
     }
 
-
-    @SuppressWarnings("deprecation")
-    public Iterator getRanges(Object handle) {
-        try {
-            if (handle instanceof Multiplicity) {
-                Collection c = ((Multiplicity) handle).getRange();
-                return c.iterator();
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-        throw new IllegalArgumentException("handle: " + handle);
-    }
-
-
     public Collection<Comment> getComments(Object handle) {
         try {
             if (handle instanceof ModelElement) {
@@ -2830,19 +2803,6 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-
-    @SuppressWarnings("deprecation")
-    public Object getOwnerScope(Object handle) {
-        try {
-            if (handle instanceof Feature) {
-                return ((Feature) handle).getOwnerScope();
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-        return illegalArgumentObject(handle);
-    }
-    
     
     public boolean isStatic(Object handle) {
         try {
@@ -2988,11 +2948,6 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentList(handle);
     }
 
-
-    @SuppressWarnings("deprecation")
-    public Object getParent(Object handle) {
-        return getGeneral(handle);
-    }
     
     public Object getGeneral(Object handle) {
         try {

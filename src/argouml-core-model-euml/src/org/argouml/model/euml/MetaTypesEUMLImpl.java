@@ -412,11 +412,6 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         return ActivityPartition.class;
     }
 
-    @SuppressWarnings("deprecation")
-    public Object getPermission() {
-        return PackageImport.class;
-    }
-
     public Object getPackageImport() {
         return PackageImport.class;
     }
