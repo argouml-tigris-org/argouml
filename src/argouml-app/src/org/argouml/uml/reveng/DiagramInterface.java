@@ -123,17 +123,6 @@ public class DiagramInterface {
         }
     }
     
-    /**
-     * Get the list of modified diagrams.
-     * 
-     * @return The list of modified diagrams.
-     * @deprecated for 0.25.4 by tfmorris. Use 
-     *             {@link #getModifiedDiagramList()}.
-     */
-    @Deprecated
-    public Vector<ArgoDiagram> getModifiedDiagrams() {
-	return new Vector<ArgoDiagram>(modifiedDiagrams);
-    }
 
     /**
      * Get the list of modified diagrams.
