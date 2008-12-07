@@ -192,7 +192,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             newEdge = lnkFig;
         } else if (Model.getFacade().isAGeneralization(edge)) {
             newEdge = new FigGeneralization(edge, settings);
-        } else if (Model.getFacade().isAPermission(edge)) {
+        } else if (Model.getFacade().isAPackageImport(edge)) {
             newEdge = new FigPermission(edge, settings);
         } else if (Model.getFacade().isAUsage(edge)) {
             newEdge = new FigUsage(edge, settings);
