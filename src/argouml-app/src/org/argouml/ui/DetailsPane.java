@@ -177,11 +177,9 @@ public class DetailsPane
 
     /**
      * Returns the JTabbedPane that contains all details panels.
-     * @deprecated by MVW, in V0.25.4. Will become package scope.
      * @return the JTabbedPane.
      */
-    @Deprecated
-    public JTabbedPane getTabs() {
+    JTabbedPane getTabs() {
         return topLevelTabbedPane;
     }
 
