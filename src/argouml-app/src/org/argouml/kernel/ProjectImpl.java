@@ -1065,15 +1065,17 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
     public void setProfileConfiguration(ProfileConfiguration pc) {
-        if (this.profileConfiguration != null) {
-            this.members.remove(this.profileConfiguration);         
-        }
-        
-        this.profileConfiguration = pc;
+        if (this.profileConfiguration != pc) {
+            if (this.profileConfiguration != null) {
+                this.members.remove(this.profileConfiguration);
+            }
 
-        // there's just one ProfileConfiguration in a project
-        // and there's no other way to add another one
-        members.add(pc);
+            this.profileConfiguration = pc;
+
+            // there's just one ProfileConfiguration in a project
+            // and there's no other way to add another one
+            members.add(pc);
+        }
         
         ProfileFacade.applyConfiguration(pc);
     }
