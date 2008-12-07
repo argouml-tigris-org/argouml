@@ -119,17 +119,6 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
      */
     private String xmiHeader;
 
-    /**
-     * Constructor for XMIReader.
-     * @param parentModelImplementation The ModelImplementation
-     * @param mp extent to read user models into.  Ignored.
-     * @deprecated for 0.26 by tfmorris.  Use 
-     * {@link #XmiReaderImpl(MDRModelImplementation)}.
-     */
-    XmiReaderImpl(MDRModelImplementation parentModelImplementation,
-            RefPackage mp) {
-        this(parentModelImplementation);
-    }
 
     /**
      * Constructor for XMIReader.

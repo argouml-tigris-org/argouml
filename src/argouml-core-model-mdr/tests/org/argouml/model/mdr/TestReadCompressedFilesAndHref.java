@@ -56,8 +56,7 @@ public class TestReadCompressedFilesAndHref extends
         File mdaIsHere = new File (ANDROMDA_HOME);
         if (mdaIsHere.exists()) {
             LOG.info("Begin testReadCompressedFileAndHref()");        
-            XmiReaderImpl reader = new XmiReaderImpl(modelImplementation,
-                    (RefPackage) modelImplementation.getMofPackage());
+            XmiReaderImpl reader = new XmiReaderImpl(modelImplementation);
             reader.addSearchPath(ANDROMDA_HOME + "/andromda/xml.zips");
             try {
                 reader.parse(
