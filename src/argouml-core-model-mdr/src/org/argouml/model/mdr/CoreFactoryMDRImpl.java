@@ -368,13 +368,18 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public Permission createPermission() {
+        return createPackageImport();
+    }
+
+    public Permission createPackageImport() {
         Permission myPermission = getCorePackage()
                 .getPermission().createPermission();
         super.initialize(myPermission);
         return myPermission;
     }
-
 
     public Primitive createPrimitiveType() {
         Primitive obj = getCorePackage().getPrimitive().createPrimitive();
@@ -890,7 +895,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     
     private Permission buildPermissionInternal(ModelElement client, 
             ModelElement supplier) {
-        Permission permission = createPermission();
+        Permission permission = createPackageImport();
         permission.getSupplier().add(supplier);
         permission.getClient().add(client);
         if (client instanceof Namespace) {

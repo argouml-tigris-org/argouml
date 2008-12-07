@@ -267,10 +267,21 @@ public interface CoreFactory extends Factory {
      * @return an initialized UML Permission instance.
      * TODO: This needs an extra parameter to specify the model/extent where
      * the new element should be created.
+     * @deprecated for 0.27.3 by tfmorris.  Renamed in UML 2.x to PackageImport.
+     * Use {@link #createPackageImport()}.
      */
+    @Deprecated
     Object createPermission();
     
-
+    /**
+     * Create an empty but initialized instance of a UML Permission.
+     *
+     * @return an initialized UML Permission instance.
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
+     */
+    Object createPackageImport();
+    
     /**
      * Create a UML PrimitiveType.
      * 
