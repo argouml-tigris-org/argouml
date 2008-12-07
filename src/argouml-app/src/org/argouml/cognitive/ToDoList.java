@@ -24,16 +24,14 @@
 
 package org.argouml.cognitive;
 
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Observable;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.event.EventListenerList;
 
@@ -324,15 +322,6 @@ public class ToDoList extends Observable implements Runnable {
         super.notifyObservers();
     }
 
-    /**
-     * @return the todo items
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getToDoItemList()}.
-     */
-    @Deprecated
-    public Vector<ToDoItem> getToDoItems() {
-        return new Vector<ToDoItem>(items);
-    }
-
 
     /**
      * Returns the List of the ToDoItems.  It is <em>mandatory</em> that
@@ -425,14 +414,6 @@ public class ToDoList extends Observable implements Runnable {
         }
     }
 
-    /**
-     * @return the decisions
-     * @deprecated by tfmorris for 0.25.4. Use {@link #getDecisionList()}.
-     */
-    @Deprecated
-    public static Vector getDecisions() {
-        return new Vector();
-    }
 
     /**
      * @return the list of Decisions (empty by default).
@@ -441,14 +422,6 @@ public class ToDoList extends Observable implements Runnable {
         return new ArrayList<Decision>();
     }
 
-    /**
-     * @return the goals
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getGoalList()}.
-     */
-    @Deprecated
-    public static Vector getGoals() {
-        return new Vector();
-    }
 
     /**
      * @return The list of Goals (empty by default).
@@ -610,16 +583,6 @@ public class ToDoList extends Observable implements Runnable {
         fireToDoItemsRemoved(oldItems);
     }
 
-    /**
-     * @param off the offender
-     * @return the todo items for this offender
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #elementListForOffender(Object)}.
-     */
-    @Deprecated
-    public Vector<ToDoItem> elementsForOffender(Object off) {
-        return new Vector<ToDoItem>(elementListForOffender(off));
-    }
 
     /**
      * @param offender the offender
@@ -649,25 +612,6 @@ public class ToDoList extends Observable implements Runnable {
      */
     public int size() {
         return items.size();
-    }
-
-    /**
-     * @return the todo items
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getToDoItemList()}.
-     */
-    @Deprecated
-    public Enumeration<ToDoItem> elements() {
-        return Collections.enumeration(items);
-    }
-
-    /**
-     * @param index an index into the todo items list
-     * @return the item at the index
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #get(int)}.
-     */
-    @Deprecated
-    public ToDoItem elementAt(int index) {
-        return get(index);
     }
 
     /**

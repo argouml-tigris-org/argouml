@@ -28,7 +28,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.Vector;
 
 /**
  * Models the designers goals in making this design.  Provides useful
@@ -52,17 +51,6 @@ public class GoalModel extends Observable implements Serializable {
 	addGoal(Goal.getUnspecifiedGoal());
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
-    /**
-     * @return the list of goals
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getGoalList()}.
-     */
-    @Deprecated
-    public Vector<Goal> getGoals() {
-        return new Vector<Goal>(goals);
-    }
 
     /**
      * @return the list of goals

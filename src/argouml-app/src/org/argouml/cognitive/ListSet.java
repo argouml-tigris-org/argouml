@@ -34,7 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-import java.util.Vector;
 
 /**
  * An Ordered, non-duplicated collection of objects (not exactly a
@@ -91,28 +90,6 @@ public class ListSet<T extends Object>
         add(o1);
     }
 
-    /**
-     * @param o
-     *            the object to add
-     * @deprecated for 0.25.4 by tfmorris. Use List methods instead of Vector
-     *             methods.
-     */
-    @Deprecated
-    public void addElement(T o) {
-        add(o);
-    }
-    
-    /**
-     * @param v a collection of objects to be added
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #addAll(Collection)}.
-     */
-    @Deprecated
-    public void addAllElements(Collection< ? extends T> v) {
-        if (v == null) {
-            return;
-        }
-        addAll(v);
-    }
 
     /**
      * @param iter an enumeration of objects to be added
@@ -132,26 +109,6 @@ public class ListSet<T extends Object>
         }
     }
 
-    /**
-     * @param iter an iterator of objects to be added
-     * @param p the predicate the objects have to fulfill to be added
-     * @deprecated for 0.26 by tfmorris. Use
-     *    {@link #addAllElementsSuchThat(Iterator, org.argouml.util.Predicate)}.
-     */
-    @Deprecated
-    public void addAllElementsSuchThat(Iterator<T> iter, 
-    		org.tigris.gef.util.Predicate p) {
-        if (p instanceof org.tigris.gef.util.PredicateTrue) {
-            addAllElements(iter);
-        } else {
-            while (iter.hasNext()) {
-                T e = iter.next();
-                if (p.predicate(e)) {
-                    add(e);
-                }
-            }
-        }
-    }
 
     /**
      * @param iter an iterator of objects to be added
@@ -170,30 +127,7 @@ public class ListSet<T extends Object>
             }
         }
     }
-    
-    /**
-     * @param s a listset of objects to be added
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #addAll(Collection)}.
-     */
-    @Deprecated
-    public void addAllElements(ListSet<T> s) {
-        addAll(s);
-    }
 
-    /**
-     * @param s a listset of objects to be added
-     * @param p the predicate the objects have to fulfill to be added
-     * @deprecated for 0.26 by tfmorris. Use
-     *    {@link #addAllElementsSuchThat(ListSet, org.argouml.util.Predicate)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public void addAllElementsSuchThat(ListSet<T> s, 
-    		org.tigris.gef.util.Predicate p) {
-        synchronized (s.mutex()) {
-            addAllElementsSuchThat(s.iterator(), p);
-        }
-    }
 
     /**
      * @param s a listset of objects to be added
@@ -248,17 +182,6 @@ public class ListSet<T extends Object>
         return false;
     }
 
-    /**
-     * @param p the predicate the objects have to fulfill
-     * @return true if at least one object in the listset fulfills the predicate
-     * @deprecated for 0.26 by tfmorris.  Use 
-     * {@link #containsSuchThat(org.argouml.util.Predicate)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public boolean containsSuchThat(org.tigris.gef.util.Predicate p) {
-        return findSuchThat(p) != null;
-    }
 
     /**
      * @param p the predicate the objects have to fulfill
@@ -266,28 +189,7 @@ public class ListSet<T extends Object>
      */
     public boolean containsSuchThat(org.argouml.util.Predicate p) {
         return findSuchThat(p) != null;
-    }
-    
-    /**
-     * Return the first object that causes the given predicate to return
-     * true.
-     *
-     * @param p the predicate the objects have to fulfill
-     * @return the found object or null
-     * @deprecated for 0.26 by tfmorris.  Use 
-     * {@link #findSuchThat(org.argouml.util.Predicate)}.
-     */
-    @Deprecated
-    public Object findSuchThat(org.tigris.gef.util.Predicate p) {
-        synchronized (list) {
-            for (Object o : list) {
-                if (p.predicate(o)) {
-                    return o;
-                }
-            }
-        }
-        return null;
-    }
+    }    
 
     
     /**
@@ -308,58 +210,6 @@ public class ListSet<T extends Object>
         return null;
     }
 
-    /**
-     * @return all the objects as enumeration
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #iterator()}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public Enumeration<T> elements() {
-        return asVector().elements();
-    }
-
-    /**
-     * @param index the location
-     * @return the object at the given index
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #get(int)}.
-     */
-    @Deprecated
-    public T elementAt(int index) {
-        return list.get(index);
-    }
-
-    /**
-     * @param iter an enumeration of objects to be added
-     * @param p the predicate the objects have to fulfill to be added
-     * @deprecated for 02.6 by tfmorris.  Use 
-     * {@link #addAllElementsSuchThat(Iterator, org.argouml.util.Predicate)} or
-     * {@link #addAllElementsSuchThat(ListSet, org.argouml.util.Predicate)}.
-     */
-    @Deprecated
-    public void addAllElementsSuchThat(Enumeration<T> iter, 
-    		org.tigris.gef.util.Predicate p) {
-        if (p instanceof org.tigris.gef.util.PredicateTrue) {
-            addAllElements(iter);
-        } else {
-            while (iter.hasMoreElements()) {
-                T e = iter.nextElement();
-                if (p.predicate(e)) {
-                    add(e);
-                }
-            }
-        }
-    }
-
-
-    /**
-     * @return all the objects as vector
-     * @deprecated for 0.25.4 by tfmorris. Use List methods instead of Vector
-     *             methods.
-     */
-    @Deprecated
-    public Vector<T> asVector() {
-        return new Vector<T>(list);
-    }
 
     /*
      * @see java.lang.Object#hashCode()
@@ -393,15 +243,6 @@ public class ListSet<T extends Object>
     }
 
 
-    /**
-     * @return the first object
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #get(int)} get(0).
-     */
-    @Deprecated
-    public T firstElement() {
-        return list.get(0);
-    }
-
     /*
      * @see java.util.Collection#size()
      */
@@ -425,25 +266,6 @@ public class ListSet<T extends Object>
         return sb.toString();
     }
 
-    /**
-     * Reply the Set of all objects that can be reached from the
-     * receiving Set by taking steps defined by the given
-     * ChildGenerator.  The result includes the elements of the original
-     * Set. In order to avoid very deep searches which are often
-     * programming mistakes, only paths of length TC_LIMIT or less are
-     * considered.
-     * 
-     * @deprecated for 0.26 by tfmorris.  Use 
-     * {@link #transitiveClosure(org.argouml.util.ChildGenerator)}.
-     * @param cg the given childgenerator
-     * @return the resulting listset
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public ListSet<T> transitiveClosure(org.tigris.gef.util.ChildGenerator cg) {
-        return transitiveClosure(cg, TC_LIMIT, 
-        		org.tigris.gef.util.PredicateTrue.theInstance());
-    }
 
     /**
      * Reply the Set of all objects that can be reached from the receiving Set
@@ -458,27 +280,6 @@ public class ListSet<T extends Object>
     public ListSet<T> transitiveClosure(org.argouml.util.ChildGenerator cg) {
         return transitiveClosure(cg, TC_LIMIT, 
         		org.argouml.util.PredicateTrue.getInstance());
-    }
-    
-    /**
-     * Reply the Set of all objects that can be reached from the
-     * receiving Set by taking steps defined by the given
-     * ChildGenerator.  The result DOES NOT include the elements of the
-     * original Set. In order to avoid very deep searches which are
-     * often programming mistakes, only paths of length TC_LIMIT or less
-     * are considered.
-     * 
-     * @deprecated for 0.26 by tfmorris.  Use 
-     * {@link #reachable(org.argouml.util.ChildGenerator)}.
-     * 
-     * @param cg the given childgenerator
-     * @return the resulting listset
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public ListSet<T> reachable(org.tigris.gef.util.ChildGenerator cg) {
-        return reachable(cg, TC_LIMIT, 
-        		org.tigris.gef.util.PredicateTrue.theInstance());
     }
 
     /**
@@ -496,38 +297,6 @@ public class ListSet<T extends Object>
         		org.argouml.util.PredicateTrue.getInstance());
     }
 
-    
-    /**
-     * Reply the Set of all objects that can be reached from the
-     * receiving Set by taking steps defined by the given
-     * ChildGenerator.  The result DOES NOT include the elements of the
-     * original Set. In order to avoid very deep searches which are
-     * often programming mistakes, only paths of given max length or
-     * less are considered. Only paths consisting of elements which all
-     * cause p.predicate() to return true are considered.
-     * 
-     * @deprecated for 0.26 by tfmorris.  Use 
-     * {@link #reachable(org.argouml.util.ChildGenerator, int, 
-     * org.argouml.util.Predicate)}.
-     * 
-     * @param cg the given childgenerator
-     * @param max the maximum depth
-     * @param p the predicate the objects have to fulfill
-     * @return the resulting listset
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public ListSet<T> reachable(org.tigris.gef.util.ChildGenerator cg, int max, 
-    		org.tigris.gef.util.Predicate p) {
-        ListSet<T> kids = new ListSet<T>();
-        synchronized (list) {
-            for (Object r : list) {
-                kids.addAllElementsSuchThat(cg.gen(r), p);
-            }
-        }
-        return kids.transitiveClosure(cg, max, p);
-    }
-    
 
     /**
      * Reply the Set of all objects that can be reached from the receiving Set
@@ -553,50 +322,6 @@ public class ListSet<T extends Object>
         return kids.transitiveClosure(cg, max, predicate);
     }
 
-
-    /**
-     * Reply the Set of all objects that can be reached from the
-     * receiving Set by taking steps defined by the given
-     * ChildGenerator.  The result includes the elements of the original
-     * Set. In order to avoid very deep searches which are often
-     * programming mistakes, only paths of given max length or less are
-     * considered. Only paths consisting of elements which all cause
-     * p.predicate() to return true are considered.
-     *
-     * @deprecated for 0.26 by tfmorris.  Use 
-     * {@link #transitiveClosure(org.argouml.util.ChildGenerator, int, 
-     * org.argouml.util.Predicate)}.
-     * 
-     * @param cg the given childgenerator
-     * @param max the maximum depth
-     * @param p the predicate the objects have to fulfill
-     * @return the resulting listset
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public ListSet<T> transitiveClosure(org.tigris.gef.util.ChildGenerator cg, 
-    		int max, 
-            org.tigris.gef.util.Predicate p) {
-        int iterCount = 0;
-        int lastSize = -1;
-        ListSet<T> touched = new ListSet<T>();
-        ListSet<T> frontier;
-        ListSet<T> recent = this;
-
-        touched.addAll(this);
-        while ((iterCount < max) && (touched.size() > lastSize)) {
-            iterCount++;
-            lastSize = touched.size();
-            frontier = new ListSet<T>();
-            for (T recentElement : recent) {
-                Enumeration frontsEnum = cg.gen(recentElement);
-                frontier.addAllElementsSuchThat(frontsEnum, p);
-            }
-            touched.addAll(frontier);
-            recent = frontier;
-        }
-        return touched;
-    }
 
 
     /**

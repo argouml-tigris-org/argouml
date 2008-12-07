@@ -33,7 +33,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
-import org.argouml.uml.GenCompositeClasses;
+import org.argouml.uml.GenCompositeClasses2;
 import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 
@@ -64,7 +64,7 @@ public class CrCircularComposition extends CrUML {
             return NO_PROBLEM;
         }
 	ListSet reach =
-	    (new ListSet(dm)).reachable(GenCompositeClasses.getSINGLETON());
+	    (new ListSet(dm)).reachable(GenCompositeClasses2.getInstance());
 	if (reach.contains(dm)) {
             return PROBLEM_FOUND;
         }
@@ -87,10 +87,10 @@ public class CrCircularComposition extends CrUML {
      */
     protected ListSet computeOffenders(Object dm) {
 	ListSet offs = new ListSet(dm);
-	ListSet above = offs.reachable(GenCompositeClasses.getSINGLETON());
+	ListSet above = offs.reachable(GenCompositeClasses2.getInstance());
         for (Object cls2 : above) {
 	    ListSet trans = (new ListSet(cls2))
-	        .reachable(GenCompositeClasses.getSINGLETON());
+	        .reachable(GenCompositeClasses2.getInstance());
 	    if (trans.contains(dm)) {
                 offs.add(cls2);
             }

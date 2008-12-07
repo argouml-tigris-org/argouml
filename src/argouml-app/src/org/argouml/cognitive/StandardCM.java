@@ -26,7 +26,6 @@ package org.argouml.cognitive;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * The standard Control Mech. It extends an ANDControlMech with the individual
@@ -110,15 +109,6 @@ class CurDecisionCM implements ControlMech {
 abstract class CompositeCM implements ControlMech {
     private List<ControlMech> mechs = new ArrayList<ControlMech>();
 
-    /**
-     * @return Returns the ControlMechs.
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getMechList()}.
-     */
-    @Deprecated
-    protected Vector<ControlMech> getMechs() {
-        return new Vector<ControlMech>(mechs);
-    }
-    
     /**
      * @return a list of the ControlMechs.
      */

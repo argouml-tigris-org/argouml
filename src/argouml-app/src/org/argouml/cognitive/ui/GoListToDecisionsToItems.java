@@ -170,19 +170,6 @@ public class GoListToDecisionsToItems extends AbstractGoList {
      */
     public void removeTreeModelListener(TreeModelListener l) { }
 
-    ////////////////////////////////////////////////////////////////
-    // utility methods
-
-    /**
-     * @return the decisions
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getDecisionList()}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public Vector<Decision> getDecisions() {
-	return Designer.theDesigner().getDecisionModel().getDecisions();
-    }
-
     /**
      * @return the decisions
      */    

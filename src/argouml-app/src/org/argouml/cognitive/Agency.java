@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
@@ -135,14 +134,6 @@ public class Agency extends Observable { //implements java.io.Serialization
         return criticRegistry;
     }
 
-    /**
-     * @return the critics
-     * @deprecated for 0.25.4 by tfmorris - use {@link #getCriticList()}.
-     */
-    @Deprecated
-    public static Vector<Critic> getCritics() {
-        return new Vector<Critic>(critics);
-    }
 
     /**
      * @return the critics
@@ -282,21 +273,6 @@ public class Agency extends Observable { //implements java.io.Serialization
 
     }
 
-    /**
-     * Return the {@link Vector} of all critics that are directly
-     * associated with the given design material subclass.<p>
-     *
-     * If there aren't any an empty Vector is returned.
-     *
-     * @param clazz the design material
-     * @return the critics
-     * @deprecated for 0.25.4 by tfmorris.  Use 
-     *             {@link #criticListForSpecificClass(Class)}.
-     */
-    @Deprecated
-    protected static Vector<Critic> criticsForSpecificClass(Class clazz) {
-        return new Vector<Critic>(criticListForSpecificClass(clazz));
-    }
 
     /**
      * Return the List of all critics that are directly

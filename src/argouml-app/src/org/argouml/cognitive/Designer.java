@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -643,16 +642,6 @@ public final class Designer
      */
     public GoalModel getGoalModel() {
         return goals;
-    }
-
-    /**
-     * @return the goals
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getGoalList()}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public Vector<Goal> getGoals() {
-        return goals.getGoals();
     }
 
     /**

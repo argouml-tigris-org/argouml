@@ -28,7 +28,6 @@ package org.argouml.cognitive;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Event issued when the todo list changes.
@@ -56,15 +55,6 @@ public class ToDoListEvent {
     public ToDoListEvent(final List<ToDoItem> toDoItems) {
         items =
             Collections.unmodifiableList(new ArrayList<ToDoItem>(toDoItems));
-    }
-    
-    /**
-     * @return the todo list events
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getToDoItemList()}.
-     */
-    @Deprecated
-    public Vector<ToDoItem> getToDoItems() {
-        return new Vector<ToDoItem>(items);
     }
 
     /**
