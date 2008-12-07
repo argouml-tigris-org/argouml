@@ -236,16 +236,6 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
         return column;
     }
 
-    /**
-     * Get the downlinks of this node.
-     * 
-     * @return The downlinks of this node.
-     * @deprecated for 0.25.4 by tfmorris - use {@link #getDownNodes()}
-     */
-    @Deprecated
-    public Vector<ClassdiagramNode> getDownlinks() {
-        return new Vector<ClassdiagramNode>(downlinks);
-    }
 
     /**
      * Get the downlinks of this node.
@@ -355,17 +345,6 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
             result = 1;
         }
         return result;
-    }
-
-    /**
-     * Get the uplinks of this node.
-     * 
-     * @return The uplinks of this node.
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getUpNodes()}.
-     */
-    @Deprecated
-    public Vector<ClassdiagramNode> getUplinks() {
-        return new Vector<ClassdiagramNode>(uplinks);
     }
 
     /**
