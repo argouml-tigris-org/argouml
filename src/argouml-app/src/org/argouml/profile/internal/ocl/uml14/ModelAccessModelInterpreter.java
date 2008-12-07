@@ -461,10 +461,10 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return Model.getFacade().getDiscriminator(subject);
                 }
                 if (feature.equals("child")) {
-                    return Model.getFacade().getChild(subject);
+                    return Model.getFacade().getSpecific(subject);
                 }
                 if (feature.equals("parent")) {
-                    return Model.getFacade().getParent(subject);
+                    return Model.getFacade().getGeneral(subject);
                 }
                 if (feature.equals("powertype")) {
                     return Model.getFacade().getPowertype(subject);
