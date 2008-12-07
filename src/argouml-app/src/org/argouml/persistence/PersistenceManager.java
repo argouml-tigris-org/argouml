@@ -78,10 +78,6 @@ public final class PersistenceManager {
 
     private AbstractFilePersister savePersister;
     
-    private boolean lastLoadStatus = true;
-
-    private String lastLoadMessage;
-
     /**
      * The configuration key for the project file location.
      */
@@ -396,56 +392,7 @@ public final class PersistenceManager {
         return true;
     }
 
-    /**
-     * Get the last message which caused loading to fail. Used for junit tests.
-     *
-     * @return the last message which caused loading to fail
-     * @deprecated for 0.25.5 by tfmorris. Persisters all throw exceptions if
-     *             they failed to complete successfully. If no exception was
-     *             thrown, the load succeeded.
-     */
-    @Deprecated
-    public String getLastLoadMessage() {
-        return lastLoadMessage;
-    }
 
-    /**
-     * Set the last load message. Used for junit tests.
-     *
-     * @param msg the last load message
-     * @deprecated for 0.25.5 by tfmorris. Persisters all throw exceptions if
-     *             they failed to complete successfully. If no exception was
-     *             thrown, the load succeeded.
-     */
-    @Deprecated
-    public void setLastLoadMessage(String msg) {
-        lastLoadMessage = msg;
-    }
-
-    /**
-     * @return the status of the last load attempt. Used for junit tests.
-     * @deprecated for 0.25.5 by tfmorris. Persisters all throw exceptions if
-     *             they failed to complete successfully. If no exception was
-     *             thrown, the load succeeded.
-     */
-    @Deprecated
-    public boolean getLastLoadStatus() {
-        return lastLoadStatus;
-    }
-
-    /**
-     * Set the status of the last load attempt. Used for junit tests.
-     *
-     * @param status the status of the last load attempt
-      * @deprecated for 0.25.5 by tfmorris. Persisters all throw exceptions if
-     *             they failed to complete successfully. If no exception was
-     *             thrown, the load succeeded.
-     */
-    @Deprecated
-    public void setLastLoadStatus(boolean status) {
-        lastLoadStatus = status;
-    }
-    
     /**
      * Sets the currently used persister for saving.
      * 
