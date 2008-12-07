@@ -60,6 +60,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
     public Object invokeFeature(Map<String, Object> vt, Object subject,
             String feature, String type, Object[] parameters) {
 
+        // TODO: This is an absurdly long method! Break it up.
+        
         if (subject == null) {
             subject = vt.get("self");
         }
@@ -404,9 +406,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         if (Model.getFacade().isAFeature(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("ownerScope")) {
-                    // TODO: This needs to be switched to use isStatic(), but
-                    // what type of value is the caller expecting?
-                    return Model.getFacade().getOwnerScope(subject);
+                    return Model.getFacade().isStatic(subject);
                 }
                 if (feature.equals("visibility")) {
                     return Model.getFacade().getVisibility(subject);
