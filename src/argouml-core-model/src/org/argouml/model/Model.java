@@ -91,11 +91,6 @@ public final class Model {
     /**
      * The register for the observer.
      */
-    private static MementoCreationObserver mementoCreationObserver;
-
-    /**
-     * The register for the observer.
-     */
     private static ModelCommandCreationObserver modelCommandCreationObserver;
 
     /**
@@ -498,21 +493,6 @@ public final class Model {
         return impl != null;
     }
 
-    /**
-     * Allows an external system to register itself to receive mementos created
-     * by the model implementation.
-     * 
-     * @see ModelMemento
-     * 
-     * @param observer the interested party
-     * @deprecated for 0.25.4 by bobtarling. Use
-     *             {@link #setModelCommandCreationObserver}.
-     */
-    @Deprecated
-    public static void setMementoCreationObserver(
-            MementoCreationObserver observer) {
-        mementoCreationObserver = observer;
-    }
 
     /**
      * Allows an external system to register itself to receive commands
@@ -526,17 +506,6 @@ public final class Model {
         modelCommandCreationObserver = observer;
     }
 
-    /**
-     * Gets the external class responsible for handling mementos.
-     * 
-     * @return the MementoCreationObserver
-     * @deprecated for 0.25.4 by bobtarling. Use
-     *             {@link #getModelCommandCreationObserver}.
-     */
-    @Deprecated
-    public static MementoCreationObserver getMementoCreationObserver() {
-        return mementoCreationObserver;
-    }
 
     /**
      * Gets the external class responsible for handling commands.
@@ -547,21 +516,6 @@ public final class Model {
         return modelCommandCreationObserver;
     }
 
-    /**
-     * Notify any observer that a command has been created.
-     * 
-     * @param memento The newly created memento.
-     * @deprecated for 0.25.4 by bobtarling. Use
-     *             {@link #notifyModelCommandCreationObserver}.
-     */
-    @Deprecated
-    public static void notifyMementoCreationObserver(
-            ModelMemento memento) {
-        MementoCreationObserver mco = getMementoCreationObserver();
-        if (mco != null) {
-            mco.mementoCreated(memento);
-        }
-    }
 
     /**
      * Notify any observer that a command has been created and execute
