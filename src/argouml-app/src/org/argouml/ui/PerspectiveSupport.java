@@ -26,7 +26,6 @@ package org.argouml.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.tree.TreeModel;
 
@@ -104,16 +103,6 @@ public class PerspectiveSupport {
         goRules.remove(tm);
     }
 
-    /**
-     * Get the rules that together form the perspective.
-     * 
-     * @return the rules that form the perspecive
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getSubTreeModelList()}.
-     */
-    @Deprecated
-    public Vector<TreeModel> getSubTreeModels() {
-        return new Vector<TreeModel>(goRules);
-    }
 
     /**
      * Get the rules that together form the perspective.
@@ -143,8 +132,11 @@ public class PerspectiveSupport {
      */
     @Override
     public String toString() {
-        if (getName() != null) return getName();
-        else return super.toString();
+        if (getName() != null) {
+            return getName();
+        } else {
+            return super.toString();
+        }
     }
 
     // ------ all rules ----------
@@ -155,15 +147,6 @@ public class PerspectiveSupport {
      */
     public static void registerRule(TreeModel rule) {
         rules.add(rule);
-    }
-
-    /**
-     * @return Returns the _goRules.
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getGoRuleList()}.
-     */
-    @Deprecated
-    protected Vector<TreeModel> getGoRules() {
-        return new Vector<TreeModel>(goRules);
     }
 
     /**
