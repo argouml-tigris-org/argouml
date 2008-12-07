@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,16 +30,17 @@ package org.argouml.cognitive.ui;
 
 import javax.swing.tree.TreeModel;
 
-import org.tigris.gef.util.Predicate;
-import org.tigris.gef.util.PredicateTrue;
+import org.argouml.util.Predicate;
+import org.argouml.util.PredicateTrue;
 
 /**
  * @author MarkusK
- * @deprecated for 0.27.3 by tfmorris.  Use {@link AbstractGoList2}.
+ *
  */
-public abstract class AbstractGoList implements TreeModel {
+public abstract class AbstractGoList2 extends AbstractGoList implements
+        TreeModel {
 
-    private Predicate listPredicate = new PredicateTrue();
+    private Predicate listPredicate = PredicateTrue.getInstance();
 
     /**
      * @param newPredicate the new list predicate
@@ -50,10 +51,8 @@ public abstract class AbstractGoList implements TreeModel {
 
     /**
      * @return the list predicate
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link AbstractGoList2#getPredicate()}.
      */
-    public Predicate getListPredicate() {
+    public Predicate getPredicate() {
         return listPredicate;
     }
 

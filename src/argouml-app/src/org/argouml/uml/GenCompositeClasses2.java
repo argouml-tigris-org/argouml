@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,53 +22,39 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
- * Created on 21.10.2004
- *
- */
-package org.argouml.cognitive.ui;
+package org.argouml.uml;
 
-import javax.swing.tree.TreeModel;
+import java.util.Iterator;
 
-import org.tigris.gef.util.Predicate;
-import org.tigris.gef.util.PredicateTrue;
+import org.argouml.util.ChildGenerator;
 
 /**
- * @author MarkusK
- * @deprecated for 0.27.3 by tfmorris.  Use {@link AbstractGoList2}.
+ * Utility class to generate a list of the "children" of a class which are the
+ * other classes that are associated with the parent class, and that Association
+ * has a COMPOSITE end at the parent. This is used in one of the critics.
+ * 
+ * @see org.argouml.uml.cognitive.critics.CrCircularComposition
+ * @stereotype singleton
  */
-public abstract class AbstractGoList implements TreeModel {
-
-    private Predicate listPredicate = new PredicateTrue();
-
-    /**
-     * @param newPredicate the new list predicate
-     */
-    public void setListPredicate(Predicate newPredicate) {
-        listPredicate = newPredicate;
-    }
+public class GenCompositeClasses2 extends GenCompositeClasses implements
+        ChildGenerator {
 
     /**
-     * @return the list predicate
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link AbstractGoList2#getPredicate()}.
+     * This SINGLETON is used in CrCircularComposition.
+     *
      */
-    public Predicate getListPredicate() {
-        return listPredicate;
-    }
-
-    /*
-     * @see javax.swing.tree.TreeModel#getRoot()
-     */
-    public Object getRoot() {
-        throw new UnsupportedOperationException();
-    }
+    private static final GenCompositeClasses2 SINGLETON =
+        new GenCompositeClasses2();
 
     /**
-     * @param r ignored
+     * @return Return the singleton
      */
-    public void setRoot(Object r) { 
-        // does nothing
+    public static GenCompositeClasses2 getInstance() {
+        return SINGLETON;
+    }
+    
+    public Iterator childIterator(Object parent) {
+        return collectChildren(parent).iterator();
     }
 
 }
