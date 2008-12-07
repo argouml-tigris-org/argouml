@@ -118,13 +118,7 @@ public abstract class AbstractActionAddModelElement2 extends UndoableAction {
      * UMLAddDialog.
      * @param selected The choices the user has selected in the UMLAddDialog
      */
-    protected void doIt(Collection selected) {
-        // TODO: This is for backward compatibility.  It can be removed after
-        // the deprecation period for AbstractActionAddModelElement has lapsed
-        if (this instanceof AbstractActionAddModelElement) {
-            ((AbstractActionAddModelElement) this).doIt((Vector) selected);
-        }
-    }
+    protected abstract void doIt(Collection selected);
 
     /*
      * @see javax.swing.Action#isEnabled()
