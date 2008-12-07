@@ -276,13 +276,6 @@ public interface ArgoDiagram extends ArgoNotationEventListener,
     // thing.  NOTE: We've only added methods used by ArgoUML,
     // so it's possible that external consumers need other methods.
     
-    /**
-     * @return an enumeration of the contents of the fig.
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getFigIterator()}.
-     * @see org.tigris.gef.base.Diagram#elements()
-     */
-    @Deprecated
-    public Enumeration elements();
     
     /**
      * @param listener
