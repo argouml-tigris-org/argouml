@@ -261,24 +261,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         return modules;
     }
 
-    /**
-     * @param file the selected file
-     * @deprecated for 0.25.5 by tfmorris. Use 
-     *             {@link #setSelectedFiles(File[])}.
-     */
-    @Deprecated
-    protected void setSelectedFile(File file) {
-        selectedFiles = new File[] {file};
-    }
-
-    /**
-     * @return the first selected file.
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getSelectedFiles()}.
-     */
-    @Deprecated
-    protected File getSelectedFile() {
-        return selectedFiles[0];
-    }
 
     protected void setSelectedFiles(final File[] files) {
         selectedFiles = files;
@@ -435,24 +417,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         }
 
         return enc;
-    }
-
-    /**
-     * Gets the import classpaths. This should be asked by the GUI for
-     * initialization.
-     * 
-     * @return a list with Strings representing the classpaths
-     * @deprecated for 0.25.7 by tfmorris. This is a Java importer specific
-     *             method.
-     */
-    public List<String> getImportClasspath() {
-        List<String> list = new ArrayList<String>();
-        URL[] urls = ImportClassLoader.getURLs(Configuration.getString(
-                Argo.KEY_USER_IMPORT_CLASSPATH, "")); //$NON-NLS-1$
-        for (URL url : urls) {
-            list.add(url.getFile());
-        }
-        return list;
     }
 
 

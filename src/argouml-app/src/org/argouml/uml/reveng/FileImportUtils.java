@@ -40,24 +40,6 @@ import org.argouml.util.SuffixFilter;
  */
 public  class FileImportUtils {
 
-    /**
-     * Return a List of source files to import.<p>
-     *
-     * Processing each file in turn is equivalent to a breadth first
-     * search through the directory structure.
-     *
-     * @param file file or directory to import
-     * @param recurse if true, descend directory tree recursively
-     * @param filters array of file suffixes to match for filtering
-     * @return a list of files to be imported
-     * @deprecated for 0.25.4 by tfmorris.  Use 
-     *         {@link #getList(File, boolean, SuffixFilter[], ProgressMonitor)}.
-     */
-    @Deprecated
-    public static List<File> getList(File file, boolean recurse,
-            SuffixFilter[] filters) {
-        return getList(file, recurse, filters, null);
-    }
         
     /**
      * This method returns a List of source files to import.
