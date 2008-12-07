@@ -366,6 +366,10 @@ public class TestAgainstUmlModel extends TestCase {
         dontTest.add("ProcedureExpression");
         dontTest.add("TimeExpression");
         dontTest.add("TypeExpression");
+        
+        // TODO: We'd like to test this in its new guise as PackageImport, but
+        // we don't have a good way to do it currently
+        dontTest.add("Permission");
 
         /*
          * A few of our factories are slightly different than as declared in the
@@ -398,6 +402,15 @@ public class TestAgainstUmlModel extends TestCase {
         remap.put("BehaviorStateMachines", "StateMachines");
         remap.put("ProtocolStateMachines", "StateMachines");
         remap.put("Models", "ModelManagement");
+        
+        /*
+         * For those things which we've already migrated to UML 2.x syntax
+         * we need to map them back to their UML 1.4 equivalents during the
+         * migration period.
+         */
+        // TODO: Except this won't work because the names are different which
+        // will cause a test in CheckUMLModelHelper to fail
+//        remap.put("Core:Permission", "Core:PackageImport");
     }
 
 
