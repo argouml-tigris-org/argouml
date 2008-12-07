@@ -145,39 +145,7 @@ public abstract class UMLRadioButtonPanel
              thePropertySetName, setAction, horizontal);
     }
     
-    /**
-     * Constructs a new UMLRadioButtonPanel.
-     * 
-     * @param isDoubleBuffered See {@link JPanel}.
-     * @param title
-     *            The title of the titledborder around the buttons. If the title
-     *            is null, there is no border shown.
-     * @param labeltextsActioncommands
-     *            A map of keys containing the texts for the buttons and values
-     *            containing the actioncommand that permits the setAction to
-     *            logically recognize the button.
-     * @param thePropertySetName
-     *            the name of the MEvent that is fired when the property that it
-     *            shows changes value.
-     * @param setAction
-     *            the action that should be registered with the buttons and
-     *            that's executed when one of the buttons is pressed.
-     * @param horizontal
-     *            when true the buttons should be laid out horizontally.
-     * @deprecated for 0.25.4 by tfmorris. Use List<String[]> form of
-     *             constructor.
-     */
-    @Deprecated
-    public UMLRadioButtonPanel(
-			       boolean isDoubleBuffered,
-			       String title,
-			       Map<String, String> labeltextsActioncommands,
-			       String thePropertySetName,
-			       Action setAction,
-			       boolean horizontal) {
-        this(isDoubleBuffered, title, toList(labeltextsActioncommands),
-                thePropertySetName, setAction, horizontal);
-    }
+
 
     private static List<String[]> toList(Map<String, String> map) {
         List<String[]> list = new ArrayList<String[]>();
@@ -187,39 +155,6 @@ public abstract class UMLRadioButtonPanel
         return list;
     }
 
-    /**
-     * Constructs a new UMLRadioButtonPanel.
-     * 
-     * @param title
-     *            The title of the titledborder around the buttons.
-     * @param labeltextsActioncommands
-     *            A map of keys containing the texts for the buttons and values
-     *            containing the actioncommand that permits the setAction to
-     *            logically recognize the button.
-     * @param thePropertySetName
-     *            the name of the MEvent that is fired when the property that is
-     *            given changes value.
-     * @param setAction
-     *            the action that should be registered with the buttons and
-     *            that's executed when one of the buttons is pressed
-     * @param horizontal
-     *            when true the buttons should be laid out horizontally.
-     * @deprecated for 0.25.4 by tfmorris. Use List<String[]> form of
-     *             constructor. See
-     *             {@link org.argouml.uml.ui.foundation.core.UMLParameterDirectionKindRadioButtonPanel}
-     *             for an
-     *             example of a subclass which has been converted to the new
-     *             form of constructor.
-     */
-    @Deprecated
-    public UMLRadioButtonPanel(String title,
-			       Map<String, String> labeltextsActioncommands,
-			       String thePropertySetName,
-			       Action setAction,
-			       boolean horizontal) {
-        this(true, title, labeltextsActioncommands,
-	     thePropertySetName, setAction, horizontal);
-    }
 
     /**
      * Construct the buttons and place them in the panel as well as the button
