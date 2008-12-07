@@ -810,29 +810,6 @@ public abstract class FigNodeModelElement
         return enclosedFigs;
     }
 
-    /**
-     * Update the order of this fig and the order of the
-     * figs that are inside of this fig.
-     *
-     * @param figures in the new order
-     * @deprecated in 0.25.5 This method is never used
-     */
-    @Deprecated
-    public void elementOrdering(List<Fig> figures) {
-        int size = figures.size();
-        getLayer().bringToFront(this);
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                Object o = figures.get(i);
-                if (o instanceof FigNodeModelElement
-                    && o != getEnclosingFig()) {
-                    FigNodeModelElement fignode = (FigNodeModelElement) o;
-                    List<Fig> enclosed = fignode.getEnclosedFigs();
-                    fignode.elementOrdering(enclosed);
-                }
-            }
-        }
-    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
