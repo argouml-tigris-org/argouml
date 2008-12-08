@@ -671,12 +671,10 @@ class FigMultiplicity extends FigSingleLineText
 
 /**
  * A textual Fig representing the ordering of some model element,
- * i.e. "{ordered}" or "{sorted}".
+ * i.e. "{ordered}" or nothing.
  * This has potential reuse for other edges showing ordering. <p>
  * 
- * This Fig is not editable by the user. <p>
- * 
- * TODO: How can the user make it "sorted"?
+ * This Fig is not editable by the user.
  * 
  * @author Bob Tarling
  */
