@@ -466,10 +466,25 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return assoc;
     }
 
-
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public UmlAssociation buildAssociation(Object fromClassifier,
             Object aggregationKind1, Object toClassifier,
             Object aggregationKind2, Boolean unidirectional) {
+        
+        if (unidirectional == null) {
+            return buildAssociation(fromClassifier, aggregationKind1,
+                    toClassifier, aggregationKind2, false);
+        } else {
+            return buildAssociation(fromClassifier, aggregationKind1,
+                    toClassifier, aggregationKind2, unidirectional
+                            .booleanValue());
+        }
+    }
+
+    public UmlAssociation buildAssociation(Object fromClassifier,
+            Object aggregationKind1, Object toClassifier,
+            Object aggregationKind2, boolean unidirectional) {
         if (fromClassifier == null || toClassifier == null) {
             throw new IllegalArgumentException("one of "
                     + "the classifiers to be " + "connected is null");
@@ -478,12 +493,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Classifier to = (Classifier) toClassifier;
         AggregationKind agg1 = (AggregationKind) aggregationKind1;
         AggregationKind agg2 = (AggregationKind) aggregationKind2;
-        
-        // Watch out for nulls which are possible due to dumb API design!
-        if (unidirectional == null) {
-            unidirectional = Boolean.FALSE;
-        }
-        
+
         Namespace ns = from.getNamespace();
         if (ns == null || modelImpl.getModelManagementHelper().isReadOnly(ns)) {
             ns = to.getNamespace();

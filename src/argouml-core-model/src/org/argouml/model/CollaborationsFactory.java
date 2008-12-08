@@ -149,11 +149,30 @@ public interface CollaborationsFactory extends Factory {
      * @param agg2   the second aggregationkind
      * @param unidirectional true if unidirectional
      * @return the newly build assoc. role
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #buildAssociationRole(Object, Object, Object, Object, boolean)}.
      */
+    @Deprecated
     Object buildAssociationRole(Object from,
             Object agg1, Object to, Object agg2,
             Boolean unidirectional);
 
+
+    /**
+     * Builds a binary associationrole on basis of two classifierroles,
+     * navigation and aggregation.
+     *
+     * @param from   the first classifierrole
+     * @param agg1   the first aggregationkind
+     * @param to     the second classifierrole
+     * @param agg2   the second aggregationkind
+     * @param unidirectional true if unidirectional
+     * @return the newly build assoc. role
+     */
+    Object buildAssociationRole(Object from,
+            Object agg1, Object to, Object agg2,
+            boolean unidirectional);
+    
     /**
      * Builds an associationrole based on a given link. The link must
      * have a source and a destination instance that both have a

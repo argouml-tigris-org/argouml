@@ -65,8 +65,19 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
         return null;
     }
 
+    @Deprecated
     public Object buildAssociationRole(Object from, Object agg1, Object to,
             Object agg2, Boolean unidirectional) {
+        if (unidirectional == null) {
+            return buildAssociationRole(from, agg1, to, agg2, false);
+        } else {
+            return buildAssociationRole(from, agg1, to, agg2, 
+                    unidirectional.booleanValue());
+        }
+    }
+
+    public Object buildAssociationRole(Object from, Object agg1, Object to,
+            Object agg2, boolean unidirectional) {
         // TODO: Auto-generated method stub
         return null;
     }

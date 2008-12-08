@@ -201,6 +201,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return (Association) run.getParams().get(0);
     }
 
+    @Deprecated
     public Association buildAssociation(Object fromClassifier,
             Object aggregationKind1, Object toClassifier,
             Object aggregationKind2, Boolean unidirectional) {
@@ -214,6 +215,16 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                     aggregationKind2, null);
         }
     }
+    
+
+    public Object buildAssociation(Object fromClassifier,
+            Object aggregationKind1, Object toClassifier,
+            Object aggregationKind2, boolean unidirectional) {
+        return buildAssociation(
+                fromClassifier, true, aggregationKind1, toClassifier,
+                !unidirectional, aggregationKind2, null); 
+    }
+
 
     public Association buildAssociation(Object classifier1, 
             Object classifier2) {

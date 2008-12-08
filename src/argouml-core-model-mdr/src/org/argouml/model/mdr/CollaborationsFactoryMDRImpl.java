@@ -239,8 +239,20 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
+    @Deprecated
     public AssociationRole buildAssociationRole(Object from, Object agg1, Object to,
             Object agg2, Boolean unidirectional) {
+        if (unidirectional == null) {
+            return buildAssociationRole(from, agg1, to, agg2, false);
+        } else {
+            return buildAssociationRole(from, agg1, to, agg2, 
+                    unidirectional.booleanValue());
+        }
+    }
+
+    
+    public AssociationRole buildAssociationRole(Object from, Object agg1,
+            Object to, Object agg2, boolean unidirectional) {
 
         AggregationKind ak1 = checkAggregationKind(agg1);
         AggregationKind ak2 = checkAggregationKind(agg2);
@@ -251,7 +263,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         AssociationEndRole end =
                 (AssociationEndRole) role.getConnection().get(0);
         end.setAggregation(ak1);
-        end.setNavigable(Boolean.FALSE.equals(unidirectional));
+        end.setNavigable(!unidirectional);
 
         end = (AssociationEndRole) role.getConnection().get(1);
         end.setAggregation(ak2);
@@ -259,8 +271,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
         return role;
     }
-
-
+    
     /**
      * Checks that aggregationKind is valid and promotes null
      * to AK_NONE.

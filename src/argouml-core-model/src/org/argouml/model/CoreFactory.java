@@ -331,10 +331,29 @@ public interface CoreFactory extends Factory {
      * @param aggregationKind2 the second aggregationkind
      * @param unidirectional true if unidirectional
      * @return the newly build binary associationrole
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #buildAssociation(Object, Object, Object, Object, boolean)}.
      */
+    @Deprecated
     Object buildAssociation(Object fromClassifier, Object aggregationKind1,
             Object toClassifier, Object aggregationKind2,
             Boolean unidirectional);
+
+
+    /**
+     * Builds a binary associationrole on basis of two classifierroles,
+     * navigation and aggregation.
+     *
+     * @param fromClassifier   the first given classifier
+     * @param aggregationKind1 the first aggregationkind
+     * @param toClassifier     the second given classifier
+     * @param aggregationKind2 the second aggregationkind
+     * @param unidirectional true if unidirectional
+     * @return the newly build binary associationrole
+     */
+    Object buildAssociation(Object fromClassifier, Object aggregationKind1,
+            Object toClassifier, Object aggregationKind2,
+            boolean unidirectional);
 
     /**
      * Builds a binary associations between two classifiers with
