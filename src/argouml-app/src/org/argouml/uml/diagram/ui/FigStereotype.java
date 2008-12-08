@@ -37,6 +37,9 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * Fig to show one stereotype within a FigStereotypeCompartment.
+ * <p>
+ * The stereotype is not editable on the fig, hence we
+ * do not use a Notation Provider.
  *
  * @author Bob Tarling
  */
