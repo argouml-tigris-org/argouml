@@ -940,6 +940,7 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     
     FigAssociationEndAnnotation(FigEdgeModelElement edge, Object owner,
             DiagramSettings settings) {
+        super(owner, settings);
         figEdge = edge;
         
         role = new FigRole(owner, settings);
