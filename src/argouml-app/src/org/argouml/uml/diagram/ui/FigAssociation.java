@@ -788,12 +788,15 @@ class FigRole extends FigSingleLineText
             notationProviderRole.cleanListener(this, getOwner());
         }
         if (getOwner() != null) {
+            NotationName notation = 
+                Notation.findNotation(getSettings().getNotationLanguage());
             notationProviderRole = 
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
                         getOwner(),
-                        this);
-            initNotationArguments();
+                        this,
+                        notation);
+            npArguments.put("useGuillemets", getSettings().isUseGuillemets());
         } else {
             LOG.debug("Null owner when initialization notation providers");
         }
