@@ -655,9 +655,6 @@ abstract class UMLComboBoxModel extends AbstractListModel
         Object oldTarget =
 	    e.getOldTargets().length > 0
             ? e.getOldTargets()[0] : null;
-        if (oldTarget instanceof Fig) {
-            oldTarget = ((Fig) oldTarget).getOwner();
-        }
         if (oldTarget == currentTarget) {
             if (Model.getFacade().isAModelElement(currentTarget)) {
                 Model.getPump().removeModelEventListener(this,
