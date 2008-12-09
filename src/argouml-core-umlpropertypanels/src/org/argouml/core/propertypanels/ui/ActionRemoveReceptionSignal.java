@@ -32,6 +32,7 @@ import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
  * This Action removes a Reception from a Signal.
+ * TODO: We shouldn't have knowledge of GEF classes here
  * 
  * @author Michiel
  */
