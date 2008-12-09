@@ -47,7 +47,6 @@ import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * ComboBox Model for UML modelelements. <p>
@@ -358,8 +357,6 @@ abstract class UMLComboBoxModel extends AbstractListModel
             return;
         }
         LOG.debug("setTarget target :  " + theNewTarget);
-        theNewTarget = theNewTarget instanceof Fig 
-            ? ((Fig) theNewTarget).getOwner() : theNewTarget;
         if (Model.getFacade().isAModelElement(theNewTarget) 
                 || theNewTarget instanceof ArgoDiagram) {
             
