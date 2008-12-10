@@ -141,9 +141,7 @@ public abstract class FigEdgeModelElement
 
 
     private NotationProvider notationProviderName;
-    // TODO: Having a HashMap per Fig, each containing two string entries, just
-    // to store what is basically just a boolean (useGuillmets) is expensive
-    // Also, the opaqueness of the string keys prevents us finding uses
+    // TODO: The opaqueness of the string keys prevents us finding uses
     private HashMap<String, Object> npArguments;
     /**
      * The Fig that displays the name of this model element.
