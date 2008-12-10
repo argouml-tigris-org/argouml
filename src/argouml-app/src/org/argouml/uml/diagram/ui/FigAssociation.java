@@ -30,7 +30,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -39,18 +38,9 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoHelpEvent;
-import org.argouml.application.events.ArgoNotationEvent;
-import org.argouml.application.events.ArgoNotationEventListener;
-import org.argouml.i18n.Translator;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationName;
-import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -282,8 +272,17 @@ public class FigAssociation extends FigEdgeModelElement {
     public void renderingChanged() {
         super.renderingChanged();
         /* This fixes issue 4987: */
-        srcMult.update();
-        destMult.update();
+        srcMult.renderingChanged();
+        destMult.renderingChanged();
+        srcGroup.renderingChanged();
+        destGroup.renderingChanged();
+        middleGroup.renderingChanged();
+        initNotationArguments();
+    }
+    
+    protected void initNotationArguments() {
+        putNotationArgument("showAssociationName", 
+                getSettings().isShowAssociationNames());
     }
 
     @Override
@@ -293,12 +292,9 @@ public class FigAssociation extends FigEdgeModelElement {
 
     private void initializeNotationProvidersInternal(Object own) {
         super.initNotationProviders(own);
-        Object[] ends = 
-            Model.getFacade().getConnections(own).toArray();
-        Object source = ends[0];
-        Object dest = ends[1];
-        srcMult.initNotationProviders(source);
-        destMult.initNotationProviders(dest);
+        srcMult.initNotationProviders();
+        destMult.initNotationProviders();
+        initNotationArguments();
     }
 
     /*
@@ -343,9 +339,9 @@ public class FigAssociation extends FigEdgeModelElement {
         }
 
 	if (ft == srcGroup.getRole()) {
-            ((FigRole) ft).parse();
+	    srcGroup.getRole().textEdited();
 	} else if (ft == destGroup.getRole()) {
-            ((FigRole) ft).parse();
+	    destGroup.getRole().textEdited();
 	} else if (ft == srcMult) {
             srcMult.textEdited();
 	} else if (ft == destMult) {
@@ -359,9 +355,9 @@ public class FigAssociation extends FigEdgeModelElement {
     @Override
     protected void textEditStarted(FigText ft) {
         if (ft == srcGroup.getRole()) {
-            showHelp(srcGroup.getRole().getParsingHelp());
+            srcGroup.getRole().textEditStarted();
         } else if (ft == destGroup.getRole()) {
-            showHelp(destGroup.getRole().getParsingHelp());
+            destGroup.getRole().textEditStarted();
         } else if (ft == srcMult) {
             srcMult.textEditStarted();
         } else if (ft == destMult) {
@@ -595,16 +591,12 @@ public class FigAssociation extends FigEdgeModelElement {
  * 
  * @author Bob Tarling
  */
-class FigMultiplicity extends FigSingleLineText 
-    implements PropertyChangeListener {
+class FigMultiplicity extends FigSingleLineTextWithNotation {
 
-    private NotationProvider multiplicityNotationProvider;
-    private static final long serialVersionUID = 5385230942216677015L;
-    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
-
+    @SuppressWarnings("deprecation")
     @Deprecated
     FigMultiplicity() {
-        super(X0, Y0, 90, 20, false, "multiplicity");
+        super(X0, Y0, 90, 20, false, new String[] {"multiplicity"});
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
     }
@@ -615,57 +607,17 @@ class FigMultiplicity extends FigSingleLineText
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
     }
-    
+
     @Override
-    protected void setText() {
-        assert getOwner() != null;
-        setText(multiplicityNotationProvider.toString(getOwner(), 
-                npArguments));
-        damage();
-    }
-    
-    protected void update() {
-        Object owner = getOwner();
-        if (Model.getFacade().isAAssociationEnd(owner)) {
-            /* If we have an owner, then we also have
-             * a notation provider, so it is safe to call the following: */
-            setText();
-        }
-    }
-    
-    protected void textEdited() {
-        multiplicityNotationProvider.parse(getOwner(), getText());
-        setText(multiplicityNotationProvider.toString(getOwner(), 
-                npArguments));
-    }
-    
-    protected void textEditStarted() {
-        String s = multiplicityNotationProvider.getParsingHelp();
-        ArgoEventPump.fireEvent(new ArgoHelpEvent(
-                ArgoEventTypes.HELP_CHANGED, this,
-                Translator.localize(s)));
-        setText(multiplicityNotationProvider.toString(getOwner(), 
-                npArguments));
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_MULTIPLICITY;
     }
 
-    /**
-     * Create the NotationProviders.
-     * 
-     * @param own the current owner
-     */
-    protected void initNotationProviders(Object own) {
-        /* Careful; the owner is not yet set! */
-        if (multiplicityNotationProvider != null) {
-            multiplicityNotationProvider.cleanListener(this, own);
-        }
-        if (Model.getFacade().isAModelElement(own)) {
-            NotationName notation = Notation.findNotation(getSettings().getNotationLanguage());
-            multiplicityNotationProvider =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_MULTIPLICITY, own, this, notation);
-            boolean value = getSettings().isShowSingularMultiplicities();
-            npArguments.put("singularMultiplicityVisible", value);
-        }
+    @Override
+    protected void initNotationArguments() {
+        super.initNotationArguments();
+        boolean value = getSettings().isShowSingularMultiplicities();
+        getNpArguments().put("singularMultiplicityVisible", value);
     }
 }
 
@@ -682,6 +634,7 @@ class FigOrdering extends FigSingleLineText {
 
     private static final long serialVersionUID = 5385230942216677015L;
 
+    @SuppressWarnings("deprecation")
     @Deprecated
     FigOrdering() {
         super(X0, Y0, 90, 20, false, "ordering");
@@ -701,7 +654,11 @@ class FigOrdering extends FigSingleLineText {
     @Override
     protected void setText() {
         assert getOwner() != null;
-        setText(getOrderingName(Model.getFacade().getOrdering(getOwner())));
+        if (getSettings().isShowProperties()) {
+            setText(getOrderingName(Model.getFacade().getOrdering(getOwner())));
+        } else {
+            setText("");
+        }
         damage();
     }
 
@@ -709,7 +666,7 @@ class FigOrdering extends FigSingleLineText {
      * Returns the name of the OrderingKind.
      *
      * @param orderingKind the kind of ordering
-     * @return "{ordered}", "{sorted}" or "" if null or "unordered"
+     * @return "{ordered}" or "", the latter if null or unordered
      */
     private String getOrderingName(Object orderingKind) {
         if (orderingKind == null) {
@@ -730,29 +687,22 @@ class FigOrdering extends FigSingleLineText {
 }
 
 /**
- * A Fig representing the ordering of some model element.
- * This has potential reuse for other edges showing ordering
+ * A Fig representing the association end role of some model element.
+ * 
  * @author Bob Tarling
  */
-class FigRole extends FigSingleLineText 
-    implements ArgoNotationEventListener {
-
-    private static final Logger LOG = Logger.getLogger(FigRole.class);
-    
-    private static final long serialVersionUID = 5385230942216677015L;
-
-    private NotationProvider notationProviderRole;
-    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
+class FigRole extends FigSingleLineTextWithNotation {
 
     /**
      * @deprecated for 0.27.3 by tfmorris.  Use 
      * {@link FigRole#FigRole(Object, DiagramSettings)}/
      */
+    @SuppressWarnings("deprecation")
     @Deprecated
     FigRole() {
         super(X0, Y0, 90, 20, false, (String[]) null 
         // no need to listen to these property changes - the 
-        // notationProvider takes care of this.
+        // notationProvider takes care of registering these.
                 /*, new String[] {"name", "visibility", "stereotype"}*/
                 );
         setTextFilled(false);
@@ -768,126 +718,27 @@ class FigRole extends FigSingleLineText
                 );
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
-        setOwnerInternal(owner);
-    }
-
-    @Override
-    public void setOwner(Object owner) {
-        setOwnerInternal(owner);
-    }
-
-    private void setOwnerInternal(Object owner) {
-        super.setOwner(owner);
-        getNewNotation();
-    }
-
-    private void getNewNotation() {
-        if (notationProviderRole != null) {
-            notationProviderRole.cleanListener(this, getOwner());
-        }
-        if (getOwner() != null) {
-            NotationName notation = 
-                Notation.findNotation(getSettings().getNotationLanguage());
-            notationProviderRole = 
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME, 
-                        getOwner(),
-                        this,
-                        notation);
-            npArguments.put("useGuillemets", getSettings().isUseGuillemets());
-        } else {
-            LOG.debug("Null owner when initialization notation providers");
-        }
-    }
-    
-    @Override
-    protected void setText() {
-        assert getOwner() != null;
-        assert notationProviderRole != null;
-        setText(notationProviderRole.toString(getOwner(), npArguments));
-    }
-
-    /**
-     * @return the help-text for parsing
-     */
-    public String getParsingHelp() {
-        return notationProviderRole.getParsingHelp();
-    }
-    
-    /**
-     * Parse the edited text to adapt the UML model.
-     */
-    public void parse() {
-        notationProviderRole.parse(getOwner(), getText());
         setText();
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigSingleLineText#propertyChange(java.beans.PropertyChangeEvent)
-     */
     @Override
-    public void propertyChange(PropertyChangeEvent pce) {
-        notationProviderRole.updateListener(this, getOwner(), pce);
-        if (!"remove".equals(pce.getPropertyName())) {
-            setText();
-            damage();
-        }
-        super.propertyChange(pce);  // do we need this?
+    protected void initNotationArguments() {
+        super.initNotationArguments();
+        HashMap<String, Object> npArguments = getNpArguments();
+        npArguments.put("visibilityVisible", getSettings().isShowVisibility());
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
-     */
-    @Override
-    public void removeFromDiagram() {
-        if (notationProviderRole != null) {
-            notationProviderRole.cleanListener(this, getOwner());
-        }
-        super.removeFromDiagram();
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME;
     }
 
-    /*
-     * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
-     */
-    public void notationAdded(ArgoNotationEvent e) {
-        renderingChanged();
-    }
-
-    /*
-     * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
-     */
-    public void notationChanged(ArgoNotationEvent e) {
-        renderingChanged();
-    }
-    
-    public void renderingChanged() {
-        super.renderingChanged();
-        getNewNotation();
-        setText();
-    }
-
-    /*
-     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
-     */
-    public void notationProviderAdded(ArgoNotationEvent e) {
-        renderingChanged();
-    }
-
-    /*
-     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
-     */
-    public void notationProviderRemoved(ArgoNotationEvent e) {
-        renderingChanged();
-    }
-
-    /*
-     * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
-     */
-    public void notationRemoved(ArgoNotationEvent e) {
-        renderingChanged();
-    }
 }
 
+/**
+ * The arrowhead and the group of labels shown at the association end: 
+ * the role name and the ordering property. 
+ * This does not include the multiplicity.
+ */
 class FigAssociationEndAnnotation extends FigTextGroup {
 
     private static final long serialVersionUID = 1871796732318164649L;
@@ -946,6 +797,10 @@ class FigAssociationEndAnnotation extends FigTextGroup {
 
         ordering = new FigOrdering(owner, settings);
         addFig(ordering);
+
+        determineArrowHead();
+        Model.getPump().addModelEventListener(this, owner, 
+                new String[] {"isNavigable", "aggregation", "participant"});
     }
     
     /*
@@ -1001,13 +856,15 @@ class FigAssociationEndAnnotation extends FigTextGroup {
                 && Boolean.FALSE.equals(pce.getNewValue())) {
             // Finished editing.
             // Parse the text that was edited.
-            role.parse();
+            // Only the role is editable, hence:
+            role.textEdited();
             calcBounds();
             endTrans();
         } else if (pName.equals("editing")
                 && Boolean.TRUE.equals(pce.getNewValue())) {
-            figEdge.showHelp(role.getParsingHelp());
-            role.setText();
+//            figEdge.showHelp(role.getParsingHelp());
+//            role.setText();
+            role.textEditStarted();
         } else {
             // Pass everything else to superclass
             super.propertyChange(pce);

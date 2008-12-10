@@ -105,16 +105,31 @@ public abstract class FigFeature extends CompartmentFigText {
     }
     
     /**
-     * Construct a Feature fig
+     * Construct a Feature fig.
+     * @deprecated by mvw in V0.27.3. Use the constructor without np parameter.
      * 
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings rendering settings
      * @param np notation provider
      */
+    @Deprecated
     public FigFeature(Object owner, Rectangle bounds, DiagramSettings settings,
             NotationProvider np) {
         super(owner, bounds, settings, np);
+        updateOwnerScope(Model.getFacade().isStatic(owner));
+        Model.getPump().addModelEventListener(this, owner, EVENT_NAME);
+    }
+    
+    /**
+     * Construct a Feature fig
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigFeature(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, bounds, settings);
         updateOwnerScope(Model.getFacade().isStatic(owner));
         Model.getPump().addModelEventListener(this, owner, EVENT_NAME);
     }

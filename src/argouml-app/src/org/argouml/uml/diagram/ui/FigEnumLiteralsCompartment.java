@@ -102,12 +102,16 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
         TargetManager.getInstance().setTarget(literal);
     }
 
-
+    @Deprecated
     @Override
-    protected FigSingleLineText createFigText(Object owner, Rectangle bounds,
+    protected FigSingleLineTextWithNotation createFigText(Object owner, Rectangle bounds,
             DiagramSettings settings, NotationProvider np) {
         return new FigEnumerationLiteral(owner, bounds, settings, np);
     }
-    
-    
+
+    @Override
+    protected FigSingleLineTextWithNotation createFigText(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        return new FigEnumerationLiteral(owner, bounds, settings);
+    }  
 }

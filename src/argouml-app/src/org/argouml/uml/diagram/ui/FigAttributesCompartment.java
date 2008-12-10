@@ -100,9 +100,16 @@ public class FigAttributesCompartment extends FigEditableCompartment {
         TargetManager.getInstance().setTarget(attr);
     }
     
+    @Deprecated
     @Override
-    protected FigSingleLineText createFigText(Object owner, Rectangle bounds,
+    protected FigSingleLineTextWithNotation createFigText(Object owner, Rectangle bounds,
             DiagramSettings settings, NotationProvider np) {
         return new FigAttribute(owner, bounds, settings, np);
+    }
+    
+    @Override
+    protected FigSingleLineTextWithNotation createFigText(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        return new FigAttribute(owner, bounds, settings);
     }
 }

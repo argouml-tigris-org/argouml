@@ -46,7 +46,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author thn
  */
-public class CompartmentFigText extends FigSingleLineText {
+public class CompartmentFigText extends FigSingleLineTextWithNotation {
     
     private static final int MARGIN = 3;
     
@@ -90,7 +90,7 @@ public class CompartmentFigText extends FigSingleLineText {
      * @param aFig The figure describing the whole compartment
      * @param np The notationProvider. See NotationProviderFactory2.
      * @deprecated for 0.27.3 by tfmorris. Use
-     * {@link #CompartmentFigText(Object, Rectangle, DiagramSettings, NotationProvider)}
+     * {@link #CompartmentFigText(Object, Rectangle, DiagramSettings)}
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -120,11 +120,13 @@ public class CompartmentFigText extends FigSingleLineText {
     /**
      * Construct a CompartmentFigText.
      * 
+     * @deprecated by mvw for 0.27.3; use a constructor without np parameter
      * @param element owning uml element
      * @param bounds position and size
      * @param settings render settings
      * @param np notation provider
      */
+    @Deprecated
     public CompartmentFigText(Object element, Rectangle bounds,
             DiagramSettings settings, NotationProvider np) {
         super(element, bounds, settings, true);
@@ -133,6 +135,22 @@ public class CompartmentFigText extends FigSingleLineText {
             LOG.warn("Need a NotationProvider for CompartmentFigText.");
         }
         setNotationProvider(np);
+
+        setJustification(FigText.JUSTIFY_LEFT);
+        setRightMargin(MARGIN);
+        setLeftMargin(MARGIN);
+    }
+    
+    /**
+     * Construct a CompartmentFigText.
+     * 
+     * @param element owning uml element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public CompartmentFigText(Object element, Rectangle bounds,
+            DiagramSettings settings) {
+        super(element, bounds, settings, true);
 
         setJustification(FigText.JUSTIFY_LEFT);
         setRightMargin(MARGIN);

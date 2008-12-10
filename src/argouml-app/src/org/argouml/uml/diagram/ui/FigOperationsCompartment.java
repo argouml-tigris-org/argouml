@@ -55,7 +55,7 @@ public class FigOperationsCompartment extends FigEditableCompartment {
      * @param w width
      * @param h height
      * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigOperationsCompartment(Rectangle, DiagramSettings)}.
+     * {@link #FigOperationsCompartment(Object, Rectangle, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -90,13 +90,37 @@ public class FigOperationsCompartment extends FigEditableCompartment {
         return NotationProviderFactory2.TYPE_OPERATION;
     }
 
-
+    /** 
+     * @deprecated  by mvw in V0.27.3; use the one without np parameter.
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     * @param np notation provider
+     * @return a FigSingleLineTextWithNotation which can be used to 
+     *                          display the text.
+     */
+    @Deprecated
     @Override
-    protected FigSingleLineText createFigText(Object owner, Rectangle bounds,
+    protected FigSingleLineTextWithNotation createFigText(Object owner, 
+            Rectangle bounds,
             DiagramSettings settings, NotationProvider np) {
         return new FigOperation(owner, bounds, settings, np);
     }
-    
+
+    /**     
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     * @return a FigSingleLineTextWithNotation which can be used to 
+     *                          display the text.
+     */
+    @Override
+    protected FigSingleLineTextWithNotation createFigText(Object owner, 
+            Rectangle bounds,
+            DiagramSettings settings) {
+        return new FigOperation(owner, bounds, settings);
+    }
+
     /*
      * By default, when double-clicking on the compartment,
      * we create an Operation (not a Reception).

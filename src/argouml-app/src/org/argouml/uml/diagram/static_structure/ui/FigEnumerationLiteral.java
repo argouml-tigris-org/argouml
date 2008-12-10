@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Rectangle;
 
 import org.argouml.notation.NotationProvider;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.tigris.gef.presentation.Fig;
@@ -54,7 +55,7 @@ public class FigEnumerationLiteral extends CompartmentFigText {
      * @param aFig The figure describing the whole compartment
      * @param np The notationProvider. See NotationProviderFactory2.
      * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigEnumerationLiteral(Object, Rectangle, DiagramSettings, NotationProvider)}.
+     * {@link #FigEnumerationLiteral(Object, Rectangle, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -66,14 +67,34 @@ public class FigEnumerationLiteral extends CompartmentFigText {
     /**
      * Build a new Enumeration Literal figText of the given dimensions, 
      * within the compartment described by <code>aFig</code>.
+     * @deprecated by mvw in V0.27.3. Use the constructor without np parameter.
      * 
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings render settings
      * @param np The notationProvider. See NotationProviderFactory2.
      */
+    @Deprecated
     public FigEnumerationLiteral(Object owner, Rectangle bounds,
             DiagramSettings settings, NotationProvider np) {
         super(owner, bounds, settings, np);
+    }
+
+    /**
+     * Build a new Enumeration Literal figText of the given dimensions, 
+     * within the compartment described by <code>aFig</code>.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigEnumerationLiteral(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+    }
+
+    @Override
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_ENUMERATION_LITERAL;
     }
 }

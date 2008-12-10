@@ -30,20 +30,14 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoNotationEvent;
-import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
-import org.argouml.notation.NotationProvider;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigText;
 
@@ -55,14 +49,11 @@ import org.tigris.gef.presentation.FigText;
  * <li>There is no line border
  * <li>There is space below the line for a "Clarifier",
  * i.e. a red squiggly line.
- * </ul><p>
- * 
- * This Fig may have a NotationProvider to render the text.
+ * </ul>
  *
  * @author Bob Tarling
  */
-public class FigSingleLineText extends ArgoFigText
-    implements ArgoNotationEventListener  {
+public class FigSingleLineText extends ArgoFigText  {
 
     private static final Logger LOG =
         Logger.getLogger(FigSingleLineText.class);
@@ -71,12 +62,6 @@ public class FigSingleLineText extends ArgoFigText
      * The properties of 'owner' that this is interested in
      */
     private String[] properties;
-    
-    /**
-     * The notation provider for the text shown in this compartment.
-     */
-    private NotationProvider notationProvider;
-    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
 
     /**
      * The constructor.
@@ -252,7 +237,6 @@ public class FigSingleLineText extends ArgoFigText
                     getOwner(), 
                     properties);
         }
-        ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
         super.removeFromDiagram();
     }
     
@@ -261,10 +245,8 @@ public class FigSingleLineText extends ArgoFigText
         if ("remove".equals(pce.getPropertyName()) 
                 && (pce.getSource() == getOwner())) {
             deleteFromModel();
-        } else if (notationProvider != null) {
-            notationProvider.updateListener(this, getOwner(), pce);
         }
-        
+
         if (pce instanceof UmlChangeEvent) {
             final UmlChangeEvent event = (UmlChangeEvent) pce;
             Runnable doWorkRunnable = new Runnable() {
@@ -315,16 +297,7 @@ public class FigSingleLineText extends ArgoFigText
             // notationProvider is null?
             setText();
         }
-
-        if (notationProvider != null
-                && (!"remove".equals(event.getPropertyName())
-                        || event.getSource() != getOwner())) {
-            this.setText(notationProvider.toString(getOwner(), npArguments));
-            damage();
-        }
     }
-
-    
     
     /**
      * This function without parameter shall
@@ -334,58 +307,9 @@ public class FigSingleLineText extends ArgoFigText
      */
     protected void setText() {
     }
-    
-
-    /**
-     * @return Returns the notationProvider for the text in this compartment.
-     */
-    public NotationProvider getNotationProvider() {
-        return notationProvider;
-    }
-
-    /**
-     * @param np The notationProvider to set.
-     */
-    void setNotationProvider(NotationProvider np) {
-        if (notationProvider != null) {
-            notationProvider.cleanListener(this, getOwner());
-        }
-        this.notationProvider = np;
-        initNotationArguments();
-    }
-
-    /**
-     * @return Returns the Notation Provider Arguments.
-     */
-    public HashMap<String, Object> getNpArguments() {
-        return npArguments;
-    }
-
-    protected void initNotationArguments() {
-        npArguments.put("useGuillemets", getSettings().isUseGuillemets());
-    }
-    
-    /**
-     * @deprecated for 0.27.3 by tfmorris.  Diagrams are responsible for
-     * updating their contained Figs with any notation changes.
-     */
-    @Deprecated
-    public void notationAdded(ArgoNotationEvent e) {
-        // Do nothing
-    }
-
-    /**
-     * @deprecated for 0.27.3 by tfmorris.  Diagrams are responsible for
-     * updating their contained Figs with any notation changes.
-     */
-    @Deprecated
-    public void notationChanged(ArgoNotationEvent e) {
-        renderingChanged();
-    }
 
     public void renderingChanged() {
         super.renderingChanged();
-        initNotationArguments();
         if (getOwner() == null) {
             return;
         }
@@ -393,32 +317,5 @@ public class FigSingleLineText extends ArgoFigText
          * guillemet notation change on a class name, 
          * see issue 5419. */
         setText();
-    }
-
-    /**
-     * @deprecated for 0.27.3 by tfmorris.  Diagrams are responsible for
-     * updating their contained Figs with any notation changes.
-     */
-    @Deprecated
-    public void notationProviderAdded(ArgoNotationEvent e) {
-        // Do nothing
-    }
-
-    /**
-     * @deprecated for 0.27.3 by tfmorris.  Diagrams are responsible for
-     * updating their contained Figs with any notation changes.
-     */
-    @Deprecated
-    public void notationProviderRemoved(ArgoNotationEvent e) {
-        // Do nothing    
-    }
-
-    /**
-     * @deprecated for 0.27.3 by tfmorris.  Diagrams are responsible for
-     * updating their contained Figs with any notation changes.
-     */
-    @Deprecated
-    public void notationRemoved(ArgoNotationEvent e) {
-        // Do nothing        
     }
 }

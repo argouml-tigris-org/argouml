@@ -184,7 +184,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
         Object visi = Model.getFacade().getVisibility(modelElement);
         String visibility = "";
         if (visi != null) {
-            visibility = NotationUtilityUml.generateVisibility(visi);
+            visibility = NotationUtilityUml.generateVisibility(visi, args);
         }
         if (name.length() < 1) {
             visibility = "";
@@ -193,6 +193,10 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
 
         String stereoString = 
             NotationUtilityUml.generateStereotype(modelElement, args);
+
+        if (stereoString.length() > 0) {
+            stereoString += " ";
+        }
 
         return stereoString + visibility + name;
     }

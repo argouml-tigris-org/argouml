@@ -34,7 +34,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.model.InvalidElementException;
 import org.argouml.notation.NotationProvider;
-import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
@@ -182,16 +181,12 @@ public abstract class FigEditableCompartment extends FigCompartment {
 
         // We are going to add the ones still valid & new ones
         // in the right sequence:
-        FigSingleLineText comp = null;
+        FigSingleLineTextWithNotation comp = null;
         try {
             int acounter = -1;
             for (Object umlObject : getUmlCollection()) {
                 comp = findCompartmentFig(figs, umlObject);
                 acounter++;                
-
-                NotationProvider np = 
-                    NotationProviderFactory2.getInstance()
-                        .getNotationProvider(getNotationType(), umlObject);
 
                 // If we don't have a fig for this UML object, we'll need to add
                 // one. We set the bounds, but they will be reset later.
@@ -202,8 +197,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
                             * ArgoFig.ROWHEIGHT,
                             0,
                             ArgoFig.ROWHEIGHT - 2),
-                            getSettings(),
-                            np);
+                            getSettings());
                 } else {
                     /* This one is still usable, so let's retain it, */
                     /* but its position may have been changed: */
@@ -211,11 +205,10 @@ public abstract class FigEditableCompartment extends FigCompartment {
                     b.y = ypos + 1 + acounter * ArgoFig.ROWHEIGHT;
                     // bounds not relevant here, but I am perfectionist...
                     comp.setBounds(b);
-                    /* We need to set a new notationprovider, since 
-                     * the Notation language may have been changed:  */
-                    comp.setNotationProvider(np);
-                 }
-                np.initialiseListener(comp, umlObject);
+                }
+                /* We need to set a new notationprovider, since 
+                 * the Notation language may have been changed:  */
+                comp.initNotationProviders();
                 addFig(comp); // add it again (but now in the right sequence)
 
                 // Now put the text in
@@ -268,12 +261,13 @@ public abstract class FigEditableCompartment extends FigCompartment {
     /**
      * @return null
      * @deprecated for 0.27.3 by tfmorris.  Subclasses must implement
-     * {@link #createFigText(Object, Rectangle, DiagramSettings, NotationProvider)}
+     * {@link #createFigText(Object, Rectangle, DiagramSettings, 
+     * NotationProvider)}
      * which will become abstract in the future when this deprecated method is
      * removed.
      */
     @Deprecated
-    protected FigSingleLineText createFigText(
+    protected FigSingleLineTextWithNotation createFigText(
 	    int x, int y, int w, int h, Fig aFig, NotationProvider np) {
         // No longer abstract to allow subclasses to remove, so we provide a
         // null default implementation
@@ -281,8 +275,9 @@ public abstract class FigEditableCompartment extends FigCompartment {
     }
 
     /**
-     * Factory method to create a FigSingleLineText which must be implemented by
-     * all subclasses. It will become abstract after the release of 0.28 to
+     * Factory method to create a FigSingleLineTextWithNotation 
+     * which must be implemented by all subclasses. 
+     * It will become abstract after the release of 0.28 to
      * enforce this requirement.
      * 
      * @param owner owning UML element
@@ -292,14 +287,15 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * @return a FigSingleLineText which can be used to display the text.
      */
     @SuppressWarnings("deprecation")
-    protected FigSingleLineText createFigText(Object owner, Rectangle
-            bounds, @SuppressWarnings("unused") DiagramSettings settings, 
+    protected FigSingleLineTextWithNotation createFigText(Object owner, 
+            Rectangle bounds, 
+            @SuppressWarnings("unused") DiagramSettings settings, 
             NotationProvider np) {
 
         // If this is not overridden it will revert to the old behavior
         // All internal subclasses have been updated, but this if for 
         // compatibility of non-ArgoUML extensions.
-        FigSingleLineText comp = createFigText(
+        FigSingleLineTextWithNotation comp = createFigText(
                     bounds.x,
                     bounds.y,
                     bounds.width,
@@ -309,6 +305,17 @@ public abstract class FigEditableCompartment extends FigCompartment {
         comp.setOwner(owner);
         return comp;
     }
+    
+    /**
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings the render settings
+     * @return a FigSingleLineText with notation provider 
+     *                  which can be used to display the text
+     */
+    abstract FigSingleLineTextWithNotation createFigText(Object owner, 
+            Rectangle bounds, 
+            DiagramSettings settings);
     
     /**
      * Returns the new size of the FigGroup (either attributes or
