@@ -141,6 +141,14 @@ public abstract class FigEdgeModelElement
 
 
     private NotationProvider notationProviderName;
+    
+    // TODO: This is a very memory inefficient design because:
+    // a) HashMaps are MUCH larger then necessary for this object
+    //    ~224 bytes vs. 24 bytes for 4 parameters - see
+    //    https://www.sdn.sap.com/irj/scn/weblogs?blog=/pub/wlg/5163
+    // b) the notation settings objects aren't shared even though most of
+    // them will be identical
+    // It's also performance inefficient, although that's less of a concern
     // TODO: The opaqueness of the string keys prevents us finding uses
     private HashMap<String, Object> npArguments;
     /**
