@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -3051,7 +3051,7 @@ public interface Facade {
      * Return the visibility of this element.
      *
      * @param handle a model element
-     * @return visibility
+     * @return the visibility in the form of a VisibilitKind object
      */
     Object getVisibility(Object handle);
 
