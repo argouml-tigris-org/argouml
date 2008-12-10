@@ -37,6 +37,7 @@ import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 
 /**
  * The Fig that represents a message between classifier roles.
@@ -73,8 +74,8 @@ public class FigMessage extends FigEdgeModelElement {
     
     @Override
     protected int getNotationProviderType() {
-        /* Use the same notation as Messages on a collaboration diagram: */
-        return NotationProviderFactory2.TYPE_MESSAGE;
+        /* Use a different notation as Messages on a collaboration diagram: */
+        return NotationProviderFactory2.TYPE_SD_MESSAGE;
     }
     
     /* This next argument may be used to switch off 
@@ -86,7 +87,17 @@ public class FigMessage extends FigEdgeModelElement {
      * and they are still optional in sequence diagrams. */
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
-        putNotationArgument("showSequenceNrs", Boolean.FALSE);
+        putNotationArgument("hideSequenceNrs", Boolean.TRUE);
+    }
+
+    protected void textEditStarted(FigText ft) {
+        /* This is a temporary hack until the notation provider
+         * for a SD Message will be able to parse successfully when the sequence
+         * number is missing.
+         * Remove this method completely then.*/
+        putNotationArgument("hideSequenceNrs", Boolean.FALSE);
+        super.textEditStarted(ft);
+        putNotationArgument("hideSequenceNrs", Boolean.TRUE);
     }
 
     @Override

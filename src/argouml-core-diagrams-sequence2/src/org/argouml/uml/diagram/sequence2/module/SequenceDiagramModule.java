@@ -26,9 +26,12 @@ package org.argouml.uml.diagram.sequence2.module;
 
 import org.apache.log4j.Logger;
 import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.proppanel.sequence2.SequenceDiagramPropPanelFactory;
+import org.argouml.proppanel.sequence2.notation.SDMessageNotationUml;
 import org.argouml.uml.diagram.DiagramFactory;
-import org.argouml.uml.diagram.DiagramFactoryInterface;
 import org.argouml.uml.diagram.DiagramFactoryInterface2;
 import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 import org.argouml.uml.ui.PropPanelFactoryManager;
@@ -57,7 +60,13 @@ public class SequenceDiagramModule implements ModuleInterface {
         // TODO: Remove the casting to DiagramFactoryInterface2
         // as soon as DiagramFactoryInterface is removed.
         DiagramFactory.getInstance().registerDiagramFactory(
-                DiagramType.Sequence, (DiagramFactoryInterface2) new SequenceDiagramFactory());
+                DiagramType.Sequence, 
+                (DiagramFactoryInterface2) new SequenceDiagramFactory());
+
+        NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();
+        NotationName nn = Notation.findNotation("UML 1.4");
+        npf.addNotationProvider(NotationProviderFactory2.TYPE_SD_MESSAGE, 
+                nn, SDMessageNotationUml.class);
 
         LOG.info("SequenceDiagram Module enabled.");
         return true;

@@ -1363,7 +1363,7 @@ public final class NotationUtilityUml {
         return s + " (" + p + ")";
     }
 
-    static String generateActionSequence(Object a) {
+    public static String generateActionSequence(Object a) {
         if (Model.getFacade().isAActionSequence(a)) {
             StringBuffer str = new StringBuffer("");
             Collection actions = Model.getFacade().getActions(a);
