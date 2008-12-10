@@ -27,7 +27,6 @@ package org.argouml.uml.reveng;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -277,8 +276,9 @@ public abstract class ImportCommon implements ImportSettingsInternal {
 
     protected File[] getSelectedFiles() {
 	File[] copy = new File[selectedFiles.length];
-	for (int i = 0; i < selectedFiles.length; i++)
+	for (int i = 0; i < selectedFiles.length; i++) {
 	    copy[i] = selectedFiles[i];
+	}
 	return copy;
         //return Arrays.copyOf(selectedFiles, selectedFiles.length);
     }
@@ -330,7 +330,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                 Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
-            if (st.hasMoreTokens()) st.nextToken();
+            skipTokens(st, 1);
             if (st.hasMoreTokens() && st.nextToken().equals("false")) {
                 return false;
             }
@@ -350,8 +350,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                         Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
+            skipTokens(st, 2);
             if (st.hasMoreTokens() && st.nextToken().equals("false")) {
                 return false;
             }
@@ -371,14 +370,20 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                         Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
+            skipTokens(st, 3);
             if (st.hasMoreTokens() && st.nextToken().equals("false")) {
                 return false;
             }
         }
         return true;
+    }
+
+    private void skipTokens(StringTokenizer st, int count) {
+        for (int i = 0; i < count; i++) {
+            if (st.hasMoreTokens()) {
+                st.nextToken();
+            }
+        }
     }
 
     /**
@@ -393,10 +398,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                         Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
+            skipTokens(st, 4);
             if (st.hasMoreTokens() && st.nextToken().equals("false")) {
                 return false;
             }
@@ -485,6 +487,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
             if (criticThreadWasOn) {
                 Designer.theDesigner().setAutoCritique(true);
             }
+            // TODO: Send an event instead of calling Explorer directly
             ExplorerEventAdaptor.getInstance().structureChanged();
             Model.getPump().startPumpingEvents();
             // Should already be closed.  If not, something bad happened, so
