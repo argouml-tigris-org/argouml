@@ -761,6 +761,9 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     private static final int NAV_AGGREGATE = 4;
     private static final int NAV_COMPOSITE = 5;
     
+    /**
+     * All the arrow head types.
+     */
     public static final ArrowHead[] ARROW_HEADS = new ArrowHead[6];
     static {
         ARROW_HEADS[NONE] = ArrowHeadNone.TheInstance;
@@ -776,6 +779,7 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     private int arrowType = 0;
     private FigEdgeModelElement figEdge;
 
+    @SuppressWarnings("deprecation")
     @Deprecated
     FigAssociationEndAnnotation(FigEdgeModelElement edge) {
         figEdge = edge;
@@ -803,9 +807,11 @@ class FigAssociationEndAnnotation extends FigTextGroup {
                 new String[] {"isNavigable", "aggregation", "participant"});
     }
     
-    /*
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+    /**
+     * @deprecated by mvw in 0.27.3. Use non-deprecated constructors instead.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public void setOwner(Object owner) {
         if (owner != null) {
@@ -905,6 +911,9 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         }
     }
     
+    /**
+     * @return the current arrow type of this end of the association
+     */
     public int getArrowType() {
         return arrowType;
     }
