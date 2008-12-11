@@ -74,8 +74,17 @@ public class PathComparator implements Comparator {
         if (o1.equals(o2)) {
             return 0;
         }
-        if (o1 instanceof String && o2 instanceof String) {
-            return collator.compare((String) o1, (String) o2);
+        if (o1 instanceof String) {
+            if (o2 instanceof String) {
+                return collator.compare((String) o1, (String) o2);
+            } else if (Model.getFacade().isAUMLElement(o2)) {
+                // All strings collate before all UML elements
+                return -1;
+            }
+        }
+        if (o2 instanceof String && Model.getFacade().isAUMLElement(o1)) {
+            // All strings collate before all UML elements
+            return 1;
         }
         // Elements are collated first by name hoping for a quick solution
         String name1, name2;
