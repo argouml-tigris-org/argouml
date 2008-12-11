@@ -83,7 +83,10 @@ public class PathComparator implements Comparator {
             name1 = Model.getFacade().getName(o1);
             name2 = Model.getFacade().getName(o2);
         } catch (IllegalArgumentException e) {
-            throw new ClassCastException("Model element or String required");
+            throw new ClassCastException(
+                "Model element or String required" 
+                    + "\n - o1 = " + ((o1 == null) ? "(null)" : o1.toString()) 
+                    + "\n - o2 = " + ((o2 == null) ? "(null)" : o2.toString()));
         }
         if (name1 != null && name2 != null) {
             int comparison = collator.compare(name1, name2);

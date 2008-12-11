@@ -119,7 +119,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
             o = Model.getFacade().getType(getTarget());
         }
         if (o == null) {
-            o = " ";
+            o = "";
         }
         return o;
     }
