@@ -70,8 +70,9 @@ public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
             Iterator it = v2.iterator();
             while (it.hasNext()) {
                 Object o = it.next();
-                if (!isValidElement(o))
+                if (!isValidElement(o)) {
                     v.remove(o);
+                }
             }
             setElements(v);
         }
@@ -88,12 +89,13 @@ public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
             container = Model.getFacade().getContainer(getTarget());
             if (container != null
                     && Model.getFacade().isASubmachineState(container)
-                    && Model.getFacade().getSubmachine(container) != null)
+                    && Model.getFacade().getSubmachine(container) != null) {
 
                 return Model.getStateMachinesHelper()
                         .getStatebyName(objectName,
                                 Model.getFacade().getTop(Model.getFacade()
                                         .getSubmachine(container)));
+            }
         }
         return null;
     }
