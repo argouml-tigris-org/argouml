@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,7 +44,9 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for N-ary association (association node),
- * i.e. the diamond.
+ * i.e. the diamond. <p>
+ * 
+ * TODO: Improve the location of the stereotypes!
  *
  * @author pepargouml@yahoo.es
  */
