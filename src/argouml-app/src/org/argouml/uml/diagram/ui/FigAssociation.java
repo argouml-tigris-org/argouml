@@ -51,10 +51,7 @@ import org.tigris.gef.presentation.ArrowHeadComposite;
 import org.tigris.gef.presentation.ArrowHeadDiamond;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadNone;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 
@@ -114,13 +111,13 @@ public class FigAssociation extends FigEdgeModelElement {
         // Placed perpendicular to midpoint of edge
         addPathItem(middleGroup,
                 new PathItemPlacement(this, middleGroup, 50, 25));
-        markPosition(50, 0, 90, 25, Color.yellow);
+        ArgoFigUtil.markPosition(this, 50, 0, 90, 25, Color.yellow);
         
         srcMult = new FigMultiplicity();
         // Placed at a 45 degree angle close to the end
         addPathItem(srcMult, 
                 new PathItemPlacement(this, srcMult, 0, 5, 135, 5));
-        markPosition(0, 5, 135, 5, Color.green);
+        ArgoFigUtil.markPosition(this, 0, 5, 135, 5, Color.green);
         
         //////////////////////////////////////////////////////////////////
         // NOTE: If this needs to be updated during the deprecation period
@@ -130,12 +127,12 @@ public class FigAssociation extends FigEdgeModelElement {
         srcGroup = new FigAssociationEndAnnotation(this);
         addPathItem(srcGroup, 
                 new PathItemPlacement(this, srcGroup, 0, 5, -135, 5));
-        markPosition(0, 5, -135, 5, Color.blue);
+        ArgoFigUtil.markPosition(this, 0, 5, -135, 5, Color.blue);
 
         destMult = new FigMultiplicity();
         addPathItem(destMult,
                 new PathItemPlacement(this, destMult, 100, -5, 45, 5));
-        markPosition(100, -5, 45, 5, Color.red);
+        ArgoFigUtil.markPosition(this, 100, -5, 45, 5, Color.red);
         
         //////////////////////////////////////////////////////////////////
         // NOTE: If this needs to be updated during the deprecation period
@@ -145,7 +142,7 @@ public class FigAssociation extends FigEdgeModelElement {
         destGroup = new FigAssociationEndAnnotation(this);
         addPathItem(destGroup,
                 new PathItemPlacement(this, destGroup, 100, -5, -45, 5));
-        markPosition(100, -5, -45, 5, Color.orange);
+        ArgoFigUtil.markPosition(this, 100, -5, -45, 5, Color.orange);
                 
         setBetweenNearestPoints(true);
     }
@@ -169,61 +166,36 @@ public class FigAssociation extends FigEdgeModelElement {
         middleGroup.addFig(getStereotypeFig());
         addPathItem(middleGroup,
                 new PathItemPlacement(this, middleGroup, 50, 25));
-        markPosition(50, 0, 90, 25, Color.yellow);
+        ArgoFigUtil.markPosition(this, 50, 0, 90, 25, Color.yellow);
         
-        Object[] ends = 
+        Object[] ends = // UML objects of AssociationEnd type
             Model.getFacade().getConnections(owner).toArray();
         
         srcMult = new FigMultiplicity(ends[0], settings);
         addPathItem(srcMult, 
                 new PathItemPlacement(this, srcMult, 0, 5, 135, 5));
-        markPosition(0, 5, 135, 5, Color.green);
+        ArgoFigUtil.markPosition(this, 0, 5, 135, 5, Color.green);
         
         srcGroup = new FigAssociationEndAnnotation(this, ends[0], settings);
         addPathItem(srcGroup, 
                 new PathItemPlacement(this, srcGroup, 0, 5, -135, 5));
-        markPosition(0, 5, -135, 5, Color.blue);
+        ArgoFigUtil.markPosition(this, 0, 5, -135, 5, Color.blue);
 
         destMult = new FigMultiplicity(ends[1], settings);
         addPathItem(destMult,
                 new PathItemPlacement(this, destMult, 100, -5, 45, 5));
-        markPosition(100, -5, 45, 5, Color.red);
+        ArgoFigUtil.markPosition(this, 100, -5, 45, 5, Color.red);
         
         destGroup = new FigAssociationEndAnnotation(this, ends[1], settings);
         addPathItem(destGroup,
                 new PathItemPlacement(this, destGroup, 100, -5, -45, 5));
-        markPosition(100, -5, -45, 5, Color.orange);
+        ArgoFigUtil.markPosition(this, 100, -5, -45, 5, Color.orange);
 
         setBetweenNearestPoints(true);
         
         initializeNotationProvidersInternal(owner);
 
     }
-
-    /*
-     * Add pretty little markers for debugging purposes. We use three markers so
-     * you can see the anchor, the computed target position, and how collision
-     * detection affects a largish box.
-     */
-    private void markPosition(int pct, int delta, int angle, int offset,
-            Color color) {
-        // set this to true on to enable debugging figs
-        if (false) {
-            Fig f;
-            f = new FigCircle(0, 0, 5, 5, color, Color.red);
-            // anchor position
-            addPathItem(f, new PathItemPlacement(this, f, pct, delta, angle, 
-                    0));
-            f = new FigRect(0, 0, 100, 20, color, Color.red);
-            f.setFilled(false);
-            addPathItem(f, new PathItemPlacement(this, f, pct, delta, angle,
-                    offset));
-            f = new FigCircle(0, 0, 5, 5, color, Color.blue);
-            addPathItem(f, new PathItemPlacement(this, f, pct, delta, angle,
-                    offset));
-        }
-    }
-
     
     /**
      * Constructor that hooks the Fig to an existing UML element.
@@ -737,7 +709,10 @@ class FigRole extends FigSingleLineTextWithNotation {
 /**
  * The arrowhead and the group of labels shown at the association end: 
  * the role name and the ordering property. 
- * This does not include the multiplicity.
+ * This does not include the multiplicity. <p>
+ * 
+ * This class does not yet support arrows for a FigAssociationEnd, 
+ * as is used for N-ary associations.
  */
 class FigAssociationEndAnnotation extends FigTextGroup {
 
