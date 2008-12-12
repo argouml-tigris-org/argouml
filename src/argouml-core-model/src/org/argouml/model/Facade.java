@@ -1537,7 +1537,8 @@ public interface Facade {
      * Return the connections to an Association or a Link.
      *
      * @param handle the Association or Link
-     * @return a Collection with all connections.
+     * @return a Collection with all connections 
+     * of type AssociationEnd or LinkEnd.
      */
     Collection getConnections(Object handle);
 
