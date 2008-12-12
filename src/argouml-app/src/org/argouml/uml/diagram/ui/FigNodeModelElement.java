@@ -1160,9 +1160,14 @@ public abstract class FigNodeModelElement
      * @param s the given string to be localized and shown
      */
     protected void showHelp(String s) {
-        ArgoEventPump.fireEvent(new ArgoHelpEvent(
-                ArgoEventTypes.HELP_CHANGED, this,
-                Translator.localize(s)));
+        if (s == null) {
+            // Convert null to empty string and clear help message
+            ArgoEventPump.fireEvent(new ArgoHelpEvent(
+                    ArgoEventTypes.HELP_CHANGED, this, ""));
+        } else {
+            ArgoEventPump.fireEvent(new ArgoHelpEvent(
+                    ArgoEventTypes.HELP_CHANGED, this, Translator.localize(s)));
+        }
     }
 
     /**
