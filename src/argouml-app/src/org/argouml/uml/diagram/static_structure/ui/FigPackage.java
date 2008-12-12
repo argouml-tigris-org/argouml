@@ -646,6 +646,12 @@ public class FigPackage extends FigNodeModelElement
         }
     }
 
+    /**
+     * A text fig for the body of a a Package 
+     * which does not contain any text, 
+     * but solely exists to trigger a jump to a diagram for
+     * the named package when double clicked.
+     */
     class FigPackageFigText extends ArgoFigText {
         
         /**
@@ -677,9 +683,13 @@ public class FigPackage extends FigNodeModelElement
             super(owner, bounds, settings, false);
         }
         
-	/*
-	 * @see java.awt.event.MouseListener#mouseClicked(
-         *         java.awt.event.MouseEvent)
+	/**
+	 * TODO: mvw: Would it not be better if this code 
+	 * would go in startTextEditor(), not overruling mouseClicked(). 
+	 * But we made this fig not editable, 
+	 * to stop it from reacting on key-presses.
+	 * Anyhow - this is a hack - abusing a FigText - GEF does 
+	 * not really support double-clicking on a Fig to trigger some action.
 	 */
 	@Override
 	public void mouseClicked(MouseEvent me) {
