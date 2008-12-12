@@ -38,7 +38,14 @@ import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.MyTokenizer;
 
 /**
- * The UML notation for an associationend name (i.e. the  role).
+ * The UML notation for an association-end name (i.e. the  role). <p>
+ * 
+ * This notation supports the association end name, 
+ * visibility, and stereotypes. <p>
+ * 
+ * There is no support for the interface specifier
+ * (that maps to the "specification" of an AssociationEnd). <p>
+ * 
  * TODO: This is the only notation (that I'm aware of) that requires state.
  * All others should become effectively singletons. - Bob.
  * @author michiel
