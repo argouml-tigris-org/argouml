@@ -158,7 +158,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         Model.getCoreHelper().setType(elem, types[0]);
         Model.getCoreHelper().setType(elem, null);
         ThreadHelper.synchronize();
-        assertNotNull(model.getSelectedItem());
+        assertNull(model.getSelectedItem());
     }
 
     /**
