@@ -1433,8 +1433,9 @@ class FacadeMDRImpl implements Facade {
     public Collection<Dependency> getClientDependencies(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                ModelElement me = (ModelElement) handle;
-                return me.getClientDependency();
+                final ModelElement me = (ModelElement) handle;
+                return Collections.unmodifiableCollection(
+                        me.getClientDependency());
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
@@ -3310,10 +3311,12 @@ class FacadeMDRImpl implements Facade {
     public Collection getSupplierDependencies(Object handle) {
         try {
             if (handle instanceof ModelElement) {
-                ModelElement me = (ModelElement) handle;                
-                return ((org.omg.uml.UmlPackage) me.refOutermostPackage())
+                final ModelElement me = (ModelElement) handle;                
+                return Collections.unmodifiableCollection(
+                        ((org.omg.uml.UmlPackage) me.refOutermostPackage())
                         .getCore().getASupplierSupplierDependency()
-                        .getSupplierDependency((ModelElement) handle);
+                        .getSupplierDependency((ModelElement) handle)
+                );
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
