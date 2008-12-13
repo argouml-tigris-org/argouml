@@ -457,18 +457,6 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         	}
             }
         }
-        if (Model.getFacade().isAModelElement(node)) {
-            Collection specs = Model.getFacade().getClientDependencies(node);
-            specs.addAll(Model.getFacade().getSupplierDependencies(node));
-            Iterator iter = specs.iterator();
-            while (iter.hasNext()) {
-        	Object dependency = iter.next();
-        	if (canAddEdge(dependency)) {
-        	    addEdge(dependency);
-        	    // return;
-                }
-            }
-        }
         if (Model.getFacade().isAAssociation(node)) {
             Collection ends = Model.getFacade().getConnections(node);
             Iterator iter = ends.iterator();
