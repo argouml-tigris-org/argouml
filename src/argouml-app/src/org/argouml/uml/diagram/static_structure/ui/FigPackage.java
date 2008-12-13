@@ -42,7 +42,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
@@ -50,9 +49,12 @@ import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.StereotypeContainer;
 import org.argouml.uml.diagram.VisibilityContainer;
 import org.argouml.uml.diagram.DiagramFactory.DiagramType;
+import org.argouml.uml.diagram.ui.ArgoFig;
+import org.argouml.uml.diagram.ui.ArgoFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Geometry;
@@ -91,9 +93,7 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class FigPackage extends FigNodeModelElement
     implements StereotypeContainer, VisibilityContainer {
-    /**
-     * Logger.
-     */
+
     private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
     /** The minimal height of the name. */
@@ -142,17 +142,28 @@ public class FigPackage extends FigNodeModelElement
      * @param node the UML package
      * @param x the x coordinate of the location
      * @param y the y coordinate of the location
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigPackage(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigPackage(Object node, int x, int y) {
-        setBigPort(
-            new PackagePortFigRect(0, 0, width, height, indentX, tabHeight));
-
-        //
         // Create a Body that reacts to double-clicks and jumps to a diagram.
-        //
         body = new FigPackageFigText(0, textH, width, height - textH);
 
+        initialize();
+
+        setOwner(node);
+        setLocation(x, y);
+
+        visibilityVisible = getSettings().isShowVisibility();
+    }
+
+    private void initialize() {
         body.setEditable(false);
+        
+        setBigPort(
+            new PackagePortFigRect(0, 0, width, height, indentX, tabHeight));
 
         getNameFig().setBounds(0, 0, width - indentX, textH + 2);
         getNameFig().setJustification(FigText.JUSTIFY_LEFT);
@@ -176,8 +187,8 @@ public class FigPackage extends FigNodeModelElement
         // display is linked to whether to display the stereotype.
 
         // TODO: Do we really still need this? - Bob
-        stereoLineBlinder =
-            new FigRect(11, 10 + STEREOHEIGHT, 58, 2, Color.white, Color.white);
+        stereoLineBlinder = new FigRect(X0 + 1, Y0 + STEREOHEIGHT, WIDTH - 2,
+                2, Color.white, Color.white);
         stereoLineBlinder.setLineWidth(1);
         stereoLineBlinder.setVisible(false);
 
@@ -188,29 +199,58 @@ public class FigPackage extends FigNodeModelElement
         addFig(stereoLineBlinder);
         addFig(body);
 
-        setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisible unless mouse enters
+
+        // Make all the parts match the main fig
+        setFilled(true);
+        setFillColor(Color.white);
+        setLineColor(Color.black);
+        setLineWidth(1);
         
-        setLocation(x, y);
+//        setLocation(x, y);
         
         // TODO: Why do we need to do this? - Bob
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
-        
-        updateEdges();
+        setBounds(getBounds());
 
-        Project p = ProjectManager.getManager().getCurrentProject();
-        visibilityVisible = p.getProjectSettings().getShowVisibilityValue();
-        setOwner(node);
+        updateEdges();
     }
 
     /**
-     * Contructor that hooks the fig into the UML element.
-     *
+     * Constructor that hooks the fig into the UML element.
+     * 
      * @param gm ignored
      * @param node the UML element
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigPackage(Object, Rectangle, DiagramSettings)}.
      */
-    public FigPackage(GraphModel gm, Object node) {
+    @Deprecated
+    public FigPackage(@SuppressWarnings("unused") GraphModel gm, Object node) {
         this(node, 0, 0);
+    }
+
+    /**
+     * Construct a package figure with the given owner, bounds, and rendering
+     * settings. This constructor is used by the PGML parser.
+     * 
+     * @param owner owning model element
+     * @param bounds position and size or null if fig hasn't been placed
+     * @param settings rendering settings
+     */
+    public FigPackage(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+
+        // Create a Body that reacts to double-clicks and jumps to a diagram.
+        body = new FigPackageFigText(getOwner(), 
+                new Rectangle(0, textH, width, height - textH), getSettings());
+        
+        initialize();
+        
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
+        visibilityVisible = settings.isShowVisibility();
+        setBounds(getBounds());
     }
 
     /*
@@ -584,7 +624,7 @@ public class FigPackage extends FigNodeModelElement
             }
             if (f instanceof FigNodeModelElement) {
                 ((FigNodeModelElement) f).forceRepaintShadow();
-                ((FigNodeModelElement) f).renderingChanged();
+                ((ArgoFig) f).renderingChanged();
             }
             f.damage();
         }
@@ -606,34 +646,68 @@ public class FigPackage extends FigNodeModelElement
         }
     }
 
-    class FigPackageFigText extends FigText {
+    /**
+     * A text fig for the body of a a Package 
+     * which does not contain any text, 
+     * but solely exists to trigger a jump to a diagram for
+     * the named package when double clicked.
+     */
+    class FigPackageFigText extends ArgoFigText {
+        
         /**
-	 * The constructor.
-         *
-	 * @param xa
-	 * @param ya
-	 * @param w
-	 * @param h
-	 */
-	public FigPackageFigText(int xa, int ya, int w, int h) {
-	    super(xa, ya, w, h);
-	}
+         * The constructor.
+         * 
+         * @param xa
+         * @param ya
+         * @param w
+         * @param h
+         * @deprecated 0.27.2 by tfmorris. Use
+         * {@link #FigPackageFigText(Object, Rectangle, DiagramSettings)}
+         */
+        @SuppressWarnings("deprecation")
+        @Deprecated
+        public FigPackageFigText(int xa, int ya, int w, int h) {
+            super(xa, ya, w, h);
+        }
 
-	/*
-	 * @see java.awt.event.MouseListener#mouseClicked(
-         *         java.awt.event.MouseEvent)
+        /**
+         * Construct a text fig for a Package which will jump to diagram for
+         * the named package when double clicked.
+         * 
+         * @param owner owning UML element
+         * @param bounds position and size
+         * @param settings render settings
+         */
+        public FigPackageFigText(Object owner, Rectangle bounds, 
+                DiagramSettings settings) {
+            super(owner, bounds, settings, false);
+        }
+        
+	/**
+	 * TODO: mvw: Would it not be better if this code 
+	 * would go in startTextEditor(), not overruling mouseClicked(). 
+	 * But we made this fig not editable, 
+	 * to stop it from reacting on key-presses.
+	 * Anyhow - this is a hack - abusing a FigText - GEF does 
+	 * not really support double-clicking on a Fig to trigger some action.
 	 */
+	@Override
 	public void mouseClicked(MouseEvent me) {
 
 	    String lsDefaultName = "main";
 
+	    // TODO: This code appears to be designed to jump to the diagram
+	    // containing the contents of the package that was double clicked
+	    // but it looks like it's always searching for the name "main"
+	    // instead of the package name.
+	    // TODO: But in any case, it should be delegating this work to 
+	    // to something that knows about the diagrams and they contents -tfm
 	    if (me.getClickCount() >= 2) {
 		Object lPkg = FigPackage.this.getOwner();
 		if (lPkg != null) {
 		    Object lNS = lPkg;
 
-		    Project lP =
-			ProjectManager.getManager().getCurrentProject();
+		    Project lP = getProject();
 
 		    List<ArgoDiagram> diags = lP.getDiagramList();
 		    ArgoDiagram lFirst = null;

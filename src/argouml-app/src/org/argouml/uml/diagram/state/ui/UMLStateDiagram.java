@@ -37,6 +37,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
@@ -307,7 +308,11 @@ public class UMLStateDiagram extends UMLDiagram {
                 && "remove".equals(evt.getPropertyName())) {
             Model.getPump().removeModelEventListener(this, 
                     theStateMachine, new String[] {"remove", "namespace"});
-            getProject().moveToTrash(this);
+            if (getProject() != null) {
+                getProject().moveToTrash(this);
+            } else {
+                DiagramFactory.getInstance().removeDiagram(this);
+            }
         }
         if (evt.getSource() == theStateMachine 
                 && "namespace".equals(evt.getPropertyName())) {

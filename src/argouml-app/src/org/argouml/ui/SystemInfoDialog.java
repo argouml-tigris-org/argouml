@@ -69,19 +69,6 @@ public class SystemInfoDialog extends ArgoDialog {
 
     /**
      * The constructor.
-     *
-     * @param owner - ignored - for backward compatibility only
-     * @param modal true if the dialog is modal
-     * @deprecated for 0.25.1 by tfmorris.  Use 
-     *             {@link #SystemInfoDialog(boolean)}
-     */
-    @Deprecated
-    public SystemInfoDialog(Frame owner, boolean modal) {
-        this(modal);
-    }
-    
-    /**
-     * The constructor.
      * 
      * @param modal true if the dialog is modal
      */

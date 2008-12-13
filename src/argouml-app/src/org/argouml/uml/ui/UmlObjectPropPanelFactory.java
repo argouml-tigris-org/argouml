@@ -59,6 +59,9 @@ class UmlObjectPropPanelFactory implements PropPanelFactory {
         if (Model.getFacade().isAElementResidence(object)) {
             return new PropPanelElementResidence();
         }
+//        if (Model.getFacade().isATemplateParameter(object)) {
+//            return new PropPanelTemplateParameter();
+//        }
         return null;
     }
 

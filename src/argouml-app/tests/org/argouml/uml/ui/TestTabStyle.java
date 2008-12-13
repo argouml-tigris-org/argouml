@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,11 +35,11 @@ import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass;
 import org.argouml.uml.diagram.static_structure.ui.StylePanelFigInterface;
+import org.argouml.uml.diagram.ui.FigAbstraction;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.SPFigEdgeModelElement;
 import org.argouml.uml.diagram.use_case.ui.FigActor;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
@@ -99,7 +99,7 @@ public class TestTabStyle extends TestCase {
         panel = tabStyle.findPanelFor(FigGeneralization.class);
         assertTrue(panel instanceof SPFigEdgeModelElement);
 
-        panel = tabStyle.findPanelFor(FigRealization.class);
+        panel = tabStyle.findPanelFor(FigAbstraction.class);
         assertTrue(panel instanceof SPFigEdgeModelElement);
 
         panel = tabStyle.findPanelFor(FigAssociation.class);

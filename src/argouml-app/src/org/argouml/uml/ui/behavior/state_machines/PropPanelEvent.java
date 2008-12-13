@@ -34,7 +34,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for an Event.
@@ -47,21 +46,6 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
 
     private UMLEventParameterListModel paramListModel;
 
-    /**
-     * Constructor for PropPanelEvent.
-     * 
-     * @param name the name string of the properties panel
-     * @param icon the icon to be shown next to the name
-     * @param orientation the orientation
-     * @deprecated for 0.25.4 by tfmorris. Use constructor without Orientation
-     *             argument and use setOrientation after instantiation.
-     */
-    @Deprecated
-    public PropPanelEvent(String name, ImageIcon icon,
-            Orientation orientation) {
-        super(name, icon, orientation);
-        initialize();
-    }
 
     /**
      * Construct a property panel for an Event.

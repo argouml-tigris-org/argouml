@@ -51,8 +51,8 @@ public class FigSubactivityState extends FigStateVertex {
 
     private static final int PADDING = 8;
 
-    private static final int X = 10;
-    private static final int Y = 10;
+    private static final int X = X0;
+    private static final int Y = Y0;
     private static final int W = 90;
     private static final int H = 25;
 

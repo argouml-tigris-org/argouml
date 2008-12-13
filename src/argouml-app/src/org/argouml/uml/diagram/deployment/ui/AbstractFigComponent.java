@@ -30,7 +30,6 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -199,26 +198,6 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
         updateEdges();
     }
 
-    /**
-     * TODO: This is not used anywhere. Can we remove it?
-     * 
-     * @param figures ?
-     * @deprecated for 0.25.4 by tfmorris. Unused in ArgoUML. Not clear it was
-     *             ever intended to be part of the public API.
-     */
-    @Deprecated
-    public void setNode(List figures) {
-        int size = figures.size();
-        if (figures != null && (size > 0)) {
-            for (int i = 0; i < size; i++) {
-                Object o = figures.get(i);
-                if (o instanceof FigComponent) {
-                    FigComponent figcomp = (FigComponent) o;
-                    figcomp.setEnclosingFig(this);
-                }
-            }
-        }
-    }
 
     @Override
     public boolean getUseTrapRect() {

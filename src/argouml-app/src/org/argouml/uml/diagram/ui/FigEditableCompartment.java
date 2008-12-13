@@ -34,7 +34,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.model.InvalidElementException;
 import org.argouml.notation.NotationProvider;
-import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 
@@ -51,10 +51,9 @@ import org.tigris.gef.presentation.FigLine;
  */
 public abstract class FigEditableCompartment extends FigCompartment {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger.getLogger(FigCompartment.class);
+
+    private static final int MIN_HEIGHT = 21;
 
     private FigSeperator compartmentSeperator;
 
@@ -63,19 +62,42 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * 
      * Two figs are added to this FigGroup:
      * The bigPort (i.e. a box that encloses all compartments),
-     * and a seperator.
+     * and a separator.
      *
      * @param x x
      * @param y y
      * @param w width
      * @param h height
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigEditableCompartment(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigEditableCompartment(int x, int y, int w, int h) {
         super(x, y, w, h); // This adds bigPort, i.e. number 1
-        compartmentSeperator = new FigSeperator(10, 10, 11);
-        addFig(compartmentSeperator); // number 2
+        constructFigs();
     }
 
+    private void constructFigs() {
+        compartmentSeperator = new FigSeperator(X0, Y0, 11);
+        addFig(compartmentSeperator); // number 2
+    }
+    
+    /**
+     * Construct a new FigGroup containing a "bigPort" or rectangle which
+     * encloses the entire group for use in attaching edges, etc and a
+     * separator.
+     * 
+     * @param owner owning UML element
+     * @param bounds bounding rectangle of fig
+     * @param settings render settings
+     */
+    public FigEditableCompartment(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings); // This adds bigPort, i.e. number 1
+        constructFigs();
+    }
+    
     /**
      * @return separator figure
      */
@@ -92,6 +114,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * from the model.
      * {@inheritDoc}
      */
+    @Override
     public void setVisible(boolean visible) {
         if (isVisible() == visible) {
             return;
@@ -112,6 +135,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
     /*
      * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void addFig(Fig fig) {
         if (fig != getBigPort()
                 && !(fig instanceof CompartmentFigText)
@@ -149,56 +173,42 @@ public abstract class FigEditableCompartment extends FigCompartment {
         int xpos = bigPort.getX();
         int ypos = bigPort.getY();
 
-        List figs = getElementFigs();
+        List<Fig> figs = getElementFigs();
         // We remove all of them:
-        Iterator i = figs.iterator();
-        while (i.hasNext()) {
-            Fig f = (Fig) i.next();
+        for (Fig f : figs) {
             removeFig(f);    
         }
 
         // We are going to add the ones still valid & new ones
         // in the right sequence:
-        FigSingleLineText comp = null;
+        FigSingleLineTextWithNotation comp = null;
         try {
-            Collection umlObjects = getUmlCollection();
             int acounter = -1;
-            Iterator iter = umlObjects.iterator();
-            while (iter.hasNext()) {
-                Object umlObject = iter.next();
+            for (Object umlObject : getUmlCollection()) {
                 comp = findCompartmentFig(figs, umlObject);
                 acounter++;                
-
-                NotationProvider np = 
-                    NotationProviderFactory2.getInstance()
-                        .getNotationProvider(getNotationType(), umlObject);
 
                 // If we don't have a fig for this UML object, we'll need to add
                 // one. We set the bounds, but they will be reset later.
                 if (comp == null) {
-                    comp = createFigText(
-                                xpos + 1,
-                                ypos + 1 + acounter
-                                * FigNodeModelElement.ROWHEIGHT,
-                                0,
-                                FigNodeModelElement.ROWHEIGHT - 2,
-                                bigPort,
-                                np);
-                    // bounds not relevant here
-                    comp.setOwner(umlObject);
-                    np.initialiseListener(comp, umlObject);
+                    comp = createFigText(umlObject, new Rectangle(
+                            xpos + 1,
+                            ypos + 1 + acounter
+                            * ArgoFig.ROWHEIGHT,
+                            0,
+                            ArgoFig.ROWHEIGHT - 2),
+                            getSettings());
                 } else {
-                    /* This one is still useable, so let's retain it, */
+                    /* This one is still usable, so let's retain it, */
                     /* but its position may have been changed: */
                     Rectangle b = comp.getBounds();
-                    b.y = ypos + 1 + acounter * FigNodeModelElement.ROWHEIGHT;
+                    b.y = ypos + 1 + acounter * ArgoFig.ROWHEIGHT;
                     // bounds not relevant here, but I am perfectionist...
                     comp.setBounds(b);
-                    /* We need to set a new notationprovider, since 
-                     * the Notation language may have been changed:  */
-                    comp.setNotationProvider(np);
-                    np.initialiseListener(comp, umlObject);
                 }
+                /* We need to set a new notationprovider, since 
+                 * the Notation language may have been changed:  */
+                comp.initNotationProviders();
                 addFig(comp); // add it again (but now in the right sequence)
 
                 // Now put the text in
@@ -223,13 +233,11 @@ public abstract class FigEditableCompartment extends FigCompartment {
     }
 
     /* Find the compartment fig for this umlObject: */
-    private CompartmentFigText findCompartmentFig(List figs, Object umlObject) {
-        Iterator it = figs.iterator();
-        while (it.hasNext()) {
-            CompartmentFigText candidate;
-            Object fig = it.next();
+    private CompartmentFigText findCompartmentFig(List<Fig> figs, 
+            Object umlObject) {
+        for (Fig fig : figs) {
             if (fig instanceof CompartmentFigText) {
-                candidate = (CompartmentFigText) fig;
+                CompartmentFigText candidate = (CompartmentFigText) fig;
                 if (candidate.getOwner() == umlObject) {
                     return candidate;
                 }
@@ -238,19 +246,77 @@ public abstract class FigEditableCompartment extends FigCompartment {
         return null;
     }
 
-    private List getElementFigs() {
-        List figs = new ArrayList(getFigs());
+    private List<Fig> getElementFigs() {
+        List<Fig> figs = new ArrayList<Fig>(getFigs());
+        // TODO: This is fragile and depends on the behavior of the super class
+        // not changing
         if (figs.size() > 1) {
             // Ignore the first 2 figs:
-            figs.remove(1); // the seperator
+            figs.remove(1); // the separator
             figs.remove(0); // the bigPort
         }
         return figs;
     }
 
-    protected abstract FigSingleLineText createFigText(
-	    int x, int y, int w, int h, Fig aFig, NotationProvider np);
+    /**
+     * @return null
+     * @deprecated for 0.27.3 by tfmorris.  Subclasses must implement
+     * {@link #createFigText(Object, Rectangle, DiagramSettings, 
+     * NotationProvider)}
+     * which will become abstract in the future when this deprecated method is
+     * removed.
+     */
+    @Deprecated
+    protected FigSingleLineTextWithNotation createFigText(
+	    int x, int y, int w, int h, Fig aFig, NotationProvider np) {
+        // No longer abstract to allow subclasses to remove, so we provide a
+        // null default implementation
+        return null;
+    }
 
+    /**
+     * Factory method to create a FigSingleLineTextWithNotation 
+     * which must be implemented by all subclasses. 
+     * It will become abstract after the release of 0.28 to
+     * enforce this requirement.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     * @param np notation provider
+     * @return a FigSingleLineText which can be used to display the text.
+     */
+    @SuppressWarnings("deprecation")
+    protected FigSingleLineTextWithNotation createFigText(Object owner, 
+            Rectangle bounds, 
+            @SuppressWarnings("unused") DiagramSettings settings, 
+            NotationProvider np) {
+
+        // If this is not overridden it will revert to the old behavior
+        // All internal subclasses have been updated, but this if for 
+        // compatibility of non-ArgoUML extensions.
+        FigSingleLineTextWithNotation comp = createFigText(
+                    bounds.x,
+                    bounds.y,
+                    bounds.width,
+                    bounds.height,
+                    this.getBigPort(),
+                    np);
+        comp.setOwner(owner);
+        return comp;
+    }
+    
+    /**
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings the render settings
+     * @return a FigSingleLineText with notation provider 
+     *                  which can be used to display the text
+     */
+    abstract FigSingleLineTextWithNotation createFigText(Object owner, 
+            Rectangle bounds, 
+            DiagramSettings settings);
+    
     /**
      * Returns the new size of the FigGroup (either attributes or
      * operations) after calculation new bounds for all sub-figs,
@@ -278,13 +344,14 @@ public abstract class FigEditableCompartment extends FigCompartment {
     /**
      * The minimum width is the minimum width of the widest child element.
      * The minimum height is the total minimum height of all child figs but no
-     * less than 21 pixels.
+     * less than MINIMUM_HEIGHT (21) pixels.
      * @return the minimum width
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension d = super.getMinimumSize();
-        if (d.height < 21) {
-            d.height = 21;
+        if (d.height < MIN_HEIGHT) {
+            d.height = MIN_HEIGHT;
         }
         return d;
     }
@@ -292,6 +359,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
     /*
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
+    @Override
     protected void setBoundsImpl(int x, int y, int w, int h) {
         int newW = w;
         int newH = h;
@@ -337,6 +405,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
         /*
          * @see org.tigris.gef.presentation.Fig#getSize()
          */
+        @Override
         public Dimension getSize() {
             return new Dimension((_x2 - _x1) + 1, getLineWidth());
         }
@@ -344,6 +413,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
         /*
          * @see org.tigris.gef.presentation.Fig#getMinimumSize()
          */
+        @Override
         public Dimension getMinimumSize() {
             return new Dimension(0, getLineWidth());
         }
@@ -352,6 +422,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
          * @see org.tigris.gef.presentation.Fig#setBoundsImpl(
          *         int, int, int, int)
          */
+        @Override
         public void setBoundsImpl(int x, int y, int w, int h) {
             setX1(x);
             setY1(y);

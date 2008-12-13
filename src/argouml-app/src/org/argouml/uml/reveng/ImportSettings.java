@@ -58,53 +58,5 @@ public interface ImportSettings {
      */
     public String getInputSourceEncoding();
 
-    /**
-     * @return always returns false.
-     * @deprecated for 0.25.6 by tfmorris.  This is a Java-specific setting
-     * that was inadvertantly included in the interface for 0.24.  Not 
-     * intended for public use.  Instead use the Settings interface to
-     * importer-specific settings.
-     */
-    @Deprecated
-    public boolean isAttributeSelected();
-
-    /**
-     * @return always returns false.
-     * @deprecated for 0.25.6 by tfmorris.  This is a Java-specific setting
-     * that was inadvertantly included in the interface for 0.24.  Not 
-     * intended for public use.  Instead use the Settings interface to
-     * importer-specific settings.
-     */
-    @Deprecated
-    public boolean isDatatypeSelected();
-
-    /**
-     * @return true if the user has request diagrams to be created for packages
-     *         contained in the imported source code.
-     * @deprecated for 0.25.6 by tfmorris. This is handled by the import
-     *             framework so specific importers don't need to worry about it.
-     */
-    /*
-     * NOTE: When this is removed from here, it should NOT be removed from
-     * ImportSettingsInternal to guarantee that GUI implementations are forced
-     * to implement it.
-     */
-    @Deprecated
-    public boolean isCreateDiagramsSelected();
-    
-    /**
-     * @return true, if user has requested that new figures placed in diagrams
-     *         should be minimized so they don't show internal compartments.
-     * @deprecated for 0.25.6 by tfmorris. This is handled by the import
-     *             framework so specific importers don't need to worry about it.
-     */
-    /*
-     * NOTE: When this is removed from here, it should NOT be removed from
-     * ImportSettingsInternal to guarantee that GUI implementations are forced
-     * to implement it.
-     */
-    @Deprecated
-    public boolean isMinimizeFigsSelected();
-
 
 }

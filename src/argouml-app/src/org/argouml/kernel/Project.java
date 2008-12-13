@@ -27,14 +27,11 @@ package org.argouml.kernel;
 import java.beans.VetoableChangeSupport;
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.profile.Profile;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -52,19 +49,6 @@ import org.tigris.gef.presentation.Fig;
  */
 public interface Project {
 
-    /**
-     * Find the base name of this project.<p>
-     *
-     * This is the name minus any valid file extension.
-     *
-     * @return The name (a String).
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link org.argouml.persistence.PersistenceManager
-     *     #getProjectBaseName(Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public String getBaseName();
 
     /**
      * Get the project name. This is just the name part of the full filename.
@@ -72,19 +56,6 @@ public interface Project {
      */
     public String getName();
 
-    /**
-     * Set the project URI.
-     *
-     * @param n The new URI (as a String).
-     * @throws URISyntaxException if the argument cannot be converted to
-     *         an URI.
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link org.argouml.persistence.PersistenceManager
-     *     #setProjectName(String, Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public void setName(final String n) throws URISyntaxException;
 
     /**
      * Get the URI for this project.
@@ -94,24 +65,14 @@ public interface Project {
     public URI getURI();
 
     /**
-     * Set the URI for this project.
-     *
-     * @param theUri The URI to set.
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link org.argouml.persistence.PersistenceManager
-     *     #setProjectURI(URI, Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public void setURI(final URI theUri);
-
-    /**
      * Set the URI for this project. <p>
      * 
      * Don't use this directly! Use instead:
      * {@link org.argouml.persistence.PersistenceManager
      * #setProjectURI(URI, Project)}
-     *
+     * <p>
+     * TODO: Why isn't this deprecated or private if it is not to be used?
+     * 
      * @param theUri The URI to set.
      */
     public void setUri(final URI theUri);
@@ -125,15 +86,6 @@ public interface Project {
      */
     public void setFile(final File file);
 
-    /**
-     * Not used by "argo.tee" any more.
-     * 
-     * @return the search path
-     * @deprecated by tfmorris for 0.25.4.  Use {@link #getSearchPathList()}.
-     */
-    // TODO: Unused?
-    @Deprecated
-    public Vector<String> getSearchPath();
     
     /**
      * Used by "argo.tee".
@@ -258,17 +210,6 @@ public interface Project {
      */
     public void setHistoryFile(final String s);
 
-
-    /**
-     * Returns all models defined by the user. I.e. this does not return the
-     * default model but all other models.
-     * 
-     * @return A Vector of all user defined models.
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #getUserDefinedModelList()}.
-     */
-    @Deprecated
-    public Vector getUserDefinedModels();
     
     /**
      * Returns all models defined by the user. I.e. this does not return any
@@ -408,13 +349,6 @@ public interface Project {
     @Deprecated
     public Object getCurrentNamespace();
 
-
-    /**
-     * @return the diagrams
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getDiagramList()}.
-     */
-    @Deprecated
-    public Vector<ArgoDiagram> getDiagrams();
     
     /**
      * @return the diagrams
@@ -454,8 +388,12 @@ public interface Project {
     public Object getInitialTarget();
 
     /**
-     * @return the VetoableChangeSupport
+     * @return the VetoableChangeSupport object
+     * @see VetoableChangeSupport
+     * @deprecated for 0.27.3 by tfmorris. This appears to be unused anywhere in
+     *             ArgoUML. Speak up now if you need it.
      */
+    @Deprecated
     public VetoableChangeSupport getVetoSupport();
 
     /**
@@ -493,52 +431,20 @@ public interface Project {
      *
      * @param obj The object to be deleted
      * @see org.argouml.kernel.ProjectImpl#trashInternal(Object)
+     * <p> 
+     * TODO: This should just be named delete() or something which better 
+     * tells what it does (since there really isn't a trash can).
      */
     public void moveToTrash(Object obj);
 
     /**
      * @param obj the object
      * @return true if the object is trashed
+     * @deprecated for 0.27.3 by tfmorris. Not actually implemented. The
+     *             (future) Undo facility is a better way to handle this.
      */
+    @Deprecated
     public boolean isInTrash(Object obj);
-
-    /**
-     * This method is unsupported and will thrown an
-     * UnsupportedOperationException. The profile subsystem has change
-     * completely for ArgoUML 0.26 and code which called this method must be
-     * revised to use the new Profile subsystem. See
-     * {@link ProfileConfiguration} and {@link Profile}. Set the given model as
-     * the current profile.
-     * 
-     * @param theDefaultModel a uml model
-     * @deprecated for 0.25.4 by tfmorris. Use {@link ProfileConfiguration}.
-     */
-    @Deprecated
-    public void setDefaultModel(final Object theDefaultModel);
-
-
-    /**
-     * Get the profile (also known as default model).
-     * <p>
-     * <em>NOTE:</em>The profile or default model handling has changed
-     * <em>significantly</em> since 0.24. In addition to now supporting
-     * multiple profiles, hierarchical profiles and a number of other features,
-     * profile elements are now referenced directly rather than being copied
-     * into the user model as they were in 0.24 and earlier versions.
-     * 
-     * @return the first profile package in the search order (typically the
-     *         standard UML model without any of the Java additions which were
-     *         present in ArgoUML 0.24 and earlier.  Equivalent to 
-     *         getProfile().getProfilePackages().get(0) where getProfile is
-     *         equivalent to getProfileConfiguration().getProfiles().get(0)
-     * 
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #getProfileConfiguration()} followed by methods from
-     *             {@link ProfileConfiguration} such as
-     *             {@link ProfileConfiguration#getProfiles()}.
-     */
-    @Deprecated
-    public Object getDefaultModel();
 
 
     /**
@@ -575,7 +481,6 @@ public interface Project {
     @Deprecated
     public void setRoot(final Object root);
 
-
     /**
      * Return a collection of top level Model Elements. Normally for ArgoUML
      * created models, this will be a single Package or Model, but other tools
@@ -601,14 +506,6 @@ public interface Project {
      */
     public boolean isValidDiagramName(String name);
 
-    /**
-     * Returns the searchpath.
-     * @return Vector
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getSearchPathList()}.
-     */
-    // TODO: Unused?
-    @Deprecated
-    public Vector<String> getSearchpath();
 
     /**
      * Returns the uri.
@@ -623,24 +520,23 @@ public interface Project {
     public Map<String, Object> getUUIDRefs();
 
     /**
-     * Sets the searchpath.
-     * @param theSearchpath The searchpath to set
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #setSearchPath(List)}.
-     */
-    // TODO: Unused?
-    @Deprecated
-    public void setSearchpath(final Vector<String> theSearchpath);
-
-    /**
      * Sets the uUIDRefs.
      * @param uUIDRefs The uUIDRefs to set
      */
     public void setUUIDRefs(final Map<String, Object> uUIDRefs);
 
     /**
-     * Sets the vetoSupport.
+     * Sets the VetoableChangeSupport object. This will be returned by
+     * {@link #getVetoSupport()} but is otherwise unused.
+     * <p>
+     * TODO: Why is this here since it's never used? - tfm
+     * 
      * @param theVetoSupport The vetoSupport to set
+     * @see VetoableChangeSupport
+     * @deprecated for 0.27.3 by tfmorris. This appears to be unused anywhere in
+     *             ArgoUML. Speak up now if you need it.
      */
+    @Deprecated
     public void setVetoSupport(VetoableChangeSupport theVetoSupport);
 
     /**
@@ -692,21 +588,6 @@ public interface Project {
     public void setPersistenceVersion(int pv);
 
     /**
-     * Get the default profile. For backward compatibility only.  Typically it
-     * will return the UML standard profile which is a subset of the combined
-     * UML 1.4 plus Java plus ArgoUML profile which was the default with
-     * ArgoUML 0.24 and earlier.
-     * 
-     * @return Returns the first profile in the search order. Equivalent to
-     *         getProfileConfiguration().getProfiles().get(0).
-     * @deprecated for 0.25.4 by maurelio1234. Use
-     *             {@link #getProfileConfiguration()} and
-     *             {@link ProfileConfiguration#getProfiles()} instead.
-     */
-    @Deprecated
-    public Profile getProfile();
-
-    /**
      * Repair all parts of the project before a save takes place.
      * @return a report of any fixes
      */
@@ -739,5 +620,18 @@ public interface Project {
      * @return the UndoManager for this project
      */
     public UndoManager getUndoManager();
+    
+    /**
+     * @return true if Project has been modified since last save
+     */
+    public boolean isDirty();
+    
+    /**
+     * Set the dirty flag for the project.  This has no direct effect other than
+     * setting the flag.
+     * 
+     * @param isDirty true if the project should be marked as dirty
+     */
+    public void setDirty(boolean isDirty);
 
 }

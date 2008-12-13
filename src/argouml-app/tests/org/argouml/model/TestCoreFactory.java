@@ -71,7 +71,7 @@ public class TestCoreFactory extends TestCase {
 	"Node",
 	"Operation",
 	"Parameter",
-	"Permission",
+//	"Permission",
 	"PresentationElement",
 	"Relationship",
 	"StructuralFeature",

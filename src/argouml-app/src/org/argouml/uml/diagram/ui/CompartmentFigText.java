@@ -26,9 +26,11 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import org.apache.log4j.Logger;
 import org.argouml.notation.NotationProvider;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
@@ -44,21 +46,22 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author thn
  */
-public class CompartmentFigText extends FigSingleLineText {
+public class CompartmentFigText extends FigSingleLineTextWithNotation {
+    
+    private static final int MARGIN = 3;
     
     /**
      * The UID.
      */
     private static final long serialVersionUID = 3830572062785308980L;
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG =
 	Logger.getLogger(CompartmentFigText.class);
 
     /**
      * The bounding figure of the compartment containing this fig text.
+     * @deprecated for 0.27.3 by tfmorris.  Only used for line color which we
+     * can get from the render settings or GEF.
      */
     private Fig refFig;
 
@@ -76,22 +79,21 @@ public class CompartmentFigText extends FigSingleLineText {
      * compartment figure. The associated FigText is marked as expand only.
      * <p>
      * 
-     * <em>Warning</em>. Won't work properly if <code>aFig</code> is null.
-     * A warning is printed.
+     * <em>Warning</em>. Won't work properly if <code>aFig</code> is null. A
+     * warning is printed.
      * <p>
      * 
      * @param x X coordinate of the top left of the FigText.
-     * 
      * @param y Y coordinate of the top left of the FigText.
-     * 
      * @param w Width of the FigText.
-     * 
      * @param h Height of the FigText.
-     * 
      * @param aFig The figure describing the whole compartment
-     * 
      * @param np The notationProvider. See NotationProviderFactory2.
+     * @deprecated for 0.27.3 by tfmorris. Use
+     * {@link #CompartmentFigText(Object, Rectangle, DiagramSettings)}
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public CompartmentFigText(int x, int y, int w, int h, Fig aFig, 
             NotationProvider np) {
         super(x, y, w, h, true);
@@ -111,10 +113,50 @@ public class CompartmentFigText extends FigSingleLineText {
         }
 
         setJustification(FigText.JUSTIFY_LEFT);
-        setRightMargin(3);
-        setLeftMargin(3);
+        setRightMargin(MARGIN);
+        setLeftMargin(MARGIN);
     }
 
+    /**
+     * Construct a CompartmentFigText.
+     * 
+     * @deprecated by mvw for 0.27.3; use a constructor without np parameter
+     * @param element owning uml element
+     * @param bounds position and size
+     * @param settings render settings
+     * @param np notation provider
+     */
+    @Deprecated
+    public CompartmentFigText(Object element, Rectangle bounds,
+            DiagramSettings settings, NotationProvider np) {
+        super(element, bounds, settings, true);
+
+        if (np == null) {
+            LOG.warn("Need a NotationProvider for CompartmentFigText.");
+        }
+        setNotationProvider(np);
+
+        setJustification(FigText.JUSTIFY_LEFT);
+        setRightMargin(MARGIN);
+        setLeftMargin(MARGIN);
+    }
+    
+    /**
+     * Construct a CompartmentFigText.
+     * 
+     * @param element owning uml element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public CompartmentFigText(Object element, Rectangle bounds,
+            DiagramSettings settings) {
+        super(element, bounds, settings, true);
+
+        setJustification(FigText.JUSTIFY_LEFT);
+        setRightMargin(MARGIN);
+        setLeftMargin(MARGIN);
+    }
+    
     /**
      * Build a new compartment figText of the given dimensions, within
      * the compartment described by <code>aFig</code>.<p>
@@ -137,7 +179,10 @@ public class CompartmentFigText extends FigSingleLineText {
      * @param aFig  The figure describing the whole compartment
      * 
      * @param property The property this Fig should listen for
+     * @deprecated for 0.27.3 by tfmorris. Use
+     * {@link #CompartmentFigText(Object, Rectangle, DiagramSettings, String)}.
      */
+    @Deprecated
     public CompartmentFigText(int x, int y, int w, int h, Fig aFig, 
             String property) {
         this(x, y, w, h, aFig, new String[] {property});
@@ -165,7 +210,11 @@ public class CompartmentFigText extends FigSingleLineText {
      * @param aFig  The figure describing the whole compartment
      * 
      * @param properties The properties this Fig should listen for
+     * @deprecated for 0.27.3 by tfmorris. Use
+     * {@link #CompartmentFigText(Object, Rectangle, DiagramSettings, String[])}
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public CompartmentFigText(int x, int y, int w, int h, Fig aFig, 
             String[] properties) {
         super(x, y, w, h, true, properties);
@@ -179,6 +228,40 @@ public class CompartmentFigText extends FigSingleLineText {
         refFig = aFig;
     }
 
+    /**
+     * Build a new compartment figText of the given dimensions, within the
+     * compartment described by <code>aFig</code>.
+     * <p>
+     * Invoke the parent constructor, then set the reference to the associated
+     * compartment figure. The associated FigText is marked as expand only.
+     * <p>
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     * @param property The property this Fig should listen for
+     */
+    public CompartmentFigText(Object owner, Rectangle bounds, 
+            DiagramSettings settings, String property) {
+        this(owner, bounds, settings, new String[] {property});
+    }
+    
+    /**
+     * Build a new compartment figText of the given dimensions, within the
+     * compartment described by <code>aFig</code>.
+     * <p>
+     * Invoke the parent constructor, then set the reference to the associated
+     * compartment figure. The associated FigText is marked as expand only.
+     * <p>
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     * @param properties The properties this Fig should listen for
+     */
+    public CompartmentFigText(Object owner, Rectangle bounds, 
+            DiagramSettings settings, String[] properties) {
+        super(owner, bounds, settings, true, properties);
+    }
+    
     /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
      */
@@ -208,7 +291,12 @@ public class CompartmentFigText extends FigSingleLineText {
      */
     @Override
     public Color getLineColor() {
-        return refFig.getLineColor();
+        if (refFig != null) {
+            return refFig.getLineColor();
+        } else {
+            // Get the right color from our settings
+            return super.getLineColor();
+        }
     }
 
     /**

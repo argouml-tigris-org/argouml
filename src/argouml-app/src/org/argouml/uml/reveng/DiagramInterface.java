@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,11 +27,9 @@ package org.argouml.uml.reveng;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
@@ -59,19 +57,14 @@ public class DiagramInterface {
     private static final char DIAGRAM_NAME_SEPARATOR = '_';
     private static final String DIAGRAM_NAME_SUFFIX = "classes";
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG =
         Logger.getLogger(DiagramInterface.class);
-    
-
 
     private Editor currentEditor;
 
     /**
      * To know what diagrams we have to layout after the import,
-     * we store them in this Vector.
+     * we store them in this list.
      */
     private List<ArgoDiagram> modifiedDiagrams = 
         new ArrayList<ArgoDiagram>();
@@ -91,6 +84,8 @@ public class DiagramInterface {
      */
     private ArgoDiagram currentDiagram;
 
+    private Project currentProject;
+    
     /**
      * Creates a new DiagramInterface.
      *
@@ -98,8 +93,21 @@ public class DiagramInterface {
      */
     public DiagramInterface(Editor editor) {
   	currentEditor = editor;
+  	LayerPerspective layer = 
+  	    (LayerPerspective) editor.getLayerManager().getActiveLayer();
+  	currentProject = ((ArgoDiagram) layer.getDiagram()).getProject();
     }
 
+    /**
+     * Creates a new DiagramInterface.
+     *
+     * @param editor The editor to operate on.
+     * @param project the project being operated on
+     */
+    public DiagramInterface(Editor editor, Project project) {
+        currentEditor = editor;
+    }
+    
     /**
      * Get the current editor.
      *
@@ -123,17 +131,6 @@ public class DiagramInterface {
         }
     }
     
-    /**
-     * Get the list of modified diagrams.
-     * 
-     * @return The list of modified diagrams.
-     * @deprecated for 0.25.4 by tfmorris. Use 
-     *             {@link #getModifiedDiagramList()}.
-     */
-    @Deprecated
-    public Vector<ArgoDiagram> getModifiedDiagrams() {
-	return new Vector<ArgoDiagram>(modifiedDiagrams);
-    }
 
     /**
      * Get the list of modified diagrams.
@@ -192,8 +189,10 @@ public class DiagramInterface {
      * @return true if diagram exists in project.
      */
     public boolean isDiagramInProject(String name) {
-        Project project = ProjectManager.getManager().getCurrentProject();
-        return project.getDiagram(getDiagramName(name)) != null;
+        if (currentProject == null) {
+            throw new RuntimeException("current project not set yet");
+        }
+        return currentProject.getDiagram(getDiagramName(name)) != null;
     }
 
     /**
@@ -223,8 +222,10 @@ public class DiagramInterface {
      */
     public void selectClassDiagram(Object p, String name) {
         // Check if this diagram already exists in the project
-        Project project = ProjectManager.getManager().getCurrentProject();
-        ArgoDiagram m = project.getDiagram(getDiagramName(name));
+        if (currentProject == null) {
+            throw new RuntimeException("current project not set yet");
+        }
+        ArgoDiagram m = currentProject.getDiagram(getDiagramName(name));
         if (m != null) {
             // The diagram already exists in this project. Select it
             // as the current target.
@@ -246,18 +247,19 @@ public class DiagramInterface {
      *            generate the diagram name from.
      */
     public void addClassDiagram(Object ns, String name) {
-        Project p = ProjectManager.getManager().getCurrentProject();
-
+        if (currentProject == null) {
+            throw new RuntimeException("current project not set yet");
+        }
         ArgoDiagram d = DiagramFactory.getInstance().createDiagram(
                 DiagramFactory.DiagramType.Class,
-                ns == null ? p.getRoot() : ns, null);
+                ns == null ? currentProject.getRoot() : ns, null);
 
         try {
             d.setName(getDiagramName(name));
         } catch (PropertyVetoException pve) { 
             LOG.error("Failed to set diagram name.", pve);
         }
-        p.addMember(d);
+        currentProject.addMember(d);
         setCurrentDiagram(d);
     }
 
@@ -361,7 +363,8 @@ public class DiagramInterface {
         currentGM = (ClassDiagramGraphModel) diagram.getGraphModel();
         currentLayer = diagram.getLayer();
         currentDiagram = diagram;
-
+        currentProject = diagram.getProject();
+        
         markDiagramAsModified(diagram);
     }
 

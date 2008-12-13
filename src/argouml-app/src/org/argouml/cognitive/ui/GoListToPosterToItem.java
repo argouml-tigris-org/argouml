@@ -27,7 +27,6 @@ package org.argouml.cognitive.ui;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
@@ -84,20 +83,6 @@ public class GoListToPosterToItem extends AbstractGoList {
 	return true;
     }
 
-
-    /**
-     * @param parent the parent object to check for offspring
-     * @return the children
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getChildrenList(Object)}.
-     */
-    @Deprecated
-    public Vector getChildren(Object parent) {
-        List result = getChildrenList(parent);
-        if (result.size() == 0) {
-            return null;
-        }
-        return new Vector(result);
-    }
     
     /**
      * Get the children of the given parent.  Unlike getChildren(),

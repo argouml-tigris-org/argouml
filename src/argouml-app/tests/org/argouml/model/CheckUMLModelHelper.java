@@ -26,7 +26,7 @@ package org.argouml.model;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 
@@ -60,9 +60,9 @@ public final class CheckUMLModelHelper {
 	Class c = mo.getClass();
 
 	// Call methods that exists for all objects and that always return
-	// something meaningfull.
-	TestCase.assertTrue("toString() corrupt in " + c,
-		      mo.toString() != null);
+	// something meaningful
+	TestCase.assertNotNull("toString() corrupt in " + c,
+		      mo.toString());
         
 	Model.getUmlFactory().delete(mo);
         Model.getPump().flushModelEvents();
@@ -85,14 +85,14 @@ public final class CheckUMLModelHelper {
 	Class c = mo.getClass();
 
 	// Call methods that exists for all objects and that always return
-	// something meaningfull.
-	TestCase.assertTrue("toString() corrupt in " + c,
-		      	    mo.toString() != null);
-	TestCase.assertTrue("getUMLClassName() corrupt in " + c,
-	        Model.getFacade().getUMLClassName(mo) != null);
-	TestCase.assertTrue(
+	// something meaningful
+	TestCase.assertNotNull("toString() corrupt in " + c,
+		      	    mo.toString());
+	TestCase.assertNotNull("getUMLClassName() corrupt in " + c,
+	        Model.getFacade().getUMLClassName(mo));
+	TestCase.assertEquals(
 	        "getUMLClassName() different from expected in " + c,
-	        name.equals(Model.getFacade().getUMLClassName(mo)));
+	        name, Model.getFacade().getUMLClassName(mo));
 
 	Model.getUmlFactory().delete(mo);
         Model.getPump().flushModelEvents();
@@ -101,6 +101,12 @@ public final class CheckUMLModelHelper {
                 Model.getUmlFactory().isRemoved(mo));
     }
 
+    public static void createAndRelease(Object factory,
+            String[] names,
+            Object[] arguments) {
+       createAndRelease(factory, Arrays.asList(names), arguments);
+    }
+    
     /**
      * Create a UML modelelement (i.e. check if a creation function exists).
      * Then deletes it, looses the reference and then checks that
@@ -111,7 +117,7 @@ public final class CheckUMLModelHelper {
      * @param arguments the arguments of the UML elements
      */
     public static void createAndRelease(Object factory,
-					String[] names,
+					Iterable<String> names,
 					Object[] arguments) {
 	Class [] argTypes = new Class[arguments.length];
 	for (int i = 0; i < arguments.length; i++) {
@@ -125,22 +131,22 @@ public final class CheckUMLModelHelper {
         String [] exprArgs = {"body text", "language text"};
         Class[] exprArgTypes = {String.class, String.class};
 
-	for (int i = 0; i < names.length; i++) {
+	for (String name : names) {
             Class[] types;
             Object[] args;
-	    if (names[i] == null) {
+	    if (name == null) {
 	        continue;
-	    } else if (names[i].startsWith("Multiplicity")) {
+	    } else if (name.startsWith("Multiplicity")) {
                 types = multArgTypes;
                 args = multArgs;
-            } else if (names[i].endsWith("Expression")) {
+            } else if (name.endsWith("Expression")) {
                 types = exprArgTypes;
                 args = exprArgs;
             } else {
                 types = argTypes;
                 args = arguments;
             }
-            String methodName = "create" + names[i];
+            String methodName = "create" + name;
 	    Method createMethod;
 
 	    // Find the create method in the offical API
@@ -155,7 +161,7 @@ public final class CheckUMLModelHelper {
 
             
             Method isAMethod;
-            String isAMethodName = "isA" + names[i];
+            String isAMethodName = "isA" + name;
             Object facade = Model.getFacade();
             try {
                 // Now get the factory implementation method to be invoked
@@ -181,7 +187,7 @@ public final class CheckUMLModelHelper {
                             }));
                 
                     deleteAndRelease(
-                            createMethod.invoke(factory, args), names[i]);
+                            createMethod.invoke(factory, args), name);
 		} catch (ClassCastException e) {
 		    // Here it is another object sent to the test.
 		    deleteAndRelease(createMethod.invoke(factory, args));
@@ -190,11 +196,11 @@ public final class CheckUMLModelHelper {
 		    deleteAndRelease(createMethod.invoke(factory, args));
 		}
 	    } catch (IllegalAccessException e) {
-		TestCase.fail("Method create" + names[i]
+		TestCase.fail("Method create" + name
 			      + " in " + factory + " cannot be called");
 		return;
 	    } catch (InvocationTargetException e) {
-		TestCase.fail("Method create" + names[i]
+		TestCase.fail("Method create" + name
 			      + " in " + factory + " throws an exception.");
 		return;
 	    }
@@ -276,17 +282,11 @@ public final class CheckUMLModelHelper {
      *            the UML elements to test
      */
     public static void createAndRelease(Object f, String[] names) {
-	Object[] noarguments = {
-	};
-	createAndRelease(f, names, noarguments);
+	createAndRelease(f, Arrays.asList(names));
     }
 
-    public static void createAndRelease(Object f, List<String>names) {
-        Object[] noarguments = {
-        };
-        String[] elementNames = new String[names.size()];
-        names.toArray(elementNames);
-        createAndRelease(f, elementNames, noarguments);
+    public static void createAndRelease(Object f, Iterable<String> names) {
+        createAndRelease(f, names, new Object[] {});
     }
     
     /**
@@ -297,8 +297,8 @@ public final class CheckUMLModelHelper {
      * @param names the names of the modelelements
      */
     public static void hasDeleteMethod(Object f, String[] names) {
-        for (int i = 0; i < names.length; i++) {
-            String methodName = "delete" + names[i];
+        for (String name : names) {
+            String methodName = "delete" + name;
             try {
                 f.getClass().getDeclaredMethod(methodName,
                         new Class[] {Object.class});
@@ -320,22 +320,23 @@ public final class CheckUMLModelHelper {
      * @param factory the modelfactory that should contain the create function
      * @param names the metamodel class names
      */
-    public static void metaModelNameCorrect(Object factory, String[] names) {
+    public static void metaModelNameCorrect(Object factory, 
+            Iterable<String> names) {
         try {
-            for (int i = 0; i < names.length; i++) {
+            for (String name : names) {
                 Method m = findMethod(factory.getClass(), Factory.class,
-                        "create" + names[i], new Class[] {});
+                        "create" + name, new Class[] {});
                 TestCase.assertNotNull("Failed to find method create"
-                        + names[i], m);
+                        + name, m);
                 Object element = m.invoke(factory, new Object[] {});
                 TestCase.assertTrue("Not a UML Element", 
                         Model.getFacade().isAUMLElement(element));
                 String metaName =
                         Model.getExtensionMechanismsHelper().getMetaModelName(
                                 element);
-                TestCase.assertTrue(
-                        "not a valid metaModelName " + names[i], 
-                        metaName.equals(names[i]));
+                TestCase.assertEquals(
+                        "not a valid metaModelName " + name, 
+                        metaName, name);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -346,8 +347,8 @@ public final class CheckUMLModelHelper {
     }
 
     public static void metaModelNameCorrect(Object factory, 
-            List<String> names) {
-        metaModelNameCorrect(factory, names.toArray(new String[names.size()]));
+            String[] names) {
+        metaModelNameCorrect(factory, Arrays.asList(names));
     }
     
     /**
@@ -357,18 +358,18 @@ public final class CheckUMLModelHelper {
      *          all the given metamodel element names
      * @param names the metamodel element names
      */
-    public static void isValidStereoType(Object f, String[] names) {
+    public static void isValidStereoType(Object f, Iterable<String> names) {
         try {
             Object ns = Model.getModelManagementFactory().createPackage();
             Object clazz = Model.getCoreFactory().buildClass(ns);
             Object stereo1 =
 		Model.getExtensionMechanismsFactory()
                     .buildStereotype(clazz, "test1", ns);
-            for (int i = 0; i < names.length; i++) {
+            for (String name : names) {
                 Method m = findMethod(f.getClass(), Factory.class,
-                        "create" + names[i], new Class[] {});
+                        "create" + name, new Class[] {});
                 if (m == null) {
-                    TestCase.fail("Failed to find method create" + names[i]);
+                    TestCase.fail("Failed to find method create" + name);
                 }
                 Object base = m.invoke(f, new Object[] {});
                 if (Model.getFacade().isAModelElement(base)) {
@@ -407,7 +408,7 @@ public final class CheckUMLModelHelper {
         }
     }
     
-    public static void isValidStereoType(Object f, List<String> names) {
-        isValidStereoType(f, names.toArray(new String[names.size()]));
+    public static void isValidStereoType(Object f, String[] names) {
+        isValidStereoType(f, Arrays.asList(names));
     }
 }

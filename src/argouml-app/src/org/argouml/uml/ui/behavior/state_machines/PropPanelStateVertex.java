@@ -33,7 +33,6 @@ import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The properties tab panel for StateVertex and family.
@@ -48,22 +47,6 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
     private JPanel containerScroll;
 
-    /**
-     * Constructor for PropPanelStateVertex.
-     *
-     * @param name the name of the tabpanel shown at the top
-     * @param icon the icon of the tabpanel shown at the top
-     * @param orientation the orientation
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelStateVertex(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelStateVertex(String name, ImageIcon icon,
-            Orientation orientation) {
-        this(name, icon);
-        setOrientation(orientation);
-    }
     
     /**
      * Constructor for PropPanelStateVertex.

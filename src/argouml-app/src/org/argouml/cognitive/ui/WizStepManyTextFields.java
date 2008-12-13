@@ -29,7 +29,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
+
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -134,14 +134,6 @@ public class WizStepManyTextFields extends WizStep {
 
     }
 
-    /**
-     * @return the strings
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getStringList()}.
-     */
-    @Deprecated
-    public Vector<String> getStrings() {
-        return new Vector<String>(getStringList());
-    }
 
     /**
      * @return the strings
@@ -158,7 +150,7 @@ public class WizStepManyTextFields extends WizStep {
      * The UID.
      */
     private static final long serialVersionUID = -5154002407806917092L;
-} /* end class WizStepManyTextFields */
+}
 
 
 

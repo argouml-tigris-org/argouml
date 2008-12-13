@@ -35,7 +35,7 @@ import org.tigris.gef.util.PredicateTrue;
 
 /**
  * @author MarkusK
- *
+ * @deprecated for 0.27.3 by tfmorris.  Use {@link AbstractGoList2}.
  */
 public abstract class AbstractGoList implements TreeModel {
 
@@ -50,6 +50,8 @@ public abstract class AbstractGoList implements TreeModel {
 
     /**
      * @return the list predicate
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link AbstractGoList2#getPredicate()}.
      */
     public Predicate getListPredicate() {
         return listPredicate;

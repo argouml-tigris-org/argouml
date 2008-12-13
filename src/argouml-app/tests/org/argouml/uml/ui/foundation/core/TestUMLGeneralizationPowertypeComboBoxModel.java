@@ -24,6 +24,9 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
@@ -111,8 +114,11 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
 					new Object[0],
 					new Object[] {elem}));
         types = new Object[NO_OF_ELEMENTS];
+        // TODO: Why is this creating two separate models?
         Object m = Model.getModelManagementFactory().createModel();
-        ProjectManager.getManager().getCurrentProject().setRoot(m);
+        Collection roots = new ArrayList();
+        roots.add(m);
+        ProjectManager.getManager().getCurrentProject().setRoots(roots);
         Model.getCoreHelper().setNamespace(elem, m);
         for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             types[i] = Model.getCoreFactory().createClass();

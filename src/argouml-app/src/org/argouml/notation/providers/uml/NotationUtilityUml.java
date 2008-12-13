@@ -427,6 +427,50 @@ public final class NotationUtilityUml {
     }
     
     /**
+     * @param modelElement the UML element to generate the visibility for, 
+     *                  or the visibility kind itself
+     * @param args arguments that influence the generation
+     * @return a string representing the visibility
+     */
+    protected static String generateVisibility(Object modelElement, Map args) {
+        String s = "";
+        if (isValue("visibilityVisible", args)) {
+            Object v = modelElement;
+            if (!Model.getFacade().isAVisibilityKind(modelElement)) {
+                v = Model.getFacade().getVisibility(modelElement);
+            }
+            if (v != null) {
+                s = NotationUtilityUml.generateVisibility2(v);
+            }
+            /* When nothing is generated: omit the space. */
+            if (s.length() > 0) {
+                s = s + " ";
+            }
+        }
+        return s;
+    }
+    
+    /**
+     * Utility function to determine the presence of a key. 
+     * The default is false.
+     * 
+     * @param key the string for the key
+     * @param map the Map to check for the presence 
+     * and value of the key
+     * @return true if the value for the key is true, otherwise false
+     */
+    public static boolean isValue(final String key, final Map map) {
+        if (map == null) {
+            return false;
+        }
+        Object o = map.get(key);
+        if (!(o instanceof Boolean)) {
+            return false;
+        }
+        return ((Boolean) o).booleanValue();
+    }
+    
+    /**
      * Returns a visibility String either for a VisibilityKind or a model
      * element.
      * 
@@ -1363,7 +1407,7 @@ public final class NotationUtilityUml {
         return s + " (" + p + ")";
     }
 
-    static String generateActionSequence(Object a) {
+    public static String generateActionSequence(Object a) {
         if (Model.getFacade().isAActionSequence(a)) {
             StringBuffer str = new StringBuffer("");
             Collection actions = Model.getFacade().getActions(a);

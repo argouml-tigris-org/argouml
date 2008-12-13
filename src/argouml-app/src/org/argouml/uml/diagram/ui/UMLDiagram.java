@@ -42,7 +42,6 @@ import org.argouml.gefext.ArgoModeCreateFigRect;
 import org.argouml.gefext.ArgoModeCreateFigSpline;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.UUIDHelper;
@@ -50,11 +49,13 @@ import org.argouml.uml.diagram.ArgoDiagramImpl;
 import org.argouml.uml.diagram.Relocatable;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.util.ToolBarUtility;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.ModeBroom;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.base.ModePlace;
 import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.graph.GraphFactory;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbar.ToolBarManager;
@@ -93,16 +94,7 @@ public abstract class UMLDiagram
     extends ArgoDiagramImpl
     implements Relocatable {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger.getLogger(UMLDiagram.class);
-
-    /**
-     * The serial number for new diagrams.
-     * Used to create an unique number for the name of the diagram.
-     */
-    private int diagramSerial = 1;
 
     /**
      * Tool to add a comment node.
@@ -160,31 +152,42 @@ public abstract class UMLDiagram
 
     private Action selectedAction;
     
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
-     * The constructor.
+     * Default constructor will become protected.  All subclasses should have
+     * their constructors invoke the 3-arg version of the constructor.
+     * @deprecated for 0.27.2 by tfmorris.  
+     * Use {@link #UMLDiagram(String, Object, GraphModel)} or another explicit
+     * constructor.
      */
+    @Deprecated
     public UMLDiagram() {
         super();
     }
 
     /**
      * @param ns the UML namespace of this diagram
+     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * {@link #UMLDiagram(Object, GraphModel)}.
      */
+    @Deprecated
     public UMLDiagram(Object ns) {
         this();
         if (!Model.getFacade().isANamespace(ns)) {
             throw new IllegalArgumentException();
         }
+        // TODO: Should we require a GraphModel in the constructor since 
+        // our implementations of setNamespace are going to try and set
+        // the namespace on the graphmodel as well?
         setNamespace(ns);
     }
-
+   
     /**
      * @param name the name of the diagram
      * @param ns the UML namespace of this diagram
+     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * {@link #UMLDiagram(String, Object, GraphModel)}.
      */
+    @Deprecated
     public UMLDiagram(String name, Object ns) {
         this(ns);
         try {
@@ -194,15 +197,43 @@ public abstract class UMLDiagram
         }
     }
 
+   
     /**
-     * Method called by PGML parser to initialize a diagram after it's been
-     * constructed.  Order of method invocations currently is: <ul>
+     * Construct a new ArgoUML diagram.  This is the fully specified form
+     * of the constructor typically used by subclasses.
+     * 
+     * @param name the name of the new diagram
+     * @param graphModel graph model to associate with diagram
+     * (use new LayerPerspective(name, graphModel)) if you need a default
+     * @param ns the namespace which will "own" the diagram
+     */
+    public UMLDiagram(String name, Object ns, GraphModel graphModel) {
+        super(name, graphModel, new LayerPerspective(name, graphModel));
+        setNamespace(ns);
+    }
+
+    /**
+     * Construct an unnamed diagram using the given GraphModel.
+     * 
+     * @param graphModel graph model to associate with diagram
+     * (use new LayerPerspective(name, graphModel)) if you need a default
+     */
+    public UMLDiagram(GraphModel graphModel) {    
+        super("", graphModel, new LayerPerspective("", graphModel));
+    }
+    
+    /**
+     * Method called by PGML parser during diagram load to initialize a diagram
+     * after it's been constructed. Order of method invocations currently is:
+     * <ul>
      * <li>0-arg constructor
+     * <li>setDiagramSettings
      * <li>initialize(Object) // UML element representing owner/home model
      * <li>setName(String)
      * <li>setScale(double)
      * <li>setShowSingleMultiplicity(boolean)
      * <ul>
+     * 
      * @param owner UML model element representing owner/namespace/home model
      * @see org.tigris.gef.base.Diagram#initialize(java.lang.Object)
      */
@@ -216,9 +247,6 @@ public abstract class UMLDiagram
             setNamespace(owner);
         }
     }
-    
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /*
      * @see org.tigris.gef.base.Diagram#getClassAndModelID()
@@ -523,18 +551,22 @@ public abstract class UMLDiagram
     }
 
     /**
-     * Reset the diagram serial counter to the initial value.
-     * This should e.g. be done when the menuitem File->New is activated.
+     * Reset the diagram serial counter to the initial value. This should e.g.
+     * be done when the menuitem File->New is activated.
+     * 
+     * @deprecated for 0.27.3 by tfmorris. This is a noop. Diagram name
+     *             duplication is checked for and managed at the project level.
      */
     public void resetDiagramSerial() {
-        diagramSerial = 1;
     }
 
     /**
      * @return Returns the diagramSerial.
+     * @deprecated for 0.27.3 by tfmorris. This is always returns 1. Diagram
+     *             naming is managed at the project level.
      */
     protected int getNextDiagramSerial() {
-        return diagramSerial++;
+        return 1;
     }
 
     /**
@@ -564,20 +596,13 @@ public abstract class UMLDiagram
      * @return String
      */
     protected String getNewDiagramName() {
-        String name = getLabelName() + " " + getNextDiagramSerial();
-        //        Project project = getProject();
-        // TODO: If this gets called from the constructor the project
-        // won't be set yet. Figure out another way to handle it
-        Project project = ProjectManager.getManager().getCurrentProject();
-        if (!project.isValidDiagramName(name)) {
-            name = getNewDiagramName();
-        }
-        return name;
+        // TODO: Add "unnamed" or "new" or something? (Localized, of course)
+        return /*"unnamed " + */ getLabelName();
     }
 
     /**
      * Method to test it the diagram can accept a certain object.
-     * This should be overriden by any diagram that wants to accept a certain
+     * This should be overridden by any diagram that wants to accept a certain
      * type of object. All other diagrams should not bother since the default
      * answer is false, ie. don't accept the object.
      * @param objectToAccept The object which acceptability will be checked.

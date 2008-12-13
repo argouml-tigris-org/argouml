@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,8 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
+
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
@@ -33,6 +35,9 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigCircle;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigRect;
 
 /**
  * Static utility methods for use with ArgoFigs.
@@ -85,4 +90,28 @@ public class ArgoFigUtil {
     }
 
 
+    /**
+     * Add pretty little markers for debugging purposes. We use three markers so
+     * you can see the anchor, the computed target position, and how collision
+     * detection affects a largish box.
+     */
+    static void markPosition(FigEdge fe, 
+            int pct, int delta, int angle, int offset,
+            Color color) {
+        // set this to true on to enable debugging figs
+        if (false) {
+            Fig f;
+            f = new FigCircle(0, 0, 5, 5, color, Color.red);
+            // anchor position
+            fe.addPathItem(f, new PathItemPlacement(fe, f, pct, delta, angle, 
+                    0));
+            f = new FigRect(0, 0, 100, 20, color, Color.red);
+            f.setFilled(false);
+            fe.addPathItem(f, new PathItemPlacement(fe, f, pct, delta, angle,
+                    offset));
+            f = new FigCircle(0, 0, 5, 5, color, Color.blue);
+            fe.addPathItem(f, new PathItemPlacement(fe, f, pct, delta, angle,
+                    offset));
+        }
+    }
 }

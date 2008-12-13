@@ -83,16 +83,6 @@ public class FileFilters {
     public static final SuffixFilter LOG_FILTER = new
         SuffixFilter("log", "Argo usage log");
 
-    /**
-     * Java Source File Filter
-     * 
-     * @deprecated for 0.26 by tfmorris. This will be removed from the core when
-     *             the Java importer is moved to a separate module.
-     */
-    @Deprecated
-    public static final SuffixFilter JAVA_FILE_FILTER = new
-        SuffixFilter("java", Translator.localize("combobox.filefilter.java"));
-
     /** 
      * This writes the GIF file.
      */

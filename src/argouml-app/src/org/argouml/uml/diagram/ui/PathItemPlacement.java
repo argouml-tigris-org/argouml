@@ -24,12 +24,15 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 
 import org.apache.log4j.Logger;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathConv;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -51,7 +54,7 @@ import org.tigris.gef.presentation.FigEdge;
  * <li>itemFig must return correct size information for this to work properly,
  * which is not currently true of all GEF figs (eg. text figs).
  * <li>Only the path is considered, so you can still get overlaps with the
- * connected nodes on the ends of the edges other labels on the same edge or
+ * connected nodes on the ends of the edges or other labels on the same edge or
  * other figs in the diagram. Using a displacement angle of 135 or -135 degrees
  * is a good way to help avoid the connected nodes.
  * </ul>
@@ -98,7 +101,7 @@ public class PathItemPlacement extends PathConv {
     
     /**
      * Construct a new path to coordinate conversion object which positions at a
-     * percentage along a path with an offset distance perpendicular to the path
+     * percentage along a path with a given distance perpendicular to the path
      * at the anchor point.
      * 
      * @param pathFig fig representing the edge which will be used for
@@ -118,9 +121,9 @@ public class PathItemPlacement extends PathConv {
 
     
     /**
-     * Construct a new path to coordinate conversion object which positions at a
-     * percentage along a path with an offset distance perpendicular to the path
-     * at the anchor point.
+     * Construct a new path to coordinate conversion object which positions
+     * an anchor point on the path at a percentage along a path with an offset, 
+     * and from the anchor point at a distance measured at a given angle.
      * 
      * @param pathFig fig representing the edge which will be used for
      *            positioning.
@@ -147,9 +150,9 @@ public class PathItemPlacement extends PathConv {
     }
 
     /**
-     * Construct a new path to coordinate conversion object which positions at a
-     * percentage along a path with an offset distance perpendicular to the path
-     * at the anchor point.
+     * Construct a new path to coordinate conversion object which positions
+     * an anchor point on the path at a percentage along a path with an offset, 
+     * and from the anchor point at a distance measured in X, Y coordinates.
      * 
      * @param pathFig fig representing the edge which will be used for
      *            positioning.
@@ -417,10 +420,10 @@ public class PathItemPlacement extends PathConv {
 
     /**
      * Set distance along displacement vector to place the figure.
-     * @param newOffset distance in units of the drawing coordinate system
+     * @param newDistance distance in units of the drawing coordinate system
      */
-    public void setDisplacementDistance(int newOffset) {
-        vectorOffset = newOffset;
+    public void setDisplacementDistance(int newDistance) {
+        vectorOffset = newDistance;
         useAngle = true;
     }
     
@@ -446,7 +449,7 @@ public class PathItemPlacement extends PathConv {
      */
     private double getSlope() {
 
-        final int slopeSegLen = 10; // segment size for computing slope
+        final int slopeSegLen = 40; // segment size for computing slope
 
         int pathLength = _pathFigure.getPerimeterLength();
         int pathDistance = getPathDistance();
@@ -574,5 +577,87 @@ public class PathItemPlacement extends PathConv {
         
         return result;
     }
-
+    
+    /**
+     * Paint the virtual connection from the edge to where the path item
+     * is placed according to this path item placement algorithm.
+     * 
+     * @param g the Graphics object
+     * @see org.tigris.gef.base.PathConv#paint(java.awt.Graphics)
+     */
+    public void paint(Graphics g) {
+        final Point p1 = getAnchorPosition();
+        Point p2 = getPoint();
+        Rectangle r = itemFig.getBounds();
+        // Load the standard colour, just add an alpha channel.
+        Color c = Globals.getPrefs().handleColorFor(itemFig);
+        c = new Color(c.getRed(), c.getGreen(), c.getBlue(), 100);
+        g.setColor(c);
+        r.grow(2, 2);
+        g.fillRoundRect(r.x, r.y, r.width, r.height, 8, 8);
+        if (r.contains(p2)) {
+            p2 = getRectLineIntersection(r, p1, p2);     
+        }
+        g.drawLine(p1.x, p1.y, p2.x, p2.y);
+    }
+    
+    /**
+     * Finds the point where a rectangle and line intersect.
+     * Finds the intersection point between the border of a Rectangle r and 
+     * a line drawn between two Points pOut (outside the rectangle) and pIn 
+     * (inside the rectangle).
+     * If the pIn is not inside the rectangle, or if any other problem occurs,
+     * pIn is returned. 
+     * @param r Rectangle to find the intersection of.
+     * @param pOut Point outside the rectangle.
+     * @param pIn Point inside the rectangle.
+     * @return The intersection between Line(pOut, pIn) and Rectangle r.
+     */
+    private Point getRectLineIntersection(Rectangle r, Point pOut, Point pIn) {
+        Line2D.Double m, n;
+        m = new Line2D.Double(pOut, pIn);
+        n = new Line2D.Double(r.x, r.y, r.x + r.width, r.y);
+        if (m.intersectsLine(n)) {
+            return intersection(m, n);
+        }
+        n = new Line2D.Double(r.x + r.width, r.y, r.x + r.width, 
+                r.y + r.height);
+        if (m.intersectsLine(n)) {
+            return intersection(m, n);
+        }
+        n = new Line2D.Double(r.x, r.y + r.height, r.x + r.width, 
+                r.y + r.height);
+        if (m.intersectsLine(n)) {
+            return intersection(m, n);
+        }
+        n = new Line2D.Double(r.x, r.y, r.x, r.y + r.width);
+        if (m.intersectsLine(n)) {
+            return intersection(m, n);
+        }
+        // Should never get here.  If we do, return the inner point.
+        LOG.warn("Could not find rectangle intersection, using inner point.");
+        return pIn;
+    }
+    
+    /**
+     * Finds the intersection point of two lines.
+     * It is surprising that this method isn't already available in the base 
+     * Line2D class of Java.  If a stock method exists or is implemented in
+     * future, feel free replace this code with it.
+     * @param m First line.
+     * @param n Second line.
+     * @return Intersection point of first and second line.
+     */
+    private Point intersection(Line2D m, Line2D n) {
+        double d = (n.getY2() - n.getY1()) * (m.getX2() - m.getX1()) 
+                - (n.getX2() - n.getX1()) * (m.getY2() - m.getY1());
+        double a = (n.getX2() - n.getX1()) * (m.getY1() - n.getY1()) 
+                - (n.getY2() - n.getY1()) * (m.getX1() - n.getX1());
+        
+        double as = a / d;
+        
+        double x = m.getX1() + as * (m.getX2() - m.getX1());
+        double y = m.getY1() + as * (m.getY2() - m.getY1());
+        return new Point((int) x, (int) y);
+    }
 }

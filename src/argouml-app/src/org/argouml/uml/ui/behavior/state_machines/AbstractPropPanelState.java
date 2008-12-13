@@ -34,7 +34,6 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The abstract properties panel for a State.
@@ -48,22 +47,6 @@ public abstract class AbstractPropPanelState extends PropPanelStateVertex {
     private JScrollPane internalTransitionsScroll;
     private ScrollList deferrableEventsScroll;
 
-
-    /**
-     * Constructor for AbstractPropPanelState.
-     * @param name the name of the properties panel, to be shown at the top
-     * @param icon the icon to be shown next to the name
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #AbstractPropPanelState(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public AbstractPropPanelState(String name, ImageIcon icon,
-            Orientation orientation) {
-        this(name, icon);
-        setOrientation(orientation);
-    }
 
     /**
      * Construct a property panel for a State. Since State is abstract, this

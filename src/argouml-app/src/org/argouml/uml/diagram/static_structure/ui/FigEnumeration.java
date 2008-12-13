@@ -28,7 +28,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.Action;
@@ -43,7 +42,6 @@ import org.argouml.uml.diagram.ui.FigStereotypesGroup;
 import org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * Class to display graphics for a UML Enumeration in a diagram.
@@ -68,8 +66,7 @@ public class FigEnumeration extends FigDataType
      */
     public FigEnumeration() {
         super();
-        FigStereotypesGroup fsc =
-            (FigStereotypesGroup) getStereotypeFig();
+        FigStereotypesGroup fsc = getStereotypeFig();
         fsc.setKeyword("enumeration");
 
         enableSizeChecking(true);
@@ -79,7 +76,7 @@ public class FigEnumeration extends FigDataType
         setBounds(getBounds());
     }
 
-    /*
+    /**
      * Constructor for use if this figure is created for an
      * existing interface node in the metamodel.
      *
@@ -143,10 +140,10 @@ public class FigEnumeration extends FigDataType
      */
     @Override
     public void renderingChanged() {
-        if (getOwner() != null) {
+        super.renderingChanged();
+               if (getOwner() != null) {
             updateEnumLiterals();
         }
-        super.renderingChanged();
     }
     
     /*
@@ -283,8 +280,8 @@ public class FigEnumeration extends FigDataType
         // Set bounds will be called from our superclass constructor before
         // our constructor has run, so make sure this gets set up if needed.
         if (literalsCompartment == null) {
-            literalsCompartment = new FigEnumLiteralsCompartment(10, 30, 60,
-                    ROWHEIGHT + 2);
+            literalsCompartment = new FigEnumLiteralsCompartment(getOwner(),
+                    DEFAULT_COMPARTMENT_BOUNDS, getSettings());
         }
         return literalsCompartment;
     }

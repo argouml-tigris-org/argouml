@@ -74,16 +74,7 @@ public class TestDataTypesFactory extends TestCase {
 	};
 
 	String[] objs = {
-	    "ActionExpression",
-	    "ArgListsExpression",
-	    "BooleanExpression",
 	    "Expression",
-	    "IterationExpression",
-	    "MappingExpression",
-	    "ObjectSetExpression",
-	    "ProcedureExpression",
-	    "TimeExpression",
-	    "TypeExpression",
 	    null,
 	};
 

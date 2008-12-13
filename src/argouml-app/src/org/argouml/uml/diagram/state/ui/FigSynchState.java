@@ -46,8 +46,8 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigSynchState extends FigStateVertex {
 
-    private static final int X = 10;
-    private static final int Y = 10;
+    private static final int X = X0;
+    private static final int Y = Y0;
     private static final int WIDTH = 25;
     private static final int HEIGHT = 25;
 
@@ -235,7 +235,7 @@ public class FigSynchState extends FigStateVertex {
     @Override
     protected void updateFont() {
         super.updateFont();
-        Font f = getProject().getProjectSettings().getFont(Font.PLAIN);
+        Font f = getSettings().getFont(Font.PLAIN);
         bound.setFont(f);
     }
 

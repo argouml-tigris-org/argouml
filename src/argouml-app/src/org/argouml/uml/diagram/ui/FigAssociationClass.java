@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.PathContainer;
 import org.tigris.gef.base.Layer;
@@ -64,14 +65,15 @@ public class FigAssociationClass extends FigAssociation implements
         AttributesCompartmentContainer, PathContainer,
         OperationsCompartmentContainer {
 
-    /**
-     * The UID.
-     */
     private static final long serialVersionUID = 3643715304027095083L;
 
     /**
      * Construct a new FigAssociationClass during load from PGML.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigAssociationClass(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigAssociationClass() {
         super();
         setBetweenNearestPoints(true);
@@ -86,13 +88,31 @@ public class FigAssociationClass extends FigAssociation implements
      *            the edge
      * @param lay
      *            the layer
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigAssociationClass(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigAssociationClass(Object ed, Layer lay) {
         this();
         setLayer(lay);
         setOwner(ed);
     }
 
+    /**
+     * Construct an association class figure for the given AssociationClass
+     * model element using the rendering settings.
+     * 
+     * @param element model element
+     * @param settings rendering settings
+     */
+    public FigAssociationClass(Object element, DiagramSettings settings) {
+        super(element, settings);
+        setBetweenNearestPoints(true);
+        ((FigPoly) getFig()).setRectilinear(false);
+        setDashed(false);
+    }
+    
     /**
      * Remove entire composite Fig from Diagram. Discover the attached
      * FigEdgeAssociationClass and the FigClassAssociationClass attached to
@@ -156,20 +176,22 @@ public class FigAssociationClass extends FigAssociation implements
      * @see org.argouml.uml.diagram.AttributesCompartmentContainer#getAttributesBounds()
      */
     public Rectangle getAttributesBounds() {
-        if (getAssociationClass() != null)
+        if (getAssociationClass() != null) {
             return getAssociationClass().getAttributesBounds();
-        else
+        } else {
             return new Rectangle(0, 0, 0, 0);
+        }
     }
 
     /*
      * Overridden in order to implement AttributesCompartmentContainer.
      */
     public boolean isAttributesVisible() {
-        if (getAssociationClass() != null)
+        if (getAssociationClass() != null) {
             return getAssociationClass().isAttributesVisible();
-        else
+        } else {
             return true;
+        }
     }
 
     /*
@@ -185,10 +207,11 @@ public class FigAssociationClass extends FigAssociation implements
      * Overridden in order to implement PathCompartmentContainer.
      */
     public boolean isPathVisible() {
-        if (getAssociationClass() != null)
+        if (getAssociationClass() != null) {
             return getAssociationClass().isPathVisible();
-        else
+        } else {
             return false;
+        }
     }
 
     /*

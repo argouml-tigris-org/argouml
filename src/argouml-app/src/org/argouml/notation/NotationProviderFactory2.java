@@ -158,6 +158,12 @@ public final class NotationProviderFactory2 {
     public static final int TYPE_ENUMERATION_LITERAL = 20;
 
     /**
+     * TYPE_MESSAGE the text shown on a Message 
+     * in a Collaborations diagram.
+     */
+    public static final int TYPE_SD_MESSAGE = 21;
+
+    /**
      * defaultLanguage the Notation language used by default, i.e. UML
      */
     private NotationName defaultLanguage;
@@ -295,7 +301,7 @@ public final class NotationProviderFactory2 {
      * @param name the name of the notation language to use
      * @return the provider
      */
-    private NotationProvider getNotationProvider(int type,
+    public NotationProvider getNotationProvider(int type,
             Object object, PropertyChangeListener listener, 
             NotationName name) {
 

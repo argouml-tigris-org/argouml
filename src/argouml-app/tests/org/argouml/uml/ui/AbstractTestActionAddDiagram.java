@@ -28,15 +28,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
-import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
 /**
@@ -128,17 +128,25 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
 
 	ArgoDiagram diagram = action.createDiagram(ns);
         Model.getPump().flushModelEvents();
-	assertNotNull(
-		      "The diagram has no namespace",
-		      diagram.getNamespace());
-	checkNamespace(diagram);
-	assertNotNull(
-		      "The diagram has no graphmodel",
-		      diagram.getGraphModel());
-	assertTrue("The graphmodel of the diagram is not a "
-		   + "UMLMutableGraphSupport",
-		   diagram.getGraphModel() instanceof UMLMutableGraphSupport);
-	assertNotNull("The diagram has no name", diagram.getName());
+	checkDiagram(diagram);
+
+        diagram = action.createDiagram(ns, new DiagramSettings());
+        Model.getPump().flushModelEvents();
+        checkDiagram(diagram);
+    }
+
+    private void checkDiagram(ArgoDiagram diagram) {
+        assertNotNull(
+        	      "The diagram has no namespace",
+        	      diagram.getNamespace());
+        checkNamespace(diagram);
+        assertNotNull(
+        	      "The diagram has no graphmodel",
+        	      diagram.getGraphModel());
+        assertTrue("The graphmodel of the diagram is not a "
+        	   + "UMLMutableGraphSupport",
+        	   diagram.getGraphModel() instanceof UMLMutableGraphSupport);
+        assertNotNull("The diagram has no name", diagram.getName());
     }
 
     /**
@@ -156,22 +164,6 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
         	   action.isValidNamespace(diagram.getNamespace()));
     }
 
-    /**
-     * Tests if two diagrams created have different names.
-     */
-    public void testDifferentNames() {
-	ArgoDiagram diagram1 = action.createDiagram(ns);
-	// This next line is needed to register the diagram in the project,
-        // since creating a next diagram will need the new name to be compared
-        // with existing diagrams in the project, to validate
-        // there are no duplicates.
-	ProjectManager.getManager().getCurrentProject().addMember(diagram1);
-        ArgoDiagram diagram2 = action.createDiagram(ns);
-        Model.getPump().flushModelEvents();
-	assertTrue(
-		   "The created diagrams have the same name",
-		   !(diagram1.getName().equals(diagram2.getName())));
-    }
 
     /**
      * Tests if the namespace created by getNamespace() is a valid namespace for

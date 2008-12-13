@@ -112,22 +112,7 @@ public final class ExplorerEventAdaptor
         treeModel.structureChanged();
     }
 
-    /**
-     * forwards this event to the tree model.
-     *
-     * @param element the modelelement to be removed
-     * @deprecated for 0.25.4 by tfmorris.  Send an event rather than calling
-     * this method directly.  This is not currently used by ArgoUML and removal
-     * is handled by Model subsystem events.
-     */
-    @Deprecated
-    public void modelElementRemoved(Object element) {
-        if (treeModel == null) {
-            return;
-        }
-        treeModel.modelElementRemoved(element);
-    }
-
+    
     /**
      * forwards this event to the tree model.
      *
@@ -203,8 +188,13 @@ public final class ExplorerEventAdaptor
         } else if (pce instanceof DeleteInstanceEvent) {
             treeModel.modelElementRemoved(((DeleteInstanceEvent) pce)
                     .getSource());
-        } else if (pce.getPropertyName()
-                .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
+        } else if (pce.getPropertyName().equals(
+                // TODO: No one should be sending the deprecated event
+                // from outside ArgoUML, but keep responding to it for now
+                // just in case
+                ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)
+                || pce.getPropertyName().equals(
+                        ProjectManager.OPEN_PROJECTS_PROPERTY)) {
             // project events
             if (pce.getNewValue() != null) {
                 treeModel.structureChanged();

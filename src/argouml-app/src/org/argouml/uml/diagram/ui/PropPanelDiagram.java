@@ -71,6 +71,8 @@ public class PropPanelDiagram extends PropPanel {
         super(diagramName, icon);
 
         JTextField field = new JTextField();
+        // TODO: This should probably only update the project when the user
+        // presses Return or focus is lost
         field.getDocument().addDocumentListener(new DiagramNameDocument(field));
         addField("label.name", field);
 

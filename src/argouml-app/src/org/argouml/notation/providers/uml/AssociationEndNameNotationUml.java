@@ -38,7 +38,14 @@ import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.MyTokenizer;
 
 /**
- * The UML notation for an associationend name (i.e. the  role).
+ * The UML notation for an association-end name (i.e. the  role). <p>
+ * 
+ * This notation supports the association end name, 
+ * visibility, and stereotypes. <p>
+ * 
+ * There is no support for the interface specifier
+ * (that maps to the "specification" of an AssociationEnd). <p>
+ * 
  * TODO: This is the only notation (that I'm aware of) that requires state.
  * All others should become effectively singletons. - Bob.
  * @author michiel
@@ -184,7 +191,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
         Object visi = Model.getFacade().getVisibility(modelElement);
         String visibility = "";
         if (visi != null) {
-            visibility = NotationUtilityUml.generateVisibility(visi);
+            visibility = NotationUtilityUml.generateVisibility(visi, args);
         }
         if (name.length() < 1) {
             visibility = "";
@@ -193,6 +200,10 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
 
         String stereoString = 
             NotationUtilityUml.generateStereotype(modelElement, args);
+
+        if (stereoString.length() > 0) {
+            stereoString += " ";
+        }
 
         return stereoString + visibility + name;
     }

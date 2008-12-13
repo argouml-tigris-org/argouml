@@ -353,9 +353,11 @@ public class TestAgainstUmlModel extends TestCase {
          * The following UML 1.4 elements have been removed from UML 2.x, so we
          * don't bother testing them.
          */
+        dontTest.add("Primitive");
         dontTest.add("ProgrammingLanguageDataType");
         dontTest.add("UseCaseInstance");
-        
+
+        dontTest.add("ActionExpression");
         dontTest.add("ArgListsExpression");
         dontTest.add("BooleanExpression");
         dontTest.add("IterationExpression");
@@ -364,6 +366,10 @@ public class TestAgainstUmlModel extends TestCase {
         dontTest.add("ProcedureExpression");
         dontTest.add("TimeExpression");
         dontTest.add("TypeExpression");
+        
+        // TODO: We'd like to test this in its new guise as PackageImport, but
+        // we don't have a good way to do it currently
+        dontTest.add("Permission");
 
         /*
          * A few of our factories are slightly different than as declared in the
@@ -372,7 +378,7 @@ public class TestAgainstUmlModel extends TestCase {
         remap.put("Core:Stereotype", "ExtensionMechanisms:Stereotype");
         remap.put("Core:TaggedValue", "ExtensionMechanisms:TaggedValue");
         remap.put("Core:TagDefinition", "ExtensionMechanisms:TagDefinition");
-        
+
         /*
          * The UML 2.x package structure is *entirely* different, so we have to
          * remap a bunch of stuff. Names without embedded colons (:) indicate
@@ -383,7 +389,6 @@ public class TestAgainstUmlModel extends TestCase {
          */
         // Specific classes to be remapped
 //      remap.put("", "");
-        remap.put("Kernel:PrimitiveType", "Core:Primitive");
         remap.put("Kernel:Expression", "DataTypes:Expression");
         
         // Packages to be remapped
@@ -397,6 +402,15 @@ public class TestAgainstUmlModel extends TestCase {
         remap.put("BehaviorStateMachines", "StateMachines");
         remap.put("ProtocolStateMachines", "StateMachines");
         remap.put("Models", "ModelManagement");
+        
+        /*
+         * For those things which we've already migrated to UML 2.x syntax
+         * we need to map them back to their UML 1.4 equivalents during the
+         * migration period.
+         */
+        // TODO: Except this won't work because the names are different which
+        // will cause a test in CheckUMLModelHelper to fail
+//        remap.put("Core:Permission", "Core:PackageImport");
     }
 
 

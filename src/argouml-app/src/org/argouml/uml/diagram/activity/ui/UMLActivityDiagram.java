@@ -136,7 +136,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         } catch (PropertyVetoException pve) {
             // no action required in case of veto on setName
         }
-        // TODO: All super constrcutors should take a GraphModel
+        // TODO: All super constructors should take a GraphModel
         setGraphModel(createGraphModel());
     }
 
@@ -150,6 +150,10 @@ public class UMLActivityDiagram extends UMLDiagram {
 
         this();
 
+        if (namespace == null) {
+            namespace = Model.getFacade().getNamespace(agraph);
+        }
+        
         if (!Model.getFacade().isANamespace(namespace)
             || !Model.getFacade().isAActivityGraph(agraph)) {
             throw new IllegalArgumentException();

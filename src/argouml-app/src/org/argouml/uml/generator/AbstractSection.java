@@ -86,6 +86,8 @@ public abstract class AbstractSection {
         try {
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
+            // TODO: This is using the default platform character encoding
+            // specifying an encoding will produce more predictable results
             FileWriter fw = new FileWriter(filename + ".out");
             String line = "";
             line = fr.readLine();
@@ -149,6 +151,8 @@ public abstract class AbstractSection {
      */
     public void read(String filename) {
         try {
+            // TODO: This is using the default platform character encoding
+            // specifying an encoding will produce more predictable results
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
 

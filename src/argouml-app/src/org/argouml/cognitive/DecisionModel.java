@@ -28,7 +28,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.Vector;
 
 /**
  * The DecisionModel is part of the state of the Designer.  It
@@ -56,18 +55,6 @@ public class DecisionModel extends Observable implements Serializable {
      */
     public DecisionModel() {
 	decisions.add(Decision.UNSPEC);
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
-    /**
-     * @return the list of decisions
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getDecisionList()}.
-     */
-    @Deprecated
-    public Vector<Decision> getDecisions() {
-        return new Vector<Decision>(decisions);
     }
 
     /**

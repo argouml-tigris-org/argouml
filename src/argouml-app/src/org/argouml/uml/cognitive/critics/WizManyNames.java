@@ -67,15 +67,6 @@ public class WizManyNames extends UMLWizard {
     public WizManyNames() {
     }
 
-    /**
-     * @param m
-     *            the offenders
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #setModelElements(List)}.
-     */
-    @Deprecated
-    public void setMEs(Vector m) {
-        setModelElements(m);
-    }
 
     /**
      * Set the list of offending ModelElements.

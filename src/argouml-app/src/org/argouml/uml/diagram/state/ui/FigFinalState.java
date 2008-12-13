@@ -44,8 +44,6 @@ import org.tigris.gef.presentation.FigCircle;
  */
 public class FigFinalState extends FigStateVertex {
 
-    private static final int X = 10;
-    private static final int Y = 10;
     private static final int WIDTH = 24;
     private static final int HEIGHT = 24;
 
@@ -59,11 +57,11 @@ public class FigFinalState extends FigStateVertex {
         setEditable(false);
         Color handleColor = Globals.getPrefs().getHandleColor();
         FigCircle bigPort =
-            new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
+            new FigCircle(X0, Y0, WIDTH, HEIGHT, Color.black, Color.white);
         inCircle =
             new FigCircle(
-        		  X + 5,
-        		  Y + 5,
+        		  X0 + 5,
+        		  Y0 + 5,
         		  WIDTH - 10,
         		  HEIGHT - 10,
         		  handleColor,

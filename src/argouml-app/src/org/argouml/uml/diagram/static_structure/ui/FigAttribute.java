@@ -24,7 +24,11 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import java.awt.Rectangle;
+
 import org.argouml.notation.NotationProvider;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -50,9 +54,44 @@ public class FigAttribute extends FigFeature {
      * @param h h
      * @param aFig the figure describing the whole compartment
      * @param np the notation provider for the text
+     * @deprecated for 0.27.3 by tfmorris. Use
+     * {@link #FigAttribute(Object, Rectangle, DiagramSettings)}
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigAttribute(int x, int y, int w, int h, Fig aFig, 
             NotationProvider np) {
         super(x, y, w, h, aFig, np);
+    }
+    
+    /**
+     * Construct an Attribute fig.
+     * @deprecated by mvw in V0.27.3. Use the constructor without np parameter.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     * @param np notation provider
+     */
+    public FigAttribute(Object owner, Rectangle bounds,
+            DiagramSettings settings, NotationProvider np) {
+        super(owner, bounds, settings, np);
+    }
+
+    /**
+     * Construct an Attribute fig.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigAttribute(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+    }
+    
+    @Override
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_ATTRIBUTE;
     }
 }

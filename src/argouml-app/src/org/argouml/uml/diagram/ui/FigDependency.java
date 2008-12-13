@@ -27,7 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.Fig;
@@ -50,29 +50,44 @@ public class FigDependency extends FigEdgeModelElement {
     /*
      * Text group to contain name & stereotype
      */
-    private FigTextGroup middleGroup = new FigTextGroup(); 
+    private FigTextGroup middleGroup; 
 
     /**
      * Constructor
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigDependency(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigDependency() {
+        super();
+        middleGroup = new FigTextGroup();
+        constructFigs();
+    }
+
+    private void constructFigs() {
         middleGroup.addFig(getNameFig());
         middleGroup.addFig(getStereotypeFig());
         addPathItem(middleGroup,
                 new PathConvPercent2(this, middleGroup, 50, 25));
+        
         endArrow = new ArrowHeadGreater();
         endArrow.setFillColor(Color.red);
         setDestArrowHead(endArrow);
+        
         setBetweenNearestPoints(true);
-        setLayer(ProjectManager.getManager()
-		 .getCurrentProject().getActiveDiagram().getLayer());
         getFig().setDashed(true);
     }
 
     /**
      * Constructor that sets the UML element
+     * 
      * @param dependency the UML element
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigDependency(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigDependency(Object dependency) {
         this();
         setOwner(dependency);
@@ -81,16 +96,33 @@ public class FigDependency extends FigEdgeModelElement {
     /**
      * @param dependency theUML element
      * @param lay the layer
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigDependency(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigDependency(Object dependency, Layer lay) {
         this();
         setOwner(dependency);
         setLayer(lay);
     }
 
+    /**
+     * Construct a FigDependency.
+     * 
+     * @param owner owning UML Dependency
+     * @param settings render settings
+     */
+    public FigDependency(Object owner, DiagramSettings settings) {
+        super(owner, settings);
+        middleGroup = new FigTextGroup(owner, settings);
+        constructFigs();
+    }
+    
     /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setFig(Fig f) {
         super.setFig(f);
         getFig().setDashed(true);
@@ -101,6 +133,7 @@ public class FigDependency extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
      */
+    @Override
     protected boolean canEdit(Fig f) {
         return false;
     }
@@ -108,16 +141,19 @@ public class FigDependency extends FigEdgeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
+    @Override
     public void paint(Graphics g) {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
     }
 
+    @Override
     protected void updateNameText() {
         super.updateNameText();
         middleGroup.calcBounds();
     }
 
+    @Override
     protected void updateStereotypeText() {
         super.updateStereotypeText();
         middleGroup.calcBounds();

@@ -76,17 +76,21 @@ public class ActionAdjustGrid extends AbstractAction {
 
     public void actionPerformed(final ActionEvent e) {
         final Editor editor = Globals.curEditor();
-        final Layer grid = editor.getLayerManager().findLayerNamed("Grid");
-        if (grid instanceof LayerGrid) {
-            if (myMap != null) {
-                // Kludge required by GEF's use of HashMap in the API
-                // TODO: This can be removed if they ever fix GEF to use Maps
-                if (myMap instanceof HashMap) {
-                    grid.adjust((HashMap<String, Comparable>) myMap);
-                } else {
-                    grid.adjust(new HashMap<String, Comparable>(myMap));
+        if (editor != null) {
+            final Layer grid = editor.getLayerManager().findLayerNamed("Grid");
+            if (grid instanceof LayerGrid) {
+                if (myMap != null) {
+                    // Kludge required by GEF's use of HashMap in the API
+                    // TODO: This can be removed if they ever fix GEF to use
+                    // Maps
+                    if (myMap instanceof HashMap) {
+                        grid.adjust((HashMap<String, Comparable>) myMap);
+                    } else {
+                        grid.adjust(new HashMap<String, Comparable>(myMap));
+                    }
+                    Configuration.setString(Argo.KEY_GRID,
+                            (String) getValue("ID"));
                 }
-                Configuration.setString(Argo.KEY_GRID, (String) getValue("ID"));
             }
         }
     }

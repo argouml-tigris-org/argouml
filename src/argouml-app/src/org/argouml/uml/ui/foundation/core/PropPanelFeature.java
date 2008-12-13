@@ -26,10 +26,8 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.tigris.swidgets.Orientation;
 
 /**
  * Abstract class for the properties panel of a Feature.
@@ -59,35 +57,6 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
         super(name, icon);
     }
     
-    /**
-     * Constructor.
-     * 
-     * @param name name
-     * @param icon icon
-     * @param orientation orientation
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelFeature(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    protected PropPanelFeature(String name, ImageIcon icon,
-            Orientation orientation) {
-        super(name, icon, orientation);
-    }
-
-    /**
-     * Constructor for PropPanelFeature.
-     *
-     * @param name the name to be shown at the top of the panel
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelFeature(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    protected PropPanelFeature(String name, Orientation orientation) {
-        super(name, orientation);
-    }
 
     /**
      * Returns the ownerScroll.

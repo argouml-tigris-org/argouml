@@ -24,14 +24,15 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Rectangle;
 import java.util.Collection;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigEnumerationLiteral;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * The Fig for the compartment of an Enumeration 
@@ -52,11 +53,27 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
      * @param y y
      * @param w width
      * @param h height
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigEnumLiteralsCompartment(Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigEnumLiteralsCompartment(int x, int y, int w, int h) {
         super(x, y, w, h);
     }
 
+    /**
+     * Constructor.
+     * 
+     * @param owner owning UML element
+     * @param bounds bounding rectangle
+     * @param settings render settings
+     */
+    public FigEnumLiteralsCompartment(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+    }
+    
     /*
      * @see org.argouml.uml.diagram.ui.FigEditableCompartment#getUmlCollection()
      */
@@ -85,13 +102,16 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
         TargetManager.getInstance().setTarget(literal);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEditableCompartment#createFigText(int, int, int, int, org.tigris.gef.presentation.Fig, org.argouml.notation.providers.NotationProvider)
-     */
-    protected FigSingleLineText createFigText(int x, int y, int w, int h, 
-            Fig aFig, NotationProvider np) {
-        return new FigEnumerationLiteral(x, y, w, h, aFig, np);
+    @Deprecated
+    @Override
+    protected FigSingleLineTextWithNotation createFigText(Object owner, Rectangle bounds,
+            DiagramSettings settings, NotationProvider np) {
+        return new FigEnumerationLiteral(owner, bounds, settings, np);
     }
-    
-    
+
+    @Override
+    protected FigSingleLineTextWithNotation createFigText(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        return new FigEnumerationLiteral(owner, bounds, settings);
+    }  
 }

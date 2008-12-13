@@ -1,4 +1,4 @@
-// $Id: SequenceDiagramFactory.java 14988 2008-06-17 19:38:48Z bobtarling $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,9 +26,13 @@ package org.argouml.uml.diagram;
 
 /**
  * An interface to be implemented by an factories for a specific diagram type.
- *
+ * 
  * @author Bob Tarling
+ * @deprecated for 0.27.3 by tfmorris. Use {@link DiagramFactoryInterface2}
+ *             which provides the default diagram settings to the factory when
+ *             the create method is invoked..
  */
+@Deprecated
 public interface DiagramFactoryInterface  {
 
     /**
@@ -39,6 +43,9 @@ public interface DiagramFactoryInterface  {
      * @param machine The StateMachine for the diagram
      *                         (only: statemachine - activitygraph)
      * @return the newly instantiated diagram
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link DiagramFactoryInterface2#createDiagram(Object, Object, DiagramSettings)}.
      */
+    @Deprecated
     public ArgoDiagram createDiagram(Object namespace, final Object machine);
 }

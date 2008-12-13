@@ -26,14 +26,15 @@ package org.argouml.persistence;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.Writer;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,6 +42,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.configuration.Configuration;
 import org.argouml.kernel.ProfileConfiguration;
@@ -78,7 +80,7 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         throws OpenException {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(
-                    inputStream));
+                    inputStream, Argo.getEncoding()));
 
             String line = null;
             while (true) {
@@ -199,7 +201,9 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
             ProfileManager profileManager) throws IOException {
         File profilesDirectory = getProfilesDirectory(profileManager);
         File profileFile = new File(profilesDirectory, fileName);
-        FileWriter writer = new FileWriter(profileFile);
+        OutputStreamWriter writer = new OutputStreamWriter(
+                new FileOutputStream(profileFile), 
+                Argo.getEncoding());
         writer.write(xmi.toString());
         writer.close();
         LOG.info("Wrote user defined profile \"" + profileFile 
@@ -247,25 +251,19 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
     }
 
     /*
-     * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.Writer, boolean)
-     */
-    @Override
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    public void save(ProjectMember member, Writer writer, boolean xmlFragment)
-        throws SaveException {
-        PrintWriter w = new PrintWriter(writer);
-        saveProjectMember(member, w);
-    }
-
-    /*
      * @see org.argouml.persistence.MemberFilePersister#save(org.argouml.kernel.ProjectMember, java.io.OutputStream)
      */
     public void save(ProjectMember member, OutputStream stream)
 	throws SaveException {
 	
-        PrintWriter w = new PrintWriter(stream);
-	saveProjectMember(member, w);
+        PrintWriter w;
+        try {
+            w = new PrintWriter(new OutputStreamWriter(stream, "UTF-8"));
+        } catch (UnsupportedEncodingException e1) {
+            throw new SaveException("UTF-8 encoding not supported on platform",
+                    e1);
+        }
+        saveProjectMember(member, w);
         w.flush();
     }
 
@@ -316,7 +314,9 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
         throws UmlException {
         
         // TODO: Why is this not executed?  Remove if not needed - tfm
-        if (true) return;
+        if (true) {
+            return;
+        }
 
         StringWriter myWriter = new StringWriter();
         for (Object model : profileModels) {

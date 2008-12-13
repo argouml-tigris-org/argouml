@@ -27,18 +27,26 @@ package org.argouml.uml.diagram;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.ModelManagementHelper;
 import org.argouml.uml.diagram.activity.ui.FigPool;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.util.EnumerationIterator;
@@ -46,6 +54,8 @@ import org.argouml.util.IItemUID;
 import org.argouml.util.ItemUID;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphSupport;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -77,57 +87,110 @@ import org.tigris.gef.undo.UndoManager;
  * the namespace of its statemachine.
  */
 public abstract class ArgoDiagramImpl extends Diagram 
-    implements PropertyChangeListener, ArgoDiagram, IItemUID {
+    implements PropertyChangeListener, VetoableChangeListener, ArgoDiagram, 
+    IItemUID {
 
     private ItemUID id;
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(ArgoDiagramImpl.class);
-
-    /**
-     * The constructor.
-     */
-    public ArgoDiagramImpl() {
-        super();
-        if (!(UndoManager.getInstance() instanceof DiagramUndoManager)) {
-            UndoManager.setInstance(new DiagramUndoManager());
-            LOG.info("Setting Diagram undo manager");
-        } else {
-            LOG.info("Diagram undo manager already set");
-        }
-        // really dirty hack to remove unwanted listeners
-        getLayer().getGraphModel().removeGraphEventListener(getLayer());
-    }
-    
     /**
      * The project this diagram is contained in.
      */
     private Project project;
 
     protected Object namespace;
+    
+    private DiagramSettings settings;
+
+    private static final Logger LOG = Logger.getLogger(ArgoDiagramImpl.class);
+
+    /**
+     * Default constructor.  Used by PGML parser when diagram is first created.
+     * @deprecated for 0.27.2 by tfmorris.  The 0-arg constructor of our sub
+     * classes will get called by the PGML parser, but this should not get
+     * propagated up the hierarchy.  The GEF Diagram constructor implementation
+     * is going to provide defaults for all missing args anyway, so we should
+     * always use the fully specified 3-arg constructor.
+     */
+    @Deprecated
+    public ArgoDiagramImpl() {
+        super();
+                
+        // TODO: What is this trying to do? It's never going to get called - tfm
+        // really dirty hack to remove unwanted listeners
+        getLayer().getGraphModel().removeGraphEventListener(getLayer());
+        
+        constructorInit();
+    }
+
 
     /**
      * The constructor.
      *
      * @param diagramName the name of the diagram
+     * @deprecated for 0.27.2 by tfmorris. Use 
+     * {@link #ArgoDiagramImpl(String, GraphModel, LayerPerspective)}.
      */
+    @Deprecated
     public ArgoDiagramImpl(String diagramName) {
         // next line patch to issue 596 (hopefully)
         super(diagramName);
+        try {
+            setName(diagramName);
+        } catch (PropertyVetoException pve) { }
+        constructorInit();
+    }
+
+    /**
+     * Construct a new ArgoUML diagram.  This is the preferred form of the
+     * constructor.  If you don't know the name yet, make one up (because that's
+     * what the super classes constructors are going to do anyway).
+     * 
+     * @param name the name of the new diagram
+     * @param graphModel graph model to associate with diagram
+     * @param layer layer to associate with diagram 
+     * (use new LayerPerspective(name, graphModel)) if you need a default
+     */
+    public ArgoDiagramImpl(String name, GraphModel graphModel,
+            LayerPerspective layer) {
+        super(name, graphModel, layer);
+        // TODO: Do we really need to do this? Carried over from old behavior
+        try {
+            setName(name);
+        } catch (PropertyVetoException pve) {
+        }
+        constructorInit();
+    }
+
+    /**
+     * Finish initialization which is common to multiple constructors which
+     * don't invoke each other.
+     */
+    private void constructorInit() {
+        // TODO: These should get replaced immediately by the creating
+        // initialization code, but make sure we've got a default just in case.
+        Project project = ProjectManager.getManager().getCurrentProject();
+        if (project != null) {
+            settings = project.getProjectSettings().getDefaultDiagramSettings();
+        }
+        // TODO: we should be given an Undo manager to use rather than looking
+        // for a global one
         if (!(UndoManager.getInstance() instanceof DiagramUndoManager)) {
             UndoManager.setInstance(new DiagramUndoManager());
             LOG.info("Setting Diagram undo manager");
         } else {
             LOG.info("Diagram undo manager already set");
         }
-        try {
-            setName(diagramName);
-        } catch (PropertyVetoException pve) { }
+
+        // Register for notification of any global changes that would affect
+        // our rendering
+        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+        ArgoEventPump.addListener(
+                ArgoEventTypes.ANY_DIAGRAM_APPEARANCE_EVENT, this);
+
+        // Listen for name changes so we can veto them if we don't like them
+        addVetoableChangeListener(this);
     }
-
-
+    
 
     public void setName(String n) throws PropertyVetoException {
         super.setName(n);
@@ -532,8 +595,10 @@ public abstract class ArgoDiagramImpl extends Diagram
                 && "remove".equals(evt.getPropertyName())) {
 
             Model.getPump().removeModelEventListener(this, namespace, "remove");
-
-            getProject().moveToTrash(this);
+            
+            if (getProject() != null) {
+                getProject().moveToTrash(this);
+            }
         }
     }
 
@@ -544,6 +609,90 @@ public abstract class ArgoDiagramImpl extends Diagram
 
     public Iterator<Fig> getFigIterator() {
         return new EnumerationIterator(elements());
+    }
+    
+    public void setDiagramSettings(DiagramSettings newSettings) {
+        settings = newSettings;
+    }
+    
+    public DiagramSettings getDiagramSettings() {
+        return settings;
+    }
+    
+    /**
+     * Handles a global change to the diagram font.
+     * @param e the event
+     * @see org.argouml.application.events.ArgoDiagramAppearanceEventListener#diagramFontChanged(org.argouml.application.events.ArgoDiagramAppearanceEvent)
+     */
+    public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
+        renderingChanged();
+    }
+    
+    /**
+     * Rerender the entire diagram based on new global rendering settings.
+     * <p>
+     * NOTE: Figs which define their own presentation listeners will get 
+     * re-rendered twice
+     */
+    public void renderingChanged() {
+        for (Object fig : getLayer().getContents()) {
+            try {
+                // This should always be true, but just in case...
+                if (fig instanceof ArgoFig) {
+                    ((ArgoFig) fig).renderingChanged();
+                } else {
+                    LOG.warn("Diagram " + getName() + " contains non-ArgoFig "
+                            + fig);
+                }
+            } catch (InvalidElementException e) {
+                LOG.error("Tried to refresh deleted element ", e);
+            }
+        }
+        damage();        
+    }
+
+    public void notationChanged(ArgoNotationEvent e) {
+        renderingChanged();  
+    }
+
+    public void notationAdded(ArgoNotationEvent e) {
+        // Do nothing
+    }
+
+    public void notationProviderAdded(ArgoNotationEvent e) {
+        // Do nothing
+    }
+
+    public void notationProviderRemoved(ArgoNotationEvent e) {
+        // Do nothing
+    }
+
+
+    public void notationRemoved(ArgoNotationEvent e) {
+        // Do nothing
+    }
+
+
+    /**
+     * Receive vetoable change event. GEF will call this method with the 'name'
+     * property when it attempts to set the name. If this will be a duplicate
+     * for the project, we can veto the requested change.
+     * 
+     * @param evt the change event
+     * @throws PropertyVetoException if the name is illegal. Usuallly this means
+     *             a duplicate in the project.
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
+    public void vetoableChange(PropertyChangeEvent evt)
+        throws PropertyVetoException {
+        
+        if ("name".equals(evt.getPropertyName())) {
+            if (project != null) {
+                if (!project.isValidDiagramName((String) evt.getNewValue())) {
+                    throw new PropertyVetoException("Invalid name", evt);
+                }
+            }
+        }    
     }
     
 }

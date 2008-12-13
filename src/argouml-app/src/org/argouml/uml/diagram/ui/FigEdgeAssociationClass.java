@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,6 +32,7 @@ import java.beans.VetoableChangeListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
@@ -62,12 +63,12 @@ public class FigEdgeAssociationClass
     private static final Logger LOG =
         Logger.getLogger(FigEdgeAssociationClass.class);
     
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
      * The constructor.
+     * @deprecated for 0.27.3 by tfmorris.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigEdgeAssociationClass() {
         setBetweenNearestPoints(true);
         ((FigPoly) getFig()).setRectilinear(false);
@@ -79,10 +80,17 @@ public class FigEdgeAssociationClass
      * 
      * @param classBoxFig the figure representing the Class
      * @param ownerFig the owner fig
+     * @deprecated for 0.27.3 by tfmorris.
      */
+    @Deprecated
     public FigEdgeAssociationClass(FigClassAssociationClass classBoxFig,
                                    FigAssociationClass ownerFig) {
         this();
+        constructFigs(classBoxFig, ownerFig);
+    }
+
+    private void constructFigs(FigClassAssociationClass classBoxFig,
+            FigAssociationClass ownerFig) {
         LOG.info("FigEdgeAssociationClass constructor");
         if (classBoxFig == null) {
             throw new IllegalArgumentException("No class box found while "
@@ -101,12 +109,23 @@ public class FigEdgeAssociationClass
         computeRoute();
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
+    /**
+     * The constructor for the AssociationClass fig.
+     * 
+     * @param classBoxFig the figure representing the Class
+     * @param ownerFig the owner fig
+     * @param settings render settings
+     */
+    FigEdgeAssociationClass(FigClassAssociationClass classBoxFig,
+            FigAssociationClass ownerFig, DiagramSettings settings) {
+        super(ownerFig.getOwner(), settings);
+        constructFigs(classBoxFig, ownerFig);
+    }
+    
     /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setFig(Fig f) {
         super.setFig(f);
         getFig().setDashed(true);
@@ -115,6 +134,7 @@ public class FigEdgeAssociationClass
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
      */
+    @Override
     protected boolean canEdit(Fig f) {
         return false;
     }
@@ -122,6 +142,7 @@ public class FigEdgeAssociationClass
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent e) {
         // TODO: are we intentionally eating all events? - tfm 20060203
         // document!
@@ -132,6 +153,7 @@ public class FigEdgeAssociationClass
      * FigAssociationClass.
      * @return the attached FigAssociationClass
      */
+    @Override
     protected Fig getRemoveDelegate() {
         FigNode node = getDestFigNode();
         if (!(node instanceof FigEdgePort)) {
@@ -151,6 +173,7 @@ public class FigEdgeAssociationClass
     }
 
 
+    @Override
     public void setDestFigNode(FigNode fn) {
         if (!(fn instanceof FigClassAssociationClass)) {
             throw new IllegalArgumentException(
@@ -160,6 +183,7 @@ public class FigEdgeAssociationClass
         super.setDestFigNode(fn);
     }
 
+    @Override
     public void setSourceFigNode(FigNode fn) {
         if (!(fn instanceof FigEdgePort)) {
             throw new IllegalArgumentException(
@@ -168,7 +192,5 @@ public class FigEdgeAssociationClass
         }
         super.setSourceFigNode(fn);
     }
-    
-    protected void renderingChanged() {
-    }
-} /* end class FigEdgeAssociationClass */
+
+}

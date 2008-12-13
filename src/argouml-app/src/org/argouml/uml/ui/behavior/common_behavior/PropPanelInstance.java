@@ -26,10 +26,8 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The abstract properties panel for any type of Instance.
@@ -59,22 +57,6 @@ public abstract class PropPanelInstance extends PropPanelModelElement {
         super(name, icon);
     }
     
-    /**
-     * Construct a property panel for an Instance with the given name, icon and
-     * orientation.
-     * 
-     * @param name the name for the properties panel
-     * @param icon the icon shown next to the name
-     * @param orientation the orientation
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelInstance(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelInstance(String name, ImageIcon icon,
-            Orientation orientation) {
-        super(name, icon, orientation);
-    }
 
     /**
      * @return the scrollpane for stimuli sender

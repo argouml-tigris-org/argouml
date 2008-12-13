@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,8 +27,9 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Iterator;
+import java.util.List;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -42,6 +43,26 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
 
     private boolean supressCalcBounds = false;
 
+    /**
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigTextGroup(Object, DiagramSettings)}.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigTextGroup() {
+        super();
+    }
+    
+    /**
+     * Construct a FigGroup with the given render settings.
+     * 
+     * @param owner owning UML element
+     * @param settings rendering settigns
+     */
+    public FigTextGroup(Object owner, DiagramSettings settings) {
+        super(owner, settings);
+    }
+    
     /**
      * Adds a FigText to the list with figs. Makes sure that the
      * figtexts do not overlap.
@@ -60,10 +81,8 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
      * added (via addFig) is shown at the bottom of the FigTextGroup.
      */
     private void updateFigTexts() {
-        Iterator it = getFigs().iterator();
         int height = 0;
-        while (it.hasNext()) {
-            Fig fig = (Fig) it.next();
+        for (Fig fig : (List<Fig>) getFigs()) {
             int figHeight = fig.getMinimumSize().height;
             fig.setBounds(getX(), getY() + height, fig.getWidth(), figHeight);
             fig.endTrans();
@@ -75,6 +94,7 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
     /*
      * @see org.tigris.gef.presentation.Fig#calcBounds()
      */
+    @Override
     public void calcBounds() {
     	updateFigTexts();
         if (!supressCalcBounds) {
@@ -83,9 +103,8 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
             // calculate the total height
             int maxWidth = 0;
             int height = 0;
-            Iterator it = getFigs().iterator();
-            while (it.hasNext()) {
-                Fig fig = (Fig) it.next();
+            for (Fig fig : (List<Fig>) getFigs()) {
+//                fig.calcBounds();
                 if (fig.getWidth() > maxWidth) {
                     maxWidth = fig.getWidth();
                 }
@@ -100,10 +119,10 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
+    @Override
     public void removeFromDiagram() {
-        Iterator it = getFigs().iterator();
-        while (it.hasNext()) {
-            ((Fig) it.next()).removeFromDiagram();
+        for (Fig fig : (List<Fig>) getFigs()) {
+            fig.removeFromDiagram();
         }
         super.removeFromDiagram();
     }
@@ -111,10 +130,10 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
     /*
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
+    @Override
     public void deleteFromModel() {
-        Iterator it = getFigs().iterator();
-        while (it.hasNext()) {
-            ((Fig) it.next()).deleteFromModel();
+        for (Fig fig : (List<Fig>) getFigs()) {
+            fig.deleteFromModel();
         }
         super.deleteFromModel();
     }

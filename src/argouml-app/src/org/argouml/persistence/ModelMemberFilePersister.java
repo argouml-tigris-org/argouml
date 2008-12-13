@@ -24,13 +24,9 @@
 
 package org.argouml.persistence;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -147,56 +143,6 @@ class ModelMemberFilePersister extends MemberFilePersister
         }
     }
 
-    /**
-     * Save the project model to XMI.
-     *
-     * {@inheritDoc}
-     */
-    @Deprecated
-    @Override
-    @SuppressWarnings("deprecation")
-    public void save(ProjectMember member, Writer w, boolean xmlFragment)
-    	throws SaveException {
-
-        if (w == null) {
-            throw new IllegalArgumentException("No Writer specified!");
-        }
-
-        try {
-            ProjectMemberModel pmm = (ProjectMemberModel) member;
-            Object model = pmm.getModel();
-            
-            if (xmlFragment) {
-                // If we have an indent then we are adding this file
-                // to a superfile.
-                // That is most likely inserting the XMI into the .uml file
-                File tempFile = File.createTempFile("xmi", null);
-                tempFile.deleteOnExit();
-
-                OutputStream stream = new FileOutputStream(tempFile);
-                XmiWriter xmiWriter = 
-                    Model.getXmiWriter(model, stream, 
-                            ApplicationVersion.getVersion() + "(" 
-                            + UmlFilePersister.PERSISTENCE_VERSION + ")");
-                
-                xmiWriter.write();
-                addXmlFileToWriter((PrintWriter) w, tempFile);
-            } else {
-                // Otherwise we are writing into a zip writer or to XMI.
-                XmiWriter xmiWriter = 
-                    Model.getXmiWriter(model, w, 
-                            ApplicationVersion.getVersion() + "(" 
-                            + UmlFilePersister.PERSISTENCE_VERSION + ")");
-                xmiWriter.write();
-            }
-        } catch (IOException e) {
-            throw new SaveException(e);
-        } catch (UmlException e) {
-            throw new SaveException(e);
-        }
-
-    }
-    
     /**
      * Save the project model to XMI.
      * 

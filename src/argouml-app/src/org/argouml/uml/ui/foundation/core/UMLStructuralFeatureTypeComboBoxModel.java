@@ -44,11 +44,12 @@ import org.argouml.uml.util.PathComparator;
  */
 public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 
+
     /**
      * Constructor for UMLStructuralFeatureTypeComboBoxModel.
      */
     public UMLStructuralFeatureTypeComboBoxModel() {
-        super("type", false);
+        super("type", true); // Allow null
     }
 
     /*
@@ -117,9 +118,6 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         Object o = null;
         if (getTarget() != null) {
             o = Model.getFacade().getType(getTarget());
-        }
-        if (o == null) {
-            o = " ";
         }
         return o;
     }

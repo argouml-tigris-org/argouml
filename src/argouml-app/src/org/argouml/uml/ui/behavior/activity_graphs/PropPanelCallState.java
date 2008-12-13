@@ -34,7 +34,6 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.behavior.state_machines.AbstractPropPanelState;
 import org.argouml.uml.ui.behavior.state_machines.UMLStateEntryListModel;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for a CallState.
@@ -54,20 +53,6 @@ public class PropPanelCallState extends AbstractPropPanelState {
         this("label.call-state", lookupIcon("CallState"));
     }
 
-    /**
-     * @param name the name of the properties panel
-     * @param icon the icon to be shown next to the name
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelCallState(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelCallState(String name, ImageIcon icon,
-            Orientation orientation) {
-        this(name, icon);
-        setOrientation(orientation);
-    }
 
     /**
      * @param name the name of the properties panel

@@ -29,7 +29,9 @@ import java.awt.Dimension;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.argouml.model.Model;
@@ -72,8 +74,8 @@ public class FigMessage extends FigNodeModelElement {
 	getNameFig().setReturnAction(FigText.END_EDITING);
 	getNameFig().setFilled(false);
 	Dimension nameMin = getNameFig().getMinimumSize();
-	getNameFig().setBounds(10, 10, 90, nameMin.height);
-        getBigPort().setBounds(10, 10, 90, nameMin.height);
+	getNameFig().setBounds(X0, Y0, 90, nameMin.height);
+        getBigPort().setBounds(X0, Y0, 90, nameMin.height);
 
 	figPoly = new FigPoly(Color.black, Color.black);
 	int[] xpoints = {75, 75, 77, 75, 73, 75};

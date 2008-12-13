@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,6 +36,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
@@ -47,7 +49,6 @@ import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -123,13 +124,14 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * A unique name is constructed by using the serial index.
      * We allow for the possibility
      * that setting this may fail, in which case no name is set.<p>
+     * @deprecated ony for use by PGML parser.
      */
+    @Deprecated
     public UMLUseCaseDiagram() {
+        super(new UseCaseDiagramGraphModel());
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
-        // TODO: All super constrctors should take a GraphModel
-        setGraphModel(createGraphModel());
     }
 
     /**
@@ -144,13 +146,10 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * @param m  the desired namespace for this diagram.
      */
     public UMLUseCaseDiagram(Object m) {
-
         this();
-
         if (!Model.getFacade().isANamespace(m)) {
             throw new IllegalArgumentException();
         }
-
         setNamespace(m);
     }
 
@@ -162,11 +161,9 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      */
     public UMLUseCaseDiagram(String name, Object namespace) {
         this(namespace);
-
         if (!Model.getFacade().isANamespace(namespace)) {
             throw new IllegalArgumentException();
         }
-
         try {
             setName(name);
         } catch (PropertyVetoException v) { }
@@ -195,6 +192,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      *
      * @author   psager@tigris.org  Jan 24, 2002
      */
+    @Override
     public void setNamespace(Object handle) {
         if (!Model.getFacade().isANamespace(handle)) {
             LOG.error(
@@ -205,7 +203,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         Object m = handle;
         super.setNamespace(m);
 
-        UseCaseDiagramGraphModel gm = createGraphModel();
+        UseCaseDiagramGraphModel gm = 
+            (UseCaseDiagramGraphModel) getGraphModel();
         gm.setHomeModel(m);
         LayerPerspective lay =
             new LayerPerspectiveMutable(Model.getFacade().getName(m), gm);
@@ -218,17 +217,6 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     }
     
-    
-    // TODO: Needs to be tidied up after stable release. Graph model
-    // should be created in constructor
-    private UseCaseDiagramGraphModel createGraphModel() {
-	if ((getGraphModel() instanceof UseCaseDiagramGraphModel)) {
-	    return (UseCaseDiagramGraphModel) getGraphModel();
-	} else {
-	    return new UseCaseDiagramGraphModel();
-	}
-    }
-
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
@@ -486,23 +474,25 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     @Override
     public FigNode drop(Object droppedObject, Point location) {
         FigNode figNode = null;
-        GraphModel gm = getGraphModel();
+       
+        // If location is non-null, convert to a rectangle that we can use
+        Rectangle bounds = null;
+        if (location != null) {
+            bounds = new Rectangle(location.x, location.y, 0, 0);
+        }
+
+        DiagramSettings settings = getDiagramSettings();
         
         if (Model.getFacade().isAActor(droppedObject)) {
-            figNode = new FigActor(gm, droppedObject);
+            figNode = new FigActor(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAUseCase(droppedObject)) {
-            figNode = new FigUseCase(gm, droppedObject);
+            figNode = new FigUseCase(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(gm, droppedObject);
+            figNode = new FigComment(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAPackage(droppedObject)) {
-            figNode = new FigPackage(gm, droppedObject);
+            figNode = new FigPackage(droppedObject, bounds, settings);
         }
         if (figNode != null) {
-            // if location is null here the position of the new figNode is set
-            // after in org.tigris.gef.base.ModePlace.mousePressed(MouseEvent e)
-            if (location != null) {
-                figNode.setLocation(location.x, location.y);
-            }
             LOG.debug("Dropped object " + droppedObject + " converted to " 
                     + figNode);
         } else {

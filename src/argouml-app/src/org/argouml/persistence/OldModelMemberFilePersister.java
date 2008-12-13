@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,47 +24,12 @@
 
 package org.argouml.persistence;
 
-import java.io.Writer;
-
-import org.argouml.application.helpers.ApplicationVersion;
-import org.argouml.kernel.ProjectMember;
-import org.argouml.model.Model;
-import org.argouml.model.UmlException;
-import org.argouml.model.XmiWriter;
-import org.argouml.uml.ProjectMemberModel;
 
 /**
  * The file persister for the UML model.
+ * TODO: This is empty.  What is its purpose? - tfm
  * @author Bob Tarling
  */
 class OldModelMemberFilePersister extends ModelMemberFilePersister 
     implements XmiExtensionParser {
-
-    /**
-     * Save the project model to XMI.
-     *
-     * {@inheritDoc}
-     */
-    @Deprecated
-    @Override
-    @SuppressWarnings("deprecation")    
-    public void save(ProjectMember member, Writer w, boolean xmlFragment)
-    	throws SaveException {
-
-        if (w == null) {
-            throw new IllegalArgumentException("No Writer specified!");
-        }
-
-        try {
-            ProjectMemberModel pmm = (ProjectMemberModel) member;
-            Object model = pmm.getModel();
-            XmiWriter xmiWriter = 
-                Model.getXmiWriter(model, w, 
-                        ApplicationVersion.getVersion() + "(" 
-                        + UmlFilePersister.PERSISTENCE_VERSION + ")");
-            xmiWriter.write();
-        } catch (UmlException e) {
-            throw new SaveException(e);
-        }
-    }
 }

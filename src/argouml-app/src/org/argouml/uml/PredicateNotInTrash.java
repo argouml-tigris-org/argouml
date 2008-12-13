@@ -28,18 +28,27 @@
 package org.argouml.uml;
 
 import org.argouml.kernel.ProjectManager;
-import org.tigris.gef.util.Predicate;
 
 /**
  * A Predicate to determine if a given object is in the Project Trash or not.
  * Required so that the GoListToOfffenderItem does not display offenders,
  * which are already in the trash bin.
  **/
-public class PredicateNotInTrash implements Predicate {
-    /*
+public class PredicateNotInTrash implements org.argouml.util.Predicate,
+        org.tigris.gef.util.Predicate {
+
+    /**
+     * @deprecated for 0.27.3 by tfmorris.  The type 
+     * org.tigris.gef.util.Predicate (and this method) will be removed in the
+     * next release.
      * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
      */
+    @Deprecated
     public boolean predicate(Object obj) {
+        return evaluate(obj);
+    }
+    
+    public boolean evaluate(Object obj) {
         return !ProjectManager.getManager().getCurrentProject().isInTrash(obj);
     }
 }

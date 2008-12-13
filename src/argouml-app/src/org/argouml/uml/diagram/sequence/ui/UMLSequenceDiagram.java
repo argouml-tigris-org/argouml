@@ -84,6 +84,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) {
         }
+        // TODO: This should check that it's receiving the argument type that
+        // it expects
         ((SequenceDiagramGraphModel) getGraphModel())
 	    .setCollaboration(collaboration);
         setNamespace(collaboration); //See issue 3373.

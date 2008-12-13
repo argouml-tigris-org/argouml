@@ -25,9 +25,9 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Font;
+import java.awt.Rectangle;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectSettings;
+import org.argouml.uml.diagram.DiagramSettings;
 
 
 /**
@@ -48,21 +48,35 @@ class FigNameWithAbstractAndBold extends FigNameWithAbstract {
      * @param y location y
      * @param w width
      * @param h height
-     * @param expandOnly impacts behavior
+     * @param expandOnly true if fig should never contract
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigNameWithAbstractAndBold(Object, Rectangle, 
+     *             DiagramSettings, boolean)}
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigNameWithAbstractAndBold(int x, int y, int w, int h,
             boolean expandOnly) {
         super(x, y, w, h, expandOnly);
     }
+    
+    /**
+     * Construct a name Fig that shows whether associated item is abstract
+     * (italics) or bold.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     * @param expandOnly true if fig should never contract
+     */
+    public FigNameWithAbstractAndBold(Object owner, Rectangle bounds,
+            DiagramSettings settings, boolean expandOnly) {
+        super(owner, bounds, settings, expandOnly);
+    }
 
     @Override
     protected int getFigFontStyle() {
-        boolean showBoldName = false;
-        Project p = getProject();
-        if (p != null) {
-            ProjectSettings ps = p.getProjectSettings();
-            showBoldName = ps.getShowBoldNamesValue();
-        }
+        boolean showBoldName = getSettings().isShowBoldNames();
         int boldStyle =  showBoldName ? Font.BOLD : Font.PLAIN;
 
         return super.getFigFontStyle() | boldStyle;

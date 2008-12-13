@@ -164,8 +164,7 @@ public class DiagramSettings {
             if (parent != null) {
                 return parent.getNotationLanguage();
             } else {
-                // TODO: What's the correct fallback default?
-                return "UML";
+                return "UML 1.4";
             }
         }
         return notationLanguage;

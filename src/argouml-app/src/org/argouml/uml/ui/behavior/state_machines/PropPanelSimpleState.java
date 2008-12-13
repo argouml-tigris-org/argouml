@@ -26,8 +26,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.ImageIcon;
 
-import org.tigris.swidgets.Orientation;
-
 /**
  * The properties panel for a State.
  *
@@ -47,23 +45,6 @@ public class PropPanelSimpleState extends AbstractPropPanelState {
         this("label.simple.state", lookupIcon("SimpleState"));
     }
 
-    /**
-     * Construct a new property panel for a Simple State with the given 
-     * attributes.
-     *
-     * @param name the name of the properties panel, shown at the top
-     * @param icon the icon shown at the top
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelSimpleState(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelSimpleState(String name, ImageIcon icon,
-            Orientation orientation) {
-        this(name, icon);
-        setOrientation(orientation);
-    }
     
     /**
      * Construct a new property panel for a Simple State with the given

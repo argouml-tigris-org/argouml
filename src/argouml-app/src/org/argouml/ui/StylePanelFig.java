@@ -40,15 +40,14 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.ui.ColorRenderer;
-
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.SpacerPanel;
-import org.argouml.uml.diagram.DiagramAppearance;
+import org.argouml.uml.diagram.DiagramSettings.StereotypeStyle;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.util.ArgoFrame;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.ui.ColorRenderer;
 
 /**
  * The basic stylepanel for a Fig which allows the user to see and adjust 
@@ -187,6 +186,7 @@ public class StylePanelFig
         DefaultComboBoxModel model = new DefaultComboBoxModel();
         stereoField.setModel(model);
         
+        // NOTE: These must stay in this order to match rendering styles
         model.addElement(Translator
                 .localize("menu.popup.stereotype-view.textual"));
         model.addElement(Translator
@@ -284,18 +284,7 @@ public class StylePanelFig
         
         if (target instanceof FigNodeModelElement) {
             FigNodeModelElement fig = (FigNodeModelElement) target;
-            
-            switch (fig.getStereotypeView()) {
-            case DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL:
-                stereoField.setSelectedIndex(0);                
-                break;
-            case DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON:
-                stereoField.setSelectedIndex(1);                
-                break;
-            case DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON:
-                stereoField.setSelectedIndex(2);                
-                break;
-            }
+            stereoField.setSelectedIndex(fig.getStereotypeStyle().ordinal());
         }
     }
 
@@ -511,20 +500,8 @@ public class StylePanelFig
                     int idx = model.getIndexOf(item);
                     FigNodeModelElement fig = (FigNodeModelElement) target;
 
-                    switch (idx) {
-                    case 0:
-                        fig.setStereotypeView(
-                                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL);
-                        break;
-                    case 1:
-                        fig.setStereotypeView(
-                                DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON);
-                        break;
-                    case 2:
-                        fig.setStereotypeView(
-                                DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);
-                        break;
-                    }
+                    fig.setStereotypeStyle(StereotypeStyle.getEnum(idx));
+
                 }
             }
         }

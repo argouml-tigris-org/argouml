@@ -47,30 +47,21 @@ public class PropPanelClass extends PropPanelClassifier {
         addField("label.namespace", getNamespaceSelector());
         getModifiersPanel().add(new UMLClassActiveCheckBox());
         add(getModifiersPanel());
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
 
         addSeparator();
-
-        addField("label.client-dependencies",
-                getClientDependencyScroll());
-        addField("label.supplier-dependencies",
-                getSupplierDependencyScroll());
-        addField("label.generalizations",
-                getGeneralizationScroll());
-        addField("label.specializations",
-                getSpecializationScroll());
+        addField("label.client-dependencies", getClientDependencyScroll());
+        addField("label.supplier-dependencies", getSupplierDependencyScroll());
+        addField("label.generalizations", getGeneralizationScroll());
+        addField("label.specializations", getSpecializationScroll());
 
         addSeparator();
-
-        addField("label.attributes",
-                getAttributeScroll());
-        addField("label.association-ends",
-                getAssociationEndScroll());
-        addField("label.operations",
-                getOperationScroll());
-        addField("label.owned-elements",
-                getOwnedElementsScroll());
-
+        addField("label.attributes", getAttributeScroll());
+        addField("label.association-ends", getAssociationEndScroll());
+        addField("label.operations", getOperationScroll());
+        addField("label.owned-elements", getOwnedElementsScroll());
+//        addField("label.template-parameters", getTemplateParameterScroll());
+        
         addAction(new ActionNavigateNamespace());
         addAction(new ActionAddAttribute());
         addAction(new ActionAddOperation());
@@ -78,7 +69,9 @@ public class PropPanelClass extends PropPanelClassifier {
         addAction(new ActionNewInnerClass());
         addAction(new ActionNewClass());
         addAction(new ActionNewStereotype());
+//        addAction(new ActionAddTemplateParameter());
         addAction(getDeleteAction());
+        
     }
 
 }

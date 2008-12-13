@@ -27,7 +27,6 @@ package org.argouml.uml.reveng;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -261,24 +260,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         return modules;
     }
 
-    /**
-     * @param file the selected file
-     * @deprecated for 0.25.5 by tfmorris. Use 
-     *             {@link #setSelectedFiles(File[])}.
-     */
-    @Deprecated
-    protected void setSelectedFile(File file) {
-        selectedFiles = new File[] {file};
-    }
-
-    /**
-     * @return the first selected file.
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getSelectedFiles()}.
-     */
-    @Deprecated
-    protected File getSelectedFile() {
-        return selectedFiles[0];
-    }
 
     protected void setSelectedFiles(final File[] files) {
         selectedFiles = files;
@@ -295,8 +276,9 @@ public abstract class ImportCommon implements ImportSettingsInternal {
 
     protected File[] getSelectedFiles() {
 	File[] copy = new File[selectedFiles.length];
-	for (int i = 0; i < selectedFiles.length; i++)
+	for (int i = 0; i < selectedFiles.length; i++) {
 	    copy[i] = selectedFiles[i];
+	}
 	return copy;
         //return Arrays.copyOf(selectedFiles, selectedFiles.length);
     }
@@ -348,7 +330,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                 Configuration.getString(Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
-            if (st.hasMoreTokens()) st.nextToken();
+            skipTokens(st, 1);
             if (st.hasMoreTokens() && st.nextToken().equals("false")) {
                 return false;
             }
@@ -368,8 +350,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                         Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
+            skipTokens(st, 2);
             if (st.hasMoreTokens() && st.nextToken().equals("false")) {
                 return false;
             }
@@ -389,14 +370,20 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                         Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
+            skipTokens(st, 3);
             if (st.hasMoreTokens() && st.nextToken().equals("false")) {
                 return false;
             }
         }
         return true;
+    }
+
+    private void skipTokens(StringTokenizer st, int count) {
+        for (int i = 0; i < count; i++) {
+            if (st.hasMoreTokens()) {
+                st.nextToken();
+            }
+        }
     }
 
     /**
@@ -411,10 +398,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                         Argo.KEY_IMPORT_GENERAL_SETTINGS_FLAGS);
         if (flags != null && flags.length() > 0) {
             StringTokenizer st = new StringTokenizer(flags, ",");
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
-            if (st.hasMoreTokens()) st.nextToken();
+            skipTokens(st, 4);
             if (st.hasMoreTokens() && st.nextToken().equals("false")) {
                 return false;
             }
@@ -435,24 +419,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         }
 
         return enc;
-    }
-
-    /**
-     * Gets the import classpaths. This should be asked by the GUI for
-     * initialization.
-     * 
-     * @return a list with Strings representing the classpaths
-     * @deprecated for 0.25.7 by tfmorris. This is a Java importer specific
-     *             method.
-     */
-    public List<String> getImportClasspath() {
-        List<String> list = new ArrayList<String>();
-        URL[] urls = ImportClassLoader.getURLs(Configuration.getString(
-                Argo.KEY_USER_IMPORT_CLASSPATH, "")); //$NON-NLS-1$
-        for (URL url : urls) {
-            list.add(url.getFile());
-        }
-        return list;
     }
 
 
@@ -521,6 +487,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
             if (criticThreadWasOn) {
                 Designer.theDesigner().setAutoCritique(true);
             }
+            // TODO: Send an event instead of calling Explorer directly
             ExplorerEventAdaptor.getInstance().structureChanged();
             Model.getPump().startPumpingEvents();
             // Should already be closed.  If not, something bad happened, so

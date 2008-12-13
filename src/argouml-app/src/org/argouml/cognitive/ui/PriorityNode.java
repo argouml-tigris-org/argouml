@@ -26,7 +26,7 @@ package org.argouml.cognitive.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
+
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
 
@@ -62,14 +62,6 @@ public class PriorityNode {
 	priority = pri;
     }
 
-    /**
-     * @return the list of all the priorities
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getPriorityList()}.
-     */
-    @Deprecated
-    public static Vector<PriorityNode> getPriorities() {
-        return new Vector<PriorityNode>(getPriorityList());
-    }
 
     /**
      * @return the list of all the priorities

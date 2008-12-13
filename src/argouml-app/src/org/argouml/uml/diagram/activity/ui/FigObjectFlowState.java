@@ -80,7 +80,6 @@ import org.tigris.gef.presentation.FigText;
 public class FigObjectFlowState extends FigNodeModelElement {
 
     private static final int PADDING = 8;
-    private static final int OFFSET = 10;
     private static final int WIDTH = 70;
     private static final int HEIGHT = 50;
 
@@ -95,16 +94,16 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * Main Constructor FigObjectFlowState (called from file loading).
      */
     public FigObjectFlowState() {
-        setBigPort(new FigRect(OFFSET, OFFSET, WIDTH, HEIGHT,
+        setBigPort(new FigRect(X0, Y0, WIDTH, HEIGHT,
                 Color.cyan, Color.cyan));
         cover =
-            new FigRect(OFFSET, OFFSET, WIDTH, HEIGHT,
+            new FigRect(X0, Y0, WIDTH, HEIGHT,
                     Color.black, Color.white);
 
         getNameFig().setUnderline(true);
         getNameFig().setLineWidth(0);
 
-        state = new FigSingleLineText(OFFSET, OFFSET, WIDTH, 21, true);
+        state = new FigSingleLineText(X0, Y0, WIDTH, 21, true);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
@@ -277,6 +276,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     @Override
     public void renderingChanged() {
+        super.renderingChanged();
         updateClassifierText();
         updateStateText();
         updateBounds();

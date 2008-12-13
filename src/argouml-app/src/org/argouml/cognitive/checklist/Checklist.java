@@ -55,39 +55,12 @@ public class Checklist extends ArrayList<CheckItem> implements List<CheckItem>,
         super();
     }
 
-    /**
-     * @return the items
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getCheckItemList()}.
-     */
-    @Deprecated
-    public Vector<CheckItem> getCheckItems() {
-        return new Vector<CheckItem>(this);
-    }
 
     /**
      * @return the items
      */
     public List<CheckItem> getCheckItemList() {
         return this;
-    }
-
-    
-    /**
-     * @param item the item to be added to the list
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #add(CheckItem)}.
-     */
-    @Deprecated
-    public void addItem(CheckItem item) {
-	add(item);
-    }
-
-    /**
-     * @param item the item to be removed
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #remove(Object)}.
-     */
-    @Deprecated
-    public void removeItem(CheckItem item) {
-	remove(item);
     }
 
     /**
@@ -108,25 +81,6 @@ public class Checklist extends ArrayList<CheckItem> implements List<CheckItem>,
 	}
     }
 
-    /**
-     * @return an enumeration of the list
-     * @deprecated for 0.25.4 by tfmorris.
-     */
-    @Deprecated
-    public Enumeration<CheckItem> elements() {
-        return Collections.enumeration(this);
-    }
-
-
-    /**
-     * @param index the position of the item to retrieve
-     * @return the item
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #get(int)}. 
-     */
-    @Deprecated
-    public CheckItem elementAt(int index) {
-	return get(index);
-    }
 
     /**
      * @param cat the category

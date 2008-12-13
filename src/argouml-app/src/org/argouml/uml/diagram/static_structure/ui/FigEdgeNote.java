@@ -62,14 +62,8 @@ public class FigEdgeNote
 	       KeyListener,
 	       PropertyChangeListener {
 
-    /**
-     * The UID.
-     */
     private static final long serialVersionUID = 7210384676965727564L;
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger.getLogger(FigEdgeNote.class);
 
     private CommentEdge owner;
@@ -80,7 +74,10 @@ public class FigEdgeNote
     /**
      * Construct a new note connection. Use the same layout as for
      * other edges.
+     * @deprecated only for use by PGML parser
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigEdgeNote() {
         super();
         LOG.info("Constructing a FigEdgeNote");
@@ -153,12 +150,11 @@ public class FigEdgeNote
         setOwner(commentEdge);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setFig(Fig f) {
         LOG.info("Setting the internal fig to " + f);
         super.setFig(f);
@@ -169,11 +165,13 @@ public class FigEdgeNote
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
      */
+    @Override
     protected boolean canEdit(Fig f) { return false; }
 
     /*
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return Translator.localize("misc.comment-edge");
     }
@@ -184,6 +182,7 @@ public class FigEdgeNote
      * and this FigEdgeNote.
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
+    @Override
     protected void modelChanged(PropertyChangeEvent e) {
         if (e instanceof RemoveAssociationEvent
                 && e.getOldValue() == annotatedElement) {
@@ -194,6 +193,7 @@ public class FigEdgeNote
     /*
      * @see org.tigris.gef.presentation.Fig#getTipString(java.awt.event.MouseEvent)
      */
+    @Override
     public String getTipString(MouseEvent me) {
         return "Comment Edge"; // TODO: get tip string from comment
     }
@@ -202,6 +202,7 @@ public class FigEdgeNote
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    @Deprecated
     public void setOwner(Object newOwner) {
         if (newOwner == null) {
             // hack to avoid loading problems since we cannot store
@@ -214,6 +215,7 @@ public class FigEdgeNote
     /*
      * @see org.tigris.gef.presentation.Fig#getOwner()
      */
+    @Override
     public Object getOwner() {
         if (owner == null) {
             // hack to avoid loading problems since we cannot store
@@ -229,6 +231,7 @@ public class FigEdgeNote
      *
      * @return empty array of actions.
      */
+    @Override
     protected final Action[] getApplyStereotypeActions() {
         return new Action[0];
     }
@@ -236,6 +239,7 @@ public class FigEdgeNote
     /*
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
+    @Override
     public void postLoad() {
         super.postLoad();
         // TODO: Why is a Fig modifying the underlying model?!?!
@@ -247,6 +251,7 @@ public class FigEdgeNote
     /**
      * generate the notation for the modelelement and stuff it into the text Fig
      */
+    @Override
     protected void updateNameText() {
         return;
     }
@@ -254,6 +259,7 @@ public class FigEdgeNote
     /**
      * generate the notation for the stereotype and stuff it into the text Fig
      */
+    @Override
     protected void updateStereotypeText() {
         return;
     }
@@ -261,6 +267,7 @@ public class FigEdgeNote
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
      */
+    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         // no listeners to update
     }
@@ -268,6 +275,7 @@ public class FigEdgeNote
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent pve) {
         modelChanged(pve);
     }
@@ -276,6 +284,7 @@ public class FigEdgeNote
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
+    @Override
     public void removeFromDiagramImpl() {
         superRemoveFromDiagram();
     }
@@ -287,6 +296,7 @@ public class FigEdgeNote
      * instance: for a classifierrole, this is the sender.
      * @return MModelElement
      */
+    @Override
     protected Object getSource() {
         Object theOwner = getOwner();
         if (theOwner != null) {
@@ -301,6 +311,7 @@ public class FigEdgeNote
      * receiver.
      * @return Object
      */
+    @Override
     protected Object getDestination() {
         Object theOwner = getOwner();
         if (theOwner != null) {
@@ -312,6 +323,7 @@ public class FigEdgeNote
     /*
      * @see org.tigris.gef.presentation.FigEdge#setDestFigNode(org.tigris.gef.presentation.FigNode)
      */
+    @Override
     public void setDestFigNode(FigNode fn) {
         if (fn != null && Model.getFacade().isAComment(fn.getOwner())) {
             Object oldComment = comment;
@@ -336,6 +348,7 @@ public class FigEdgeNote
     /*
      * @see org.tigris.gef.presentation.FigEdge#setSourceFigNode(org.tigris.gef.presentation.FigNode)
      */
+    @Override
     public void setSourceFigNode(FigNode fn) {
         if (fn != null && Model.getFacade().isAComment(fn.getOwner())) {
             Object oldComment = comment;
@@ -354,4 +367,4 @@ public class FigEdgeNote
         }
         super.setSourceFigNode(fn);
     }
-} /* end class FigEdgeNote */
+} 

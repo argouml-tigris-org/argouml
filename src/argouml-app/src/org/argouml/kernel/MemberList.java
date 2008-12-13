@@ -225,57 +225,6 @@ class MemberList implements List<ProjectMember> {
         diagramMembers.clear();
     }
 
-    /**
-     * @param type the type of the member
-     * @return the member of the project
-     * @deprecated by MVW in V0.25.2: no replacement needed since not used. 
-     * Rationale: this class should ONLY implement List, nothing more.
-     */
-    @Deprecated
-    public synchronized ProjectMember getMember(Class type) {
-        if (type == ProjectMemberModel.class) {
-            return model;
-        }
-        if (type == ProjectMemberTodoList.class) {
-            return todoList;
-        }
-        if (type == ProfileConfiguration.class) {
-            return profileConfiguration;
-        }
-        throw new IllegalArgumentException(
-            "There is no single instance of a " + type.getName() + " member");
-    }
-
-    /**
-     * @param type the type of the member
-     * @return the member of the project
-     * @deprecated by MVW in V0.25.2: no replacement needed since not used. 
-     * Rationale: this class should ONLY implement List, nothing more.
-     */
-    @Deprecated
-    public synchronized List getMembers(Class type) {
-        if (type == ProjectMemberModel.class) {
-            List<ProjectMember> temp = new ArrayList<ProjectMember>(1);
-            temp.add(model);
-            return temp;
-        }
-        if (type == ProjectMemberTodoList.class) {
-            List<ProjectMember> temp = new ArrayList<ProjectMember>(1);
-            temp.add(todoList);
-            return temp;
-        }
-        if (type == ProjectMemberDiagram.class) {
-            return diagramMembers;
-        }
-        if (type == ProfileConfiguration.class) {
-            List<ProjectMember> temp = new ArrayList<ProjectMember>(1);
-            temp.add(profileConfiguration);
-            return temp;
-        }
-        throw new IllegalArgumentException(
-            "There is no single instance of a " + type.getName() + " member");
-    }
-
     public synchronized ProjectMember get(int i) {
         if (model != null) {
             if (i == 0) {
@@ -374,24 +323,5 @@ class MemberList implements List<ProjectMember> {
         throw new UnsupportedOperationException();
     }
 
-    /**
-     * @return the project member
-     * @deprecated by MVW in V0.25.2: no replacement needed since not used. 
-     * Rationale: this class should ONLY implement List, nothing more.
-     */
-    @Deprecated
-    public AbstractProjectMember getProfileConfiguration() {
-        return profileConfiguration;
-    }
-
-    /**
-     * @param profileConfig the new profile configuration
-     * @deprecated by MVW in V0.25.2: no replacement needed since not used. 
-     * Rationale: this class should ONLY implement List, nothing more.
-     */
-    @Deprecated
-    public void setProfileConfiguration(AbstractProjectMember profileConfig) {
-        profileConfiguration = profileConfig;
-    }
 
 }

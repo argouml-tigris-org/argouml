@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
@@ -41,6 +42,7 @@ import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
@@ -156,94 +158,73 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
             throw new IllegalArgumentException("A model edge must be supplied");
         }
 
+        DiagramSettings settings = ((ArgoDiagram) ((LayerPerspective) lay)
+                .getDiagram()).getDiagramSettings();
+        
         FigEdgeModelElement newEdge = null;
 
         if (Model.getFacade().isAAssociation(edge)) {
-            // If the edge is an association, we'll need a FigAssociation
-            Object   asc         = /*(MAssociation)*/ edge;
-            FigAssociation ascFig      = new FigAssociation(asc, lay);
-
-            newEdge = ascFig;
+            newEdge = new FigAssociation(edge, settings);
         } else if (Model.getFacade().isAGeneralization(edge)) {
-            // Generalization needs a FigGeneralization
-            Object   gen    = /*(MGeneralization)*/ edge;
-            FigGeneralization genFig = new FigGeneralization(gen, lay);
-            newEdge = genFig;
+            newEdge = new FigGeneralization(edge, settings);
         } else if (Model.getFacade().isAExtend(edge)) {
-            // Extend relationship
-            Object   ext    = /*(MExtend)*/ edge;
-            FigExtend extFig = new FigExtend(ext);
+            newEdge = new FigExtend(edge, settings);
 
             // The nodes at the two ends
-
-            Object base      = Model.getFacade().getBase(ext);
-            Object extension = Model.getFacade().getExtension(ext);
+            Object base = Model.getFacade().getBase(edge);
+            Object extension = Model.getFacade().getExtension(edge);
 
             // The figs for the two end nodes
-
-            FigNode baseFN      = (FigNode) lay.presentationFor(base);
+            FigNode baseFN = (FigNode) lay.presentationFor(base);
             FigNode extensionFN = (FigNode) lay.presentationFor(extension);
 
             // Link the new extend relationship in to the ends. Remember we
             // draw from the extension use case to the base use case.
+            newEdge.setSourcePortFig(extensionFN);
+            newEdge.setSourceFigNode(extensionFN);
 
-            extFig.setSourcePortFig(extensionFN);
-            extFig.setSourceFigNode(extensionFN);
+            newEdge.setDestPortFig(baseFN);
+            newEdge.setDestFigNode(baseFN);
 
-            extFig.setDestPortFig(baseFN);
-            extFig.setDestFigNode(baseFN);
-
-            newEdge = extFig;
         } else if (Model.getFacade().isAInclude(edge)) {
-            // Include relationship is very like extend.
-            Object   inc    = /*(MInclude)*/ edge;
-            FigInclude incFig = new FigInclude(inc);
+            newEdge = new FigInclude(edge, settings);
 
-            Object base     = Model.getFacade().getBase(inc);
-            Object addition = Model.getFacade().getAddition(inc);
+            Object base = Model.getFacade().getBase(edge);
+            Object addition = Model.getFacade().getAddition(edge);
 
             // The figs for the two end nodes
-
-            FigNode baseFN     = (FigNode) lay.presentationFor(base);
+            FigNode baseFN = (FigNode) lay.presentationFor(base);
             FigNode additionFN = (FigNode) lay.presentationFor(addition);
 
             // Link the new include relationship in to the ends
+            newEdge.setSourcePortFig(baseFN);
+            newEdge.setSourceFigNode(baseFN);
 
-            incFig.setSourcePortFig(baseFN);
-            incFig.setSourceFigNode(baseFN);
-
-            incFig.setDestPortFig(additionFN);
-            incFig.setDestFigNode(additionFN);
-
-            newEdge = incFig;
+            newEdge.setDestPortFig(additionFN);
+            newEdge.setDestFigNode(additionFN);
         } else if (Model.getFacade().isADependency(edge)) {
-            // Dependency needs a FigDependency
-            Object   dep    = /*(MDependency)*/ edge;
-            FigDependency depFig = new FigDependency(dep);
+            newEdge = new FigDependency(edge, settings);
 
             // Where there is more than one supplier or client, take the first
             // element in each case. There really ought to be a check that
             // there are some here for safety.
 
             Object supplier =
-                 ((Model.getFacade().getSuppliers(dep).toArray())[0]);
+                 ((Model.getFacade().getSuppliers(edge).toArray())[0]);
             Object client =
-                 ((Model.getFacade().getClients(dep).toArray())[0]);
+                 ((Model.getFacade().getClients(edge).toArray())[0]);
 
             // The figs for the two end nodes
-
             FigNode supplierFN = (FigNode) lay.presentationFor(supplier);
-            FigNode clientFN   = (FigNode) lay.presentationFor(client);
+            FigNode clientFN = (FigNode) lay.presentationFor(client);
 
             // Link the new dependency in to the ends
+            newEdge.setSourcePortFig(clientFN);
+            newEdge.setSourceFigNode(clientFN);
 
-            depFig.setSourcePortFig(clientFN);
-            depFig.setSourceFigNode(clientFN);
+            newEdge.setDestPortFig(supplierFN);
+            newEdge.setDestFigNode(supplierFN);
 
-            depFig.setDestPortFig(supplierFN);
-            depFig.setDestFigNode(supplierFN);
-
-            newEdge = depFig;
         } else if (edge instanceof CommentEdge) {
             newEdge = new FigEdgeNote(edge, lay);
         }
@@ -257,6 +238,8 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
         }
 
         lay.add(newEdge);
+        newEdge.setLayer(lay);
+        
         newEdge.setDiElement(
                 GraphChangeAdapter.getInstance().createElement(gm, edge));
 

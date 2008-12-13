@@ -25,6 +25,7 @@
 package org.argouml.uml;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -41,6 +42,7 @@ import org.tigris.gef.util.ChildGenerator;
  *
  * @see org.argouml.uml.cognitive.critics.CrCircularComposition
  * @stereotype singleton
+ * @deprecated for 0.27.3 by tfmorris.  Use {@link GenCompositeClasses2}.
  */
 public class GenCompositeClasses implements ChildGenerator {
     /**
@@ -52,46 +54,61 @@ public class GenCompositeClasses implements ChildGenerator {
 
     /**
      * @return Returns the sINGLETON.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link GenCompositeClasses2#getInstance()}.
      */
     public static GenCompositeClasses getSINGLETON() {
         return SINGLETON;
     }
     
-    /*
+    /**
      * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link GenCompositeClasses2#childIterator(Object)}.
      */
     public Enumeration gen(Object o) {
-	List res = new ArrayList();
-	if (!(Model.getFacade().isAClassifier(o))) {
-	    return Collections.enumeration(res);
-	}
-	Object cls = o;
-	List ends = new ArrayList(Model.getFacade().getAssociationEnds(cls));
-	if (ends == null) {
-	    return Collections.enumeration(res);
-	}
-	Iterator assocEnds = ends.iterator();
-	while (assocEnds.hasNext()) {
-	    Object ae = assocEnds.next();
-	    if (Model.getAggregationKind().getComposite().equals(
-	            Model.getFacade().getAggregation(ae))) {
-		Object asc = Model.getFacade().getAssociation(ae);
-		ArrayList conn =
-		    new ArrayList(Model.getFacade().getConnections(asc));
-		if (conn == null || conn.size() != 2) {
-		    continue;
-		}
-		Object otherEnd =
-		    (ae == conn.get(0)) ? conn.get(1) : conn.get(0);
-		if (Model.getFacade().getType(ae)
-		        != Model.getFacade().getType(otherEnd)) {
-		    res.add(Model.getFacade().getType(otherEnd));
-		}
-	    }
-	}
-	return Collections.enumeration(res);
+        return Collections.enumeration(collectChildren(o));
     }
 
+    /**
+     * Collect children.<p>
+     * TODO: Move this method to the subclass GenCompositeClasses2 when this
+     * deprecated class is removed.
+     * @param o the parent element
+     * @return a collection of children.
+     */
+    protected Collection collectChildren(Object o) {
+        List res = new ArrayList();
+        if (!(Model.getFacade().isAClassifier(o))) {
+            return res;
+        }
+        Object cls = o;
+        List ends = new ArrayList(Model.getFacade().getAssociationEnds(cls));
+        if (ends == null) {
+            return res;
+        }
+        Iterator assocEnds = ends.iterator();
+        while (assocEnds.hasNext()) {
+            Object ae = assocEnds.next();
+            if (Model.getAggregationKind().getComposite().equals(
+                    Model.getFacade().getAggregation(ae))) {
+                Object asc = Model.getFacade().getAssociation(ae);
+                ArrayList conn =
+                    new ArrayList(Model.getFacade().getConnections(asc));
+                if (conn == null || conn.size() != 2) {
+                    continue;
+                }
+                Object otherEnd =
+                    (ae == conn.get(0)) ? conn.get(1) : conn.get(0);
+                if (Model.getFacade().getType(ae)
+                        != Model.getFacade().getType(otherEnd)) {
+                    res.add(Model.getFacade().getType(otherEnd));
+                }
+            }
+        }
+        return res;
+    }
+    
     /**
      * The UID.
      */

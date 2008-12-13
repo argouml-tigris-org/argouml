@@ -51,13 +51,13 @@ public class FigObject extends FigNodeModelElement {
      * Main constructor.
      */
     public FigObject() {
-        setBigPort(new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan));
-        cover = new FigRect(10, 10, 90, 50, Color.black, Color.white);
+        setBigPort(new FigRect(X0, Y0, 90, 50, Color.cyan, Color.cyan));
+        cover = new FigRect(X0, Y0, 90, 50, Color.black, Color.white);
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
         getNameFig().setUnderline(true);
         Dimension nameMin = getNameFig().getMinimumSize();
-        getNameFig().setBounds(10, 10, nameMin.width + 20, nameMin.height);
+        getNameFig().setBounds(X0, Y0, nameMin.width + 20, nameMin.height);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());

@@ -97,6 +97,8 @@ public class CheckItem implements Serializable {
      * @deprecated for 0.26 by tfmorris.  Use 
      * {@link #CheckItem(String, String, String, Predicate)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public CheckItem(String c, String d, String m, 
             org.tigris.gef.util.Predicate p) {
 	this(c, d);
@@ -161,6 +163,7 @@ public class CheckItem implements Serializable {
      * @return the GEF predicate
      * @deprecated for 0.26 by tfmorris.  Use {@link #getPredicate2()}.
      */
+    @SuppressWarnings("deprecation")
     @Deprecated
     public org.tigris.gef.util.Predicate getPredicate() {
         if (predicate instanceof PredicateGefWrapper) {
@@ -179,7 +182,11 @@ public class CheckItem implements Serializable {
 
     /**
      * @param p the predicate
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link CheckItem#setPredicate(Predicate)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public void setPredicate(org.tigris.gef.util.Predicate p) { 
         predicate = new PredicateGefWrapper(p); 
     }

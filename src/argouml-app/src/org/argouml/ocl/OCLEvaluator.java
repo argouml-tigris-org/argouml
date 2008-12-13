@@ -106,19 +106,17 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
     }
 
     private String value2String(Object v) {
-        if (Model.getFacade().isAModelElement(v)) {
-            v = Model.getFacade().getName(v);
-            if ("".equals(v)) {
-                v = Translator.localize("misc.name.anon");
-            }
-        }
         if (Model.getFacade().isAExpression(v)) {
             v = Model.getFacade().getBody(v);
             if ("".equals(v)) {
                 v = "(unspecified)";
             }
-        }
-        if (v instanceof Collection) {
+        } else if (Model.getFacade().isAUMLElement(v)) {
+            v = Model.getFacade().getName(v);
+            if ("".equals(v)) {
+                v = Translator.localize("misc.name.anon");
+            }
+        } else if (v instanceof Collection) {
             String acc = "[";
             Collection collection = (Collection) v;
 
@@ -128,6 +126,6 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
             acc += "]";
             v = acc;
         }
-        return ""+v;
+        return "" + v;
     }
 }  // end of OCLEvaluator

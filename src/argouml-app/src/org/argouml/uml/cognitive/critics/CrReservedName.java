@@ -62,6 +62,8 @@ public class CrReservedName extends CrUML {
     }
 
     static {
+        // TODO: This could just work off the names in the UML profile
+        // TODO: It doesn't look like it matches what's in the UML 1.4 spec
 	umlReserved.add("becomes");
 	umlReserved.add("call");
 	umlReserved.add("component");

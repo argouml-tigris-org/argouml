@@ -28,6 +28,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.Action;
@@ -64,12 +65,14 @@ import org.argouml.uml.diagram.DiagramFactory;
 public final class ProjectManager implements ModelCommandCreationObserver {
 
     /**
-     * The name of the property that defines the current project.
+     * The name of the property that defines the current project.  The values
+     * passed are Projects, not Strings.  The 'name' here refers to the name
+     * of this property, not the name of the project.
      * 
      * @deprecated for 0.27.2 by tfmorris. Listeners of this event which expect
      *             it to indicate a new project being opened should listen for
      *             {@link #OPEN_PROJECTS_PROPERTY}. Listeners who think 
-     *             they need to know a single global current project name need
+     *             they need to know a single global current project need
      *             to be changed to deal with things on a per-project basis.
      */
     @Deprecated
@@ -92,6 +95,8 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * The project that is visible in the projectbrowser.
      */
     private static Project currentProject;
+    
+    private static LinkedList<Project> openProjects = new LinkedList<Project>();
 
     /**
      * Flag to indicate we are creating a new current project.
@@ -184,23 +189,24 @@ public final class ProjectManager implements ModelCommandCreationObserver {
 
     /**
      * Sets the current project (the project that is viewable in the
-     * projectbrowser).
-     * Sets the current diagram for the project (if one exists).
-     * This method fires a propertychanged event.<p>
-     *
+     * projectbrowser). Sets the current diagram for the project (if one
+     * exists). This method fires a propertychanged event.
+     * <p>
      * If the argument is null, then the current project will be forgotten
      * about.
-     *
+     * 
      * @param newProject The new project.
-     * @deprecated for 0.27.2 by tfmorris.  There is no longer the concept of
-     * a single global "current" project.  In the future, multiple projects
-     * will be able to be open at a time, so all code should be prepared to deal
-     * with multiple projects and should require a Project to be passed as an
-     * argument if they need access.
+     * @deprecated for 0.27.2 by tfmorris. There is no longer the concept of a
+     *             single global "current" project. In the future, multiple
+     *             projects will be able to be open at a time, so all code
+     *             should be prepared to deal with multiple projects and should
+     *             require a Project to be passed as an argument if they need
+     *             access.
      */
     public void setCurrentProject(Project newProject) {
         Project oldProject = currentProject;
         currentProject = newProject;
+        addProject(newProject);
         if (currentProject != null
             && currentProject.getActiveDiagram() == null) {
             List<ArgoDiagram> diagrams = currentProject.getDiagramList();
@@ -209,6 +215,10 @@ public final class ProjectManager implements ModelCommandCreationObserver {
                 currentProject.setActiveDiagram(activeDiagram);
             }
         }
+        notifyProjectAdded(newProject, oldProject);
+    }
+
+    private void notifyProjectAdded(Project newProject, Project oldProject) {
         firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME,
                 oldProject, newProject);
         // TODO: Tentative implementation. Do we want something that updates
@@ -228,14 +238,15 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * <p>
      * 
      * @return Project the current project or null if none
-     * @deprecated for 0.27.2 by tfmorris.  There is no longer the concept of
-     * a single global "current" project.  In the future, multiple projects
-     * will be able to be open at a time, so all code should be prepared to deal
-     * with multiple projects and should require a Project to be passed as an
-     * argument if they need access.  To get a list of all currently open
-     * projects, use {@link #getOpenProjects()}.  For settings which affect
-     * renderings in diagrams use 
-     * {@link org.argouml.uml.diagram.ui.ArgoFig#getDiagramSettings()}.
+     * @deprecated for 0.27.2 by tfmorris. There is no longer the concept of a
+     *             single global "current" project. In the future, multiple
+     *             projects will be able to be open at a time, so all code
+     *             should be prepared to deal with multiple projects and should
+     *             require a Project to be passed as an argument if they need
+     *             access. To get a list of all currently open projects, use
+     *             {@link #getOpenProjects()}. For settings which affect
+     *             renderings in diagrams use
+     *             {@link org.argouml.uml.diagram.ui.ArgoFig#getSettings()}.
      */
     public Project getCurrentProject() {
         if (currentProject == null && !creatingCurrentProject) {
@@ -286,25 +297,19 @@ public final class ProjectManager implements ModelCommandCreationObserver {
                 creatingCurrentProject = true;
                 LOG.info("making empty project");
                 Project newProject = new ProjectImpl();
-                // Our project isn't really fully initialized yet, but the
-                // UndoManager depends on having the current project set before
-                // we can create our default Model
-                setCurrentProject(newProject);
+                createDefaultModel(newProject);
                 if (addDefaultDiagrams) {
                     createDefaultDiagrams(newProject);
                 }
                 creatingCurrentProject = false;
-
+                setCurrentProject(newProject);
                 Model.getPump().startPumpingEvents();
-                
-                if (saveAction != null) {
-                    saveAction.setEnabled(false);
-                }
                 return null;
             }
         };
         cmd.execute();
         currentProject.getUndoManager().addCommand(cmd);
+        setSaveEnabled(false);
         return currentProject;
     }
 
@@ -315,14 +320,15 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * @param project the project to create the diagrams in.
      */
     private void createDefaultDiagrams(Project project) {
-        createDefaultModel(project);
         Object model = project.getRoots().iterator().next();
         DiagramFactory df = DiagramFactory.getInstance();
-        ArgoDiagram d = df.createDiagram(DiagramFactory.DiagramType.Class,
-                model, null);
+        ArgoDiagram d = df.create(DiagramFactory.DiagramType.Class,
+                model, 
+                project.getProjectSettings().getDefaultDiagramSettings());
         project.addMember(d);
-        project.addMember(df.createDiagram(
-                DiagramFactory.DiagramType.UseCase, model, null));
+        project.addMember(df.create(
+                DiagramFactory.DiagramType.UseCase, model, 
+                project.getProjectSettings().getDefaultDiagramSettings()));
         project.addMember(new ProjectMemberTodoList("",
                 project));
         project.setActiveDiagram(d);
@@ -361,7 +367,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     /**
      * @return true is the save action is currently enabled
      * <p>
-     * TODO: This needs to get the save-enabled status for the current project.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link Project#isDirty()}.
      */
     public boolean isSaveActionEnabled() {
         return this.saveAction.isEnabled();
@@ -372,27 +378,35 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * current project's save state has changed. There are 2 receivers:
      * the SaveProject tool icon and the title bar (for showing a *).
      * <p>
-     * TODO: This needs to be managed on a per-project basis.
-     * @param newValue The new state.
+     * @deprecated for 0.27.2 by tfmorris.  Use 
+     * {@link Project#setDirty(boolean)}.
      */
     public void setSaveEnabled(boolean newValue) {
         if (saveAction != null) {
             saveAction.setEnabled(newValue);
         }
     }
-    
 
+    private void addProject(Project newProject) {
+        openProjects.addLast(newProject);
+    }
+    
     /**
      * Remove the project.
      *
      * @param oldProject The project to be removed.
      */
     public void removeProject(Project oldProject) {
-
+        openProjects.remove(oldProject);
+        
+        // TODO: This code can be removed when getCurrentProject is removed
         if (currentProject == oldProject) {
-            currentProject = null;
+            if (openProjects.size() > 0) {
+                currentProject = openProjects.getLast();
+            } else {
+                currentProject = null;
+            }
         }
-
         oldProject.remove();
     }
 
@@ -405,9 +419,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * @see org.argouml.model.ModelCommandCreationObserver#execute(ModelCommand)
      */
     public Object execute(final ModelCommand command) {
-        if (saveAction != null) {
-            saveAction.setEnabled(true);
-        }
+        setSaveEnabled(true);
         AbstractCommand wrappedCommand = new AbstractCommand() {
             private ModelCommand modelCommand = command;
             public void undo() {
@@ -426,6 +438,11 @@ public final class ProjectManager implements ModelCommandCreationObserver {
                 return modelCommand.toString();
             }
         };
-        return getCurrentProject().getUndoManager().execute(wrappedCommand);
+        Project p = getCurrentProject();
+        if (p != null) {
+            return getCurrentProject().getUndoManager().execute(wrappedCommand);
+        } else {
+            return wrappedCommand.execute();
+        }
     }
 }

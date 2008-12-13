@@ -26,7 +26,6 @@ package org.argouml.cognitive.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
@@ -153,16 +152,6 @@ public class GoListToGoalsToItems extends AbstractGoList {
      */
     public void removeTreeModelListener(TreeModelListener l) { }
 
-
-    /**
-     * @return the goals
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getGoalList()}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public Vector<Goal> getGoals() {
-	return Designer.theDesigner().getGoalModel().getGoals();
-    }
 
     /**
      * @return the goals

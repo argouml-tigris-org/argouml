@@ -238,25 +238,6 @@ public abstract class UMLPlainTextDocument
         }
     }
 
-    /**
-     * Returns the editing.
-     * @return boolean
-     * @deprecated for 0.25.6 by tfmorris.  This is a no-op and will be removed.
-     */
-    @Deprecated
-    public boolean isEditing() {
-        return editing;
-    }
-
-    /**
-     * Sets the editing.
-     * @param ed The editing to set
-     * @deprecated for 0.25.6 by tfmorris.  This is a no-op and will be removed.
-     */
-    @Deprecated
-    public void setEditing(boolean ed) {
-        editing = ed;
-    }
 
     /**
      * Returns the eventName.

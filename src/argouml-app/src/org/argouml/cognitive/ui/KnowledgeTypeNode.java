@@ -26,7 +26,6 @@ package org.argouml.cognitive.ui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.argouml.cognitive.Critic;
 
@@ -50,14 +49,6 @@ public class KnowledgeTypeNode {
 	name = n;
     }
 
-    /**
-     * @return a list of all the types
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getTypeList()}.
-     */
-    @Deprecated
-    public static Vector<KnowledgeTypeNode> getTypes() {
-        return new Vector<KnowledgeTypeNode>(getTypeList());
-    }
 
     /**
      * @return a list of all the types

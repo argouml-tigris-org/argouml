@@ -38,6 +38,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -75,13 +76,20 @@ public abstract class ActionAddDiagram extends UndoableAction {
     /*
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent e) {
+        // TODO: The project should be bound to the action when it is created?
         Project p = ProjectManager.getManager().getCurrentProject();
         Object ns = findNamespace();
 
         if (ns != null && isValidNamespace(ns)) {
             super.actionPerformed(e);
-            ArgoDiagram diagram = createDiagram(ns);
+            DiagramSettings settings = 
+                p.getProjectSettings().getDefaultDiagramSettings();
+            // TODO: We should really be passing the default settings to
+            // the diagram factory so they get set at creation time
+            ArgoDiagram diagram = createDiagram(ns, settings);
+                    
             p.addMember(diagram);
             //TODO: make the explorer listen to project member property
             //changes...  to eliminate coupling on gui.
@@ -145,9 +153,33 @@ public abstract class ActionAddDiagram extends UndoableAction {
     /**
      * Creates the diagram. Classes derived from this class should implement any
      * specific behaviour to create the diagram.
-     *
+     * 
      * @param ns The namespace the UMLDiagram should get.
      * @return UMLDiagram
+     * @deprecated for 0.27.3 by tfmorris. Subclasses should override
+     *             {@link #createDiagram(Object, DiagramSettings)}.  This method
+     *             is no longer abstract, so implementing classes may remove it.
      */
-    public abstract ArgoDiagram createDiagram(Object ns);
+    @Deprecated
+    public ArgoDiagram createDiagram(@SuppressWarnings("unused") Object ns) {
+        // Do nothing during the deprecation period, then it can be removed.
+        return null;
+    }
+    
+    /**
+     * Create a new diagram. To be implemented by subclasses. It will become
+     * abstract after 0.28 to enforce this requirement.
+     * 
+     * @param owner owner of the diagram. May be a namespace, statemachine, or
+     *            collaboration depending on the type of diagram.
+     * @param settings default rendering settings for all figs in the new
+     *            diagram
+     * @return newly created diagram
+     */
+    public ArgoDiagram createDiagram(Object owner, DiagramSettings settings) {
+        ArgoDiagram d = createDiagram(owner);
+        d.setDiagramSettings(settings);
+        return d;
+    }
+
 }

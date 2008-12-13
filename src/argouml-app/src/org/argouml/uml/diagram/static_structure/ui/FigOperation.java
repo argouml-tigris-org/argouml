@@ -25,10 +25,13 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
+import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -49,15 +52,48 @@ public class FigOperation extends FigFeature {
      * @param h h
      * @param aFig the fig
      * @param np the notation provider for the text
+     * @deprecated for 0.27.3 by tfmorris.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigOperation(int x, int y, int w, int h, Fig aFig, 
             NotationProvider np) {
         super(x, y, w, h, aFig, np);
     }
 
+    /**
+     * Construct a fig for a UML Operation.
+     * @deprecated by mvw in V0.27.3. Use the constructor without np parameter.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     * @param np notation provider
+     */
+    @Deprecated
+    public FigOperation(Object owner, Rectangle bounds,
+            DiagramSettings settings, NotationProvider np) {
+        super(owner, bounds, settings, np);
+        Model.getPump().addModelEventListener(this, owner, "isAbstract");
+    }
+
+    /**
+     * Construct a fig for a UML Operation
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigOperation(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        Model.getPump().addModelEventListener(this, owner, "isAbstract");
+    }    
     /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#setOwner(java.lang.Object)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public void setOwner(Object owner) {
         super.setOwner(owner);
@@ -85,7 +121,7 @@ public class FigOperation extends FigFeature {
     public void propertyChange(PropertyChangeEvent pce) {
         super.propertyChange(pce);
         if ("isAbstract".equals(pce.getPropertyName())) {
-            diagramFontChanged(null);    
+            renderingChanged();    
         }
     }
 
@@ -99,4 +135,8 @@ public class FigOperation extends FigFeature {
             ? Font.ITALIC : Font.PLAIN;
     }
 
+    @Override
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_OPERATION;
+    }
 }

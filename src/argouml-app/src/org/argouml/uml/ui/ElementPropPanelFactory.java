@@ -284,6 +284,8 @@ class ElementPropPanelFactory implements PropPanelFactory {
                 return new PropPanelPermission();
             } else if (Model.getFacade().isAUsage(element)) {
                 return new PropPanelUsage();
+//            } else if (Model.getFacade().isABinding(element)) {
+//                return new PropPanelBinding();
             } else {
                 return new PropPanelDependency();
             }

@@ -48,6 +48,7 @@ import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ExtensionsCompartmentContainer;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionAddNote;
@@ -165,11 +166,6 @@ public class FigUseCase extends FigNodeModelElement
      */
     private CompartmentFigText highlightedFigText;
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Constructors
-    //
-    ///////////////////////////////////////////////////////////////////////////
 
     /**
      * Constructor for a new use case fig. We work out the smallest
@@ -178,17 +174,31 @@ public class FigUseCase extends FigNodeModelElement
      * At creation the extension point box is not showing (for
      * consistency with existing implementations). We can show it
      * later.<p>
+     * @deprecated for 0.27.2 by tfmorris. Use
+     *             {@link #FigUseCase(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigUseCase() {
+        initialize();
+    }
 
+    /**
+     * Initialization which is common to multiple constructors.
+     */
+    private void initialize() {
+        // We need to be initialized before we can use our own versions of these
+        Color fg = super.getLineColor();
+        Color fill = super.getFillColor();
+        
         // Create all the things we need, then use getMinimumSize to work out
         // the dimensions of the oval.
 
         // First the main port ellipse and the cover of identical size that
         // will realize it. Use arbitrary dimensions for now.
 
-        bigPort = new FigMyCircle(0, 0, 100, 60, Color.black, Color.white);
-        cover = new FigMyCircle(0, 0, 100, 60, Color.black, Color.white);
+        bigPort = new FigMyCircle(0, 0, 100, 60, fg, fill);
+        cover = new FigMyCircle(0, 0, 100, 60, fg, fill);
 
         // Mark the text, but not the box as filled, mark that the name may
         // use multiline text (a bit odd - how do we enter a multi-line
@@ -201,7 +211,7 @@ public class FigUseCase extends FigNodeModelElement
 
         // The separator, again with arbitrary bounds for now.
 
-        epSep = new FigLine(0, 30, 100, 100, Color.black);
+        epSep = new FigLine(0, 30, 100, 100, fg);
 
         epSep.setVisible(false);
 
@@ -214,8 +224,7 @@ public class FigUseCase extends FigNodeModelElement
         // empty) are the same as for the name box at this stage.
 
         epBigPort =
-	    new FigRect(0, 30, getNameFig().getBounds().width, 20,
-			Color.black, Color.white);
+	    new FigRect(0, 30, getNameFig().getBounds().width, 20, fg, fill);
 
         epBigPort.setFilled(false);
         epBigPort.setLineWidth(0);
@@ -289,8 +298,7 @@ public class FigUseCase extends FigNodeModelElement
         
         // Having built the figure, getBounds finds the enclosing rectangle,
         // which we set as our bounds.
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
+        setBounds(getBounds());
     }
 
     /**
@@ -306,10 +314,31 @@ public class FigUseCase extends FigNodeModelElement
      *              implementation.
      *
      * @param node  The model element object to associate with this Fig.
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigUseCase(Object, Rectangle, DiagramSettings)}.
      */
-    public FigUseCase(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigUseCase(@SuppressWarnings("unused") GraphModel gm, Object node) {
         this();
         setOwner(node);
+    }
+    
+    /**
+     * Construct a use case figure with the given owner, bounds, and rendering 
+     * settings.  This constructor is used by the PGML parser.
+     * 
+     * @param owner owning model element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigUseCase(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initialize();
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
     }
 
     /**
@@ -903,10 +932,11 @@ public class FigUseCase extends FigNodeModelElement
         // If we are currently selected, turn off the draggable buttons at each
         // side, and unhighlight any currently selected extension points.
         Editor ce = Globals.curEditor();
-        Selection sel = ce.getSelectionManager().findSelectionFor(this);
-
-        if (sel instanceof SelectionUseCase) {
-            ((SelectionUseCase) sel).hideButtons();
+        if (ce != null) {
+            Selection sel = ce.getSelectionManager().findSelectionFor(this);
+            if (sel instanceof SelectionUseCase) {
+                ((SelectionUseCase) sel).hideButtons();
+            }
         }
 
         unhighlight();
@@ -1060,21 +1090,15 @@ public class FigUseCase extends FigNodeModelElement
              * and abstract makes the text italic.
              * All Figs need to listen to "remove", too: */
             l.add(new Object[] {newOwner, 
-                    new String[] {"remove", "name", "isAbstract", 
-                        "extensionPoint", "stereotype"}});
+                                new String[] {"remove", "name", "isAbstract", 
+                                    "extensionPoint", "stereotype"}});
             
             // register for extension points:
-            Iterator it =
-                Model.getFacade().getExtensionPoints(newOwner).iterator();
-            while (it.hasNext()) {
-                l.add(new Object[] {it.next(),
-                        new String[] {"location", "name"}});
+            for (Object ep : Model.getFacade().getExtensionPoints(newOwner)) {
+                l.add(new Object[] {ep, new String[] {"location", "name"}});
             }
             
-            Collection c = Model.getFacade().getStereotypes(newOwner);
-            it = c.iterator();
-            while (it.hasNext()) {
-                Object st = it.next();
+            for (Object st : Model.getFacade().getStereotypes(newOwner)) {
                 l.add(new Object[] {st, "name"});
             }
         }
@@ -1086,10 +1110,10 @@ public class FigUseCase extends FigNodeModelElement
      */
     @Override
     public void renderingChanged() {
+        super.renderingChanged();
         if (getOwner() != null) {
             updateExtensionPoint();
         }
-        super.renderingChanged();
     }
 
     /**
@@ -1148,23 +1172,23 @@ public class FigUseCase extends FigNodeModelElement
                                 NotationProviderFactory2.TYPE_EXTENSION_POINT, 
                                 ep);
 
-                    epFig = new CompartmentFigText(
+                    epFig = new CompartmentFigText(ep, new Rectangle(
                             xpos,
 			    ypos + (epCount - 1) * ROWHEIGHT,
 			    0,
-			    ROWHEIGHT,
-			    epBigPort,
+			    ROWHEIGHT),
+			    getSettings(),
                             np);
                     
                     epFig.setFilled(false);
                     epFig.setLineWidth(0);
-                    epFig.setTextColor(Color.black);
+                    epFig.setTextColor(getTextColor());
                     epFig.setJustification(FigText.JUSTIFY_LEFT);
                     epFig.setReturnAction(FigText.END_EDITING);
 
                     epVec.addFig(epFig);
                 } else {
-                    /* This one is still useable, so let's not remove it: */
+                    /* This one is still usable, so let's not remove it: */
                     toBeRemoved.remove(epFig);
                 }
 

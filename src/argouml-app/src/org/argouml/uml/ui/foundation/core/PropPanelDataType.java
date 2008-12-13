@@ -39,7 +39,6 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for a Datatype.
@@ -51,22 +50,6 @@ public class PropPanelDataType extends PropPanelClassifier {
     private static UMLClassOperationListModel operationListModel =
         new UMLClassOperationListModel();
 
-    /**
-     * Construct a property panel for UML DataType elements.
-     * 
-     * @param title title string for the property panel
-     * @param icon icon
-     * @param orientation horizontal or vertical orientation
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelDataType(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelDataType(String title, ImageIcon icon,
-            Orientation orientation) {
-        this(title, icon);
-        setOrientation(orientation);
-    }
     
     /**
      * Construct a property panel for UML DataType elements.
@@ -82,7 +65,7 @@ public class PropPanelDataType extends PropPanelClassifier {
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
         add(getModifiersPanel());
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
 
         addSeparator();
 

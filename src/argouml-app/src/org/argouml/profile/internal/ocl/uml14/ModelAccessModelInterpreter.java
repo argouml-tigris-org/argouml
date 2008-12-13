@@ -60,6 +60,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
     public Object invokeFeature(Map<String, Object> vt, Object subject,
             String feature, String type, Object[] parameters) {
 
+        // TODO: This is an absurdly long method! Break it up.
+        
         if (subject == null) {
             subject = vt.get("self");
         }
@@ -404,7 +406,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         if (Model.getFacade().isAFeature(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("ownerScope")) {
-                    return Model.getFacade().getOwnerScope(subject);
+                    return Model.getFacade().isStatic(subject);
                 }
                 if (feature.equals("visibility")) {
                     return Model.getFacade().getVisibility(subject);
@@ -459,10 +461,10 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                     return Model.getFacade().getDiscriminator(subject);
                 }
                 if (feature.equals("child")) {
-                    return Model.getFacade().getChild(subject);
+                    return Model.getFacade().getSpecific(subject);
                 }
                 if (feature.equals("parent")) {
-                    return Model.getFacade().getParent(subject);
+                    return Model.getFacade().getGeneral(subject);
                 }
                 if (feature.equals("powertype")) {
                     return Model.getFacade().getPowertype(subject);
@@ -660,13 +662,14 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
 
         /* 4.5.2.35 ProgrammingLanguageDataType */          
         
-        if (Model.getFacade().isAProgrammingLanguageDataType(subject)) {
-            if (type.equals(".")) {
-                if (feature.equals("expression")) {
-                    return Model.getFacade().getExpression(subject);
-                }
-            }
-        }                
+        // Gone from UML 2.x, so unsupported here
+//        if (Model.getFacade().isAProgrammingLanguageDataType(subject)) {
+//            if (type.equals(".")) {
+//                if (feature.equals("expression")) {
+//                    return Model.getFacade().getExpression(subject);
+//                }
+//            }
+//        }                
 
         /* 4.5.2.37 StructuralFeature */
 

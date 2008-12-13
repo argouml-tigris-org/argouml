@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,9 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -43,12 +45,20 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigMultiLineText extends ArgoFigText {
 
-    /*
+    /**
      * @see org.tigris.gef.presentation.FigText#FigText(
      *         int, int, int, int, boolean)
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *  {@link #FigMultiLineText(Object, Rectangle, DiagramSettings, boolean)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigMultiLineText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
+        initFigs();
+    }
+
+    private void initFigs() {
         setTextColor(Color.black);
         setReturnAction(FigText.INSERT);
         setLineSeparator("\n");
@@ -56,5 +66,19 @@ public class FigMultiLineText extends ArgoFigText {
         setJustification(FigText.JUSTIFY_LEFT);
         setFilled(false);
         setLineWidth(0);
+    }
+    
+    /**
+     * Create a multi line text Fig
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     * @param expandOnly true if fig should expand, but never contract
+     */
+    public FigMultiLineText(Object owner, Rectangle bounds,
+            DiagramSettings settings, boolean expandOnly) {
+        super(owner, bounds, settings, expandOnly);
+        initFigs();
     }
 }

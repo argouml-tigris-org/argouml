@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.Icon;
 
@@ -122,15 +121,6 @@ public class CompoundCritic extends Critic {
         critics = c;
     }
 
-    /**
-     * @return the complete list of critics
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getCriticList()}. Unused
-     *             in ArgoUML. Can be scheduled for speedy removal.
-     */
-    @Deprecated
-    public Vector<Critic> getCritics() {
-        return new Vector<Critic>(critics);
-    }
 
     /**
      * @return the complete list of critics

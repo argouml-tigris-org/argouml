@@ -51,6 +51,7 @@ import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
@@ -110,10 +111,23 @@ public class FigComment
 
     /**
      * The main constructor used for file loading.
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigComment(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigComment() {
 
-        outlineFig = new FigPoly(Color.black, Color.white);
+        bodyTextFig = new FigMultiLineText(2, 2, width - 2 - dogear,
+                height - 4, true);
+        initialize();
+    }
+
+    private void initialize() {
+        Color fg = super.getLineColor(); // Use super because not fully init'd
+        Color fill = super.getFillColor();
+        
+        outlineFig = new FigPoly(fg, fill);
         outlineFig.addPoint(0, 0);
         outlineFig.addPoint(width - 1 - dogear, 0);
         outlineFig.addPoint(width - 1, dogear);
@@ -123,7 +137,7 @@ public class FigComment
         outlineFig.setFilled(true);
         outlineFig.setLineWidth(1);
 
-        urCorner = new FigPoly(Color.black, Color.white);
+        urCorner = new FigPoly(fg, fill);
         urCorner.addPoint(width - 1 - dogear, 0);
         urCorner.addPoint(width - 1, dogear);
         urCorner.addPoint(width - 1 - dogear, dogear);
@@ -137,9 +151,6 @@ public class FigComment
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
 
-        bodyTextFig =
-            new FigMultiLineText(2, 2,
-                                 width - 2 - dogear, height - 4, true);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
@@ -151,7 +162,7 @@ public class FigComment
         col = outlineFig.getFillColor();
         urCorner.setFillColor(col.darker());
 
-        setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisible unless mouse enters
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
         updateEdges();
@@ -172,10 +183,36 @@ public class FigComment
      *
      * @param gm the graphmodel
      * @param node the underlying UML Comment
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigComment(Object, Rectangle, DiagramSettings)}.
      */
-    public FigComment(GraphModel gm, Object node) {
+    @Deprecated
+    public FigComment(@SuppressWarnings("unused") GraphModel gm, Object node) {
         this();
         setOwner(node);
+    }
+    
+    /**
+     * Construct a comment figure with the given model element, bounds, and
+     * settings. This constructor is used by the PGML parser.
+     * 
+     * @param owner owning Comments
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigComment(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        
+        bodyTextFig = new FigMultiLineText(getOwner(), 
+                new Rectangle(2, 2, width - 2 - dogear, height - 4), 
+                getSettings(), true);
+        
+        initialize();
+        updateBody();
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
     }
 
     /**
@@ -220,9 +257,16 @@ public class FigComment
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    @Override
     public void setOwner(Object own) {
         super.setOwner(own);
-        if (own != null) {
+        updateBody();
+    }
+
+    private void updateBody() {
+        if (getOwner() != null) {
             String body = (String) Model.getFacade().getBody(getOwner());
             if (body != null) {
                 bodyTextFig.setText(body);
@@ -230,8 +274,6 @@ public class FigComment
         }
     }
 
-    ////////////////////////////////////////////////////////////////
-    // event handlers
 
     /**
      * See FigNodeModelElement.java for more info on these methods.

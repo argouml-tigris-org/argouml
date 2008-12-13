@@ -26,10 +26,10 @@ package org.argouml.kernel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeSupport;
 import java.io.File;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -39,7 +39,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -48,9 +47,7 @@ import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.persistence.PersistenceManager;
 import org.argouml.profile.Profile;
-import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.ProjectMemberModel;
@@ -69,9 +66,6 @@ import org.tigris.gef.presentation.Fig;
  */
 public class ProjectImpl implements java.io.Serializable, Project {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger.getLogger(ProjectImpl.class);
 
     /**
@@ -120,7 +114,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
     
     private Object root;
     private final Collection roots = new HashSet();
-    
 
     /**
      * Instances of the UML diagrams.
@@ -151,6 +144,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
     // TODO: Change this to use an UndoManager instance per project when
     // GEF has been enhanced.
     private UndoManager undoManager = DefaultUndoManager.getInstance();
+
+    private boolean dirty = false;
     
     /**
      * Constructor.
@@ -187,16 +182,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         addSearchPath("PROJECT_DIR");
     }
 
-    /*
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link PersistenceManager#getProjectBaseName(Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public String getBaseName() {
-        return PersistenceManager.getInstance().getProjectBaseName(this);
-    }
-
 
     public String getName() {
         // TODO: maybe separate name
@@ -204,17 +189,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
             return UNTITLED_FILE;
         }
         return new File(uri).getName();
-    }
-
-    /*
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link PersistenceManager#setProjectName(String, Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public void setName(final String n)
-        throws URISyntaxException {
-        PersistenceManager.getInstance().setProjectName(n, this);
     }
 
 
@@ -225,16 +199,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public URI getURI() {
         return uri;
-    }
-
-    /*
-     * @deprecated by MVW in V0.25.4 - replaced by 
-     *     {@link PersistenceManager#setProjectUri(URI, Project)}
-     *     Rationale: Remove dependency on persistence subsystem.
-     */
-    @Deprecated
-    public void setURI(URI theUri) {
-        PersistenceManager.getInstance().setProjectURI(theUri, this);
     }
 
     /**
@@ -263,12 +227,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    @SuppressWarnings("deprecation")
-    public Vector<String> getSearchPath() {
-        return new Vector<String>(searchpath);
-    }
-
-
     public List<String> getSearchPathList() {
         return Collections.unmodifiableList(searchpath);
     }
@@ -290,6 +248,15 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * @param d the diagram
      */
     private void addDiagramMember(ArgoDiagram d) {
+        // Check for duplicate name and rename if necessary
+        int serial = getDiagramCount();
+        while (!isValidDiagramName(d.getName())) {
+            try {
+                d.setName(d.getName() + " " + serial);
+            } catch (PropertyVetoException e) {
+                serial++;            
+            }
+        }
         ProjectMember pm = new ProjectMemberDiagram(d, this);
         addDiagram(d);
         // if diagram added successfully, add the member too
@@ -375,6 +342,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
         roots.add(model);
         setCurrentNamespace(model);
         setSaveEnabled(true);
+        if (models.size() > 1 || roots.size() > 1) {
+            LOG.debug("Multiple roots/models");
+        }
     }
 
     /**
@@ -505,12 +475,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    @SuppressWarnings({ "deprecation", "unchecked" })
-    public Vector getUserDefinedModels() {
-        return new Vector(models);
-    }
-
-
     public List getUserDefinedModelList() {
         return models;
     }
@@ -531,6 +495,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @SuppressWarnings("deprecation")
     @Deprecated
     public Object getModel() {
         if (models.size() != 1) {
@@ -647,6 +612,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public void setCurrentNamespace(final Object m) {
 
         if (m != null && !Model.getFacade().isANamespace(m)) {
@@ -657,15 +624,12 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public Object getCurrentNamespace() {
         return currentNamespace;
     }
 
-
-    @SuppressWarnings("deprecation")
-    public Vector<ArgoDiagram> getDiagrams() {
-        return new Vector<ArgoDiagram>(diagrams);
-    }
 
     public List<ArgoDiagram> getDiagramList() {
         return Collections.unmodifiableList(diagrams);
@@ -769,6 +733,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public VetoableChangeSupport getVetoSupport() {
         if (vetoSupport == null) {
             vetoSupport = new VetoableChangeSupport(this);
@@ -781,7 +747,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         for (ArgoDiagram diagram : diagrams) {
             diagram.preSave();
         }
-        // TODO: is preSave needed for models?
     }
 
 
@@ -789,7 +754,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         for (ArgoDiagram diagram : diagrams) {
             diagram.postSave();
         }
-        // TODO: is postSave needed for models?
         setSaveEnabled(true);
     }
 
@@ -821,7 +785,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
     /**
      * Empty the trash can and permanently delete all objects that it contains.
      */
-    public void emptyTrashCan() {
+    private void emptyTrashCan() {
         trashcan.clear();
     }
 
@@ -847,6 +811,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * @param obj the object to be thrown away
      */
     protected void trashInternal(Object obj) {
+        // TODO: This should only be checking for the top level package
+        // (if anything at all)
         if (Model.getFacade().isAModel(obj)) {
             return; //Can not delete the model
         }
@@ -867,6 +833,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
         } else if (obj instanceof ArgoDiagram) {
             removeProjectMemberDiagram((ArgoDiagram) obj);
+            // TODO: Is the following still true?  fix it there! - tfm
             // Need to manually delete diagrams from explorer because they
             // don't have a decent event system set up:
             ProjectManager.getManager()
@@ -880,6 +847,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             // for primitive Figs (without owner).
             LOG.info("Request to delete a Fig " + obj.getClass().getName());
         } else if (obj instanceof CommentEdge) {
+            // TODO: Why is this a special case? - tfm
             CommentEdge ce = (CommentEdge) obj;
             LOG.info("Removing the link from " + ce.getAnnotatedElement()
                     + " to " + ce.getComment());
@@ -888,53 +856,14 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public boolean isInTrash(Object obj) {
         return trashcan.contains(obj);
     }
 
 
-    @SuppressWarnings("deprecation")
-    public void setDefaultModel(final Object theDefaultModel) {
-        // We could attempt to create a profile with the model and add it
-        // to the configuration, but the chances of it working anything like
-        // the user expects are almost nil, so we'll just punt.
-        throw new UnsupportedOperationException(
-                "Old style profiles not supported."
-                        + "Please see the documentation for "
-                        + "ProfileConfiguration");
-    }
 
-
-    @SuppressWarnings("deprecation")
-    public Object getDefaultModel() {
-
-        // Do our best to return something which looks vaguely like old code
-        // might have expected.  Hopefully no one is using this...
-        
-        Collection profilePackages;
-        try {
-            profilePackages = getProfile().getProfilePackages();
-        } catch (ProfileException e) {
-            LOG.error("Failed to get profile", e);
-            return null;
-        }
-        
-        // First priority is Model for best backward compatibility
-        for (Object pkg : profilePackages) {
-            if (Model.getFacade().isAModel(pkg)) {
-                return pkg;
-            }
-        }
-        // then a Package
-        for (Object pkg : profilePackages) {
-            if (Model.getFacade().isAPackage(pkg)) {
-                return pkg;
-            }
-        }
-        // if all else fails, just the first element
-        return profilePackages.iterator().next();
-    }
-    
     public Object findTypeInDefaultModel(String name) {
         if (defaultModelTypeCache.containsKey(name)) {
             return defaultModelTypeCache.get(name);
@@ -976,6 +905,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         // TODO: We don't really want to do the following, but I'm not sure
         // what depends on it - tfm - 20070725
         Model.getModelManagementFactory().setRootModel(theRoot);
+        // TODO: End up with multiple models here
         addModelInternal(theRoot);
         roots.clear();
         roots.add(theRoot);
@@ -1018,26 +948,11 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public Vector<String> getSearchpath() {
-        return new Vector(searchpath);
-    }
-
-
     public Map<String, Object> getUUIDRefs() {
         return uuidRefs;
     }
 
-
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public void setSearchpath(final Vector<String> theSearchpath) {
-        searchpath.clear();
-        searchpath.addAll(theSearchpath);
-    }
-
-
+    
     public void setSearchPath(final List<String> theSearchpath) {
         searchpath.clear();
         searchpath.addAll(theSearchpath);
@@ -1048,17 +963,23 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public void setVetoSupport(VetoableChangeSupport theVetoSupport) {
         vetoSupport = theVetoSupport;
     }
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public ArgoDiagram getActiveDiagram() {
         return activeDiagram;
     }
 
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public void setActiveDiagram(final ArgoDiagram theDiagram) {
         activeDiagram = theDiagram;
     }
@@ -1121,13 +1042,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
 
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public Profile getProfile() {
-        return getProfileConfiguration().getProfiles().get(0);
-    }
-
-
     public String repair() {
         StringBuilder report = new StringBuilder();
         Iterator it = members.iterator();
@@ -1151,17 +1065,32 @@ public class ProjectImpl implements java.io.Serializable, Project {
     }
 
     public void setProfileConfiguration(ProfileConfiguration pc) {
-        if (this.profileConfiguration != null) {
-            this.members.remove(this.profileConfiguration);         
-        }
-        
-        this.profileConfiguration = pc;
+        if (this.profileConfiguration != pc) {
+            if (this.profileConfiguration != null) {
+                this.members.remove(this.profileConfiguration);
+            }
 
-        // there's just one ProfileConfiguration in a project
-        // and there's no other way to add another one
-        members.add(pc);
+            this.profileConfiguration = pc;
+
+            // there's just one ProfileConfiguration in a project
+            // and there's no other way to add another one
+            members.add(pc);
+        }
         
         ProfileFacade.applyConfiguration(pc);
     }
 
+    public boolean isDirty() {
+        // TODO: Placeholder implementation until support for tracking on
+        // a per-project basis is implemented
+//        return dirty;
+        return ProjectManager.getManager().isSaveActionEnabled();
+    }
+    
+    public void setDirty(boolean isDirty) {
+        // TODO: Placeholder implementation until support for tracking on
+        // a per-project basis is implemented
+        dirty = isDirty;
+        ProjectManager.getManager().setSaveEnabled(isDirty);
+    }
 }

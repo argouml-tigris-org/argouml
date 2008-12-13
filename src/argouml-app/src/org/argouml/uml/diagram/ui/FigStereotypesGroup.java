@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -38,6 +39,7 @@ import org.argouml.kernel.Project;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -87,9 +89,17 @@ public class FigStereotypesGroup extends ArgoFigGroup {
      * @param y y
      * @param w width
      * @param h height
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigStereotypesGroup(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigStereotypesGroup(int x, int y, int w, int h) {
         super();
+        constructFigs(x, y, w, h);
+    }
+
+    private void constructFigs(int x, int y, int w, int h) {
         bigPort = new FigRect(x, y, w, h, Color.black, Color.white);
         addFig(bigPort);
 
@@ -98,11 +108,28 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         setFilled(false);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigStereotypesGroup(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, settings);
+        constructFigs(bounds.x, bounds.y, bounds.width, bounds.height);
+        Model.getPump().addModelEventListener(this, owner, "stereotype");
+        populate();
+    }
+    
     /*
      * Beware: The owner here is NOT the stereotype(s), 
      * but the extended element!
      */
+    @SuppressWarnings("deprecation")
     @Override
+    @Deprecated
     public void setOwner(Object own) {
         if (own != null) {
             super.setOwner(own);
@@ -127,6 +154,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
      *             of this method will be changed to private in the next release
      *             when FigStereotypesCompartment is removed.
      */
+    @Deprecated
     protected Fig getBigPort() {
         return bigPort;
     }
@@ -140,15 +168,14 @@ public class FigStereotypesGroup extends ArgoFigGroup {
                 if (findFig(stereotype) == null) {
                     Fig theBigPort = this.getBigPort();
                     FigText stereotypeTextFig =
-                        new FigStereotype(
+                        new FigStereotype(stereotype, new Rectangle(
                                 theBigPort.getX() + 1,
                                 theBigPort.getY() + 1
                                 + (++stereotypeCount)
-                                * FigNodeModelElement.ROWHEIGHT,
+                                * ArgoFig.ROWHEIGHT,
                                 0,
-                                FigNodeModelElement.ROWHEIGHT - 2,
-                                theBigPort,
-                                stereotype);
+                                ArgoFig.ROWHEIGHT - 2),
+                                getSettings());
                     stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
                     stereotypeTextFig.setEditable(false);
                     stereotypeTextFig.setText(
@@ -219,7 +246,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
     }
     
     /**
-     * TODO: This should become private and only called from setOwner
+     * TODO: This should become private and only called from constructor
      *
      * @see org.argouml.uml.diagram.ui.FigEditableCompartment#populate()
      */
@@ -251,15 +278,14 @@ public class FigStereotypesGroup extends ArgoFigGroup {
             if (figs.size() <= acounter) {
                 ++stereotypeCount;
                 stereotypeTextFig =
-                    new FigStereotype(
+                    new FigStereotype(null, new Rectangle(
                             xpos + 1,
                             ypos + 1
                             + (acounter - 1)
-                                * FigNodeModelElement.ROWHEIGHT,
+                                * ArgoFig.ROWHEIGHT,
                             0,
-                            FigNodeModelElement.ROWHEIGHT - 2,
-                            theBigPort,
-                            null);
+                            ArgoFig.ROWHEIGHT - 2),
+                            getSettings());
                 // bounds not relevant here
                 stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
                 stereotypeTextFig.setEditable(false);
@@ -276,15 +302,14 @@ public class FigStereotypesGroup extends ArgoFigGroup {
             if (figs.size() <= acounter) {
                 ++stereotypeCount;
                 stereotypeTextFig =
-                    new FigStereotype(
+                    new FigStereotype(stereo, new Rectangle(
                             xpos + 1,
                             ypos + 1
                             + (acounter - 1)
-                            * FigNodeModelElement.ROWHEIGHT,
+                            * ArgoFig.ROWHEIGHT,
                             0,
-                            FigNodeModelElement.ROWHEIGHT - 2,
-                            theBigPort,
-                            stereo);
+                            ArgoFig.ROWHEIGHT - 2),
+                            getSettings());
                 // bounds not relevant here
                 stereotypeTextFig.setJustification(FigText.JUSTIFY_CENTER);
                 stereotypeTextFig.setEditable(false);
@@ -292,7 +317,6 @@ public class FigStereotypesGroup extends ArgoFigGroup {
             } else {
                 stereotypeTextFig = (CompartmentFigText) figs.get(acounter);
             }
-            stereotypeTextFig.setOwner(stereo);
 
             acounter++;
         }
@@ -322,6 +346,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
     }
 
     private Image getIconForStereotype(FigStereotype fs) {
+        // TODO: Find a way to replace this dependency on Project
         Project project = getProject();
         if (project == null) {
             LOG.warn("getProject() returned null");
@@ -367,6 +392,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
      */
     public void setKeyword(String word) {
         keyword = word;
+        populate();
     }
 
     /**

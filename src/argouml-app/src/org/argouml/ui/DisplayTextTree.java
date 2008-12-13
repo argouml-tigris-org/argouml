@@ -56,9 +56,7 @@ import org.argouml.uml.ui.UMLTreeCellRenderer;
  * navigation (the explorer) and the todo list.
  */
 public class DisplayTextTree extends JTree {
-    /**
-     * Logger.
-     */
+
     private static final Logger LOG = Logger.getLogger(DisplayTextTree.class);
 
     /**
@@ -148,21 +146,7 @@ public class DisplayTextTree extends JTree {
                 if (Model.getFacade().isATransition(value)) {
                     name = formatTransitionLabel(value);
                 } else if (Model.getFacade().isAExtensionPoint(value)) {
-                    NotationProvider notationProvider =
-                        NotationProviderFactory2.getInstance()
-                            .getNotationProvider(
-                                NotationProviderFactory2.TYPE_EXTENSION_POINT,
-                                value);
-                    /* TODO: move this Map outside this method 
-                     * for performance. */
-                    HashMap<String, Object> npArguments = 
-                        new HashMap<String, Object>();
-                    Project p = ProjectManager.getManager().getCurrentProject();
-                    if (p != null) {
-                        npArguments.put("useGuillemets", p.getProjectSettings()
-                                .getDefaultDiagramSettings().isUseGuillemets());
-                    }
-                    name = notationProvider.toString(value, npArguments);
+                    name = formatExtensionPoint(value);
                 } else if (Model.getFacade().isAComment(value)) {
                     name = (String) Model.getFacade().getBody(value);
                 } else if (Model.getFacade().isATaggedValue(value)) {
@@ -200,23 +184,8 @@ public class DisplayTextTree extends JTree {
             return name;
         }
 
-        if (Model.getFacade().isAExpression(value)) {
-            try {
-                String name = Model.getFacade().getUMLClassName(value);
-                String language = Model.getDataTypesHelper().getLanguage(value);
-                String body = Model.getDataTypesHelper().getBody(value);
-                if (language != null && language.length() > 0) {
-                    name += " (" + language + ")";
-                }
-                if (body != null && body.length() > 0) {
-                    name += ": " + body;
-                }
-                return name;
-            } catch (InvalidElementException e) {
-                return Translator.localize("misc.name.deleted");
-            }
-        }
-        
+        // TODO: This duplicates code in Facade.toString(), but this version
+        // is localized, so we'll leave it for now.
         if (Model.getFacade().isAElementImport(value)) {
             try {
                 Object me = Model.getFacade().getImportedElement(value);
@@ -239,25 +208,15 @@ public class DisplayTextTree extends JTree {
             }
         }
 
-        if (Model.getFacade().isAMultiplicity(value)) {
+        // Use default formatting for any other type of UML element
+        if (Model.getFacade().isAUMLElement(value)) {
             try {
-                // TODO: Localize
-                return "Multiplicity: "
-                    + Model.getDataTypesHelper().multiplicityToString(value);
-            } catch (InvalidElementException e) {
-                return Translator.localize("misc.name.deleted");
-            }
-        }
-        
-        if (Model.getFacade().isAElementResidence(value)) {
-            try {
-                // TODO: Add the container and resident names
-                return "ElementResidence";
+                return Model.getFacade().toString(value);
             } catch (InvalidElementException e) {
                 return Translator.localize("misc.name.deleted");
             }            
         }
-
+        
         if (value instanceof ArgoDiagram) {
             return ((ArgoDiagram) value).getName();
         }
@@ -266,6 +225,26 @@ public class DisplayTextTree extends JTree {
             return value.toString();
         }
         return "-";
+    }
+
+    private String formatExtensionPoint(Object value) {
+        String name;
+        NotationProvider notationProvider =
+            NotationProviderFactory2.getInstance()
+                .getNotationProvider(
+                    NotationProviderFactory2.TYPE_EXTENSION_POINT,
+                    value);
+        /* TODO: move this Map outside this method 
+         * for performance. */
+        HashMap<String, Object> npArguments = 
+            new HashMap<String, Object>();
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p != null) {
+            npArguments.put("useGuillemets", p.getProjectSettings()
+                    .getDefaultDiagramSettings().isUseGuillemets());
+        }
+        name = notationProvider.toString(value, npArguments);
+        return name;
     }
 
     private String formatTaggedValueLabel(Object value) {

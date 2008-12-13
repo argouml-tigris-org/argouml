@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for a modelelement.
@@ -75,7 +73,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     private JScrollPane elementResidenceScroll;
 
     private JTextField nameTextField;
-
+    
     private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel =
 	new UMLModelElementNamespaceComboBoxModel();
 
@@ -99,38 +97,16 @@ public abstract class PropPanelModelElement extends PropPanel {
     private static UMLModelElementTargetFlowListModel targetFlowListModel =
 	new UMLModelElementTargetFlowListModel();
 
-    /**
-     * Construct a property panel for a model element with the given name, icon,
-     * and orientation.
-     * 
-     * @param name the name of the properties panel
-     * @param icon the icon to be shown next to the name
-     * @param orientation the orientation
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelModelElement(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelModelElement(String name, ImageIcon icon,
-            Orientation orientation) {
-        super(name, icon);
-        setOrientation(orientation);
-    }
+//    private JScrollPane templateParameterScroll;
+//    
+//    private UMLModelElementTemplateParameterListModel templateParameterListModel
+//        = new UMLModelElementTemplateParameterListModel();
+//    
+//    private UMLModelElementTemplateBindingComboBoxModel 
+//    templateBindingComboBoxModel;
+//
+//    private JComboBox templateBindingSelector;
 
-    /**
-     * Construct a property panel for a model element with the given name and
-     * icon.
-     * 
-     * @param name the name of the properties panel
-     * @param orientation the orientation
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelModelElement(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelModelElement(String name, Orientation orientation) {
-        super(name, orientation);
-    }
 
     /**
      * The constructor.
@@ -168,7 +144,7 @@ public abstract class PropPanelModelElement extends PropPanel {
 
         addField("label.constraints",
                 getConstraintScroll());
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
         
         addField("label.derived",
                 new UMLDerivedCheckBox());
@@ -213,11 +189,11 @@ public abstract class PropPanelModelElement extends PropPanel {
         List actions = super.getActions();
         if (Model.getFacade().isAUMLElement(getTarget())
                 && Model.getModelManagementHelper().isReadOnly(getTarget())) {
-            final List filteredActions = new ArrayList(2);
+            final List<Action> filteredActions = new ArrayList<Action>(2);
             for (Object o : actions) {
                 if (o instanceof Action && !o.getClass().isAnnotationPresent(
                         UmlModelMutator.class)) {
-                    filteredActions.add(o);
+                    filteredActions.add((Action) o);
                 }
             }
             return filteredActions;
@@ -331,15 +307,7 @@ public abstract class PropPanelModelElement extends PropPanel {
         }
         return visibilityPanel;
     }
-    
-    /**
-     * @deprecated for 0.26 by penyaskito. Use
-     *             {@link #getVisibilityPanel()} instead.
-     * @return a panel for the visibility
-     */
-    protected JComponent getNamespaceVisibilityPanel() {        
-        return getVisibilityPanel();
-    }
+
     
     /**
      * @return a scrollpane for residence
@@ -371,4 +339,42 @@ public abstract class PropPanelModelElement extends PropPanel {
         return nameDocument;
     }
 
+    /**
+     * @return a scrollpane for template parameters
+     */
+//    protected JComponent getTemplateParameterScroll() {
+//        if (templateParameterScroll == null) {
+//
+//            templateParameterScroll = new ScrollList(
+//                    templateParameterListModel, false, false);
+//
+//            // TODO: Use some kind of list to allow user to select type for
+//            // new parameters to be added
+////            JList list = new UMLMutableLinkedList(
+////                    templateParameterListModel,
+////                    new ActionAddClientDependencyAction(),
+////                    null,
+////                    null,
+////                    true);
+////            templateParameterScroll = new JScrollPane(list);
+//        }
+//        return templateParameterScroll;
+//    }
+    
+    /**
+     * Returns the template selector. This is a component which allows the
+     * user to select a single item as the template to be used.
+     *
+     * @return a component for selecting the template binding
+     */
+//    protected JComponent getTemplateBindingSelector() {
+//        if (templateBindingSelector == null) {
+//            templateBindingSelector = new UMLSearchableComboBox(
+//                    templateBindingComboBoxModel,
+//                    new ActionSetModelElementTemplateBinding(), true);
+//        }
+//        return new UMLComboBoxNavigator(
+//                Translator.localize("label.namespace.navigate.tooltip"),
+//                templateBindingSelector);
+//    }
 }

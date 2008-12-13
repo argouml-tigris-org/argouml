@@ -54,7 +54,7 @@ public class PropPanelModel extends PropPanelPackage  {
         addField(Translator.localize("label.namespace"),
                 getNamespaceSelector());
 
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
 
         add(getModifiersPanel());
         

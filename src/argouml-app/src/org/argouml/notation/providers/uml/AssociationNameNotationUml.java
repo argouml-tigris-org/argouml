@@ -31,9 +31,6 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.AssociationNameNotation;
 
@@ -86,18 +83,18 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
     public String toString(Object modelElement, Map args) {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = p.getProjectSettings();
+        Object o = args.get("showAssociationName");
 
-        if (!ps.getShowAssociationNamesValue())
+        if (o == Boolean.FALSE) {
             return "";
+        }
 
         String name = Model.getFacade().getName(modelElement);
         StringBuffer sb = new StringBuffer("");
         if (isValue("fullyHandleStereotypes", args)) {
             sb.append(generateStereotypes(modelElement));
         }
-        sb.append(generateVisibility(modelElement, args));
+        sb.append(NotationUtilityUml.generateVisibility(modelElement, args));
         if (isValue("pathVisible", args)) {
             sb.append(NotationUtilityUml.generatePath(modelElement));
         }
@@ -115,23 +112,4 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
         return NotationUtilityUml.generateStereotype(modelElement);
     }
 
-    /**
-     * @param modelElement the UML element to generate for
-     * @param args arguments that influence the generation
-     * @return a string representing the visibility
-     */
-    protected String generateVisibility(Object modelElement, Map args) {
-        String s = "";
-        if (isValue("visibilityVisible", args)) {
-            Object v = Model.getFacade().getVisibility(modelElement);
-            if (v != null) {
-                s = NotationUtilityUml.generateVisibility(v);
-            }
-            /* When nothing is generated: omit the space. */
-            if (s.length() > 0) {
-                s = s + " ";
-            }
-        }
-        return s;
-    }
 }

@@ -32,7 +32,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for a Association.
@@ -91,19 +90,7 @@ public class PropPanelAssociation extends PropPanelRelationship {
         addAction(getDeleteAction());
     }
 
-    /**
-     * Construct a property panel for an Association.
-     * 
-     * @param title the title of the panel
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #PropPanelAssociation()}.
-     */
-    @Deprecated
-    protected PropPanelAssociation(String title, Orientation orientation) {
-        this(title);
-        setOrientation(orientation);
-    }
-    
+
     /**
      * Construct a property panel for an Association.
      *

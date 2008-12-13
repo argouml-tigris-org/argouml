@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,15 +35,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
-
-import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 /**
  * Class to display graphics for an Actor in a diagram.
@@ -73,17 +73,29 @@ public class FigActor extends FigNodeModelElement {
 
     /**
      * Main Constructor for the creation of a new Actor.
+     * 
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigActor(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigActor() {
+        constructFigs();
+    }
+
+    private void constructFigs() {
+        Color fg = getLineColor();
+        Color fill = getFillColor();
+        
         // Put this rectangle behind the rest, so it goes first
-        FigRect bigPort = new ActorPortFigRect(10, 10, 0, 0, this);
+        FigRect bigPort = new ActorPortFigRect(X0, Y0, 0, 0, this);
         FigCircle head =
-            new FigCircle(12, 10, 16, 15, Color.black, Color.white);
-        FigLine body = new FigLine(20, 25, 20, 40, Color.black);
-        FigLine arms = new FigLine(10, 30, 30, 30, Color.black);
-        FigLine leftLeg = new FigLine(20, 40, 15, 55, Color.black);
-        FigLine rightLeg = new FigLine(20, 40, 25, 55, Color.black);
-        getNameFig().setBounds(10, 55, 20, 20);
+            new FigCircle(X0 + 2, Y0, 16, 15, fg, fill);
+        FigLine body = new FigLine(X0 + 10, Y0 + 15, 20, 40, fg);
+        FigLine arms = new FigLine(X0, Y0 + 20, 30, 30, fg);
+        FigLine leftLeg = new FigLine(X0 + 10, Y0 + 30, 15, 55, fg);
+        FigLine rightLeg = new FigLine(X0 + 10, Y0 + 30, 25, 55, fg);
+        getNameFig().setBounds(X0, Y0 + 45, 20, 20);
 
         getNameFig().setTextFilled(false);
         getNameFig().setFilled(false);
@@ -112,10 +124,30 @@ public class FigActor extends FigNodeModelElement {
      *
      * @param gm ignored!
      * @param node The UML object being placed.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigActor(Object, Rectangle, DiagramSettings)}.
      */
-    public FigActor(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigActor(@SuppressWarnings("unused") GraphModel gm, Object node) {
         this();
         setOwner(node);
+    }
+    
+    /**
+     * Construct a new Actor with the given owner, bounds, and settings.  This
+     * constructor is used by the PGML parser.
+     * 
+     * @param owner model element that owns this fig
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigActor(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, bounds, settings);
+        constructFigs();
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
     }
 
     /*
@@ -337,7 +369,7 @@ public class FigActor extends FigNodeModelElement {
          * @param x the x
          * @param y the y
          * @param w the width
-         * @param h the hight
+         * @param h the height
          * @param p the Actor fig
          */
         public ActorPortFigRect(int x, int y, int w, int h, Fig p) {

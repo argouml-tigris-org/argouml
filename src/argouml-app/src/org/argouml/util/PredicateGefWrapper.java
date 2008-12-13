@@ -29,7 +29,10 @@ package org.argouml.util;
  * the transition period.  <em>Not to be used for new implementations</em>.
  * 
  * @author Tom Morris <tfmorris@gmail.com>
+ * @deprecated for 0.27.3 by tfmorris.  Will be removed when no longer required
+ * by CheckItem.
  */
+@Deprecated
 public class PredicateGefWrapper implements Predicate {
 
     private org.tigris.gef.util.Predicate predicate;
@@ -47,6 +50,9 @@ public class PredicateGefWrapper implements Predicate {
         return predicate.predicate(object);
     }
     
+    /**
+     * @return the original GEF Predicate
+     */
     public org.tigris.gef.util.Predicate getGefPredicate() {
         return predicate;
     }

@@ -49,16 +49,6 @@ public class ChecklistStatus extends Checklist {
         super();
     }
 
-    
-    /**
-     * @param item the item to be checkmarked
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #add(CheckItem)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public void addItem(CheckItem item) {
-        add(item);
-    }
 
     /**
      * @param item the item to be checkmarked

@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import org.argouml.kernel.Project;
+import org.argouml.uml.diagram.DiagramSettings;
 
 /**
  * An interface that all ArgoUML Figs are required to interface. It provides a
@@ -36,6 +37,28 @@ import org.argouml.kernel.Project;
  * @since 0.25.4
  */
 public interface ArgoFig {
+
+    // TODO: These have been used for most instances of new FigFoo(X0, Y0, ...
+    // but additional work is required to extract the constant from
+    // calculations, etc.
+    
+    /** Default X offset of origin used when building figs */
+    static final int X0 = 10;
+
+    /** Default Y offset of origin used when building figs */
+    static final int Y0 = 10;
+
+
+    /**
+     * min. 17, used to calculate y pos of FigText items in a compartment
+     */
+    public static final int ROWHEIGHT = 17;
+    /**
+     * min. 18, used to calculate y pos of stereotype FigText items
+     * in a compartment
+     */
+    public static final int STEREOHEIGHT = 18;
+
 
     /**
      * Set the owning project for this Fig. This is an optional operation which
@@ -53,8 +76,46 @@ public interface ArgoFig {
     /**
      * Get the owning project for this fig.
      * 
-     * @return the project
+     * @return the owning project
+     * @deprecated for 0.27.2 by tfmorris. Implementations should have all the
+     *             information that they require in the DiagramSettings object.
      */
+    @Deprecated
     public Project getProject();
+    
+    /**
+     * Rerender the entire fig.
+     * <p>
+     * This may be an expensive operation for subclasses which are complex,
+     * so should be used sparingly.  It is only intended to be used when 
+     * some global change to the rendering defaults is made at the ArgoDiagram
+     * level.
+     */
+    public void renderingChanged();
 
+    /**
+     * @return the rendering settings for the Fig
+     */
+    public DiagramSettings getSettings();
+    
+    /**
+     * Set the rendering settings to be used for this fig. Currently this
+     * normally will be a diagram-wide or project-wide settings object that is
+     * shared by all Figs.
+     * 
+     * @param settings the rendering settings to use
+     */
+    public void setSettings(DiagramSettings settings);
+    
+    /**
+     * Setting the owner of the Fig must be done in the constructor and
+     * not changed aftewards for all ArgoUML figs.
+     * 
+     * @param owner owning UML element
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     * @deprecated for 0.27.3 by tfmorris.  Set owner in constructor.
+     */
+    @Deprecated
+    public void setOwner(Object owner);
+    
 }

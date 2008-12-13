@@ -109,7 +109,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
         modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
         add(modifiersPanel);
         
-        add(getNamespaceVisibilityPanel());
+        add(getVisibilityPanel());
 
         addSeparator();
 

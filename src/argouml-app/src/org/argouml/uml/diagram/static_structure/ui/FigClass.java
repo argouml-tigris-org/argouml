@@ -24,12 +24,14 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -45,10 +47,6 @@ import org.tigris.gef.presentation.FigText;
 public class FigClass extends FigClassifierBoxWithAttributes
         implements AttributesCompartmentContainer {
 
-    /**
-     * Logger.
-     */
-    //private static final Logger LOG = Logger.getLogger(FigClass.class);
 
     /**
      * Constructor for a {@link FigClass} during file load.<p>
@@ -77,7 +75,10 @@ public class FigClass extends FigClassifierBoxWithAttributes
      * @param y y-position
      * @param w width
      * @param h height
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigClass(Object, Rectangle, DiagramSettings)}.
      */
+    @Deprecated
     public FigClass(Object modelElement, int x, int y, int w, int h) {
         this(null, modelElement);
         setBounds(x, y, w, h);
@@ -106,23 +107,63 @@ public class FigClass extends FigClassifierBoxWithAttributes
      * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
      *
      * @param gm   Not actually used in the current implementation
-     *
      * @param node The UML object being placed.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigClass(Object, Rectangle, DiagramSettings)}.
      */
+    @Deprecated
     public FigClass(GraphModel gm, Object node) {
         super();
+        constructFigs();
+        setOwner(node);
+    }
+
+    private void constructFigs() {
         addFig(getBigPort());
         addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(getOperationsFig());
         addFig(getAttributesFig());
         addFig(borderFig);
-        setOwner(node);
+    }
+    
+    /**
+     * Constructor for a {@link FigClass} during file load.<p>
+     *
+     * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
+     * will have created the main box {@link #getBigPort()} and its
+     * name {@link #getNameFig()} and stereotype
+     * (@link #getStereotypeFig()}. This constructor
+     * creates a box for the attributes and operations.<p>
+     *
+     * The properties of all these graphic elements are adjusted
+     * appropriately. The main boxes are all filled and have
+     * outlines.<p>
+     *
+     * <em>Warning</em>. Much of the graphics positioning is hard
+     * coded. The overall figure is placed at location (10,10). The
+     * name compartment (in the parent
+     * {@link org.argouml.uml.diagram.ui.FigNodeModelElement} is
+     * 21 pixels high. The stereotype compartment is created 15 pixels
+     * high in the parent, but we change it to 19 pixels, 1 more than
+     * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
+     * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
+     * 
+     * @param element model element to be represented by this fig.
+     * @param bounds rectangle describing bounds
+     * @param settings rendering settings
+     */
+    public FigClass(Object element, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(element, bounds, settings);
+        constructFigs();
+        renderingChanged();
     }
 
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigClass figClone = (FigClass) super.clone();
         Iterator thisIter = this.getFigs().iterator();
@@ -254,10 +295,11 @@ public class FigClass extends FigClassifierBoxWithAttributes
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
+    @Override
     protected void updateNameText() {
         super.updateNameText();
         calcBounds();
         setBounds(getBounds());
     }
     
-} /* end class FigClass */
+}

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,54 +22,26 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
-
-import javax.swing.Icon;
-
-import org.tigris.gef.presentation.Fig;
+package org.argouml.uml.diagram;
 
 /**
- * Class to decorate or paint "clarifiers" for a figure.
+ * An interface to be implemented by factories for a specific diagram type.
  * 
- * @deprecated for 0.25.2 by tfmorris - use {@link SelectionNodeClarifiers2} for
- *             new implementations
+ * @since 0.27.3 when it replaced DiagramFactoryInterface
  */
-@Deprecated
-public class SelectionNodeClarifiers extends SelectionNodeClarifiers2 {
-    
+public interface DiagramFactoryInterface2  {
 
-    /** Construct a new SelectionNodeClarifiers for the given Fig
-     *
-     * @param f the given Fig
+    /**
+     * Factory method to create a new instance of an ArgoDiagram.
+     * 
+     * @param owner the owning element. This can be the owning namespace for a
+     *            Class diagram or an owning Statemachine for a State Diagram or
+     *            any other interpretation that the diagram type wants to apply.
+     * @param name the name of the diagram. This may be null if the caller would
+     *            like the factory to provide a default name.
+     * @param settings default rendering settings for the diagram
+     * @return the newly instantiated diagram
      */
-    public SelectionNodeClarifiers(Fig f) {
-        super(f);
-    }
-
-    @Override
-    protected Icon[] getIcons() {
-        return null;
-    }
-
-    @Override
-    protected String getInstructions(int index) {
-        return null;
-    }
-
-    @Override
-    protected Object getNewNodeType(int index) {
-        return null;
-    }
-
-    @Override
-    protected Object getNewEdgeType(int index) {
-        return null;
-    }
-
-    @Override
-    protected boolean isReverseEdge(int index) {
-        return false;
-    }
-
-} 
-
+    public ArgoDiagram createDiagram(final Object owner, final String name,
+            DiagramSettings settings);
+}

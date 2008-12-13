@@ -36,7 +36,6 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for a Statemachine.
@@ -62,27 +61,13 @@ public class PropPanelStateMachine extends PropPanelModelElement {
      * The constructor.
      *
      * @param name the title of the properties panel, to be shown at the top
+     * @param icon icon for property panel
      */
     public PropPanelStateMachine(String name, ImageIcon icon) {
         super(name, icon);
         initialize();
     }
     
-    /**
-     * The constructor.
-     *
-     * @param name the title of the properties panel, to be shown at the top
-     * @param orient the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelStateMachine(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelStateMachine(String name, Orientation orient) {
-        super(name, lookupIcon(name));
-        setOrientation(orient);
-        initialize();
-    }
 
     /**
      * Initialize the panel with fields and stuff.

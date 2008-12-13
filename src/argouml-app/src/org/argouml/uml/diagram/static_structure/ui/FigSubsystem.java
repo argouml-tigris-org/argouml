@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigPoly;
 
@@ -46,10 +47,18 @@ public class FigSubsystem extends FigPackage {
      *                initial X coordinate
      * @param y
      *                initial Y coordinate
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigSubsystem(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigSubsystem(Object modelElement, int x, int y) {
         super(modelElement, x, y);
 
+        constructFigs();
+    }
+
+    private void constructFigs() {
         int[] xpoints = {125, 125, 130, 130, 130, 135, 135};
         int[] ypoints = {45, 40, 40, 35, 40, 40, 45};
         Polygon polygon = new Polygon(xpoints, ypoints, 7);
@@ -65,11 +74,29 @@ public class FigSubsystem extends FigPackage {
      * Constructor that hooks the Fig to a UML element
      * @param gm ignored
      * @param node the UML element
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigSubsystem(Object, Rectangle, DiagramSettings)}.
      */
-    public FigSubsystem(GraphModel gm, Object node) {
+    @Deprecated
+    public FigSubsystem(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this(node, 0, 0);
     }
 
+
+    /**
+     * Construct a Subsystem fig.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigSubsystem(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        constructFigs();
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */

@@ -27,7 +27,6 @@ package org.argouml.cognitive.ui;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
@@ -39,12 +38,11 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.uml.PredicateNotInTrash;
 
 
-
 /**
  * Rule for sorting the ToDo list: Offender -> Item.
  *
  */
-public class GoListToOffenderToItem extends AbstractGoList {
+public class GoListToOffenderToItem extends AbstractGoList2 {
 
     private Object lastParent;
     
@@ -54,7 +52,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
      * The constructor.
      */
     public GoListToOffenderToItem() {
-        setListPredicate(new PredicateNotInTrash());
+        setListPredicate((org.argouml.util.Predicate) new PredicateNotInTrash());
     }
 
     ////////////////////////////////////////////////////////////////
@@ -110,20 +108,6 @@ public class GoListToOffenderToItem extends AbstractGoList {
 
 
     /**
-     * @param parent the parent object to check for offspring
-     * @return the children
-     * @deprecated for 0.25.4 by tfmorris. Use {@link #getChildrenList(Object)}.
-     */
-    @Deprecated
-    public Vector<ToDoItem> getChildren(Object parent) {
-        List<ToDoItem> result = getChildrenList(parent);
-        if (result.size() == 0) {
-            return null;
-        }
-        return new Vector<ToDoItem>(result);
-    }
-
-    /**
      * Get a list of children. Note that unlike its predecessor getChildren(),
      * this never returns null. If there are no children, it will return an
      * empty list.
@@ -137,11 +121,11 @@ public class GoListToOffenderToItem extends AbstractGoList {
         }
         lastParent = parent;
         ListSet<ToDoItem> allOffenders = new ListSet<ToDoItem>();
-        ListSet designerOffenders = 
+        ListSet<ToDoItem> designerOffenders = 
             Designer.theDesigner().getToDoList().getOffenders();
         synchronized (designerOffenders) {
             allOffenders.addAllElementsSuchThat(designerOffenders,
-                    getListPredicate());
+                    getPredicate());
         }
 
         if (parent instanceof ToDoList) {
@@ -158,7 +142,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
                 for (ToDoItem item : itemList) {
                     ListSet offs = new ListSet();
                     offs.addAllElementsSuchThat(item.getOffenders(),
-                            getListPredicate());
+                            getPredicate());
                     if (offs.contains(parent)) {
                         result.add(item);
                     }

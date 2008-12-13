@@ -33,7 +33,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for a Composite State.
@@ -50,22 +49,6 @@ public class PropPanelCompositeState extends AbstractPropPanelState {
     private JList subverticesList = null;
     private Action addConcurrentRegion;
 
-    /**
-     * Constructor for PropPanelCompositeState.
-     * @param name the name of the properties panel
-     * @param icon the icon to be shown next to the name
-     * @param orientation the orientation of the panel
-     * @deprecated for 0.25.4 by tfmorris. Use
-     *             {@link #PropPanelCompositeState(String, ImageIcon)} and
-     *             setOrientation() after instantiation.
-     */
-    @Deprecated
-    public PropPanelCompositeState(final String name, final ImageIcon icon,
-            final Orientation orientation) {
-        super(name, icon);
-        setOrientation(orientation);
-        initialize();
-    }
 
     /**
      * Constructor for PropPanelCompositeState.

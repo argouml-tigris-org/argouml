@@ -34,7 +34,6 @@ import java.awt.event.MouseListener;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
@@ -183,14 +182,6 @@ public class ToDoPane extends JPanel
         return root;
     }
 
-    /**
-     * @return the perspective's treemodels
-     * @deprecated for 0.25.4 by tfmorris.  Use {@link #getPerspectiveList()}.
-     */
-    @Deprecated
-    public Vector<ToDoPerspective> getPerspectives() {
-        return new Vector<ToDoPerspective>(perspectives);
-    }
 
     /**
      * @return the perspectives treemodels

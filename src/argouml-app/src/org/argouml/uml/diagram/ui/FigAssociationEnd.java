@@ -26,19 +26,13 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -47,78 +41,106 @@ import org.tigris.gef.presentation.FigText;
  * This class represents an association End Fig on a diagram, 
  * i.e. the line between the diamond and a node (like a class). <p>
  * 
- * This class makes use of 2 NotationProviders: 
- * one for the association end name, 
- * and one for the multiplicity.
+ * The direction of the lines is from the diamond outwards,
+ * hence the destination is the side of the classifier,
+ * where the labels are shown. <p>
+ * 
+ * There is no support for arrows indicating navigability. <p>
+ * 
+ * Showing qualifiers or aggregation is not permitted 
+ * according the UML 1.4.2 standard.
  *
  * @author pepargouml@yahoo.es
  */
 public class FigAssociationEnd extends FigEdgeModelElement {
 
     /**
-     * Serial version generation by Eclipse for rev. 1.18
-     */
-    private static final long serialVersionUID = -3029436535288973358L;
-    /**
      * Group for the FigTexts concerning the association end.
      */
-    private FigTextGroup srcGroup = new FigTextGroup();
-    private FigText srcMult; 
-    private FigText srcOrdering;
-
-    /**
-     * The notation provider for the multiplicity.
-     */
-    private NotationProvider multiplicityNotationProvider;
+    private FigAssociationEndAnnotation destGroup;
+    private FigMultiplicity destMult;
 
     /**
      * The constructor.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigAssociationEnd(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigAssociationEnd() {
         super();
+        
+        destMult = new FigMultiplicity();
+        // Placed at a 45 degree angle close to the end
+        addPathItem(destMult, 
+                new PathItemPlacement(this, destMult, 100, -5, 45, 5));
+        ArgoFigUtil.markPosition(this, 100, -5, 45, 5, Color.green);
 
-        srcMult = new FigText(10, 10, 90, 20);
-        srcMult.setTextColor(Color.black);
-        srcMult.setTextFilled(false);
-        srcMult.setFilled(false);
-        srcMult.setLineWidth(0);
-        srcMult.setReturnAction(FigText.END_EDITING);
-        srcMult.setJustification(FigText.JUSTIFY_CENTER);
-
-        srcOrdering = new FigText(10, 10, 90, 20);
-        srcOrdering.setTextColor(Color.black);
-        srcOrdering.setTextFilled(false);
-        srcOrdering.setFilled(false);
-        srcOrdering.setLineWidth(0);
-        srcOrdering.setReturnAction(FigText.END_EDITING);
-        srcOrdering.setJustification(FigText.JUSTIFY_CENTER);
-        srcOrdering.setEditable(false);
-
-        srcGroup.addFig(getNameFig());
-        srcGroup.addFig(srcOrdering);
-
-        addPathItem(srcMult, new PathConvPercentPlusConst(this, 100, -15, -15));
-        addPathItem(srcGroup, new PathConvPercentPlusConst(this, 100, -40, 20));
+        destGroup = new FigAssociationEndAnnotation(this);
+        addPathItem(destGroup, 
+                new PathItemPlacement(this, destGroup, 100, -5, -45, 5));
+        ArgoFigUtil.markPosition(this, 100, -5, -45, 5, Color.blue);
 
         setBetweenNearestPoints(true);
-        // next line necessary for loading
-        setLayer(ProjectManager.getManager().getCurrentProject()
-                .getActiveDiagram().getLayer());
     }
 
     /**
      * The constructor.
      *
-     * @param edge the UML object: association-end
+     * @param owner the UML object: association-end
      * @param lay the layer that contains this Fig
+      * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigAssociationEnd(Object, DiagramSettings)}.
      */
-    public FigAssociationEnd(Object edge, Layer lay) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigAssociationEnd(Object owner, Layer lay) {
         this();
         setLayer(lay);
-        setOwner(edge);
-        if (Model.getFacade().isAAssociationEnd(edge)) {
-            addElementListener(edge);
+        setOwner(owner);
+        if (Model.getFacade().isAAssociationEnd(owner)) {
+            addElementListener(owner);
         }
+    }
+    
+    /**
+     * Construct Fig.
+     * 
+     * @param owner owning UML element (i.e. an AssociationEnd)
+     * @param settings rendering settings
+     */
+    public FigAssociationEnd(Object owner, DiagramSettings settings) {
+        super(owner, settings);
+
+        destMult = new FigMultiplicity(owner, settings);
+        addPathItem(destMult, 
+                new PathItemPlacement(this, destMult, 100, -5, 45, 5));
+        ArgoFigUtil.markPosition(this, 100, -5, 45, 5, Color.green);
+        
+        destGroup = new FigAssociationEndAnnotation(this, owner, settings);
+        addPathItem(destGroup, 
+                new PathItemPlacement(this, destGroup, 100, -5, -45, 5));
+        ArgoFigUtil.markPosition(this, 100, -5, -45, 5, Color.blue);
+
+        setBetweenNearestPoints(true);
+        
+        initializeNotationProvidersInternal(owner);
+    }
+    
+    /**
+     * Set the owner.
+     * 
+     * @param owner the associationEnd
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#setOwner(java.lang.Object)
+     * @deprecated for 0.27.3 by mvw.  Set the owner in the constructor.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    @Override
+    public void setOwner(Object owner) {
+        super.setOwner(owner);
+        destGroup.setOwner(owner);
+        destMult.setOwner(owner);
     }
 
     /*
@@ -129,28 +151,23 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         return NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void initNotationProviders(Object own) {
-        if (multiplicityNotationProvider != null) {
-            multiplicityNotationProvider.cleanListener(this, own);
-        }
+        initializeNotationProvidersInternal(own);
+    }
+
+    @SuppressWarnings("deprecation")
+    private void initializeNotationProvidersInternal(Object own) {
         super.initNotationProviders(own);
-        if (Model.getFacade().isAAssociationEnd(own)) {
-            multiplicityNotationProvider =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_MULTIPLICITY, own, this);
-            Project p = getProject();
-            if (p != null) {
-                boolean value = p.getProjectSettings()
-                    .getShowSingularMultiplicitiesValue();
-                getNotationArguments().put("singularMultiplicityVisible", 
-                        value);
-                getNotationArguments().put("rightGuillemot", 
-                        p.getProjectSettings().getRightGuillemot());
-                getNotationArguments().put("leftGuillemot", 
-                        p.getProjectSettings().getLeftGuillemot());
-            }
-        }
+        destMult.initNotationProviders();
+        initNotationArguments();
+    }
+
+    protected void initNotationArguments() {
+        /* Nothing yet. Later maybe something like: */
+//        putNotationArgument("showAssociationName", 
+//                getSettings().isShowAssociationNames());
     }
 
     /*
@@ -158,31 +175,13 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      */
     @Override
     public void updateListeners(Object oldOwner, Object newOwner) {
-        Set<Object[]> l = new HashSet<Object[]>();
+        Set<Object[]> listeners = new HashSet<Object[]>();
         if (newOwner != null) {
-            l.add(new Object[] {newOwner, null});
+            listeners.add(new Object[] {newOwner, 
+                new String[] {"isAbstract", "remove"}
+            });
         }
-        updateElementListeners(l);
-    }
-
-    /** Returns the name of the OrderingKind.
-     * @return "{ordered}", "{sorted}" or "" if null or "unordered"
-     */
-    private String getOrderingName(Object orderingKind) {
-        if (orderingKind == null) {
-            return "";
-        }
-        if (Model.getFacade().getName(orderingKind) == null) {
-            return "";
-        }
-        if ("".equals(Model.getFacade().getName(orderingKind))) {
-            return "";
-        }
-        if ("unordered".equals(Model.getFacade().getName(orderingKind))) {
-            return "";
-        }
-
-        return "{" + Model.getFacade().getName(orderingKind) + "}";
+        updateElementListeners(listeners);
     }
 
     /*
@@ -194,13 +193,16 @@ public class FigAssociationEnd extends FigEdgeModelElement {
             return;
         }
         super.textEdited(ft);
-        if (ft == srcMult) {
+        if (getOwner() == null) {
+            return;
+        }
+        if (ft == destGroup.getRole()) {
+            destGroup.getRole().textEdited();
+        } else if (ft == destMult) {
             /* The text the user has filled in the textfield is first checked
              * to see if it's a valid multiplicity. If so then that is the 
              * multiplicity to be set. If not the input is rejected. */
-            multiplicityNotationProvider.parse(getOwner(), ft.getText());
-            ft.setText(multiplicityNotationProvider.toString(getOwner(), 
-                    getNotationArguments()));
+            destMult.textEdited();
         }
     }
 
@@ -209,79 +211,79 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      */
     @Override
     protected void textEditStarted(FigText ft) {
-        if (ft == srcMult) {
-            showHelp(multiplicityNotationProvider.getParsingHelp());
+        if (ft == destGroup.getRole()) {
+            destGroup.getRole().textEditStarted();
+        } else if (ft == destMult) {
+            destMult.textEditStarted();
         } else {
             super.textEditStarted(ft);
         }
     }
 
-    private void updateEnd(FigText multiToUpdate, 
-                           FigText orderingToUpdate) {
-
-        Object owner = getOwner();
-        if (!Model.getFacade().isAAssociationEnd(owner)) {
-            throw new IllegalArgumentException();
-        }
-
-        if (multiplicityNotationProvider != null) {
-            multiToUpdate.setText(
-                    multiplicityNotationProvider.toString(getOwner(), 
-                            getNotationArguments()));
-        }
-
-        Object order = Model.getFacade().getOrdering(owner);
-        orderingToUpdate.setText(getOrderingName(order));
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
     @Override
-    protected void modelChanged(PropertyChangeEvent e) {
-        super.modelChanged(e);
-        if (e instanceof AttributeChangeEvent
-                || e instanceof AssociationChangeEvent) {
-            renderingChanged();
-            if (multiplicityNotationProvider != null) {
-                multiplicityNotationProvider.updateListener(this, 
-                        getOwner(), e);
-            }
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
-     */
-    @Override
-    protected void renderingChanged() {
-        updateEnd(srcMult, srcOrdering);
-        srcMult.calcBounds();
-        srcGroup.calcBounds();
+    public void renderingChanged() {
         super.renderingChanged();
+        // Fonts and colors should get updated automatically for contained figs
+        destMult.renderingChanged();
+        destGroup.renderingChanged();
+        initNotationArguments();
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateStereotypeText()
-     */
     @Override
     protected void updateStereotypeText() {
         /* There is none... */
     }
 
     @Override
-    protected void removeFromDiagramImpl() {
-        multiplicityNotationProvider.cleanListener(this, getOwner());
-        super.removeFromDiagramImpl();
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#paintClarifiers(java.awt.Graphics)
-     */
-    @Override
     public void paintClarifiers(Graphics g) {
         indicateBounds(getNameFig(), g);
-        indicateBounds(srcMult, g);
+        indicateBounds(destMult, g);
+        indicateBounds(destGroup.getRole(), g);
         super.paintClarifiers(g);
-    }    
+    }
+
+    /**
+     * Updates the multiplicity field.
+     */
+    protected void updateMultiplicity() {
+        if (getOwner() != null 
+                && destMult.getOwner() != null) {
+            destMult.setText();
+        }
+    }
+
+    /* TODO: Support navigability. 
+     * The code below causes and exception in FigAssociationEndAnnotation. */
+//  @Override
+//  public void paint(Graphics g) {
+//      if (getOwner() == null ) {
+//          LOG.error(
+//              "Trying to paint a FigAssociationEnd without an owner. ");
+//      } else {
+//          applyArrowHeads(); 
+//      }
+//      if (getSourceArrowHead() != null) {
+//          getSourceArrowHead().setLineColor(getLineColor());
+//      }
+//      super.paint(g);
+//  }
+    
+//    /**
+//     * Choose the arrowhead style for each end. <p>
+//     * 
+//     * TODO: This is called from paint(). Would it not better 
+//     * be called from renderingChanged()?
+//     */
+//    protected void applyArrowHeads() {
+//        int sourceArrowType = destGroup.getArrowType();
+//
+//        if (!getSettings().isShowBidirectionalArrows()
+//                && sourceArrowType > 2) {
+//            sourceArrowType -= 3;
+//        }
+//        
+//        setSourceArrowHead(FigAssociationEndAnnotation
+//                .ARROW_HEADS[sourceArrowType]);
+//    }
+
 }

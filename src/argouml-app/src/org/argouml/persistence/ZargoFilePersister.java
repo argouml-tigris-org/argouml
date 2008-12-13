@@ -130,17 +130,14 @@ class ZargoFilePersister extends UmlFilePersister {
                     "Failed to archive the previous file version", e);
         }
 
-        BufferedWriter writer = null;
+        ZipOutputStream stream = null;
         try {
 
             project.setFile(file);
             project.setVersion(ApplicationVersion.getVersion());
             project.setPersistenceVersion(PERSISTENCE_VERSION);
 
-            ZipOutputStream stream =
-                new ZipOutputStream(new FileOutputStream(file));
-            writer =
-                new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
+            stream = new ZipOutputStream(new FileOutputStream(file));
 
             for (ProjectMember projectMember : project.getMembers()) {
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
@@ -152,7 +149,7 @@ class ZargoFilePersister extends UmlFilePersister {
                             new ZipEntry(projectMember.getZipName()));
                     MemberFilePersister persister =
                         getMemberFilePersister(projectMember);
-                    persister.save(projectMember, writer);
+                    persister.save(projectMember, stream);
                 }
             }
             // if save did not raise an exception
@@ -173,7 +170,9 @@ class ZargoFilePersister extends UmlFilePersister {
         } catch (Exception e) {
             LOG.error("Exception occured during save attempt", e);
             try {
-                writer.close();
+                if (stream != null) {
+                    stream.close();
+                }
             } catch (Exception ex) {
                 // Do nothing.
             }
@@ -188,7 +187,7 @@ class ZargoFilePersister extends UmlFilePersister {
         }
 
         try {
-            writer.close();
+            stream.close();
         } catch (IOException ex) {
             LOG.error("Failed to close save output writer", ex);
         }
@@ -197,6 +196,7 @@ class ZargoFilePersister extends UmlFilePersister {
     /*
      * @see org.argouml.persistence.AbstractFilePersister#isSaveEnabled()
      */
+    @Override
     public boolean isSaveEnabled() {
         return false;
     }

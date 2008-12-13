@@ -39,7 +39,6 @@ import org.argouml.uml.ui.UMLMultiplicityPanel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLSingleRowSelector;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.tigris.swidgets.Orientation;
 
 /**
  * The properties panel for an association end.
@@ -116,22 +115,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     private JScrollPane qualifiersScroll;
     
     private String associationLabel;
-
-
-    /**
-     * Constructs the proppanel including initializing all scrollpanes, panels
-     * etc. but excluding placing them on the proppanel itself.
-     * 
-     * @param name name/title of the property panel
-     * @param orientation orientation of the panel
-     * @see org.argouml.uml.ui.PropPanel#PropPanel(String, Orientation)
-     * @deprecated for 0.25.4 by tfmorris. Use setOrientation after
-     *             instantiation to select orientation.
-     */
-    @Deprecated
-    protected PropPanelAssociationEnd(String name, Orientation orientation) {
-        super(name, orientation);
-    }
 
 
     /**

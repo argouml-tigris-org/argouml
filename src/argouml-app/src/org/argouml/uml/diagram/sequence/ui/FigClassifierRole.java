@@ -954,9 +954,9 @@ public class FigClassifierRole extends FigNodeModelElement
      */
     @Override
     public void renderingChanged() {
+        super.renderingChanged();
         updateBaseNames();
         updateClassifierRoleName();
-        super.renderingChanged();
     }
 
     /**

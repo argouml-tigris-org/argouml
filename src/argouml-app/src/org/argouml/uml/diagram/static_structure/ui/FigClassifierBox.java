@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -40,6 +39,7 @@ import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -74,15 +74,24 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     
     /**
      * Constructor.
+     * 
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #FigClassifierBox(Object, Rectangle, DiagramSettings)}
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     FigClassifierBox() {
+        super();
+        Rectangle bounds = getDefaultBounds();
+        operationsFig = new FigOperationsCompartment(bounds.x, bounds.y,
+                bounds.width, bounds.height);
+        constructFigs();
+    }
 
-        // this rectangle marks the operation section; all operations
-        // are inside it
-        operationsFig =
-            new FigOperationsCompartment(
-                    10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
-
+    /**
+     * Initialization shared by all constructors.
+     */
+    private void constructFigs() {
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
@@ -92,13 +101,36 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
 
-        borderFig = new FigEmptyRect(10, 10, 0, 0);
+        borderFig = new FigEmptyRect(X0, Y0, 0, 0);
         borderFig.setLineWidth(1);
         borderFig.setLineColor(Color.black);
 
         getBigPort().setLineWidth(0);
         getBigPort().setFillColor(Color.white);
+    }
 
+    private Rectangle getDefaultBounds() {
+        // this rectangle marks the operation section; all operations
+        // are inside it
+        Rectangle bounds = new Rectangle(DEFAULT_COMPARTMENT_BOUNDS);
+        // 2nd compartment, so adjust Y appropriately
+        bounds.y = DEFAULT_COMPARTMENT_BOUNDS.y + ROWHEIGHT + 1;
+        return bounds;
+    }
+
+    /**
+     * Construct a Fig with owner, bounds, and settings.
+     * 
+     * @param owner the model element that owns this fig
+     * @param bounds the rectangle defining the bounds
+     * @param settings the rendering settings
+     */
+    public FigClassifierBox(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        operationsFig = new FigOperationsCompartment(owner, getDefaultBounds(),
+                getSettings());
+        constructFigs();
     }
 
     /*
@@ -143,8 +175,10 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
-        updateOperations();
         super.renderingChanged();
+        // TODO: We should be able to just call renderingChanged on the child
+        // figs here instead of doing an updateOperations...
+        updateOperations();
     }
     
     /**
@@ -209,7 +243,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#isOperationsVisible()
      */
     public boolean isOperationsVisible() {
-        return operationsFig.isVisible();
+        return operationsFig != null && operationsFig.isVisible();
     }
 
     /*
@@ -225,9 +259,11 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     public void translate(int dx, int dy) {
         super.translate(dx, dy);
         Editor ce = Globals.curEditor();
-        Selection sel = ce.getSelectionManager().findSelectionFor(this);
-        if (sel instanceof SelectionClass) {
-            ((SelectionClass) sel).hideButtons();
+        if (ce != null) {
+            Selection sel = ce.getSelectionManager().findSelectionFor(this);
+            if (sel instanceof SelectionClass) {
+                ((SelectionClass) sel).hideButtons();
+            }
         }
     }
 

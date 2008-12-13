@@ -26,24 +26,19 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoNotationEvent;
-import org.argouml.application.events.ArgoNotationEventListener;
-import org.argouml.kernel.Project;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
-import org.argouml.notation.NotationProvider;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -54,14 +49,11 @@ import org.tigris.gef.presentation.FigText;
  * <li>There is no line border
  * <li>There is space below the line for a "Clarifier",
  * i.e. a red squiggly line.
- * </ul><p>
- * 
- * This Fig may have a NotationProvider to render the text.
+ * </ul>
  *
  * @author Bob Tarling
  */
-public class FigSingleLineText extends ArgoFigText
-    implements ArgoNotationEventListener  {
+public class FigSingleLineText extends ArgoFigText  {
 
     private static final Logger LOG =
         Logger.getLogger(FigSingleLineText.class);
@@ -70,12 +62,6 @@ public class FigSingleLineText extends ArgoFigText
      * The properties of 'owner' that this is interested in
      */
     private String[] properties;
-    
-    /**
-     * The notation provider for the text shown in this compartment.
-     */
-    private NotationProvider notationProvider;
-    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
 
     /**
      * The constructor.
@@ -84,18 +70,25 @@ public class FigSingleLineText extends ArgoFigText
      * @param y the initial y position
      * @param w the initial width
      * @param h the initial height
-     * @param expandOnly true if this fig shall not shrink
+     * @param expandOnly true if the Fig should never shrink
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigSingleLineText(Object, Rectangle, DiagramSettings, boolean)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly) {
         super(x, y, w, h, expandOnly);
 
+        initialize();
+
+//        initNotationArguments(); /* There is no NotationProvider yet! */
+    }
+
+    private void initialize() {
         setFilled(false);
         setTabAction(FigText.END_EDITING);
         setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
-
-//        initNotationArguments(); /* There is no NotationProvider yet! */
-        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
     /**
@@ -107,16 +100,16 @@ public class FigSingleLineText extends ArgoFigText
      * @param h the initial height
      * @param expandOnly true if this fig shall not shrink
      * @param property the property to listen to
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigSingleLineText(Object, Rectangle, DiagramSettings, boolean)}.
      */
+    @Deprecated
     public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly, 
             String property) {
         this(x, y, w, h, expandOnly, new String[] {property});
     }
 
-    /*
-     * @see org.tigris.gef.presentation.FigText#FigText(
-     *         int, int, int, int, boolean)
-     */
+
     /**
      * The constructor.
      *
@@ -126,13 +119,65 @@ public class FigSingleLineText extends ArgoFigText
      * @param h the initial height
      * @param expandOnly true if this fig shall not shrink
      * @param allProperties the properties to listen to
+     * @see org.tigris.gef.presentation.FigText#FigText(
+     *         int, int, int, int, boolean)
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #FigSingleLineText(Object, Rectangle, DiagramSettings, boolean)}.
      */
+    @Deprecated
     public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly, 
             String[] allProperties) {
         this(x, y, w, h, expandOnly);
         this.properties = allProperties;
     }
 
+    /**
+     * Construct text fig
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     * @param expandOnly true if the Fig should only expand and never contract
+     */
+    public FigSingleLineText(Object owner, Rectangle bounds,
+            DiagramSettings settings, boolean expandOnly) {
+
+        this(owner, bounds, settings, expandOnly, (String[]) null);
+    }
+
+    /**
+     * Construct text fig
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     * @param expandOnly true if the Fig should only expand and never contract
+     * @param property name of property to listen to
+     */
+    public FigSingleLineText(Object owner, Rectangle bounds,
+            DiagramSettings settings, boolean expandOnly, String property) {
+
+        this(owner, bounds, settings, expandOnly, new String[] {property});
+    }
+    
+    /**
+     * Construct text fig
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     * @param expandOnly true if the Fig should only expand and never contract
+     * @param allProperties names of properties to listen to
+     */
+    public FigSingleLineText(Object owner, Rectangle bounds,
+            DiagramSettings settings, boolean expandOnly, 
+            String[] allProperties) {
+        super(owner, bounds, settings, expandOnly);
+        initialize();
+        this.properties = allProperties;
+        addModelListener();
+    }
+    
     @Override
     public Dimension getMinimumSize() {
         Dimension d = new Dimension();
@@ -167,15 +212,20 @@ public class FigSingleLineText extends ArgoFigText
         }
     }
     
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public void setOwner(Object owner) {
         super.setOwner(owner);
         if (owner != null && properties != null) {
-            Model.getPump().addModelEventListener(
-                    this, 
-                    owner, 
-                    properties);
+            addModelListener();
             setText(); // TODO: MVW: Remove this!
+        }
+    }
+
+    private void addModelListener() {
+        if (properties != null && getOwner() != null) {
+            Model.getPump().addModelEventListener(this, getOwner(), properties);
         }
     }
     
@@ -187,7 +237,7 @@ public class FigSingleLineText extends ArgoFigText
                     getOwner(), 
                     properties);
         }
-        ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+        super.removeFromDiagram();
     }
     
     @Override
@@ -195,10 +245,8 @@ public class FigSingleLineText extends ArgoFigText
         if ("remove".equals(pce.getPropertyName()) 
                 && (pce.getSource() == getOwner())) {
             deleteFromModel();
-        } else if (notationProvider != null) {
-            notationProvider.updateListener(this, getOwner(), pce);
         }
-        
+
         if (pce instanceof UmlChangeEvent) {
             final UmlChangeEvent event = (UmlChangeEvent) pce;
             Runnable doWorkRunnable = new Runnable() {
@@ -249,16 +297,7 @@ public class FigSingleLineText extends ArgoFigText
             // notationProvider is null?
             setText();
         }
-
-        if (notationProvider != null
-                && (!"remove".equals(event.getPropertyName())
-                        || event.getSource() != getOwner())) {
-            this.setText(notationProvider.toString(getOwner(), npArguments));
-            damage();
-        }
     }
-
-    
     
     /**
      * This function without parameter shall
@@ -268,74 +307,15 @@ public class FigSingleLineText extends ArgoFigText
      */
     protected void setText() {
     }
-    
 
-    /**
-     * @return Returns the notationProvider for the text in this compartment.
-     */
-    public NotationProvider getNotationProvider() {
-        return notationProvider;
-    }
-
-    /**
-     * @param np The notationProvider to set.
-     */
-    void setNotationProvider(NotationProvider np) {
-        if (notationProvider != null) {
-            notationProvider.cleanListener(this, getOwner());
-        }
-        this.notationProvider = np;
-        initNotationArguments();
-    }
-
-    /**
-     * @return Returns the Notation Provider Arguments.
-     */
-    public HashMap<String, Object> getNpArguments() {
-        return npArguments;
-    }
-
-    protected void initNotationArguments() {
-        Project p = getProject();
-        if (p != null) {
-            npArguments.put("rightGuillemot", 
-                    p.getProjectSettings().getRightGuillemot());
-            npArguments.put("leftGuillemot", 
-                    p.getProjectSettings().getLeftGuillemot());
-        }
-    }
-    
-    public void notationAdded(ArgoNotationEvent e) {
-        // Do nothing
-    }
-
-    public void notationChanged(ArgoNotationEvent e) {
-        initNotationArguments();
+    public void renderingChanged() {
+        super.renderingChanged();
         if (getOwner() == null) {
-            return;
-        }
-        /* TODO: There are exceptions when saving a project, 
-         * doing "New", then loading it again. Fix these!
-         * For now, this solution (Yes, this is a hack): */
-        if (Model.getUmlFactory().isRemoved(getOwner())) {
-            ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
             return;
         }
         /* This is needed for e.g. 
          * guillemet notation change on a class name, 
          * see issue 5419. */
         setText();
-    }
-
-    public void notationProviderAdded(ArgoNotationEvent e) {
-        // Do nothing
-    }
-
-    public void notationProviderRemoved(ArgoNotationEvent e) {
-        // Do nothing    
-    }
-
-    public void notationRemoved(ArgoNotationEvent e) {
-        // Do nothing        
     }
 }

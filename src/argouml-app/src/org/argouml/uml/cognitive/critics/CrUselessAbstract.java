@@ -27,8 +27,8 @@ package org.argouml.uml.cognitive.critics;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -37,8 +37,8 @@ import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.ListSet;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
-import org.tigris.gef.util.ChildGenerator;
-import org.tigris.gef.util.EnumerationEmpty;
+import org.argouml.util.ChildGenerator;
+
 
 /** A critic to detect when a class can never have instances (of
  *
@@ -83,6 +83,7 @@ public class CrUselessAbstract extends CrUML {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getUMLClass());
@@ -94,19 +95,21 @@ public class CrUselessAbstract extends CrUML {
 
 
 class ChildGenDerivedClasses implements ChildGenerator {
-    public Enumeration gen(Object o) {
-	Object c = o;
-	Collection specs = new ArrayList(Model.getFacade().getSpecializations(c));
-	if (specs == null) {
-	    return EnumerationEmpty.theInstance();
-	}
-	List specClasses = new ArrayList(specs.size());
+    public Iterator childIterator(Object o) {
+        Object c = o;
+        Collection specs = new ArrayList(Model.getFacade()
+                .getSpecializations(c));
+        if (specs == null) {
+            return Collections.emptySet().iterator();
+        }
+        List specClasses = new ArrayList(specs.size());
         for (Object g : specs) {
-	    Object ge = Model.getFacade().getSpecific(g);
-	    if (ge != null) {
-		specClasses.add(ge);
-	    }
-	}
-	return Collections.enumeration(specClasses);
+            Object ge = Model.getFacade().getSpecific(g);
+            if (ge != null) {
+                specClasses.add(ge);
+            }
+        }
+        return specClasses.iterator();
     }
+
 }

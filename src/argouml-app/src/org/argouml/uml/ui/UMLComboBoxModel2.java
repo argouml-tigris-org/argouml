@@ -61,12 +61,16 @@ import org.tigris.gef.presentation.Fig;
 public abstract class UMLComboBoxModel2 extends AbstractListModel
         implements PropertyChangeListener, 
         ComboBoxModel, TargetListener, PopupMenuListener {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(UMLComboBoxModel2.class);
 
+    private static final Logger LOG = Logger.getLogger(UMLComboBoxModel2.class);
+
+    /**
+     * The string that represents a null or cleared choice.
+     */
+    // TODO: I18N
+    // Don't use the empty string for this or it won't show in the list
+    protected static final String CLEARED = "<none>";
+    
     /**
      * The target of the comboboxmodel. This is some UML modelelement
      */
@@ -85,11 +89,11 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     private Object selectedObject = null;
 
     /**
-     * Flag to indicate if the user may select the empty string ("") as value in
-     * the combobox. If true the attribute that is shown by this combobox may be
-     * set to null. Makes sure that there is always a "" in the list with
-     * objects so the user has the opportunity to select this to clear the
-     * attribute.
+     * Flag to indicate if the user may select the special CLEARED choice
+     * ("<none>") as value in the combobox. If true the attribute that is shown
+     * by this combobox may be set to null. Makes sure that there is always an
+     * entry in the list with objects so the user has the opportunity to select
+     * this to clear the attribute.
      */
     private boolean isClearable = false;
 
@@ -119,19 +123,20 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
 
 
     /**
-     * Constructs a model for a combobox. The container given is used
-     * to retrieve the target that is manipulated through this
-     * combobox. If clearable is true, the user can select null in the
-     * combobox and thereby clear the attribute in the model.
-     *
-     * @param name The name of the property change event that must be
-     * fired to set the selected item programmatically (via changing
-     * the model)
-     * @param clearable Flag to indicate if the user may select ""
-     * as value in the combobox. If true the attribute that is shown
-     * by this combobox may be set to null.
-     * Makes sure that there is always a "" in the list with objects so the
-     * user has the opportunity to select this to clear the attribute.
+     * Constructs a model for a combobox. The container given is used to
+     * retrieve the target that is manipulated through this combobox. If
+     * clearable is true, the user can select null in the combobox and thereby
+     * clear the attribute in the model.
+     * 
+     * @param name The name of the property change event that must be fired to
+     *            set the selected item programmatically (via changing the
+     *            model)
+     * @param clearable Flag to indicate if the user may select the special
+     *            CLEARED value (<none>) as value in the combobox. If true the
+     *            attribute that is shown by this combobox may be set to null.
+     *            Makes sure that there is always an entry for this in the list
+     *            with objects so the user has the opportunity to select this to
+     *            clear the attribute.
      * @throws IllegalArgumentException if one of the arguments is null
      */
     public UMLComboBoxModel2(String name, boolean clearable) {
@@ -146,7 +151,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         propertySetName = name;
     }
 
-    final public void propertyChange(final PropertyChangeEvent pve) {
+    public final void propertyChange(final PropertyChangeEvent pve) {
         if (pve instanceof UmlChangeEvent) {
             final UmlChangeEvent event = (UmlChangeEvent) pve;
 
@@ -221,9 +226,9 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         } else if (evt instanceof RemoveAssociationEvent && isValidEvent(evt)) {
             if (evt.getPropertyName().equals(propertySetName) 
                     && (evt.getSource() == getTarget())) {
-                if (evt.getOldValue() == getSelectedItem()) {
+                if (evt.getOldValue() == internal2external(getSelectedItem())) {
                     /* TODO: Here too? */
-                    setSelectedItem(evt.getNewValue());
+                    setSelectedItem(external2internal(evt.getNewValue()));
                 }
             } else {
                 Object o = getChangedElement(evt);
@@ -288,18 +293,24 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
         if (elements != null) {
             ArrayList toBeRemoved = new ArrayList();
             for (Object o : objects) {
-                if (!elements.contains(o) && !(isClearable && "".equals(o))) {
+                if (!elements.contains(o)
+                        && !(isClearable 
+                                // Check against "" is needed for backward 
+                                // compatibility.  Don't remove without 
+                                // checking subclasses and warning downstream
+                                // developers - tfm - 20081211
+                                && ("".equals(o) || CLEARED.equals(o)))) {
                     toBeRemoved.add(o);
                 }
             }
             removeAll(toBeRemoved);
             addAll(elements);
             
+            if (isClearable && !elements.contains(CLEARED)) {
+                addElement(CLEARED);
+            }
             if (!objects.contains(selectedObject)) {
                 selectedObject = null;
-            }
-            if (isClearable && !elements.contains("")) {
-                addElement("");
             }
         } else {
             throw new IllegalArgumentException("In setElements: may not set "
@@ -352,15 +363,13 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      * @param col the elements to be addd
      */
     protected void addAll(Collection col) {
-        Object o2 = getSelectedItem();
+        Object selected = getSelectedItem();
         fireListEvents = false;
         int oldSize = objects.size();
         for (Object o : col) {
             addElement(o);
         }
-        if (o2 != null) {
-            setSelectedItem(o2);
-        }
+        setSelectedItem(external2internal(selected));
         fireListEvents = true;
         if (objects.size() != oldSize) {
             fireIntervalAdded(this, oldSize == 0 ? 0 : oldSize - 1, 
@@ -431,7 +440,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 buildMinimalModelList();
                 // Do not set buildingModel = false here, 
                 // otherwise the action for selection is performed.
-                setSelectedItem(getSelectedModelElement());
+                setSelectedItem(external2internal(getSelectedModelElement()));
                 buildingModel = false;
 
                 if (getSize() > 0) {
@@ -444,7 +453,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                         ArgoDiagram.NAMESPACE_KEY, this);
                 buildingModel = true;
                 buildMinimalModelList();
-                setSelectedItem(getSelectedModelElement());
+                setSelectedItem(external2internal(getSelectedModelElement()));
                 buildingModel = false;
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
@@ -454,7 +463,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
                 removeAllElements();
             }
             if (getSelectedItem() != null && isClearable) {
-                addElement(""); // makes sure we can select 'none'
+                addElement(CLEARED); // makes sure we can select 'none'
             }
         }
     }
@@ -555,7 +564,7 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
      */
     public void setSelectedItem(Object o) {
         if ((selectedObject != null && !selectedObject.equals(o))
-            || (selectedObject == null && o != null)) {
+                || (selectedObject == null && o != null)) {
             selectedObject = o;
             fireContentsChanged(this, -1, -1);
         }
@@ -600,7 +609,15 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     public Object getSelectedItem() {
         return selectedObject;
     }
+    
+    private Object external2internal(Object o) {
+        return o == null && isClearable ? CLEARED : o;
+    }
 
+    private Object internal2external(Object o) {
+        return isClearable && CLEARED.equals(o) ? null : o;
+    }
+    
     /**
      * Returns true if some object elem is contained by the list of choices.
      *
@@ -733,7 +750,11 @@ public abstract class UMLComboBoxModel2 extends AbstractListModel
     }
 
     /**
-     * Return boolean indicating whether combo allows empty string.
+     * Return boolean indicating whether combo allows empty string.  This 
+     * flag can only be specified in the constructor, so it will never change.
+     * The flag is checked directly internally, so overriding this method will
+     * have no effect.
+     * 
      * @return state of isClearable flag
      */
     protected boolean isClearable() {

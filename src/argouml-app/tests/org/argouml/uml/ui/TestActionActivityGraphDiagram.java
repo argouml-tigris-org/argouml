@@ -28,7 +28,6 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
@@ -110,32 +109,7 @@ public class TestActionActivityGraphDiagram extends TestCase {
         assertTrue("All elements of diagram not deleted", leftovers.isEmpty());
     }
 
-    /**
-     * Tests if two diagrams created have different names.
-     */
-    public void testDifferentNames() {
-        action.actionPerformed(null);
-        Object d = TargetManager.getInstance().getTarget();
-        assertTrue("No diagram generated", d instanceof ArgoDiagram);
-        Model.getPump().flushModelEvents();
-        ArgoDiagram diagram1 = (ArgoDiagram) d;
-        // This next line is needed to register the diagram in the project,
-        // since creating a next diagram will need the new name to be compared
-        // with existing diagrams in the project, to validate
-        // there are no duplicates.
-        ProjectManager.getManager().getCurrentProject().addMember(diagram1);
 
-        TargetManager.getInstance().setTarget(ns);
-        action.actionPerformed(null);
-        d = TargetManager.getInstance().getTarget();
-        assertTrue("No diagram generated", d instanceof ArgoDiagram);
-        Model.getPump().flushModelEvents();
-        ArgoDiagram diagram2 = (ArgoDiagram) d;
-
-        Model.getPump().flushModelEvents();
-        assertFalse("The created diagrams have the same name",
-                   diagram1.getName().equals(diagram2.getName()));
-    }
 
 
 }

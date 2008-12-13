@@ -74,8 +74,17 @@ public class PathComparator implements Comparator {
         if (o1.equals(o2)) {
             return 0;
         }
-        if (o1 instanceof String && o2 instanceof String) {
-            return collator.compare((String) o1, (String) o2);
+        if (o1 instanceof String) {
+            if (o2 instanceof String) {
+                return collator.compare((String) o1, (String) o2);
+            } else if (Model.getFacade().isAUMLElement(o2)) {
+                // All strings collate before all UML elements
+                return -1;
+            }
+        }
+        if (o2 instanceof String && Model.getFacade().isAUMLElement(o1)) {
+            // All strings collate before all UML elements
+            return 1;
         }
         // Elements are collated first by name hoping for a quick solution
         String name1, name2;
@@ -83,7 +92,10 @@ public class PathComparator implements Comparator {
             name1 = Model.getFacade().getName(o1);
             name2 = Model.getFacade().getName(o2);
         } catch (IllegalArgumentException e) {
-            throw new ClassCastException("Model element or String required");
+            throw new ClassCastException(
+                "Model element or String required" 
+                    + "\n - o1 = " + ((o1 == null) ? "(null)" : o1.toString()) 
+                    + "\n - o2 = " + ((o2 == null) ? "(null)" : o2.toString()));
         }
         if (name1 != null && name2 != null) {
             int comparison = collator.compare(name1, name2);

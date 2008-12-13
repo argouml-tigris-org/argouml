@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigMessage;
@@ -49,27 +51,51 @@ public class FigAssociationRole extends FigAssociation {
      */
     private static final long serialVersionUID = -6543020797101620194L;
     
-    private FigMessageGroup messages = new FigMessageGroup();
+    private FigMessageGroup messages;
 
     /**
      * Main Constructor
+     * 
+     * @deprecate for 0.27.3 by tfmorris. Use
+     *            {@link #FigAssociationRole(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigAssociationRole() {
-	super(); // this really is questionable
-	addPathItem(messages, new PathConvPercent(this, 50, 10));
+        super();
+        messages = new FigMessageGroup();
+        addPathItem(messages, new PathConvPercent(this, 50, 10));
     }
 
     /**
      * Constructor for FigAssociationRole.
+     * 
      * @param edge the owning UML element
      * @param lay the layer
+     * @deprecate for 0.27.3 by tfmorris. Use
+     *            {@link #FigAssociationRole(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigAssociationRole(Object edge, Layer lay) {
 	this();
 	setLayer(lay);
     	setOwner(edge);
     }
-
+    
+    /**
+     * Construct an AssociationRole fig with the given onwer and render
+     * settings.
+     * 
+     * @param owner owning UML element
+     * @param settings render settings
+     */
+    public FigAssociationRole(Object owner, DiagramSettings settings) {
+        super(owner, settings);
+        messages = new FigMessageGroup(owner, settings);
+        addPathItem(messages, new PathConvPercent(this, 50, 10));
+    }
+    
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getNotationProviderType()
      */
@@ -90,14 +116,16 @@ public class FigAssociationRole extends FigAssociation {
 
 /**
  * A Fig for the group of Messages shown above the Association Role.
- * 
- * TODO: Should this be in its own source file?
  */
 class FigMessageGroup extends ArgoFigGroup {
 
     /**
      * Constructor for FigMessageGroup.
+     * @deprecate for 0.27.3 by tfmorris. Use
+     *            {@link #FigMessageGroup(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigMessageGroup() {
 	super();
     }
@@ -106,9 +134,17 @@ class FigMessageGroup extends ArgoFigGroup {
      * Constructor for FigMessageGroup.
      * 
      * @param figs
+      * @deprecate for 0.27.3 by tfmorris. Use
+     *            {@link #FigMessageGroup(Object, DiagramSettings)}.
      */
-    public FigMessageGroup(List figs) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigMessageGroup(List<ArgoFig> figs) {
         super(figs);
+    }
+    
+    public FigMessageGroup(Object owner, DiagramSettings settings) {
+        super(owner, settings);
     }
 
     private void updateFigPositions() {
@@ -169,6 +205,7 @@ class FigMessageGroup extends ArgoFigGroup {
     /*
      * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
      */
+    @Override
     public void addFig(Fig f) {
 	super.addFig(f);
 	updateFigPositions();

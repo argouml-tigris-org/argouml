@@ -156,6 +156,8 @@ public class ImportStatusScreen extends JDialog implements ProgressMonitor {
             String message) {
         // TODO: Create an error dialog or panel in our progress dialog
         // for now we just use our old style separate error dialog
+        // TODO: BUG - All Swing processing must take place on the AWT event
+        // thread and we are on the Import Thread here
         ProblemsDialog problemsDialog = new ProblemsDialog(parentFrame, message);
         problemsDialog.setTitle(title);
         problemsDialog.setVisible(true);
