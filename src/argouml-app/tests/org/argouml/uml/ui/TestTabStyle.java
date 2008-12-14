@@ -37,6 +37,7 @@ import org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass;
 import org.argouml.uml.diagram.static_structure.ui.StylePanelFigInterface;
 import org.argouml.uml.diagram.ui.FigAbstraction;
 import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -102,6 +103,9 @@ public class TestTabStyle extends TestCase {
         panel = tabStyle.findPanelFor(FigAbstraction.class);
         assertTrue(panel instanceof SPFigEdgeModelElement);
 
+        panel = tabStyle.findPanelFor(FigDependency.class);
+        assertTrue(panel instanceof SPFigEdgeModelElement);
+        
         panel = tabStyle.findPanelFor(FigAssociation.class);
         assertTrue(panel instanceof SPFigEdgeModelElement);
 
