@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml,v 1.2 2006/05/25 12:58:04 linus Exp $
+// $Id$
 // Copyright (c) 2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
