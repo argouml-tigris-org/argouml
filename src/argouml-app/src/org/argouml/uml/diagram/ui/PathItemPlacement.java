@@ -373,6 +373,25 @@ public class PathItemPlacement extends PathConv {
         offset = newOffset;
         useAngle = false;
     }
+    
+    /**
+     * Attempts to set a new location for the fig being controlled
+     * by this path item.  Takes the given Point which represents an x,y 
+     * position, and calculates the most appropriate angle and displacement
+     * to achieve this new position.  Used when the user drags a label
+     * on the diagram.  
+     * @override
+     * @param newPoint The new target location for the PathItem fig.
+     * @see org.tigris.gef.base.PathConv#setPoint(java.awt.Point)
+     */
+    public void setPoint(Point newPoint) {
+        //Point p1 = getAnchorPosition();
+        //Point p2 = newPoint;
+        int vect[] = computeVector(newPoint);
+        setDisplacementAngle(vect[0]);
+        setDisplacementDistance(vect[1]);
+        //setDisplacementDistance((int) Point.distance(p1.x, p1.y, p2.x, p2.y));
+    }
 
 
     /**
@@ -391,10 +410,10 @@ public class PathItemPlacement extends PathConv {
         double offsetSlope = getSlope(anchor, point);
         // TODO: This is completely untested.  The angle probably needs to
         // be adjusted to get it to match what is expected on input.
-        int angle = (int) ((offsetSlope - pathSlope) / Math.PI * 180);
+        int angle = (int) ((offsetSlope - pathSlope) / Math.PI * 180) + 180;
         int[] result = new int[] {angle, distance};
-        throw new UnsupportedOperationException();
-//        return result;
+        //throw new UnsupportedOperationException();
+        return result;
     }
     
     /**
