@@ -35,8 +35,8 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 
 /**
- * Mode for dragging (i.e. user repositioning) of Text labels
- * connected to FigEdges.
+ * Mode for dragging (i.e. user repositioning) of Text labels connected to 
+ * FigEdges.
  * @author Dave Thompson
  */
 public class ModeLabelDrag extends FigModifyingModeImpl {
@@ -62,7 +62,7 @@ public class ModeLabelDrag extends FigModifyingModeImpl {
      * point.  When a new mouse drag event occurs, the difference between
      * the current point and dragBasePoint is the delta in position.
      */
-    private Point dragBasePoint = new Point(0,0);
+    private Point dragBasePoint = new Point(0, 0);
    
     /**
      * X-offset for storing the location of the mouse click on a label
@@ -79,6 +79,7 @@ public class ModeLabelDrag extends FigModifyingModeImpl {
      * still behave sensibly.  X component.
      */
     private int deltay = 0;
+    
     /**
      * Constructor for creating the ModeLabelDrag instance.
      * @param editor The editor which will own this mode.
@@ -110,9 +111,6 @@ public class ModeLabelDrag extends FigModifyingModeImpl {
      * @see org.tigris.gef.base.ModeImpl#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
-        // Translate the mouse event to the drawing scale coordinates.
-        //me = editor.translateMouseEvent(me);
-
         Point clickPoint = me.getPoint(); 
         Fig underMouse = editor.hit(clickPoint);
         if (underMouse instanceof FigEdge) {
@@ -130,16 +128,24 @@ public class ModeLabelDrag extends FigModifyingModeImpl {
                 }
             }
         }
-        System.out.println("dragFig=" + dragFig);
     }
     
+    /**
+     * Handle mouseReleased events.
+     * @param me The mouse event to process.
+     * @see org.tigris.gef.base.ModeImpl#mouseReleased(java.awt.event.MouseEvent)
+     */
     public void mouseReleased(MouseEvent me) {
-        //me = editor.retranslateMouseEvent(me);
         if (dragFig != null) {
             dragFig = null;
         }
     }
     
+    /**
+     * Handle mouseDragged events.
+     * @param me The mouse event to process.
+     * @see org.tigris.gef.base.ModeImpl#mouseDragged(java.awt.event.MouseEvent)
+     */
     public void mouseDragged(MouseEvent me) {
         if (dragFig != null) {
             me = editor.translateMouseEvent(me);
@@ -157,10 +163,6 @@ public class ModeLabelDrag extends FigModifyingModeImpl {
             dragFig.translate(dx, dy);
             me.consume();
         }
-        //dragBasePoint.setLocation(me.getX(), me.getY());
-        
-        System.out.println("ModeLabelDrag.mouseDragged()");
-        
         editor.damageAll(); /// TODO: reckless use of damageAll.
     }
 
