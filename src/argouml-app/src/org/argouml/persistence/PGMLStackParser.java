@@ -124,7 +124,7 @@ class PGMLStackParser
         // this may change if we refactor package structure
         try {
             Class<?> clazz = Class.forName(
-                    "org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram");
+                    "org.argouml.uml.diagram.sequence2.ui.UMLSequenceDiagram");
             addTranslation(
                     "org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram",
                     "org.argouml.uml.diagram.sequence2.ui.UMLSequenceDiagram");
