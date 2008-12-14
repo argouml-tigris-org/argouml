@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -200,17 +199,18 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             newEdge = new FigAbstraction(edge, settings);
         } else if (Model.getFacade().isADependency(edge)) {
 
-            Collection c = Model.getFacade().getStereotypes(edge);
-            Iterator i = c.iterator();
             String name = "";
-            while (i.hasNext()) {
-                Object o = i.next();
-                name = Model.getFacade().getName(o);
+            for (Object stereotype : Model.getFacade().getStereotypes(edge)) {
+                name = Model.getFacade().getName(stereotype);
                 if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
                     break;
                 }
             }
             if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
+                // TODO: This code doesn't look like it will get reached because
+                // any abstraction/realization is going to take the 
+                // isAAbstraction leg of the if before it gets to this more
+                // general case. - tfm 20080508
                 FigAbstraction realFig = new FigAbstraction(edge, settings);
 
                 Object supplier =
