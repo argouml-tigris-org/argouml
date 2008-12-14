@@ -104,7 +104,7 @@ public class TestProject extends TestCase {
         URL url = TestProject.class.getResource(name);
         AbstractFilePersister persister =
             PersistenceManager.getInstance().getPersisterFromFileName(name);
-
+        
         URI uri = url.toURI();
         Project p = persister.doLoad(new File(uri));
         
@@ -547,4 +547,10 @@ public class TestProject extends TestCase {
         (new InitProfileSubsystem()).init();
         ProjectManager.getManager().makeEmptyProject();
     }
+    
+    // TODO: Add tests for Profiles
+    // TODO: Add tests for getting default types
+    // TODO: Add tests to get Undo manager
+    // TODO: Add tests to get Project settings
+    
 }
