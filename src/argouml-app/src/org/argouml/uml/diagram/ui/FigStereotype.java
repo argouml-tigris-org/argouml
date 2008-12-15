@@ -36,10 +36,11 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Fig to show one stereotype within a FigStereotypeCompartment.
+ * Fig to show one stereotype within a FigStereotypesGroup.
  * <p>
  * The stereotype is not editable on the fig, hence we
- * do not use a Notation Provider.
+ * do not use a Notation Provider. <p>
+ * This Fig listens to model changes regarding the name of the stereotype.
  *
  * @author Bob Tarling
  */

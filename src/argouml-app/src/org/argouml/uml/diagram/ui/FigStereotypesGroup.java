@@ -47,7 +47,7 @@ import org.tigris.gef.presentation.FigText;
 /**
  * A Fig designed to be the child of some FigNode or FigEdge to display the
  * stereotypes of the model element represented by the parent Fig.
- * Currently display of multiple stereotypes are stacked one on top of the
+ * Currently, multiple stereotypes are shown stacked one on top of the other,
  * each enclosed by guillemets.<p>
  * 
  * The minimum width of this fig is the largest minimum width of its child
@@ -55,6 +55,9 @@ import org.tigris.gef.presentation.FigText;
  * 
  * The minimum height of this fig is the total minimum height of its child
  * figs.<p>
+ * 
+ * The owner of this Fig is the UML element that is extended with the stereotypes.
+ * We are listening to changes to the model: addition and removal of stereotypes. 
  * 
  * TODO: Allow for UML2 style display where all stereotypes are displayed in
  * the same guillemet pair and are delimited by commas. The style should be

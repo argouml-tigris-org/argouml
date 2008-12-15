@@ -425,6 +425,7 @@ public abstract class FigEdgeModelElement
         int iconPos = 25, gap = 1, xOff = -4, yOff = -4;
         Point p = new Point();
         ToDoList tdList = Designer.theDesigner().getToDoList();
+        /* Owner related todo items: */
         List<ToDoItem> items = tdList.elementListForOffender(getOwner());
         for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
@@ -438,6 +439,7 @@ public abstract class FigEdgeModelElement
                 iconPos += icon.getIconWidth() + gap;
             }
         }
+        /* Fig related todo items: */
         items = tdList.elementListForOffender(this);
         for (ToDoItem item : items) {
             Icon icon = item.getClarifier();
