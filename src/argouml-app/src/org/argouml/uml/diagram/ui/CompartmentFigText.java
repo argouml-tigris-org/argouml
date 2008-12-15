@@ -38,8 +38,10 @@ import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * A FigText class extension for FigClass/FigInterface/FigUseCase
- * compartments.<p>
+ * A single line FigText class extension for editable 
+ * FigClass/FigInterface/FigUseCase
+ * compartments that use notation. 
+ * When selected, this compartment is highlighted.<p>
  *
  * This implementation now supports the extension point compartment in
  * a use case.<p>
@@ -63,6 +65,7 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation {
      * @deprecated for 0.27.3 by tfmorris.  Only used for line color which we
      * can get from the render settings or GEF.
      */
+    @Deprecated
     private Fig refFig;
 
     /**
@@ -303,7 +306,7 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation {
      * This is actually used to mark this Fig as selected, however setSelected
      * is set final in GEF.
      * TODO: Can setSelected be used without side-effect if GEF is adjusted?
-     * Otherwise consider renamaing as setSelectedChild and try to make
+     * Otherwise consider renaming as setSelectedChild and try to make
      * protected.
      * @param flag  <code>true</code> if the entry is to be highlighted,
      *              <code>false</code> otherwise.
@@ -314,7 +317,7 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation {
     
     /**
      * Extends the normal paint function in order to display a similar
-     * selectionbox to that given for a non-resizable FigNode.
+     * selection-box to that given for a non-resizable FigNode.
      * @param g the graphics object
      * @see org.tigris.gef.presentation.FigText#paint(java.awt.Graphics)
      */
@@ -373,12 +376,9 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation {
     
     /**
      * Called when text editing has completed on this Fig.
-     * TODO: This should become protected once textEdited in FigEnumeration
-     * has been refactored to FigNodeModelElement
      */
-    public void textEdited() {
+    protected void textEdited() {
         setHighlighted(true);
-        getNotationProvider().parse(getOwner(), getText());
-        setText(getNotationProvider().toString(getOwner(), getNpArguments()));
+        super.textEdited();
     }
 }
