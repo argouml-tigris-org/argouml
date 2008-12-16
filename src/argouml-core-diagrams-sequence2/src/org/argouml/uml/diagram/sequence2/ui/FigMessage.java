@@ -200,7 +200,11 @@ public class FigMessage extends FigEdgeModelElement {
      * @return true if they are the same, otherwise false. 
      */
     boolean isSelfMessage() {
-        return getDestination().equals(getSource());
+        if (Model.getUmlFactory().isRemoved(getOwner())) {
+            return getDestFigNode().equals(getSourceFigNode());
+        } else {
+            return getDestination().equals(getSource());
+        }
     }
     
     /**
