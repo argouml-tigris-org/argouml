@@ -47,6 +47,7 @@ import org.argouml.ui.TabFigTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigClassAssociationClass;
 import org.argouml.uml.util.namespace.Namespace;
@@ -93,7 +94,7 @@ import org.tigris.gef.presentation.FigEdge;
  * copy only but the presentation options exist in one copy per diagram
  * that the model element is showing in. E.g. a class could have
  * attributes hidden in one diagram and showing in another. So, for the user
- * it would be very logical to seperate these 2 kinds of settings
+ * it would be very logical to separate these 2 kinds of settings
  * on different tabs.
  *
  */
@@ -184,7 +185,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
                 }
             }
         }
-        
+
         // TODO: Defer most of this work if the panel isn't visible - tfm
 
         // the responsibility of determining if the given target is a
@@ -200,7 +201,9 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
                     return;
                 }
                 t = col.iterator().next();
-                if (!(t instanceof Fig)) return;
+                if (!(t instanceof Fig)) {
+                    return;
+                }
             } else {
                 return;
             }
@@ -286,7 +289,9 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
                 panelClass = panelClassFor(newClass);
                 newClass = newClass.getSuperclass();
             }
-            if (panelClass == null) return null;
+            if (panelClass == null) {
+                return null;
+            }
             try {
                 p = (TabFigTarget) panelClass.newInstance();
             } catch (IllegalAccessException ignore) {
@@ -377,8 +382,7 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
 
         if (!(targetItem instanceof Fig)) {
             if (Model.getFacade().isAModelElement(targetItem)) {
-                Project p = ProjectManager.getManager().getCurrentProject();
-                ArgoDiagram diagram = p.getActiveDiagram();
+                ArgoDiagram diagram = DiagramUtils.getActiveDiagram();
                 if (diagram == null) {
                     shouldBeEnabled = false;
                     return false;
@@ -425,7 +429,9 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
      * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
      */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
-        if (stylePanel != null) stylePanel.refresh(pce);
+        if (stylePanel != null) {
+            stylePanel.refresh(pce);
+        }
     }
 
     /*
@@ -434,7 +440,6 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
         fireTargetAdded(e);
-
     }
 
     /*
@@ -446,7 +451,6 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         // case
         setTarget(e.getNewTarget());
         fireTargetRemoved(e);
-
     }
 
     /*
@@ -455,7 +459,6 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
         fireTargetSet(e);
-
     }
 
     /**
@@ -521,4 +524,5 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         }
     }
 
-} /* end class TabStyle */
+}
+
