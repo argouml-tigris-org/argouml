@@ -617,7 +617,17 @@ public abstract class FigEdgeModelElement
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
         if (pve instanceof DeleteInstanceEvent && src == getOwner()) {
-            removeFromDiagram();
+            Runnable doWorkRunnable = new Runnable() {
+                public void run() {
+                    try {
+                        removeFromDiagram();
+                    } catch (InvalidElementException e) {
+                            LOG.error("updateLayout method accessed "
+                                    + "deleted element", e);
+                    }
+                }  
+            };
+            SwingUtilities.invokeLater(doWorkRunnable);
             return;
         }
         // We handle and consume editing events
