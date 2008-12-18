@@ -144,9 +144,11 @@ public abstract class FigNodeModelElement
     // as needed to express other common factors - tfm 20081201
     
     /**
-     * Default width for a node fig
+     * Default width for a node fig. 
+     * Used to be 60 (up to V0.20), later (from V0.22) it was 90.
+     * Now 64 to align to grid better.
      */
-    protected static final int WIDTH = 60;
+    protected static final int WIDTH = 64;
 
     private DiElement diElement;
 
@@ -307,8 +309,8 @@ public abstract class FigNodeModelElement
         // is inside it:
         bigPort = new FigRect(X0, Y0, 0, 0, Color.cyan, Color.cyan);
         
-        nameFig = new FigNameWithAbstractAndBold(X0, Y0, 90, 21, true);
-        stereotypeFig = new FigStereotypesGroup(X0, Y0, 90, 15);
+        nameFig = new FigNameWithAbstractAndBold(X0, Y0, WIDTH, 21, true);
+        stereotypeFig = new FigStereotypesGroup(X0, Y0, WIDTH, 15);
         constructFigs();
     }
     
@@ -370,9 +372,9 @@ public abstract class FigNodeModelElement
         // is inside it:
         bigPort = new FigRect(X0, Y0, 0, 0, Color.cyan, Color.cyan);
         nameFig = new FigNameWithAbstractAndBold(element, 
-                new Rectangle(X0, Y0, 90, 21), getSettings(), true);
+                new Rectangle(X0, Y0, WIDTH, 21), getSettings(), true);
         stereotypeFig = new FigStereotypesGroup(element, 
-                new Rectangle(X0, Y0, 90, 15), settings);
+                new Rectangle(X0, Y0, WIDTH, 15), settings);
         constructFigs();
         if (element == null) {
             throw new IllegalArgumentException("An owner must be supplied");

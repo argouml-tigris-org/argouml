@@ -255,7 +255,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         aSize = addChildDimensions(aSize, getAttributesFig());
         aSize = addChildDimensions(aSize, getOperationsFig());
 
-        aSize.width = Math.max(60, aSize.width);
+        aSize.width = Math.max(WIDTH, aSize.width);
 
         return aSize;
     }
