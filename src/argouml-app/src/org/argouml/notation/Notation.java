@@ -103,8 +103,7 @@ public final class Notation implements PropertyChangeListener {
         Configuration.makeKey("notation", "guillemots");
 
     /**
-     * Indicates if the user wants to see associaction names (public,
-     * private, protected or # + -).
+     * Indicates if the user wants to see association names
      */
     public static final ConfigurationKey KEY_SHOW_ASSOCIATION_NAMES =
         Configuration.makeKey("notation", "show", "associationnames");
