@@ -226,7 +226,7 @@ public final class NotationProviderFactory2 {
      * @param name the name of the notation language to use
      * @return the provider, or null if there was any failure
      */
-    private NotationProvider getNotationProvider(int type,
+    public NotationProvider getNotationProvider(int type,
             Object object, NotationName name) {
 
         Class clazz = getNotationProviderClass(type, name);
