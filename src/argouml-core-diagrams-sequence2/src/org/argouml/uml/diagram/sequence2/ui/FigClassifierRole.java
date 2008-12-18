@@ -254,20 +254,11 @@ public class FigClassifierRole extends FigNodeModelElement {
     public void removeFigEdge(FigEdge edge) {
         super.removeFigEdge(edge);
 
-        if (! (edge instanceof FigMessage)) {
-            return;
+        if (edge instanceof FigMessage) {
+            final FigMessage figMessage = (FigMessage) edge;
+            positionHead(figMessage);
+            createActivations();
         }
-        final FigMessage figMessage = (FigMessage) edge;
-
-        // if the removed edge is a Create Message it will affect the position
-        // of the ClassifierRole so it should be repositioned
-        if (figMessage.isCreateAction()
-                && equals(figMessage.getDestFigNode())
-                && !equals(figMessage.getSourceFigNode())) {
-            relocate();
-        }
-
-        createActivations();
     }
     
     @Override
@@ -275,31 +266,28 @@ public class FigClassifierRole extends FigNodeModelElement {
         super.addFigEdge(edge);
         
         if (edge instanceof FigMessage) {
-            
             FigMessage mess = (FigMessage) edge;
             if (mess.isSelfMessage()) {
                 mess.convertToArc();
             }
-            
-            // if the removed edge is a Create Message it will affect the position
-            // of the ClassifierRole so it should be repositioned
-            if (equals(mess.getDestFigNode())
-                  && !equals(mess.getSourceFigNode())  
-                  && Model.getFacade().isACreateAction(mess.getAction())) {
-                
-                LOG.info("Added a create message");
-                relocate();
-            }
+            positionHead(mess);
         }        
-    }  
-
+    }
+    
     /**
-     * Updates the position of the classifier role.
-     * Called when a create message is added, moved or removed.
+     * Position the head at the top of the lifeline so that it is at the top
+     * of the FigClassifierRole or where the create message enters the
+     * FigClassifierRole
      */
-    void relocate() {
-        updateHeadOffset();
-        setBounds(getX(), getY(), getWidth(), getHeight());
+    void positionHead(final FigMessage message) {
+        // if the added edge is a Create Message it will affect the position
+        // of the ClassifierRole so it should be repositioned
+        if (message.isCreateAction()
+                && equals(message.getDestFigNode())
+                && !equals(message.getSourceFigNode())) {
+            updateHeadOffset();
+            setBounds(getX(), getY(), getWidth(), getHeight());
+        }
     }
     
     /**

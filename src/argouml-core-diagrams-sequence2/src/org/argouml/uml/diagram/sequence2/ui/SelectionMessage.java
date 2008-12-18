@@ -107,10 +107,7 @@ public class SelectionMessage extends SelectionRerouteEdge {
             }
         }
         
-        // if it is a create action, relocate its dest node.
-        if (figMessage.isCreateAction()) {
-            dest.relocate();
-        }
+        dest.positionHead(figMessage);
         
         // we recalculate all the activations        
         source.createActivations();        
