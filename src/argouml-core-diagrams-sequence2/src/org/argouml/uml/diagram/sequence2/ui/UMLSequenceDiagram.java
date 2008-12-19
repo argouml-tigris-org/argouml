@@ -147,21 +147,6 @@ public class UMLSequenceDiagram extends UMLDiagram {
     	// Do nothing.        
     }
     
-    /**
-     * Creates a new diagramname.
-     *
-     * @return a new unique name.
-     */
-    // TODO: Why isn't this using the superclass implementation? - tfm
-    protected String getNewDiagramName() {
-        String name = getLabelName() + " " + getNextDiagramSerial();
-        if (!(ProjectManager.getManager().getCurrentProject()
-                .isValidDiagramName(name))) {
-            name = getNewDiagramName();
-        }
-        return name;
-    }
-    
     @Override
     public boolean isRelocationAllowed(Object base)  {
     	return Model.getFacade().isACollaboration(base);
