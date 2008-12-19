@@ -101,7 +101,14 @@ public class FigStereotype extends CompartmentFigText {
             setText();
         }
     }
-     
+
+    /* Force the line-width to 0, since the FigGroup that contains the 
+     * stereotype may want to show a border, but we don't. */
+    @Override
+    public void setLineWidth(int w) {
+        super.setLineWidth(0);
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         super.propertyChange(event);
