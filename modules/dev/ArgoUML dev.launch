@@ -36,5 +36,5 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.argouml.application.Main"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="argouml-module-dev"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512M -ea -Dlog4j.configuration=org/argouml/resource/full_console.lcf -Dargouml.modules=org.argouml.uml.diagram.sequence2.module.SequenceDiagramModule;org.argouml.dev.DeveloperModule"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512M -ea -Dlog4j.configuration=org/argouml/resource/full_console.lcf -Dargouml.modules=org.argouml.sequence2.SequenceDiagramModule;org.argouml.dev.DeveloperModule"/>
 </launchConfiguration>
