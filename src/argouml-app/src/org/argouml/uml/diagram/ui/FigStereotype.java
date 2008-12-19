@@ -132,8 +132,8 @@ public class FigStereotype extends CompartmentFigText {
      * {@inheritDoc}
      */
     public void setText(String text) {
-        super.setText(NotationUtilityUml.formatSingleStereotype(text,
-                getNpArguments()));
+        super.setText(NotationUtilityUml.formatStereotype(text,
+                getSettings().isUseGuillemets()));
     }
     
 }
