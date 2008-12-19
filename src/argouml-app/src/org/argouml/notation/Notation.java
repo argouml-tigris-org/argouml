@@ -47,20 +47,28 @@ import org.argouml.configuration.ConfigurationKey;
  */
 public final class Notation implements PropertyChangeListener {
 
-    /**
-     * Define a static log4j category variable for ArgoUML notation.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(Notation.class);
+    private static final Logger LOG = Logger.getLogger(Notation.class);
 
+    // TODO: Do we have any potential consumers of the unversioned name outside
+    // of the notation subsystem?
+    private static final String DEFAULT_NOTATION_NAME = "UML";
+
+    private static final String DEFAULT_NOTATION_VERSION = "1.4";
+
+    /**
+     * Default notation with both base name and version (e.g. "UML 1.4")
+     */
+    public static final String DEFAULT_NOTATION = DEFAULT_NOTATION_NAME + " "
+            + DEFAULT_NOTATION_VERSION;
+    
     /**
      * The name of the default ArgoUML notation.  This notation is
      * part of ArgoUML core distribution.
      */
     private static NotationName notationArgo =
         makeNotation(
-            "UML",
-            "1.4",
+            DEFAULT_NOTATION_NAME,
+            DEFAULT_NOTATION_VERSION,
             ResourceLoaderWrapper.lookupIconResource("UmlNotation"));
 
     /*
@@ -211,7 +219,7 @@ public final class Notation implements PropertyChangeListener {
         // This is needed for the case when the default notation is
         // not loaded at this point.
         if (n == null) {
-            n = NotationNameImpl.findNotation("UML 1.4");
+            n = NotationNameImpl.findNotation(DEFAULT_NOTATION);
 	}
         LOG.debug("default notation is " + n.getConfigurationValue());
         return n;
