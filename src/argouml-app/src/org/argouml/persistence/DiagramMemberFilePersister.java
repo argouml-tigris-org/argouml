@@ -30,7 +30,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
@@ -46,10 +49,20 @@ import org.tigris.gef.ocl.TemplateReader;
  * @author Bob Tarling
  */
 class DiagramMemberFilePersister extends MemberFilePersister {
+    
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(DiagramMemberFilePersister.class);
+    
     /**
      * The tee file for persistence.
      */
     private static final String PGML_TEE = "/org/argouml/persistence/PGML.tee";
+    
+    private static final Map<String, String> CLASS_TRANSLATIONS =
+        new HashMap<String, String>();
 
     @Override
     public void load(Project project, InputStream inputStream)
@@ -67,6 +80,13 @@ class DiagramMemberFilePersister extends MemberFilePersister {
             // TODO: We need the project specific diagram settings here
             PGMLStackParser parser = new PGMLStackParser(project.getUUIDRefs(),
                     defaultSettings);
+            LOG.info("Adding translations registered by modules");
+            for (Map.Entry<String, String> translation
+                    : CLASS_TRANSLATIONS.entrySet()) {
+                parser.addTranslation(
+                        translation.getKey(),
+                        translation.getValue());
+            }
             ArgoDiagram d = parser.readArgoDiagram(inputStream, false);
             inputStream.close();
             project.addMember(d);
@@ -129,5 +149,17 @@ class DiagramMemberFilePersister extends MemberFilePersister {
         
     }
 
-
+    /**
+     * Figs are stored by class name and recreated by reflection. If the class
+     * name changes or moves this provides a simple way of translating from
+     * class name at time of save to the current class name without need for
+     * XSL.
+     * @param originalClassName
+     * @param newClassName
+     */
+    public void addTranslation(
+            final String originalClassName,
+            final String newClassName) {
+        CLASS_TRANSLATIONS.put(originalClassName, newClassName);
+    }
 }

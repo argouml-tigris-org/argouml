@@ -410,6 +410,23 @@ public final class PersistenceManager {
     public AbstractFilePersister getSavePersister() {
         return savePersister;
     }
+    
+    /**
+     * Figs are stored by class name and recreated by reflection. If the class
+     * name changes or moves this provides a simple way of translating from
+     * class name at time of save to the current class name without need for
+     * XSL.
+     * @param originalClassName The class name that may be in the save file
+     * @param newClassName The class name to use in preference
+     */
+    public void addTranslation(
+            final String originalClassName,
+            final String newClassName) {
+        getDiagramMemberFilePersister().addTranslation(
+                originalClassName,
+                newClassName);
+    }
+    
 }
 
 /**

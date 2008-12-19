@@ -120,33 +120,6 @@ class PGMLStackParser
                 "org.argouml.uml.diagram.deployment.ui.FigNodeInstance");
         addTranslation("org.argouml.uml.diagram.ui.FigRealization",
                 "org.argouml.uml.diagram.ui.FigAbstraction");
-        // Replace any old sequence figs with Seq2
-        // this may change if we refactor package structure
-        try {
-            Class<?> clazz = Class.forName(
-                    "org.argouml.uml.diagram.sequence2.ui.UMLSequenceDiagram");
-            addTranslation(
-                    "org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram",
-                    "org.argouml.uml.diagram.sequence2.ui.UMLSequenceDiagram");
-            addTranslation(
-                    "org.argouml.uml.diagram.sequence.ui.FigCreateActionMessage",
-                    "org.argouml.uml.diagram.sequence2.ui.FigMessage");
-            addTranslation(
-                    "org.argouml.uml.diagram.sequence.ui.FigDeleteActionMessage",
-                    "org.argouml.uml.diagram.sequence2.ui.FigMessage");
-            addTranslation(
-                    "org.argouml.uml.diagram.sequence.ui.FigCallActionMessage",
-                    "org.argouml.uml.diagram.sequence2.ui.FigMessage");
-            addTranslation(
-                    "org.argouml.uml.diagram.sequence.ui.FigReturnActionMessage",
-                    "org.argouml.uml.diagram.sequence2.ui.FigMessage");
-            addTranslation(
-                    "org.argouml.uml.diagram.sequence.ui.FigClassifierRole",
-                    "org.argouml.uml.diagram.sequence2.ui.FigClassifierRole");
-        } catch (ClassNotFoundException e) {
-            // Temporarily ignore until I can work out how to get tests to
-            // this.
-        }
     }
     
     /**
