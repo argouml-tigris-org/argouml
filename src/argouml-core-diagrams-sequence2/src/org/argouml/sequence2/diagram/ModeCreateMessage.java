@@ -51,6 +51,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
         Logger.getLogger(ModeCreateMessage.class);
     
     private static final int DEFAULT_ACTIVATION_HEIGHT = 50;
+    private static final int DEFAULT_MESSAGE_GAP = 20;
     
     /**
      * The constructor.
@@ -86,9 +87,9 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
         FigClassifierRole dcr = (FigClassifierRole) fe.getDestFigNode();
         FigClassifierRole scr = (FigClassifierRole) fe.getSourceFigNode();
         
+        ensureSpace(figMessage);
+        
         if (figMessage.isCallAction()) {
-            
-            ensureSpace(figMessage);
             
             // get the source of the return message
             final Object returnMessageSource =
@@ -159,14 +160,37 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
      * @param figMessage
      */
     private void ensureSpace(final FigMessage figMessage) {
+        
+        // Make sure there is the minimum gap above the message being drawn
+        final FigMessage firstMessageAbove = getNearestMessage(
+                (FigClassifierRole) getSourceFigNode(),
+                figMessage,
+                false);
+        
+        if (firstMessageAbove != null) {
+            final int figMessageY = figMessage.getFirstPoint().y;
+            final int firstMessageY = firstMessageAbove.getFirstPoint().y;
+            if ((figMessageY - firstMessageY) < DEFAULT_MESSAGE_GAP) {
+                figMessage.translateEdge(
+                        0,
+                        firstMessageY + DEFAULT_MESSAGE_GAP - figMessageY);
+            }
+        }
+        
+        // Make sure there is the minimum gap below the message being drawn
         final FigMessage firstMessageBelow = getNearestMessage(
                 (FigClassifierRole) getSourceFigNode(),
                 figMessage,
                 true);
         
-        final int defaultMessageGap = 20;
-        final int heightPlusGap = 
-            DEFAULT_ACTIVATION_HEIGHT + defaultMessageGap;
+        final int heightPlusGap;
+        if (figMessage.isCallAction()) {
+            heightPlusGap = 
+                DEFAULT_ACTIVATION_HEIGHT + DEFAULT_MESSAGE_GAP;
+        } else {
+            heightPlusGap = 
+                DEFAULT_MESSAGE_GAP;
+        }
         
         if (firstMessageBelow != null 
                 && firstMessageBelow.getFirstPoint().y 
@@ -179,6 +203,11 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             
             for (FigMessage fig : getMessagesBelow(figMessage)) {
                 fig.translateEdge(0, dy);
+                if (fig.isCreateAction()) {
+                    FigClassifierRole fcr =
+                        (FigClassifierRole) fig.getDestFigNode();
+                    fcr.positionHead(fig);
+                }
             }
         }
     }
@@ -246,9 +275,8 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             final int val,
             final FigMessage message1,
             final FigMessage message2) {
-        if (val >= message1.getFirstPoint().y 
-                && (message2 == null
-                        || val <= message2.getFirstPoint().y)) {
+        if ((message1 == null || val >= message1.getFirstPoint().y) 
+                && (message2 == null || val <= message2.getFirstPoint().y)) {
             return true;
         }
         return false;
