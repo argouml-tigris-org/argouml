@@ -828,6 +828,9 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
             } catch (Exception e) {
                 LOG.error("Exception", e);
+                // TODO: We shouldn't be throwing RuntimeException.
+                // We need some exception type of our own.
+                // Should this be a checked exception?
                 throw new RuntimeException(e);
             }
         }
