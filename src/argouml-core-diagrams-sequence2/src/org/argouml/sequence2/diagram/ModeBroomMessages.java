@@ -39,9 +39,10 @@ import org.tigris.gef.presentation.FigNode;
 /**
  * Brooms all the message which y coordinate is upper than the position
  * of the broom.
+ * TODO: Provide a ModeFactory and then this class can become package scope.
  * @author penyaskito
  */
-class ModeBroomMessages extends FigModifyingModeImpl  {
+public class ModeBroomMessages extends FigModifyingModeImpl  {
    
     private static final int DIRECTION_UNDEFINED = 0;
     private static final int DIRECTION_UPWARD = 1;
