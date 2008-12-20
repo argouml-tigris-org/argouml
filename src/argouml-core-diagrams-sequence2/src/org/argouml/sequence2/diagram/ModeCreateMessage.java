@@ -38,10 +38,11 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigPoly;
 
 /**
- * Mode to create a link between two figclassifierroles. 
+ * Mode to create a link between two FigClassifierRoles. 
+ * TODO: Provide a ModeFactory and then this class can become package scope.
  * @author penyaskito
  */
-class ModeCreateMessage extends ModeCreatePolyEdge {
+public class ModeCreateMessage extends ModeCreatePolyEdge {
 
     /**
      * Logger.
@@ -158,9 +159,10 @@ class ModeCreateMessage extends ModeCreatePolyEdge {
      * @param figMessage
      */
     private void ensureSpace(final FigMessage figMessage) {
-        final FigMessage firstMessageBelow = getFirstMessageBelow(
+        final FigMessage firstMessageBelow = getNearestMessage(
                 (FigClassifierRole) getSourceFigNode(),
-                figMessage);
+                figMessage,
+                true);
         
         final int defaultMessageGap = 20;
         final int heightPlusGap = 
@@ -207,38 +209,48 @@ class ModeCreateMessage extends ModeCreatePolyEdge {
      * @param figMessage
      * @return the FigMessage below or null
      */
-    private FigMessage getFirstMessageBelow(
+    private FigMessage getNearestMessage(
             final FigClassifierRole figClassifierRole,
-            final FigMessage figMessage) {
+            final FigMessage figMessage,
+            final boolean below) {
         
-        final int figMessageY = figMessage.getFirstPoint().y;
-        
-        FigMessage firstMessageBelow = null;
+        FigMessage nearestMessage = null;
         
         for (FigEdge fe : figClassifierRole.getFigEdges()) {
             if (fe instanceof FigMessage && fe != figMessage) {
                 final FigMessage fm = (FigMessage) fe;
                 final int y = fm.getFirstPoint().y;
-                if (firstMessageBelow == null
-                            || isBetween (y,
-                                    figMessageY, 
-                                    firstMessageBelow.getFirstPoint().y)) {
-                    firstMessageBelow = fm;
+                if (below) {
+                    if (isBetween(y, figMessage, nearestMessage)) {
+                        nearestMessage = fm;
+                    }
+                } else {
+                    if (isBetween(y, nearestMessage, figMessage)) {
+                        nearestMessage = fm;
+                    }
                 }
             }
         }
         
-        return firstMessageBelow;
+        return nearestMessage;
     }
     
     /**
-     * Return true if a value is in a given range (exclusive)
-     * @param val the value to test
-     * @param lowerVal the lowest value to check
-     * @param upperVal the upper value to check
+     * Return true if a given y co-ordinate is between the two given messages
+     * @param y the value to test
+     * @param message1 the lowest value to check
+     * @param message2 the upper value to check
      * @return
      */
-    private boolean isBetween(int val, int lowerVal, int upperVal) {
-        return (val > lowerVal && val < upperVal);
+    private boolean isBetween(
+            final int val,
+            final FigMessage message1,
+            final FigMessage message2) {
+        if (val >= message1.getFirstPoint().y 
+                && (message2 == null
+                        || val <= message2.getFirstPoint().y)) {
+            return true;
+        }
+        return false;
     }
 }
