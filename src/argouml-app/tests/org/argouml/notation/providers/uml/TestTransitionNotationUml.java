@@ -33,6 +33,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
+import org.argouml.notation.NotationSettings;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -192,7 +193,8 @@ public class TestTransitionNotationUml extends TestCase {
             assertTrue("Unexpected exception: " + e.getMessage(), true);
         }
         // try creating a string from the generated modelelements:
-        String notationStr = notation.toString(it, null); 
+        String notationStr = notation.toString(it, 
+                NotationSettings.getDefaultSettings()); 
         assertTrue("Notation not correctly generated for " + text + "\n"
                 + "Resulted in: '" + notationStr + "'", 
                 text.equals(notationStr));

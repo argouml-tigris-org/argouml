@@ -36,6 +36,7 @@ import org.argouml.configuration.ConfigurationKey;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationSettings;
 import org.argouml.uml.diagram.DiagramAppearance;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.undo.Memento;
@@ -59,7 +60,9 @@ public class ProjectSettings {
     // Default diagram settings
     private DiagramSettings diaDefault;
 
-
+    // Default notation settings
+    private NotationSettings npSettings;
+    
     /* Generation preferences: */
     private String headerComment =
         "Your copyright and other header comments";
@@ -76,42 +79,46 @@ public class ProjectSettings {
         super();
 
         diaDefault = new DiagramSettings();
+        npSettings = diaDefault.getNotationSettings();
         
         String notationLanguage =
             Notation.getConfiguredNotation().getConfigurationValue();
         // TODO: The concept of a single global notation language doesn't
         // work with multiple projects
         NotationProviderFactory2.setCurrentLanguage(notationLanguage);
-        diaDefault.setNotationLanguage(notationLanguage);
+        npSettings.setNotationLanguage(notationLanguage);
         
         diaDefault.setShowBoldNames(Configuration.getBoolean(
                 Notation.KEY_SHOW_BOLD_NAMES));
-        diaDefault.setUseGuillemets(Configuration.getBoolean(
+        
+        npSettings.setUseGuillemets(Configuration.getBoolean(
                 Notation.KEY_USE_GUILLEMOTS, false));
         /*
          * The next one defaults to TRUE, to stay compatible with older
          * ArgoUML versions that did not have this setting:
          */
-        diaDefault.setShowAssociationNames(Configuration.getBoolean(
+        npSettings.setShowAssociationNames(Configuration.getBoolean(
                 Notation.KEY_SHOW_ASSOCIATION_NAMES, true));
-        diaDefault.setShowVisibility(Configuration.getBoolean(
+        npSettings.setShowVisibilities(Configuration.getBoolean(
                 Notation.KEY_SHOW_VISIBILITY));
-        diaDefault.setShowMultiplicity(Configuration.getBoolean(
+        npSettings.setShowMultiplicities(Configuration.getBoolean(
                 Notation.KEY_SHOW_MULTIPLICITY));
-        diaDefault.setShowInitialValue(Configuration.getBoolean(
+        npSettings.setShowInitialValues(Configuration.getBoolean(
                 Notation.KEY_SHOW_INITIAL_VALUE));
-        diaDefault.setShowProperties(Configuration.getBoolean(
+        npSettings.setShowProperties(Configuration.getBoolean(
                 Notation.KEY_SHOW_PROPERTIES));
         /*
          * The next ones defaults to TRUE, to stay compatible with older
          * ArgoUML versions that did not have this setting:
          */
-        diaDefault.setShowTypes(Configuration.getBoolean(
+        npSettings.setShowTypes(Configuration.getBoolean(
                 Notation.KEY_SHOW_TYPES, true));
+        
+        // TODO: Why is this a notation setting?
         diaDefault.setShowBidirectionalArrows(!Configuration.getBoolean(
                 Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS, true));
         
-        diaDefault.setShowStereotypes(Configuration.getBoolean(
+        npSettings.setShowStereotypes(Configuration.getBoolean(
                 Notation.KEY_SHOW_STEREOTYPES));
         /*
          * The next one defaults to TRUE, despite that this is
@@ -119,10 +126,13 @@ public class ProjectSettings {
          * (before 0.24) that did
          * not have this setting - see issue 1395 for the rationale:
          */
-        diaDefault.setShowSingularMultiplicities(Configuration.getBoolean(
+        npSettings.setShowSingularMultiplicities(Configuration.getBoolean(
                 Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true));
+        
+        // TODO: Why is this a notation setting?
         diaDefault.setDefaultShadowWidth(Configuration.getInteger(
                 Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
+
         diaDefault.setDefaultStereotypeView(Configuration.getInteger(
                 ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
                 DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL));
@@ -178,6 +188,12 @@ public class ProjectSettings {
         return diaDefault;
     }
 
+    /**
+     * @return the default project wide notation settings
+     */
+    public NotationSettings getNotationSettings() {
+        return npSettings;
+    }
 
     /**
      * Used by "argo.tee".
@@ -185,11 +201,11 @@ public class ProjectSettings {
      * @return Returns the notation language.
      */
     public String getNotationLanguage() {
-        return diaDefault.getNotationLanguage();
+        return npSettings.getNotationLanguage();
     }
 
     /**
-     * @return Returns the notation language.
+     * @return Return the notation name.
      */
     public NotationName getNotationName() {
         return Notation.findNotation(getNotationLanguage());
@@ -214,13 +230,13 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_DEFAULT_NOTATION;
 
             public void redo() {
-                diaDefault.setNotationLanguage(newLanguage);
+                npSettings.setNotationLanguage(newLanguage);
                 NotationProviderFactory2.setCurrentLanguage(newLanguage);
                 fireNotationEvent(key, oldLanguage, newLanguage);
             }
 
             public void undo() {
-                diaDefault.setNotationLanguage(oldLanguage);
+                npSettings.setNotationLanguage(oldLanguage);
                 NotationProviderFactory2.setCurrentLanguage(oldLanguage);
                 fireNotationEvent(key, newLanguage, oldLanguage);
             }
@@ -319,7 +335,7 @@ public class ProjectSettings {
      * @return Returns <code>true</code> if we show guillemets.
      */
     public boolean getUseGuillemotsValue() {
-        return diaDefault.isUseGuillemets();
+        return npSettings.isUseGuillemets();
     }
     
 
@@ -344,12 +360,12 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_USE_GUILLEMOTS;
 
             public void redo() {
-                diaDefault.setUseGuillemets(showem);
+                npSettings.setUseGuillemets(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                diaDefault.setUseGuillemets(!showem);
+                npSettings.setUseGuillemets(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
@@ -382,7 +398,7 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show association names.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public String getShowAssociationNames() {
@@ -391,16 +407,16 @@ public class ProjectSettings {
 
     /**
      * @return Returns <code>true</code> if we show association names.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public boolean getShowAssociationNamesValue() {
-        return diaDefault.isShowAssociationNames();
+        return npSettings.isShowAssociationNames();
     }
 
     /**
      * @param showem <code>true</code> if association names are to be shown.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowAssociationNames(String showem) {
@@ -409,11 +425,11 @@ public class ProjectSettings {
 
     /**
      * @param showem <code>true</code> if association names are to be shown.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowAssociationNames(final boolean showem) {
-        if (diaDefault.isShowAssociationNames() == showem) {
+        if (npSettings.isShowAssociationNames() == showem) {
             return;
         }
 
@@ -422,12 +438,12 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_ASSOCIATION_NAMES;
 
             public void redo() {
-                diaDefault.setShowAssociationNames(showem);
+                npSettings.setShowAssociationNames(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                diaDefault.setShowAssociationNames(!showem);
+                npSettings.setShowAssociationNames(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
@@ -438,7 +454,7 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show visibilities.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
      */
     @Deprecated
     public String getShowVisibility() {
@@ -447,16 +463,16 @@ public class ProjectSettings {
 
     /**
      * @return Returns <code>true</code> if we show visibilities.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
      */
     @Deprecated
     public boolean getShowVisibilityValue() {
-        return diaDefault.isShowVisibility();
+        return npSettings.isShowVisibilities();
     }
 
     /**
      * @param showem <code>true</code> if visibilities are to be shown.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowVisibility(String showem) {
@@ -465,11 +481,11 @@ public class ProjectSettings {
 
     /**
      * @param showem <code>true</code> if visibilities are to be shown.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowVisibility(final boolean showem) {
-        if (diaDefault.isShowVisibility() == showem) {
+        if (npSettings.isShowVisibilities() == showem) {
             return;
         }
 
@@ -477,12 +493,12 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_SHOW_VISIBILITY;
 
             public void redo() {
-                diaDefault.setShowVisibility(showem);
+                npSettings.setShowVisibilities(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                diaDefault.setShowVisibility(!showem);
+                npSettings.setShowVisibilities(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
@@ -493,7 +509,7 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show multiplicities.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public String getShowMultiplicity() {
@@ -502,16 +518,16 @@ public class ProjectSettings {
 
     /**
      * @return Returns <code>true</code> if we show multiplicities.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public boolean getShowMultiplicityValue() {
-        return diaDefault.isShowMultiplicity();
+        return npSettings.isShowMultiplicities();
     }
 
     /**
      * @param showem <code>true</code> if multiplicity is to be shown.
-      * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+      * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowMultiplicity(String showem) {
@@ -520,11 +536,11 @@ public class ProjectSettings {
 
     /**
      * @param showem <code>true</code> if the multiplicity is to be shown.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowMultiplicity(final boolean showem) {
-        if (diaDefault.isShowMultiplicity() == showem) {
+        if (npSettings.isShowMultiplicities() == showem) {
             return;
         }
 
@@ -532,12 +548,12 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_SHOW_MULTIPLICITY;
 
             public void redo() {
-                diaDefault.setShowMultiplicity(showem);
+                npSettings.setShowMultiplicities(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                diaDefault.setShowMultiplicity(!showem);
+                npSettings.setShowMultiplicities(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
@@ -548,7 +564,7 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show initial values.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public String getShowInitialValue() {
@@ -557,16 +573,16 @@ public class ProjectSettings {
 
     /**
      * @return Returns <code>true</code> if we show initial values.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public boolean getShowInitialValueValue() {
-        return diaDefault.isShowInitialValue();
+        return npSettings.isShowInitialValues();
     }
 
     /**
      * @param showem <code>true</code> if initial values are to be shown.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowInitialValue(String showem) {
@@ -575,11 +591,11 @@ public class ProjectSettings {
 
     /**
      * @param showem <code>true</code> if initial values are to be shown.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowInitialValue(final boolean showem) {
-        if (diaDefault.isShowInitialValue() == showem) {
+        if (npSettings.isShowInitialValues() == showem) {
             return;
         }
 
@@ -588,12 +604,12 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_INITIAL_VALUE;
 
             public void redo() {
-                diaDefault.setShowInitialValue(showem);
+                npSettings.setShowInitialValues(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                diaDefault.setShowInitialValue(!showem);
+                npSettings.setShowInitialValues(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
@@ -604,7 +620,7 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show properties.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public String getShowProperties() {
@@ -613,16 +629,16 @@ public class ProjectSettings {
 
     /**
      * @return Returns <code>true</code> if we show properties.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public boolean getShowPropertiesValue() {
-        return diaDefault.isShowProperties();
+        return npSettings.isShowProperties();
     }
 
     /**
      * @param showem <code>true</code> if properties are to be shown.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowProperties(String showem) {
@@ -631,11 +647,11 @@ public class ProjectSettings {
 
     /**
      * @param showem <code>true</code> if properties are to be shown.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowProperties(final boolean showem) {
-        if (diaDefault.isShowProperties() == showem) {
+        if (npSettings.isShowProperties() == showem) {
             return;
         }
 
@@ -644,12 +660,12 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_PROPERTIES;
 
             public void redo() {
-                diaDefault.setShowProperties(showem);
+                npSettings.setShowProperties(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                diaDefault.setShowProperties(!showem);
+                npSettings.setShowProperties(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
@@ -660,7 +676,7 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show types.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
      */
     @Deprecated
     public String getShowTypes() {
@@ -669,16 +685,16 @@ public class ProjectSettings {
 
     /**
      * @return Returns <code>true</code> if we show types.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
      */
     @Deprecated
     public boolean getShowTypesValue() {
-        return diaDefault.isShowTypes();
+        return npSettings.isShowTypes();
     }
 
     /**
      * @param showem <code>true</code> if types are to be shown.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowTypes(String showem) {
@@ -687,11 +703,11 @@ public class ProjectSettings {
 
     /**
      * @param showem <code>true</code> if types are to be shown.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowTypes(final boolean showem) {
-        if (diaDefault.isShowTypes() == showem) {
+        if (npSettings.isShowTypes() == showem) {
             return;
         }
 
@@ -699,12 +715,12 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_SHOW_TYPES;
 
             public void redo() {
-                diaDefault.setShowTypes(showem);
+                npSettings.setShowTypes(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                diaDefault.setShowTypes(!showem);
+                npSettings.setShowTypes(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
@@ -716,7 +732,7 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show stereotypes.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public String getShowStereotypes() {
@@ -728,16 +744,16 @@ public class ProjectSettings {
      * stay in ProjectSettings (as well as being a DiagramSetting).
      * 
      * @return Returns <code>true</code> if we show stereotypes.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public boolean getShowStereotypesValue() {
-        return diaDefault.isShowStereotypes();
+        return npSettings.isShowStereotypes();
     }
 
     /**
      * @param showem <code>true</code> if stereotypes are to be shown.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowStereotypes(String showem) {
@@ -746,11 +762,11 @@ public class ProjectSettings {
 
     /**
      * @param showem <code>true</code> if stereotypes are to be shown.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowStereotypes(final boolean showem) {
-        if (diaDefault.isShowStereotypes() == showem) {
+        if (npSettings.isShowStereotypes() == showem) {
             return;
         }
 
@@ -758,12 +774,12 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_SHOW_STEREOTYPES;
 
             public void redo() {
-                diaDefault.setShowStereotypes(showem);
+                npSettings.setShowStereotypes(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                diaDefault.setShowStereotypes(!showem);
+                npSettings.setShowStereotypes(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };
@@ -774,7 +790,7 @@ public class ProjectSettings {
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show "1" Multiplicities.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
      */
     @Deprecated
     public String getShowSingularMultiplicities() {
@@ -783,16 +799,16 @@ public class ProjectSettings {
 
     /**
      * @return Returns <code>true</code> if we show  "1" Multiplicities.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public boolean getShowSingularMultiplicitiesValue() {
-        return diaDefault.isShowSingularMultiplicities();
+        return npSettings.isShowSingularMultiplicities();
     }
 
     /**
      * @param showem <code>true</code> if "1" Multiplicities are to be shown.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowSingularMultiplicities(String showem) {
@@ -801,11 +817,11 @@ public class ProjectSettings {
 
     /**
      * @param showem <code>true</code> if "1" Multiplicities are to be shown.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
+     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
      */
     @Deprecated
     public void setShowSingularMultiplicities(final boolean showem) {
-        if (diaDefault.isShowSingularMultiplicities() == showem) {
+        if (npSettings.isShowSingularMultiplicities() == showem) {
             return;
         }
 
@@ -814,12 +830,12 @@ public class ProjectSettings {
                 Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES;
 
             public void redo() {
-                diaDefault.setShowSingularMultiplicities(showem);
+                npSettings.setShowSingularMultiplicities(showem);
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                diaDefault.setShowSingularMultiplicities(!showem);
+                npSettings.setShowSingularMultiplicities(!showem);
                 fireNotationEvent(key, showem, !showem);
             }
         };

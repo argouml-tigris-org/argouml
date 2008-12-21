@@ -27,15 +27,14 @@ package org.argouml.notation.providers.uml;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import junit.framework.TestCase;
 
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
+import org.argouml.notation.NotationSettings;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -47,7 +46,8 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
 
     private Object aEnumeration;
     private Object aLiteral;
-    private HashMap<String, Object> npArguments;
+
+    private NotationSettings npSettings;
 
     /**
      * Create an unnamed Enumeration, with one unnamed Literal.
@@ -64,7 +64,7 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
         aEnumeration = Model.getCoreFactory().buildEnumeration("", model);
         aLiteral = Model.getCoreFactory().createEnumerationLiteral();
         Model.getCoreHelper().addLiteral(aEnumeration, 0, aLiteral);
-        npArguments = new HashMap<String, Object>();
+        npSettings = new NotationSettings();
     }
     
     /**
@@ -145,7 +145,9 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
         int i = 0;
         for (Object lit : literals) {
             String name = Model.getFacade().getName(lit);
-            if (name == null) name = "";
+            if (name == null) {
+                name = "";
+            }
             assertEquals("Unexpected Literal name", name, names[i++]);
         }
     }
@@ -224,7 +226,8 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
                   val.length == stereos.size()
                   && stereosMatch);
         
-        String str = np.toString(literal, null);
+        String str = np.toString(literal, 
+                NotationSettings.getDefaultSettings());
         assertTrue("Empty string", str.length() > 0);
         // TODO: Test if the generated string is correct.
     }
@@ -234,20 +237,20 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
      * @throws ParseException when parsing goes wrong
      */
     public void testGenerateLiteral() throws ParseException {
-        checkGenerate(aLiteral, "", npArguments);
+        checkGenerate(aLiteral, "", NotationSettings.getDefaultSettings());
         checkName(aLiteral, " << s1, s2, s3 >> name3", "name3");
-        checkGenerate(aLiteral, "<<s1,s2,s3>> name3", npArguments);
-        npArguments.put("leftGuillemot", "\u00AB");
-        npArguments.put("rightGuillemot", "\u00BB");
-        /* TODO: Make this work: */
-//        checkGenerate(aLiteral, "\u00ABs1,s2,s3\u00BB name3", npArguments);
+        checkGenerate(aLiteral, "<<s1, s2, s3>> name3", 
+                NotationSettings.getDefaultSettings());
+        npSettings.setUseGuillemets(true);
+        checkGenerate(aLiteral, "\u00ABs1, s2, s3\u00BB name3", npSettings);
     }
     
-    private void checkGenerate(Object literal, String text, Map args) {
+    private void checkGenerate(Object literal, String text, 
+            NotationSettings settings) {
         EnumerationLiteralNotationUml notation = 
             new EnumerationLiteralNotationUml(aLiteral); 
         assertEquals("Incorrect generation", 
-                text, notation.toString(literal, args));
+                text, notation.toString(literal, settings));
     }
     
     /**

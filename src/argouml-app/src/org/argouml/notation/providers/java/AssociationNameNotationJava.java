@@ -33,6 +33,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.AssociationNameNotation;
 
 /**
@@ -93,11 +94,15 @@ public class AssociationNameNotationJava extends AssociationNameNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public String toString(final Object modelElement, final Map args) {
         String name;
         name = Model.getFacade().getName(modelElement);
-        if (name == null) return "";
+        if (name == null) {
+            return "";
+        }
         return NotationUtilityJava.generateLeaf(modelElement, args)
             + NotationUtilityJava.generateAbstract(modelElement, args)
             + NotationUtilityJava.generateVisibility(modelElement, args) 
@@ -105,4 +110,26 @@ public class AssociationNameNotationJava extends AssociationNameNotation {
             + name;
     }
 
+    @Override
+    public String toString(final Object modelElement, 
+            final NotationSettings settings) {
+        String name;
+        name = Model.getFacade().getName(modelElement);
+        if (name == null) {
+            return "";
+        }
+        String visibility = "";
+        if (settings.isShowVisibilities()) {
+            visibility = NotationUtilityJava.generateVisibility(modelElement);
+        }
+        String path = "";
+        if (settings.isShowPaths()) {
+            path = NotationUtilityJava.generatePath(modelElement);
+        }
+        return NotationUtilityJava.generateLeaf(modelElement)
+            + NotationUtilityJava.generateAbstract(modelElement)
+            + visibility 
+            + path
+            + name;
+    }
 }

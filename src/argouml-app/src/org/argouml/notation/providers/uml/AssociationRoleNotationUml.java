@@ -34,6 +34,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.AssociationRoleNotation;
 import org.argouml.util.MyTokenizer;
 
@@ -190,12 +191,23 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
      * See issue 2712.
      * 
      * {@inheritDoc}
+     * @deprecated
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement);
+    }
+
+    private String toString(final Object modelElement) {
         //get the associationRole name
         String name = Model.getFacade().getName(modelElement);
-        if (name == null) name = "";
-        if (name.length() > 0) name = "/" + name;
+        if (name == null) {
+            name = "";
+        }
+        if (name.length() > 0) {
+            name = "/" + name;
+        }
         //get the base association name
         Object assoc = Model.getFacade().getBase(modelElement);
         if (assoc != null) {
@@ -205,6 +217,12 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
             }
         }
         return name;
+    }
+
+    @Override
+    public String toString(final Object modelElement, 
+            final NotationSettings settings) {
+        return toString(modelElement);
     }
     
     

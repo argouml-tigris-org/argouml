@@ -37,6 +37,7 @@ import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ObjectFlowStateStateNotation;
 
 /**
@@ -223,24 +224,26 @@ public class ObjectFlowStateStateNotationUml extends
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
-        StringBuffer theNewText = new StringBuffer("");
+        return toString(modelElement);
+    }
+
+    private String toString(Object modelElement) {
+        StringBuilder theNewText = new StringBuilder("");
         Object cis = Model.getFacade().getType(modelElement);
         if (Model.getFacade().isAClassifierInState(cis)) {
             theNewText.append("[ ");
-            Collection states = Model.getFacade().getInStates(cis);
-            Iterator i = states.iterator();
-            boolean first = true;
-            while (i.hasNext()) {
-                if (!first) {
-                    theNewText.append(", ");
-                }
-                first = false;
-                Object state = i.next();
-                theNewText.append(Model.getFacade().getName(state));
-            }
+            theNewText.append(formatNameList(
+                    Model.getFacade().getInStates(cis)));
             theNewText.append(" ]");
         }
         return theNewText.toString();
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
     }
 }

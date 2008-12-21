@@ -26,7 +26,7 @@ package org.argouml.uml.diagram;
 
 import java.awt.Font;
 
-import org.argouml.notation.Notation;
+import org.argouml.notation.NotationSettings;
 import org.tigris.gef.undo.Memento;
 
 /**
@@ -57,7 +57,7 @@ public class DiagramSettings {
          */
         BIG_ICON(DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON), 
         /**
-         * Stereotype rendered with small ico
+         * Stereotype rendered with small icon
          */
         SMALL_ICON(DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);
        
@@ -100,6 +100,8 @@ public class DiagramSettings {
 //    }
     
     private DiagramSettings parent;
+    
+    private NotationSettings notationSettings;
 
     /* Diagram appearance settings with project scope: */
     private String fontName;
@@ -115,21 +117,12 @@ public class DiagramSettings {
     private Font fontBold;
     private Font fontBoldItalic;
     
-    /* Notation settings  */
-    private String notationLanguage;
     private Boolean showBidirectionalArrows;
-    private Boolean showAssociationNames;
-    private Boolean showVisibility;
-    private Boolean showMultiplicity;
-    private Boolean showInitialValue;
-    private Boolean showProperties;
-    private Boolean showTypes;
-    private Boolean showStereotypes;
-    private Boolean showSingularMultiplicities;
+    
     private Integer defaultShadowWidth;
+    
     private StereotypeStyle defaultStereotypeView;
 
-    private Boolean useGuillemets;
 
 
     /**
@@ -138,6 +131,7 @@ public class DiagramSettings {
      */
     public DiagramSettings() {
         super();
+        notationSettings = new NotationSettings();
         recomputeFonts();
         parent = null;
     }
@@ -155,56 +149,22 @@ public class DiagramSettings {
         parent = parentSettings;
     }
 
-
+    
     /**
-     * @return Return the notation language.
+     * @return Returns the notationSettings.
      */
-    public String getNotationLanguage() {
-        if (notationLanguage == null) {
-            if (parent != null) {
-                return parent.getNotationLanguage();
-            } else {
-                return "UML 1.4";
-            }
-        }
-        return notationLanguage;
+    public NotationSettings getNotationSettings() {
+        return notationSettings;
     }
 
 
     /**
-     * @param newLanguage the notation language.
-     * @return true if the notation is set - false if it does not exist
+     * @param notationSettings The notationSettings to set.
      */
-    public boolean setNotationLanguage(final String newLanguage) {
-        if (notationLanguage != null 
-                && notationLanguage.equals(newLanguage)) {
-            return true;
-        }
-        
-        // TODO: Do we care?
-        if (Notation.findNotation(newLanguage) == null) {
-            /* This Notation is not available! */
-            return false;
-        }
-
-        final String oldLanguage = notationLanguage;
-
-        Memento memento = new Memento() {
-            public void redo() {
-                notationLanguage = newLanguage;
-                // TODO: We can't have a global "current" language
-                // NotationProviderFactory2.setCurrentLanguage(newLanguage);
-            }
-
-            public void undo() {
-                notationLanguage = oldLanguage;
-                // TODO: We can't have a global "current" language
-                // NotationProviderFactory2.setCurrentLanguage(oldLanguage);
-            }
-        };
-        doUndoable(memento);
-        return true;
+    public void setNotationSettings(NotationSettings notationSettings) {
+        this.notationSettings = notationSettings;
     }
+
 
     /**
      * @return Returns <code>true</code> if we show bold names.
@@ -235,329 +195,6 @@ public class DiagramSettings {
 
             public void undo() {
                 showBoldNames = !showem;
-            }
-        };
-        doUndoable(memento);
-    }
-
-    /**
-     * @return Returns <code>true</code> if we show guillemets.
-     */
-    public boolean isUseGuillemets() {
-        if (useGuillemets == null) {
-            if (parent != null) {
-                return parent.isUseGuillemets();
-            } else {
-                return false;
-            }
-        }
-        return useGuillemets;
-    }
-
-
-    /**
-     * @param showem <code>true</code> if guillemets are to be shown.
-     */
-    public void setUseGuillemets(final boolean showem) {
-        if (useGuillemets != null && useGuillemets == showem) {
-            return;
-        }
-
-        Memento memento = new Memento() {
-            public void redo() {
-                useGuillemets = showem;
-            }
-
-            public void undo() {
-                useGuillemets = !showem;
-            }
-        };
-        doUndoable(memento);
-    }
-
-
-    /**
-     * @return Returns <code>true</code> if we show association names.
-     */
-    public boolean isShowAssociationNames() {
-        if (showAssociationNames == null) {
-            if (parent != null) {
-                return parent.isShowAssociationNames();
-            } else {
-                return false;
-            }
-        }
-        return showAssociationNames;
-    }
-
-    /**
-     * @param showem <code>true</code> if association names are to be shown.
-     */
-    public void setShowAssociationNames(final boolean showem) {
-        if (showAssociationNames != null && showAssociationNames == showem) {
-            return;
-        }
-
-        Memento memento = new Memento() {
-
-            public void redo() {
-                showAssociationNames = showem;
-            }
-
-            public void undo() {
-                showAssociationNames = !showem;
-            }
-        };
-        doUndoable(memento);
-    }
-
-    /**
-     * @return Returns <code>true</code> if we show visibilities.
-     */
-    public boolean isShowVisibility() {
-        if (showVisibility == null) {
-            if (parent != null) {
-                return parent.isShowVisibility();
-            } else {
-                return false;
-            }
-        }
-        return showVisibility;
-    }
-
-    /**
-     * @param showem <code>true</code> if visibilities are to be shown.
-     */
-    public void setShowVisibility(final boolean showem) {
-        if (showVisibility != null && showVisibility == showem) {
-            return;
-        }
-
-        Memento memento = new Memento() {
-            public void redo() {
-                showVisibility = showem;
-            }
-
-            public void undo() {
-                showVisibility = !showem;
-            }
-        };
-        doUndoable(memento);
-    }
-
-
-    /**
-     * @return Returns <code>true</code> if we show multiplicities.
-     */
-    public boolean isShowMultiplicity() {
-        if (showMultiplicity == null) {
-            if (parent != null) {
-                return parent.isShowMultiplicity();
-            } else {
-                return false;
-            }
-        }
-        return showMultiplicity;
-    }
-
-
-    /**
-     * @param showem <code>true</code> if the multiplicity is to be shown.
-     */
-    public void setShowMultiplicity(final boolean showem) {
-        if (showMultiplicity != null && showMultiplicity == showem) {
-            return;
-        }
-
-        Memento memento = new Memento() {
-            public void redo() {
-                showMultiplicity = showem;
-            }
-
-            public void undo() {
-                showMultiplicity = !showem;
-            }
-        };
-        doUndoable(memento);
-    }
-
-    /**
-     * @return Returns <code>true</code> if we show initial values.
-     */
-    public boolean isShowInitialValue() {
-        if (showInitialValue == null) {
-            if (parent != null) {
-                return parent.isShowInitialValue();
-            } else {
-                return false;
-            }
-        }
-        return showInitialValue;
-    }
-
-
-    /**
-     * @param showem <code>true</code> if initial values are to be shown.
-     */
-    public void setShowInitialValue(final boolean showem) {
-        if (showInitialValue != null && showInitialValue == showem) {
-            return;
-        }
-
-        Memento memento = new Memento() {
-            public void redo() {
-                showInitialValue = showem;
-            }
-
-            public void undo() {
-                showInitialValue = !showem;
-            }
-        };
-        doUndoable(memento);
-
-    }
-
-
-    /**
-     * @return Returns <code>true</code> if we show properties.
-     */
-    public boolean isShowProperties() {
-        if (showProperties == null) {
-            if (parent != null) {
-                return parent.isShowProperties();
-            } else {
-                return false;
-            }
-        }
-        return showProperties;
-    }
-
-
-    /**
-     * @param showem <code>true</code> if properties are to be shown.
-     */
-    public void setShowProperties(final boolean showem) {
-        if (showProperties != null && showProperties == showem) {
-            return;
-        }
-
-        Memento memento = new Memento() {
-            public void redo() {
-                showProperties = showem;
-            }
-
-            public void undo() {
-                showProperties = !showem;
-            }
-        };
-        doUndoable(memento);
-
-    }
-
-
-    /**
-     * @return Returns <code>true</code> if we show types.
-     */
-    public boolean isShowTypes() {
-        if (showTypes == null) {
-            if (parent != null) {
-                return parent.isShowTypes();
-            } else {
-                return false;
-            }
-        }
-        return showTypes;
-    }
-
-
-    /**
-     * @param showem <code>true</code> if types are to be shown.
-     */
-    public void setShowTypes(final boolean showem) {
-        if (showTypes != null && showTypes == showem) {
-            return;
-        }
-
-        Memento memento = new Memento() {
-            public void redo() {
-                showTypes = showem;
-            }
-
-            public void undo() {
-                showTypes = !showem;
-            }
-        };
-        doUndoable(memento);
-
-    }
-
-    /**
-     * @return Returns <code>true</code> if we show stereotypes.
-     */
-    public boolean isShowStereotypes() {
-        if (showStereotypes == null) {
-            if (parent != null) {
-                return parent.isShowStereotypes();
-            } else {
-                return true;
-            }
-        }
-        return showStereotypes;
-    }
-
-
-    /**
-     * @param showem <code>true</code> if stereotypes are to be shown.
-     */
-    public void setShowStereotypes(final boolean showem) {
-        if (showStereotypes != null && showStereotypes == showem) {
-            return;
-        }
-
-        Memento memento = new Memento() {
-            public void redo() {
-                showStereotypes = showem;
-            }
-
-            public void undo() {
-                showStereotypes = !showem;
-            }
-        };
-        doUndoable(memento);
-
-    }
-
-    /**
-     * @return Returns <code>true</code> if we show  "1" Multiplicities.
-     */
-    public boolean isShowSingularMultiplicities() {
-        if (showSingularMultiplicities == null) {
-            if (parent != null) {
-                return parent.isShowSingularMultiplicities();
-            } else {
-                return false;
-            }
-        }
-        return showSingularMultiplicities;
-    }
-
-
-    /**
-     * @param showem <code>true</code> if "1" Multiplicities are to be shown.
-     */
-    public void setShowSingularMultiplicities(final boolean showem) {
-        if (showSingularMultiplicities != null 
-                && showSingularMultiplicities == showem) {
-            return;
-        }
-
-        Memento memento = new Memento() {
-            public void redo() {
-                showSingularMultiplicities = showem;
-            }
-
-            public void undo() {
-                showSingularMultiplicities = !showem;
             }
         };
         doUndoable(memento);

@@ -73,8 +73,11 @@ import org.argouml.model.DiElement;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationSettings;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectActions;
@@ -139,18 +142,11 @@ public abstract class FigEdgeModelElement
     **/
     private static int popupAddOffset;
 
-
     private NotationProvider notationProviderName;
     
-    // TODO: This is a very memory inefficient design because:
-    // a) HashMaps are MUCH larger then necessary for this object
-    //    ~224 bytes vs. 24 bytes for 4 parameters - see
-    //    https://www.sdn.sap.com/irj/scn/weblogs?blog=/pub/wlg/5163
-    // b) the notation settings objects aren't shared even though most of
-    // them will be identical
-    // It's also performance inefficient, although that's less of a concern
-    // TODO: The opaqueness of the string keys prevents us finding uses
+    @Deprecated
     private HashMap<String, Object> npArguments;
+
     /**
      * The Fig that displays the name of this model element.
      * Use getNameFig(), no setter should be required.
@@ -202,7 +198,6 @@ public abstract class FigEdgeModelElement
     protected FigEdgeModelElement(Object element, 
             DiagramSettings renderSettings) {
         settings = renderSettings;
-
         nameFig = new FigNameWithAbstract(element, 
                 new Rectangle(X0, Y0 + 20, 90, 20), 
                 renderSettings, false);
@@ -212,12 +207,6 @@ public abstract class FigEdgeModelElement
       
         initFigs();
         initOwner(element);
-
-        // TODO: defer setting this up until needed
-        // (or just use value from settings)
-        putNotationArgument("useGuillemets", 
-                Boolean.valueOf(getSettings().isUseGuillemets()));
-
     }
 
 
@@ -707,7 +696,7 @@ public abstract class FigEdgeModelElement
         if (ft == getNameFig()) {
             showHelp(notationProviderName.getParsingHelp());
             ft.setText(notationProviderName.toString(getOwner(), 
-                    getNotationArguments()));
+                    getNotationSettings()));
         }
     }
     
@@ -743,7 +732,7 @@ public abstract class FigEdgeModelElement
             }
             notationProviderName.parse(getOwner(), ft.getText());
             ft.setText(notationProviderName.toString(getOwner(), 
-                    getNotationArguments()));
+                    getNotationSettings()));
         }
     }
 
@@ -908,7 +897,7 @@ public abstract class FigEdgeModelElement
         }
         if (notationProviderName != null) {
             String nameStr = notationProviderName.toString(
-                    getOwner(), getNotationArguments());
+                    getOwner(), getNotationSettings());
             nameFig.setText(nameStr);
             updateFont();
             calcBounds();
@@ -997,11 +986,12 @@ public abstract class FigEdgeModelElement
          * since this is not always about the name of this 
          * modelelement alone.*/
         if (Model.getFacade().isAModelElement(own)) {
+            NotationName notation = Notation.findNotation(
+                    getNotationSettings().getNotationLanguage());
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        getNotationProviderType(), own, this);
-            putNotationArgument("useGuillemets", 
-                    Boolean.valueOf(getSettings().isUseGuillemets()));
+                        getNotationProviderType(), own, this, 
+                        notation);
         }
     }
 
@@ -1509,11 +1499,19 @@ public abstract class FigEdgeModelElement
 
     /**
      * @return the current notation arguments or null if none have been set
+     * @deprecated for 0.27.3 by tfmorris.  Use {@link #getNotationSettings()}.
      */
+    @Deprecated
     protected HashMap<String, Object> getNotationArguments() {
         return npArguments;
     }
 
+    /**
+     * @param key
+     * @param element
+     * @deprecated for 0.27.3 by tfmorris.  Use {@link #getNotationSettings()}.
+     */
+    @Deprecated
     protected void putNotationArgument(String key, Object element) {
         if (notationProviderName != null) {
             // Lazily initialize if not done yet
@@ -1636,5 +1634,12 @@ public abstract class FigEdgeModelElement
     public void setSettings(DiagramSettings renderSettings) {
         settings = renderSettings;
         renderingChanged();
+    }
+    
+    /**
+     * @return the current notation settings
+     */
+    protected NotationSettings getNotationSettings() {
+        return getSettings().getNotationSettings();
     }
 }

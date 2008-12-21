@@ -79,6 +79,7 @@ import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationSettings;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectActions;
@@ -153,7 +154,8 @@ public abstract class FigNodeModelElement
     private DiElement diElement;
 
     private NotationProvider notationProviderName;
-    // TODO: Use lazy initialization and/or remove
+    
+    // TODO: Deprecated
     private HashMap<String, Object> npArguments;
     
     /**
@@ -279,11 +281,6 @@ public abstract class FigNodeModelElement
      */
     private boolean removeFromDiagram = true;
 
-    /**
-     * Flag that indicates if the full namespace path should be shown
-     * in front of the name.
-     */
-    private boolean pathVisible;
 
     /**
      * If the contains text to be edited by the user.
@@ -368,6 +365,8 @@ public abstract class FigNodeModelElement
             DiagramSettings renderSettings) {
         super();
         settings = renderSettings;
+        initNotationSettings();
+        
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
         bigPort = new FigRect(X0, Y0, 0, 0, Color.cyan, Color.cyan);
@@ -390,8 +389,6 @@ public abstract class FigNodeModelElement
         notationProviderName =
             NotationProviderFactory2.getInstance().getNotationProvider(
                     getNotationProviderType(), element, this);
-        putNotationArgument("pathVisible", 
-                Boolean.valueOf(isPathVisible()));
 
         /* This next line presumes that the 1st fig with this owner 
          * is the previous port - and consequently nullifies the owner 
@@ -1141,13 +1138,13 @@ public abstract class FigNodeModelElement
         if (ft == getNameFig()) {
             showHelp(notationProviderName.getParsingHelp());
             ft.setText(notationProviderName.toString(getOwner(), 
-                    getNotationArguments()));
+                    getNotationSettings()));
         }
         if (ft instanceof CompartmentFigText) {
             final CompartmentFigText figText = (CompartmentFigText) ft;
             showHelp(figText.getNotationProvider().getParsingHelp());
             figText.setText(figText.getNotationProvider().toString(
-                    figText.getOwner(), getNotationArguments()));
+                    figText.getOwner(), getNotationSettings()));
         }
     }
 
@@ -1191,13 +1188,13 @@ public abstract class FigNodeModelElement
             }
             notationProviderName.parse(getOwner(), ft.getText());
             ft.setText(notationProviderName.toString(getOwner(), 
-                    getNotationArguments()));
+                    getNotationSettings()));
         }
         if (ft instanceof CompartmentFigText) {
             final CompartmentFigText figText = (CompartmentFigText) ft;
             figText.getNotationProvider().parse(ft.getOwner(), ft.getText());
             ft.setText(figText.getNotationProvider().toString(
-                    ft.getOwner(), getNotationArguments()));
+                    ft.getOwner(), getNotationSettings()));
         }
     }
 
@@ -1495,9 +1492,12 @@ public abstract class FigNodeModelElement
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         getNotationProviderType(), own, this);
-            putNotationArgument("pathVisible", 
-                    Boolean.valueOf(isPathVisible()));
         }
+    }
+    
+    private void initNotationSettings() {
+        // Is this actually set at initialization time?
+        getNotationSettings().setShowPaths(isPathVisible());
     }
 
  
@@ -1534,7 +1534,7 @@ public abstract class FigNodeModelElement
             }
             if (notationProviderName != null) {
                 nameFig.setText(notationProviderName.toString(
-                        getOwner(), getNotationArguments()));
+                        getOwner(), getNotationSettings()));
                 // TODO: Why does the font need updating? - tfm
                 updateFont();
                 updateBounds();
@@ -1546,24 +1546,22 @@ public abstract class FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.PathContainer#isPathVisible()
      */
     public boolean isPathVisible() {
-        return pathVisible;
+        return getNotationSettings().isShowPaths();
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.PathContainer#setPathVisible(boolean)
      */
     public void setPathVisible(boolean visible) {
-        if (pathVisible == visible) {
+        NotationSettings ns = getNotationSettings();
+        if (ns.isShowPaths() == visible) {
             return;
         }
         MutableGraphSupport.enableSaveAction();
         // TODO: Use this event mechanism to update 
         // the checkmark on the Presentation Tab:
         firePropChange("pathVisible", !visible, visible);
-        pathVisible = visible;
-        if (notationProviderName != null) {
-            putNotationArgument("pathVisible", Boolean.valueOf(visible));
-        }
+        ns.setShowPaths(visible);
         if (readyToEdit) {
             renderingChanged();
             damage();
@@ -1595,10 +1593,8 @@ public abstract class FigNodeModelElement
             Object elementNs = Model.getFacade().getNamespace(modelElement);
             Object diagramNs = diagram.getNamespace();
             if (elementNs != null) {
-                boolean visible = elementNs != diagramNs;
-                // TODO: Pass argument directly
-                putNotationArgument("pathVisible", Boolean.valueOf(visible));
-                pathVisible = visible;
+                boolean visible = (elementNs != diagramNs);
+                getNotationSettings().setShowPaths(visible);
                 renderingChanged();
                 damage();
             }
@@ -2186,12 +2182,19 @@ public abstract class FigNodeModelElement
     
     /**
      * @return the current notation arguments or null if none are set
+     * @deprecated for 0.27.3 by tfmorris.  Use {@link #getNotationSettings()}.
      */
+    @Deprecated
     protected HashMap<String, Object> getNotationArguments() {
         return npArguments;
     }
 
-
+    /**
+     * @param key
+     * @param value
+     * @deprecated for 0.27.3 by tfmorris.  Use {@link #getNotationSettings()}.
+     */
+    @Deprecated
     protected void putNotationArgument(String key, Object value) {
         if (notationProviderName != null) {
             // Lazily initialize if not done yet
@@ -2455,6 +2458,9 @@ public abstract class FigNodeModelElement
         renderingChanged();
     }
 
+    protected NotationSettings getNotationSettings() {
+        return getSettings().getNotationSettings();
+    }
     
     /**
      * A default "clarifier" to be used for selection if the subclass doesn't

@@ -36,6 +36,7 @@ import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ModelElementNameNotation;
 import org.argouml.util.MyTokenizer;
 
@@ -190,14 +191,24 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
 
         Model.getCoreHelper().setName(modelElement, name);
         
-        if (abstrac) Model.getCoreHelper().setAbstract(modelElement, abstrac);
-        if (fina) Model.getCoreHelper().setLeaf(modelElement, fina);
-        if (publi) Model.getCoreHelper().setVisibility(modelElement,
+        if (abstrac) {
+            Model.getCoreHelper().setAbstract(modelElement, abstrac);
+        }
+        if (fina) {
+            Model.getCoreHelper().setLeaf(modelElement, fina);
+        }
+        if (publi) {
+            Model.getCoreHelper().setVisibility(modelElement,
                 Model.getVisibilityKind().getPublic());
-        if (privat) Model.getCoreHelper().setVisibility(modelElement,
+        }
+        if (privat) {
+            Model.getCoreHelper().setVisibility(modelElement,
                 Model.getVisibilityKind().getPrivate());
-        if (protect) Model.getCoreHelper().setVisibility(modelElement,
+        }
+        if (protect) {
+            Model.getCoreHelper().setVisibility(modelElement,
                 Model.getVisibilityKind().getProtected());
+        }
     }
 
     /**
@@ -219,10 +230,14 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
         String name;
         name = Model.getFacade().getName(modelElement);
-        if (name == null) return "";
+        if (name == null) {
+            return "";
+        }
         return NotationUtilityJava.generateLeaf(modelElement, args)
             + NotationUtilityJava.generateAbstract(modelElement, args)
             + NotationUtilityJava.generateVisibility(modelElement, args) 
@@ -230,5 +245,25 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
             + name;
     }
 
+    public String toString(Object modelElement, NotationSettings settings) {
+        String name;
+        name = Model.getFacade().getName(modelElement);
+        if (name == null) {
+            return "";
+        }
+        String visibility = "";
+        if (settings.isShowVisibilities()) {
+            visibility = NotationUtilityJava.generateVisibility(modelElement);
+        }
+        String path = "";
+        if (settings.isShowPaths()) {
+            path = NotationUtilityJava.generatePath(modelElement);
+        }
+        return NotationUtilityJava.generateLeaf(modelElement)
+            + NotationUtilityJava.generateAbstract(modelElement)
+            + visibility
+            + path
+            + name;
+    }
 
 }

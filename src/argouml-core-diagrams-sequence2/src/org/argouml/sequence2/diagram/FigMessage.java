@@ -29,6 +29,7 @@ import java.awt.Point;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.SDNotationSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
 import org.tigris.gef.base.PathConvPercent;
@@ -58,6 +59,8 @@ public class FigMessage extends FigEdgeModelElement {
      */
     private Object action = null;
     
+    private SDNotationSettings notationSettings;
+    
     /**
      * Constructs a new figlink and sets the owner of the figlink.
      *
@@ -68,7 +71,8 @@ public class FigMessage extends FigEdgeModelElement {
         textGroup = new FigTextGroup();
         textGroup.addFig(getNameFig());
         textGroup.addFig(getStereotypeFig());
-        addPathItem(textGroup, new PathConvPercent(this, 50, 10));        
+        addPathItem(textGroup, new PathConvPercent(this, 50, 10));
+        notationSettings = new SDNotationSettings();
         setOwner(owner);
     }
     
@@ -85,19 +89,25 @@ public class FigMessage extends FigEdgeModelElement {
      * since they do not add any information. 
      * In collaboration diagrams they are needed, 
      * and they are still optional in sequence diagrams. */
+    @Override
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
-        putNotationArgument("hideSequenceNrs", Boolean.TRUE);
+        notationSettings.setShowSequenceNumbers(false);
     }
 
+    @Override
     protected void textEditStarted(FigText ft) {
         /* This is a temporary hack until the notation provider
          * for a SD Message will be able to parse successfully when the sequence
          * number is missing.
          * Remove this method completely then.*/
-        putNotationArgument("hideSequenceNrs", Boolean.FALSE);
+        notationSettings.setShowSequenceNumbers(true);
         super.textEditStarted(ft);
-        putNotationArgument("hideSequenceNrs", Boolean.TRUE);
+        notationSettings.setShowSequenceNumbers(false);
+    }
+    
+    protected SDNotationSettings getNotationSettings() {
+        return notationSettings;
     }
 
     @Override

@@ -166,24 +166,50 @@ public class NotationUtilityJava {
     
     /**
      * @param modelElement the UML element
+     * @param args a set of arguments that may influence the generated notation
+     * @return a string which represents abstractness
+     * @deprecated for 0.27.3 by tfmorris. Use {@link #generateAbstract(Object)}
+     *             .
+     */
+    @Deprecated
+    static String generateAbstract(Object modelElement, 
+            @SuppressWarnings("unused") Map args) {
+        return generateAbstract(modelElement);
+    }
+
+    /**
+     * @param modelElement the UML element
      * @param args a set of arguments that may influence 
      * the generated notation
      * @return a string which represents abstractness
      */
-    static String generateAbstract(Object modelElement, Map args) {
+    static String generateAbstract(Object modelElement) {
         if (Model.getFacade().isAbstract(modelElement)) {
             return "abstract ";
         }
         return "";
     }
-
+    
      /**
      * @param modelElement the UML element
      * @param args a set of arguments that may influence 
      * the generated notation
      * @return a string which represents leaf
+     * @deprecated for 0.27.3 by tfmorris.  Use {@link #generateLeaf(Object)}.
      */
-    static String generateLeaf(Object modelElement, Map args) {
+    @Deprecated
+    static String generateLeaf(Object modelElement, 
+            @SuppressWarnings("unused") Map args) {
+        return generateLeaf(modelElement);
+    }
+
+    /**
+     * @param modelElement the UML element
+     * @param args a set of arguments that may influence 
+     * the generated notation
+     * @return a string which represents leaf
+     */
+    static String generateLeaf(Object modelElement) {
         if (Model.getFacade().isLeaf(modelElement)) {
             return "final ";
         }
@@ -198,31 +224,42 @@ public class NotationUtilityJava {
      */
     static String generatePath(Object modelElement, 
             Map args) {
-        StringBuilder s = new StringBuilder();
         if (NotationProvider.isValue("pathVisible", args)) {
-            Stack<String> stack = new Stack<String>();
-            Object ns = Model.getFacade().getNamespace(modelElement);
-            while (ns != null && !Model.getFacade().isAModel(ns)) {
-                stack.push(Model.getFacade().getName(ns));
-                ns = Model.getFacade().getNamespace(ns);
-            }
-            while (!stack.isEmpty()) {
-                s.append(stack.pop()).append(".");
-            }
+            return generatePath(modelElement);
+        } else {
+            return "";
+        }
+    }
 
-            if (s.length() > 0 && !(s.lastIndexOf(".") == s.length() - 1)) {
-                s.append(".");
-            }
+    static String generatePath(Object modelElement) {
+        StringBuilder s = new StringBuilder();
+        Stack<String> stack = new Stack<String>();
+        Object ns = Model.getFacade().getNamespace(modelElement);
+        // TODO: Use Model.getModelManagementHelper().getPathList(modelElement);
+        // TODO: This will fail with nested Models
+        while (ns != null && !Model.getFacade().isAModel(ns)) {
+            stack.push(Model.getFacade().getName(ns));
+            ns = Model.getFacade().getNamespace(ns);
+        }
+        while (!stack.isEmpty()) {
+            s.append(stack.pop()).append(".");
+        }
+
+        if (s.length() > 0 && !(s.lastIndexOf(".") == s.length() - 1)) {
+            s.append(".");
         }
         return s.toString();
     }
 
     /**
      * @param modelElement the UML element
-     * @param args a set of arguments that may influence 
-     * the generated notation
+     * @param args a set of arguments that may influence the generated notation
      * @return a string which represents the visibility
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #generateVisibility(Object)} or
+     *             {@link #generateVisibility(Object, org.argouml.notation.NotationSettings)}
      */
+    @Deprecated
     static String generateVisibility(Object modelElement, 
             Map args) {
         String s = "";
@@ -231,4 +268,18 @@ public class NotationUtilityJava {
         }
         return s;
     }
+    
+    /**
+     * @param modelElement the UML element
+     * @param settings  settings which influence the generated notation
+     * @return a string which represents the visibility
+     */
+//    static String generateVisibility(Object modelElement, 
+//            NotationSettings settings) {
+//        String s = "";
+//        if (settings.isShowVisibility()) {
+//            s = NotationUtilityJava.generateVisibility(modelElement);
+//        }
+//        return s;
+//    }
 }

@@ -38,6 +38,7 @@ import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.NotationProvider;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.profile.init.InitProfileSubsystem;
 
@@ -1044,7 +1045,8 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
                   val.length == stereos.size()
                   && stereosMatch);
         
-        String str = np.toString(feature, null);
+        String str = np
+                .toString(feature, NotationSettings.getDefaultSettings());
         assertTrue("Empty string", str.length() > 0);
         // TODO: Test if the generated string is correct.
     }

@@ -97,19 +97,6 @@ public class TestDiagramSettings extends TestCase {
                 settings.getDefaultStereotypeViewInt());
 }
 
-    /**
-     * Test the project setting for showing Association names.
-     */
-    public void testAssociationNames() {
-        assertFalse("Association names not correct",
-                settings.isShowAssociationNames());
-        settings.setShowAssociationNames(true);
-        assertTrue("Association names not correct",
-                settings.isShowAssociationNames());
-        settings.setShowAssociationNames(false);
-        assertFalse("Association names not correct",
-                settings.isShowAssociationNames());
-    }
     
     public void testShowBidirectionalArrows() {
         assertFalse("BidirectionalArrows is not correct",
@@ -132,83 +119,9 @@ public class TestDiagramSettings extends TestCase {
         assertFalse("BoldNames is not correct",
                 settings.isShowBoldNames());        
     }
+    
+    
 
-    public void testShowInitialValue() {
-        assertFalse("InitialValue is not correct",
-                settings.isShowInitialValue());
-        settings.setShowInitialValue(true);
-        assertTrue("InitialValue is not correct",
-                settings.isShowInitialValue());
-        settings.setShowInitialValue(false);
-        assertFalse("InitialValue is not correct",
-                settings.isShowBoldNames());        
-        
-    }
-
-    public void testShowProperties() {
-        assertFalse("Properties is not correct",
-                settings.isShowProperties());
-        settings.setShowProperties(true);
-        assertTrue("Properties is not correct",
-                settings.isShowProperties());
-        settings.setShowProperties(false);
-        assertFalse("Properties is not correct",
-                settings.isShowProperties());
-    }
-    
-    public void testShowMultiplicity() {
-        assertFalse("Multiplicities is not correct",
-                settings.isShowMultiplicity());
-        settings.setShowMultiplicity(true);
-        assertTrue("Multiplicity is not correct",
-                settings.isShowMultiplicity());
-        settings.setShowMultiplicity(false);
-        assertFalse("Multiplicity is not correct",
-                settings.isShowMultiplicity());        
-        
-    }
-    
-    public void testSingularMultiplicities() {
-        assertFalse("ShowSingularMultiplicities is not correct",
-                settings.isShowSingularMultiplicities());
-        settings.setShowSingularMultiplicities(true);
-        assertTrue("ShowSingularMultiplicities is not correct",
-                settings.isShowSingularMultiplicities());
-        settings.setShowSingularMultiplicities(false);
-        assertFalse("SingularMultiplicities is not correct",
-                settings.isShowSingularMultiplicities());
-    }
-    
-    public void testShowStereotypes() {
-        assertTrue("Stereotypes is not correct",
-                settings.isShowStereotypes());
-        settings.setShowStereotypes(true);
-        assertTrue("Stereotypes is not correct",
-                settings.isShowStereotypes());
-        settings.setShowStereotypes(false);
-        assertFalse("Stereotypes is not correct",
-                settings.isShowStereotypes());        
-
-    }
-    
-    public void testShowTypes() {
-        assertFalse("Types is not correct",
-                settings.isShowTypes());
-        settings.setShowTypes(true);
-        assertTrue("Types is not correct",
-                settings.isShowTypes());
-        settings.setShowTypes(false);
-        assertFalse("Types is not correct",
-                settings.isShowTypes());        
-
-    }
-    
-    public void testNotationLanguage() {
-        assertEquals("NotationLanguage default is not correct",
-                "UML 1.4", settings.getNotationLanguage());
-        
-    }
-    
     public void testFont() {
         assertEquals("Font default is not correct",
                 "Dialog", settings.getFontName());
@@ -228,52 +141,6 @@ public class TestDiagramSettings extends TestCase {
                 settings.getFontItalic().isItalic());
     }
     
-    /**
-     * Test the project setting for showing Multiplicity.
-     */
-    public void testMultiplicity() {
-        assertFalse("Multiplicity not correct",
-                settings.isShowMultiplicity());
-        
-        settings.setShowMultiplicity(true);
-        assertTrue("Multiplicity not correct",
-                settings.isShowMultiplicity());
-        
-        settings.setShowMultiplicity(false);
-        assertFalse("Multiplicity not correct",
-                settings.isShowMultiplicity());
-        
-    }
-    
-    /**
-     * Test the project setting for showing Visibility.
-     */
-    public void testVisibility() {
-        assertFalse("Visibility not correct",
-                settings.isShowVisibility());
-        
-        settings.setShowVisibility(true);
-        assertTrue("Visibility not correct",
-                settings.isShowVisibility());
-        
-        settings.setShowVisibility(false);
-        assertFalse("Visibility not correct",
-                settings.isShowVisibility());
-    }
-
-    /**
-     * Test the use of Guillemets.
-     */
-    public void testUseGuillemets() {
-        assertFalse("Guillemots not correct",
-                settings.isUseGuillemets());
-        settings.setUseGuillemets(true);
-        assertTrue("Guillemots not correct",
-                settings.isUseGuillemets());
-        settings.setUseGuillemets(false);
-        assertFalse("Guillemots not correct",
-                settings.isUseGuillemets());
-    }
 
     /*
      * @see junit.framework.TestCase#setUp()

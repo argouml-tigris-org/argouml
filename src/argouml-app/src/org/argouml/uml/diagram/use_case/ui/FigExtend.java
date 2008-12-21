@@ -280,7 +280,8 @@ public class FigExtend extends FigEdgeModelElement {
     
     private String getLabel() {
         return NotationUtilityUml.formatStereotype(
-                "extend", getSettings().isUseGuillemets());
+                "extend", 
+                getNotationSettings().isUseGuillemets());
     }
 
 }

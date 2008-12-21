@@ -73,7 +73,7 @@ class ActionAddStereotype extends UndoableAction {
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
         return NotationUtilityUml.generateStereotype(st, 
-                ps.getDefaultDiagramSettings().isUseGuillemets());
+                ps.getNotationSettings().isUseGuillemets());
     }
 
     /*

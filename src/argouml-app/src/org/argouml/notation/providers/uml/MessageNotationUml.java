@@ -41,6 +41,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.MessageNotation;
 import org.argouml.util.CustomSeparator;
 import org.argouml.util.MyTokenizer;
@@ -128,13 +129,26 @@ public class MessageNotationUml extends MessageNotation {
         return "parsing.help.fig-message";
     }
 
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
+    }
+
     /*
-     * Generates a textual description for a Message m.
+     * Generate a textual description for a Message m.
      *
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, 
+     * @see org.argouml.notation.NotationProvider#toString(java.lang.Object, 
      * java.util.Map)
+     * @deprecated
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(final Object modelElement, final Map args) {
+        return toString(modelElement);
+    }
+
+    private String toString(final Object modelElement) {
         Iterator it;
         Collection pre;
         Object act;

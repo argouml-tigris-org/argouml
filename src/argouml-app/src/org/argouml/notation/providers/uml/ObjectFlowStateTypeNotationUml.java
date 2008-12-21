@@ -32,6 +32,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ObjectFlowStateTypeNotation;
 
 /**
@@ -120,7 +121,13 @@ public class ObjectFlowStateTypeNotationUml
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement);
+    }
+
+    private String toString(Object modelElement) {
         Object classifier = Model.getFacade().getType(modelElement);
         if (Model.getFacade().isAClassifierInState(classifier)) {
             classifier = Model.getFacade().getType(classifier);
@@ -133,6 +140,11 @@ public class ObjectFlowStateTypeNotationUml
             name = "";
         }
         return name;
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
     }
 
 }

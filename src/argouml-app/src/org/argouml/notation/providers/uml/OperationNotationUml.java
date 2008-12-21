@@ -41,6 +41,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.OperationNotation;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.MyTokenizer;
@@ -467,153 +468,114 @@ public class OperationNotationUml extends OperationNotation {
         return "parsing.help.operation";
     }
 
-    /*
-     * Generates an operation according to the UML notation:
-     *
+    /**
+     * Generate an operation according to the UML notation:
+     * <pre>
      *         stereotype visibility name (parameter-list) :
      *                         return-type-expression {property-string}
-     *
+     * </pre>
+     * For the return-type-expression: only the types of the return parameters
+     * are shown.  Depending on settings in Notation, visibility and
+     * properties are shown/not shown.
+     * 
+     * @param modelElement UML Operation element
+     * @param settings notation settings
+     * @return a formatted text string
+     * @see org.argouml.notation.NotationProvider#toString(java.lang.Object, org.argouml.notation.NotationSettings)
+     */
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement, settings.isUseGuillemets(), 
+                settings.isShowVisibilities(), settings.isShowTypes(),
+                settings.isShowProperties());
+    }
+    
+    /**
+     * Generate an operation according to the UML notation:
+     * <pre>
+     *         stereotype visibility name (parameter-list) :
+     *                         return-type-expression {property-string}
+     * </pre>
      * For the return-type-expression: only the types of the return parameters
      * are shown.  Depending on settings in Notation, visibility and
      * properties are shown/not shown.
      *
      * @author jaap.branderhorst@xs4all.nl
-     *
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
+     * {@inheritDoc}
+     * @see org.argouml.notation.NotationProvider#toString(java.lang.Object, java.util.Map)
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #toString(Object, NotationSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
-
+        return toString(modelElement, ps.getUseGuillemotsValue(), 
+                ps.getShowVisibilityValue(), ps
+                .getShowTypesValue(), ps.getShowPropertiesValue());
+    }
+    
+    /**
+     * Generate an operation according to the UML notation:
+     * <pre>
+     *         stereotype visibility name (parameter-list) :
+     *                         return-type-expression {property-string}
+     * </pre>
+     * For the return-type-expression: only the types of the return parameters
+     * are shown.  Depending on settings in Notation, visibility and
+     * properties are shown/not shown.
+     *
+     * @author jaap.branderhorst@xs4all.nl
+     */
+    private String toString(Object modelElement, boolean useGuillemets, 
+            boolean showVisibility,
+            boolean showTypes, boolean showProperties) {
         try {
             String stereoStr = NotationUtilityUml.generateStereotype(
-                    Model.getFacade().getStereotypes(modelElement), args);
+                    Model.getFacade().getStereotypes(modelElement), 
+                    useGuillemets);
             boolean isReception = Model.getFacade().isAReception(modelElement);
             // TODO: needs I18N
             if (isReception) {
                 stereoStr =
                         NotationUtilityUml
-                                .generateStereotype(RECEPTION_KEYWORD, args)
+                                .generateStereotype(RECEPTION_KEYWORD, 
+                                        useGuillemets)
                                 + " " + stereoStr;
             }
-            String visStr = NotationUtilityUml.generateVisibility(modelElement);
-            String nameStr = Model.getFacade().getName(modelElement);
 
-            // the parameters
-            StringBuffer parameterListBuffer = new StringBuffer();
-            Collection coll = Model.getFacade().getParameters(modelElement);
-            Iterator it = coll.iterator();
-            int counter = 0;
-            while (it.hasNext()) {
-                Object parameter = it.next();
-                if (!Model.getFacade().hasReturnParameterDirectionKind(
-                        parameter)) {
-                    counter++;
-                    parameterListBuffer.append(
-                            NotationUtilityUml.generateParameter(parameter));
-                    parameterListBuffer.append(",");
-                }
-            }
-            if (counter > 0) {
-                parameterListBuffer.delete(
-                        parameterListBuffer.length() - 1,
-                        parameterListBuffer.length());
-            }
-
-            StringBuffer parameterStr = new StringBuffer();
-            parameterStr.append("(").append(parameterListBuffer).append(")");
-
-            // the returnparameters
-            StringBuffer returnParasSb = new StringBuffer();
-            if (!isReception) {
-                coll = Model.getCoreHelper().getReturnParameters(modelElement);
-                if (coll != null && coll.size() > 0) {
-                    returnParasSb.append(": ");
-                    Iterator it2 = coll.iterator();
-                    while (it2.hasNext()) {
-                        Object type = Model.getFacade().getType(it2.next());
-                        if (type != null) {
-                            returnParasSb.append(Model.getFacade()
-                                    .getName(type));
-                        }
-                        returnParasSb.append(",");
-                    }
-                    // if we have only one return value and without type,
-                    // the return param string is ": ,", we remove it
-                    if (returnParasSb.length() == 3) {
-                        returnParasSb.delete(0, returnParasSb.length());
-                    }
-                    // else: we remove only the extra ","
-                    else {
-                        returnParasSb.delete(
-                                returnParasSb.length() - 1,
-                                returnParasSb.length());
-                    }
-                }
-            }
-
-
-            // the properties
-            StringBuffer propertySb = new StringBuffer().append("{");
-            // the query state
-            if (Model.getFacade().isQuery(modelElement)) {
-                propertySb.append("query,");
-            }
-            /*
-             * Although Operation and Signal are peers in the UML type 
-             * hierarchy they share the attributes isRoot, isLeaf, 
-             * isAbstract, and  specification. Concurrency is *not* 
-             * shared and is specific to Operation.
-             */
-            if (Model.getFacade().isRoot(modelElement)) {
-                propertySb.append("root,");
-            }
-            if (Model.getFacade().isLeaf(modelElement)) {
-                propertySb.append("leaf,");
-            }
-            if (!isReception) {
-                if (Model.getFacade().getConcurrency(modelElement) != null) {
-                    propertySb.append(Model.getFacade().getName(
-                            Model.getFacade().getConcurrency(modelElement)));
-                    propertySb.append(',');
-                }
-            }
-            Iterator it3 = Model.getFacade().getTaggedValues(modelElement);
-            StringBuffer taggedValuesSb = new StringBuffer();
-            if (it3 != null && it3.hasNext()) {
-                while (it3.hasNext()) {
-                    taggedValuesSb.append(
-                            NotationUtilityUml.generateTaggedValue(it3.next()));
-                    taggedValuesSb.append(",");
-                }
-                taggedValuesSb.delete(
-                        taggedValuesSb.length() - 1,
-                        taggedValuesSb.length());
-            }
-            if (propertySb.length() > 1) {
-                propertySb.delete(propertySb.length() - 1, propertySb.length());
-                // remove last ,
-                propertySb.append("}");
-            } else {
-                propertySb = new StringBuffer();
-            }
-
+            // Unused currently
+//            StringBuffer taggedValuesSb = getTaggedValues(modelElement);
+            
             // lets concatenate it to the resulting string (genStr)
             StringBuffer genStr = new StringBuffer(30);
             if ((stereoStr != null) && (stereoStr.length() > 0)) {
                 genStr.append(stereoStr).append(" ");
             }
-            if ((visStr != null)
-                    && (visStr.length() > 0)
-                    && ps.getShowVisibilityValue()) {
-                genStr.append(visStr);
+            if (showVisibility) {
+                String visStr = NotationUtilityUml
+                        .generateVisibility2(modelElement);
+                if (visStr != null) {
+                    genStr.append(visStr);
+                }
             }
+            
+            String nameStr = Model.getFacade().getName(modelElement);
             if ((nameStr != null) && (nameStr.length() > 0)) {
                 genStr.append(nameStr);
             }
+            
             /* The "show types" defaults to TRUE, to stay compatible with older
              * ArgoUML versions that did not have this setting: */
-            if (ps.getShowTypesValue()) {
+            if (showTypes) {
+                // the parameters
+                StringBuffer parameterStr = new StringBuffer();
+                parameterStr.append("(").append(getParameterList(modelElement))
+                        .append(")");
+
+                // the returnparameters
+                StringBuffer returnParasSb = getReturnParameters(modelElement,
+                        isReception);
                 genStr.append(parameterStr).append(" ");
                 if ((returnParasSb != null) && (returnParasSb.length() > 0)) {
                     genStr.append(returnParasSb).append(" ");
@@ -621,9 +583,12 @@ public class OperationNotationUml extends OperationNotation {
             } else {
                 genStr.append("()");
             }
-            if ((propertySb.length() > 0)
-                    && ps.getShowPropertiesValue()) {
-                genStr.append(propertySb);
+            if (showProperties) {
+                StringBuffer propertySb = getProperties(modelElement,
+                        isReception);
+                if (propertySb.length() > 0) {
+                    genStr.append(propertySb);
+                }
             }
             return genStr.toString().trim();
         } catch (InvalidElementException e) {
@@ -633,4 +598,114 @@ public class OperationNotationUml extends OperationNotation {
 
     }
 
+
+    private StringBuffer getParameterList(Object modelElement) {
+        StringBuffer parameterListBuffer = new StringBuffer();
+        Collection coll = Model.getFacade().getParameters(modelElement);
+        Iterator it = coll.iterator();
+        int counter = 0;
+        while (it.hasNext()) {
+            Object parameter = it.next();
+            if (!Model.getFacade().hasReturnParameterDirectionKind(
+                    parameter)) {
+                counter++;
+                parameterListBuffer.append(
+                        NotationUtilityUml.generateParameter(parameter));
+                parameterListBuffer.append(",");
+            }
+        }
+        if (counter > 0) {
+            parameterListBuffer.delete(
+                    parameterListBuffer.length() - 1,
+                    parameterListBuffer.length());
+        }
+        return parameterListBuffer;
+    }
+
+    private StringBuffer getReturnParameters(Object modelElement,
+            boolean isReception) {
+        StringBuffer returnParasSb = new StringBuffer();
+        if (!isReception) {
+            Collection coll = 
+                Model.getCoreHelper().getReturnParameters(modelElement);
+            if (coll != null && coll.size() > 0) {
+                returnParasSb.append(": ");
+                Iterator it2 = coll.iterator();
+                while (it2.hasNext()) {
+                    Object type = Model.getFacade().getType(it2.next());
+                    if (type != null) {
+                        returnParasSb.append(Model.getFacade()
+                                .getName(type));
+                    }
+                    returnParasSb.append(",");
+                }
+                // if we have only one return value and without type,
+                // the return param string is ": ,", we remove it
+                if (returnParasSb.length() == 3) {
+                    returnParasSb.delete(0, returnParasSb.length());
+                }
+                // else: we remove only the extra ","
+                else {
+                    returnParasSb.delete(
+                            returnParasSb.length() - 1,
+                            returnParasSb.length());
+                }
+            }
+        }
+        return returnParasSb;
+    }
+    
+    
+    private StringBuffer getProperties(Object modelElement, 
+            boolean isReception) {
+        StringBuffer propertySb = new StringBuffer().append("{");
+        // the query state
+        if (Model.getFacade().isQuery(modelElement)) {
+            propertySb.append("query,");
+        }
+        /*
+         * Although Operation and Signal are peers in the UML type 
+         * hierarchy they share the attributes isRoot, isLeaf, 
+         * isAbstract, and  specification. Concurrency is *not* 
+         * shared and is specific to Operation.
+         */
+        if (Model.getFacade().isRoot(modelElement)) {
+            propertySb.append("root,");
+        }
+        if (Model.getFacade().isLeaf(modelElement)) {
+            propertySb.append("leaf,");
+        }
+        if (!isReception) {
+            if (Model.getFacade().getConcurrency(modelElement) != null) {
+                propertySb.append(Model.getFacade().getName(
+                        Model.getFacade().getConcurrency(modelElement)));
+                propertySb.append(',');
+            }
+        }
+        if (propertySb.length() > 1) {
+            propertySb.delete(propertySb.length() - 1, propertySb.length());
+            // remove last ,
+            propertySb.append("}");
+        } else {
+            propertySb = new StringBuffer();
+        }
+        return propertySb;
+    }
+
+
+    private StringBuffer getTaggedValues(Object modelElement) {
+        StringBuffer taggedValuesSb = new StringBuffer();
+        Iterator it3 = Model.getFacade().getTaggedValues(modelElement);
+        if (it3 != null && it3.hasNext()) {
+            while (it3.hasNext()) {
+                taggedValuesSb.append(
+                        NotationUtilityUml.generateTaggedValue(it3.next()));
+                taggedValuesSb.append(",");
+            }
+            taggedValuesSb.delete(
+                    taggedValuesSb.length() - 1,
+                    taggedValuesSb.length());
+        }
+        return taggedValuesSb;
+    }
 }

@@ -35,6 +35,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.OperationNotation;
 
 /**
@@ -74,11 +75,22 @@ public class OperationNotationJava extends OperationNotation {
     public String getParsingHelp() {
         return "Parsing in Java not yet supported";
     }
+    
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
+    }
 
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement);
+    }
+
+    private String toString(Object modelElement) {
         StringBuffer sb = new StringBuffer(80);
         String nameStr = null;
         boolean constructor = false;

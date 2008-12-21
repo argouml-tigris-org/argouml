@@ -213,8 +213,8 @@ public abstract class FigEditableCompartment extends FigCompartment {
 
                 // Now put the text in
                 // We must handle the case where the text is null
-                String ftText = comp.getNotationProvider()
-                    .toString(umlObject, comp.getNpArguments());
+                String ftText = comp.getNotationProvider().toString(umlObject,
+                        comp.getNotationSettings());
                 if (ftText == null) {
                     ftText = "";
                 }

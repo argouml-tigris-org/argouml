@@ -119,6 +119,7 @@ public class FigStereotype extends CompartmentFigText {
         }
     }
     
+    @Override
     protected void setText() {
         if (getOwner() != null) {
             setText(Model.getFacade().getName(getOwner()));
@@ -128,12 +129,13 @@ public class FigStereotype extends CompartmentFigText {
     }
     
     /**
-     * Add guillemots to any text set to this Fig.
+     * Add guillemets to any text set to this Fig.
      * {@inheritDoc}
      */
+    @Override
     public void setText(String text) {
         super.setText(NotationUtilityUml.formatStereotype(text,
-                getSettings().isUseGuillemets()));
+                getNotationSettings().isUseGuillemets()));
     }
     
 }

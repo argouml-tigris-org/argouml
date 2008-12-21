@@ -31,7 +31,6 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -249,13 +248,8 @@ public class FigAssociation extends FigEdgeModelElement {
         srcGroup.renderingChanged();
         destGroup.renderingChanged();
         middleGroup.renderingChanged();
-        initNotationArguments();
     }
-    
-    protected void initNotationArguments() {
-        putNotationArgument("showAssociationName", 
-                getSettings().isShowAssociationNames());
-    }
+
 
     @Override
     protected void initNotationProviders(Object own) {
@@ -266,7 +260,6 @@ public class FigAssociation extends FigEdgeModelElement {
         super.initNotationProviders(own);
         srcMult.initNotationProviders();
         destMult.initNotationProviders();
-        initNotationArguments();
     }
 
     /*
@@ -585,12 +578,6 @@ class FigMultiplicity extends FigSingleLineTextWithNotation {
         return NotationProviderFactory2.TYPE_MULTIPLICITY;
     }
 
-    @Override
-    protected void initNotationArguments() {
-        super.initNotationArguments();
-        boolean value = getSettings().isShowSingularMultiplicities();
-        getNpArguments().put("singularMultiplicityVisible", value);
-    }
 }
 
 /**
@@ -626,7 +613,7 @@ class FigOrdering extends FigSingleLineText {
     @Override
     protected void setText() {
         assert getOwner() != null;
-        if (getSettings().isShowProperties()) {
+        if (getSettings().getNotationSettings().isShowProperties()) {
             setText(getOrderingName(Model.getFacade().getOrdering(getOwner())));
         } else {
             setText("");
@@ -691,13 +678,6 @@ class FigRole extends FigSingleLineTextWithNotation {
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
         setText();
-    }
-
-    @Override
-    protected void initNotationArguments() {
-        super.initNotationArguments();
-        HashMap<String, Object> npArguments = getNpArguments();
-        npArguments.put("visibilityVisible", getSettings().isShowVisibility());
     }
 
     protected int getNotationProviderType() {

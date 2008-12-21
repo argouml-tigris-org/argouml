@@ -32,6 +32,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -100,7 +101,8 @@ public class TestCallStateNotationUml extends TestCase {
     public void testStringGenerationNoClassName() {
         setUp2();
         CallStateNotationUml notation = new CallStateNotationUml(aCallState);
-        String notationStr = notation.toString(aCallState, null);
+        String notationStr = notation.toString(aCallState, 
+                NotationSettings.getDefaultSettings());
         assertEquals("Notation not correctly generated", "myOper", notationStr);
     }
 
@@ -111,7 +113,8 @@ public class TestCallStateNotationUml extends TestCase {
         setUp2();
         CallStateNotationUml notation = new CallStateNotationUml(aCallState);
         Model.getCoreHelper().setName(aClass, "ClassA");
-        String notationStr = notation.toString(aCallState, null);
+        String notationStr = notation.toString(aCallState, 
+                NotationSettings.getDefaultSettings());
         assertEquals("Notation not correctly generated", "myOper\n(ClassA)",
                 notationStr);
     }
@@ -123,7 +126,8 @@ public class TestCallStateNotationUml extends TestCase {
         setUp2();
         Model.getCoreHelper().setName(aOper, "");
         CallStateNotationUml notation = new CallStateNotationUml(aCallState);
-        String notationStr = notation.toString(aCallState, null);
+        String notationStr = notation.toString(aCallState, 
+                NotationSettings.getDefaultSettings());
         assertEquals("Notation not correctly generated", "", notationStr);
     }
 
@@ -140,7 +144,8 @@ public class TestCallStateNotationUml extends TestCase {
         assertNotNull("No entry action generated", entry);
         Object op = Model.getFacade().getOperation(entry);
         assertNotNull("Operation not linked to entry action", op);
-        String notationStr = notation.toString(aCallState, null);
+        String notationStr = notation.toString(aCallState, 
+                NotationSettings.getDefaultSettings());
         assertEquals("Notation not correctly generated", "myOper\n(ClassA)",
                 notationStr);
     }
@@ -160,7 +165,8 @@ public class TestCallStateNotationUml extends TestCase {
         assertNotNull("Operation not linked to entry action", op);
         String name = Model.getFacade().getName(op);
         assertEquals("Operation name incorrect", "myOper2", name);
-        String notationStr = notation.toString(aCallState, null);
+        String notationStr = notation.toString(aCallState, 
+                NotationSettings.getDefaultSettings());
         assertEquals("Notation not correctly generated", "myOper2\n(ClassA)",
                 notationStr);
     }
@@ -181,7 +187,8 @@ public class TestCallStateNotationUml extends TestCase {
         assertNotNull("Operation not linked to entry action", op);
         String name = Model.getFacade().getName(op);
         assertEquals("Operation name incorrect", "myOperB", name);
-        String notationStr = notation.toString(aCallState, null);
+        String notationStr = notation.toString(aCallState, 
+                NotationSettings.getDefaultSettings());
         assertEquals("Notation not correctly generated", "myOperB\n(ClassB)",
                 notationStr);
     }
@@ -251,7 +258,8 @@ public class TestCallStateNotationUml extends TestCase {
         assertNotNull("No entry action generated", entry);
         Object op = Model.getFacade().getOperation(entry);
         assertNotNull("Operation not linked to entry action", op);
-        String notationStr = notation.toString(aCallState, null);
+        String notationStr = notation.toString(aCallState, 
+                NotationSettings.getDefaultSettings());
         assertEquals("Notation not correctly generated", "myOper\n(ClassA)",
                 notationStr);
     }

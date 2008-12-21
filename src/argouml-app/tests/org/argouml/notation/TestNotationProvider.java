@@ -63,11 +63,10 @@ public class TestNotationProvider extends TestCase
      */
     public void testToString() {
         NotationProvider np = new NPImpl();
-        Map<String, String> args = new HashMap<String, String>();
-        args.put("b", "c");
-        assertTrue("Test toString()", "a1".equals(np.toString("a", args)));
-        args.put("d", "e");
-        assertTrue("Test toString()", "f2".equals(np.toString("f", args)));
+        NotationSettings settings = new NotationSettings();
+        settings.setUseGuillemets(true);
+        assertTrue("Test toString()", "atrue".equals(
+                np.toString("a", settings)));
     }
     
     /**
@@ -103,16 +102,23 @@ public class TestNotationProvider extends TestCase
         /*
          * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
          */
+        @SuppressWarnings("deprecation")
+        @Deprecated
         public String toString(Object modelElement, Map args) {
             return modelElement.toString() + args.size();
         }
 
+        public String toString(Object modelElement, NotationSettings settings) {
+            return modelElement.toString() + settings.isUseGuillemets();
+        }
+        
         /*
          * @see org.argouml.notation.providers.NotationProvider#parse(java.lang.Object, java.lang.String)
          */
         public void parse(Object modelElement, String text) {
 
         }
+
     }
     
     public void testListener() {

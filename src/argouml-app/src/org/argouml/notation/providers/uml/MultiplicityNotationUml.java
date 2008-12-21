@@ -32,6 +32,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.MultiplicityNotation;
 
 /**
@@ -83,10 +84,18 @@ public class MultiplicityNotationUml extends MultiplicityNotation {
         return multi;
     }
     
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public String toString(Object multiplicityOwner, Map args) {
         return NotationUtilityUml.generateMultiplicity(
                 multiplicityOwner, args);
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return NotationUtilityUml.generateMultiplicity(modelElement, 
+                settings.isShowSingularMultiplicities());
     }
 
 }

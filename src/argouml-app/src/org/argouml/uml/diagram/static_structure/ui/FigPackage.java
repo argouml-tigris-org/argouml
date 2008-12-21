@@ -32,7 +32,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -124,17 +123,6 @@ public class FigPackage extends FigNodeModelElement
 
     private FigText body;
 
-    /**
-     * Flag that indicates if the stereotype should be shown even if
-     * it is specified or not.
-     */
-    private boolean stereotypeVisible = true;
-
-    /**
-     * Flag that indicates if the visibility should be shown in front
-     * of the name.
-     */
-    private boolean visibilityVisible;
 
     /**
      * The main constructor.
@@ -155,8 +143,6 @@ public class FigPackage extends FigNodeModelElement
 
         setOwner(node);
         setLocation(x, y);
-
-        visibilityVisible = getSettings().isShowVisibility();
     }
 
     private void initialize() {
@@ -231,22 +217,8 @@ public class FigPackage extends FigNodeModelElement
         if (bounds != null) {
             setLocation(bounds.x, bounds.y);
         }
-        visibilityVisible = settings.isShowVisibility();
         setBounds(getBounds());
     }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
-     */
-    @Override
-    protected void initNotationProviders(Object own) {
-        super.initNotationProviders(own);
-        if (Model.getFacade().isAPackage(own)) {
-            putNotationArgument("visibilityVisible",
-                    Boolean.valueOf(isVisibilityVisible()));
-        }
-    }
-
 
     /*
      * @see java.lang.Object#clone()
@@ -254,9 +226,7 @@ public class FigPackage extends FigNodeModelElement
     @Override
     public Object clone() {
         FigPackage figClone = (FigPackage) super.clone();
-        Iterator thisIter = this.getFigs().iterator();
-        while (thisIter.hasNext()) {
-            Fig thisFig = (Fig) thisIter.next();
+        for (Fig thisFig : (List<Fig>) getFigs()) {
             if (thisFig == body) {
                 figClone.body = (FigText) thisFig;
             }
@@ -360,11 +330,11 @@ public class FigPackage extends FigNodeModelElement
             /* we got at least one stereotype */
             /* This populates the stereotypes area: */
             getStereotypeFig().setOwner(getOwner());
-            if (!stereotypeVisible) {
+            if (!isStereotypeVisible()) {
                 getNameFig().setTopMargin(0);
                 getStereotypeFig().setVisible(false);
             } else if (!getStereotypeFig().isVisible()) {
-                if (stereotypeVisible) {
+                if (isStereotypeVisible()) {
                     getNameFig().setTopMargin(50); //TODO: Calc the right nr
                     getStereotypeFig().setVisible(true);
                 }
@@ -410,8 +380,8 @@ public class FigPackage extends FigNodeModelElement
 
         // If we have any number of stereotypes displayed, then allow 
         // some space for that (only width, height is included in nameFig):
-        if (stereotypeVisible) {
-            Dimension st = getStereotypeFig().getMinimumSize();
+        if (isStereotypeVisible()) {
+           Dimension st = getStereotypeFig().getMinimumSize();
             aSize.width =
 		Math.max(aSize.width, st.width);
         }
@@ -478,7 +448,7 @@ public class FigPackage extends FigNodeModelElement
 
         int tabWidth = newW - indentX;
 
-        if (stereotypeVisible) {
+        if (isStereotypeVisible()) {
             Dimension stereoMin = getStereotypeFig().getMinimumSize();
             getNameFig().setTopMargin(stereoMin.height);
             getNameFig().setBounds(xa, currentY, tabWidth + 1, minNameHeight);
@@ -782,14 +752,14 @@ public class FigPackage extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.StereotypeContainer#isStereotypeVisible()
      */
     public boolean isStereotypeVisible() {
-        return stereotypeVisible;
+        return getNotationSettings().isShowStereotypes();
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.StereotypeContainer#setStereotypeVisible(boolean)
      */
     public void setStereotypeVisible(boolean isVisible) {
-        stereotypeVisible = isVisible;
+        getNotationSettings().setShowStereotypes(isVisible);
         renderingChanged();
         damage();
     }
@@ -798,15 +768,14 @@ public class FigPackage extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.VisibilityContainer#isVisibilityVisible()
      */
     public boolean isVisibilityVisible() {
-        return visibilityVisible;
+        return getNotationSettings().isShowVisibilities();
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.VisibilityContainer#setVisibilityVisible(boolean)
      */
     public void setVisibilityVisible(boolean isVisible) {
-        visibilityVisible = isVisible;
-        putNotationArgument("visibilityVisible", Boolean.valueOf(isVisible));
+        getNotationSettings().setShowVisibilities(isVisible);
         renderingChanged();
         damage();
     }

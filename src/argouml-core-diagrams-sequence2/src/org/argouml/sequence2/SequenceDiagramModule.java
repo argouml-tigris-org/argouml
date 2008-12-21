@@ -45,9 +45,6 @@ import org.argouml.uml.ui.PropPanelFactoryManager;
  */
 public class SequenceDiagramModule implements ModuleInterface {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger
             .getLogger(SequenceDiagramModule.class);
 
@@ -65,7 +62,7 @@ public class SequenceDiagramModule implements ModuleInterface {
                 (DiagramFactoryInterface2) new SequenceDiagramFactory());
 
         NotationProviderFactory2 npf = NotationProviderFactory2.getInstance();
-        NotationName nn = Notation.findNotation("UML 1.4");
+        NotationName nn = Notation.findNotation(Notation.DEFAULT_NOTATION);
         npf.addNotationProvider(NotationProviderFactory2.TYPE_SD_MESSAGE, 
                 nn, SDMessageNotationUml.class);
         

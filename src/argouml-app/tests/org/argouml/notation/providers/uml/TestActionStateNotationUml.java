@@ -30,6 +30,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -97,7 +98,8 @@ public class TestActionStateNotationUml extends TestCase {
     public void testStringGenerationNoAction() {
         ActionStateNotationUml notation = 
             new ActionStateNotationUml(aActionState);
-        String notationStr = notation.toString(aActionState, null);
+        String notationStr = notation.toString(aActionState, 
+                NotationSettings.getDefaultSettings());
         assertEquals("Notation not correctly generated "
         		+ "(for absent entry-action)", "", notationStr);
     }
@@ -110,7 +112,8 @@ public class TestActionStateNotationUml extends TestCase {
             .buildUninterpretedAction(aActionState);
         ActionStateNotationUml notation = 
             new ActionStateNotationUml(aActionState);
-        String notationStr = notation.toString(aActionState, null);
+        String notationStr = notation.toString(aActionState, 
+                NotationSettings.getDefaultSettings());
         assertEquals("Notation not correctly generated "
         		+ "(for absent script)", "", notationStr);
     }
@@ -123,7 +126,8 @@ public class TestActionStateNotationUml extends TestCase {
         setUp2();
         ActionStateNotationUml notation = 
             new ActionStateNotationUml(aActionState);
-        String notationStr = notation.toString(aActionState, null);
+        String notationStr = notation.toString(aActionState, 
+                NotationSettings.getDefaultSettings());
         assertEquals("Notation not correctly generated", "testScript",
                 notationStr);
     }
@@ -144,7 +148,8 @@ public class TestActionStateNotationUml extends TestCase {
         Object actionExpr = Model.getFacade().getScript(entry);
         assertNotNull("No script generated for the entry action", actionExpr);
 
-        String notationStr = notation.toString(aActionState, null);
+        String notationStr = notation.toString(aActionState, 
+                NotationSettings.getDefaultSettings());
         assertEquals("Notation not correctly generated", "testRoundTrip",
                 notationStr);
         
@@ -185,7 +190,8 @@ public class TestActionStateNotationUml extends TestCase {
         Model.getDataTypesHelper().setBody(script, null);
         ActionStateNotationUml notation = 
             new ActionStateNotationUml(aActionState);
-        String result = notation.toString(aActionState, null);
+        String result = notation.toString(aActionState, 
+                NotationSettings.getDefaultSettings());
         assertTrue("Null body did not return empty string", "".equals(result));
     }
     
