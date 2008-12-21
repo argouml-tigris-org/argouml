@@ -31,7 +31,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -247,36 +246,31 @@ public class ClassdiagramLayouter implements Layouter {
     }
 
     /**
-     * Constant value for the gap between edges.
+     * Gap to be left between edges.
      */
     private static final int E_GAP = 5;
 
     /**
-     * Constant value for the horizontal gap between nodes.
+     * Horizontal gap between nodes.
      */
     private static final int H_GAP = 80;
 
-    /**
-     * Logger for logging events.
-     */
     private static final Logger LOG =
 	Logger.getLogger(ClassdiagramLayouter.class);
 
     /**
-     * Constant value for the maximum row width.
+     * The maximum row width.
      */
     // TODO: this should be a configurable property
     private static final int MAX_ROW_WIDTH = 1200;
 
     /**
-     * Constant value for the vertical gap between nodes.
+     * Vertical gap between nodes.
      */
     private static final int V_GAP = 80;
 
-    // Attributes
-
     /**
-     * The diagram that will be layouted.
+     * The diagram that is being laid out.
      */
     private ArgoDiagram diagram;
 
@@ -300,23 +294,23 @@ public class ClassdiagramLayouter implements Layouter {
             new ArrayList<ClassdiagramEdge>();
 
     /**
-     * Attribute layoutedObjects holds the objects to layout.
+     * List of objects to lay out.
      */
     private List<LayoutedObject> layoutedObjects =
             new ArrayList<LayoutedObject>();
 
     /**
-     * nodeRows contains all DiagramRows of the diagram.
+     * List of NodeRows in the diagram.
      */
     private List<NodeRow> nodeRows = new ArrayList<NodeRow>();
 
     /**
-     * internal.
+     * Base X position to use a starting point for next node.
      */
     private int xPos;
 
     /**
-     * internal.
+     * Base Y position for the row currently being laid out.
      */
     private int yPos;
 
@@ -328,9 +322,7 @@ public class ClassdiagramLayouter implements Layouter {
      */
     public ClassdiagramLayouter(ArgoDiagram theDiagram) {
         diagram = theDiagram;
-        Iterator<Fig> nodeIter = diagram.getLayer().getContents().iterator();
-        while (nodeIter.hasNext()) {
-            Fig fig = nodeIter.next();
+        for (Fig fig : diagram.getLayer().getContents()) {
             if (fig.getEnclosingFig() == null) {
                 add(ClassdiagramModelElementFactory.SINGLETON.getInstance(fig));
             }
@@ -362,9 +354,8 @@ public class ClassdiagramLayouter implements Layouter {
     }
 
     /**
-     * Operation getMinimumDiagramSize returns the minimum diagram size after
-     * the layout process.
-     *
+     * Return the minimum diagram size after the layout process.
+     * 
      * @return The minimum diagram size after the layout process.
      */
     public Dimension getMinimumDiagramSize() {
@@ -385,8 +376,7 @@ public class ClassdiagramLayouter implements Layouter {
     }
 
     /**
-     * Operation getObject returns a object with a given index from the
-     * layouter.
+     * Return the object with a given index from the layouter.
      *
      * @param index
      *            represents the index of this object in the layouter.
@@ -397,7 +387,7 @@ public class ClassdiagramLayouter implements Layouter {
     }
 
     /**
-     * Operation getObjects returns all the objects currently participating in
+     * Return all the objects currently participating in
      * the layout process.
      *
      * @return An array holding all the object in the layouter.
@@ -416,7 +406,7 @@ public class ClassdiagramLayouter implements Layouter {
     }
 
     /**
-     * Operation layout implements the actual layout algorithm.
+     * Lay out the current diagram.
      */
     public void layout() {
         long s = System.currentTimeMillis();
@@ -470,9 +460,11 @@ public class ClassdiagramLayouter implements Layouter {
                     + " Position: (" + xPosNew + "," + yPos + ") xPos: " 
                     + xPos + " hint: " + node.getPlacementHint());
         }
-        if (downlinks.size() == 1
-                && downlinks.get(0).getUpNodes().get(0).equals(node)) {
-            downlinks.get(0).setPlacementHint(xPosNew);
+        if (downlinks.size() == 1) {
+            ClassdiagramNode downNode = downlinks.get(0);
+            if (downNode.getUpNodes().get(0).equals(node)) {
+                downNode.setPlacementHint(xPosNew);
+            }
         }
         xPos = (int) Math.max(node.getPlacementHint() + curW, xPos + xOffset);
     }
