@@ -98,6 +98,11 @@ public class PathItemPlacement extends PathConv {
      */
     private Point offset;
     
+    /**
+     * Set true to keep items on same side (top or bottom) of path as
+     * it rotates through vertical.
+     */
+    private final boolean swap = true;
     
     /**
      * Construct a new path to coordinate conversion object which positions at a
@@ -146,7 +151,7 @@ public class PathItemPlacement extends PathConv {
         super(pathFig);
         itemFig = theItemFig;
         setAnchor(pathPercent, pathDelta);
-        setDisplacementVector(displacementAngle, displacementDistance);
+        setDisplacementVector(displacementAngle + 180, displacementDistance);
     }
 
     /**
@@ -385,12 +390,9 @@ public class PathItemPlacement extends PathConv {
      * @see org.tigris.gef.base.PathConv#setPoint(java.awt.Point)
      */
     public void setPoint(Point newPoint) {
-        //Point p1 = getAnchorPosition();
-        //Point p2 = newPoint;
         int vect[] = computeVector(newPoint);
         setDisplacementAngle(vect[0]);
         setDisplacementDistance(vect[1]);
-        //setDisplacementDistance((int) Point.distance(p1.x, p1.y, p2.x, p2.y));
     }
 
 
@@ -399,20 +401,24 @@ public class PathItemPlacement extends PathConv {
      * This is a convenience method to help callers get coordinates in a form
      * that can be passed back in using {@link #setDisplacementVector(int, int)}
      * 
-     * TODO: Untested.
      * @param point the desired target point
      * @return an array of two integers containing the angle and distance
      */
     public int[] computeVector(Point point) {
         Point anchor = getAnchorPosition();
         int distance = (int) anchor.distance(point);
+        int angl = 0;
         double pathSlope = getSlope();
         double offsetSlope = getSlope(anchor, point);
-        // TODO: This is completely untested.  The angle probably needs to
-        // be adjusted to get it to match what is expected on input.
-        int angle = (int) ((offsetSlope - pathSlope) / Math.PI * 180) + 180;
-        int[] result = new int[] {angle, distance};
-        //throw new UnsupportedOperationException();
+
+        if (swap && pathSlope > Math.PI / 2 && pathSlope < Math.PI * 3 / 2) {
+            angl = -(int) ((offsetSlope - pathSlope) / Math.PI * 180);
+        }
+        else {
+            angl = (int) ((offsetSlope - pathSlope) / Math.PI * 180);
+        }
+
+        int[] result = new int[] {angl, distance};
         return result;
     }
     
@@ -545,10 +551,6 @@ public class PathItemPlacement extends PathConv {
     private Point applyOffset(double theta, int theOffset, 
             Point result) {
      
-        // Set true to keep items on same side (top or bottom) of path as
-        // it rotates through vertical.
-        final boolean swap = true;
-        
         // Set the following for some backward compatibility with old algorithm
         final boolean aboveAndRight = false;
 
@@ -574,12 +576,6 @@ public class PathItemPlacement extends PathConv {
         int dx = (int) (theOffset * Math.cos(theta));
         int dy = (int) (theOffset * Math.sin(theta));
         
-        // Invert signs for compatibility with callers notion 
-        // that positive offsets are above
-        // TODO: Do in polar domain?  Skip altogether?
-        dy = -dy;
-        dx = -dx;
-
         // For backward compatibility everything is above and right
         // TODO: Do in polar domain?
         if (aboveAndRight) {
