@@ -490,7 +490,7 @@ public class ClassdiagramLayouter implements Layouter {
             yPos += rowHeight + getVGap();
 
         }
-        centerParents();
+//        centerParents();
     }
 
     /**
