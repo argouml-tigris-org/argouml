@@ -162,8 +162,8 @@ public class ModeLabelDrag extends FigModifyingModeImpl {
             dragBasePoint.setLocation(newPoint);
             dragFig.translate(dx, dy);
             me.consume();
+            editor.damaged(dragFig);
         }
-        editor.damageAll(); /// TODO: reckless use of damageAll.
     }
 
 }
