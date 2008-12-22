@@ -190,6 +190,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (Model.getFacade().isAAssociation(node)
                 && !Model.getFacade().isANaryAssociation(node)) {
             // A binary association is not a node so reject.
+            LOG.debug("A binary association cannot be added as a node");
             return false;
         }
         
@@ -425,12 +426,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             while (iter.hasNext()) {
                 Object association =
                         Model.getFacade().getAssociation(iter.next());
-                // TODO: We should be able to add AssociationClasses, but the
-                // way things are now, we only half add them, so just disable
-                // until fixed. - tfm  20061208
-                if (!Model.getFacade().isANaryAssociation(association)
-                        && !Model.getFacade().isAAssociationClass(association)
-                        && canAddEdge(association)) {
+                if (canAddEdge(association)) {
                     addEdge(association);
                 }
             }
