@@ -126,6 +126,13 @@ import org.omg.uml.modelmanagement.UmlPackage;
  */
 final class MetaTypesMDRImpl implements MetaTypes {
 
+    /**
+     * Constructor that forbids to instantiate.
+     */
+    MetaTypesMDRImpl() {
+        // forbid instantiation
+    }
+    
     public String getName(Object modelElement) {
         Class<?> clazz;
         if (modelElement instanceof Class) {
@@ -150,13 +157,6 @@ final class MetaTypesMDRImpl implements MetaTypes {
         }
 
         return name.substring(startName, endName);
-    }
-
-    /**
-     * Constructor that forbids to instantiate.
-     */
-    MetaTypesMDRImpl() {
-        // forbid instantiation
     }
 
     /*
