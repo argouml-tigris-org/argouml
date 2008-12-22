@@ -138,7 +138,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         String text = (String) theName;
         Namespace ns = (Namespace) theNamespaceObject;
         Stereotype stereo = buildStereotype(text);
-        stereo.getBaseClass().add(extensionHelper.getMetaModelName(me));
+        stereo.getBaseClass().add(modelImpl.getMetaTypes().getName(me));
         // TODO: this doesn't look right - review - tfm
         Stereotype stereo2 = (Stereotype) extensionHelper.getStereotype(ns,
                 stereo);
@@ -162,8 +162,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         ModelElement me = (ModelElement) theModelElementObject;
 
         Stereotype stereo = buildStereotype(theName);
-        stereo.getBaseClass().add(
-                modelImpl.getExtensionMechanismsHelper().getMetaModelName(me));
+        stereo.getBaseClass().add(modelImpl.getMetaTypes().getName(me));
         Stereotype stereo2 = (Stereotype) extensionHelper.getStereotype(models,
                 stereo);
         if (stereo2 != null) {
