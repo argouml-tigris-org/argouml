@@ -156,18 +156,25 @@ public class FigEdgeAssociationClass
     @Override
     protected Fig getRemoveDelegate() {
         FigNode node = getDestFigNode();
-        if (!(node instanceof FigEdgePort)) {
+        if (!(node instanceof FigEdgePort || node instanceof FigNodeAssociation)) {
             node = getSourceFigNode();
         }
-        if (!(node instanceof FigEdgePort)) {
+        if (!(node instanceof FigEdgePort || node instanceof FigNodeAssociation)) {
             LOG.warn("The is no FigEdgePort attached"
                     + " to the association class link");
             return null;
         }
+        
+        final Fig delegate;
         // Actually return the FigEdge that the FigEdgePort is part of.
-        Fig delegate = node.getGroup();
+        if (node instanceof FigEdgePort) {
+            delegate = node.getGroup();
+        } else {
+            delegate = node;
+        }
         if (LOG.isInfoEnabled()) {
             LOG.info("Delegating remove to " + delegate.getClass().getName());
+//            throw new IllegalArgumentException();
         }
         return delegate;
     }
