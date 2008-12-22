@@ -81,8 +81,10 @@ public interface ExtensionMechanismsHelper {
 
     /**
      * @param m the ModelElement
-     * @return the meta name of the ModelElement
+     * @return the name of the metatype (i.e UML type) of this Element
+     * @deprecated for 0.27.3 by tfmorris. Use {@link MetaTypes#getName(Object)}
      */
+    @Deprecated
     String getMetaModelName(Object m);
 
     /**
