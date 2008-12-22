@@ -625,6 +625,7 @@ class CoreHelperMDRImpl implements CoreHelper {
             return Collections.emptyList();
         }
         List<Interface> result = new ArrayList<Interface>();
+        // TODO: This should be using internalGetAllRealizedInterfaces()
         try {
             for (Dependency clientDependency 
                     : classifier.getClientDependency()) {
@@ -1857,8 +1858,8 @@ class CoreHelperMDRImpl implements CoreHelper {
             Collection col, Set visited) {
         visited.add(o);
         if (o != null) {
-            if (o instanceof UmlClass) {
-                UmlClass clazz = (UmlClass) o;
+            if (o instanceof Classifier) {
+                Classifier clazz = (Classifier) o;
                 for (Dependency dependency : clazz.getClientDependency()) {
                     Stereotype stereo =
                         (Stereotype) getFirstItemOrNull(
