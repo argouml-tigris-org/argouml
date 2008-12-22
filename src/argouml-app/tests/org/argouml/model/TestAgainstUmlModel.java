@@ -356,6 +356,8 @@ public class TestAgainstUmlModel extends TestCase {
         dontTest.add("Primitive");
         dontTest.add("ProgrammingLanguageDataType");
         dontTest.add("UseCaseInstance");
+        
+        dontTest.add("ActivityGraph");
 
         dontTest.add("ActionExpression");
         dontTest.add("ArgListsExpression");
