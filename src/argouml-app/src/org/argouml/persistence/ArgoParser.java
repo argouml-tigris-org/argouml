@@ -31,6 +31,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectSettings;
+import org.argouml.notation.NotationSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -51,6 +52,8 @@ class ArgoParser extends SAXParserBase {
     private ProjectSettings ps;
     
     private DiagramSettings diagramDefaults;
+    
+    private NotationSettings notationSettings;
 
     private ArgoTokenTable tokens = new ArgoTokenTable();
 
@@ -116,6 +119,7 @@ class ArgoParser extends SAXParserBase {
         project = theProject;
         ps = project.getProjectSettings();
         diagramDefaults = ps.getDefaultDiagramSettings();
+        notationSettings = ps.getNotationSettings();
     }
 
     private void logError(String projectName, SAXException e) {
@@ -383,7 +387,8 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowVisibility(XMLElement e) {
         String showVisibility = e.getText().trim();
-        diagramDefaults.setShowVisibility(Boolean.parseBoolean(showVisibility));
+        notationSettings.setShowVisibilities(
+                Boolean.parseBoolean(showVisibility));
     }
 
     /**
@@ -391,7 +396,7 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowMultiplicity(XMLElement e) {
         String showMultiplicity = e.getText().trim();
-        diagramDefaults.setShowMultiplicity(
+        notationSettings.setShowMultiplicities(
                 Boolean.parseBoolean(showMultiplicity));
     }
 
@@ -400,7 +405,7 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowInitialValue(XMLElement e) {
         String showInitialValue = e.getText().trim();
-        diagramDefaults.setShowInitialValue(
+        notationSettings.setShowInitialValues(
                 Boolean.parseBoolean(showInitialValue));
     }
 
@@ -409,7 +414,8 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowProperties(XMLElement e) {
         String showproperties = e.getText().trim();
-        diagramDefaults.setShowProperties(Boolean.parseBoolean(showproperties));
+        notationSettings.setShowProperties(
+                Boolean.parseBoolean(showproperties));
     }
 
     /**
@@ -417,7 +423,7 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowTypes(XMLElement e) {
         String showTypes = e.getText().trim();
-        diagramDefaults.setShowTypes(Boolean.parseBoolean(showTypes));
+        notationSettings.setShowTypes(Boolean.parseBoolean(showTypes));
     }
 
     /**
@@ -425,7 +431,7 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowStereotypes(XMLElement e) {
         String showStereotypes = e.getText().trim();
-        diagramDefaults.setShowStereotypes(
+        notationSettings.setShowStereotypes(
                 Boolean.parseBoolean(showStereotypes));
     }
 
@@ -434,7 +440,7 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowSingularMultiplicities(XMLElement e) {
         String showSingularMultiplicities = e.getText().trim();
-        diagramDefaults.setShowSingularMultiplicities(
+        notationSettings.setShowSingularMultiplicities(
                 Boolean.parseBoolean(showSingularMultiplicities));
     }
 
@@ -471,7 +477,7 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowAssociationNames(XMLElement e) {
         String showAssociationNames = e.getText().trim();
-        diagramDefaults.setShowAssociationNames(
+        notationSettings.setShowAssociationNames(
                 Boolean.parseBoolean(showAssociationNames));
     }
 

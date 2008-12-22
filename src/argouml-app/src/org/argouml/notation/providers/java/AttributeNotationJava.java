@@ -30,6 +30,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.AttributeNotation;
 
 /**
@@ -47,6 +48,9 @@ public class AttributeNotationJava extends AttributeNotation {
     private static final AttributeNotationJava INSTANCE =
         new AttributeNotationJava();
 
+    /**
+     * @return the singleton instance
+     */
     public static final AttributeNotationJava getInstance() {
         return INSTANCE;
     }
@@ -71,7 +75,13 @@ public class AttributeNotationJava extends AttributeNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement);
+    }
+
+    private String toString(Object modelElement) {
         StringBuffer sb = new StringBuffer(80);
         sb.append(NotationUtilityJava.generateVisibility(modelElement));
         sb.append(NotationUtilityJava.generateScope(modelElement));
@@ -104,6 +114,11 @@ public class AttributeNotationJava extends AttributeNotation {
         }
 
         return sb.toString();
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
     }
 
 }

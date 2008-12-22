@@ -40,6 +40,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.AttributeNotation;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.MyTokenizer;
@@ -507,6 +508,15 @@ public class AttributeNotationUml extends AttributeNotation {
         return "parsing.help.attribute";
     }
 
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement, settings.isUseGuillemets(), settings
+                .isShowVisibilities(), settings.isShowMultiplicities(), settings
+                .isShowTypes(), settings.isShowInitialValues(),
+                settings.isShowProperties());
+    }
+
     /**
      * Generates a string representation for the provided
      * attribute. The string representation will be of the form:
@@ -516,17 +526,26 @@ public class AttributeNotationUml extends AttributeNotation {
      * type-expression, initial value and properties are shown/not shown.
      * 
      * {@inheritDoc}
+     * @deprecated
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
 
+        return toString(modelElement, ps.getUseGuillemotsValue(), 
+                ps.getShowVisibilityValue(), ps.getShowMultiplicityValue(),
+                ps.getShowTypesValue(), ps.getShowInitialValueValue(),
+                ps.getShowPropertiesValue());
+    }
+
+    private String toString(Object modelElement, boolean useGuillemets, 
+            boolean showVisibility, boolean showMultiplicity, boolean showTypes,
+            boolean showInitialValues, boolean showProperties) {
         try {
-            String visibility =
-                    NotationUtilityUml.generateVisibility(modelElement);
-            // generateStereotype accepts a collection, despite its name
-            String stereo = NotationUtilityUml.generateStereotype(
-                    Model.getFacade().getStereotypes(modelElement), args);
+            String stereo = NotationUtilityUml.generateStereotype(modelElement, 
+                    useGuillemets);
             String name = Model.getFacade().getName(modelElement);
             String multiplicity = generateMultiplicity(
                     Model.getFacade().getMultiplicity(modelElement));
@@ -535,42 +554,24 @@ public class AttributeNotationUml extends AttributeNotation {
                 type = Model.getFacade().getName(
                         Model.getFacade().getType(modelElement));
             }
-            String initialValue = "";
-            if (Model.getFacade().getInitialValue(modelElement) != null) {
-                initialValue =
-                    (String) Model.getFacade().getBody(
-                            Model.getFacade().getInitialValue(modelElement));
-            }
-            String changeableKind = "";
-            if (Model.getFacade().isReadOnly(modelElement)) {
-                changeableKind = "frozen";
-            }
-            if (Model.getFacade().getChangeability(modelElement) != null) {
-                if (Model.getChangeableKind().getAddOnly().equals(
-                        Model.getFacade().getChangeability(modelElement))) {
-                    changeableKind = "addOnly";
-                }
-            }
-            StringBuilder properties = new StringBuilder();
-            if (changeableKind.length() > 0) {
-                properties.append("{ ").append(changeableKind).append(" }");
-            }
 
             StringBuilder sb = new StringBuilder(20);
             if ((stereo != null) && (stereo.length() > 0)) {
                 sb.append(stereo).append(" ");
             }
-            if ((visibility != null)
-                    && (visibility.length() > 0)
-                    && ps.getShowVisibilityValue()) {
-                sb.append(visibility);
+            if (showVisibility) {
+                String visibility = NotationUtilityUml
+                        .generateVisibility2(modelElement);
+                if (visibility != null && visibility.length() > 0) {
+                    sb.append(visibility);
+                }
             }
             if ((name != null) && (name.length() > 0)) {
                 sb.append(name).append(" ");
             }
             if ((multiplicity != null)
                     && (multiplicity.length() > 0)
-                    && ps.getShowMultiplicityValue()) {
+                    && showMultiplicity) {
                 sb.append("[").append(multiplicity).append("]").append(" ");
             }
             if ((type != null) && (type.length() > 0)
@@ -579,17 +580,38 @@ public class AttributeNotationUml extends AttributeNotation {
                      * with older ArgoUML versions that did not have this
                      * setting:
                      */
-                    && ps.getShowTypesValue()) {
+                    && showTypes) {
                 sb.append(": ").append(type).append(" ");
             }
-            if ((initialValue != null)
-                    && (initialValue.length() > 0)
-                    && ps.getShowInitialValueValue()) {
-                sb.append(" = ").append(initialValue).append(" ");
+            if (showInitialValues) {
+                Object iv = Model.getFacade().getInitialValue(modelElement);
+                if (iv != null) {
+                    String initialValue = 
+                        (String) Model.getFacade().getBody(iv);
+                    if (initialValue != null && initialValue.length() > 0) {
+                        sb.append(" = ").append(initialValue).append(" ");
+                    }
+                }
             }
-            if ((properties.length() > 0)
-                    && ps.getShowPropertiesValue()) {
-                sb.append(properties);
+            if (showProperties) {
+                String changeableKind = "";
+                if (Model.getFacade().isReadOnly(modelElement)) {
+                    changeableKind = "frozen";
+                }
+                if (Model.getFacade().getChangeability(modelElement) != null) {
+                    if (Model.getChangeableKind().getAddOnly().equals(
+                            Model.getFacade().getChangeability(modelElement))) {
+                        changeableKind = "addOnly";
+                    }
+                }
+                StringBuilder properties = new StringBuilder();
+                if (changeableKind.length() > 0) {
+                    properties.append("{ ").append(changeableKind).append(" }");
+                }
+
+                if (properties.length() > 0) {
+                    sb.append(properties);
+                }
             }
             return sb.toString().trim();
         } catch (InvalidElementException e) {

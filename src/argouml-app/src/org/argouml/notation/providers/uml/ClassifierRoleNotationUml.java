@@ -37,6 +37,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ClassifierRoleNotation;
 import org.argouml.util.MyTokenizer;
 
@@ -258,26 +259,21 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement);
+    }
+
+    private String toString(Object modelElement) {
         String nameString = Model.getFacade().getName(modelElement);
         if (nameString == null) { 
             nameString = "";
         }
         nameString = nameString.trim();
-        StringBuilder baseString = new StringBuilder();
-
         // Loop through all base classes, building a comma separated list
-
-        Collection c = Model.getFacade().getBases(modelElement);
-        if (c != null && c.size() > 0) {
-            List<String> bases = new ArrayList<String>(c);
-            baseString.append(Model.getFacade().getName(bases.get(0)));
-
-            for (int i = 1; i < bases.size(); i++) {
-                baseString.append(
-                    ", " + Model.getFacade().getName(bases.get(i)));
-            }
-        }
+        StringBuilder baseString = 
+            formatNameList(Model.getFacade().getBases(modelElement));
         baseString = new StringBuilder(baseString.toString().trim());       
         // Build the final string
         if (nameString.length() != 0) {
@@ -287,6 +283,11 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
             baseString = baseString.insert(0, ":");
         }
         return nameString + baseString.toString();
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
     }
 
 }

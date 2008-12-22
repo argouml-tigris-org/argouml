@@ -25,12 +25,12 @@
 package org.argouml.notation.providers.uml;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ObjectNotation;
 
 /**
@@ -81,7 +81,7 @@ public class ObjectNotationUml extends ObjectNotation {
         }
 
         Model.getCommonBehaviorHelper().setClassifiers(modelElement, 
-                Collections.EMPTY_LIST);
+                Collections.emptyList());
         if (baseTokens != null) {
             while (baseTokens.hasMoreElements()) {
                 String typeString = baseTokens.nextToken();
@@ -99,23 +99,20 @@ public class ObjectNotationUml extends ObjectNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement);
+    }
+
+    private String toString(Object modelElement) {
         String nameStr = "";
         if (Model.getFacade().getName(modelElement) != null) {
             nameStr = Model.getFacade().getName(modelElement).trim();
         }
 
-
-        StringBuilder baseString = new StringBuilder();
-        Iterator bases = Model.getFacade().getClassifiers(modelElement)
-                .iterator();
-        if (bases.hasNext()) {
-            baseString.append(Model.getFacade().getName(bases.next()));
-            while (bases.hasNext()) {
-                baseString.append(", ").append(
-                        Model.getFacade().getName(bases.next()));
-            }
-        }
+        StringBuilder baseString = formatNameList(
+                Model.getFacade().getClassifiers(modelElement));
 
         if ((nameStr.length() == 0) && (baseString.length() == 0)) {
             return "";
@@ -125,6 +122,11 @@ public class ObjectNotationUml extends ObjectNotation {
             return nameStr.trim();
         }
         return nameStr.trim() + " : " + base;
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
     }
 
 }

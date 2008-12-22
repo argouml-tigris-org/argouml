@@ -37,6 +37,7 @@ import org.argouml.notation.InitNotation;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
 
@@ -122,10 +123,16 @@ public class TestNotationProviderFactory2 extends TestCase {
         /*
          * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
          */
+        @SuppressWarnings("deprecation")
+        @Deprecated
         public String toString(Object modelElement, Map args) {
             return modelElement.toString() + args.size();
         }
-
+        
+        public String toString(Object modelElement, NotationSettings settings) {
+            return modelElement.toString() + settings.toString();
+        }
+        
         /*
          * @see org.argouml.notation.providers.NotationProvider#parse(java.lang.Object, java.lang.String)
          */

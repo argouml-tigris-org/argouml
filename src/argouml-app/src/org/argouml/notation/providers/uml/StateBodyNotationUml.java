@@ -35,6 +35,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.StateBodyNotation;
 
 /**
@@ -83,10 +84,22 @@ public class StateBodyNotationUml extends StateBodyNotation {
         return "parsing.help.fig-statebody";
     }
 
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
+    }
+    
     /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement);
+    }
+
+    private String toString(Object modelElement) {
         StringBuffer s = new StringBuffer();
 
         Object entryAction = Model.getFacade().getEntry(modelElement);
@@ -121,8 +134,8 @@ public class StateBodyNotationUml extends StateBodyNotation {
                     s.append("\n");
                 }
                 /* TODO: Is this a good way of handling nested notation? */
-                s.append((new TransitionNotationUml(trans))
-                            .toString(trans, null));
+                s.append((new TransitionNotationUml(trans)).toString(trans,
+                        NotationSettings.getDefaultSettings()));
             }
         }
         return s.toString();

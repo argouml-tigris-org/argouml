@@ -28,6 +28,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -47,11 +48,9 @@ import org.argouml.model.Model;
  */
 public abstract class NotationProvider {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(NotationProvider.class);
+    private static final Logger LOG = Logger.getLogger(NotationProvider.class);
+    
+    private static final String LIST_SEPARATOR = ", ";
     
     /**
      * A collection of properties of listeners registered for this notation.
@@ -104,8 +103,28 @@ public abstract class NotationProvider {
      * @param modelElement the base UML modelelement
      * @param args arguments that may determine the notation
      * @return the string written in the correct notation
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #toString(Object, NotationSettings)}.
      */
+    @Deprecated
     public abstract String toString(Object modelElement, Map args);
+
+
+    /**
+     * Generate a string representation for the given model element.
+     * <p>
+     * <em>WARNING:</em> All subclasses must implement this as if it were
+     * abstract. It will become abstract in a future release after the
+     * deprecation period for toString(Object, Map) expires.
+     * 
+     * @param modelElement the base UML element
+     * @param settings settings that control rendering of the text
+     * @return the string written in the correct notation
+     */
+    public String toString(Object modelElement,
+            NotationSettings settings) {
+        return toString(modelElement, Collections.emptyMap());
+    }
     
     /**
      * Initialise the appropriate model change listeners 
@@ -298,5 +317,23 @@ public abstract class NotationProvider {
         }
         listeners.clear();
     }
+    
+    protected StringBuilder formatNameList(Collection modelElements) {
+        return formatNameList(modelElements, LIST_SEPARATOR);
+    }
 
+    protected StringBuilder formatNameList(Collection modelElements, 
+            String separator) {
+        StringBuilder result = new StringBuilder();
+        for (Object element : modelElements) {
+            String name = Model.getFacade().getName(element);
+            // TODO: Any special handling for null names? append will use "null"
+            result.append(name).append(separator);
+        }
+        if (result.length() >= separator.length()) {
+            result.delete(result.length() - separator.length(), 
+                    result.length());
+        }
+        return result;
+    }
 }

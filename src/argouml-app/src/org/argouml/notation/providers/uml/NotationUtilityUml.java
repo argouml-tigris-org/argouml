@@ -403,7 +403,7 @@ public final class NotationUtilityUml {
     }
 
     /**
-     * Returns a visibility String either for a MVisibilityKind (according to
+     * Returns a visibility String either for a VisibilityKind (according to
      * the definition in NotationProvider2), but also for a model element.
      * 
      * @param o a modelelement or a visibilitykind
@@ -431,24 +431,23 @@ public final class NotationUtilityUml {
      *                  or the visibility kind itself
      * @param args arguments that influence the generation
      * @return a string representing the visibility
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #generateVisibility2(Object)}.
      */
+    @Deprecated
     protected static String generateVisibility(Object modelElement, Map args) {
-        String s = "";
         if (isValue("visibilityVisible", args)) {
-            Object v = modelElement;
-            if (!Model.getFacade().isAVisibilityKind(modelElement)) {
-                v = Model.getFacade().getVisibility(modelElement);
-            }
-            if (v != null) {
-                s = NotationUtilityUml.generateVisibility2(v);
-            }
+            String s = NotationUtilityUml.generateVisibility2(modelElement);
             /* When nothing is generated: omit the space. */
             if (s.length() > 0) {
                 s = s + " ";
             }
+            return s;
+        } else {
+            return "";
         }
-        return s;
     }
+
     
     /**
      * Utility function to determine the presence of a key. 
@@ -982,7 +981,10 @@ public final class NotationUtilityUml {
      * @param args arguments that may determine the notation
      * The value of "useGuillemets" influences the outcome.
      * @return a string representing the given stereotype(s)
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #generateStereotype(Object, boolean)}.
      */
+    @Deprecated
     public static String generateStereotype(Object st, Map args) {
         if (st == null) {
             return "";
@@ -1028,7 +1030,10 @@ public final class NotationUtilityUml {
      * @param name the name of the stereotype
      * @param args any arguments
      * @return the string representation
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #formatStereotype(String, boolean)}.
      */
+    @Deprecated
     public static String formatSingleStereotype(String name, Map args) {
         if (name == null || name.length() == 0) {
             return "";
@@ -1132,9 +1137,7 @@ public final class NotationUtilityUml {
      *                 or a modelelement of which the stereotypes are retrieved
      * @return a string representing the given stereotype(s)
      * @deprecated by mvw in V0.25.5. Use 
-     * {@link #generateStereotype(Object, boolean)} or 
-     * {@link #generateStereotype(Object, Map).
-     * Rationale: Use the args Map instead of accessing the Project from here.
+     * {@link #generateStereotype(Object, boolean)}.
      */
     @Deprecated
     public static String generateStereotype(Object st) {
@@ -1171,8 +1174,8 @@ public final class NotationUtilityUml {
                 }
             }
             if (!first) {
-                return formatStereotype(sb.toString(), 
-                        ps.getDefaultDiagramSettings().isUseGuillemets());
+                return formatStereotype(sb.toString(), ps.getNotationSettings()
+                        .isUseGuillemets());
             }
         }
         return "";
@@ -1184,7 +1187,7 @@ public final class NotationUtilityUml {
             return "";
         }
         return formatStereotype(name, 
-                ps.getDefaultDiagramSettings().isUseGuillemets());
+                ps.getNotationSettings().isUseGuillemets());
     }
 
     /**
@@ -1331,21 +1334,13 @@ public final class NotationUtilityUml {
      * @param args the value singularMultiplicityVisible 
      * influences the outcome
      * @return the resulting string
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #generateMultiplicity(Object, boolean)}.
      */
     public static String generateMultiplicity(Object multiplicityOwner, 
             Map args) {
-        String s = "";
-        Object multiplicity = Model.getFacade().getMultiplicity(
-                multiplicityOwner);
-        if (multiplicity != null) {
-            s = Model.getFacade().toString(multiplicity);
-        }
-        if (!NotationProvider.isValue("singularMultiplicityVisible", args)) {
-            if ("1".equals(s)) {
-                s = ""; 
-            }
-        }
-        return s;
+        return generateMultiplicity(multiplicityOwner, 
+                NotationProvider.isValue("singularMultiplicityVisible", args));
     }
     
     /**

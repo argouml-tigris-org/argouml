@@ -33,6 +33,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ModelElementNameNotation;
 
 /**
@@ -83,13 +84,23 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement, isValue("fullyHandleStereotypes", args), 
+                isValue("useGuillemets", args), 
+                isValue("visibilityVisible", args),  
+                isValue("pathVisible", args));
+    }
+
+    private String toString(Object modelElement, boolean handleStereotypes, 
+            boolean useGuillemets, boolean showVisibility, boolean showPath) {
         String name = Model.getFacade().getName(modelElement);
         StringBuffer sb = new StringBuffer("");
-        if (isValue("fullyHandleStereotypes", args)) {
-            sb.append(generateStereotypes(modelElement, args));
+        if (handleStereotypes) {
+            sb.append(NotationUtilityUml.generateStereotype(modelElement, useGuillemets));
         }
-        sb.append(generateVisibility(modelElement, args));
-        if (isValue("pathVisible", args)) {
+        if (showVisibility) {
+            sb.append(generateVisibility(modelElement));
+        }
+        if (showPath) {
             sb.append(NotationUtilityUml.generatePath(modelElement));
         }
         if (name != null) {
@@ -102,7 +113,9 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
      * @param modelElement the UML element to generate for
      * @param args arguments that influence the generation
      * @return a string which represents the stereotypes
+     * @deprecated for 0.27.3 by tfmorris.
      */
+    @Deprecated
     protected String generateStereotypes(Object modelElement, Map args) {
         return NotationUtilityUml.generateStereotype(modelElement, args);
     }
@@ -111,7 +124,9 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
      * @param modelElement the UML element to generate for
      * @param args arguments that influence the generation
      * @return a string which represents the path
+     * @deprecated for 0.27.3 by tfmorris.
      */
+    @Deprecated
     protected String generatePath(Object modelElement, Map args) {
         StringBuilder s = new StringBuilder();
         if (isValue("pathVisible", args)) {
@@ -137,20 +152,31 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
      * @param modelElement the UML element to generate for
      * @param args arguments that influence the generation
      * @return a string representing the visibility
+     * @deprecated for 0.27.3 by tfmorris.
      */
+    @Deprecated
     protected String generateVisibility(Object modelElement, Map args) {
-        String s = "";
         if (isValue("visibilityVisible", args)) {
-            Object v = Model.getFacade().getVisibility(modelElement);
-            if (v != null) {
-                s = NotationUtilityUml.generateVisibility(v);
-            }
-            /* When nothing is generated: omit the space. */
-            if (s.length() > 0) {
-                s = s + " ";
-            }            
+            return generateVisibility(modelElement);
+        } else {
+            return "";
         }
+    }
+
+    private String generateVisibility(Object modelElement) {
+        String s = NotationUtilityUml.generateVisibility2(modelElement);
+        /* When nothing is generated: omit the space. */
+        if (s.length() > 0) {
+            s = s + " ";
+        }            
         return s;
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement, settings.isFullyHandleStereotypes(),
+                settings.isUseGuillemets(), settings.isShowVisibilities(),
+                settings.isShowPaths());
     }
 
 }

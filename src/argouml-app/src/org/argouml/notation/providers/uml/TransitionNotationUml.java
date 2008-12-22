@@ -37,6 +37,7 @@ import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesFactory;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.TransitionNotation;
 
 /**
@@ -483,10 +484,21 @@ public class TransitionNotationUml extends TransitionNotation {
         return "parsing.help.fig-transition";
     }
 
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
+    }    
+
     /*
      * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement);
+    }
+
+    private String toString(Object modelElement) {
         Object trigger = Model.getFacade().getTrigger(modelElement);
     	Object guard = Model.getFacade().getGuard(modelElement);
         Object effect = Model.getFacade().getEffect(modelElement);
@@ -715,6 +727,6 @@ public class TransitionNotationUml extends TransitionNotation {
 
         Object effect = Model.getFacade().getEffect(transition);
         addListenersForAction(listener, effect);
-    }    
+    }
 
 }

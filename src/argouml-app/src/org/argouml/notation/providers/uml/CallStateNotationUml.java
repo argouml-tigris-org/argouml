@@ -36,6 +36,7 @@ import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.CallStateNotation;
 
 
@@ -211,7 +212,13 @@ public class CallStateNotationUml extends CallStateNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement);
+    }
+
+    private String toString(Object modelElement) {
         String ret = "";
         Object action = Model.getFacade().getEntry(modelElement);
         if (Model.getFacade().isACallAction(action)) {
@@ -234,6 +241,11 @@ public class CallStateNotationUml extends CallStateNotation {
             return "";
         }
         return ret;
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
     }
 
 }

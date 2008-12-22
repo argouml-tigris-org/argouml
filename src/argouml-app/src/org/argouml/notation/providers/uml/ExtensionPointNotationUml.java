@@ -29,6 +29,7 @@ import java.util.StringTokenizer;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ExtensionPointNotation;
 
 /**
@@ -211,14 +212,15 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
      * is no name given.
      *
      * {@inheritDoc}
+     * @deprecated
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
-//        if (Model.getUmlFactory().isRemoved(modelElement)) {
-//            /* This is a normal situation, 
-//             * e.g. when an extensionpoint is removed by parsing, 
-//             * see issue 4596. */
-//            return "";
-//        }
+        return toString(modelElement);
+    }
+
+    private String toString(final Object modelElement) {
 
         if (modelElement == null) {
             return "";
@@ -242,6 +244,18 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
         }
 
         return s;
+    }
+
+    /**
+     * Generate the text for an extension point.<p>
+     *
+     * The representation is "name: location". 
+     * The "name: " is omitted if there
+     * is no name given.
+     */
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
     }
 
 }

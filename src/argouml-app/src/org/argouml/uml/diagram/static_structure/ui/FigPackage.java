@@ -32,7 +32,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -71,9 +70,15 @@ import org.tigris.gef.undo.UndoableAction;
  * consisting of a "tab" and a "body". <p>
  * 
  * The tab of the Package Fig is build of 2 pieces: 
- * the stereotypes at the top, and the name below it. 
- * Both are not transparent, and have a line border. 
- * And there is a blinder for the line in the middle. <p>
+ * the stereotypes at the top, and the name below it. <p>
+ * 
+ * The name box covers the whole tab, i.e. its size
+ * is always equal to the total size of the tab. 
+ * It is not transparent, and has a line border. 
+ * Its text sits at the bottom of the fig, to leave room for stereotypes. <p>
+ * 
+ * The stereotype fig is transparent, and sits at the top
+ * inside the name fig. It is drawn on top of the name fig box. <p>
  * 
  * The tab of the Package Fig can only be resized by the user horizontally.
  * The body can be resized horizontally and vertically by the user. <p>
@@ -118,23 +123,6 @@ public class FigPackage extends FigNodeModelElement
 
     private FigText body;
 
-    /**
-     * Flag that indicates if the stereotype should be shown even if
-     * it is specified or not.
-     */
-    private boolean stereotypeVisible = true;
-
-    /**
-     * Flag that indicates if the visibility should be shown in front
-     * of the name.
-     */
-    private boolean visibilityVisible;
-
-    /**
-     * A rectangle to blank out the line that would otherwise appear at the
-     * bottom of the stereotype text box.
-     */
-    private FigRect stereoLineBlinder;
 
     /**
      * The main constructor.
@@ -155,8 +143,6 @@ public class FigPackage extends FigNodeModelElement
 
         setOwner(node);
         setLocation(x, y);
-
-        visibilityVisible = getSettings().isShowVisibility();
     }
 
     private void initialize() {
@@ -171,32 +157,16 @@ public class FigPackage extends FigNodeModelElement
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
 
-        // Set properties of the stereotype box. Make it 1 pixel higher than
-        // before, so it overlaps the name box, and the blanking takes out both
-        // lines. Initially not set to be displayed, but this will be changed
+        // Set properties of the stereotype box. 
+        // Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
 
-        getStereotypeFig().setFilled(true);
-        getStereotypeFig().setLineWidth(1);
-        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         getStereotypeFig().setVisible(false);
-
-        // A thin rectangle to overlap the boundary line between stereotype
-        // and name. This is just 2 pixels high, and we rely on the line
-        // thickness, so the rectangle does not need to be filled. Whether to
-        // display is linked to whether to display the stereotype.
-
-        // TODO: Do we really still need this? - Bob
-        stereoLineBlinder = new FigRect(X0 + 1, Y0 + STEREOHEIGHT, WIDTH - 2,
-                2, Color.white, Color.white);
-        stereoLineBlinder.setLineWidth(1);
-        stereoLineBlinder.setVisible(false);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
-        addFig(getStereotypeFig());
         addFig(getNameFig());
-        addFig(stereoLineBlinder);
+        addFig(getStereotypeFig());
         addFig(body);
 
         setBlinkPorts(false); //make port invisible unless mouse enters
@@ -206,9 +176,7 @@ public class FigPackage extends FigNodeModelElement
         setFillColor(Color.white);
         setLineColor(Color.black);
         setLineWidth(1);
-        
-//        setLocation(x, y);
-        
+
         // TODO: Why do we need to do this? - Bob
         setBounds(getBounds());
 
@@ -249,22 +217,8 @@ public class FigPackage extends FigNodeModelElement
         if (bounds != null) {
             setLocation(bounds.x, bounds.y);
         }
-        visibilityVisible = settings.isShowVisibility();
         setBounds(getBounds());
     }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
-     */
-    @Override
-    protected void initNotationProviders(Object own) {
-        super.initNotationProviders(own);
-        if (Model.getFacade().isAPackage(own)) {
-            putNotationArgument("visibilityVisible",
-                    Boolean.valueOf(isVisibilityVisible()));
-        }
-    }
-
 
     /*
      * @see java.lang.Object#clone()
@@ -272,12 +226,7 @@ public class FigPackage extends FigNodeModelElement
     @Override
     public Object clone() {
         FigPackage figClone = (FigPackage) super.clone();
-        Iterator thisIter = this.getFigs().iterator();
-        while (thisIter.hasNext()) {
-            Fig thisFig = (Fig) thisIter.next();
-            if (thisFig == stereoLineBlinder) {
-                figClone.stereoLineBlinder = (FigRect) thisFig;
-            }
+        for (Fig thisFig : (List<Fig>) getFigs()) {
             if (thisFig == body) {
                 figClone.body = (FigText) thisFig;
             }
@@ -292,10 +241,9 @@ public class FigPackage extends FigNodeModelElement
     @Override
     public void setLineColor(Color col) {
         super.setLineColor(col);
-        getStereotypeFig().setLineColor(col);
+        getStereotypeFig().setLineColor(null);
         getNameFig().setLineColor(col);
         body.setLineColor(col);
-        stereoLineBlinder.setLineColor(stereoLineBlinder.getFillColor());
     }
 
     /*
@@ -312,10 +260,9 @@ public class FigPackage extends FigNodeModelElement
     @Override
     public void setFillColor(Color col) {
         super.setFillColor(col);
-        getStereotypeFig().setFillColor(col);
+        getStereotypeFig().setFillColor(null);
         getNameFig().setFillColor(col);
         body.setFillColor(col);
-        stereoLineBlinder.setLineColor(col);
     }
 
     /*
@@ -331,7 +278,7 @@ public class FigPackage extends FigNodeModelElement
      */
     @Override
     public void setFilled(boolean f) {
-        getStereotypeFig().setFilled(f);
+        getStereotypeFig().setFilled(false);
         getNameFig().setFilled(f);
         body.setFilled(f);
     }
@@ -347,6 +294,7 @@ public class FigPackage extends FigNodeModelElement
      */
     @Override
     public void setLineWidth(int w) {
+        // There are 2 boxes showing lines: the tab and the body.
         getNameFig().setLineWidth(w);
         body.setLineWidth(w);
     }
@@ -375,19 +323,19 @@ public class FigPackage extends FigNodeModelElement
         /* check if any stereotype is defined */
         if (Model.getFacade().getStereotypes(modelElement).isEmpty()) {
             if (getStereotypeFig().isVisible()) {
-                stereoLineBlinder.setVisible(false);
+                getNameFig().setTopMargin(0);
                 getStereotypeFig().setVisible(false);
             }
         } else {
             /* we got at least one stereotype */
             /* This populates the stereotypes area: */
             getStereotypeFig().setOwner(getOwner());
-            if (!stereotypeVisible) {
-                stereoLineBlinder.setVisible(false);
+            if (!isStereotypeVisible()) {
+                getNameFig().setTopMargin(0);
                 getStereotypeFig().setVisible(false);
             } else if (!getStereotypeFig().isVisible()) {
-                if (stereotypeVisible) {
-                    stereoLineBlinder.setVisible(true);
+                if (isStereotypeVisible()) {
+                    getNameFig().setTopMargin(50); //TODO: Calc the right nr
                     getStereotypeFig().setVisible(true);
                 }
             }
@@ -431,12 +379,11 @@ public class FigPackage extends FigNodeModelElement
         aSize.width = Math.max(aSize.width, MIN_WIDTH);
 
         // If we have any number of stereotypes displayed, then allow 
-        // some space for that (width and height):
-        if (stereotypeVisible) {
-            Dimension st = getStereotypeFig().getMinimumSize();
+        // some space for that (only width, height is included in nameFig):
+        if (isStereotypeVisible()) {
+           Dimension st = getStereotypeFig().getMinimumSize();
             aSize.width =
 		Math.max(aSize.width, st.width);
-            aSize.height += STEREOHEIGHT + st.height;
         }
 
         // take into account the tab is not as wide as the body:
@@ -501,26 +448,24 @@ public class FigPackage extends FigNodeModelElement
 
         int tabWidth = newW - indentX;
 
-        if (stereotypeVisible) {
+        if (isStereotypeVisible()) {
             Dimension stereoMin = getStereotypeFig().getMinimumSize();
-            currentY += stereoMin.height;
+            getNameFig().setTopMargin(stereoMin.height);
+            getNameFig().setBounds(xa, currentY, tabWidth + 1, minNameHeight);
+
             getStereotypeFig().setBounds(xa, ya,
                 tabWidth, stereoMin.height + 1);
 
             if (tabWidth < stereoMin.width + 1) {
                 tabWidth = stereoMin.width + 2;
             }
-            stereoLineBlinder.setBounds(
-                xa + 1,
-                ya + stereoMin.height,
-                tabWidth - 2,
-                2);
+        } else {
+            getNameFig().setBounds(xa, currentY, tabWidth + 1, minNameHeight);
         }
-        getNameFig().setBounds(xa, currentY, tabWidth + 1, minNameHeight);
-
+        
         // Advance currentY to where the start of the body box is,
         // remembering that it overlaps the next box by 1 pixel. Calculate the
-        // size of the attribute box, and update the Y pointer past it if it is
+        // size of the body box, and update the Y pointer past it if it is
         // displayed.
 
         currentY += minNameHeight - 1; // -1 for 1 pixel overlap
@@ -807,14 +752,14 @@ public class FigPackage extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.StereotypeContainer#isStereotypeVisible()
      */
     public boolean isStereotypeVisible() {
-        return stereotypeVisible;
+        return getNotationSettings().isShowStereotypes();
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.StereotypeContainer#setStereotypeVisible(boolean)
      */
     public void setStereotypeVisible(boolean isVisible) {
-        stereotypeVisible = isVisible;
+        getNotationSettings().setShowStereotypes(isVisible);
         renderingChanged();
         damage();
     }
@@ -823,15 +768,14 @@ public class FigPackage extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.VisibilityContainer#isVisibilityVisible()
      */
     public boolean isVisibilityVisible() {
-        return visibilityVisible;
+        return getNotationSettings().isShowVisibilities();
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.VisibilityContainer#setVisibilityVisible(boolean)
      */
     public void setVisibilityVisible(boolean isVisible) {
-        visibilityVisible = isVisible;
-        putNotationArgument("visibilityVisible", Boolean.valueOf(isVisible));
+        getNotationSettings().setShowVisibilities(isVisible);
         renderingChanged();
         damage();
     }

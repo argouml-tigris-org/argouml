@@ -40,5 +40,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.argouml.application.Main"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="D:\Dave\ArgoUML\issue1048\association.zargo"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="argouml-app"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512M -ea -Dargouml.modules=org.argouml.uml.diagram.sequence2.module.SequenceDiagramModule"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx512M -ea -Dargouml.modules=org.argouml.sequence2.SequenceDiagramModule"/>
 </launchConfiguration>

@@ -39,6 +39,7 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 
 /**
@@ -186,7 +187,8 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
         if (notationProvider != null
                 && (!"remove".equals(event.getPropertyName())
                         || event.getSource() != getOwner())) { // not???
-            this.setText(notationProvider.toString(getOwner(), npArguments));
+            this.setText(notationProvider.toString(getOwner(), 
+                    getNotationSettings()));
             damage();
         }
     }
@@ -221,7 +223,10 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
 
     /**
      * @return Returns the Notation Provider Arguments.
+     * @deprecated for 0.27.3 by tfmorris.  Use {@link #getSettings()} then
+     * getNotationSettings() on the settings object returned..
      */
+    @Deprecated
     public HashMap<String, Object> getNpArguments() {
         return npArguments;
     }
@@ -231,8 +236,8 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
             notationProvider.cleanListener(this, getOwner());
         }
         if (getOwner() != null) {
-            NotationName notation = 
-                Notation.findNotation(getSettings().getNotationLanguage());
+            NotationName notation = Notation.findNotation(
+                    getNotationSettings().getNotationLanguage());
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         getNotationProviderType(), getOwner(), this, notation);
@@ -240,13 +245,19 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
         }
     }
     
+    /**
+     * @deprecated for 0.27.3 by tfmorris.  No replacement.
+     */
+    @Deprecated
     protected void initNotationArguments() {
-        npArguments.put("useGuillemets", getSettings().isUseGuillemets());
+        npArguments.put("useGuillemets", 
+                getNotationSettings().isUseGuillemets());
     }
 
-//    protected void putNotationArgument(String key, Object element) {
-//        npArguments.put(key, element);
-//    }
+    @Deprecated
+    protected void putNotationArgument(String key, Object element) {
+        npArguments.put(key, element);
+    }
 
     /**
      * Show the help-text for parsing, and initialise the text.
@@ -339,7 +350,7 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
     protected void setText() {
         assert getOwner() != null;
         assert notationProvider != null;
-        setText(notationProvider.toString(getOwner(), npArguments));
+        setText(notationProvider.toString(getOwner(), getNotationSettings()));
     }
     
     /**
@@ -356,5 +367,9 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
         ArgoEventPump.fireEvent(new ArgoHelpEvent(
                 ArgoEventTypes.HELP_CHANGED, this,
                 Translator.localize(s)));
+    }
+    
+    protected NotationSettings getNotationSettings() {
+        return getSettings().getNotationSettings();
     }
 }

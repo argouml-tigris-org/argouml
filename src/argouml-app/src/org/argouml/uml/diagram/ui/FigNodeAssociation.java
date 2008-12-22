@@ -40,6 +40,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.FigDiamond;
 import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -285,6 +286,41 @@ public class FigNodeAssociation extends FigNodeModelElement {
         
         return aSize;
     }
+    
+    
+    /**
+     * Remove entire composite Fig from Diagram. Discover the attached
+     * FigEdgeAssociationClass and the FigClassAssociationClass attached to
+     * that. Remove them from the diagram before removing this.
+     */
+    @Override
+    protected void removeFromDiagramImpl() {
+        FigEdgeAssociationClass figEdgeLink = null;
+        final List edges = getFigEdges();
+
+        if (edges != null) {
+            for (Iterator it = edges.iterator(); it.hasNext()
+                    && figEdgeLink == null;) {
+                Object o = it.next();
+                if (o instanceof FigEdgeAssociationClass) {
+                    figEdgeLink = (FigEdgeAssociationClass) o;
+                }
+            }
+        }
+
+        if (figEdgeLink != null) {
+            FigNode figClassBox = figEdgeLink.getDestFigNode();
+            if (!(figClassBox instanceof FigClassAssociationClass)) {
+                figClassBox = figEdgeLink.getSourceFigNode();
+            }
+            figEdgeLink.removeFromDiagramImpl();
+            ((FigClassAssociationClass) figClassBox).removeFromDiagramImpl();
+        }
+
+        super.removeFromDiagramImpl();
+    }
+
+    
 
 } /* end class FigNodeAssociation */
 

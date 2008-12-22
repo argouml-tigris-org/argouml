@@ -32,6 +32,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.AssociationNameNotation;
 
 /**
@@ -82,20 +83,41 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement, settings.isShowAssociationNames(),
+                settings.isFullyHandleStereotypes(),
+                settings.isShowPaths(),
+                settings.isShowVisibilities());
+    }
+    
+    /*
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
+     */
     public String toString(Object modelElement, Map args) {
-        Object o = args.get("showAssociationName");
+        return toString(modelElement, (Boolean) args.get("showAssociationName"),
+                isValue("fullyHandleStereotypes", args),
+                isValue("pathVisible", args),
+                isValue("visibilityVisible", args));
+    }
 
-        if (o == Boolean.FALSE) {
+    private String toString(Object modelElement, Boolean showAssociationName,
+            boolean fullyHandleStereotypes, boolean showPath, 
+            boolean showVisibility) {
+
+        if (showAssociationName == Boolean.FALSE) {
             return "";
         }
 
         String name = Model.getFacade().getName(modelElement);
         StringBuffer sb = new StringBuffer("");
-        if (isValue("fullyHandleStereotypes", args)) {
+        if (fullyHandleStereotypes) {
             sb.append(generateStereotypes(modelElement));
         }
-        sb.append(NotationUtilityUml.generateVisibility(modelElement, args));
-        if (isValue("pathVisible", args)) {
+        if (showVisibility) {
+            sb.append(NotationUtilityUml.generateVisibility2(modelElement));
+            sb.append(" ");
+        }
+        if (showPath) {
             sb.append(NotationUtilityUml.generatePath(modelElement));
         }
         if (name != null) {
@@ -103,7 +125,7 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
         }
         return sb.toString();
     }
-
+    
     /**
      * @param modelElement the UML element to generate for
      * @return a string which represents the stereotypes

@@ -386,8 +386,8 @@ public class FigClassifierRole extends FigNodeModelElement {
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig()) {
             notationProvider.parse(getOwner(), ft.getText());
-            ft.setText(notationProvider.toString(getOwner(), 
-                    getNotationArguments()));
+            ft.setText(notationProvider.toString(getOwner(),
+                    getNotationSettings()));
         }
     }
 
@@ -410,7 +410,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     protected void updateNameText() {
         if (notationProvider != null) {
             getNameFig().setText(notationProvider.toString(getOwner(), 
-                    getNotationArguments()));
+                    getNotationSettings()));
         }
     }
 

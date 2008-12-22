@@ -33,6 +33,7 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.AssociationEndNameNotation;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.MyTokenizer;
@@ -181,31 +182,46 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object,
      *      java.util.HashMap)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement, 
+                NotationUtilityUml.isValue("visibilityVisible", args), 
+                NotationUtilityUml.isValue("useGuillemets", args));
+    }
+
+    private String toString(Object modelElement, boolean showVisibility,
+            boolean useGuillemets) {
         String name = Model.getFacade().getName(modelElement);
         if (name == null) {
             name = "";
         }
 
-        Object visi = Model.getFacade().getVisibility(modelElement);
         String visibility = "";
-        if (visi != null) {
-            visibility = NotationUtilityUml.generateVisibility(visi, args);
-        }
-        if (name.length() < 1) {
-            visibility = "";
-            //this is the temporary solution for issue 1011
+        if (showVisibility) {
+            visibility = NotationUtilityUml.generateVisibility2(modelElement);
+
+            if (name.length() < 1) {
+                visibility = "";
+                // this is the temporary solution for issue 1011
+            }
         }
 
         String stereoString = 
-            NotationUtilityUml.generateStereotype(modelElement, args);
+            NotationUtilityUml.generateStereotype(modelElement, useGuillemets);
 
         if (stereoString.length() > 0) {
             stereoString += " ";
         }
 
         return stereoString + visibility + name;
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement, settings.isShowVisibilities(), 
+                settings.isUseGuillemets());
     }
 
 }

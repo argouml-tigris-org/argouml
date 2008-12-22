@@ -30,6 +30,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.AssociationEndNameNotation;
 import org.argouml.notation.providers.uml.NotationUtilityUml;
 
@@ -78,8 +79,15 @@ public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement, 
+                NotationUtilityUml.isValue("useGuillemets", args));
+    }
+
+    private String toString(Object modelElement, boolean useGuillemets) {
         String name = Model.getFacade().getName(modelElement);
         if (name == null) {
             name = "";
@@ -96,9 +104,14 @@ public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
         }
 
         String stereoString = 
-            NotationUtilityUml.generateStereotype(modelElement, args);
+            NotationUtilityUml.generateStereotype(modelElement, useGuillemets);
 
         return stereoString + visibility + name;
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement, settings.isUseGuillemets());
     }
     
 }

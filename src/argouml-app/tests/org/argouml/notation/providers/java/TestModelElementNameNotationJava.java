@@ -31,6 +31,7 @@ import junit.framework.TestCase;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ModelElementNameNotation;
 import org.argouml.profile.init.InitProfileSubsystem;
 
@@ -62,7 +63,8 @@ public class TestModelElementNameNotationJava extends TestCase {
             Object relationship) {
         ModelElementNameNotation notation = new ModelElementNameNotationJava(
                 relationship);
-        assertEquals("", notation.toString(relationship, new HashMap()));
+        assertEquals("", notation.toString(relationship, 
+                NotationSettings.getDefaultSettings()));
     }
 
     private void assertToStringForNamedRelationshipEqualsItsName(
@@ -71,7 +73,7 @@ public class TestModelElementNameNotationJava extends TestCase {
                 relationship);
         Model.getCoreHelper().setName(relationship, "relationshipName");
         assertEquals(Model.getFacade().getName(relationship), notation.toString(
-                relationship, new HashMap()));
+                relationship, NotationSettings.getDefaultSettings()));
     }
 
     public void testToStringForGeneralization() {

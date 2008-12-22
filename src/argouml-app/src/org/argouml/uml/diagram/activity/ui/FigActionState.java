@@ -68,8 +68,8 @@ public class FigActionState extends FigStateVertex {
      * Constructor FigActionState.
      */
     public FigActionState() {
-        setBigPort(new FigRRect(X0 + 1, Y0 + 1, WIDTH - 2, HEIGHT - 2, Color.cyan,
-                Color.cyan));
+        setBigPort(new FigRRect(X0 + 1, Y0 + 1, WIDTH - 2, HEIGHT - 2,
+                Color.cyan, Color.cyan));
         ((FigRRect) getBigPort()).setCornerRadius(getBigPort().getHeight() / 2);
         cover = new FigRRect(X0, Y0, WIDTH, HEIGHT, Color.black, Color.white);
         cover.setCornerRadius(getHeight() / 2);
@@ -285,7 +285,7 @@ public class FigActionState extends FigStateVertex {
     protected void updateNameText() {
         if (notationProvider != null) {
             getNameFig().setText(notationProvider.toString(getOwner(), 
-                    getNotationArguments()));
+                    getNotationSettings()));
         }
     }
 
@@ -304,7 +304,7 @@ public class FigActionState extends FigStateVertex {
     protected void textEdited(FigText ft) throws PropertyVetoException {
         notationProvider.parse(getOwner(), ft.getText());
         ft.setText(notationProvider.toString(getOwner(), 
-                getNotationArguments()));
+                getNotationSettings()));
     }
 
     /*

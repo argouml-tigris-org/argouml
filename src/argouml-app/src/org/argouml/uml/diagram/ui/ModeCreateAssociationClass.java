@@ -128,7 +128,6 @@ public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
 
         FigEdgeAssociationClass dashedEdge =
             new FigEdgeAssociationClass(figNode, thisFig, settings);
-        dashedEdge.setOwner(thisFig.getOwner());
         lay.add(dashedEdge);
 
         dashedEdge.damage();

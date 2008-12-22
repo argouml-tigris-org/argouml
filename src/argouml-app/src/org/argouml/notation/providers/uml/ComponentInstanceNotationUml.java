@@ -25,13 +25,12 @@
 package org.argouml.notation.providers.uml;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ComponentInstanceNotation;
 
 /**
@@ -109,22 +108,21 @@ public class ComponentInstanceNotationUml extends ComponentInstanceNotation {
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement);
+    }
+
+    private String toString(Object modelElement) {
         String nameStr = "";
         if (Model.getFacade().getName(modelElement) != null) {
             nameStr = Model.getFacade().getName(modelElement).trim();
         }
 
         // construct bases string (comma separated)
-        StringBuilder baseStr = new StringBuilder();
-        Collection col = Model.getFacade().getClassifiers(modelElement);
-        if (col != null && col.size() > 0) {
-            Iterator it = col.iterator();
-            baseStr.append(Model.getFacade().getName(it.next()));
-            while (it.hasNext()) {
-                baseStr.append(", " + Model.getFacade().getName(it.next()));
-            }
-        }
+        StringBuilder baseStr = 
+            formatNameList(Model.getFacade().getClassifiers(modelElement));
         if ((nameStr.length() == 0) && (baseStr.length() == 0)) {
             return "";
         }
@@ -133,6 +131,11 @@ public class ComponentInstanceNotationUml extends ComponentInstanceNotation {
             return nameStr.trim();
         }
         return nameStr.trim() + " : " + baseStr.toString();
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement);
     }
 
 }

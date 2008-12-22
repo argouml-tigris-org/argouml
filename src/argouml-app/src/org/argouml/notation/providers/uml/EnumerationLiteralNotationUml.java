@@ -35,6 +35,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.EnumerationLiteralNotation;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.MyTokenizer;
@@ -235,18 +236,31 @@ public class EnumerationLiteralNotationUml extends EnumerationLiteralNotation {
         return;
     }
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public String toString(Object modelElement, Map args) {
+        return toString(modelElement, 
+                NotationUtilityUml.isValue("useGuillemets", args));
+    }
+
+    private String toString(Object modelElement, boolean useGuillemets) {
         String nameStr = "";
         /* Heuristic algorithm: do not show stereotypes if there is no name. */
         if (Model.getFacade().getName(modelElement) != null) {
-            nameStr = NotationUtilityUml.generateStereotype(modelElement, args);
+            nameStr = NotationUtilityUml.generateStereotype(modelElement, 
+                    useGuillemets);
             if (nameStr.length() > 0) {
                 nameStr += " ";
             }
             nameStr += Model.getFacade().getName(modelElement).trim();
         }
         return nameStr;
+    }
+
+    @Override
+    public String toString(Object modelElement, NotationSettings settings) {
+        return toString(modelElement, settings.isUseGuillemets());
     }
 
 }

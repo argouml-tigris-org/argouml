@@ -36,10 +36,11 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Fig to show one stereotype within a FigStereotypeCompartment.
+ * Fig to show one stereotype within a FigStereotypesGroup.
  * <p>
  * The stereotype is not editable on the fig, hence we
- * do not use a Notation Provider.
+ * do not use a Notation Provider. <p>
+ * This Fig listens to model changes regarding the name of the stereotype.
  *
  * @author Bob Tarling
  */
@@ -100,7 +101,14 @@ public class FigStereotype extends CompartmentFigText {
             setText();
         }
     }
-     
+
+    /* Force the line-width to 0, since the FigGroup that contains the 
+     * stereotype may want to show a border, but we don't. */
+    @Override
+    public void setLineWidth(int w) {
+        super.setLineWidth(0);
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent event) {
         super.propertyChange(event);
@@ -111,6 +119,7 @@ public class FigStereotype extends CompartmentFigText {
         }
     }
     
+    @Override
     protected void setText() {
         if (getOwner() != null) {
             setText(Model.getFacade().getName(getOwner()));
@@ -120,12 +129,13 @@ public class FigStereotype extends CompartmentFigText {
     }
     
     /**
-     * Add guillemots to any text set to this Fig.
+     * Add guillemets to any text set to this Fig.
      * {@inheritDoc}
      */
+    @Override
     public void setText(String text) {
-        super.setText(NotationUtilityUml.formatSingleStereotype(text,
-                getNpArguments()));
+        super.setText(NotationUtilityUml.formatStereotype(text,
+                getNotationSettings().isUseGuillemets()));
     }
     
 }

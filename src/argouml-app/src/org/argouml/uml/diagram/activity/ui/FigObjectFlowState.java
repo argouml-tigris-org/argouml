@@ -40,6 +40,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
 import org.tigris.gef.base.LayerPerspective;
@@ -291,7 +292,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
             if (notationProviderType != null) {
                 getNameFig().setText(
                         notationProviderType.toString(getOwner(), 
-                                getNotationArguments()));
+                                getNotationSettings()));
             }
         }
     }
@@ -302,7 +303,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     private void updateStateText() {
         if (isReadyToEdit()) {
             state.setText(notationProviderState.toString(getOwner(), 
-                    getNotationArguments()));
+                    getNotationSettings()));
         }
     }
 
@@ -395,10 +396,12 @@ public class FigObjectFlowState extends FigNodeModelElement {
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == getNameFig()) {
             notationProviderType.parse(getOwner(), ft.getText());
-            ft.setText(notationProviderType.toString(getOwner(), null));
+            ft.setText(notationProviderType.toString(getOwner(),
+                    NotationSettings.getDefaultSettings()));
         } else if (ft == state) {
             notationProviderState.parse(getOwner(), ft.getText());
-            ft.setText(notationProviderState.toString(getOwner(), null));
+            ft.setText(notationProviderState.toString(getOwner(),
+                    NotationSettings.getDefaultSettings()));
         }
     }
 

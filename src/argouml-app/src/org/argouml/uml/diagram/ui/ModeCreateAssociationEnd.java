@@ -140,23 +140,47 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
         final Object association = fig.getOwner();
         final FigNode originalEdgePort = figAssociation.getEdgePort();
         
+        FigClassAssociationClass associationClassBox = null;
+        FigEdgeAssociationClass associationClassLink = null;
+        
+        final LayerPerspective lay = 
+            (LayerPerspective) editor.getLayerManager().getActiveLayer();
+        
         // Detach any edges (such as comment edges) already attached
         // to the FigAssociation before the FigAssociation is removed.
         // They'll later be re-attached to the new FigNodeAssociation
         final Collection<FigEdge> existingEdges = originalEdgePort.getEdges();
         for (FigEdge edge : existingEdges) {
-            originalEdgePort.removeFigEdge(edge);
+            if (edge instanceof FigEdgeAssociationClass) {
+                // If there are bits of an association class then
+                // remember their location and path.
+                associationClassLink = (FigEdgeAssociationClass) edge;
+                FigNode figNode = edge.getSourceFigNode();
+                if (figNode instanceof FigEdgePort) {
+                    figNode = edge.getDestFigNode();
+                }
+                associationClassBox = (FigClassAssociationClass) figNode;
+                originalEdgePort.removeFigEdge(edge);
+                lay.remove(edge);
+                lay.remove(associationClassBox);
+            } else {
+                originalEdgePort.removeFigEdge(edge);
+            }
         }
+        
+        List associationFigs = lay.presentationsFor(association);
+        
         figAssociation.removeFromDiagram();
+        associationFigs = lay.presentationsFor(association);
         
         // Create the new FigNodeAssociation and locate it.
         final MutableGraphModel gm =
             (MutableGraphModel) editor.getGraphModel();
         gm.addNode(association);
-        final LayerPerspective lay = 
-            (LayerPerspective) editor.getLayerManager().getActiveLayer();
-        final List associationFigs = lay.presentationsFor(association);
+        associationFigs = lay.presentationsFor(association);
         associationFigs.remove(figAssociation);
+        associationFigs = lay.presentationsFor(association);
+        
         final FigNodeAssociation figNode = 
             (FigNodeAssociation) associationFigs.get(0);
         
@@ -169,9 +193,11 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
         // Add the association ends to the graph model
         final Collection<Object> associationEnds =
             Model.getFacade().getConnections(association);
+        
         for (Object associationEnd : associationEnds) {
             gm.addEdge(associationEnd);
         }
+        
         // Add the edges (such as comment edges) that were on the old
         // FigAssociation to our new FigNodeAssociation and make sure they are
         // positioned correctly.
@@ -186,6 +212,16 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
             }
         }
         figNode.updateEdges();
+        
+        if (associationClassBox != null) {
+            associationFigs = lay.presentationsFor(association);
+            
+            lay.add(associationClassBox);
+            associationClassLink.setSourceFigNode(figNode);
+            lay.add(associationClassLink);
+            
+            associationFigs = lay.presentationsFor(association);
+        }
 
         return figNode;
     }

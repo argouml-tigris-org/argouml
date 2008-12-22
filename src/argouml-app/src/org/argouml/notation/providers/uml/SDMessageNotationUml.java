@@ -41,13 +41,15 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
+import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationSettings;
+import org.argouml.notation.SDNotationSettings;
 import org.argouml.notation.providers.MessageNotation;
 import org.argouml.util.CustomSeparator;
 import org.argouml.util.MyTokenizer;
 
 /**
- * The UML notation for a message, as shown on a collaboration diagram. <p>
+ * The UML notation for a message, as shown on a sequence diagram. <p>
  *
  * The parse method parses a message line of the form: <p>
  *
@@ -80,13 +82,10 @@ import org.argouml.util.MyTokenizer;
  *
  * @author michiel
  */
-public class MessageNotationUml extends MessageNotation {
+public class SDMessageNotationUml extends MessageNotation {
 
-    /**
-     * The standard error etc. logger
-     */
     private static final Logger LOG =
-        Logger.getLogger(MessageNotationUml.class);
+        Logger.getLogger(SDMessageNotationUml.class);
 
     /**
      * The list of CustomSeparators to use when tokenizing parameters.
@@ -98,7 +97,7 @@ public class MessageNotationUml extends MessageNotation {
      *
      * @param message the UML object
      */
-    public MessageNotationUml(Object message) {
+    public SDMessageNotationUml(Object message) {
         super(message);
         parameterCustomSep = new ArrayList<CustomSeparator>();
         parameterCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
@@ -129,34 +128,35 @@ public class MessageNotationUml extends MessageNotation {
         return "parsing.help.fig-message";
     }
 
-
-    @Override
-    public String toString(Object modelElement, NotationSettings settings) {
-        return toString(modelElement);
-    }
-
-    /*
+    /**
      * Generate a textual description for a Message m.
-     *
-     * @see org.argouml.notation.NotationProvider#toString(java.lang.Object, 
-     * java.util.Map)
-     * @deprecated
+     * {@inheritDoc}
+     * @see org.argouml.notation.NotationProvider#toString(Object, NotationSettings)
      */
-    @SuppressWarnings("deprecation")
-    @Deprecated
+    public String toString(final Object modelElement, 
+            NotationSettings settings) {
+        if (settings instanceof SDNotationSettings) {
+            return toString(modelElement, 
+                    ((SDNotationSettings) settings).isShowSequenceNumbers());
+        } else {
+            return toString(modelElement, true);
+        }
+    }
+    
+    /*
+     * Generates a textual description for a Message m.
+     *
+     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, 
+     * java.util.Map)
+     */
     public String toString(final Object modelElement, final Map args) {
-        return toString(modelElement);
+        return toString(modelElement, 
+                !NotationProvider.isValue("hideSequenceNrs", args));
     }
 
-    private String toString(final Object modelElement) {
-        Iterator it;
-        Collection pre;
-        Object act;
-        Object/*MMessage*/ rt;
-        MsgPtr ptr;
-
+    private String toString(final Object modelElement, 
+            boolean showSequenceNumbers) {
         String action = "";
-        String number;
         StringBuilder predecessors = new StringBuilder();
         int lpn;
 
@@ -164,12 +164,12 @@ public class MessageNotationUml extends MessageNotation {
             return "";
         }
 
-        ptr = new MsgPtr();
+        MsgPtr ptr = new MsgPtr();
         lpn = recCountPredecessors(modelElement, ptr) + 1;
-        rt = Model.getFacade().getActivator(modelElement);
+        Object rt = Model.getFacade().getActivator(modelElement);
 
-        pre = Model.getFacade().getPredecessors(modelElement);
-        it = (pre != null) ? pre.iterator() : null;
+        Collection pre = Model.getFacade().getPredecessors(modelElement);
+        Iterator it = (pre != null) ? pre.iterator() : null;
         if (it != null && it.hasNext()) {
             MsgPtr ptr2 = new MsgPtr();
             int precnt = 0;
@@ -199,9 +199,9 @@ public class MessageNotationUml extends MessageNotation {
             }
         }
 
-        number = generateMessageNumber(modelElement, ptr.message, lpn);
+        String number = generateMessageNumber(modelElement, ptr.message, lpn);
 
-        act = Model.getFacade().getAction(modelElement);
+        Object act = Model.getFacade().getAction(modelElement);
         if (act != null) {
             if (Model.getFacade().getRecurrence(act) != null) {
                 number =
@@ -216,10 +216,13 @@ public class MessageNotationUml extends MessageNotation {
              * when we start supporting parameters):
              */
             if (!action.endsWith(")")) {
-        	action = action + "()";
+                action = action + "()";
             }
         }
 
+        if (!showSequenceNumbers) {
+            return action;
+        }
         return predecessors + number + " : " + action;
     }
 
@@ -289,8 +292,6 @@ public class MessageNotationUml extends MessageNotation {
     }
 
     private int recCountPredecessors(Object message, MsgPtr ptr) {
-        Collection predecessors;
-        Iterator it;
         int pre = 0;
         int local = 0;
         Object/*MMessage*/ maxmsg = null;
@@ -302,10 +303,7 @@ public class MessageNotationUml extends MessageNotation {
         }
 
         activatorMessage = Model.getFacade().getActivator(message);
-        predecessors = Model.getFacade().getPredecessors(message);
-        it = predecessors.iterator();
-        while (it.hasNext()) {
-            Object msg = it.next();
+        for (Object msg : Model.getFacade().getPredecessors(message)) {
             if (Model.getFacade().getActivator(msg) != activatorMessage) {
                 continue;
             }
@@ -433,14 +431,14 @@ public class MessageNotationUml extends MessageNotation {
                     }
                 } else if ("[".equals(token)) {
                     if (mustBePre) {
-                    	String msg = "parsing.error.message.pred-unqualified";
+                        String msg = "parsing.error.message.pred-unqualified";
                         throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
                     mustBeSeq = true;
 
                     if (guard != null) {
-                    	String msg = "parsing.error.message.several-specs";
+                        String msg = "parsing.error.message.several-specs";
                         throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
@@ -455,7 +453,7 @@ public class MessageNotationUml extends MessageNotation {
                     }
                 } else if ("*".equals(token)) {
                     if (mustBePre) {
-                    	String msg = "parsing.error.message.pred-unqualified";
+                        String msg = "parsing.error.message.pred-unqualified";
                         throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
@@ -466,7 +464,7 @@ public class MessageNotationUml extends MessageNotation {
                     }
                 } else if (".".equals(token)) {
                     if (currentseq == null) {
-                    	String msg = "parsing.error.message.unexpected-dot";
+                        String msg = "parsing.error.message.unexpected-dot";
                         throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
@@ -514,7 +512,7 @@ public class MessageNotationUml extends MessageNotation {
                     }
 
                     if (mustBeSeq) {
-                    	String msg = "parsing.error.message.sequence-slash";
+                        String msg = "parsing.error.message.sequence-slash";
                         throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
@@ -541,7 +539,7 @@ public class MessageNotationUml extends MessageNotation {
                     hasPredecessors = true;
                 } else if ("//".equals(token)) {
                     if (mustBePre) {
-                    	String msg = "parsing.error.message.pred-parallelized";
+                        String msg = "parsing.error.message.pred-parallelized";
                         throw new ParseException(Translator.localize(msg),
                                 st.getTokenIndex());
                     }
@@ -622,10 +620,10 @@ public class MessageNotationUml extends MessageNotation {
                     } else if (fname == null || fname.length() == 0) {
                         fname = token;
                     } else {
-                    	String msg = "parsing.error.message.unexpected-token";
+                        String msg = "parsing.error.message.unexpected-token";
                         Object[] parseExcArgs = {token};
                         throw new ParseException(
-                        		Translator.localize(msg, parseExcArgs),
+                                        Translator.localize(msg, parseExcArgs),
                                 st.getTokenIndex());
                     }
                 } else {
@@ -638,16 +636,16 @@ public class MessageNotationUml extends MessageNotation {
 
                     if (!hasVal && !assigned && bp == token.length()) {
                         try {
-                            currentseq.set(currentseq.size() - 2, Integer.valueOf(
-                                    token));
+                            currentseq.set(currentseq.size() - 2, 
+                                    Integer.valueOf(token));
                             assigned = true;
                         } catch (NumberFormatException nfe) { }
                     }
 
                     if (!hasOrd && !assigned && bp == 0) {
                         try {
-                            currentseq.set(currentseq.size() - 1, Integer.valueOf(
-                                    parseMsgOrder(token)));
+                            currentseq.set(currentseq.size() - 1, 
+                                    Integer.valueOf(parseMsgOrder(token)));
                             assigned = true;
                         } catch (NumberFormatException nfe) { }
                     }
@@ -666,10 +664,10 @@ public class MessageNotationUml extends MessageNotation {
                     }
 
                     if (!assigned) {
-                    	String msg = "parsing.error.message.unexpected-token";
+                        String msg = "parsing.error.message.unexpected-token";
                         Object[] parseExcArgs = {token};
                         throw new ParseException(
-                        		Translator.localize(msg, parseExcArgs),
+                                        Translator.localize(msg, parseExcArgs),
                                 st.getTokenIndex());
                     }
                 }
@@ -760,12 +758,10 @@ public class MessageNotationUml extends MessageNotation {
                     guard = guard.insert(0, "*");
                 }
             }
-            Project project =
-                ProjectManager.getManager().getCurrentProject();
-            ProjectSettings ps = project.getProjectSettings();
+
             Object expr =
                 Model.getDataTypesFactory().createIterationExpression(
-                        ps.getNotationLanguage(), guard.toString());
+                        getNotationLanguage(), guard.toString());
             Model.getCommonBehaviorHelper().setRecurrence(
                     Model.getFacade().getAction(mes), expr);
         }
@@ -821,10 +817,6 @@ public class MessageNotationUml extends MessageNotation {
             }
         }
 
-        Project project =
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
-
         if (fname != null) {
             String expr = fname.trim();
             if (varname.length() > 0) {
@@ -839,7 +831,7 @@ public class MessageNotationUml extends MessageNotation {
                 Object e =
                     Model.getDataTypesFactory()
                         .createActionExpression(
-                                ps.getNotationLanguage(),
+                                getNotationLanguage(),
                                 expr.trim());
                 Model.getCommonBehaviorHelper().setScript(
                         Model.getFacade().getAction(mes), e);
@@ -869,7 +861,7 @@ public class MessageNotationUml extends MessageNotation {
                             : "");
                     Object e =
                         Model.getDataTypesFactory().createExpression(
-                                ps.getNotationLanguage(),
+                                getNotationLanguage(),
                             value.trim());
                     Model.getCommonBehaviorHelper().setValue(arg, e);
                 }
@@ -950,20 +942,20 @@ public class MessageNotationUml extends MessageNotation {
             if (compareMsgNumbers(mname.toString(), gname.toString())) {
                 // Do nothing
             } else if (isMsgNumberStartOf(gname.toString(), mname.toString())) {
-            	String msg = "parsing.error.message.subtree-rooted-self";
+                String msg = "parsing.error.message.subtree-rooted-self";
                 throw new ParseException(Translator.localize(msg), 0);
             } else if (Model.getFacade().getPredecessors(mes).size() > 1
                     && Model.getFacade().getSuccessors(mes).size() > 1) {
-            	String msg = "parsing.error.message.start-end-many-threads";
+                String msg = "parsing.error.message.start-end-many-threads";
                 throw new ParseException(Translator.localize(msg), 0);
             } else if (root == null && pname.length() > 0) {
-            	String msg = "parsing.error.message.activator-not-found";
+                String msg = "parsing.error.message.activator-not-found";
                 throw new ParseException(Translator.localize(msg), 0);
             } else if (swapRoles
                     && Model.getFacade().getActivatedMessages(mes).size() > 0
                     && (Model.getFacade().getSender(mes)
                             != Model.getFacade().getReceiver(mes))) {
-            	String msg = "parsing.error.message.reverse-direction-message";
+                String msg = "parsing.error.message.reverse-direction-message";
                 throw new ParseException(Translator.localize(msg), 0);
             } else {
                 /* Disconnect the message from the call graph
@@ -1104,6 +1096,15 @@ public class MessageNotationUml extends MessageNotation {
             }
             Model.getCollaborationsHelper().setPredecessors(mes, pre);
         }
+    }
+
+    // TODO: We know what our notation language is (and it's fixed)
+    // Why are we looking it up in project settings?
+    private String getNotationLanguage() {
+        Project project =
+            ProjectManager.getManager().getCurrentProject();
+        ProjectSettings ps = project.getProjectSettings();
+        return ps.getNotationLanguage();
     }
 
     /**

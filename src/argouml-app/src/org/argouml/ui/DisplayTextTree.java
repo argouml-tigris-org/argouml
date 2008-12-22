@@ -27,7 +27,6 @@ package org.argouml.ui;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -42,11 +41,12 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
@@ -228,23 +228,24 @@ public class DisplayTextTree extends JTree {
     }
 
     private String formatExtensionPoint(Object value) {
-        String name;
-        NotationProvider notationProvider =
-            NotationProviderFactory2.getInstance()
-                .getNotationProvider(
-                    NotationProviderFactory2.TYPE_EXTENSION_POINT,
-                    value);
-        /* TODO: move this Map outside this method 
-         * for performance. */
-        HashMap<String, Object> npArguments = 
-            new HashMap<String, Object>();
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p != null) {
-            npArguments.put("useGuillemets", p.getProjectSettings()
-                    .getDefaultDiagramSettings().isUseGuillemets());
-        }
-        name = notationProvider.toString(value, npArguments);
+        NotationSettings settings = getNotationSettings();
+        NotationProvider notationProvider = NotationProviderFactory2
+                .getInstance().getNotationProvider(
+                        NotationProviderFactory2.TYPE_EXTENSION_POINT, value,
+                        Notation.findNotation(settings.getNotationLanguage()));
+        String name = notationProvider.toString(value, settings);
         return name;
+    }
+
+    private static NotationSettings getNotationSettings() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        NotationSettings settings;
+        if (p != null) {
+            settings = p.getProjectSettings().getNotationSettings();
+        } else {
+            settings = NotationSettings.getDefaultSettings();
+        }
+        return settings;
     }
 
     private String formatTaggedValueLabel(Object value) {
@@ -286,7 +287,8 @@ public class DisplayTextTree extends JTree {
                 .getNotationProvider(
                         NotationProviderFactory2.TYPE_TRANSITION,
                         value);
-        String signature = notationProvider.toString(value, null);
+        String signature = notationProvider.toString(value, 
+                NotationSettings.getDefaultSettings());
         if (name != null && name.length() > 0) {
             name += ": " + signature;
         } else {
@@ -300,11 +302,8 @@ public class DisplayTextTree extends JTree {
      * @return a string representing the given stereotype(s)
      */
     public static String generateStereotype(Collection<Object> st) {
-        Project project =
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
         return NotationUtilityUml.generateStereotype(st, 
-                ps.getDefaultDiagramSettings().isUseGuillemets());
+                getNotationSettings().isUseGuillemets());
     }
 
     public static final String getModelElementDisplayName(Object modelElement) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,9 +27,7 @@ package org.argouml.uml.diagram.static_structure.layout;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 
 import org.argouml.uml.diagram.layout.LayoutedNode;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
@@ -70,15 +68,13 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
      */
     public static final int NOWEIGHT = -1;
 
-    // Attributes
-
     /**
-     * Attribute column represents the current column of this node.
+     * The current column of this node.
      */
     private int column = NOCOLUMN;
 
     /**
-     * Attribute downlinks represents the nodes that contain the figures, which
+     * List of the nodes that contain the figures, which
      * are sources of edges with the figure of this node as destination.
      */
     private List<ClassdiagramNode> downlinks = 
@@ -90,29 +86,28 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     private int edgeOffset = 0;
 
     /**
-     * Attribute figure represents the figure that this ClassdiagramNode
-     * represents during the layout process.
+     * The Fig that this ClassdiagramNode represents during the layout process.
      */
     private FigNode figure = null;
 
     /**
-     * Attribute placementHint keeps information about preferred positioning.
+     * The preferred X coordinate for the node.  Hint only. May not be used.
      */
     private int placementHint = -1;
 
     /**
-     * Attribute rank represents the current rank (i.e. row) of this node.
+     * The current rank (i.e. row number) of this node.
      */
     private int rank = NORANK;
 
     /**
-     * Attribute uplinks represents the nodes that contain the figures, which
-     * are destinations of edges with the figure of this node as source.
+     * List of nodes that contain the figures, which are destinations of edges
+     * with the figure of this node as source.
      */
     private List<ClassdiagramNode> uplinks = new ArrayList<ClassdiagramNode>();
 
     /**
-     * This attribute stores the 'weight' of this node. This is a computed
+     * The 'weight' of this node. This is a computed
      * attribute that is used during the horizontal placement process. It's
      * based on the position of the 'uplinked' objects. The actual purpose is to
      * minimize the number of link crossings in the diagram. Since we don't
@@ -125,7 +120,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     private static final float UPLINK_FACTOR = 5;
 
     /**
-     * Operation ClassdiagramNode creates a new ClassdiagramNode.
+     * Construct a new ClassdiagramNode representing the given Fig.
      * 
      * @param f
      *            represents the figure in the diagram, that peers this layout
@@ -136,10 +131,10 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     }
 
     /**
-     * Operation setDownlinks changes the value of the attribute _downlinks.
+     * Add a new downlinked node to this node.
      * 
      * @param newDownlink
-     *            Represents the new value of _downlinks.
+     *            The node to be added with a dowlink.
      */
     public void addDownlink(ClassdiagramNode newDownlink) {
         downlinks.add(newDownlink);
@@ -223,14 +218,12 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
         if (result == 0) {
             result = node.hashCode() - this.hashCode();
         }
-        //System.out.println(result + " node1: " + this + ", node2 " + node);
+        //LOG.debug(result + " node1: " + this + ", node2 " + node);
         return result;
     }
 
     /**
-     * Operation getColumn returns the value of the attribute _column.
-     * 
-     * @return The value of the attribute _column.
+     * @return The column of this node.
      */
     public int getColumn() {
         return column;
@@ -238,8 +231,6 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
 
 
     /**
-     * Get the downlinks of this node.
-     * 
      * @return The downlinks of this node.
      */
     public List<ClassdiagramNode> getDownNodes() {
@@ -289,17 +280,15 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     }
 
     /**
-     * Get the current placement hint.
+     * Get the current placement hint (X coordinate in the row).
      * 
-     * @return The placementhint for this node.
+     * @return The placement hint for this node.
      */
     public int getPlacementHint() {
         return placementHint;
     }
 
     /**
-     * Get the rank of this node.
-     * 
      * @return The rank for this node.
      */
     public int getRank() {
@@ -307,7 +296,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     }
 
     /**
-     * Operation getSize returns the size of the figure associated with this
+     * Return the size of the figure associated with this
      * layout node.
      * 
      * @return The size of the associated figure.
@@ -417,31 +406,30 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     }
 
     /**
-     * Operation setFigure changes the value of the attribute _figure.
+     * Set the Fig represented by this node.
      * 
      * @param newFigure
-     *            represents the new value of _figure.
+     *            represents the new value of figure.
      */
     public void setFigure(FigNode newFigure) {
         figure = newFigure;
     }
 
     /**
-     * Operation setLocation set the new location of the associated figure in
-     * the diagram.
+     * Set the location of the Fig associated with this node.
      * 
      * @param newLocation
      *            represents the new location for this figure.
      */
+    @SuppressWarnings("unchecked")
     public void setLocation(Point newLocation) {
         Point oldLocation = getFigure().getLocation();
 
         getFigure().setLocation(newLocation);
         int xTrans = newLocation.x - oldLocation.x;
         int yTrans = newLocation.y - oldLocation.y;
-        for (Iterator<Fig> iter = getFigure().getEnclosedFigs().iterator(); 
-                iter.hasNext();) {
-            iter.next().translate(xTrans, yTrans);
+        for (Fig fig : (List<Fig>) getFigure().getEnclosedFigs()) {
+            fig.translate(xTrans, yTrans);
         }
     }
 
@@ -458,10 +446,10 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
     }
 
     /**
-     * Operation setRank changes the value of the attribute _rank.
+     * Set the rank
      * 
      * @param newRank
-     *            represents the new value of _rank.
+     *            represents the new value of rank.
      */
     public void setRank(int newRank) {
         rank = newRank;

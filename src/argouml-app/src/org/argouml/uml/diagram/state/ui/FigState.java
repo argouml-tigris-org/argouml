@@ -163,7 +163,7 @@ public abstract class FigState extends FigStateVertex {
         }
         if (notationProviderBody != null) {
             internal.setText(notationProviderBody.toString(getOwner(), 
-                    getNotationArguments()));
+                    getNotationSettings()));
         }
         calcBounds();
         setBounds(getBounds());
@@ -227,7 +227,7 @@ public abstract class FigState extends FigStateVertex {
             }
             notationProviderBody.parse(getOwner(), ft.getText());
             ft.setText(notationProviderBody.toString(getOwner(), 
-                    getNotationArguments()));
+                    getNotationSettings()));
         }
     }
 

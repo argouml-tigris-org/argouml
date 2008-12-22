@@ -156,18 +156,25 @@ public class FigEdgeAssociationClass
     @Override
     protected Fig getRemoveDelegate() {
         FigNode node = getDestFigNode();
-        if (!(node instanceof FigEdgePort)) {
+        if (!(node instanceof FigEdgePort || node instanceof FigNodeAssociation)) {
             node = getSourceFigNode();
         }
-        if (!(node instanceof FigEdgePort)) {
+        if (!(node instanceof FigEdgePort || node instanceof FigNodeAssociation)) {
             LOG.warn("The is no FigEdgePort attached"
                     + " to the association class link");
             return null;
         }
+        
+        final Fig delegate;
         // Actually return the FigEdge that the FigEdgePort is part of.
-        Fig delegate = node.getGroup();
+        if (node instanceof FigEdgePort) {
+            delegate = node.getGroup();
+        } else {
+            delegate = node;
+        }
         if (LOG.isInfoEnabled()) {
             LOG.info("Delegating remove to " + delegate.getClass().getName());
+//            throw new IllegalArgumentException();
         }
         return delegate;
     }
@@ -177,7 +184,7 @@ public class FigEdgeAssociationClass
     public void setDestFigNode(FigNode fn) {
         if (!(fn instanceof FigClassAssociationClass)) {
             throw new IllegalArgumentException(
-                    "The source of a association class dashed link can "
+                    "The dest of an association class dashed link can "
                     + "only be a FigClassAssociationClass");
         }
         super.setDestFigNode(fn);
@@ -185,9 +192,9 @@ public class FigEdgeAssociationClass
 
     @Override
     public void setSourceFigNode(FigNode fn) {
-        if (!(fn instanceof FigEdgePort)) {
+        if (!(fn instanceof FigEdgePort || fn instanceof FigNodeAssociation)) {
             throw new IllegalArgumentException(
-                    "The source of a association class dashed link can "
+                    "The source of an association class dashed link can "
                     + "only be a FigEdgePort");
         }
         super.setSourceFigNode(fn);
