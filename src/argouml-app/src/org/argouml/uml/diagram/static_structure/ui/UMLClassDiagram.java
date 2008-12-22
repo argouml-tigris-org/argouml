@@ -665,7 +665,9 @@ public class UMLClassDiagram extends UMLDiagram {
 
         DiagramSettings settings = getDiagramSettings();
         
-        if (Model.getFacade().isAClass(droppedObject)) {
+        if (Model.getFacade().isAAssociation(droppedObject)) {
+            figNode = new FigNodeAssociation(gm, droppedObject);
+        } else if (Model.getFacade().isAClass(droppedObject)) {
             figNode = new FigClass(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAInterface(droppedObject)) {
             figNode = new FigInterface(droppedObject, bounds, settings);
@@ -677,8 +679,6 @@ public class UMLClassDiagram extends UMLDiagram {
             figNode = new FigPackage(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComment(droppedObject)) {
             figNode = new FigComment(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAAssociation(droppedObject)) {
-            figNode = new FigNodeAssociation(gm, droppedObject);
         } else if (Model.getFacade().isAEnumeration(droppedObject)) {
             figNode = new FigEnumeration(gm, droppedObject);
         } else if (Model.getFacade().isADataType(droppedObject)) {
