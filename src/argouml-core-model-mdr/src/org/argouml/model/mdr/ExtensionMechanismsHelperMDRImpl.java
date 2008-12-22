@@ -28,15 +28,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.jmi.model.MofClass;
 import javax.jmi.reflect.InvalidObjectException;
-import javax.jmi.reflect.RefBaseObject;
-import javax.jmi.reflect.RefClass;
-import javax.jmi.reflect.RefPackage;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ExtensionMechanismsHelper;
@@ -60,9 +58,6 @@ import org.omg.uml.modelmanagement.UmlPackage;
  */
 class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
 
-    /**
-     * The logger.
-     */
     private static final Logger LOG =
         Logger.getLogger(ExtensionMechanismsHelperMDRImpl.class);
 
@@ -183,33 +178,25 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String getMetaModelName(Object m) {
-        return getMetaModelName(m.getClass());
+        return modelImpl.getMetaTypes().getName(m);
     }
 
-    /**
-     * @param clazz
-     *            the UML class
-     * @return the meta name of the UML class
-     */
-    protected String getMetaModelName(Class clazz) {
-        return modelImpl.getMetaTypes().getName(clazz);
-    }
-
+    
     /*
      * @see org.argouml.model.ExtensionMechanismsHelper#getAllPossibleStereotypes(java.util.Collection, java.lang.Object)
      */
-    public Collection getAllPossibleStereotypes(Collection models,
+    public Collection<Stereotype> getAllPossibleStereotypes(Collection models,
             Object modelElement) {
         if (modelElement == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptySet();
         }
-        List ret = new ArrayList();
+        List<Stereotype> ret = new ArrayList<Stereotype>();
         try {
-            Iterator it = getStereotypes(models).iterator();
-            while (it.hasNext()) {
-                Stereotype stereo = (Stereotype) it.next();
-                if (isValidStereoType(modelElement.getClass(), stereo)) {
+            for (Stereotype stereo : getStereotypes(models)) {
+                if (isApplicableStereo(modelElement, stereo)) {
                     ret.add(stereo);
                 }
             }
@@ -224,59 +211,27 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     /**
      * Can the given stereotype be applied the given class?
      *
-     * @param clazz
-     *            the class we want to apply the stereotype to
+     * @param element
+     *            the UML element we want to apply the stereotype to
      * @param stereo
      *            the given stereotype
      * @return true if the stereotype may be applied
      */
-    private boolean isValidStereoType(Class clazz, Object stereo) {
-        if (clazz == null || !(stereo instanceof Stereotype)) {
-            return false;
-        }
+    private boolean isApplicableStereo(Object element, Stereotype stereo) {
+        String metatypeName = modelImpl.getMetaTypes().getName(element);
+        MofClass metatype = ((FacadeMDRImpl) modelImpl.getFacade())
+                .getMofClass(metatypeName);
+        Collection<String> allTypes = getNames(metatype.allSupertypes());
+        allTypes.add(metatypeName);
 
-        MofClass metatype = getMofClassObject(clazz);
-        Collection allTypes = getNames(metatype.allSupertypes());
-        allTypes.add(getMetaModelName(clazz));
-
-        Collection bases = ((Stereotype) stereo).getBaseClass();
-        for (Iterator it = bases.iterator(); it.hasNext();) {
-            if (allTypes.contains(it.next())) {
+        for (String base : stereo.getBaseClass()) {
+            if (allTypes.contains(base)) {
                 return true;
             }
         }
-
         return false;
     }
 
-    /**
-     * Return object representing metatype of given object.
-     *
-     * @return The object representing the metatype.
-     * @param clazz The object.
-     */
-    private MofClass getMofClassObject(Class clazz) {
-        String className = clazz.getName();
-        String packageName = className.substring(0, className.lastIndexOf("."));
-        packageName = packageName.substring(packageName.lastIndexOf(".") + 1);
-        className = getMetaModelName(clazz);
-
-        if ("core".equals(packageName)) {
-            packageName = "Core"; // optimization for frequent case
-        } else {
-            packageName = packageMap.get(packageName);
-            if (packageName == null) {
-                throw new IllegalArgumentException("Invalid class" + clazz);
-            }
-        }
-        RefPackage pkg = modelImpl.getUmlPackage().refPackage(packageName);
-        RefClass myClass = pkg.refClass(className);
-        RefBaseObject metaObject = myClass.refMetaObject();
-
-        // This could throw a ClassCastException, but shouldn't with
-        // any UML metamodel.
-        return (MofClass) metaObject;
-    }
 
     /**
      * Convert a collection of elements to a collection of names.
@@ -284,10 +239,10 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
      * @param elements The elements.
      * @return A Collection with {@link String}s.
      */
-    private Collection getNames(Collection elements) {
-        Collection names = new ArrayList();
-        for (Iterator it = elements.iterator(); it.hasNext();) {
-            names.add(((MofClass) it.next()).getName());
+    private Collection<String> getNames(Collection<MofClass> elements) {
+        Collection<String> names = new HashSet<String>();
+        for (MofClass element : elements) {
+            names.add(element.getName());
         }
         return names;
     }
@@ -298,16 +253,14 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         if (theModelElement == null) {
             return false;
         }
-        return isValidStereoType(theModelElement.getClass(), theStereotype);
+        return isApplicableStereo(theModelElement, (Stereotype) theStereotype);
     }
 
 
-    public Collection getStereotypes(Collection models) {
-        List ret = new ArrayList();
-        Iterator it = models.iterator();
+    public Collection<Stereotype> getStereotypes(Collection models) {
+        List<Stereotype> ret = new ArrayList<Stereotype>();
         try {
-            while (it.hasNext()) {
-                Object model = it.next();
+            for (Object model : models) {
                 if (!(model instanceof Model)) {
                     throw new IllegalArgumentException(
                             "Expected to receive a collection of Models. "
