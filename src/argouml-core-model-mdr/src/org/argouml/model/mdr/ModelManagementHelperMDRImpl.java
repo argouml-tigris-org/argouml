@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.jmi.model.MofClass;
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefObject;
@@ -195,29 +194,14 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             name = name.substring(3);
         }
 
-        Collection allOfType = Collections.EMPTY_LIST;
-        // Get all (UML) metaclasses and search for the requested one
-        Collection metaTypes = modelImpl.getModelPackage().getMofClass()
-                .refAllOfClass();
-        for (Iterator it = metaTypes.iterator(); it.hasNext();) {
-            MofClass elem = (MofClass) it.next();
-            // TODO: Generalize - assumes UML type names are unique
-            // without the qualifying package names - true for UML 1.4
-            if (name.equals(elem.getName())) {
-                List names = elem.getQualifiedName();
-                // Although this only handles one level of package, it is
-                // OK for UML 1.4 because of clustering
-                try {
-                    RefPackage pkg = ((RefObject) nsa).refOutermostPackage()
-                            .refPackage((String) names.get(0));
-                    // Get the metatype proxy and use it to find all instances
-                    RefClass classProxy = pkg.refClass((String) names.get(1));
-                    allOfType = classProxy.refAllOfType();
-                } catch (InvalidObjectException e) {
-                    throw new InvalidElementException(e);
-                }
-                break;
-            }
+        Collection allOfType = Collections.emptySet();
+        try {
+            RefPackage extent = ((RefObject) nsa).refOutermostPackage();
+            RefClass classProxy = ((FacadeMDRImpl) modelImpl.getFacade())
+                    .getProxy(name, extent);
+            allOfType = classProxy.refAllOfType();
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
 
         // Remove any elements not in requested namespace
