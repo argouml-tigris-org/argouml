@@ -1222,8 +1222,12 @@ public abstract class FigEdgeModelElement
      */
     protected boolean determineFigNodes() {
         Object owner = getOwner();
-        if (owner == null || getLayer() == null) {
-            LOG.error("The FigEdge has no owner or its layer is null");
+        if (owner == null) {
+            LOG.error("The FigEdge has no owner");
+            return false;
+        }
+        if (getLayer() == null) {
+            LOG.error("The FigEdge has no layer");
             return false;
         }
 
