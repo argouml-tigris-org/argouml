@@ -2109,4 +2109,16 @@ class FacadeEUMLImpl implements Facade {
         return c;
     }
 
+    public String[] getMetatypeNames() {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
+        
+    }
+
+    public boolean isA(String metatypeName, Object element) {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
+        
+    }
+
 }

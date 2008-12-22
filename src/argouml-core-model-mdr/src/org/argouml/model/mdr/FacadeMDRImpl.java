@@ -36,8 +36,10 @@ import javax.jmi.model.MofClass;
 import javax.jmi.model.Reference;
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefBaseObject;
+import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefFeatured;
 import javax.jmi.reflect.RefObject;
+import javax.jmi.reflect.RefPackage;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
@@ -4462,4 +4464,51 @@ class FacadeMDRImpl implements Facade {
     }
 
 
+    public String[] getMetatypeNames() {
+        // Get all (UML) metaclasses
+        Collection<MofClass> metaTypes = getMetaClasses();
+        String[] names = new String[metaTypes.size()];
+        int i = 0;
+        for (MofClass mofClass : metaTypes) {
+            // TODO: Do we need to worry about UmlClass, UmlPackage, etc?
+            names[i++] = mofClass.getName();
+        }
+        return names;
+    }
+
+    Collection<MofClass> getMetaClasses() {
+        Collection<MofClass> metaTypes = modelImpl.getModelPackage()
+                .getMofClass().refAllOfClass();
+        return metaTypes;
+    }
+
+    public boolean isA(String metatypeName, Object element) {
+        MofClass metaObject = (MofClass) ((RefObject) element).refMetaObject();
+        return metatypeName != null
+                && metatypeName.equals(metaObject.getName());
+    }
+    
+    MofClass getMofClass(String metatypeName) {
+        Collection<MofClass> metaTypes = getMetaClasses();
+        for (MofClass mofClass : metaTypes) {
+            // TODO: Generalize - assumes UML type names are unique
+            // without the qualifying package names - true for UML 1.4
+            if (metatypeName.equals(mofClass.getName())) {
+                return mofClass;
+            }
+        }
+        return null;
+    }
+    
+    RefClass getProxy(String metatypeName, RefPackage extent) {
+        Collection<MofClass> metaTypes = getMetaClasses();
+        MofClass mofClass = getMofClass(metatypeName);
+        List<String> names = mofClass.getQualifiedName();
+        // Although this only handles one level of package, it is
+        // OK for UML 1.4 because of clustering
+        // Get the right UML package in the extent
+        RefPackage pkg = extent.refPackage(names.get(0));
+        // Return the metatype proxy 
+        return pkg.refClass(names.get(1));
+    }
 }

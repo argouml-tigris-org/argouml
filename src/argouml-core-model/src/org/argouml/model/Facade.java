@@ -3183,4 +3183,25 @@ public interface Facade {
      * @since 0.25.4
      */
     boolean isReadOnly(Object handle);
+    
+    
+    /**
+     * Get the names of all valid metatypes.
+     * 
+     * @return the list of valid metatype names.
+     * @since 0.28
+     */
+    String[] getMetatypeNames();
+    
+    /**
+     * Test whether the provided element is an instance of the given metatype.
+     * 
+     * @param metatypeName the name of the metatype given as a string. Use the
+     *            name as given in the UML spec, not any specific
+     *            implementation's renaming (ie Class, not UmlClass which has
+     *            been renamed to avoid a Java conflict)
+     * @param element the UML element to test
+     * @return true if the element is an instance of the given metatype
+     */
+    boolean isA(String metatypeName, Object element);
 }
