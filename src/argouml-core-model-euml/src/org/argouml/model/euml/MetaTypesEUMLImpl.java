@@ -39,6 +39,8 @@ import org.eclipse.uml2.uml.AssociationClass;
 import org.eclipse.uml2.uml.BehavioralFeature;
 import org.eclipse.uml2.uml.CallAction;
 import org.eclipse.uml2.uml.CallConcurrencyKind;
+import org.eclipse.uml2.uml.CallEvent;
+import org.eclipse.uml2.uml.ChangeEvent;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Comment;
@@ -50,8 +52,10 @@ import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
+import org.eclipse.uml2.uml.Expression;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.ExtensionPoint;
+import org.eclipse.uml2.uml.Feature;
 import org.eclipse.uml2.uml.FinalState;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Include;
@@ -69,21 +73,27 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
+import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Reception;
+import org.eclipse.uml2.uml.Relationship;
 import org.eclipse.uml2.uml.Signal;
+import org.eclipse.uml2.uml.SignalEvent;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Stereotype;
+import org.eclipse.uml2.uml.StructuralFeature;
 import org.eclipse.uml2.uml.TemplateBinding;
 import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.TemplateParameterSubstitution;
+import org.eclipse.uml2.uml.TimeEvent;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.UseCase;
 import org.eclipse.uml2.uml.VisibilityKind;
+
 
 
 /**
@@ -544,6 +554,121 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 
     public Object getVisibilityKind() {
         return VisibilityKind.class;
+    }
+
+    
+    public Object getActionSequence() {
+        // TODO: Need UML 2.x equivalent
+        return null /*ActionSequence.class*/;
+    }
+
+    public Object getArgument() {
+        // TODO: Need UML 2.x equivalent
+        return null /*Argument.class*/;
+    }
+
+    public Object getAttributeLink() {
+        // TODO: Need UML 2.x equivalent
+        return null /*AttributeLink.class*/;
+    }
+
+    public Object getCallEvent() {
+        return CallEvent.class;
+    }
+
+    public Object getChangeEvent() {
+        return ChangeEvent.class;
+    }
+
+    public Object getClassifierInState() {
+        // TODO: Need UML 2.x equivalent
+        return null /*ClassifierInState.class*/;
+    }
+
+    public Object getCollaborationInstanceSet() {
+        // TODO: Need UML 2.x equivalent
+        return null /*CollaborationInstanceSet.class*/;
+    }
+
+    public Object getDataValue() {
+        // TODO: Need UML 2.x equivalent
+        return null /*DataValue.class*/;
+    }
+
+    public Object getElement() {
+        return Element.class;
+    }
+
+    public Object getElementResidence() {
+        // TODO: Need UML 2.x equivalent
+        return null /*ElementResidence.class*/;
+    }
+
+    public Object getExpression() {
+        return Expression.class;
+    }
+
+    public Object getFeature() {
+        return Feature.class;
+    }
+
+    public Object getFlow() {
+        // TODO: Need UML 2.x equivalent
+        return null /*Flow.class*/;
+    }
+
+    public Object getInteractionInstanceSet() {
+        // TODO: Need UML 2.x equivalent
+        return null /*InteractionInstanceSet.class*/;
+    }
+
+    public Object getLinkEnd() {
+        // TODO: Need UML 2.x equivalent
+        return null /*LinkEnd.class*/;
+    }
+
+    public Object getLinkObject() {
+        // TODO: Need UML 2.x equivalent
+        return null /*LinkObject.class*/;
+    }
+
+    public Object getMethod() {
+        // TODO: Need UML 2.x equivalent
+        return null /*Method.class*/;
+    }
+
+    public Object getMultiplicityRange() {
+        return MultiplicityElement.class;
+    }
+
+    public Object getPrimitiveType() {
+        return PrimitiveType.class;
+    }
+
+    public Object getRelationship() {
+        return Relationship.class;
+    }
+
+    public Object getSignalEvent() {
+        return SignalEvent.class;
+    }
+
+    public Object getStructuralFeature() {
+        return StructuralFeature.class;
+    }
+
+    public Object getSubsystemInstance() {
+        // TODO: Need UML 2.x equivalent
+        return null /*SubsystemInstance.class*/;
+    }
+
+    public Object getTimeEvent() {
+        return TimeEvent.class;
+    }
+
+    public Object getUninterpretedAction() {
+        // TODO: Need UML 2.x equivalent
+        return null /*UninterpretedAction.class*/;
     }
 
 }

@@ -24,9 +24,12 @@
 
 package org.argouml.model.mdr;
 
+import javax.jmi.model.PrimitiveType;
+
 import org.argouml.model.MetaTypes;
 import org.omg.uml.behavioralelements.activitygraphs.ActionState;
 import org.omg.uml.behavioralelements.activitygraphs.CallState;
+import org.omg.uml.behavioralelements.activitygraphs.ClassifierInState;
 import org.omg.uml.behavioralelements.activitygraphs.ObjectFlowState;
 import org.omg.uml.behavioralelements.activitygraphs.Partition;
 import org.omg.uml.behavioralelements.activitygraphs.SubactivityState;
@@ -34,28 +37,41 @@ import org.omg.uml.behavioralelements.collaborations.AssociationEndRole;
 import org.omg.uml.behavioralelements.collaborations.AssociationRole;
 import org.omg.uml.behavioralelements.collaborations.ClassifierRole;
 import org.omg.uml.behavioralelements.collaborations.Collaboration;
+import org.omg.uml.behavioralelements.collaborations.CollaborationInstanceSet;
 import org.omg.uml.behavioralelements.collaborations.Interaction;
+import org.omg.uml.behavioralelements.collaborations.InteractionInstanceSet;
 import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.commonbehavior.Action;
+import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
+import org.omg.uml.behavioralelements.commonbehavior.Argument;
+import org.omg.uml.behavioralelements.commonbehavior.AttributeLink;
 import org.omg.uml.behavioralelements.commonbehavior.CallAction;
 import org.omg.uml.behavioralelements.commonbehavior.ComponentInstance;
 import org.omg.uml.behavioralelements.commonbehavior.CreateAction;
+import org.omg.uml.behavioralelements.commonbehavior.DataValue;
 import org.omg.uml.behavioralelements.commonbehavior.DestroyAction;
 import org.omg.uml.behavioralelements.commonbehavior.Instance;
 import org.omg.uml.behavioralelements.commonbehavior.Link;
+import org.omg.uml.behavioralelements.commonbehavior.LinkEnd;
+import org.omg.uml.behavioralelements.commonbehavior.LinkObject;
 import org.omg.uml.behavioralelements.commonbehavior.NodeInstance;
 import org.omg.uml.behavioralelements.commonbehavior.Reception;
 import org.omg.uml.behavioralelements.commonbehavior.ReturnAction;
 import org.omg.uml.behavioralelements.commonbehavior.SendAction;
 import org.omg.uml.behavioralelements.commonbehavior.Signal;
 import org.omg.uml.behavioralelements.commonbehavior.Stimulus;
+import org.omg.uml.behavioralelements.commonbehavior.SubsystemInstance;
 import org.omg.uml.behavioralelements.commonbehavior.TerminateAction;
 import org.omg.uml.behavioralelements.commonbehavior.UmlException;
+import org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction;
+import org.omg.uml.behavioralelements.statemachines.CallEvent;
+import org.omg.uml.behavioralelements.statemachines.ChangeEvent;
 import org.omg.uml.behavioralelements.statemachines.CompositeState;
 import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.behavioralelements.statemachines.FinalState;
 import org.omg.uml.behavioralelements.statemachines.Guard;
 import org.omg.uml.behavioralelements.statemachines.Pseudostate;
+import org.omg.uml.behavioralelements.statemachines.SignalEvent;
 import org.omg.uml.behavioralelements.statemachines.SimpleState;
 import org.omg.uml.behavioralelements.statemachines.State;
 import org.omg.uml.behavioralelements.statemachines.StateMachine;
@@ -63,6 +79,7 @@ import org.omg.uml.behavioralelements.statemachines.StateVertex;
 import org.omg.uml.behavioralelements.statemachines.StubState;
 import org.omg.uml.behavioralelements.statemachines.SubmachineState;
 import org.omg.uml.behavioralelements.statemachines.SynchState;
+import org.omg.uml.behavioralelements.statemachines.TimeEvent;
 import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.behavioralelements.usecases.Actor;
 import org.omg.uml.behavioralelements.usecases.Extend;
@@ -82,18 +99,25 @@ import org.omg.uml.foundation.core.Component;
 import org.omg.uml.foundation.core.Constraint;
 import org.omg.uml.foundation.core.DataType;
 import org.omg.uml.foundation.core.Dependency;
+import org.omg.uml.foundation.core.Element;
+import org.omg.uml.foundation.core.ElementResidence;
 import org.omg.uml.foundation.core.Enumeration;
 import org.omg.uml.foundation.core.EnumerationLiteral;
+import org.omg.uml.foundation.core.Feature;
+import org.omg.uml.foundation.core.Flow;
 import org.omg.uml.foundation.core.GeneralizableElement;
 import org.omg.uml.foundation.core.Generalization;
 import org.omg.uml.foundation.core.Interface;
+import org.omg.uml.foundation.core.Method;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Node;
 import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.core.Parameter;
 import org.omg.uml.foundation.core.Permission;
+import org.omg.uml.foundation.core.Relationship;
 import org.omg.uml.foundation.core.Stereotype;
+import org.omg.uml.foundation.core.StructuralFeature;
 import org.omg.uml.foundation.core.TagDefinition;
 import org.omg.uml.foundation.core.TaggedValue;
 import org.omg.uml.foundation.core.TemplateArgument;
@@ -105,7 +129,9 @@ import org.omg.uml.foundation.datatypes.ActionExpression;
 import org.omg.uml.foundation.datatypes.AggregationKind;
 import org.omg.uml.foundation.datatypes.BooleanExpression;
 import org.omg.uml.foundation.datatypes.CallConcurrencyKind;
+import org.omg.uml.foundation.datatypes.Expression;
 import org.omg.uml.foundation.datatypes.Multiplicity;
+import org.omg.uml.foundation.datatypes.MultiplicityRange;
 import org.omg.uml.foundation.datatypes.ParameterDirectionKind;
 import org.omg.uml.foundation.datatypes.PseudostateKind;
 import org.omg.uml.foundation.datatypes.ScopeKind;
@@ -521,5 +547,106 @@ final class MetaTypesMDRImpl implements MetaTypes {
     public Object getInteraction() {
         return Interaction.class;
     }
+
+    public Object getActionSequence() {
+        return ActionSequence.class;
+    }
+
+    public Object getArgument() {
+        return Argument.class;
+    }
+
+    public Object getAttributeLink() {
+        return AttributeLink.class;
+    }
+
+    public Object getCallEvent() {
+        return CallEvent.class;
+    }
+
+    public Object getChangeEvent() {
+        return ChangeEvent.class;
+    }
+
+    public Object getClassifierInState() {
+        return ClassifierInState.class;
+    }
+
+    public Object getCollaborationInstanceSet() {
+        return CollaborationInstanceSet.class;
+    }
+
+    public Object getDataValue() {
+        return DataValue.class;
+    }
+
+    public Object getElement() {
+        return Element.class;
+    }
+
+    public Object getElementResidence() {
+        return ElementResidence.class;
+    }
+
+    public Object getExpression() {
+        return Expression.class;
+    }
+
+    public Object getFeature() {
+        return Feature.class;
+    }
+
+    public Object getFlow() {
+        return Flow.class;
+    }
+
+    public Object getInteractionInstanceSet() {
+        return InteractionInstanceSet.class;
+    }
+
+    public Object getLinkEnd() {
+        return LinkEnd.class;
+    }
+
+    public Object getLinkObject() {
+        return LinkObject.class;
+    }
+
+    public Object getMethod() {
+        return Method.class;
+    }
+
+    public Object getMultiplicityRange() {
+        return MultiplicityRange.class;
+    }
+
+    public Object getPrimitiveType() {
+        return PrimitiveType.class;
+    }
+
+    public Object getRelationship() {
+        return Relationship.class;
+    }
+
+    public Object getSignalEvent() {
+        return SignalEvent.class;
+    }
+
+    public Object getStructuralFeature() {
+        return StructuralFeature.class;
+    }
+
+    public Object getSubsystemInstance() {
+        return SubsystemInstance.class;
+    }
+
+    public Object getTimeEvent() {
+        return TimeEvent.class;
+    }
+
+    public Object getUninterpretedAction() {
+        return UninterpretedAction.class;
+    }
+
 
 }

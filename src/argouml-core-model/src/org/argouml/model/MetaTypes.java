@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -515,5 +515,55 @@ public interface MetaTypes {
      * @return Returns the Interaction
      */
     Object getInteraction();
+
+    Object getActionSequence();
+
+    Object getArgument();
+
+    Object getAttributeLink();
+
+    Object getCallEvent();
+
+    Object getChangeEvent();
+
+    Object getClassifierInState();
+
+    Object getCollaborationInstanceSet();
+
+    Object getDataValue();
+
+    Object getElement();
+
+    Object getElementResidence();
+
+    Object getExpression();
+
+    Object getFeature();
+
+    Object getFlow();
+
+    Object getInteractionInstanceSet();
+
+    Object getLinkEnd();
+
+    Object getLinkObject();
+
+    Object getMethod();
+
+    Object getMultiplicityRange();
+
+    Object getPrimitiveType();
+
+    Object getRelationship();
+
+    Object getSignalEvent();
+
+    Object getStructuralFeature();
+
+    Object getSubsystemInstance();
+
+    Object getTimeEvent();
+
+    Object getUninterpretedAction();
 
 }
