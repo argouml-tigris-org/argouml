@@ -859,12 +859,16 @@ public class EvaluateExpression extends DepthFirstAdapter {
         LOG.error("OCL does not evaluate to a " + type + " expression!! Exp: "
                 + node + " Val: " + val);
         val = dft;
+        // TODO: We need a specific exception type here.
+        throw new RuntimeException();
     }
 
     private void error(Object node) {
         LOG.error("Unknown error processing OCL exp!! Exp: " + node + " Val: "
                 + val);
         val = null;
+        // TODO: We need a specific exception type here.
+        throw new RuntimeException();
     }
 
 }
