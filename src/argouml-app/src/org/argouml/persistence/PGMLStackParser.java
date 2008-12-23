@@ -44,6 +44,7 @@ import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.PathContainer;
 import org.argouml.uml.diagram.StereotypeContainer;
 import org.argouml.uml.diagram.VisibilityContainer;
+import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigEdgePort;
 import org.tigris.gef.base.Diagram;
@@ -135,7 +136,9 @@ class PGMLStackParser
             DiagramSettings defaultSettings) {
         // TODO: Move addTranslation here when deprecated constructor is removed
         this(modelElementsByUuid);
-        diagramSettings = defaultSettings;
+        // Create a new diagram wide settings block which is backed by 
+        // the project-wide defaults that we were passed
+        diagramSettings = new DiagramSettings(defaultSettings);
     }
 
     /*
@@ -241,6 +244,7 @@ class PGMLStackParser
                 throw new SAXException("Found href of " + href
 				       + " with no matching element in model");
             }
+            // The owner should always have already been set in the constructor
             if (f.getOwner() != modelElement) {
                 // Assign nodes immediately but edges later. See issue 4310.
                 if (f instanceof FigEdge) {
@@ -683,7 +687,7 @@ class PGMLStackParser
     @Override
     public void setDiagram(Diagram diagram) {
         // TODO: We could generalize this to initialize more stuff if needed
-        ((ArgoDiagram) diagram).setDiagramSettings(diagramSettings);
+        ((ArgoDiagram) diagram).setDiagramSettings(getDiagramSettings());
         super.setDiagram(diagram);
     }
     
