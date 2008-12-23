@@ -99,6 +99,9 @@ public class ArgoFigText extends FigText
     public ArgoFigText(Object owner, Rectangle bounds,
             DiagramSettings renderSettings, boolean expandOnly) {
         this(bounds.x, bounds.y, bounds.width, bounds.height, expandOnly);
+        // TODO: We don't currently have any settings that can change on a
+        // per-fig basis, so we can just use the project/diagram defaults
+//        settings = new DiagramSettings(renderSettings);
         settings = renderSettings;
         setFontFamily(settings.getFontName());
         setFontSize(settings.getFontSize());
