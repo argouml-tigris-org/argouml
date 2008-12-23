@@ -87,22 +87,26 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
         return toString(modelElement, settings.isShowAssociationNames(),
                 settings.isFullyHandleStereotypes(),
                 settings.isShowPaths(),
-                settings.isShowVisibilities());
+                settings.isShowVisibilities(),
+                settings.isUseGuillemets());
     }
     
     /*
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public String toString(Object modelElement, Map args) {
         return toString(modelElement, (Boolean) args.get("showAssociationName"),
                 isValue("fullyHandleStereotypes", args),
                 isValue("pathVisible", args),
-                isValue("visibilityVisible", args));
+                isValue("visibilityVisible", args),
+                isValue("useGuillemets", args));
     }
 
     private String toString(Object modelElement, Boolean showAssociationName,
             boolean fullyHandleStereotypes, boolean showPath, 
-            boolean showVisibility) {
+            boolean showVisibility, boolean useGuillemets) {
 
         if (showAssociationName == Boolean.FALSE) {
             return "";
@@ -111,7 +115,8 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
         String name = Model.getFacade().getName(modelElement);
         StringBuffer sb = new StringBuffer("");
         if (fullyHandleStereotypes) {
-            sb.append(generateStereotypes(modelElement));
+            sb.append(NotationUtilityUml.generateStereotype(modelElement, 
+                    useGuillemets));
         }
         if (showVisibility) {
             sb.append(NotationUtilityUml.generateVisibility2(modelElement));
@@ -124,14 +129,6 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
             sb.append(name);
         }
         return sb.toString();
-    }
-    
-    /**
-     * @param modelElement the UML element to generate for
-     * @return a string which represents the stereotypes
-     */
-    protected static String generateStereotypes(Object modelElement) {
-        return NotationUtilityUml.generateStereotype(modelElement);
     }
 
 }
