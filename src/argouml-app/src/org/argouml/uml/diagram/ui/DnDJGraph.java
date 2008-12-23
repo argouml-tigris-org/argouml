@@ -214,9 +214,9 @@ class DnDJGraph
 
             dropTargetDropEvent.getDropTargetContext().dropComplete(true);
         } catch (UnsupportedFlavorException e) {
-            LOG.debug(e);
+            LOG.debug("Exception caught", e);
         } catch (IOException e) {
-            LOG.debug(e);
+            LOG.debug("Exception caught", e);
         }
     }
 
