@@ -115,15 +115,15 @@ public class NotationSettings {
         settings.parent = null;
         settings.setNotationLanguage(Notation.DEFAULT_NOTATION);
         settings.setFullyHandleStereotypes(false);
-        settings.setShowAssociationNames(false);
+        settings.setShowAssociationNames(true);
         settings.setShowInitialValues(false);
-        settings.setShowMultiplicities(true);
+        settings.setShowMultiplicities(false);
         settings.setShowPaths(false);
         settings.setShowProperties(false);
-        settings.setShowSingularMultiplicities(false);
+        settings.setShowSingularMultiplicities(true);
         settings.setShowTypes(true);
         settings.setShowVisibilities(false);
-        settings.setUseGuillemets(true);
+        settings.setUseGuillemets(false);
         return settings;
     }
     
