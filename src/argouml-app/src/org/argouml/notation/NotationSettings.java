@@ -27,48 +27,105 @@ package org.argouml.notation;
 import org.tigris.gef.undo.Memento;
 
 /**
- * Notation settings value object.  Stores settings which control how text is 
+ * Notation settings value object. Stores settings which control how text is
  * rendered on diagrams.
+ * <p>
+ * TODO: This needs to go on a diet. It's used everywhere, so is performance
+ * sensitive. The current set of settings is the union of all those found in the
+ * legacy code, but it's not clear that all of them are actually used.
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  */
 public class NotationSettings {
-    
-    // TODO: This needs more complete initialization.  Everything defaults to
-    // false for now.
+
     private static final NotationSettings DEFAULT_SETTINGS = 
-        new NotationSettings();
+        initializeDefaultSettings();
     
-    // TODO: If we want to support a hierarchy of inherited settings, we'll
-    // need a link to the parent, but not clear this is needed right now
-    // private NotationSettings parent;
+    private NotationSettings parent;
 
     private String notationLanguage;
     
+    // No valid field for above notationLanguage.  It's valid if not null.
+    
     private boolean showAssociationNames;
-    
+
+    private boolean showAssociationNamesSet = false;
+
     private boolean showVisibilities;
-    
+
+    private boolean showVisibilitiesSet = false;
+
     private boolean showPaths;
-    
+
+    private boolean showPathsSet = false;
+
     private boolean fullyHandleStereotypes;
 
-    private boolean showStereotypes = true;
-    
+    private boolean fullyHandleStereotypesSet = false;
+
     private boolean useGuillemets;
-    
+
+    private boolean useGuillemetsSet = false;
+
     private boolean showMultiplicities;
-    
+
+    private boolean showMultiplicitiesSet = false;
+
     private boolean showSingularMultiplicities;
+
+    private boolean showSingularMultiplicitiesSet = false;
 
     // TODO: Do we need to control separately for attributes and operations?
     private boolean showTypes;
-    
+
+    private boolean showTypesSet = false;
+
     private boolean showProperties;
-    
+
+    private boolean showPropertiesSet = false;
+
     private boolean showInitialValues;
-    
- 
+
+    private boolean showInitialValuesSet = false;
+
+    /**
+     * Create a notation settings value object with all default values.
+     * <p>
+     * TODO: This class only has partial Undo support (basically just those
+     * members that had it as part of a previous implementation).
+     */
+    public NotationSettings() {
+        super();
+        parent = getDefaultSettings();
+    }
+
+    /**
+     * Create a notation settings object which uses the given settings as its
+     * default values.  Note that there can be multiple levels of settings in
+     * the hierarchy.
+     */
+    public NotationSettings(NotationSettings parentSettings) {
+        this();
+        parent = parentSettings;
+    }
+
+    // TODO: These defaults need to be checked against historical ones
+    private static NotationSettings initializeDefaultSettings() {
+        NotationSettings settings = new NotationSettings();
+        settings.parent = null;
+        settings.setNotationLanguage(Notation.DEFAULT_NOTATION);
+        settings.setFullyHandleStereotypes(false);
+        settings.setShowAssociationNames(false);
+        settings.setShowInitialValues(false);
+        settings.setShowMultiplicities(true);
+        settings.setShowPaths(false);
+        settings.setShowProperties(false);
+        settings.setShowSingularMultiplicities(false);
+        settings.setShowTypes(true);
+        settings.setShowVisibilities(false);
+        settings.setUseGuillemets(true);
+        return settings;
+    }
     
     /**
      * @return the default settings
@@ -82,11 +139,11 @@ public class NotationSettings {
      */
     public String getNotationLanguage() {
         if (notationLanguage == null) {
-//            if (parent != null) {
-//                return parent.getNotationLanguage();
-//            } else {
-            return "UML 1.4";
-//            }
+            if (parent != null) {
+                return parent.getNotationLanguage();
+            } else {
+                return Notation.DEFAULT_NOTATION;
+            }
         }
         return notationLanguage;
     }
@@ -129,41 +186,63 @@ public class NotationSettings {
 
 
     /**
-     * @return Returns the fullyHandleStereotypes.
+     * @return Returns the fullyHandleStereotypes setting. If true, it will
+     *         cause notation providers to include the names of the stereotypes
+     *         for an element in the editable string presented to the user.
      */
     public boolean isFullyHandleStereotypes() {
-        return fullyHandleStereotypes;
+        if (fullyHandleStereotypesSet) {
+            return fullyHandleStereotypes;
+        } else {
+            if (parent != null) {
+                return parent.fullyHandleStereotypes;
+            } else {
+                return getDefaultSettings().isFullyHandleStereotypes();
+            }
+        }
     }
 
     /**
-     * @param fullyHandleStereotypes The fullyHandleStereotypes to set.
+     * @param newValue The fullyHandleStereotypes to set. If true, it will cause
+     *            notation providers to include the names of the stereotypes for
+     *            an element in the editable string presented to the user.
      */
-    public void setFullyHandleStereotypes(boolean fullyHandleStereotypes) {
-        this.fullyHandleStereotypes = fullyHandleStereotypes;
+    public void setFullyHandleStereotypes(boolean newValue) {
+        fullyHandleStereotypes = newValue;
+        fullyHandleStereotypesSet = true;
     }
 
     /**
      * @return Returns the showSingularMultiplicities.
      */
     public boolean isShowSingularMultiplicities() {
-        return showSingularMultiplicities;
+        if (showSingularMultiplicitiesSet) {
+            return showSingularMultiplicities;
+        } else if (parent != null) {
+            return parent.isShowSingularMultiplicities();
+        }
+        return getDefaultSettings().isShowSingularMultiplicities();
     }
 
     /**
      * @param showem <code>true</code> if "1" Multiplicities are to be shown.
      */
     public void setShowSingularMultiplicities(final boolean showem) {
-        if (showSingularMultiplicities == showem) {
+        if (showSingularMultiplicities == showem 
+                && showSingularMultiplicitiesSet) {
             return;
         }
 
+        final boolean oldValid = showSingularMultiplicitiesSet;
         Memento memento = new Memento() {
             public void redo() {
                 showSingularMultiplicities = showem;
+                showSingularMultiplicitiesSet = true;
             }
 
             public void undo() {
                 showSingularMultiplicities = !showem;
+                showSingularMultiplicitiesSet = oldValid;
             }
         };
         doUndoable(memento);
@@ -173,24 +252,33 @@ public class NotationSettings {
      * @return Returns the useGuillemets.
      */
     public boolean isUseGuillemets() {
-        return useGuillemets;
+        if (useGuillemetsSet) {
+            return useGuillemets;
+        } else if (parent != null) {
+            return parent.isUseGuillemets();
+        }
+        return getDefaultSettings().isUseGuillemets();
     }
 
     /**
      * @param showem <code>true</code> if guillemets are to be shown.
      */
     public void setUseGuillemets(final boolean showem) {
-        if (useGuillemets == showem) {
+        if (useGuillemets == showem && useGuillemetsSet) {
             return;
         }
 
+        final boolean oldValid = useGuillemetsSet;
+        
         Memento memento = new Memento() {
             public void redo() {
                 useGuillemets = showem;
+                useGuillemetsSet = true;
             }
 
             public void undo() {
                 useGuillemets = !showem;
+                useGuillemetsSet = oldValid;
             }
         };
         doUndoable(memento);
@@ -200,7 +288,12 @@ public class NotationSettings {
      * @return Returns the showTypes.
      */
     public boolean isShowTypes() {
-        return showTypes;
+        if (showTypesSet) {
+            return showTypes;
+        } else if (parent != null) {
+            return parent.isShowTypes();
+        }
+        return getDefaultSettings().isShowTypes();
     }
 
 
@@ -208,17 +301,21 @@ public class NotationSettings {
      * @param showem <code>true</code> if types are to be shown.
      */
     public void setShowTypes(final boolean showem) {
-        if (showTypes == showem) {
+        if (showTypes == showem && showTypesSet) {
             return;
         }
 
+        final boolean oldValid = showTypesSet;
+        
         Memento memento = new Memento() {
             public void redo() {
                 showTypes = showem;
+                showTypesSet = true;
             }
 
             public void undo() {
                 showTypes = !showem;
+                showTypesSet = oldValid;
             }
         };
         doUndoable(memento);
@@ -229,24 +326,33 @@ public class NotationSettings {
      * @return Returns the showProperties.
      */
     public boolean isShowProperties() {
-        return showProperties;
+        if (showPropertiesSet) {
+            return showProperties;
+        } else if (parent != null) {
+            return parent.isShowProperties();
+        }
+        return getDefaultSettings().isShowProperties();
     }
 
     /**
      * @param showem <code>true</code> if properties are to be shown.
      */
     public void setShowProperties(final boolean showem) {
-        if (showProperties == showem) {
+        if (showProperties == showem && showPropertiesSet) {
             return;
         }
 
+        final boolean oldValid = showPropertiesSet;
+        
         Memento memento = new Memento() {
             public void redo() {
                 showProperties = showem;
+                showPropertiesSet = true;
             }
 
             public void undo() {
                 showProperties = !showem;
+                showPropertiesSet = oldValid;
             }
         };
         doUndoable(memento);
@@ -257,7 +363,12 @@ public class NotationSettings {
      * @return Returns the showInitialValues.
      */
     public boolean isShowInitialValues() {
-        return showInitialValues;
+        if (showInitialValuesSet) {
+            return showInitialValues;
+        } else if (parent != null) {
+            return parent.isShowInitialValues();
+        }
+        return getDefaultSettings().isShowInitialValues();
     }
 
 
@@ -265,17 +376,21 @@ public class NotationSettings {
      * @param showem <code>true</code> if initial values are to be shown.
      */
     public void setShowInitialValues(final boolean showem) {
-        if (showInitialValues == showem) {
+        if (showInitialValues == showem && showInitialValuesSet) {
             return;
         }
 
+        final boolean oldValid = showInitialValuesSet;
+        
         Memento memento = new Memento() {
             public void redo() {
                 showInitialValues = showem;
+                showInitialValuesSet = true;
             }
 
             public void undo() {
                 showInitialValues = !showem;
+                showInitialValuesSet = oldValid;
             }
         };
         doUndoable(memento);
@@ -286,24 +401,33 @@ public class NotationSettings {
      * @return Returns the showMultiplicities.
      */
     public boolean isShowMultiplicities() {
-        return showMultiplicities;
+        if (showMultiplicitiesSet) {
+            return showMultiplicities;
+        } else if (parent != null) {
+            return parent.isShowMultiplicities();
+        }
+        return getDefaultSettings().isShowMultiplicities();
     }
 
     /**
      * @param showem <code>true</code> if the multiplicity is to be shown.
      */
     public void setShowMultiplicities(final boolean showem) {
-        if (showMultiplicities == showem) {
+        if (showMultiplicities == showem && showMultiplicitiesSet) {
             return;
         }
 
+        final boolean oldValid = showMultiplicitiesSet;
+        
         Memento memento = new Memento() {
             public void redo() {
                 showMultiplicities = showem;
+                showMultiplicitiesSet = true;
             }
 
             public void undo() {
                 showMultiplicities = !showem;
+                showMultiplicitiesSet = oldValid;
             }
         };
         doUndoable(memento);
@@ -315,25 +439,34 @@ public class NotationSettings {
      * @return Returns the showAssociationNames.
      */
     public boolean isShowAssociationNames() {
-        return showAssociationNames;
+        if (showAssociationNamesSet) {
+            return showAssociationNames;
+        } else if (parent != null) {
+            return parent.isShowAssociationNames();
+        }
+        return getDefaultSettings().isShowAssociationNames();
     }
 
     /**
      * @param showem <code>true</code> if association names are to be shown.
      */
     public void setShowAssociationNames(final boolean showem) {
-        if (showAssociationNames == showem) {
+        if (showAssociationNames == showem && showAssociationNamesSet) {
             return;
         }
 
+        final boolean oldValid = showAssociationNamesSet;
+        
         Memento memento = new Memento() {
 
             public void redo() {
                 showAssociationNames = showem;
+                showAssociationNamesSet = true;
             }
 
             public void undo() {
                 showAssociationNames = !showem;
+                showAssociationNamesSet = oldValid;
             }
         };
         doUndoable(memento);
@@ -343,7 +476,12 @@ public class NotationSettings {
      * @return Returns the showVisibilities.
      */
     public boolean isShowVisibilities() {
-        return showVisibilities;
+        if (showVisibilitiesSet) {
+            return showVisibilities;
+        } else if (parent != null) {
+            return parent.isShowVisibilities();
+        }
+        return getDefaultSettings().isShowVisibilities();
     }
 
 
@@ -351,17 +489,22 @@ public class NotationSettings {
      * @param showem <code>true</code> if visibilities are to be shown.
      */
     public void setShowVisibilities(final boolean showem) {
-        if (showVisibilities == showem) {
+        
+        if (showVisibilities == showem && showVisibilitiesSet) {
             return;
         }
 
+        final boolean oldValid = showVisibilitiesSet;
+        
         Memento memento = new Memento() {
             public void redo() {
                 showVisibilities = showem;
+                showVisibilitiesSet = true;
             }
 
             public void undo() {
                 showVisibilities = !showem;
+                showVisibilitiesSet = oldValid;
             }
         };
         doUndoable(memento);
@@ -371,7 +514,12 @@ public class NotationSettings {
      * @return Returns the showPaths.
      */
     public boolean isShowPaths() {
-        return showPaths;
+        if (showPathsSet) {
+            return showPaths;
+        } else if (parent != null) {
+            return parent.isShowPaths();
+        }
+        return getDefaultSettings().isShowPaths();
     }
 
 
@@ -380,38 +528,10 @@ public class NotationSettings {
      */
     public void setShowPaths(boolean showPaths) {
         this.showPaths = showPaths;
+        showPathsSet = true;
     }
 
-
-    /**
-     * @return Returns the showStereotypes.
-     */
-    public boolean isShowStereotypes() {
-        return showStereotypes;
-    }
-
-
-    /**
-     * @param showem <code>true</code> if stereotypes are to be shown.
-     */
-    public void setShowStereotypes(final boolean showem) {
-        if (showStereotypes == showem) {
-            return;
-        }
-
-        Memento memento = new Memento() {
-            public void redo() {
-                showStereotypes = showem;
-            }
-
-            public void undo() {
-                showStereotypes = !showem;
-            }
-        };
-        doUndoable(memento);
-
-    }
-    
+   
     
     private void doUndoable(Memento memento) {
         // TODO: Undo should be managed externally or we should be given 

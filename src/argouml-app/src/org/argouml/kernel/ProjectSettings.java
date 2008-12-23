@@ -63,6 +63,9 @@ public class ProjectSettings {
     // Default notation settings
     private NotationSettings npSettings;
     
+    /** Setting to control whether stereotypes are shown in explorer view */
+    private boolean showExplorerStereotypes;
+    
     /* Generation preferences: */
     private String headerComment =
         "Your copyright and other header comments";
@@ -118,8 +121,8 @@ public class ProjectSettings {
         diaDefault.setShowBidirectionalArrows(!Configuration.getBoolean(
                 Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS, true));
         
-        npSettings.setShowStereotypes(Configuration.getBoolean(
-                Notation.KEY_SHOW_STEREOTYPES));
+        showExplorerStereotypes = Configuration.getBoolean(
+                Notation.KEY_SHOW_STEREOTYPES);
         /*
          * The next one defaults to TRUE, despite that this is
          * NOT compatible with older ArgoUML versions
@@ -731,10 +734,8 @@ public class ProjectSettings {
     /**
      * Used by "argo.tee".
      *
-     * @return Returns "true" if we show stereotypes.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     * @return Returns "true" if we show stereotypes in the explorer.
      */
-    @Deprecated
     public String getShowStereotypes() {
         return Boolean.toString(getShowStereotypesValue());
     }
@@ -743,30 +744,26 @@ public class ProjectSettings {
      * TODO: Is this used in places other than on Diagrams?  If so, it needs to
      * stay in ProjectSettings (as well as being a DiagramSetting).
      * 
-     * @return Returns <code>true</code> if we show stereotypes.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     * @return Returns <code>true</code> if we show stereotypes in the explorer
      */
-    @Deprecated
     public boolean getShowStereotypesValue() {
-        return npSettings.isShowStereotypes();
+        return showExplorerStereotypes;
     }
 
     /**
-     * @param showem <code>true</code> if stereotypes are to be shown.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link NotationSettings}.
+     * @param showem <code>true</code> if stereotypes are to be shown in the
+     * explorer.
      */
-    @Deprecated
     public void setShowStereotypes(String showem) {
         setShowStereotypes(Boolean.valueOf(showem).booleanValue());
     }
 
     /**
-     * @param showem <code>true</code> if stereotypes are to be shown.
-     * @deprecated for 0.27.2 by tfmorris. Use {@link NotationSettings}.
+     * @param showem <code>true</code> if stereotypes are to be shown in the
+     * explorer view.
      */
-    @Deprecated
     public void setShowStereotypes(final boolean showem) {
-        if (npSettings.isShowStereotypes() == showem) {
+        if (showExplorerStereotypes == showem) {
             return;
         }
 
@@ -774,12 +771,12 @@ public class ProjectSettings {
             private final ConfigurationKey key = Notation.KEY_SHOW_STEREOTYPES;
 
             public void redo() {
-                npSettings.setShowStereotypes(showem);
+                showExplorerStereotypes = showem;
                 fireNotationEvent(key, !showem, showem);
             }
 
             public void undo() {
-                npSettings.setShowStereotypes(!showem);
+                showExplorerStereotypes = !showem;
                 fireNotationEvent(key, showem, !showem);
             }
         };
