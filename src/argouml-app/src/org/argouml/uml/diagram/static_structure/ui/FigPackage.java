@@ -123,6 +123,12 @@ public class FigPackage extends FigNodeModelElement
 
     private FigText body;
 
+    /**
+     * Flag that indicates if the stereotype should be shown even if
+     * it is specified or not.
+     */
+    private boolean stereotypeVisible = true;
+
 
     /**
      * The main constructor.
@@ -752,14 +758,14 @@ public class FigPackage extends FigNodeModelElement
      * @see org.argouml.uml.diagram.ui.StereotypeContainer#isStereotypeVisible()
      */
     public boolean isStereotypeVisible() {
-        return getNotationSettings().isShowStereotypes();
+        return stereotypeVisible;
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.StereotypeContainer#setStereotypeVisible(boolean)
      */
     public void setStereotypeVisible(boolean isVisible) {
-        getNotationSettings().setShowStereotypes(isVisible);
+        stereotypeVisible = isVisible;
         renderingChanged();
         damage();
     }
