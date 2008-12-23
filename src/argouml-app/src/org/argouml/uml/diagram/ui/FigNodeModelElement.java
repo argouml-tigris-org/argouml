@@ -307,6 +307,7 @@ public abstract class FigNodeModelElement
      */
     @Deprecated
     protected FigNodeModelElement() {
+        notationSettings = new NotationSettings();
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
         bigPort = new FigRect(X0, Y0, 0, 0, ArgoFig.DEBUG_COLOR,
