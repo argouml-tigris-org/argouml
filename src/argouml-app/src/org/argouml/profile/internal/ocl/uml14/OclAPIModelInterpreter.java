@@ -24,11 +24,9 @@
 
 package org.argouml.profile.internal.ocl.uml14;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.profile.internal.ocl.ModelInterpreter;
 
@@ -39,9 +37,6 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
  */
 public class OclAPIModelInterpreter implements ModelInterpreter {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger
             .getLogger(OclAPIModelInterpreter.class);
 
@@ -62,22 +57,7 @@ public class OclAPIModelInterpreter implements ModelInterpreter {
                 if (typeName.equals("OclAny")) {
                     return true;
                 } else {
-                    boolean applicable = false;
-                    try {
-                        if (typeName.equals("Class")) {
-                            typeName = "UMLClass";
-                        }
-                        
-                        Method m = Facade.class.getDeclaredMethod("isA"
-                                + typeName, new Class[] {Object.class});
-                        if (m != null) {
-                            applicable = (Boolean) m.invoke(Model.getFacade(),
-                                    new Object[] {subject});
-                        }
-                    } catch (Exception e) {
-                        LOG.error("Exception", e);
-                    }
-                    return applicable;
+                    return  Model.getFacade().isA(typeName, subject);
                 }
             }
 
