@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -294,6 +293,12 @@ public abstract class FigNodeModelElement
      * Settings which affect rendering (color, font, line width, etc);
      */
     private DiagramSettings settings;
+    
+    /**
+     * The notation settings for this specific fig.  We manage it separately
+     * from DiagramSettings because it is more likely to change.
+     */
+    private NotationSettings notationSettings;
 
     /**
      * The default constructor. <p>
@@ -304,7 +309,8 @@ public abstract class FigNodeModelElement
     protected FigNodeModelElement() {
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
-        bigPort = new FigRect(X0, Y0, 0, 0, Color.cyan, Color.cyan);
+        bigPort = new FigRect(X0, Y0, 0, 0, ArgoFig.DEBUG_COLOR,
+                ArgoFig.DEBUG_COLOR);
         
         nameFig = new FigNameWithAbstractAndBold(X0, Y0, WIDTH, 21, true);
         stereotypeFig = new FigStereotypesGroup(X0, Y0, WIDTH, 15);
@@ -364,12 +370,22 @@ public abstract class FigNodeModelElement
     protected FigNodeModelElement(Object element, Rectangle bounds, 
             DiagramSettings renderSettings) {
         super();
+        // TODO: We currently don't support per-fig settings for most stuff, so
+        // we can just use the defaults that we were given.
+//        settings = new DiagramSettings(renderSettings);
         settings = renderSettings;
-        initNotationSettings();
-        
+        /*
+         * Notation settings are different since, we know that, at a minimum,
+         * the isShowPath() setting can change because with implement
+         * PathContainer, so we make sure that we have a private copy of the
+         * notation settings.
+         */
+        notationSettings = new NotationSettings(settings.getNotationSettings());
+
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
-        bigPort = new FigRect(X0, Y0, 0, 0, Color.cyan, Color.cyan);
+        bigPort = new FigRect(X0, Y0, 0, 0, ArgoFig.DEBUG_COLOR,
+                ArgoFig.DEBUG_COLOR);
         nameFig = new FigNameWithAbstractAndBold(element, 
                 new Rectangle(X0, Y0, WIDTH, 21), getSettings(), true);
         stereotypeFig = new FigStereotypesGroup(element, 
@@ -1128,8 +1144,8 @@ public abstract class FigNodeModelElement
      *
      * It is also possible to alter the text to be edited
      * already here, e.g. by adding the stereotype in front of the name,
-     * by adding ["fullyHandleStereotypes", true] in the arguments 
-     * HashMap of the NotationProvider.toString() function, 
+     * by using setFullyHandleStereotypes(true) in the NotationSettings 
+     * argument of the NotationProvider.toString() function, 
      * but that seems not user-friendly. See issue 3838.
      *
      * @param ft the FigText that will be edited and contains the start-text
@@ -1495,12 +1511,6 @@ public abstract class FigNodeModelElement
         }
     }
     
-    private void initNotationSettings() {
-        // Is this actually set at initialization time?
-        getNotationSettings().setShowPaths(isPathVisible());
-    }
-
- 
     /**
      * Overrule this for subclasses 
      * that need a different NotationProvider.
@@ -2459,7 +2469,7 @@ public abstract class FigNodeModelElement
     }
 
     protected NotationSettings getNotationSettings() {
-        return getSettings().getNotationSettings();
+        return notationSettings;
     }
     
     /**
