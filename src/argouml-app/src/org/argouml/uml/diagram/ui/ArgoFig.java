@@ -24,6 +24,8 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
+
 import org.argouml.kernel.Project;
 import org.argouml.uml.diagram.DiagramSettings;
 
@@ -58,6 +60,12 @@ public interface ArgoFig {
      * in a compartment
      */
     public static final int STEREOHEIGHT = 18;
+    
+    /**
+     * The color used for things which shouldn't normally be visible, so we can
+     * spot them easily when they are.
+     */
+    public static final Color DEBUG_COLOR = Color.cyan;
 
 
     /**
