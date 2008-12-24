@@ -236,11 +236,23 @@ public class EvaluateExpression extends DepthFirstAdapter {
 
         if (op != null) {
             if (op instanceof AAndLogicalOperator) {
-                val = asBoolean(left, node) && asBoolean(right, node);
+                if (left != null && left instanceof Boolean && ((Boolean)left).booleanValue() == false) {
+                    val = false;
+                } else if (right != null && right instanceof Boolean && ((Boolean)right).booleanValue() == false) {
+                    val = false;
+                } else {
+                    val = asBoolean(left, node) && asBoolean(right, node);
+                }
             } else if (op instanceof AImpliesLogicalOperator) {
                 val = !asBoolean(left, node) || asBoolean(right, node);
             } else if (op instanceof AOrLogicalOperator) {
-                val = asBoolean(left, node) || asBoolean(right, node);
+                if (left != null && left instanceof Boolean && ((Boolean)left).booleanValue() == true) {
+                    val = true;
+                } else if (right != null && right instanceof Boolean && ((Boolean)right).booleanValue() == true) {
+                    val = true;
+                } else {
+                    val = asBoolean(left, node) || asBoolean(right, node);
+                }
             } else if (op instanceof AXorLogicalOperator) {
                 val = !asBoolean(left, node) ^ asBoolean(right, node);
             } else {
