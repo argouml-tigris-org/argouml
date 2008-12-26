@@ -371,6 +371,7 @@ public abstract class FigNodeModelElement
     protected FigNodeModelElement(Object element, Rectangle bounds, 
             DiagramSettings renderSettings) {
         super();
+        super.setOwner(element);
         // TODO: We currently don't support per-fig settings for most stuff, so
         // we can just use the defaults that we were given.
 //        settings = new DiagramSettings(renderSettings);
@@ -400,7 +401,7 @@ public abstract class FigNodeModelElement
                     "The owner must be a model element - got a "
                     + element.getClass().getName());
         }
-        super.setOwner(element);
+
         nameFig.setText(placeString());
         
         notationProviderName =
@@ -1523,7 +1524,7 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Updates the text of the sterotype FigText. Override in subclasses to get
+     * Updates the text of the stereotype FigText. Override in subclasses to get
      * wanted behaviour.
      */
     protected void updateStereotypeText() {
@@ -1606,7 +1607,7 @@ public abstract class FigNodeModelElement
             if (elementNs != null) {
                 boolean visible = (elementNs != diagramNs);
                 getNotationSettings().setShowPaths(visible);
-                renderingChanged();
+                updateNameText();
                 damage();
             }
             // it is done
@@ -1908,7 +1909,9 @@ public abstract class FigNodeModelElement
     
     /**
      * If you override this method, make sure to remove all listeners:
-     * If you don't, objects in a deleted project will still receive events.
+     * If you don't, objects in a deleted project will still receive events.<p>
+     * 
+     * Also important for remove from diagram!
      */
     protected void removeFromDiagramImpl() {
         if (notationProviderName != null) { //This test needed for a FigPool
@@ -1917,6 +1920,8 @@ public abstract class FigNodeModelElement
         removeAllElementListeners();
         setShadowSize(0);
         super.removeFromDiagram();
+        // Get model listeners removed:
+        stereotypeFig.removeFromDiagram();
     }
 
     /**

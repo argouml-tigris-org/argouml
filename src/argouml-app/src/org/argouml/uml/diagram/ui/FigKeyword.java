@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -27,42 +27,42 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Rectangle;
 
-import org.argouml.model.Model;
-import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Fig to show one stereotype within a FigStereotypesGroup.
+ * Fig to show a keyword within a FigStereotypesGroup,
+ * which resembles a stereotype, but isn't one. 
+ * E.g. <<interface>>. 
  * <p>
- * The stereotype is not editable on the fig, hence we
+ * The keyword is not editable on the fig, hence we
  * do not use a Notation Provider. <p>
- * This Fig listens to model changes regarding the name of the stereotype.
+ * This Fig does not need to listen to model changes 
+ * and is frozen.<p>
+ * 
+ * This Fig only supports updates of the text 
+ * for changes in guillemet style.
  *
- * @author Bob Tarling
+ * @author Michiel
  */
-public class FigStereotype extends FigSingleLineText {
+public class FigKeyword extends FigSingleLineText {
+
+    private final String keywordText;
 
     /**
-     * Construct a fig for a Stereotype or a keyword (which visually resembles a
-     * stereotype).
-     * 
-     * @param owner owning UML element or null if this fig is being used for a
-     *            keyword.
+     * @param keyword the text to show
      * @param bounds position and size
-     * @param settings render settings
+     * @param settings rendering settings
      */
-    public FigStereotype(Object owner, Rectangle bounds,
+    public FigKeyword(String keyword, Rectangle bounds, 
             DiagramSettings settings) {
-        super(owner, bounds, settings, true,
-                new String[] {"name"});
-        assert owner != null;
+        super(bounds, settings, true);
         initialize();
-        setText();
+        keywordText = keyword;
+        setText(keyword);
     }
-
+    
     private void initialize() {
         setEditable(false);
         setTextColor(Color.black);
@@ -71,7 +71,7 @@ public class FigStereotype extends FigSingleLineText {
         setRightMargin(3);
         setLeftMargin(3);
     }
-
+    
     /* Force the line-width to 0, since the FigGroup that contains the 
      * stereotype may want to show a border, but we don't. */
     @Override
@@ -79,46 +79,11 @@ public class FigStereotype extends FigSingleLineText {
         super.setLineWidth(0);
     }
 
-    // Called by propertyChange
-    protected void updateLayout(UmlChangeEvent event) {
-        assert event != null;
-
-        Rectangle oldBounds = getBounds();
-
-        setText(); // this does a calcBounds()
-
-        if (oldBounds != getBounds()) {
-            setBounds(getBounds());
-        }
-
-        if (getGroup() != null ) {
-            /* TODO: Why do I need to do this? */
-            getGroup().calcBounds();
-            getGroup().setBounds(getGroup().getBounds());
-            if (oldBounds != getBounds()) {
-                Fig sg = getGroup().getGroup();
-                /* TODO: Why do I need to do this? */
-                if (sg != null) {
-                    sg.calcBounds();
-                    sg.setBounds(sg.getBounds());
-                }
-            }
-        }
-        /* Test-case for the above code: 
-         * Draw a class. 
-         * Create a stereotype for it by clicking on the prop-panel tool, and name it.
-         * Remove the class from the diagram.
-         * Drag the class from the explorer on the diagram.
-         * Select the stereotype in the explorer, and change
-         * its name in the prop-panel to something longer.
-         * The longer name does not make the class Fig wider 
-         * unless the above code is added.*/
-        damage();
-    }
-
-    @Override
+    /**
+     * This is needed for updating the guillemet style.
+     */
     protected void setText() {
-        setText(Model.getFacade().getName(getOwner()));
+        setText(keywordText);
     }
 
     /**
@@ -126,9 +91,8 @@ public class FigStereotype extends FigSingleLineText {
      * {@inheritDoc}
      */
     public void setText(String text) {
+        assert keywordText.equals(text);
         super.setText(NotationUtilityUml.formatStereotype(text,
                 getSettings().getNotationSettings().isUseGuillemets()));
-        damage();
     }
-
 }

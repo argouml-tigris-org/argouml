@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -44,8 +43,7 @@ import org.tigris.gef.presentation.FigText;
  * A Class may show compartments for stereotypes,
  * attributes and operations.
  */
-public class FigClass extends FigClassifierBoxWithAttributes
-        implements AttributesCompartmentContainer {
+public class FigClass extends FigClassifierBoxWithAttributes {
 
 
     /**
@@ -114,8 +112,8 @@ public class FigClass extends FigClassifierBoxWithAttributes
     @Deprecated
     public FigClass(GraphModel gm, Object node) {
         super();
-        constructFigs();
         setOwner(node);
+        constructFigs();
     }
 
     private void constructFigs() {
@@ -157,7 +155,6 @@ public class FigClass extends FigClassifierBoxWithAttributes
             DiagramSettings settings) {
         super(element, bounds, settings);
         constructFigs();
-        renderingChanged();
     }
 
     /*

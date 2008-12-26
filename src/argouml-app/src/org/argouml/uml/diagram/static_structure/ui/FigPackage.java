@@ -124,11 +124,12 @@ public class FigPackage extends FigNodeModelElement
     private FigText body;
 
     /**
-     * Flag that indicates if the stereotype should be shown even if
-     * it is specified or not.
+     * Flag that indicates if the user wants any stereotype to be shown. 
+     * It corresponds to the check-mark on the Presentation tab.
+     * There is no relation with the actual presence of any stereotypes.
+     * This setting has Fig-scope, hence it is saved with the Fig layout data.
      */
     private boolean stereotypeVisible = true;
-
 
     /**
      * The main constructor.
@@ -145,9 +146,10 @@ public class FigPackage extends FigNodeModelElement
         // Create a Body that reacts to double-clicks and jumps to a diagram.
         body = new FigPackageFigText(0, textH, width, height - textH);
 
+        setOwner(node);
+
         initialize();
 
-        setOwner(node);
         setLocation(x, y);
     }
 
@@ -182,9 +184,6 @@ public class FigPackage extends FigNodeModelElement
         setFillColor(Color.white);
         setLineColor(Color.black);
         setLineWidth(1);
-
-        // TODO: Why do we need to do this? - Bob
-        setBounds(getBounds());
 
         updateEdges();
     }
@@ -331,20 +330,19 @@ public class FigPackage extends FigNodeModelElement
             if (getStereotypeFig().isVisible()) {
                 getNameFig().setTopMargin(0);
                 getStereotypeFig().setVisible(false);
-            }
+            } // else nothing changed
         } else {
             /* we got at least one stereotype */
             /* This populates the stereotypes area: */
-            getStereotypeFig().setOwner(getOwner());
+            super.updateStereotypeText();
             if (!isStereotypeVisible()) {
+                // the user wants to hide them
                 getNameFig().setTopMargin(0);
                 getStereotypeFig().setVisible(false);
             } else if (!getStereotypeFig().isVisible()) {
-                if (isStereotypeVisible()) {
-                    getNameFig().setTopMargin(50); //TODO: Calc the right nr
+                    getNameFig().setTopMargin(getStereotypeFig().getMinimumSize().height);
                     getStereotypeFig().setVisible(true);
-                }
-            }
+            } // else nothing changed
         }
 
         forceRepaintShadow();

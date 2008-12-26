@@ -42,6 +42,9 @@ import org.tigris.gef.presentation.FigGroup;
 
 /**
  * Class to display graphics for a node with compartments in a diagram.<p>
+ * 
+ * It adds a border around the box, 
+ * and deals with highlighting editable compartments. <p>
  *
  * Note that the upper line of the name box will be blanked out
  * if there is eventually a stereotype above.
@@ -86,9 +89,9 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
 
+        // The outside border of the box around all compartments.
         borderFig = new FigEmptyRect(X0, Y0, 0, 0);
         borderFig.setLineWidth(1);
-        borderFig.setLineColor(Color.black);
 
         getBigPort().setLineWidth(0);
         getBigPort().setFillColor(Color.white);

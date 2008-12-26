@@ -49,7 +49,9 @@ import org.tigris.gef.presentation.FigText;
  * <li>There is no line border
  * <li>There is space below the line for a "Clarifier",
  * i.e. a red squiggly line.
- * </ul>
+ * </ul><p>
+ * 
+ * Some of these have an UML object as owner, others do not.
  *
  * @author Bob Tarling
  */
@@ -158,6 +160,21 @@ public class FigSingleLineText extends ArgoFigText  {
             DiagramSettings settings, boolean expandOnly, String property) {
 
         this(owner, bounds, settings, expandOnly, new String[] {property});
+    }
+
+    /**
+     * Constructor for text fig without owner. 
+     * Using this constructor shall mean 
+     * that this fig will never have an owner.
+     * 
+     * @param bounds position and size
+     * @param settings rendering settings
+     * @param expandOnly true if the Fig should only expand and never contract
+     */
+    public FigSingleLineText(Rectangle bounds,
+            DiagramSettings settings, boolean expandOnly) {
+
+        this(null, bounds, settings, expandOnly);
     }
     
     /**
@@ -303,16 +320,13 @@ public class FigSingleLineText extends ArgoFigText  {
      * This function without parameter shall
      * determine the text of the Fig taking values from the owner,
      * and then call {@link #setText(String)}.
-     * TO be implemented as required by sub classes.
+     * To be implemented as required by sub classes.
      */
     protected void setText() {
     }
 
     public void renderingChanged() {
         super.renderingChanged();
-        if (getOwner() == null) {
-            return;
-        }
         /* This is needed for e.g. 
          * guillemet notation change on a class name, 
          * see issue 5419. */
