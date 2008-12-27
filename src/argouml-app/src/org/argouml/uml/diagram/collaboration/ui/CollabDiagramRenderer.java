@@ -29,6 +29,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.FigDependency;
@@ -81,6 +83,9 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
 				 Object node, Map styleAttributes) {
 
         FigNode figNode = null;
+
+        assert node != null;
+
         // Although not generally true for GEF, for Argo we know that the layer
         // is a LayerPerspective which knows the associated diagram
         Diagram diag = ((LayerPerspective) lay).getDiagram(); 
@@ -88,35 +93,45 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
                 && ((UMLDiagram) diag).doesAccept(node)) {
             figNode = ((UMLDiagram) diag).drop(node, null);
         } else { 
-            LOG.debug("TODO: CollabDiagramRenderer getFigNodeFor");
-            return null;
+            LOG.error("TODO: CollabDiagramRenderer getFigNodeFor");
+            throw new IllegalArgumentException(
+                    "Node is not a recognised type. Received "
+                    + node.getClass().getName());
         }
         
         lay.add(figNode);
         return figNode;
     }
 
-    /*
+    /**
      * Return a Fig that can be used to represent the given edge,
      * Generally the same code as for the ClassDiagram, since its
      * very related to it.
      *
-     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel,
-     * org.tigris.gef.base.Layer, java.lang.Object, java.util.Map)
+     * {@inheritDoc}
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay,
 				 Object edge, Map styleAttributes) {
-        
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("making figedge for " + edge);
+        }
+        if (edge == null) {
+            throw new IllegalArgumentException("A model edge must be supplied");
+        }
+
+        assert lay instanceof LayerPerspective;
+        ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
+        DiagramSettings settings = diag.getDiagramSettings();
+
         FigEdge newEdge = null;
         if (Model.getFacade().isAAssociationRole(edge)) {
-            newEdge = new FigAssociationRole(edge, lay);
+            newEdge = new FigAssociationRole(edge, settings);
         } else if (Model.getFacade().isAGeneralization(edge)) {
-            newEdge = new FigGeneralization(edge, lay);
+            newEdge = new FigGeneralization(edge, settings);
         } else if (Model.getFacade().isADependency(edge)) {
-            newEdge = new FigDependency(edge , lay);
+            newEdge = new FigDependency(edge , settings);
         } else if (edge instanceof CommentEdge) {
-            newEdge = new FigEdgeNote(edge, lay);
+            newEdge = new FigEdgeNote(edge, lay); // TODO -> settings
         }
     
         if (newEdge == null) {
