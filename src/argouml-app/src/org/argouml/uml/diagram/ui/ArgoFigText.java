@@ -89,7 +89,10 @@ public class ArgoFigText extends FigText
     }
     
     /**
-     * Construct a text fig owned by the given UML element.
+     * Construct a text fig owned by the given UML element. <p>
+     * 
+     * Even if there is no owner, then you still have to use this constructor;
+     * setting the owner parameter to null is acceptable.
      * 
      * @param owner owning model element or null
      * @param bounds rectangle describing bounds of figure
@@ -228,6 +231,7 @@ public class ArgoFigText extends FigText
      * @deprecated for 0.27.3 by tfmorris. The owner must be specified in the
      *             constructor and never changed.
      */
+    @SuppressWarnings("deprecation")
     @Override
     @Deprecated
     public void setOwner(Object own) {
