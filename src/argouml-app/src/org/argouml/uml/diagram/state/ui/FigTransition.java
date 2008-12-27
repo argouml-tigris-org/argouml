@@ -130,6 +130,8 @@ public class FigTransition extends FigEdgeModelElement {
         getFig().setLineColor(Color.black);
         setDestArrowHead(endArrow);
         allowRemoveFromDiagram(false);
+        
+        updateDashed();
     }
 
     @Override
