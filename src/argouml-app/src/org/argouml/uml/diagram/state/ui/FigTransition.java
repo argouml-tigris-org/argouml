@@ -139,12 +139,28 @@ public class FigTransition extends FigEdgeModelElement {
         super.setLayer(lay);
 
         /* This presumes that the layer is set after the owner: */
-        assert getOwner() != null;
+        if (getOwner() != null) {
+            initPorts();
+        }
+    }
 
+    @Deprecated
+    @SuppressWarnings("deprecation")
+    @Override
+    public void setOwner(Object owner) {
+        super.setOwner(owner);
+
+        /* This presumes that the owner is set after the layer: */
+        if (getLayer() != null) {
+            initPorts();
+        }
+    }
+
+    private void initPorts() {
         Object sourceSV = Model.getFacade().getSource(getOwner());
         Object destSV = Model.getFacade().getTarget(getOwner());
-        FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
-        FigNode destFN = (FigNode) lay.presentationFor(destSV);
+        FigNode sourceFN = (FigNode) getLayer().presentationFor(sourceSV);
+        FigNode destFN = (FigNode) getLayer().presentationFor(destSV);
         setSourcePortFig(sourceFN);
         setSourceFigNode(sourceFN);
         setDestPortFig(destFN);
