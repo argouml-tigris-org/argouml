@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Iterator;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
@@ -46,45 +47,70 @@ public class FigSimpleState extends FigState {
     private FigLine divider;
 
     /**
-     * The main constructor
+     * The main constructor.
+     * 
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigSimpleState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigSimpleState() {
-	cover =
-	    new FigRRect(getInitialX(), getInitialY(),
-			 getInitialWidth(), getInitialHeight(),
-			 Color.black, Color.white);
-
-	getBigPort().setLineWidth(0);
-
-	divider =
-	    new FigLine(getInitialX(),
-			getInitialY() + 2 + getNameFig().getBounds().height + 1,
-			getInitialWidth() - 1,
-			getInitialY() + 2 + getNameFig().getBounds().height + 1,
-			Color.black);
-
-	// add Figs to the FigNode in back-to-front order
-	addFig(getBigPort());
-	addFig(cover);
-	addFig(getNameFig());
-	addFig(divider);
-	addFig(getInternal());
-
-	//setBlinkPorts(false); //make port invisble unless mouse enters
-	Rectangle r = getBounds();
-	setBounds(r.x, r.y, r.width, r.height);
+        initializeSimpleState();
     }
 
     /**
      * The constructor that hooks into an existing UML element
      * @param gm ignored
      * @param node the UML element
+     * 
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigSimpleState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigSimpleState(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigSimpleState(@SuppressWarnings("unused") GraphModel gm, Object node) {
 	this();
 	setOwner(node);
     }
 
+    /**
+     * Constructor used by PGML parser.
+     * 
+     * @param owner the owning UML element
+     * @param bounds rectangle describing bounds
+     * @param settings rendering settings
+     */
+    public FigSimpleState(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initializeSimpleState();
+    }
+
+    private void initializeSimpleState() {
+        cover =
+            new FigRRect(getInitialX(), getInitialY(),
+                         getInitialWidth(), getInitialHeight(),
+                         Color.black, Color.white);
+
+        getBigPort().setLineWidth(0);
+
+        divider =
+            new FigLine(getInitialX(),
+                        getInitialY() + 2 + getNameFig().getBounds().height + 1,
+                        getInitialWidth() - 1,
+                        getInitialY() + 2 + getNameFig().getBounds().height + 1,
+                        Color.black);
+
+        // add Figs to the FigNode in back-to-front order
+        addFig(getBigPort());
+        addFig(cover);
+        addFig(getNameFig());
+        addFig(divider);
+        addFig(getInternal());
+
+        //setBlinkPorts(false); //make port invisble unless mouse enters
+        Rectangle r = getBounds();
+        setBounds(r.x, r.y, r.width, r.height);
+    }
 
     @Override
     public Object clone() {

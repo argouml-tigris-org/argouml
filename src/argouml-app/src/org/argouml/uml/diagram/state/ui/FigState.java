@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 
@@ -34,6 +35,7 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
@@ -67,9 +69,45 @@ public abstract class FigState extends FigStateVertex {
 
     /**
      * Constructor for FigState.
+     * 
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigState() {
         super();
+        initializeState();
+    }
+
+    /**
+     * Constructor for FigState, used when an UML elm already exists.
+     *
+     * @param gm ignored
+     * @param node the UML element
+     * 
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigState(Object, Rectangle, DiagramSettings)}.
+     */
+    @Deprecated
+    public FigState(@SuppressWarnings("unused") GraphModel gm, Object node) {
+        this();
+        setOwner(node);
+    }
+
+    /**
+     * Constructor used by PGML parser.
+     * 
+     * @param owner the owning UML element
+     * @param bounds rectangle describing bounds
+     * @param settings rendering settings
+     */
+    public FigState(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initializeState();
+    }
+
+    private void initializeState() {
         setBigPort(new FigRRect(getInitialX() + 1, getInitialY() + 1,
                 getInitialWidth() - 2, getInitialHeight() - 2,
                 Color.cyan, Color.cyan));
@@ -93,20 +131,11 @@ public abstract class FigState extends FigStateVertex {
         internal.setJustification(FigText.JUSTIFY_LEFT);
     }
 
-    /**
-     * Constructor for FigState, used when an UML elm already exists.
-     *
-     * @param gm ignored
-     * @param node the UML element
-     */
-    public FigState(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
-    }
-
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public void setOwner(Object newOwner) {
         super.setOwner(newOwner);

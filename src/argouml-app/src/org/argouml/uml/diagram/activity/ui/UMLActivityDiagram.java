@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.activity.ui;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ import org.argouml.model.ActivityGraphsHelper;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
@@ -794,11 +796,18 @@ public class UMLActivityDiagram extends UMLDiagram {
     public FigNode drop(Object droppedObject, Point location) {
         FigNode figNode = null;
         GraphModel gm = getGraphModel();
-        
+
+        // If location is non-null, convert to a rectangle that we can use
+        Rectangle bounds = null;
+        if (location != null) {
+            bounds = new Rectangle(location.x, location.y, 0, 0);
+        }
+        DiagramSettings settings = getDiagramSettings();
+
         if (Model.getFacade().isAPartition(droppedObject)) {
             figNode = new FigPartition(gm, droppedObject);
         } else if (Model.getFacade().isAActionState(droppedObject)) {
-            figNode = new FigActionState(gm, droppedObject);
+            figNode = new FigActionState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isACallState(droppedObject)) {
             figNode = new FigCallState(gm, droppedObject);
         } else if (Model.getFacade().isAObjectFlowState(droppedObject)) {
