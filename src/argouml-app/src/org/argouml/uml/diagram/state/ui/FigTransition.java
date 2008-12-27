@@ -35,6 +35,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.PathConvPercent2;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
@@ -69,14 +70,16 @@ public class FigTransition extends FigEdgeModelElement {
 
     /**
      * The main constructor.
+     *
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigTransition(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigTransition() {
         super();
-        addPathItem(getNameFig(),
-                    new PathConvPercent2(this, getNameFig(), 50, 10));
-        getFig().setLineColor(Color.black);
-        setDestArrowHead(endArrow);
-        allowRemoveFromDiagram(false);
+
+        initializeTransition();
     }
 
     /**
@@ -87,13 +90,17 @@ public class FigTransition extends FigEdgeModelElement {
      *
      * @param edge the UML element
      * @param lay the layer
+     *
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigTransition(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigTransition(Object edge, Layer lay) {
         this();
         if (Model.getFacade().isATransition(edge)) {
-            Object tr = /* (MTransition) */edge;
-            Object sourceSV = Model.getFacade().getSource(tr);
-            Object destSV = Model.getFacade().getTarget(tr);
+            Object sourceSV = Model.getFacade().getSource(edge);
+            Object destSV = Model.getFacade().getTarget(edge);
             FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
             FigNode destFN = (FigNode) lay.presentationFor(destSV);
             setSourcePortFig(sourceFN);
@@ -103,6 +110,43 @@ public class FigTransition extends FigEdgeModelElement {
         }
         setLayer(lay);
         setOwner(edge);
+    }
+    
+    /**
+     * Constructor used by PGML parser.
+     * 
+     * @param owner owning uml element
+     * @param settings rendering settings
+     */
+    public FigTransition(Object owner, DiagramSettings settings) {
+        super(owner, settings);
+        
+        initializeTransition();
+    }
+
+    private void initializeTransition() {
+        addPathItem(getNameFig(),
+                new PathConvPercent2(this, getNameFig(), 50, 10));
+        getFig().setLineColor(Color.black);
+        setDestArrowHead(endArrow);
+        allowRemoveFromDiagram(false);
+    }
+
+    @Override
+    public void setLayer(Layer lay) {
+        super.setLayer(lay);
+
+        /* This presumes that the layer is set after the owner: */
+        assert getOwner() != null;
+
+        Object sourceSV = Model.getFacade().getSource(getOwner());
+        Object destSV = Model.getFacade().getTarget(getOwner());
+        FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
+        FigNode destFN = (FigNode) lay.presentationFor(destSV);
+        setSourcePortFig(sourceFN);
+        setSourceFigNode(sourceFN);
+        setDestPortFig(destFN);
+        setDestFigNode(destFN);
     }
 
     /*
@@ -223,8 +267,7 @@ public class FigTransition extends FigEdgeModelElement {
      */
     protected Object getDestination() {
         if (getOwner() != null) {
-            return Model.getStateMachinesHelper().getDestination(
-            /* (Transition) */getOwner());
+            return Model.getStateMachinesHelper().getDestination(getOwner());
         }
         return null;
     }
@@ -234,8 +277,7 @@ public class FigTransition extends FigEdgeModelElement {
      */
     protected Object getSource() {
         if (getOwner() != null) {
-            return Model.getStateMachinesHelper().getSource(
-            /* (Transition) */getOwner());
+            return Model.getStateMachinesHelper().getSource(getOwner());
         }
         return null;
     }
@@ -255,10 +297,5 @@ public class FigTransition extends FigEdgeModelElement {
         indicateBounds(getNameFig(), g);
         super.paintClarifiers(g);
     }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 2938247797781036110L;
 
 } /* end class FigTransition */
