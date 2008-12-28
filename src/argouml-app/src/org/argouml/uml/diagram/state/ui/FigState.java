@@ -33,6 +33,8 @@ import java.beans.PropertyVetoException;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -104,7 +106,14 @@ public abstract class FigState extends FigStateVertex {
      */
     public FigState(Object owner, Rectangle bounds, DiagramSettings settings) {
         super(owner, bounds, settings);
+
         initializeState();
+
+        NotationName notation = Notation.findNotation(
+                getNotationSettings().getNotationLanguage());
+        notationProviderBody =
+            NotationProviderFactory2.getInstance().getNotationProvider(
+                    NotationProviderFactory2.TYPE_STATEBODY, getOwner(), this, notation);
     }
 
     private void initializeState() {
@@ -151,10 +160,12 @@ public abstract class FigState extends FigStateVertex {
             notationProviderBody.cleanListener(this, own);
         }
         super.initNotationProviders(own);
+        NotationName notation = Notation.findNotation(
+                getNotationSettings().getNotationLanguage());
         if (Model.getFacade().isAState(own)) {
             notationProviderBody =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_STATEBODY, own, this);
+                        NotationProviderFactory2.TYPE_STATEBODY, own, this, notation);
         }
     }
 
