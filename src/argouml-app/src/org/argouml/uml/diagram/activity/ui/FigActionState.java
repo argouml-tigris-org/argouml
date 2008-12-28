@@ -306,7 +306,9 @@ public class FigActionState extends FigStateVertex {
      */
     @Override
     public void removeFromDiagramImpl() {
-        notationProvider.cleanListener(this, getOwner());
+        if (notationProvider != null) {
+            notationProvider.cleanListener(this, getOwner());
+        }
         super.removeFromDiagramImpl();
     }
 

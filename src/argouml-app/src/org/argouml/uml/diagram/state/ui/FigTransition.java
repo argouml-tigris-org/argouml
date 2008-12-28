@@ -139,7 +139,7 @@ public class FigTransition extends FigEdgeModelElement {
         super.setLayer(lay);
 
         /* This presumes that the layer is set after the owner: */
-        if (getOwner() != null) {
+        if (getLayer() != null && getOwner() != null) {
             initPorts();
         }
     }
@@ -151,11 +151,14 @@ public class FigTransition extends FigEdgeModelElement {
         super.setOwner(owner);
 
         /* This presumes that the owner is set after the layer: */
-        if (getLayer() != null) {
+        if (getLayer() != null && getOwner() != null) {
             initPorts();
         }
     }
 
+    /**
+     * TODO: This needs documentation! Is this really needed? Why?
+     */
     private void initPorts() {
         Object sourceSV = Model.getFacade().getSource(getOwner());
         Object destSV = Model.getFacade().getTarget(getOwner());

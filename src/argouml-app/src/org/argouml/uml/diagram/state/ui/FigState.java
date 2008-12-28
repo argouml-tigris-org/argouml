@@ -176,7 +176,9 @@ public abstract class FigState extends FigStateVertex {
      */
     @Override
     public void removeFromDiagramImpl() {
-        notationProviderBody.cleanListener(this, getOwner());
+        if (notationProviderBody != null) {
+            notationProviderBody.cleanListener(this, getOwner());
+        }
         super.removeFromDiagramImpl();
     }
 
