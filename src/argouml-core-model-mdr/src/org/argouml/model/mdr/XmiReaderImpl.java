@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -236,7 +236,12 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 repository.endTrans();
             } catch (Throwable e) {
                 // Roll back transaction to remove any partial results read
-                modelImpl.getRepository().endTrans(true);
+                try {
+                    modelImpl.getRepository().endTrans(true);
+                } catch (Throwable e2) {
+                    // Ignore any error.  The transaction may already have
+                    // been unwound as part of exception processing by MDR
+                }
                 if (e instanceof MalformedXMIException) {
                     throw (MalformedXMIException) e;
                 } else if (e instanceof IOException) {
@@ -291,7 +296,11 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             modelImpl.deleteExtent(extent);
             throw new XmiException(e);
         } catch (IOException e) {
-            modelImpl.deleteExtent(extent);
+            try {
+                modelImpl.deleteExtent(extent);
+            } catch (InvalidObjectException e2) {
+                // Ignore if the extent never got created or has been deleted
+            }
             throw new XmiException(e);
         }
 
