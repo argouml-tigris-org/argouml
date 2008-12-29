@@ -142,6 +142,7 @@ Building this requires:
     <jar basedir="build/classes"
          excludes="*.txt,*.bat,*.xml,*.sh" 
          includes="org/argouml/**"
+         manifest="src/META-INF/MANIFEST.MF"
 	 jarfile="build/argouml-diagrams-sequence.jar" />
   </target>
 
