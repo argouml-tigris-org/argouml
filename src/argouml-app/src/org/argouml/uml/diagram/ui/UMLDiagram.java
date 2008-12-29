@@ -204,7 +204,6 @@ public abstract class UMLDiagram
      * 
      * @param name the name of the new diagram
      * @param graphModel graph model to associate with diagram
-     * (use new LayerPerspective(name, graphModel)) if you need a default
      * @param ns the namespace which will "own" the diagram
      */
     public UMLDiagram(String name, Object ns, GraphModel graphModel) {
@@ -216,7 +215,6 @@ public abstract class UMLDiagram
      * Construct an unnamed diagram using the given GraphModel.
      * 
      * @param graphModel graph model to associate with diagram
-     * (use new LayerPerspective(name, graphModel)) if you need a default
      */
     public UMLDiagram(GraphModel graphModel) {    
         super("", graphModel, new LayerPerspective("", graphModel));
