@@ -128,7 +128,8 @@ public abstract class FigFeature extends CompartmentFigText {
      * @param bounds position and size
      * @param settings rendering settings
      */
-    public FigFeature(Object owner, Rectangle bounds, DiagramSettings settings) {
+    public FigFeature(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
         super(owner, bounds, settings);
         updateOwnerScope(Model.getFacade().isStatic(owner));
         Model.getPump().addModelEventListener(this, owner, EVENT_NAME);
