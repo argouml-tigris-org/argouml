@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,6 +34,7 @@ import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
@@ -65,8 +66,21 @@ public class FigMessage extends FigNodeModelElement {
 
     /**
      * The main constructor.
+     * @deprecated for 0.27.4 by tfmorris.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigMessage() {
+        super();
+        
+        initFigs();
+        initArrows();
+
+	Rectangle r = getBounds();
+	setBounds(r.x, r.y, r.width, r.height);
+    }
+
+    private void initFigs() {
         setShadowSize(0); // Issue 2714.
 	getNameFig().setLineWidth(0);
 	getNameFig().setReturnAction(FigText.END_EDITING);
@@ -82,33 +96,52 @@ public class FigMessage extends FigNodeModelElement {
 	figPoly.setPolygon(polygon);
 	figPoly.setBounds(100, 10, 5, 18);
 
-	arrowDirections = new Vector<String>(4);
-        arrowDirections.add(SOUTH, "South");
-        arrowDirections.add(EAST, "East");
-        arrowDirections.add(WEST, "West");
-        arrowDirections.add(NORTH, "North");
-
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
 	// add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
 	addFig(getNameFig());
 	addFig(figPoly);
-
-	Rectangle r = getBounds();
-	setBounds(r.x, r.y, r.width, r.height);
     }
 
+    private void initArrows() {
+        arrowDirections = new Vector<String>(4);
+        arrowDirections.add(SOUTH, "South");
+        arrowDirections.add(EAST, "East");
+        arrowDirections.add(WEST, "West");
+        arrowDirections.add(NORTH, "North");
+    }
+
+    /**
+     * Construct a FigMessage.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigMessage(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initArrows();
+        initFigs();
+        // TODO: Do we need the setBounds(getBounds()) hack here?
+    }
+    
     /**
      * The constructor that hooks the Fig into an existing UML element
      * @param gm ignored
      * @param lay the layer
      * @param node the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigMessage(Object, Rectangle, DiagramSettings)}.
      */
-    public FigMessage(GraphModel gm, Layer lay, Object node) {
-	this();
-	setLayer(lay);
-	setOwner(node);
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigMessage(@SuppressWarnings("unused") GraphModel gm, Layer lay,
+            Object node) {
+        this();
+        setLayer(lay);
+        setOwner(node);
     }
 
     /*
@@ -289,9 +322,10 @@ public class FigMessage extends FigNodeModelElement {
 
         int ht = 0;
 
-        if (nameMin.height > figPoly.getHeight())
+        if (nameMin.height > figPoly.getHeight()) {
             ht = (nameMin.height - figPoly.getHeight()) / 2;
-
+        }
+        
         getNameFig().setBounds(x, y, w - figPoly.getWidth(), nameMin.height);
         getBigPort().setBounds(x, y, w - figPoly.getWidth(), nameMin.height);
         figPoly.setBounds(x + getNameFig().getWidth(), y + ht,
@@ -455,8 +489,9 @@ public class FigMessage extends FigNodeModelElement {
                 }
                 if (Model.getFacade().isASendAction(act)) {
                     Object sig = Model.getFacade().getSignal(act);
-                    if (sig != null)
+                    if (sig != null) {
                         Model.getPump().removeModelEventListener(this, sig);
+                    }
                     Model.getPump().addModelEventListener(this, sig);
                 }
             }
@@ -470,12 +505,16 @@ public class FigMessage extends FigNodeModelElement {
      */
     protected void updateArrow() {
   	Object mes = getOwner(); // Message
-	if (mes == null || getLayer() == null) return;
+	if (mes == null || getLayer() == null) {
+	    return;
+	}
 	Object sender = Model.getFacade().getSender(mes); // ClassifierRole
 	Object receiver = Model.getFacade().getReceiver(mes); // ClassifierRole
 	Fig senderPort = getLayer().presentationFor(sender);
 	Fig receiverPort = getLayer().presentationFor(receiver);
-	if (senderPort == null || receiverPort == null) return;
+	if (senderPort == null || receiverPort == null) {
+	    return;
+	}
 	int sx = senderPort.getX();
 	int sy = senderPort.getY();
 	int rx = receiverPort.getX();

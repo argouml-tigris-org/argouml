@@ -24,11 +24,13 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -42,8 +44,12 @@ import org.tigris.gef.presentation.Fig;
 public class FigNodeInstance extends AbstractFigNode {
 
     /**
-     * Main constructor - used for file loading.
+     * Constructor
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #FigNodeInstance(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigNodeInstance() {
         super();
         getNameFig().setUnderline(true);
@@ -51,15 +57,33 @@ public class FigNodeInstance extends AbstractFigNode {
 
     /**
      * Constructor which hooks the new Fig into an existing UML element.
-     *
+     * 
      * @param gm ignored
      * @param node the UML element
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #FigNodeInstance(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigNodeInstance(GraphModel gm, Object node) {
         super(gm, node);
         getNameFig().setUnderline(true);
     }
 
+    
+    /**
+     * Construct a new FigNodeInstance.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigNodeInstance(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        getNameFig().setUnderline(true);
+    }
+    
     @Override
     protected int getNotationProviderType() {
         return NotationProviderFactory2.TYPE_NODEINSTANCE;

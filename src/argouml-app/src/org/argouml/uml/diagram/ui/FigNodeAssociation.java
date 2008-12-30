@@ -34,6 +34,7 @@ import java.util.List;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
@@ -60,8 +61,17 @@ public class FigNodeAssociation extends FigNodeModelElement {
 
     /**
      * The constructor.
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *          {@link #FigNodeAssociation(Object, Rectangle, DiagramSettings)}
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigNodeAssociation() {
+        super();
+        initFigs();
+    }
+
+    private void initFigs() {
         setEditable(false);
         setBigPort(new FigDiamond(0, 0, 70, 70, Color.cyan, Color.cyan));
         head = new FigDiamond(0, 0, 70, 70, Color.black, Color.white);
@@ -81,7 +91,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
         addFig(getNameFig());
         addFig(getStereotypeFig());
 
-        setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisible unless mouse enters
         Rectangle r = getBounds();
         setBounds(r);
         setResizable(true);
@@ -89,18 +99,38 @@ public class FigNodeAssociation extends FigNodeModelElement {
 
     /**
      * The constructor.
-     *
+     * 
      * @param gm the graphmodel
      * @param node the owner (UML association)
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *          {@link #FigNodeAssociation(Object, Rectangle, DiagramSettings)}
      */
-    public FigNodeAssociation(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigNodeAssociation(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
+    }
+    
+    
+    /**
+     * Construct a new FigNodeAssociation.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigNodeAssociation(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
     }
 
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigNodeAssociation figClone = (FigNodeAssociation) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -117,6 +147,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
      *
      * @param mee the event
      */
+    @Override
     protected void updateLayout(UmlChangeEvent mee) {
         super.updateLayout(mee);
         if (mee.getSource() == getOwner()
@@ -186,6 +217,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
      * Makes sure that the edges stick to the outline of the fig.
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
+    @Override
     public List getGravityPoints() {
         return getBigPort().getGravityPoints();
     }
@@ -193,6 +225,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         head.setLineColor(col);
     }
@@ -200,6 +233,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return head.getLineColor();
     }
@@ -207,6 +241,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         head.setFillColor(col);
     }
@@ -214,6 +249,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return head.getFillColor();
     }
@@ -221,9 +257,11 @@ public class FigNodeAssociation extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
     }
 
+    @Override
     public boolean isFilled() {
         return true;
     }
@@ -231,6 +269,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         head.setLineWidth(w);
     }
@@ -238,10 +277,12 @@ public class FigNodeAssociation extends FigNodeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return head.getLineWidth();
     }
 
+    @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
 
@@ -320,8 +361,5 @@ public class FigNodeAssociation extends FigNodeModelElement {
         super.removeFromDiagramImpl();
     }
 
-    
-
-} /* end class FigNodeAssociation */
-
+}
 

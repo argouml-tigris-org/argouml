@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -43,23 +45,45 @@ import org.tigris.gef.presentation.FigText;
  * @author 5eichler
  */
 public class FigComponent extends AbstractFigComponent {
+    
     /**
      * Constructor.
+     * 
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #FigComponent(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigComponent() {
         super();
     }
 
     /**
      * The constructor that hooks the Fig into an existing UML element.
-     *
+     * 
      * @param gm ignored
      * @param node the UML element
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #FigComponent(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigComponent(GraphModel gm, Object node) {
         super(gm, node);
     }
 
+    /**
+     * Construct a new FigComponent.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigComponent(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+    }
+    
     @Override
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -49,8 +50,17 @@ public class FigObject extends FigNodeModelElement {
 
     /**
      * Main constructor.
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #FigObject(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigObject() {
+        super();
+        initFigs();
+    }
+
+    private void initFigs() {
         setBigPort(new FigRect(X0, Y0, 90, 50, Color.cyan, Color.cyan));
         cover = new FigRect(X0, Y0, 90, 50, Color.black, Color.white);
         getNameFig().setLineWidth(0);
@@ -70,15 +80,32 @@ public class FigObject extends FigNodeModelElement {
 
     /**
      * Constructor that hooks the Fig to an existing UML element.
-     *
+     * 
      * @param gm ignored
      * @param node the UML element
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #FigObject(Object, Rectangle, DiagramSettings)}.
      */
-    public FigObject(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigObject(@SuppressWarnings("unused") GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
 
+    
+    /**
+     * Construct a new FigObject.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigObject(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#getNotationProviderType()
      */

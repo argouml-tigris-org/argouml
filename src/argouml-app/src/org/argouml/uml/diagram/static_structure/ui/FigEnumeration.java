@@ -36,6 +36,7 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
 import org.argouml.uml.diagram.ui.FigStereotypesGroup;
@@ -63,7 +64,11 @@ public class FigEnumeration extends FigDataType
 
     /**
      * Main constructor for a {@link FigEnumeration}.
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #FigEnumeration(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigEnumeration() {
         super();
         FigStereotypesGroup fsc = getStereotypeFig();
@@ -76,15 +81,20 @@ public class FigEnumeration extends FigDataType
         setBounds(getBounds());
     }
 
+
     /**
-     * Constructor for use if this figure is created for an
-     * existing interface node in the metamodel.
-     *
-     * @param gm   Not actually used in the current implementation
-     *
+     * Constructor for use if this figure is created for an existing interface
+     * node in the metamodel.
+     * 
+     * @param gm Not actually used in the current implementation
      * @param node The UML object being placed.
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #FigEnumeration(Object, Rectangle, DiagramSettings)}.
      */
-    public FigEnumeration(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigEnumeration(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         enableSizeChecking(true);
         setEnumLiteralsVisible(true);
@@ -93,6 +103,29 @@ public class FigEnumeration extends FigDataType
         setBounds(getBounds());
     }
 
+
+    /**
+     * Construct a new AbstractFigComponent.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigEnumeration(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        getStereotypeFig().setKeyword("enumeration");
+
+        enableSizeChecking(true);
+        setSuppressCalcBounds(false);
+
+        addFig(getLiteralsCompartment()); // This creates the compartment.
+        setEnumLiteralsVisible(true);
+        literalsCompartment.populate();
+
+        setBounds(getBounds());
+    }
+    
     /*
      * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#makeSelection()
      */
@@ -141,7 +174,7 @@ public class FigEnumeration extends FigDataType
     @Override
     public void renderingChanged() {
         super.renderingChanged();
-               if (getOwner() != null) {
+        if (getOwner() != null) {
             updateEnumLiterals();
         }
     }

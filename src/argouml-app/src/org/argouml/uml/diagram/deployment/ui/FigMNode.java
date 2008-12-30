@@ -24,9 +24,11 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
 
@@ -39,21 +41,42 @@ public class FigMNode extends AbstractFigNode {
 
     /**
      * Main constructor - only directly used for file loading.
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #FigMNode(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigMNode() {
         super();
     }
 
     /**
      * Construct a FigMNode based on an existing UML Node element.
-     *
+     * 
      * @param gm ignored
      * @param node the UML element
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #FigMNode(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigMNode(GraphModel gm, Object node) {
         super(gm, node);
     }
 
+    
+    /**
+     * Construct a new FigMNode.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigMNode(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+    }
+    
     @Override
     protected void textEditStarted(FigText ft) {
         if (ft == getNameFig()) {
