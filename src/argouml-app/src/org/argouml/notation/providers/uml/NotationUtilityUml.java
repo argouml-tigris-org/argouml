@@ -1227,7 +1227,7 @@ public final class NotationUtilityUml {
     public static String generateMultiplicity(Object element, 
             boolean showSingularMultiplicity) {
         Object multiplicity;
-        if (!Model.getFacade().isAMultiplicity(element)) { 
+        if (Model.getFacade().isAMultiplicity(element)) { 
             multiplicity = element;
         } else if (Model.getFacade().isAUMLElement(element)) {
             multiplicity = Model.getFacade().getMultiplicity(element);
