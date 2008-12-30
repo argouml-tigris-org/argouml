@@ -24,6 +24,9 @@
 
 package org.argouml.sequence2;
 
+import org.argouml.model.InitializeModel;
+import org.argouml.profile.init.InitProfileSubsystem;
+
 import org.argouml.sequence2.SequenceDiagramPropPanelFactory;
 import org.argouml.sequence2.SequenceDiagramPropPanelFactory.PropPanelUMLSequenceDiagram;
 import org.argouml.sequence2.diagram.UMLSequenceDiagram;
@@ -32,6 +35,16 @@ import org.argouml.uml.ui.PropPanel;
 import junit.framework.TestCase;
 
 public class TestSequenceDiagramPropPanelFactory extends TestCase {
+
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
+    public void setUp() throws Exception {
+	super.setUp();
+        InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
+    }
 
     public void testCreatePropPanel() {
         SequenceDiagramPropPanelFactory factory = 

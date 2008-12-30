@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,9 @@
 
 package org.argouml.sequence2.diagram;
 
+import org.argouml.model.InitializeModel;
+import org.argouml.profile.init.InitProfileSubsystem;
+
 import org.argouml.sequence2.diagram.SequenceDiagramGraphModel;
 import org.argouml.sequence2.diagram.SequenceDiagramRenderer;
 import org.argouml.sequence2.diagram.UMLSequenceDiagram;
@@ -39,8 +42,15 @@ public class TestUMLSequenceDiagram extends TestCase {
 
     private UMLSequenceDiagram theDiagram;
     
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    @Override
     protected void setUp() throws Exception {
         super.setUp();
+        InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
+
         theDiagram = new UMLSequenceDiagram();        
     }
     
