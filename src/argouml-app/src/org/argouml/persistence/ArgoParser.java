@@ -431,8 +431,7 @@ class ArgoParser extends SAXParserBase {
      */
     protected void handleShowStereotypes(XMLElement e) {
         String showStereotypes = e.getText().trim();
-        notationSettings.setShowStereotypes(
-                Boolean.parseBoolean(showStereotypes));
+        ps.setShowStereotypes(Boolean.parseBoolean(showStereotypes));
     }
 
     /**

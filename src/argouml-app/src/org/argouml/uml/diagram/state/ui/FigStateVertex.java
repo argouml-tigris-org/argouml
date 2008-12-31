@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,11 +25,13 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Editor;
@@ -43,14 +45,18 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
 /**
- * Abstract class to with common behavior for nestable nodes in UML Statechart
- * diagrams.
+ * Abstract class for a State Vertex 
+ * which has behavior for nestable nodes in UML Statechart diagrams.
  */
 public abstract class FigStateVertex extends FigNodeModelElement {
 
     /**
      * The main constructor
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigStateVertex(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigStateVertex() {
         this.allowRemoveFromDiagram(false);
     }
@@ -62,14 +68,30 @@ public abstract class FigStateVertex extends FigNodeModelElement {
      *            ignored
      * @param node
      *            the UML elm
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigStateVertex(Object, Rectangle, DiagramSettings)}.
      */
-    public FigStateVertex(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigStateVertex(@SuppressWarnings("unused") GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
 
+    /**
+     * Constructor used by PGML parser.
+     * 
+     * @param owner the owning UML element
+     * @param bounds rectangle describing bounds
+     * @param settings rendering settings
+     */
+    public FigStateVertex(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, bounds, settings);
+        this.allowRemoveFromDiagram(false);
+    }
+
     /*
-     * Overriden to make it possible to include a statevertex in a composite
+     * Overridden to make it possible to include a stateVertex in a composite
      * state.
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
@@ -162,7 +184,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
      * Return a list of gravity points around circle which is enclosed
      * in the bounding box.  Convenience method for use by FigInitialState
      * and FigFinalState.
-     * TODO: As this method is not required by all sub classes then should we
+     * TODO: As this method is not required by all sub classes,
      * it would seem sensible to extend FigStateVertex with FigCircleVertex
      * and only have the relevant concrete Figs extend that and gain this
      * functionality.

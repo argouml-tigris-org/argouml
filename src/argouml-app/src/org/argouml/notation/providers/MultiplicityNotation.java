@@ -46,6 +46,9 @@ public abstract class MultiplicityNotation extends NotationProvider {
      */
     public MultiplicityNotation(Object multiplicityOwner) {
         // If this fails, then there is a problem...
+        // dthompson 29/12/2008: It seems that the returned value is 
+        // irrelevant here, so I assume that the purpose of this call
+        // is just to throw an exception in case of a problem.
         Model.getFacade().getMultiplicity(multiplicityOwner);
     }
 

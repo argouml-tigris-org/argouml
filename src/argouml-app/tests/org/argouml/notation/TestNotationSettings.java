@@ -1,31 +1,34 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+/// Copyright (c) 2008 Tom Morris and other contributors. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies. This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
-// IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Contributors.
+// The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Contributors. The 
+// Contributors do not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason. IN NO EVENT SHALL THE
-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// CONTRIBUTORS BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// THE CONTRIBUTORS HAVE BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE CONTRIBUTORS SPECIFICALLY DISCLAIM ANY
 // WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE CONTRIBUTORS
+// HAVE NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.notation;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests for the NotationSettings class.
+ */
 public class TestNotationSettings extends TestCase {
 
     private NotationSettings settings;
@@ -37,12 +40,12 @@ public class TestNotationSettings extends TestCase {
 
     public void testNotationLanguage() {
         assertEquals("NotationLanguage default is not correct",
-                "UML 1.4", 
+                Notation.DEFAULT_NOTATION, 
                 settings.getNotationLanguage());
         // The following should fail
         assertFalse(settings.setNotationLanguage("foo"));
         // and leave things unchanged
-        assertEquals("UML 1.4", settings.getNotationLanguage());
+        assertEquals(Notation.DEFAULT_NOTATION, settings.getNotationLanguage());
         // This one should work except Java is not registered by default
 //        assertTrue(settings.setNotationLanguage("Java"));
 //        assertEquals("Java", settings.getNotationLanguage());
@@ -81,13 +84,13 @@ public class TestNotationSettings extends TestCase {
      * Test the project setting for showing Association names.
      */
     public void testAssociationNames() {
-        assertFalse("Association names not correct",
-                settings.isShowAssociationNames());
-        settings.setShowAssociationNames(true);
         assertTrue("Association names not correct",
                 settings.isShowAssociationNames());
         settings.setShowAssociationNames(false);
         assertFalse("Association names not correct",
+                settings.isShowAssociationNames());
+        settings.setShowAssociationNames(true);
+        assertTrue("Association names not correct",
                 settings.isShowAssociationNames());
     }
 
@@ -128,34 +131,22 @@ public class TestNotationSettings extends TestCase {
     }
     
     public void testSingularMultiplicities() {
-        assertFalse("ShowSingularMultiplicities is not correct",
-                settings.isShowSingularMultiplicities());
-        settings.setShowSingularMultiplicities(true);
         assertTrue("ShowSingularMultiplicities is not correct",
                 settings.isShowSingularMultiplicities());
         settings.setShowSingularMultiplicities(false);
         assertFalse("SingularMultiplicities is not correct",
                 settings.isShowSingularMultiplicities());
-    }
-    
-    public void testShowStereotypes() {
-        assertTrue("Stereotypes is not correct",
-                settings.isShowStereotypes());
-        settings.setShowStereotypes(true);
-        assertTrue("Stereotypes is not correct",
-                settings.isShowStereotypes());
-        settings.setShowStereotypes(false);
-        assertFalse("Stereotypes is not correct",
-                settings.isShowStereotypes());        
-
+        settings.setShowSingularMultiplicities(true);
+        assertTrue("ShowSingularMultiplicities is not correct",
+                settings.isShowSingularMultiplicities());
     }
     
     public void testShowTypes() {
-        assertFalse("Types is not correct", settings.isShowTypes());
-        settings.setShowTypes(true);
         assertTrue("Types is not correct", settings.isShowTypes());
         settings.setShowTypes(false);
         assertFalse("Types is not correct", settings.isShowTypes());
+        settings.setShowTypes(true);
+        assertTrue("Types is not correct", settings.isShowTypes());
     }
     
     /**
@@ -164,11 +155,9 @@ public class TestNotationSettings extends TestCase {
     public void testMultiplicities() {
         assertFalse("Multiplicities not correct",
                 settings.isShowMultiplicities());
-        
         settings.setShowMultiplicities(true);
         assertTrue("Multiplicities not correct",
                 settings.isShowMultiplicities());
-        
         settings.setShowMultiplicities(false);
         assertFalse("Multiplicities not correct",
                 settings.isShowMultiplicities());
@@ -195,13 +184,13 @@ public class TestNotationSettings extends TestCase {
      * Test the use of Guillemets.
      */
     public void testUseGuillemets() {
-        assertFalse("Guillemots not correct",
+        assertFalse("Guillemets not correct",
                 settings.isUseGuillemets());
         settings.setUseGuillemets(true);
-        assertTrue("Guillemots not correct",
+        assertTrue("Guillemets not correct",
                 settings.isUseGuillemets());
         settings.setUseGuillemets(false);
-        assertFalse("Guillemots not correct",
+        assertFalse("Guillemets not correct",
                 settings.isUseGuillemets());
     }
 

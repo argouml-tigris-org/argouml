@@ -69,6 +69,7 @@ public class DefaultOclEvaluator implements OclExpressionEvaluator {
         
         LOG.debug("OCL: " + ocl);
         if (ocl.contains("ore")) {
+            // TODO: Convert this to some sensible logging
             System.out.println("VOILA!");
         }
         Lexer lexer = new Lexer(new PushbackReader(new StringReader(

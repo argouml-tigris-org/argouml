@@ -45,6 +45,7 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.graph.presentation.JGraph;
 import org.tigris.gef.presentation.FigNode;
 
@@ -198,22 +199,24 @@ class DnDJGraph
                         dropTargetDropEvent.getLocation());
                 
                 if (figNode != null) {
-                    GraphModel gm = diagram.getGraphModel();
+                    MutableGraphModel gm =
+                        (MutableGraphModel) diagram.getGraphModel();
                     if (!gm.getNodes().contains(figNode.getOwner())) {
                         gm.getNodes().add(figNode.getOwner());
                     }
                     
                     Globals.curEditor().getLayerManager().getActiveLayer()
                             .add(figNode);
+                    gm.addNodeRelatedEdges(figNode.getOwner());
                 }
                 
             }
 
             dropTargetDropEvent.getDropTargetContext().dropComplete(true);
         } catch (UnsupportedFlavorException e) {
-            LOG.debug(e);
+            LOG.debug("Exception caught", e);
         } catch (IOException e) {
-            LOG.debug(e);
+            LOG.debug("Exception caught", e);
         }
     }
 

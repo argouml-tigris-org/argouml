@@ -69,11 +69,7 @@ import org.xml.sax.helpers.DefaultHandler;
 class PGMLStackParser
     extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(PGMLStackParser.class);
+    private static final Logger LOG = Logger.getLogger(PGMLStackParser.class);
 
     private List<EdgeData> figEdges = new ArrayList<EdgeData>(50);
     
@@ -92,9 +88,13 @@ class PGMLStackParser
     @Deprecated
     public PGMLStackParser(Map modelElementsByUuid) {
         super(modelElementsByUuid);
-        // TODO: Use stylesheet to convert or wait till we use Fig
-        // factories in diagram subsystem.
-        // What is the last version that used FigNote?
+        addTranslations();
+    }
+
+    // TODO: Use stylesheet to convert or wait till we use Fig
+    // factories in diagram subsystem.
+    // What is the last version that used FigNote?
+    private void addTranslations() {
         addTranslation("org.argouml.uml.diagram.ui.FigNote",
         	"org.argouml.uml.diagram.static_structure.ui.FigComment");
         addTranslation("org.argouml.uml.diagram.static_structure.ui.FigNote",
@@ -133,15 +133,18 @@ class PGMLStackParser
      */
     public PGMLStackParser(Map<String, Object> modelElementsByUuid, 
             DiagramSettings defaultSettings) {
-        // TODO: Move addTranslation here when deprecated constructor is removed
-        this(modelElementsByUuid);
-        diagramSettings = defaultSettings;
+        super(modelElementsByUuid);
+        addTranslations();
+        // Create a new diagram wide settings block which is backed by 
+        // the project-wide defaults that we were passed
+        diagramSettings = new DiagramSettings(defaultSettings);
     }
 
     /*
      * @see org.tigris.gef.persistence.pgml.HandlerFactory#getHandler(
      *         HandlerStack, Object, String, String, String, Attributes)
      */
+    @Override
     public DefaultHandler getHandler(HandlerStack stack,
                                              Object container,
                                              String uri,
@@ -193,6 +196,7 @@ class PGMLStackParser
      * @see org.tigris.gef.persistence.pgml.PGMLStackParser#setAttrs(
      *         org.tigris.gef.presentation.Fig, org.xml.sax.Attributes)
      */
+    @Override
     protected final void setAttrs(Fig f, Attributes attrList)
         throws SAXException {
         
@@ -241,6 +245,7 @@ class PGMLStackParser
                 throw new SAXException("Found href of " + href
 				       + " with no matching element in model");
             }
+            // The owner should always have already been set in the constructor
             if (f.getOwner() != modelElement) {
                 // Assign nodes immediately but edges later. See issue 4310.
                 if (f instanceof FigEdge) {
@@ -683,7 +688,7 @@ class PGMLStackParser
     @Override
     public void setDiagram(Diagram diagram) {
         // TODO: We could generalize this to initialize more stuff if needed
-        ((ArgoDiagram) diagram).setDiagramSettings(diagramSettings);
+        ((ArgoDiagram) diagram).setDiagramSettings(getDiagramSettings());
         super.setDiagram(diagram);
     }
     

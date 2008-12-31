@@ -24,13 +24,11 @@
 
 package org.argouml.profile.internal.ocl.uml14;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.profile.internal.ocl.DefaultOclEvaluator;
 import org.argouml.profile.internal.ocl.InvalidOclException;
@@ -816,22 +814,9 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#getBuiltInSymbol(java.lang.String)
      */
     public Object getBuiltInSymbol(String sym) {
-        Method m;
-        if (sym.equals("Class")) {
-            return new OclType(sym.toString());
-        } else {
-            try {
-                m = Facade.class.getDeclaredMethod("isA" + sym,
-                        new Class[] {Object.class});
-                if (m != null) {
-                    return new OclType(sym.toString());
-                }
-            } catch (Exception e) {
-                LOG.error("Exception", e);
-                // TODO: We shouldn't be throwing RuntimeException.
-                // We need some exception type of our own.
-                // Should this be a checked exception?
-                throw new RuntimeException(e);
+        for (String name : Model.getFacade().getMetatypeNames()) {
+            if (name.equals(sym)) {
+                return new OclType(sym);
             }
         }
         return null;

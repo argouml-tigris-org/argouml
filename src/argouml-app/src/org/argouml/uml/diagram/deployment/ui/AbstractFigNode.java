@@ -39,6 +39,8 @@ import java.util.Set;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
@@ -73,16 +75,24 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
 
     /**
      * Constructor.
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #AbstractFigNode(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public AbstractFigNode() {
         super();
+        initFigs();
+    }
+
+    private void initFigs() {
         setBigPort(new CubePortFigRect(DEFAULT_X, DEFAULT_Y - DEPTH, 
                 DEFAULT_WIDTH + DEPTH, 
                 DEFAULT_HEIGHT + DEPTH, DEPTH));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
-        cover = new FigCube(DEFAULT_X, DEFAULT_Y, 
-                DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.black, Color.white);
+        cover = new FigCube(DEFAULT_X, DEFAULT_Y, DEFAULT_WIDTH,
+                DEFAULT_HEIGHT, ArgoFig.LINE_COLOR, ArgoFig.FILL_COLOR);
 
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
@@ -99,8 +109,13 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
      * 
      * @param gm the graphmodel
      * @param node the UML element
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #AbstractFigNode(Object, Rectangle, DiagramSettings)}.
      */
-    public AbstractFigNode(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public AbstractFigNode(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
         if (Model.getFacade().isAClassifier(node)
@@ -118,11 +133,28 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
      * @param element ModelElement associated with figure
      * @param x horizontal location
      * @param y vertical location
+     * @deprecated by for 0.27.4 by tfmorris. Use
+     *             {@link #AbstractFigNode(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public AbstractFigNode(Object element, int x, int y) {
         super(element, x, y);
     }
 
+    /**
+     * Construct a new AbstractFigNode.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public AbstractFigNode(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
     @Override
     public Object clone() {
         AbstractFigNode figClone = (AbstractFigNode) super.clone();
@@ -205,7 +237,7 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
     @Override
     public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
-        setLineColor(Color.black);
+        setLineColor(ArgoFig.LINE_COLOR);
     }
 
     @Override

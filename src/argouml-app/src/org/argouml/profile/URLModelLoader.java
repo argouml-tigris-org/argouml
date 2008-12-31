@@ -76,9 +76,9 @@ public class URLModelLoader implements ProfileModelLoader {
             elements = xmiReader.parse(inputSource, true);
             return elements;
         } catch (UmlException e) {
-            throw new ProfileException("Invalid XMI data!", e);
+            throw new ProfileException("Error loading profile XMI file ", e);
         } catch (IOException e) {
-            throw new ProfileException("Invalid zip file with XMI data!", e);
+            throw new ProfileException("I/O error loading profile XMI ", e);
         }
     }
 

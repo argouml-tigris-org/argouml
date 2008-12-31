@@ -1130,65 +1130,6 @@ public final class NotationUtilityUml {
         return Translator.localize(key, new Object[] {name});
     }
     
-    /**
-     * @param st a stereotype UML object
-     *                 or a string
-     *                 or a collection of stereotypes
-     *                 or a modelelement of which the stereotypes are retrieved
-     * @return a string representing the given stereotype(s)
-     * @deprecated by mvw in V0.25.5. Use 
-     * {@link #generateStereotype(Object, boolean)}.
-     */
-    @Deprecated
-    public static String generateStereotype(Object st) {
-        if (st == null) {
-            return "";
-        }
-        Project project =
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
-
-        if (st instanceof String) {
-            return formatSingleStereotype((String) st, ps);
-        }
-        if (Model.getFacade().isAStereotype(st)) {
-            return formatSingleStereotype(Model.getFacade().getName(st), ps);
-        }
-
-        if (Model.getFacade().isAModelElement(st)) {
-            st = Model.getFacade().getStereotypes(st);
-        }
-        if (st instanceof Collection) {
-            Object o;
-            StringBuffer sb = new StringBuffer(10);
-            boolean first = true;
-            Iterator iter = ((Collection) st).iterator();
-            while (iter.hasNext()) {
-                if (!first) {
-                    sb.append(',');
-                }
-                o = iter.next();
-                if (o != null) {
-                    sb.append(Model.getFacade().getName(o));
-                    first = false;
-                }
-            }
-            if (!first) {
-                return formatStereotype(sb.toString(), ps.getNotationSettings()
-                        .isUseGuillemets());
-            }
-        }
-        return "";
-    }
-
-    private static String formatSingleStereotype(String name, 
-            ProjectSettings ps) {
-        if (name == null || name.length() == 0) {
-            return "";
-        }
-        return formatStereotype(name, 
-                ps.getNotationSettings().isUseGuillemets());
-    }
 
     /**
      * Generates the representation of a parameter on the display (diagram). The
@@ -1286,7 +1227,7 @@ public final class NotationUtilityUml {
     public static String generateMultiplicity(Object element, 
             boolean showSingularMultiplicity) {
         Object multiplicity;
-        if (!Model.getFacade().isAMultiplicity(element)) { 
+        if (Model.getFacade().isAMultiplicity(element)) { 
             multiplicity = element;
         } else if (Model.getFacade().isAUMLElement(element)) {
             multiplicity = Model.getFacade().getMultiplicity(element);
@@ -1302,27 +1243,6 @@ public final class NotationUtilityUml {
         return "";
     }
     
-    /**
-     * Generate the text of a multiplicity.
-     * <p>
-     * @deprecated by mvw in V0.25.5. Use 
-     * {@link #generateMultiplicity(Object, boolean)}.
-     *
-     * @param m the given multiplicity
-     * @return a string (guaranteed not null)
-     */
-    @Deprecated
-    public static String generateMultiplicity(Object m) {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = p.getProjectSettings();
-        String s = Model.getFacade().toString(m);
-        if (m == null
-                || (!ps.getShowSingularMultiplicitiesValue() 
-                        && "1".equals(s))) {
-            return "";
-        }
-        return s;
-    }
     
     /**
      * Generate the text of a multiplicity.

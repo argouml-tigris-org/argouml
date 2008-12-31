@@ -24,6 +24,7 @@
 
 package org.argouml.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +48,10 @@ public class TestActivityGraphsFactory extends TestCase {
         "ObjectFlowState",
         "Partition",
         "SubactivityState",
+    };
+    
+    private static String[] skippedModelElements = {
+        "ActivityGraph",
     };
 
     /**
@@ -94,6 +99,9 @@ public class TestActivityGraphsFactory extends TestCase {
      * @return all testable model elements
      */
     static List<String> getTestableModelElements() {
-        return Arrays.asList(allModelElements);
+        List<String> result = 
+            new ArrayList<String>(Arrays.asList(allModelElements));
+        result.removeAll(Arrays.asList(skippedModelElements));
+        return result;
     } 
 }

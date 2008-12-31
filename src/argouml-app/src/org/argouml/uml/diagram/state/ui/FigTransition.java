@@ -35,6 +35,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.PathConvPercent2;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
@@ -69,14 +70,16 @@ public class FigTransition extends FigEdgeModelElement {
 
     /**
      * The main constructor.
+     *
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigTransition(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigTransition() {
         super();
-        addPathItem(getNameFig(),
-                    new PathConvPercent2(this, getNameFig(), 50, 10));
-        getFig().setLineColor(Color.black);
-        setDestArrowHead(endArrow);
-        allowRemoveFromDiagram(false);
+
+        initializeTransition();
     }
 
     /**
@@ -87,22 +90,83 @@ public class FigTransition extends FigEdgeModelElement {
      *
      * @param edge the UML element
      * @param lay the layer
+     *
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigTransition(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigTransition(Object edge, Layer lay) {
         this();
         if (Model.getFacade().isATransition(edge)) {
-            Object tr = /* (MTransition) */edge;
-            Object sourceSV = Model.getFacade().getSource(tr);
-            Object destSV = Model.getFacade().getTarget(tr);
-            FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
-            FigNode destFN = (FigNode) lay.presentationFor(destSV);
-            setSourcePortFig(sourceFN);
-            setSourceFigNode(sourceFN);
-            setDestPortFig(destFN);
-            setDestFigNode(destFN);
+            initPorts(lay, edge);
         }
         setLayer(lay);
         setOwner(edge);
+    }
+    
+    /**
+     * Constructor used by PGML parser.
+     * 
+     * @param owner owning uml element
+     * @param settings rendering settings
+     */
+    public FigTransition(Object owner, DiagramSettings settings) {
+        super(owner, settings);
+        
+        initializeTransition();
+    }
+
+    private void initializeTransition() {
+        addPathItem(getNameFig(),
+                new PathConvPercent2(this, getNameFig(), 50, 10));
+        getFig().setLineColor(Color.black);
+        setDestArrowHead(endArrow);
+        allowRemoveFromDiagram(false);
+        
+        updateDashed();
+    }
+
+    @Override
+    public void setLayer(Layer lay) {
+        super.setLayer(lay);
+
+        /* This presumes that the layer is set after the owner: */
+        if (getLayer() != null && getOwner() != null) {
+            initPorts(lay, getOwner());
+        }
+    }
+
+    @Deprecated
+    @SuppressWarnings("deprecation")
+    @Override
+    public void setOwner(Object owner) {
+        super.setOwner(owner);
+
+        /* This presumes that the owner is set after the layer: */
+        if (getLayer() != null && getOwner() != null) {
+            initPorts(getLayer(), owner);
+        }
+    }
+
+    /**
+     * Set the owners of the associated FigNodes to be the StateVertexes which
+     * are at either end of the Transition.
+     * <p>
+     * TODO: This needs documentation! Is this really needed? Why?
+     * 
+     * @param lay diagram layer containing this fig
+     * @param owner owning UML element
+     */
+    private void initPorts(Layer lay, Object owner) {
+        Object sourceSV = Model.getFacade().getSource(owner);
+        Object destSV = Model.getFacade().getTarget(owner);
+        FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
+        FigNode destFN = (FigNode) lay.presentationFor(destSV);
+        setSourcePortFig(sourceFN);
+        setSourceFigNode(sourceFN);
+        setDestPortFig(destFN);
+        setDestFigNode(destFN);
     }
 
     /*
@@ -144,6 +208,7 @@ public class FigTransition extends FigEdgeModelElement {
         }
     }
 
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         /* Check if multiple items are selected: */
@@ -213,6 +278,7 @@ public class FigTransition extends FigEdgeModelElement {
     /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
+    @Override
     public void setFig(Fig f) {
         super.setFig(f);
         getFig().setDashed(dashed);
@@ -221,10 +287,10 @@ public class FigTransition extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getDestination()
      */
+    @Override
     protected Object getDestination() {
         if (getOwner() != null) {
-            return Model.getStateMachinesHelper().getDestination(
-            /* (Transition) */getOwner());
+            return Model.getStateMachinesHelper().getDestination(getOwner());
         }
         return null;
     }
@@ -232,10 +298,10 @@ public class FigTransition extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getSource()
      */
+    @Override
     protected Object getSource() {
         if (getOwner() != null) {
-            return Model.getStateMachinesHelper().getSource(
-            /* (Transition) */getOwner());
+            return Model.getStateMachinesHelper().getSource(getOwner());
         }
         return null;
     }
@@ -243,6 +309,7 @@ public class FigTransition extends FigEdgeModelElement {
     /*
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
+    @Override
     public void paint(Graphics g) {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
@@ -251,14 +318,10 @@ public class FigTransition extends FigEdgeModelElement {
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#paintClarifiers(java.awt.Graphics)
      */
+    @Override
     public void paintClarifiers(Graphics g) {
         indicateBounds(getNameFig(), g);
         super.paintClarifiers(g);
     }
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 2938247797781036110L;
-
-} /* end class FigTransition */
+}

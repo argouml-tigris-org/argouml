@@ -197,6 +197,9 @@ public abstract class FigEdgeModelElement
      */
     protected FigEdgeModelElement(Object element, 
             DiagramSettings renderSettings) {
+        // TODO: We don't have any settings that can change per-fig currently
+        // so we can just use the default settings;
+//        settings = new DiagramSettings(renderSettings);
         settings = renderSettings;
         nameFig = new FigNameWithAbstract(element, 
                 new Rectangle(X0, Y0 + 20, 90, 20), 

@@ -27,6 +27,8 @@ package org.argouml.model;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -175,6 +177,22 @@ public final class CheckUMLModelHelper {
                 return;
             }
 
+            Method getMethod;
+            String getMethodName = "get" + name;
+            if ("Class".equals(name)) {
+                getMethodName = "getUMLClass";
+            }
+            Object metatypes = Model.getMetaTypes();
+            try {
+                getMethod =
+                    MetaTypes.class.getDeclaredMethod(
+                            getMethodName,
+                            new Class[] {});
+            } catch (NoSuchMethodException e) {
+                TestCase.fail("Method " + getMethodName
+                        + " does not exist in MetaTypes");
+                return;
+            }
 	    try {
 		// Extra careful now, not to keep any references to the
 		// second argument.
@@ -185,9 +203,12 @@ public final class CheckUMLModelHelper {
                             isAMethod, facade, new Object[] {
                                 element
                             }));
-                
-                    deleteAndRelease(
-                            createMethod.invoke(factory, args), name);
+		    TestCase.assertTrue(Model.getFacade().isA(name, element));
+                    Object metaElement = invoke(getMethod, metatypes,
+                            new Object[0]);
+                    TestCase.assertTrue(((Class) metaElement)
+                            .isAssignableFrom(element.getClass()));
+                    deleteAndRelease(createMethod.invoke(factory, args), name);
 		} catch (ClassCastException e) {
 		    // Here it is another object sent to the test.
 		    deleteAndRelease(createMethod.invoke(factory, args));
@@ -322,21 +343,50 @@ public final class CheckUMLModelHelper {
      */
     public static void metaModelNameCorrect(Object factory, 
             Iterable<String> names) {
+        Set<String> metaNames = new HashSet<String>();
+        metaNames.addAll(Arrays.asList(Model.getFacade().getMetatypeNames()));
         try {
             for (String name : names) {
-                Method m = findMethod(factory.getClass(), Factory.class,
+                Method createMethod = findMethod(factory.getClass(), Factory.class,
                         "create" + name, new Class[] {});
                 TestCase.assertNotNull("Failed to find method create"
-                        + name, m);
-                Object element = m.invoke(factory, new Object[] {});
+                        + name, createMethod);
+                Object element = createMethod.invoke(factory, new Object[] {});
                 TestCase.assertTrue("Not a UML Element", 
                         Model.getFacade().isAUMLElement(element));
-                String metaName =
-                        Model.getExtensionMechanismsHelper().getMetaModelName(
-                                element);
+                String metaName = Model.getMetaTypes().getName(element);
                 TestCase.assertEquals(
                         "not a valid metaModelName " + name, 
                         metaName, name);
+                TestCase.assertTrue(metaNames.contains(metaName));
+                TestCase.assertTrue(Model.getFacade().isA(metaName, element));
+                
+                Method m2 = findMethod(MetaTypes.class, MetaTypes.class,
+                        "get" + name, new Class[] {});
+                
+                
+                Method getMethod;
+                String getMethodName = "get" + name;
+                if ("Class".equals(name)) {
+                    getMethodName = "getUMLClass";
+                }
+                Object metatypes = Model.getMetaTypes();
+                try {
+                    getMethod =
+                        MetaTypes.class.getDeclaredMethod(
+                                getMethodName,
+                                new Class[] {});
+                } catch (NoSuchMethodException e) {
+                    TestCase.fail("Method " + getMethodName
+                            + " does not exist in MetaTypes");
+                    return;
+                }
+                TestCase.assertNotNull("Failed to find method get"
+                        + getMethodName, getMethod);
+                Object metaElement = createMethod.invoke(factory, 
+                        new Object[] {});
+                TestCase.assertTrue(metaElement.getClass().isAssignableFrom(
+                        element.getClass()));
             }
         } catch (Exception ex) {
             ex.printStackTrace();

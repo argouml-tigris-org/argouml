@@ -24,10 +24,7 @@
 
 package org.argouml.profile.internal.ocl;
 
-import java.lang.reflect.Method;
-
 import org.apache.log4j.Logger;
-import org.argouml.model.Facade;
 import org.argouml.model.Model;
 
 import tudresden.ocl.parser.analysis.DepthFirstAdapter;
@@ -43,9 +40,6 @@ import tudresden.ocl.parser.node.APreStereotype;
  */
 public class ContextApplicable extends DepthFirstAdapter {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger.getLogger(ContextApplicable.class);
 
     private boolean applicable = true;
@@ -74,18 +68,7 @@ public class ContextApplicable extends DepthFirstAdapter {
      */
     public void caseAClassifierContext(AClassifierContext node) {
         String metaclass = ("" + node.getPathTypeName()).trim();
-
-        try {
-            Method m = Facade.class.getDeclaredMethod("isA" + metaclass,
-                    new Class[] { Object.class });
-            if (m != null) {
-                applicable &= (Boolean) m.invoke(Model.getFacade(),
-                        new Object[] { modelElement });
-            }
-        } catch (Exception e) {
-            LOG.error("Exception", e);
-        }
-
+        applicable &= Model.getFacade().isA(metaclass, modelElement);
     }
 
     /**

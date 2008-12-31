@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,6 +23,8 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.diagram.ui;
+
+import java.awt.Color;
 
 import org.argouml.kernel.Project;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -48,7 +50,6 @@ public interface ArgoFig {
     /** Default Y offset of origin used when building figs */
     static final int Y0 = 10;
 
-
     /**
      * min. 17, used to calculate y pos of FigText items in a compartment
      */
@@ -58,6 +59,36 @@ public interface ArgoFig {
      * in a compartment
      */
     public static final int STEREOHEIGHT = 18;
+
+    /**
+     * Default line width in pixels.
+     */
+    static final int LINE_WIDTH = 1;
+
+    /**
+     * Default color for lines.  This constant is an interim measure to get
+     * rid of all the Color.black references before moving to settable defaults.
+     */
+    static final Color LINE_COLOR = Color.black;
+    
+    /**
+     * Default color for filled figures. This constant is an interim measure to
+     * get rid of all the Color.white references before moving to settable
+     * defaults.
+     */
+    static final Color FILL_COLOR = Color.white;
+    
+    /**
+     * Default color for text.  This constant is an interim measure to get
+     * rid of all the Color.black references before moving to settable defaults.
+     */
+    static final Color TEXT_COLOR = Color.black;
+    
+    /**
+     * The color used for things which shouldn't normally be visible, so we can
+     * spot them easily when they are.
+     */
+    static final Color DEBUG_COLOR = Color.cyan;
 
 
     /**

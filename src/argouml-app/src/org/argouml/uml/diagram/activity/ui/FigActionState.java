@@ -36,6 +36,7 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.diagram.ui.FigMultiLineTextWithBold;
 import org.tigris.gef.graph.GraphModel;
@@ -52,7 +53,7 @@ public class FigActionState extends FigStateVertex {
 
     private static final int HEIGHT = 25;
 
-    private static final int WIDTH = 90;
+    private static final int STATE_WIDTH = 90;
 
     private static final int PADDING = 8;
 
@@ -66,17 +67,59 @@ public class FigActionState extends FigStateVertex {
 
     /**
      * Constructor FigActionState.
+     * 
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigActionState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigActionState() {
-        setBigPort(new FigRRect(X0 + 1, Y0 + 1, WIDTH - 2, HEIGHT - 2,
+        initializeActionState();
+    }
+
+    /**
+     * Constructor FigActionState.
+     *
+     * @param gm ignored!
+     * @param node owner
+     * 
+     * @deprecated for 0.27.3 by mvw.  Use 
+     * {@link #FigActionState(Object, Rectangle, DiagramSettings)}.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigActionState(@SuppressWarnings("unused") GraphModel gm, Object node) {
+        setOwner(node);
+        initializeActionState();
+    }
+    
+    /**
+     * Constructor used by PGML parser.
+     * 
+     * @param owner the owning UML element
+     * @param bounds rectangle describing bounds
+     * @param settings rendering settings
+     */
+    public FigActionState(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initializeActionState();
+    }
+
+    private void initializeActionState() {
+        
+        setBigPort(new FigRRect(X0 + 1, Y0 + 1, STATE_WIDTH - 2, HEIGHT - 2,
                 Color.cyan, Color.cyan));
         ((FigRRect) getBigPort()).setCornerRadius(getBigPort().getHeight() / 2);
-        cover = new FigRRect(X0, Y0, WIDTH, HEIGHT, Color.black, Color.white);
+        cover = new FigRRect(X0, Y0, STATE_WIDTH, HEIGHT, Color.black, Color.white);
         cover.setCornerRadius(getHeight() / 2);
 
-        // overrule the single-line namefig created by the parent
-        setNameFig(new FigMultiLineTextWithBold(X0 + PADDING, Y0, 
-                WIDTH - PADDING * 2, HEIGHT,
+        // overrule the single-line name-fig created by the parent
+        Rectangle bounds = new Rectangle(X0 + PADDING, Y0, 
+                STATE_WIDTH - PADDING * 2, HEIGHT);
+        setNameFig(new FigMultiLineTextWithBold(
+                getOwner(),
+                bounds,
+                getSettings(),
                 true));
         getNameFig().setText(placeString());
         getNameFig().setBotMargin(7); // make space for the clarifier
@@ -96,17 +139,6 @@ public class FigActionState extends FigStateVertex {
         //setBlinkPorts(false); //make port invisible unless mouse enters
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
-    }
-
-    /**
-     * Constructor FigActionState.
-     *
-     * @param gm ignored!
-     * @param node owner
-     */
-    public FigActionState(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
     }
 
     /*
@@ -274,7 +306,9 @@ public class FigActionState extends FigStateVertex {
      */
     @Override
     public void removeFromDiagramImpl() {
-        notationProvider.cleanListener(this, getOwner());
+        if (notationProvider != null) {
+            notationProvider.cleanListener(this, getOwner());
+        }
         super.removeFromDiagramImpl();
     }
 

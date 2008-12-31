@@ -24,7 +24,7 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,6 +32,8 @@ import java.util.List;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -48,7 +50,11 @@ public class FigComponentInstance extends AbstractFigComponent {
 
     /**
      * Construct a default ComponentInstance figure.
+     * @deprecated by for 0.27.4 by tfmorris.  Use 
+     *       {@link #FigComponentInstance(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigComponentInstance() {
         super();
         getNameFig().setUnderline(true);
@@ -59,9 +65,27 @@ public class FigComponentInstance extends AbstractFigComponent {
      *
      * @param gm ignored
      * @param node the UML element
+     * @deprecated by for 0.27.4 by tfmorris.  Use 
+     *       {@link #FigComponentInstance(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigComponentInstance(GraphModel gm, Object node) {
         super(gm, node);
+        getNameFig().setUnderline(true);
+    }
+    
+    
+    /**
+     * Construct a new FigComponentInstance.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigComponentInstance(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
         getNameFig().setUnderline(true);
     }
 
@@ -109,7 +133,7 @@ public class FigComponentInstance extends AbstractFigComponent {
     public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
         // TODO: What is this needed for? - tfm
-        setLineColor(Color.black);
+        setLineColor(ArgoFig.LINE_COLOR);
     }
 
     /*

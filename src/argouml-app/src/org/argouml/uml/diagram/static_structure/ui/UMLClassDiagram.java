@@ -666,7 +666,7 @@ public class UMLClassDiagram extends UMLDiagram {
         DiagramSettings settings = getDiagramSettings();
         
         if (Model.getFacade().isAAssociation(droppedObject)) {
-            figNode = new FigNodeAssociation(gm, droppedObject);
+            figNode = new FigNodeAssociation(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAClass(droppedObject)) {
             figNode = new FigClass(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAInterface(droppedObject)) {
@@ -680,7 +680,7 @@ public class UMLClassDiagram extends UMLDiagram {
         } else if (Model.getFacade().isAComment(droppedObject)) {
             figNode = new FigComment(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAEnumeration(droppedObject)) {
-            figNode = new FigEnumeration(gm, droppedObject);
+            figNode = new FigEnumeration(droppedObject, bounds, settings);
         } else if (Model.getFacade().isADataType(droppedObject)) {
             figNode = new FigDataType(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAStereotype(droppedObject)) {
@@ -695,15 +695,15 @@ public class UMLClassDiagram extends UMLDiagram {
         } else if (Model.getFacade().isAUseCase(droppedObject)) {
             figNode = new FigUseCase(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAObject(droppedObject)) {
-            figNode = new FigObject(gm, droppedObject);
+            figNode = new FigObject(droppedObject, bounds, settings);
         } else if (Model.getFacade().isANodeInstance(droppedObject)) {
-            figNode = new FigNodeInstance(gm, droppedObject);
+            figNode = new FigNodeInstance(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComponentInstance(droppedObject)) {
-            figNode = new FigComponentInstance(gm, droppedObject);
+            figNode = new FigComponentInstance(droppedObject, bounds, settings);
         } else if (Model.getFacade().isANode(droppedObject)) {
-            figNode = new FigMNode(gm, droppedObject);
+            figNode = new FigMNode(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComponent(droppedObject)) {
-            figNode = new FigComponent(gm, droppedObject);
+            figNode = new FigComponent(droppedObject, bounds, settings);
         }
         
         if (figNode != null) {

@@ -1,4 +1,4 @@
-// $Id$
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,61 +24,43 @@
 
 package org.argouml.profile.internal.ocl;
 
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
+import junit.framework.TestCase;
 
-import org.apache.log4j.Logger;
-import org.argouml.model.MetaTypes;
+import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Designer;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 
-import tudresden.ocl.parser.analysis.DepthFirstAdapter;
-import tudresden.ocl.parser.node.AClassifierContext;
-
 /**
- * Check the design materials related to this OCL
+ * Tests for the CrOCL class.
  * 
  * @author maurelio1234
  */
-public class ComputeDesignMaterials extends DepthFirstAdapter {
+public class TestCrOCL extends TestCase {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = 
-        Logger.getLogger(ComputeDesignMaterials.class);
-
-    private Set<Object> dms = new HashSet<Object>();
-
-    /*
-     * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAClassifierContext(tudresden.ocl.parser.node.AClassifierContext)
-     */
     @Override
-    public void caseAClassifierContext(AClassifierContext node) {
-        String str = ("" + node.getPathTypeName()).trim();
-        
-        // TODO: This appears unused.  If it's needed, the Model API should
-        // be enhanced to provide a method that does this directly.
-        if (str.equals("Class")) {
-            dms.add(Model.getMetaTypes().getUMLClass());            
-        } else {
-            try {
-                Method m = MetaTypes.class.getDeclaredMethod("get" + str,
-                        new Class[0]);
-                if (m != null) {
-                    dms.add(m.invoke(Model.getMetaTypes(), new Object[0]));
-                }
-            } catch (Exception e) {
-                LOG.error("Metaclass not found: " + str, e);
-            }
-        }
+    protected void setUp() throws Exception {
+        super.setUp();
+        InitializeModel.initializeDefault();
     }
 
     /**
-     * @return the criticized design materials
+     * Test the <code>predicate2</code> operation
+     * 
+     * @throws Exception if something goes wrong
      */
-    public Set<Object> getCriticizedDesignMaterials() {
-        return dms;
-    }
+    public void testPredicate() throws Exception {
+        Object obj1 = Model.getUseCasesFactory().createActor();
+        Object obj2 = Model.getActivityGraphsFactory().createPartition();
 
+        String ocl = "context Actor inv: 0 > 2";
+
+        CrOCL cr = new CrOCL(ocl, null, null, null, null, null, null);
+
+        assertEquals(cr.predicate2(obj1, Designer.theDesigner()),
+                Critic.PROBLEM_FOUND);
+        assertEquals(cr.predicate2(obj2, Designer.theDesigner()),
+                Critic.NO_PROBLEM);
+
+    }
 }

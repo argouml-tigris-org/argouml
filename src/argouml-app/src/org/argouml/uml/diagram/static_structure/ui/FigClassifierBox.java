@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -44,6 +43,7 @@ import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
+import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
@@ -102,11 +102,11 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
 
         borderFig = new FigEmptyRect(X0, Y0, 0, 0);
-        borderFig.setLineWidth(1);
-        borderFig.setLineColor(Color.black);
+        borderFig.setLineWidth(ArgoFig.LINE_WIDTH);
+        borderFig.setLineColor(ArgoFig.LINE_COLOR);
 
         getBigPort().setLineWidth(0);
-        getBigPort().setFillColor(Color.white);
+        getBigPort().setFillColor(ArgoFig.FILL_COLOR);
     }
 
     private Rectangle getDefaultBounds() {

@@ -31,15 +31,26 @@ import org.tigris.gef.undo.Memento;
 
 /**
  * Diagram appearance settings.  This includes basic things like colors and
- * fonts, but also settings that affect more complex things like whether or
- * not certain labels and text fields are displayed.
+ * fonts, as well as the {@link NotationSettings} which contain all the settings
+ * that control text formatting.
  * <p>
- * The special value <code>null</code> is used internally to indicate that the
- * default value should be inherited from the next level of settings.
+ * The settings are designed to work in a hierarchical fashion with any settings
+ * that are defaulted at the current level inheriting from the next level in
+ * the hierarchy.  A typical hierarchy would be Fig->StyleSheet->Project where 
+ * a style sheet is a named set of attributes that can be applied as a set to
+ * a fig (perhaps in conjunction with a stereotype).  The hierarchy which is
+ * currently used in ArgoUML is Fig->Diagram->Project, although there's no
+ * support for changing anything but the Project (and a few of the attributes
+ * managed directly by GEF).
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  */
 public class DiagramSettings {
+
+    /*
+     * The special value <code>null</code> is used internally to indicate that
+     * the default value should be inherited from the next level of settings.
+     */
     
     /**
      * Enumeration representing different stereotype presentation styles
@@ -99,6 +110,10 @@ public class DiagramSettings {
 //            StereotypeView.SMALL_ICON;
 //    }
     
+    /**
+     * Next level in the settings hierarchy to inherit from if the value
+     * isn't set (ie is <default>) at the current level.
+     */
     private DiagramSettings parent;
     
     private NotationSettings notationSettings;
@@ -124,7 +139,6 @@ public class DiagramSettings {
     private StereotypeStyle defaultStereotypeView;
 
 
-
     /**
      * Construct an empty project settings with no parent and all values
      * defaulted. <p>
@@ -147,6 +161,8 @@ public class DiagramSettings {
     public DiagramSettings(DiagramSettings parentSettings) {
         this();
         parent = parentSettings;
+        // We just created one of these and now we're throwing it away, oh well
+        notationSettings = new NotationSettings(getNotationSettings());
     }
 
     
