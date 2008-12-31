@@ -137,6 +137,41 @@ height="<ocl>self.height.intValue</ocl>"
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
+<template class="org.tigris.gef.base.PathConv">
+
+<![CDATA[
+
+<argouml:pathitem name="<ocl>org.argouml.persistence.PgmlUtility.getId(self.pathFig)</ocl>"
+                  description="<ocl>self.class.name</ocl>"
+                  href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self.pathFig)</ocl>"
+                  pathFig="<ocl>self.pathFig.toString</ocl>" />
+
+]]>
+
+</template>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
+<template class="org.argouml.uml.diagram.ui.PathItemPlacement">
+
+<![CDATA[
+
+<argouml:pathitem figname="<ocl>org.argouml.persistence.PgmlUtility.getId(self.itemFig)</ocl>"
+                  description="<ocl>self.class.name</ocl>"
+                  figdescription="<ocl>self.itemFig.class.name</ocl>"
+                  href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self.itemFig)</ocl>"
+                  percent="<ocl>self.percent</ocl>"
+                  angle="<ocl>self.angle</ocl>"
+                  offset="<ocl>self.pathOffset</ocl>" />
+
+]]>
+
+</template>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+
 <template class="org.tigris.gef.presentation.FigRect">
 
 <![CDATA[
@@ -525,7 +560,8 @@ height="<ocl>self.height.intValue</ocl>"
     sourceFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourceFigNode)</ocl>"
 
     destFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destFigNode)</ocl>"
-
+    
+    <ocl>self.pathItemStrategies</ocl>
   </private>
 
 

@@ -177,6 +177,17 @@ public class PathItemPlacement extends PathConv {
         setAnchor(pathPercent, pathDelta);
         setAbsoluteOffset(absoluteOffset);
     }
+    
+    /**
+     * Returns the Fig that this PathItemPlacement places.
+     * To get the Fig of the Edge which owns this fig, use use getPathFig()
+     * @see org.tigris.gef.base.PathConv#getPathFig()
+     * @note Used by PGML.tee.
+     * @return The fig that this path item places.
+     */
+    public Fig getItemFig() {
+        return itemFig;
+    }
 
     /**
      * Compute a position.  This strangely named method computes a
@@ -675,4 +686,37 @@ public class PathItemPlacement extends PathConv {
         double y = m.getY1() + as * (m.getY2() - m.getY1());
         return new Point((int) x, (int) y);
     }
+    
+    /**
+     * Returns the value of the percent field - the position of the anchor
+     * point as a percentage of the edge.
+     * @important Used by PGML.tee.
+     * @return The value of the percent field. 
+     */
+    public int getPercent() {
+        return percent;
+    }
+    
+    /**
+     * Returns the value of the angle field.
+     * The angle of the path item relative to the edge.
+     * @important Used by PGML.tee.
+     * @return The value of the angle field.
+     */
+    public double getAngle() {
+        return angle;
+    }
+    
+    /**
+     * Returns the value of the pathOffset field.
+     * The pathOffset field is the distance away from the edge, along the 
+     * path vector that the item Fig is placed.
+     * @important Used by PGML.tee.
+     * @return The value of the pathOffset field.
+     */
+    public int getPathOffset() {
+        return pathOffset;
+    }
+    /** End of methods used by PGML.tee */
+    
 }
