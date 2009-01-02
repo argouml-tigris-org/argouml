@@ -101,6 +101,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      *
      * @param gm   Not actually used in the current implementation
      * @param node The UML object being placed.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
      * {@link #FigStereotypeDeclaration(Object, Rectangle, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
