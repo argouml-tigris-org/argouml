@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,10 @@
 
 package org.argouml.uml.diagram.activity.ui;
 
+import java.awt.Rectangle;
+
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 
@@ -46,7 +49,11 @@ public class FigCallState extends FigActionState {
 
     /**
      * Main Constructor FigCallState (called from file loading)
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigCallState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigCallState() {
         super();
     }
@@ -56,10 +63,27 @@ public class FigCallState extends FigActionState {
      * an existing UML model element
      * @param gm ignored!
      * @param node owner, i.e. the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigCallState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigCallState(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigCallState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
+    }
+    
+    /**
+     * Construct a new FigCallState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigCallState(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
     }
 
     /*

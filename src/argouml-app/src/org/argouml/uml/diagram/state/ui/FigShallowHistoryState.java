@@ -24,6 +24,9 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import java.awt.Rectangle;
+
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.graph.GraphModel;
 
 /** Class to display graphics for a UML ShallowHistoryState in a diagram.
@@ -32,9 +35,26 @@ import org.tigris.gef.graph.GraphModel;
  */
 public class FigShallowHistoryState extends FigHistoryState {
 
+    
+    /**
+     * Construct a new FigSubactivityState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigShallowHistoryState(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+    }
+    
     /**
      * Main constructor
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigShallowHistoryState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigShallowHistoryState() {
         super();
     }
@@ -50,9 +70,13 @@ public class FigShallowHistoryState extends FigHistoryState {
      * The constructor which links the Fig into the existing UML element
      * @param gm ignored
      * @param node the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigShallowHistoryState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigShallowHistoryState(GraphModel gm, Object node) {
         super(gm, node);
     }
 
-} /* end class FigShallowHistoryState */
+}

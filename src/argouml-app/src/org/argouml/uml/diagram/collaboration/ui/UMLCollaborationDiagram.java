@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.collaboration.ui;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,6 +36,7 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
@@ -502,15 +504,22 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         GraphModel gm = getGraphModel();
         Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
         
+        // If location is non-null, convert to a rectangle that we can use
+        Rectangle bounds = null;
+        if (location != null) {
+            bounds = new Rectangle(location.x, location.y, 0, 0);
+        }
+        DiagramSettings settings = getDiagramSettings();
+        
         if (Model.getFacade().isAClassifierRole(droppedObject)) {
             figNode = new FigClassifierRole(gm, lay, droppedObject);
         } else if (Model.getFacade().isAMessage(droppedObject)) {
-            figNode = new FigMessage(gm, lay, droppedObject);
+            figNode = new FigMessage(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(gm, droppedObject);
+            figNode = new FigComment(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAClassifierRole(droppedObject)) {
             figNode = makeNewFigCR(droppedObject, location);           
-        } else if (Model.getFacade().isAClassifier(droppedObject)){
+        } else if (Model.getFacade().isAClassifier(droppedObject)) {
             figNode = makeNewFigCR(makeNewCR(droppedObject), location);
         }
         if (figNode != null) {

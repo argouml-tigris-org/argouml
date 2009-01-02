@@ -25,6 +25,7 @@
 package org.argouml.sequence2.diagram;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.List;
@@ -32,6 +33,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.RadioAction;
@@ -54,10 +56,7 @@ import org.tigris.gef.presentation.FigNode;
 public class UMLSequenceDiagram extends UMLDiagram {
     
     private Object[] actions;
-    
-    /**
-     * Logger.
-     */
+
     private static final Logger LOG = Logger
         .getLogger(UMLSequenceDiagram.class);
     
@@ -178,7 +177,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
         if (Model.getFacade().isAClassifier(objectToAccept)) {
             return true;
         } else if (Model.getFacade().isAComment(objectToAccept)) {
-        	return true;
+            return true;
         }
         return false;
     }
@@ -198,7 +197,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
             node =
                 Model.getCollaborationsFactory().buildClassifierRole(
                         collaboration);
-          }
+        }
         Model.getCollaborationsHelper().addBase(node, base);
         
         return node;
@@ -214,7 +213,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     private FigClassifierRole makeNewFigCR(Object classifierRole, 
             Point location) {
         if (classifierRole != null) {
-        	FigClassifierRole newCR = new FigClassifierRole(classifierRole);
+            FigClassifierRole newCR = new FigClassifierRole(classifierRole);
             
             getGraphModel().getNodes().add(newCR.getOwner());
             
@@ -249,16 +248,22 @@ public class UMLSequenceDiagram extends UMLDiagram {
     public FigNode drop(Object droppedObject, Point location) {
         FigNode figNode = null;
         
+
+        // If location is non-null, convert to a rectangle that we can use
+        Rectangle bounds = null;
+        if (location != null) {
+            bounds = new Rectangle(location.x, location.y, 0, 0);
+        }
+        DiagramSettings settings = getDiagramSettings();
+        
         if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(getGraphModel(), droppedObject);
+            figNode = new FigComment(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAClassifierRole(droppedObject)) {
-            if (! getGraphModel().getNodes().contains(droppedObject)) {
+            if (!getGraphModel().getNodes().contains(droppedObject)) {
                 figNode = makeNewFigCR(droppedObject, location);  
             }
-        } else if (Model.getFacade().isAClassifier(droppedObject)){
+        } else if (Model.getFacade().isAClassifier(droppedObject)) {
             figNode = makeNewFigCR(makeNewCR(droppedObject), location);
-        } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(getGraphModel(), droppedObject);
         }
         
         if (figNode != null) {
@@ -273,11 +278,11 @@ public class UMLSequenceDiagram extends UMLDiagram {
     @Override
     public String getInstructions(Object droppedObject) {
     	if (Model.getFacade().isAClassifierRole(droppedObject)) {
-    		return super.getInstructions(droppedObject);
+    	    return super.getInstructions(droppedObject);
     	} else if (Model.getFacade().isAClassifier(droppedObject)) {
             return Translator.localize(
-            		"misc.message.click-on-diagram-to-add-as-cr", 
-            		new Object[] {Model.getFacade().toString(droppedObject)});
+                    "misc.message.click-on-diagram-to-add-as-cr",
+                    new Object[] {Model.getFacade().toString(droppedObject)});
         }
         return super.getInstructions(droppedObject);
     }

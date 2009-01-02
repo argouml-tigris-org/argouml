@@ -29,6 +29,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -81,7 +83,11 @@ class SequenceDiagramRenderer extends UmlDiagramRenderer {
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
                                  Map styleAttributes) {
         FigEdge figEdge = null;
-
+        
+        assert lay instanceof LayerPerspective;
+        ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
+        DiagramSettings settings = diag.getDiagramSettings();
+        
         if (edge instanceof CommentEdge) {
             figEdge = new FigEdgeNote(edge, lay);
         } else if (Model.getFacade().isAMessage(edge)) {

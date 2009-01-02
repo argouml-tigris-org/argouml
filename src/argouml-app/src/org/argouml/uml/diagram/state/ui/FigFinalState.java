@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -49,15 +50,37 @@ public class FigFinalState extends FigStateVertex {
 
     private FigCircle inCircle;
 
+    
+    /**
+     * Construct a new FigFinalState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigFinalState(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
     /**
      * The main constructor.
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigFinalState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigFinalState() {
         super();
+        initFigs();
+    }
+
+    private void initFigs() {
         setEditable(false);
         Color handleColor = Globals.getPrefs().getHandleColor();
         FigCircle bigPort =
-            new FigCircle(X0, Y0, WIDTH, HEIGHT, Color.black, Color.white);
+            new FigCircle(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
         inCircle =
             new FigCircle(
         		  X0 + 5,
@@ -65,7 +88,7 @@ public class FigFinalState extends FigStateVertex {
         		  WIDTH - 10,
         		  HEIGHT - 10,
         		  handleColor,
-        		  Color.black);
+        		  LINE_COLOR);
 
         bigPort.setLineWidth(1);
         inCircle.setLineWidth(0);
@@ -74,15 +97,20 @@ public class FigFinalState extends FigStateVertex {
         addFig(inCircle);
         setBigPort(bigPort);
 
-        setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisible unless mouse enters
     }
 
     /**
      * The constructor that hooks the Fig into the UML element.
      * @param gm ignored
      * @param node the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigFinalState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigFinalState(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigFinalState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
     	this();
     	setOwner(node);
     }

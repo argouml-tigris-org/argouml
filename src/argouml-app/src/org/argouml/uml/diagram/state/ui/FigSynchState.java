@@ -32,6 +32,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigRect;
@@ -54,24 +55,44 @@ public class FigSynchState extends FigStateVertex {
     private FigText bound;
     private FigCircle head;
 
-
+    /**
+     * Construct a new FigSynchState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigSynchState(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
     /**
      * The constructor.
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigSynchState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigSynchState() {
+        initFigs();
+    }
+
+    private void initFigs() {
         setEditable(false);
 
-        setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan,
-                Color.cyan));
-        head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
+        setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, DEBUG_COLOR, 
+                DEBUG_COLOR));
+        head = new FigCircle(X, Y, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
 
         bound = new FigText(X - 2, Y + 2, 0, 0, true);
         bound.setFilled(false);
         bound.setLineWidth(0);
-        bound.setTextColor(Color.black);
+        bound.setTextColor(TEXT_COLOR);
         bound.setReturnAction(FigText.END_EDITING);
         bound.setTabAction(FigText.END_EDITING);
-        bound.setJustificationByName("center");
+        bound.setJustification(FigText.JUSTIFY_CENTER);
         bound.setEditable(false);
         bound.setText("*");
 
@@ -79,7 +100,7 @@ public class FigSynchState extends FigStateVertex {
         addFig(head);
         addFig(bound);
 
-        setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisible unless mouse enters
     }
 
     /**
@@ -87,8 +108,13 @@ public class FigSynchState extends FigStateVertex {
      *
      * @param gm the graphmodel (not used)
      * @param node the UML object
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigSynchState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigSynchState(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigSynchState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
     }
@@ -235,7 +261,7 @@ public class FigSynchState extends FigStateVertex {
     @Override
     protected void updateFont() {
         super.updateFont();
-        Font f = getSettings().getFont(Font.PLAIN);
+        Font f = getSettings().getFontPlain();
         bound.setFont(f);
     }
 

@@ -68,9 +68,7 @@ import org.tigris.gef.presentation.FigNode;
  * @author ics125b spring 1998
  */
 public class StateDiagramRenderer extends UmlDiagramRenderer {
-    /**
-     * Logger.
-     */
+
     private static final Logger LOG =
         Logger.getLogger(StateDiagramRenderer.class);
 

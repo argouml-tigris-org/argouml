@@ -29,6 +29,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 
@@ -48,17 +49,41 @@ public class FigForkState extends FigStateVertex {
 
 
     /**
-     * The main constructor.
+     * Construct a new FigForkState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
      */
+    public FigForkState(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
+
+    /**
+     * The main constructor.
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigForkState(Object, Rectangle, DiagramSettings)}.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigForkState() {
+        super();
+        initFigs();
+    }
+
+
+    private void initFigs() {
         setEditable(false);
-        setBigPort(new FigRect(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan));
-        head = new FigRect(X, Y, WIDTH, HEIGHT, Color.black, Color.black);
+        setBigPort(new FigRect(X, Y, WIDTH, HEIGHT, DEBUG_COLOR, DEBUG_COLOR));
+        head = new FigRect(X, Y, WIDTH, HEIGHT, LINE_COLOR, LINE_COLOR);
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
         addFig(head);
 
-        setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisible unless mouse enters
     }
 
     /**
@@ -66,8 +91,13 @@ public class FigForkState extends FigStateVertex {
      *
      * @param gm ignored
      * @param node the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigForkState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigForkState(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigForkState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
     }

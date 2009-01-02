@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,9 +38,12 @@ import java.util.Set;
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.NotationSettings;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
 import org.tigris.gef.base.LayerPerspective;
@@ -83,6 +86,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     private static final int PADDING = 8;
     private static final int WIDTH = 70;
     private static final int HEIGHT = 50;
+    private static final int STATE_HEIGHT = 21;
 
     private NotationProvider notationProviderType;
     private NotationProvider notationProviderState;
@@ -90,21 +94,44 @@ public class FigObjectFlowState extends FigNodeModelElement {
     private FigRect cover;
     private FigText state;      // the state name
 
-
+    
+    /**
+     * Construct a new FigObjectFlowState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigObjectFlowState(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        state = new FigSingleLineText(owner, new Rectangle(X0, Y0, WIDTH,
+                STATE_HEIGHT), settings, true);
+        initFigs();
+    }
+    
     /**
      * Main Constructor FigObjectFlowState (called from file loading).
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigObjectFlowState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigObjectFlowState() {
+        state = new FigSingleLineText(X0, Y0, WIDTH, STATE_HEIGHT, true);
+        initFigs();
+        ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
+    }
+
+    private void initFigs() {
         setBigPort(new FigRect(X0, Y0, WIDTH, HEIGHT,
-                Color.cyan, Color.cyan));
+                DEBUG_COLOR, DEBUG_COLOR));
         cover =
             new FigRect(X0, Y0, WIDTH, HEIGHT,
-                    Color.black, Color.white);
+                    LINE_COLOR, FILL_COLOR);
 
         getNameFig().setUnderline(true);
         getNameFig().setLineWidth(0);
-
-        state = new FigSingleLineText(X0, Y0, WIDTH, 21, true);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
@@ -116,8 +143,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
         setReadyToEdit(false);
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
-
-        ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
     /**
@@ -126,12 +151,17 @@ public class FigObjectFlowState extends FigNodeModelElement {
      *
      * @param gm ignored!
      * @param node owner, i.e. the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigObjectFlowState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigObjectFlowState(GraphModel gm, Object node) {
         this();
         setOwner(node);
         enableSizeChecking(true);
     }
+
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
@@ -140,14 +170,16 @@ public class FigObjectFlowState extends FigNodeModelElement {
     protected void initNotationProviders(Object own) {
         super.initNotationProviders(own);
         if (Model.getFacade().isAModelElement(own)) {
+            NotationName notationName = Notation
+                    .findNotation(getNotationSettings().getNotationLanguage());
             notationProviderType =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE,
-                        own);
+                        own, notationName);
             notationProviderState =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_STATE,
-                        own);
+                        own, notationName);
         }
     }
 
@@ -215,7 +247,9 @@ public class FigObjectFlowState extends FigNodeModelElement {
     public void setEnclosingFig(Fig encloser) {
         LayerPerspective layer = (LayerPerspective) getLayer();
         // If the layer is null, then most likely we are being deleted.
-        if (layer == null) return;
+        if (layer == null) {
+            return;
+        }
 
         super.setEnclosingFig(encloser);
     }

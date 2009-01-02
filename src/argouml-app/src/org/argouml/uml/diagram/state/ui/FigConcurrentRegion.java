@@ -67,7 +67,11 @@ public class FigConcurrentRegion extends FigState
 
     /**
      * The constructor.
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #Fig(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigConcurrentRegion() {
         super();
         cover =
@@ -101,7 +105,11 @@ public class FigConcurrentRegion extends FigState
      *
      * @param gm (not used)
      * @param node the UML model element represented by this Fig
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #Fig(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigConcurrentRegion(GraphModel gm, Object node) {
         this();
         setOwner(node);

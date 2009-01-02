@@ -29,6 +29,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 
@@ -47,13 +48,37 @@ public class FigJoinState extends FigStateVertex {
     private FigRect head;
 
 
+    
+    /**
+     * Construct a new FigJoinState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigJoinState(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
+
     /**
      * The main constructor.
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigJoinState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigJoinState() {
+        super();
+        initFigs();
+    }
+
+    private void initFigs() {
         setEditable(false);
-        setBigPort(new FigRect(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan));
-        head = new FigRect(X, Y, WIDTH, HEIGHT, Color.black, Color.black);
+        setBigPort(new FigRect(X, Y, WIDTH, HEIGHT, DEBUG_COLOR, DEBUG_COLOR));
+        head = new FigRect(X, Y, WIDTH, HEIGHT, LINE_COLOR, LINE_COLOR);
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
         addFig(head);
@@ -66,8 +91,13 @@ public class FigJoinState extends FigStateVertex {
      *
      * @param gm ignored
      * @param node the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigJoinState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigJoinState(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigJoinState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
     }
