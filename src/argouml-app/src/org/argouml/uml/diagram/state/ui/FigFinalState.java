@@ -90,7 +90,7 @@ public class FigFinalState extends FigStateVertex {
         		  handleColor,
         		  LINE_COLOR);
 
-        bigPort.setLineWidth(1);
+        bigPort.setLineWidth(LINE_WIDTH);
         inCircle.setLineWidth(0);
 
         addFig(bigPort);

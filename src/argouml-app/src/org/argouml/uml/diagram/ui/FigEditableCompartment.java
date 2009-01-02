@@ -194,15 +194,15 @@ public abstract class FigEditableCompartment extends FigCompartment {
                     comp = createFigText(umlObject, new Rectangle(
                             xpos + 1,
                             ypos + 1 + acounter
-                            * ArgoFig.ROWHEIGHT,
+                            * ROWHEIGHT,
                             0,
-                            ArgoFig.ROWHEIGHT - 2),
+                            ROWHEIGHT - 2),
                             getSettings());
                 } else {
                     /* This one is still usable, so let's retain it, */
                     /* but its position may have been changed: */
                     Rectangle b = comp.getBounds();
-                    b.y = ypos + 1 + acounter * ArgoFig.ROWHEIGHT;
+                    b.y = ypos + 1 + acounter * ROWHEIGHT;
                     // bounds not relevant here, but I am perfectionist...
                     comp.setBounds(b);
                 }

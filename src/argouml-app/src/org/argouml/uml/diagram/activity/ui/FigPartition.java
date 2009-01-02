@@ -91,8 +91,7 @@ public class FigPartition extends FigNodeModelElement {
 
     private void initFigs() {
         // TODO: define constants for magic numbers
-        setBigPort(new FigRect(X0, Y0, 160, 200, ArgoFig.DEBUG_COLOR, 
-                ArgoFig.DEBUG_COLOR));
+        setBigPort(new FigRect(X0, Y0, 160, 200, DEBUG_COLOR, DEBUG_COLOR));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
         

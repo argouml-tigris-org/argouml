@@ -92,7 +92,7 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
         cover = new FigCube(DEFAULT_X, DEFAULT_Y, DEFAULT_WIDTH,
-                DEFAULT_HEIGHT, ArgoFig.LINE_COLOR, ArgoFig.FILL_COLOR);
+                DEFAULT_HEIGHT, LINE_COLOR, FILL_COLOR);
 
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
@@ -237,7 +237,7 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
     @Override
     public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
-        setLineColor(ArgoFig.LINE_COLOR);
+        setLineColor(LINE_COLOR);
     }
 
     @Override

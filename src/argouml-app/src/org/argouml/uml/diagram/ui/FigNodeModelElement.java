@@ -310,8 +310,7 @@ public abstract class FigNodeModelElement
         notationSettings = new NotationSettings();
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
-        bigPort = new FigRect(X0, Y0, 0, 0, ArgoFig.DEBUG_COLOR,
-                ArgoFig.DEBUG_COLOR);
+        bigPort = new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
         
         nameFig = new FigNameWithAbstractAndBold(X0, Y0, WIDTH, 21, true);
         stereotypeFig = new FigStereotypesGroup(X0, Y0, WIDTH, 15);
@@ -323,9 +322,7 @@ public abstract class FigNodeModelElement
      * rendering settings.
      */
     private void constructFigs() {
-
-
-        nameFig.setLineWidth(1);
+        nameFig.setLineWidth(LINE_WIDTH);
         nameFig.setFilled(true);
         nameFig.setText(placeString());
         nameFig.setBotMargin(7); // make space for the clarifier
@@ -386,8 +383,7 @@ public abstract class FigNodeModelElement
 
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
-        bigPort = new FigRect(X0, Y0, 0, 0, ArgoFig.DEBUG_COLOR,
-                ArgoFig.DEBUG_COLOR);
+        bigPort = new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
         nameFig = new FigNameWithAbstractAndBold(element, 
                 new Rectangle(X0, Y0, WIDTH, 21), getSettings(), true);
         stereotypeFig = new FigStereotypesGroup(element, 

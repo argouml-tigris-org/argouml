@@ -133,8 +133,8 @@ public class FigSubactivityState extends FigStateVertex {
         s2 = new FigRRect(x - 11, y + 9, 8, 6, LINE_COLOR, FILL_COLOR);
         s1.setFilled(true);
         s2.setFilled(true);
-        s1.setLineWidth(1);
-        s2.setLineWidth(1);
+        s1.setLineWidth(LINE_WIDTH);
+        s2.setLineWidth(LINE_WIDTH);
         s1.setCornerRadius(SH);
         s2.setCornerRadius(SH);
         s3 = new FigLine(x - 18, y + 6, x - 7, y + 12, LINE_COLOR);

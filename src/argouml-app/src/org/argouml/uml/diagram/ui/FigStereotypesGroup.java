@@ -336,9 +336,9 @@ public class FigStereotypesGroup extends ArgoFigGroup {
                 bigPort.getX() + 1,
                 bigPort.getY() + 1
                 + (stereotypeCount
-                * ArgoFig.ROWHEIGHT),
+                * ROWHEIGHT),
                 0,
-                ArgoFig.ROWHEIGHT - 2);
+                ROWHEIGHT - 2);
     }
 
     private void updateHiddenStereotypes() {

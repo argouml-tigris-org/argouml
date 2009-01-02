@@ -183,7 +183,7 @@ public class FigPackage extends FigNodeModelElement
         setFilled(true);
         setFillColor(FILL_COLOR);
         setLineColor(LINE_COLOR);
-        setLineWidth(1);
+        setLineWidth(LINE_WIDTH);
 
         updateEdges();
     }

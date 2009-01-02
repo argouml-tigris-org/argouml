@@ -133,7 +133,7 @@ public class FigComponentInstance extends AbstractFigComponent {
     public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
         // TODO: What is this needed for? - tfm
-        setLineColor(ArgoFig.LINE_COLOR);
+        setLineColor(LINE_COLOR);
     }
 
     /*
