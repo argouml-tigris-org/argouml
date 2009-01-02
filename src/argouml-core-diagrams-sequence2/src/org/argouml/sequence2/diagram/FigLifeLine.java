@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,14 +24,13 @@
 
 package org.argouml.sequence2.diagram;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.argouml.model.Model;
-import org.tigris.gef.presentation.FigGroup;
+import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 
@@ -40,7 +39,7 @@ import org.tigris.gef.presentation.FigRect;
  * This fig is the LifeLine of a ClassifierRole.
  * @author penyaskito
  */
-class FigLifeLine extends FigGroup {
+class FigLifeLine extends ArgoFigGroup {
 
     private static final long serialVersionUID = 466925040550356L;
 
@@ -68,7 +67,7 @@ class FigLifeLine extends FigGroup {
         rectFig.setFilled(false);
         rectFig.setLineWidth(0);
         lineFig = new FigLine(x + WIDTH / 2, y, 
-                x + WIDTH / 2, y + HEIGHT, Color.BLACK);
+                x + WIDTH / 2, y + HEIGHT, LINE_COLOR);
         lineFig.setDashed(true);       
         
         addFig(rectFig);

@@ -72,6 +72,7 @@ public class FigDependency extends FigEdgeModelElement {
                 new PathConvPercent2(this, middleGroup, 50, 25));
         
         endArrow = new ArrowHeadGreater();
+        // TODO: Why is this a different color than everything else? - tfm
         endArrow.setFillColor(Color.red);
         setDestArrowHead(endArrow);
         

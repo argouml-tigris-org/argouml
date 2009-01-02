@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
@@ -94,7 +93,6 @@ public class FigTransition extends FigEdgeModelElement {
      * @deprecated for 0.27.3 by mvw.  Use 
      * {@link #FigTransition(Object, DiagramSettings)}.
      */
-    @SuppressWarnings("deprecation")
     @Deprecated
     public FigTransition(Object edge, Layer lay) {
         this();
@@ -120,7 +118,7 @@ public class FigTransition extends FigEdgeModelElement {
     private void initializeTransition() {
         addPathItem(getNameFig(),
                 new PathConvPercent2(this, getNameFig(), 50, 10));
-        getFig().setLineColor(Color.black);
+        getFig().setLineColor(LINE_COLOR);
         setDestArrowHead(endArrow);
         allowRemoveFromDiagram(false);
         

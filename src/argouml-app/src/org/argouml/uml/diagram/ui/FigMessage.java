@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -89,7 +89,7 @@ public class FigMessage extends FigNodeModelElement {
 	getNameFig().setBounds(X0, Y0, 90, nameMin.height);
         getBigPort().setBounds(X0, Y0, 90, nameMin.height);
 
-	figPoly = new FigPoly(Color.black, Color.black);
+	figPoly = new FigPoly(LINE_COLOR, SOLID_FILL_COLOR);
 	int[] xpoints = {75, 75, 77, 75, 73, 75};
 	int[] ypoints = {33, 24, 24, 15, 24, 24};
 	Polygon polygon = new Polygon(xpoints, ypoints, 6);

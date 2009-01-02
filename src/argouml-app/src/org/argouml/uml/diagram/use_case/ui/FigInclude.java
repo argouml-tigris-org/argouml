@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -77,7 +76,7 @@ public class FigInclude extends FigEdgeModelElement {
     private void initialize() {
         // The <<include>> label.
         // It's not a true stereotype, so don't use the stereotype support
-        label.setTextColor(Color.black);
+        label.setTextColor(TEXT_COLOR);
         label.setTextFilled(false);
         label.setFilled(false);
         label.setLineWidth(0);

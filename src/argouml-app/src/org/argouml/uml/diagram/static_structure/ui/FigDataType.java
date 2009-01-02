@@ -333,7 +333,7 @@ public class FigDataType extends FigClassifierBox {
         borderFig.setBounds(x, y, w, h);
 
         getNameFig().setLineWidth(0);
-        getNameFig().setLineColor(Color.red);
+        getNameFig().setLineColor(Color.red); // TODO: debug color?
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {

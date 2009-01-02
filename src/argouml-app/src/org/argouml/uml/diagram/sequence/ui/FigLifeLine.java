@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -79,13 +78,14 @@ class FigLifeLine extends ArgoFigGroup implements HandlerFactory {
      * @param x
      * @param y
      */
+    @Deprecated
     FigLifeLine(int x, int y) {
         super();
         rect = new FigRect(x, y, WIDTH, HEIGHT);
         rect.setFilled(false);
         rect.setLineWidth(0);
         line =
-            new FigLine(x + WIDTH / 2, y, x + WIDTH / 2, HEIGHT, Color.black);
+            new FigLine(x + WIDTH / 2, y, x + WIDTH / 2, HEIGHT, LINE_COLOR);
         line.setDashed(true);
         addFig(rect);
         addFig(line);

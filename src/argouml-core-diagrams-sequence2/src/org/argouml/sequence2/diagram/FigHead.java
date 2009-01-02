@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,15 +24,14 @@
 
 package org.argouml.sequence2.diagram;
 
-import java.awt.Color;
 import java.awt.Dimension;
 
+import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-class FigHead extends FigGroup {
+class FigHead extends ArgoFigGroup  {
     
     private final FigText nameFig;
     private final Fig stereotypeFig;
@@ -54,7 +53,7 @@ class FigHead extends FigGroup {
             new FigRect(0, 0,
                 DEFAULT_WIDTH,
                 DEFAULT_HEIGHT,
-                Color.black, Color.white);
+                LINE_COLOR, FILL_COLOR);
         addFig(rectFig);
         addFig(nameFig);
         addFig(stereotypeFig);
@@ -79,7 +78,7 @@ class FigHead extends FigGroup {
         }
         nameFig.setFilled(false);
         nameFig.setLineWidth(0);
-        nameFig.setTextColor(Color.black);
+        nameFig.setTextColor(TEXT_COLOR);
         nameFig.setBounds(x, yy, w, nameFig.getHeight());
         _x = x;
         _y = y;

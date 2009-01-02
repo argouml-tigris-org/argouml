@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -73,8 +73,8 @@ public class FigNodeAssociation extends FigNodeModelElement {
 
     private void initFigs() {
         setEditable(false);
-        setBigPort(new FigDiamond(0, 0, 70, 70, Color.cyan, Color.cyan));
-        head = new FigDiamond(0, 0, 70, 70, Color.black, Color.white);
+        setBigPort(new FigDiamond(0, 0, 70, 70, DEBUG_COLOR, DEBUG_COLOR));
+        head = new FigDiamond(0, 0, 70, 70, LINE_COLOR, FILL_COLOR);
 
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);

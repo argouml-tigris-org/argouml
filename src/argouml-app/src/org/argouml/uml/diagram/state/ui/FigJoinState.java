@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,13 +42,12 @@ public class FigJoinState extends FigStateVertex {
 
     private static final int X = X0;
     private static final int Y = Y0;
-    private static final int WIDTH = 80;
+    private static final int STATE_WIDTH = 80;
     private static final int HEIGHT = 7;
 
     private FigRect head;
 
 
-    
     /**
      * Construct a new FigJoinState.
      * 
@@ -77,8 +76,10 @@ public class FigJoinState extends FigStateVertex {
 
     private void initFigs() {
         setEditable(false);
-        setBigPort(new FigRect(X, Y, WIDTH, HEIGHT, DEBUG_COLOR, DEBUG_COLOR));
-        head = new FigRect(X, Y, WIDTH, HEIGHT, LINE_COLOR, LINE_COLOR);
+        setBigPort(new FigRect(X, Y, STATE_WIDTH, HEIGHT, DEBUG_COLOR,
+                DEBUG_COLOR));
+        head = new FigRect(X, Y, STATE_WIDTH, HEIGHT, LINE_COLOR,
+                SOLID_FILL_COLOR);
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
         addFig(head);

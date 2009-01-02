@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
@@ -94,7 +93,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         borderFig.setLineWidth(1);
 
         getBigPort().setLineWidth(0);
-        getBigPort().setFillColor(Color.white);
+        getBigPort().setFillColor(FILL_COLOR);
     }
 
     /**

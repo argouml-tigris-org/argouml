@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
@@ -92,12 +91,11 @@ public class FigExtend extends FigEdgeModelElement {
         // The <<extend>> label.
         // It's not a true stereotype, so don't use the stereotype support
         //int y = getNameFig().getBounds().height;
-        Color textColor = getLineColor()/*Color.black*/;
         int h = 20;
         int y = Y0 + h;
         label = new FigText(X0, y, 90, h);
         y = y + h;
-        label.setTextColor(textColor);
+        label.setTextColor(TEXT_COLOR);
         label.setTextFilled(false);
         label.setFilled(false);
         label.setLineWidth(0);
@@ -108,7 +106,7 @@ public class FigExtend extends FigEdgeModelElement {
         // Set up FigText to hold the condition.
         condition = new FigText(X0, y, 90, h);
         y = y + h;
-        condition.setTextColor(textColor);
+        condition.setTextColor(TEXT_COLOR);
         condition.setTextFilled(false);
         condition.setFilled(false);
         condition.setLineWidth(0);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Collection;
@@ -57,8 +56,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
     }
 
     private void constructFigs(int x, int y, int w, int h) {
-        // TODO: Don't hardcode colors
-        bigPort = new FigRect(x, y, w, h, Color.black, Color.white);
+        bigPort = new FigRect(x, y, w, h, LINE_COLOR, FILL_COLOR);
         bigPort.setFilled(true);
         setFilled(true);
 
@@ -74,7 +72,8 @@ public abstract class FigCompartment extends ArgoFigGroup {
      * @param bounds rectangle describing bounds of compartment
      * @param settings render settings
      */
-    public FigCompartment(Object owner, Rectangle bounds, DiagramSettings settings) {
+    public FigCompartment(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
         super(owner, settings);
         constructFigs(bounds.x, bounds.y, bounds.width, bounds.height);
     }

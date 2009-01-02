@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,6 +40,7 @@ import javax.swing.JSeparator;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.ProjectActions;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -68,7 +69,7 @@ public class FigConcurrentRegion extends FigState
     /**
      * The constructor.
      * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #Fig(Object, Rectangle, DiagramSettings)}.
+     * {@link #FigConcurrentRegion(Object, Rectangle, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -78,7 +79,7 @@ public class FigConcurrentRegion extends FigState
             new FigRect(getInitialX(),
                 getInitialY(),
                 getInitialWidth(), getInitialHeight(),
-                Color.white, Color.white);
+                INVISIBLE_LINE_COLOR, FILL_COLOR);
         dividerline = new FigLine(getInitialX(),
                 getInitialY(),
                 getInitialWidth(),
@@ -96,8 +97,7 @@ public class FigConcurrentRegion extends FigState
         addFig(getInternal());
 
         setShadowSize(0);
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
+        setBounds(getBounds());
     }
 
     /**
@@ -106,7 +106,7 @@ public class FigConcurrentRegion extends FigState
      * @param gm (not used)
      * @param node the UML model element represented by this Fig
      * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #Fig(Object, Rectangle, DiagramSettings)}.
+     * {@link #FigConcurrentRegion(Object, Rectangle, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
     @Deprecated
@@ -379,7 +379,7 @@ public class FigConcurrentRegion extends FigState
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
-        cover.setLineColor(Color.white);
+        cover.setLineColor(INVISIBLE_LINE_COLOR);
         dividerline.setLineColor(col);
     }
 
@@ -477,7 +477,7 @@ public class FigConcurrentRegion extends FigState
      * @return the initial color
      */
     protected Color getInitialColor() {
-        return Color.black;
+        return LINE_COLOR;
     }
 
     /////////////////////////////////////////////////////////////////////////

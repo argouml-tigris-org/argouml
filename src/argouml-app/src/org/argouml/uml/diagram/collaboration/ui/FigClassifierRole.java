@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -83,8 +83,8 @@ public class FigClassifierRole extends FigNodeModelElement {
     public FigClassifierRole() {
         // The big port and cover. Color of the big port is irrelevant
 
-        setBigPort(new FigRect(X0, Y0, 90, 50, Color.cyan, Color.cyan));
-        cover   = new FigRect(X0, Y0, 90, 50, Color.black, Color.white);
+        setBigPort(new FigRect(X0, Y0, 90, 50, DEBUG_COLOR, DEBUG_COLOR));
+        cover   = new FigRect(X0, Y0, 90, 50, LINE_COLOR, FILL_COLOR);
 
         // The stereotype. Width is the same as the cover, height is whatever
         // its minimum permitted is. The text should be centred.
@@ -94,7 +94,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         getStereotypeFig().setLineWidth(0);
         getStereotypeFig().setVisible(true);
         //getStereotypeFig().setFilled(false);
-        getStereotypeFig().setFillColor(Color.red);
+        getStereotypeFig().setFillColor(Color.red); // TODO: DEBUG_COLOR?
         getStereotypeFig().setBounds(X0, Y0, 90, stereoMin.height);
 
         // The name. Width is the same as the cover, height is whatever its

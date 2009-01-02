@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
@@ -36,7 +35,7 @@ import org.tigris.gef.presentation.FigPoly;
 
 public class FigSubsystem extends FigPackage {
 
-    private FigPoly figPoly = new FigPoly(Color.black, Color.black);
+    private FigPoly figPoly = new FigPoly(LINE_COLOR, SOLID_FILL_COLOR);
 
     /**
      * Constructor.

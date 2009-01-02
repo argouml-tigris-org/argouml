@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,8 +23,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.diagram.static_structure.ui;
-
-import java.awt.Color;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -56,12 +54,13 @@ public class FigLink extends FigEdgeModelElement {
     /**
      * Constructor.
      */
+    @Deprecated
     public FigLink() {
         middleGroup.addFig(getNameFig());
         addPathItem(middleGroup,
                 new PathConvPercent2(this, middleGroup, 50, 25));
         getNameFig().setUnderline(true);
-	getFig().setLineColor(Color.black);
+	getFig().setLineColor(LINE_COLOR);
 	setBetweenNearestPoints(true);
     }
 
@@ -121,7 +120,9 @@ public class FigLink extends FigEdgeModelElement {
         Object association = Model.getFacade().getAssociation(getOwner());
         if (association != null) {
             nameString = Model.getFacade().getName(association);
-            if (nameString == null) nameString = "";
+            if (nameString == null) {
+                nameString = "";
+            }
         }
         getNameFig().setText(nameString);
         calcBounds();
