@@ -51,16 +51,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 class FigLifeLine extends ArgoFigGroup implements HandlerFactory {
 
-    /**
-     * The UID.
-     */
     private static final long serialVersionUID = -1242239243040698287L;
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(FigLifeLine.class);
+    private static final Logger LOG = Logger.getLogger(FigLifeLine.class);
 
     static final int WIDTH = 20;
     static final int HEIGHT = 1000;
@@ -81,11 +74,12 @@ class FigLifeLine extends ArgoFigGroup implements HandlerFactory {
     @Deprecated
     FigLifeLine(int x, int y) {
         super();
-        rect = new FigRect(x, y, WIDTH, HEIGHT);
+        rect = new FigRect(x, y, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
         rect.setFilled(false);
         rect.setLineWidth(0);
         line =
             new FigLine(x + WIDTH / 2, y, x + WIDTH / 2, HEIGHT, LINE_COLOR);
+        line.setLineWidth(LINE_WIDTH);
         line.setDashed(true);
         addFig(rect);
         addFig(line);

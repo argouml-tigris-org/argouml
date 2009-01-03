@@ -32,6 +32,7 @@ import javax.management.NotificationEmitter;
 import javax.management.NotificationFilter;
 import javax.management.NotificationListener;
 
+import org.argouml.uml.diagram.ui.ArgoFig;
 import org.tigris.gef.presentation.FigLine;
 
 /**
@@ -46,13 +47,23 @@ public class ArgoFigLine extends FigLine implements NotificationEmitter {
 
     public ArgoFigLine() {
         super();
+        initFig();
     }
     
     public ArgoFigLine(int x1, int y1, int x2, int y2) {
         super(x1, y1, x2, y2);
+        initFig();
     }
 
-
+    
+    /**
+     * Set default line width and color
+     */
+    private void initFig() {
+        setLineColor(ArgoFig.LINE_COLOR);
+        setLineWidth(ArgoFig.LINE_WIDTH);
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */

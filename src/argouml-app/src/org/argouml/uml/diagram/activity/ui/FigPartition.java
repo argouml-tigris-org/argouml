@@ -95,16 +95,16 @@ public class FigPartition extends FigNodeModelElement {
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
         
-        leftLine = new FigLine(X0, Y0, 10, 300);
-        rightLine = new FigLine(150, Y0, 160, 300);
-        bottomLine = new FigLine(X0, 300, 150, 300);
-        topLine = new FigLine(X0, Y0, 150, 10);
+        leftLine = new FigLine(X0, Y0, 10, 300, LINE_COLOR);
+        rightLine = new FigLine(150, Y0, 160, 300, LINE_COLOR);
+        bottomLine = new FigLine(X0, 300, 150, 300, LINE_COLOR);
+        topLine = new FigLine(X0, Y0, 150, 10, LINE_COLOR);
 
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(X0, Y0, 50, 25);
         getNameFig().setFilled(false);
         
-        seperator = new FigLine(X0, Y0 + 15, 150, 25);
+        seperator = new FigLine(X0, Y0 + 15, 150, 25, LINE_COLOR);
 
         addFig(getBigPort());
         addFig(rightLine);
