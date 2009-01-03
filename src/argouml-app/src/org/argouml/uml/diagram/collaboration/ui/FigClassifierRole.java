@@ -94,7 +94,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         getStereotypeFig().setLineWidth(0);
         getStereotypeFig().setVisible(true);
         //getStereotypeFig().setFilled(false);
-        getStereotypeFig().setFillColor(Color.red); // TODO: DEBUG_COLOR?
+        getStereotypeFig().setFillColor(DEBUG_COLOR);
         getStereotypeFig().setBounds(X0, Y0, 90, stereoMin.height);
 
         // The name. Width is the same as the cover, height is whatever its
