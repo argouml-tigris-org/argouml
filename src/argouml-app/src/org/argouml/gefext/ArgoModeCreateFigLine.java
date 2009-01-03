@@ -27,11 +27,12 @@ package org.argouml.gefext;
 import java.awt.event.MouseEvent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.uml.diagram.ui.ArgoFig;
 import org.tigris.gef.base.ModeCreateFigLine;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * A Mode to interprete user input while creating a FigLine. All of
+ * A Mode to interpret user input while creating a FigLine. All of
  *  the actual event handling is inherited from ModeCreate. This class
  *  just implements the differences needed to make it specific to
  *  lines.
@@ -42,7 +43,13 @@ public class ArgoModeCreateFigLine extends ModeCreateFigLine {
 
     @Override
     public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-        return new ArgoFigLine(snapX, snapY, snapX, snapY);
+        Fig line = new ArgoFigLine(snapX, snapY, snapX, snapY);
+        // TODO: We need a way to set the line color and width here, but
+        // TestDependencies thinks this creates a dependency cycle
+        //        Fig line = new ArgoFigLine(snapX, snapY, snapX, snapY, 
+//                ArgoFig.LINE_COLOR);
+//        line.setLineWidth(ArgoFig.LINE_WIDTH);
+        return line;
     }
 
     @Override

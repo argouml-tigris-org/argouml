@@ -24,6 +24,8 @@
 
 package org.argouml.gefext;
 
+import java.awt.Color;
+
 import javax.management.ListenerNotFoundException;
 import javax.management.MBeanNotificationInfo;
 import javax.management.Notification;
@@ -32,7 +34,6 @@ import javax.management.NotificationEmitter;
 import javax.management.NotificationFilter;
 import javax.management.NotificationListener;
 
-import org.argouml.uml.diagram.ui.ArgoFig;
 import org.tigris.gef.presentation.FigLine;
 
 /**
@@ -47,23 +48,24 @@ public class ArgoFigLine extends FigLine implements NotificationEmitter {
 
     public ArgoFigLine() {
         super();
-        initFig();
     }
     
     public ArgoFigLine(int x1, int y1, int x2, int y2) {
-        super(x1, y1, x2, y2);
-        initFig();
+        super(x1, y1, x2, y2 );
     }
 
-    
     /**
-     * Set default line width and color
+     * Create a line from x1,y1 to x2,y2 in the given color
+     * @param x1 x1
+     * @param y1 y1
+     * @param x2 x2
+     * @param y2 y2
+     * @param lineColor color of line
      */
-    private void initFig() {
-        setLineColor(ArgoFig.LINE_COLOR);
-        setLineWidth(ArgoFig.LINE_WIDTH);
+    public ArgoFigLine(int x1, int y1, int x2, int y2, Color lineColor) {
+        super(x1, y1, x2, y2, lineColor);
     }
-    
+        
     /*
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */
