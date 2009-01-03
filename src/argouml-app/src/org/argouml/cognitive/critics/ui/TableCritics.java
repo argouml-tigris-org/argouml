@@ -65,7 +65,9 @@ class TableCritics extends JTable {
     }
 
     private void setColumnWidths() {
-        if (!initialised) return;
+        if (!initialised) {
+            return;
+        }
         TableColumn checkCol = getColumnModel().getColumn(0);
         TableColumn descCol = getColumnModel().getColumn(1);
         TableColumn actCol = getColumnModel().getColumn(2);
