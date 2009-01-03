@@ -188,21 +188,24 @@ public abstract class FigEditableCompartment extends FigCompartment {
                 comp = findCompartmentFig(figs, umlObject);
                 acounter++;                
 
+                // TODO: Some of these magic numbers probably assume a line
+                // width of 1.  Replace with appropriate constants/variables.
+                
                 // If we don't have a fig for this UML object, we'll need to add
                 // one. We set the bounds, but they will be reset later.
                 if (comp == null) {
                     comp = createFigText(umlObject, new Rectangle(
-                            xpos + 1,
-                            ypos + 1 + acounter
+                            xpos + 1 /*?LINE_WIDTH?*/,
+                            ypos + 1 /*?LINE_WIDTH?*/ + acounter
                             * ROWHEIGHT,
                             0,
-                            ROWHEIGHT - 2),
+                            ROWHEIGHT - 2 /*? 2*LINE_WIDTH? */), 
                             getSettings());
                 } else {
                     /* This one is still usable, so let's retain it, */
                     /* but its position may have been changed: */
                     Rectangle b = comp.getBounds();
-                    b.y = ypos + 1 + acounter * ROWHEIGHT;
+                    b.y = ypos + 1 /*?LINE_WIDTH?*/ + acounter * ROWHEIGHT;
                     // bounds not relevant here, but I am perfectionist...
                     comp.setBounds(b);
                 }
@@ -376,6 +379,8 @@ public abstract class FigEditableCompartment extends FigCompartment {
                 } else {
                     fw = fig.getMinimumSize().width;
                 }
+                // TODO: Some of these magic numbers probably assume a line
+                // width of 1.  Replace with appropriate constants/variables.
                 fig.setBounds(x + 1, yy + 1, fw, fig.getMinimumSize().height);
                 if (newW < fw + 2) {
                     newW = fw + 2;
@@ -399,7 +404,8 @@ public abstract class FigEditableCompartment extends FigCompartment {
          * @param len
          */
         FigSeperator(int x, int y, int len) {
-            super(x, y, (x + len) - 1, y);
+            super(x, y, (x + len) - 1, y, LINE_COLOR);
+            setLineWidth(LINE_WIDTH);
         }
 
         /*
@@ -427,7 +433,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
             setX1(x);
             setY1(y);
             setX2((x + w) - 1);
-            setY2((y + h) - 1);
+            setY2(y);
         }
 
         /**

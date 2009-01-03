@@ -90,6 +90,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
         // The outside border of the box around all compartments.
         borderFig = new FigEmptyRect(X0, Y0, 0, 0);
+        borderFig.setLineColor(LINE_COLOR);
         borderFig.setLineWidth(LINE_WIDTH);
 
         getBigPort().setLineWidth(0);

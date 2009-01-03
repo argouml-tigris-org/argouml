@@ -322,6 +322,7 @@ public abstract class FigNodeModelElement
      * rendering settings.
      */
     private void constructFigs() {
+        // TODO: Why isn't this stuff managed by the nameFig itself?
         nameFig.setLineWidth(LINE_WIDTH);
         nameFig.setFilled(true);
         nameFig.setText(placeString());
@@ -369,10 +370,20 @@ public abstract class FigNodeModelElement
             DiagramSettings renderSettings) {
         super();
         super.setOwner(element);
+        
         // TODO: We currently don't support per-fig settings for most stuff, so
         // we can just use the defaults that we were given.
 //        settings = new DiagramSettings(renderSettings);
         settings = renderSettings;
+        
+        // Be careful here since subclasses could have overridden this with
+        // the assumption that it wouldn't be called before the constructors
+        // finished
+        super.setFillColor(FILL_COLOR);
+        super.setLineColor(LINE_COLOR);
+        super.setLineWidth(LINE_WIDTH);
+        super.setTextColor(TEXT_COLOR); // Some subclasses will try to use this
+        
         /*
          * Notation settings are different since, we know that, at a minimum,
          * the isShowPath() setting can change because with implement
@@ -387,7 +398,7 @@ public abstract class FigNodeModelElement
         nameFig = new FigNameWithAbstractAndBold(element, 
                 new Rectangle(X0, Y0, WIDTH, 21), getSettings(), true);
         stereotypeFig = new FigStereotypesGroup(element, 
-                new Rectangle(X0, Y0, WIDTH, 15), settings);
+                new Rectangle(X0, Y0, WIDTH, STEREOHEIGHT), settings);
         constructFigs();
         if (element == null) {
             throw new IllegalArgumentException("An owner must be supplied");

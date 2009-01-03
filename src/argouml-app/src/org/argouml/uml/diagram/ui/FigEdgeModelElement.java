@@ -201,6 +201,14 @@ public abstract class FigEdgeModelElement
         // so we can just use the default settings;
 //        settings = new DiagramSettings(renderSettings);
         settings = renderSettings;
+        
+        // TODO: It doesn't matter what these get set to because GEF can't 
+        // draw anything except 1 pixel wide lines
+        super.setLineColor(LINE_COLOR);
+        super.setLineWidth(LINE_WIDTH);
+        getFig().setLineColor(LINE_COLOR);
+        getFig().setLineWidth(LINE_WIDTH);
+        
         nameFig = new FigNameWithAbstract(element, 
                 new Rectangle(X0, Y0 + 20, 90, 20), 
                 renderSettings, false);
