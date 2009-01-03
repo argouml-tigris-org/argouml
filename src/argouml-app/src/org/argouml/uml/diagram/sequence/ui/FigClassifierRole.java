@@ -76,7 +76,7 @@ public class FigClassifierRole extends FigNodeModelElement
     /**
      * The width of an activation box.
      */
-    public static final int WIDTH = 20;
+    public static final int ROLE_WIDTH = 20;
 
     /**
      * The margin between the outer box and the name and stereotype text box.
@@ -144,7 +144,7 @@ public class FigClassifierRole extends FigNodeModelElement
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
         lifeLineFig =
-            new FigLifeLine(MIN_HEAD_WIDTH / 2 - WIDTH / 2, MIN_HEAD_HEIGHT);
+            new FigLifeLine(MIN_HEAD_WIDTH / 2 - ROLE_WIDTH / 2, MIN_HEAD_HEIGHT);
         linkPositions.add(new MessageNode(this));
         for (int i = 0;
                 i <= lifeLineFig.getHeight() 
@@ -294,9 +294,9 @@ public class FigClassifierRole extends FigNodeModelElement
         headFig.setBounds(x, y, w, headFig.getMinimumSize().height);
 
         lifeLineFig.setBounds(
-                (x + w / 2) - WIDTH / 2,
+                (x + w / 2) - ROLE_WIDTH / 2,
                 y + headFig.getHeight(),
-                WIDTH,
+                ROLE_WIDTH,
                 h - headFig.getHeight());
 
         this.updateEdges(); //???
@@ -430,7 +430,7 @@ public class FigClassifierRole extends FigNodeModelElement
                 int fmpY = lifeLineFig.getYCoordinate(i);
                 if (figMessagePort.getY() != fmpY) {
                     figMessagePort.setBounds(lifeLineFig.getX(), 
-                            fmpY, WIDTH, 1);
+                            fmpY, ROLE_WIDTH, 1);
                 }
                 Object message = figMessagePort.getOwner();
                 boolean selfMessage =
@@ -572,14 +572,16 @@ public class FigClassifierRole extends FigNodeModelElement
                 lifeLineFig.addActivationFig(
                     new FigLine(x,
                     	    y + SequenceDiagramLayer.LINK_DISTANCE / 2,
-                    	    x + WIDTH,
-                    	    y + SequenceDiagramLayer.LINK_DISTANCE));
+                    	    x + ROLE_WIDTH,
+                    	    y + SequenceDiagramLayer.LINK_DISTANCE, LINE_COLOR)
+                    );
                 lifeLineFig.addActivationFig(
                     new FigLine(x,
                     	    y + SequenceDiagramLayer.LINK_DISTANCE,
-                    	    x + WIDTH,
+                    	    x + ROLE_WIDTH,
                     	    y
-                    	    + SequenceDiagramLayer.LINK_DISTANCE / 2));
+                    	    + SequenceDiagramLayer.LINK_DISTANCE / 2, LINE_COLOR)
+                    );
             }
             if (startActivationNode == null) {
                 switch (nextState) {
@@ -631,7 +633,7 @@ public class FigClassifierRole extends FigNodeModelElement
                         y2 += SequenceDiagramLayer.LINK_DISTANCE / 2;
                     }
                     lifeLineFig.addActivationFig(
-                            new FigActivation(x, y1, WIDTH, y2 - y1));
+                            new FigActivation(x, y1, ROLE_WIDTH, y2 - y1));
                 }
                 startActivationNode = null;
                 endActivationNode = null;
@@ -651,7 +653,7 @@ public class FigClassifierRole extends FigNodeModelElement
                 y2 += SequenceDiagramLayer.LINK_DISTANCE / 2;
             }
             lifeLineFig.addActivationFig(
-                    new FigActivation(x, y1, WIDTH, y2 - y1));
+                    new FigActivation(x, y1, ROLE_WIDTH, y2 - y1));
             startActivationNode = null;
             endActivationNode = null;
             startFull = false;
@@ -1089,7 +1091,7 @@ public class FigClassifierRole extends FigNodeModelElement
         return new TempFig(
                 messageNode, lifeLineFig.getX(),
                 getYCoordinate((MessageNode) messageNode),
-                lifeLineFig.getX() + WIDTH);
+                lifeLineFig.getX() + ROLE_WIDTH);
     }
 
     /**
