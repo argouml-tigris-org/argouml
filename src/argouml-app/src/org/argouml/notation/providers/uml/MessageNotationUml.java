@@ -37,10 +37,9 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
 import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.MessageNotation;
 import org.argouml.util.CustomSeparator;
@@ -760,12 +759,9 @@ public class MessageNotationUml extends MessageNotation {
                     guard = guard.insert(0, "*");
                 }
             }
-            Project project =
-                ProjectManager.getManager().getCurrentProject();
-            ProjectSettings ps = project.getProjectSettings();
             Object expr =
                 Model.getDataTypesFactory().createIterationExpression(
-                        ps.getNotationLanguage(), guard.toString());
+                        getExpressionLanguage(), guard.toString());
             Model.getCommonBehaviorHelper().setRecurrence(
                     Model.getFacade().getAction(mes), expr);
         }
@@ -821,10 +817,6 @@ public class MessageNotationUml extends MessageNotation {
             }
         }
 
-        Project project =
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
-
         if (fname != null) {
             String expr = fname.trim();
             if (varname.length() > 0) {
@@ -839,7 +831,7 @@ public class MessageNotationUml extends MessageNotation {
                 Object e =
                     Model.getDataTypesFactory()
                         .createActionExpression(
-                                ps.getNotationLanguage(),
+                                getExpressionLanguage(),
                                 expr.trim());
                 Model.getCommonBehaviorHelper().setScript(
                         Model.getFacade().getAction(mes), e);
@@ -869,7 +861,7 @@ public class MessageNotationUml extends MessageNotation {
                             : "");
                     Object e =
                         Model.getDataTypesFactory().createExpression(
-                                ps.getNotationLanguage(),
+                                getExpressionLanguage(),
                             value.trim());
                     Model.getCommonBehaviorHelper().setValue(arg, e);
                 }
@@ -1104,6 +1096,12 @@ public class MessageNotationUml extends MessageNotation {
             }
             Model.getCollaborationsHelper().setPredecessors(mes, pre);
         }
+    }
+
+    // TODO: We are using the notation language here as the expression language.
+    // Is that sensible?
+    private String getExpressionLanguage() {
+        return Notation.DEFAULT_NOTATION;
     }
 
     /**
@@ -1466,21 +1464,21 @@ public class MessageNotationUml extends MessageNotation {
     }
 
     /**
-     * Finds the operations in Collection c with name name and params number of
+     * Finds the operations in Collection c with the given name and the given number of
      * parameters. If no operation is found, one is created. The applicable
      * operations are returned.
      *
      * @param c the collection of operations to be searched
      * @param name the name of the operation to be found
      * @param params the number of parameters of the operation to be found
-     * @return the sought operation
+     * @return a list of the sought operations
      */
     private List getOperation(Collection c, String name, int params) {
-        List options = new ArrayList();
+        List<Object> ops = new ArrayList<Object>();
         Iterator it;
 
         if (name == null || name.length() == 0) {
-            return options;
+            return ops;
         }
 
         it = c.iterator();
@@ -1501,11 +1499,11 @@ public class MessageNotationUml extends MessageNotation {
                 if (params != countParameters(op)) {
                     continue;
                 }
-                options.add(op);
+                ops.add(op);
             }
         }
-        if (options.size() > 0) {
-            return options;
+        if (ops.size() > 0) {
+            return ops;
         }
 
         it = c.iterator();
@@ -1536,9 +1534,9 @@ public class MessageNotationUml extends MessageNotation {
                         pe);
 
             }
-            options.add(op);
+            ops.add(op);
         }
-        return options;
+        return ops;
     }
 
     /**

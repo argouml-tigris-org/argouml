@@ -41,6 +41,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationSettings;
 import org.argouml.notation.SDNotationSettings;
@@ -761,7 +762,7 @@ public class SDMessageNotationUml extends MessageNotation {
 
             Object expr =
                 Model.getDataTypesFactory().createIterationExpression(
-                        getNotationLanguage(), guard.toString());
+                        getExpressionLanguage(), guard.toString());
             Model.getCommonBehaviorHelper().setRecurrence(
                     Model.getFacade().getAction(mes), expr);
         }
@@ -831,7 +832,7 @@ public class SDMessageNotationUml extends MessageNotation {
                 Object e =
                     Model.getDataTypesFactory()
                         .createActionExpression(
-                                getNotationLanguage(),
+                                getExpressionLanguage(),
                                 expr.trim());
                 Model.getCommonBehaviorHelper().setScript(
                         Model.getFacade().getAction(mes), e);
@@ -861,7 +862,7 @@ public class SDMessageNotationUml extends MessageNotation {
                             : "");
                     Object e =
                         Model.getDataTypesFactory().createExpression(
-                                getNotationLanguage(),
+                                getExpressionLanguage(),
                             value.trim());
                     Model.getCommonBehaviorHelper().setValue(arg, e);
                 }
@@ -1098,13 +1099,10 @@ public class SDMessageNotationUml extends MessageNotation {
         }
     }
 
-    // TODO: We know what our notation language is (and it's fixed)
-    // Why are we looking it up in project settings?
-    private String getNotationLanguage() {
-        Project project =
-            ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = project.getProjectSettings();
-        return ps.getNotationLanguage();
+    // TODO: We are using the notation language here as the expression language.
+    // Is that sensible?
+    private String getExpressionLanguage() {
+        return Notation.DEFAULT_NOTATION;
     }
 
     /**
@@ -1467,21 +1465,21 @@ public class SDMessageNotationUml extends MessageNotation {
     }
 
     /**
-     * Finds the operations in Collection c with name name and params number of
+     * Finds the operations in Collection c with the given name and the given number of
      * parameters. If no operation is found, one is created. The applicable
      * operations are returned.
      *
      * @param c the collection of operations to be searched
      * @param name the name of the operation to be found
      * @param params the number of parameters of the operation to be found
-     * @return the sought operation
+     * @return a list of the sought operations
      */
     private List getOperation(Collection c, String name, int params) {
-        List options = new ArrayList();
+        List<Object> ops = new ArrayList<Object>();
         Iterator it;
 
         if (name == null || name.length() == 0) {
-            return options;
+            return ops;
         }
 
         it = c.iterator();
@@ -1502,11 +1500,11 @@ public class SDMessageNotationUml extends MessageNotation {
                 if (params != countParameters(op)) {
                     continue;
                 }
-                options.add(op);
+                ops.add(op);
             }
         }
-        if (options.size() > 0) {
-            return options;
+        if (ops.size() > 0) {
+            return ops;
         }
 
         it = c.iterator();
@@ -1537,9 +1535,9 @@ public class SDMessageNotationUml extends MessageNotation {
                         pe);
 
             }
-            options.add(op);
+            ops.add(op);
         }
-        return options;
+        return ops;
     }
 
     /**
