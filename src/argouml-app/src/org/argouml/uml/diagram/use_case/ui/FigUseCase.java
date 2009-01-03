@@ -44,8 +44,6 @@ import javax.swing.Action;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider;
-import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -212,6 +210,7 @@ public class FigUseCase extends FigNodeModelElement
         // The separator, again with arbitrary bounds for now.
 
         epSep = new FigLine(0, 30, 100, 100, fg);
+        epSep.setLineWidth(LINE_WIDTH);
 
         epSep.setVisible(false);
 
@@ -765,7 +764,10 @@ public class FigUseCase extends FigNodeModelElement
      */
     @Override
     public void setLineColor(Color col) {
-        cover.setLineColor(col);
+        super.setLineColor(col);
+        if (cover != null) {
+            cover.setLineColor(col);
+        }
     }
 
     /**
@@ -789,7 +791,10 @@ public class FigUseCase extends FigNodeModelElement
      */
     @Override
     public void setFillColor(Color col) {
-        cover.setFillColor(col);
+        super.setFillColor(col);
+        if (cover != null) {
+            cover.setFillColor(col);
+        }
     }
 
     /**
@@ -814,7 +819,10 @@ public class FigUseCase extends FigNodeModelElement
      */
     @Override
     public void setFilled(boolean f) {
-        cover.setFilled(f);
+        super.setFilled(f);
+        if (cover != null) {
+            cover.setFilled(f);
+        }
     }
 
     /**
@@ -839,7 +847,9 @@ public class FigUseCase extends FigNodeModelElement
      */
     @Override
     public void setLineWidth(int w) {
-        cover.setLineWidth(w);
+        if (cover != null) {
+            cover.setLineWidth(w);
+        }
     }
 
     /**
@@ -1166,19 +1176,12 @@ public class FigUseCase extends FigNodeModelElement
                 // If we don't have a fig for this EP, we'll need to add
                 // one. We set the bounds, but they will be reset later.
                 if (epFig == null) {
-                    NotationProvider np = 
-                        NotationProviderFactory2.getInstance()
-                            .getNotationProvider(
-                                NotationProviderFactory2.TYPE_EXTENSION_POINT, 
-                                ep);
-
-                    epFig = new CompartmentFigText(ep, new Rectangle(
+                     epFig = new CompartmentFigText(ep, new Rectangle(
                             xpos,
 			    ypos + (epCount - 1) * ROWHEIGHT,
 			    0,
 			    ROWHEIGHT),
-			    getSettings(),
-                            np);
+			    getSettings());
                     
                     epFig.setFilled(false);
                     epFig.setLineWidth(0);
