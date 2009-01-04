@@ -98,6 +98,15 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
         return "parsing.help.fig-message";
     }
 
+    /**
+     * TODO: Document syntax generated here. 
+     * TODO: Document exceptional behaviour.
+     * 
+     * @param m the UML message object to generate the sequence number for
+     * @param pre the predecessor message (UML object)
+     * @param position the integer position of the given message
+     * @return the generated sequence expression
+     */
     protected String generateMessageNumber(Object/*MMessage*/ m, Object/*MMessage*/ pre,
             int position) {
                 Collection c;
@@ -161,7 +170,7 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      * and level in a collaboration.<p>
      *
      * If you plan to modify this number, make sure that
-     * ParserDisplay.parseMessage is adapted to the change.
+     * the parsing of the Message is adapted accordingly to the change.
      *
      * @param message A Message to generate the number for.
      * @return A String with the message number of m.
@@ -227,7 +236,7 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      * <li> A3, B4/ C3.1*: update()
      * </ul>
      *
-     * This syntax is compatible with the UML 1.3 specification.<p>
+     * This syntax is compatible with the UML 1.4.2 specification.<p>
      *
      * Actually, only a subset of this syntax is currently supported, and some
      * is not even planned to be supported. The exceptions are intno, which
