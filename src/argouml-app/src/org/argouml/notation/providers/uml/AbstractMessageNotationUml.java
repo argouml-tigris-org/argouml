@@ -174,13 +174,11 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
 
     protected int countSuccessors(Object message) {
         int count = 0;
-        Object activator = Model.getFacade().getActivator(message);
-        Collection successors = Model.getFacade().getSuccessors(message);
+        final Object activator = Model.getFacade().getActivator(message);
+        final Collection successors = Model.getFacade().getSuccessors(message);
         if (successors != null) {
-            Iterator it = successors.iterator();
-            while (it.hasNext()) {
-                Object msg = it.next();
-                if (Model.getFacade().getActivator(msg) != activator) {
+            for (Object suc : successors) {
+                if (Model.getFacade().getActivator(suc) != activator) {
                     continue;
                 }
                 count++;
@@ -1267,13 +1265,11 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      * Finds the messages in Collection c that has message a as activator.
      */
     private Collection filterWithActivator(Collection c, Object/*MMessage*/a) {
-        Iterator it = c.iterator();
         List v = new ArrayList();
-        while (it.hasNext()) {
-            Object m = /* (MMessage) */it.next();
-            if (Model.getFacade().getActivator(m) == a) {
-                v.add(m);
-            }
+        for (Object msg : c) {
+            if (Model.getFacade().getActivator(msg) == a) {
+                v.add(msg);
+            }            
         }
         return v;
     }
