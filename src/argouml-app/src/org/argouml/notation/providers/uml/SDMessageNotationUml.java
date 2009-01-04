@@ -37,9 +37,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationProvider;
@@ -52,7 +50,8 @@ import org.argouml.util.MyTokenizer;
 /**
  * The UML notation for a message, as shown on a sequence diagram. <p>
  *
- * The parse method parses a message line of the form: <p>
+ * The Message notation syntax is a line of the following form, 
+ * which we can generate and parse: <p>
  *
  * <pre>
  * intno := integer|name
@@ -60,10 +59,11 @@ import org.argouml.util.MyTokenizer;
  * recurrance := '*'['//'] | '*'['//']'[' <code>iteration </code>']' | '['
  * <code>condition </code>']'
  * seqelem := {[intno] ['['recurrance']']}
- * seq2 := seqelem ['.' seqelem]*
+ * seq_expr := seqelem ['.' seqelem]*
  * ret_list := lvalue [',' lvalue]*
  * arg_list := rvalue [',' rvalue]*
- * message := [seq [',' seq]* '/'] seq2 ':' [ret_list :=] name ([arg_list])
+ * predecessor := seq [',' seq]* '/'
+ * message := [predecessor] seq_expr ':' [ret_list :=] name ([arg_list])
  * </pre> <p>
  *
  * Which is rather complex, so a few examples:<p><ul>
@@ -73,13 +73,13 @@ import org.argouml.util.MyTokenizer;
  * <li> A3, B4/ C3.1*: update()
  * </ul><p>
  *
- * This syntax is compatible with the UML 1.3 specification.<p>
+ * This syntax is compatible with the UML 1.4.2 specification.<p>
  *
  * Actually, only a subset of this syntax is currently supported, and some
  * is not even planned to be supported. The exceptions are intno, which
  * allows a number possibly followed by a sequence of letters in the range
  * 'a' - 'z', seqelem, which does not allow a recurrance, and message, which
- * does allow one recurrance near seq2. (formerly: name: action )
+ * does allow one recurrance near seq_expr. (formerly: name: action )
  *
  * @author michiel
  */
@@ -359,35 +359,6 @@ public class SDMessageNotationUml extends MessageNotation {
      * Parse a Message textual description.<p>
      *
      * TODO: - This method is too complex, lets break it up. <p>
-     *
-     * Parses a message line of the form:
-     *
-     * <pre>
-     * intno := integer|name
-     * seq := intno ['.' intno]*
-     * recurrance := '*'['//'] | '*'['//']'[' <i>iteration </i>']' | '['
-     * <i>condition </i>']'
-     * seqelem := {[intno] ['['recurrance']']}
-     * seq2 := seqelem ['.' seqelem]*
-     * ret_list := lvalue [',' lvalue]*
-     * arg_list := rvalue [',' rvalue]*
-     * message := [seq [',' seq]* '/'] seq2 ':' [ret_list :=] name ([arg_list])
-     * </pre>
-     *
-     * Which is rather complex, so a few examples:<ul>
-     * <li> 2: display(x, y)
-     * <li> 1.3.1: p := find(specs)
-     * <li> [x &lt; 0] 4: invert(color)
-     * <li> A3, B4/ C3.1*: update()
-     * </ul>
-     *
-     * This syntax is compatible with the UML 1.3 specification.<p>
-     *
-     * Actually, only a subset of this syntax is currently supported, and some
-     * is not even planned to be supported. The exceptions are intno, which
-     * allows a number possibly followed by a sequence of letters in the range
-     * 'a' - 'z', seqelem, which does not allow a recurrance, and message, which
-     * does allow one recurrance near seq2. (formerly: name: action )
      *
      * @param mes the MMessage to apply any changes to
      * @param s   the String to parse
