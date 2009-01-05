@@ -331,36 +331,8 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation {
             final int h = getHeight();
             g.setColor(Globals.getPrefs().handleColorFor(this));
             
-            g.drawRect(
-                    x - 1,
-                    y - 1,
-                    w + 2,
-                    h + 2);
-            g.drawRect(
-                    x - 1,
-                    y - 1,
-                    w + 2,
-                    h + 2);
-            g.fillRect(
-                x - Selection.HAND_SIZE / 2,
-                y - Selection.HAND_SIZE / 2,
-                Selection.HAND_SIZE,
-                Selection.HAND_SIZE);
-            g.fillRect(
-                x + w - Selection.HAND_SIZE / 2,
-                y - Selection.HAND_SIZE / 2,
-                Selection.HAND_SIZE,
-                Selection.HAND_SIZE);
-            g.fillRect(
-                x - Selection.HAND_SIZE / 2,
-                y + h - Selection.HAND_SIZE / 2,
-                Selection.HAND_SIZE,
-                Selection.HAND_SIZE);
-            g.fillRect(
-                x + w - Selection.HAND_SIZE / 2,
-                y + h - Selection.HAND_SIZE / 2,
-                Selection.HAND_SIZE,
-                Selection.HAND_SIZE);
+            g.drawRect(x - 1, y - 1, w + 2, h + 2);
+            g.drawRect(x, y, w, h);
         }
     }
 
