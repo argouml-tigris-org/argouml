@@ -24,8 +24,12 @@
 
 package org.argouml.ui.explorer;
 
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+import javax.swing.SwingUtilities;
+
+import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoProfileEvent;
@@ -35,8 +39,10 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.Notation;
 
 /**
@@ -56,6 +62,10 @@ import org.argouml.notation.Notation;
  */
 public final class ExplorerEventAdaptor
     implements PropertyChangeListener {
+    
+    private static final Logger LOG =
+        Logger.getLogger(ExplorerEventAdaptor.class);
+
     /**
      * The singleton instance.
      *
@@ -161,33 +171,27 @@ public final class ExplorerEventAdaptor
      *
      * @see PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
-    public void propertyChange(java.beans.PropertyChangeEvent pce) {
+    public void propertyChange(final PropertyChangeEvent pce) {
         if (treeModel == null) {
             return;
         }
 
         // uml model events
-        if (pce instanceof AttributeChangeEvent) {
-            // TODO: Can this be made more restrictive?
-            // Do we care about any attributes other than name? - tfm
-            treeModel.modelElementChanged(pce.getSource());
-        } else if (pce instanceof RemoveAssociationEvent) {
-            // TODO: This should really be coded the other way round,
-            // to only act on associations which are important for
-            // representing the current perspective (and to only act
-            // on a single end of the association) - tfm
-            if (!("namespace".equals(pce.getPropertyName()))) {
-                treeModel.modelElementChanged(((RemoveAssociationEvent) pce)
-                        .getChangedValue());
-            }
-        } else if (pce instanceof AddAssociationEvent) {
-            if (!("namespace".equals(pce.getPropertyName()))) {
-                treeModel.modelElementAdded(
-                        ((AddAssociationEvent) pce).getSource());
-            }
-        } else if (pce instanceof DeleteInstanceEvent) {
-            treeModel.modelElementRemoved(((DeleteInstanceEvent) pce)
-                    .getSource());
+        if (pce instanceof UmlChangeEvent) {
+            Runnable doWorkRunnable = new Runnable() {
+                public void run() {
+                    try {
+                        modelChanged((UmlChangeEvent) pce);
+                    } catch (InvalidElementException e) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("updateLayout method accessed "
+                                    + "deleted element", e);
+                        }
+                    }
+                }  
+            };
+            SwingUtilities.invokeLater(doWorkRunnable);
+            
         } else if (pce.getPropertyName().equals(
                 // TODO: No one should be sending the deprecated event
                 // from outside ArgoUML, but keep responding to it for now
@@ -205,11 +209,40 @@ public final class ExplorerEventAdaptor
             // notation events
             treeModel.structureChanged();
         } else if (pce.getSource() instanceof ProjectManager) {
+            // TODO: Bob says - I think we don't need this any more
+            // we no longer get "remove" from ProjectManager but instead
+            // a DeleteInstanceEvent (trapped above)
             if ("remove".equals(pce.getPropertyName())) {
                 treeModel.modelElementRemoved(pce.getOldValue());
             }
         }
     }
+    
+    private void modelChanged(UmlChangeEvent event) {
+        if (event instanceof AttributeChangeEvent) {
+            // TODO: Can this be made more restrictive?
+            // Do we care about any attributes other than name? - tfm
+            treeModel.modelElementChanged(event.getSource());
+        } else if (event instanceof RemoveAssociationEvent) {
+            // TODO: This should really be coded the other way round,
+            // to only act on associations which are important for
+            // representing the current perspective (and to only act
+            // on a single end of the association) - tfm
+            if (!("namespace".equals(event.getPropertyName()))) {
+                treeModel.modelElementChanged(((RemoveAssociationEvent) event)
+                        .getChangedValue());
+            }
+        } else if (event instanceof AddAssociationEvent) {
+            if (!("namespace".equals(event.getPropertyName()))) {
+                treeModel.modelElementAdded(
+                        ((AddAssociationEvent) event).getSource());
+            }
+        } else if (event instanceof DeleteInstanceEvent) {
+            treeModel.modelElementRemoved(((DeleteInstanceEvent) event)
+                    .getSource());
+        }
+    }
+    
     
     /**
      * Listener for additions and removals of profiles.
