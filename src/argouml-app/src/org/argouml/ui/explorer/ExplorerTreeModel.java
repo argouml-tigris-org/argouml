@@ -247,7 +247,8 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * @see org.argouml.ui.explorer.TreeModelUMLEventListener#modelElementRemoved(java.lang.Object)
      */
     public void modelElementRemoved(Object node) {
-        for (ExplorerTreeNode changeNode : findNodes(node)) {
+        for (ExplorerTreeNode changeNode
+                : new ArrayList<ExplorerTreeNode>(findNodes(node))) {
             if (changeNode.getParent() != null) {
                 removeNodeFromParent(changeNode);
             }
