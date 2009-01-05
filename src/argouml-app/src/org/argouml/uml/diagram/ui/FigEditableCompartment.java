@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,10 @@ import org.tigris.gef.presentation.FigLine;
  * make the whole compartment invisible, and
  * a NotationProvider is used to handle (generate and parse) 
  * the texts shown in the compartment, i.e. 
- * the compartment texts are editable by the user.
+ * the compartment texts are editable by the user. <p>
+ * 
+ * This FigGroup shall only contain its bigPort, 
+ * and Figs of type FigSeparator, and CompartmentFigText.
  */
 public abstract class FigEditableCompartment extends FigCompartment {
 
@@ -110,7 +113,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * children.
      * This is to save on resources and increase efficiency as multiple
      * figs need not exist and be resized, moved etc if they are not visible.
-     * If a compartment is later made visible the its child figs are rebuilt
+     * If a compartment is later made visible then its child figs are rebuilt
      * from the model.
      * {@inheritDoc}
      */
@@ -156,7 +159,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
     protected abstract Collection getUmlCollection();
 
     /**
-     * @return the type of the notationprovider 
+     * @return the type of the notationProvider 
      *              used to handle the text in the compartment 
      */
     protected abstract int getNotationType();
@@ -394,6 +397,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
 
     /**
      * Fig representing separator for compartment.
+     * This is a horizontal line.
      */
     protected static class FigSeperator extends FigLine {
         /**
