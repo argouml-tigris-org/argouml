@@ -364,7 +364,7 @@ public class FigStubState extends FigStateVertex {
         try {
             text = facade.getReferenceState(getOwner());
         } catch (Exception e) {
-            LOG.error(e);
+            LOG.error("Exception caught and ignored!!", e);
         }
         if (text != null) {
             referenceFig.setText((String) text);
@@ -461,10 +461,11 @@ public class FigStubState extends FigStateVertex {
 
     @Override
     protected void updateListeners(Object oldV, Object newOwner) {
-        Object container = null;
         if (oldV != null) {
-            removeElementListener(oldV);
-            container = facade.getContainer(oldV);
+            if (oldV != newOwner) {
+                removeElementListener(oldV);
+            }
+            Object container = facade.getContainer(oldV);
             while (container != null && !facade.isTop(container)) {
                 removeElementListener(container);
                 container = facade.getContainer(container);
