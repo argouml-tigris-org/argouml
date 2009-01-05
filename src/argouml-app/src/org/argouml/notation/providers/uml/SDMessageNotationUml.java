@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationSettings;
@@ -72,9 +71,6 @@ import org.argouml.notation.SDNotationSettings;
  */
 public class SDMessageNotationUml extends AbstractMessageNotationUml {
 
-    private static final Logger LOG =
-        Logger.getLogger(SDMessageNotationUml.class);
-
     /**
      * The constructor.
      *
@@ -105,6 +101,7 @@ public class SDMessageNotationUml extends AbstractMessageNotationUml {
      * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, 
      * java.util.Map)
      */
+    @SuppressWarnings("deprecation")
     public String toString(final Object modelElement, final Map args) {
         return toString(modelElement, 
                 !NotationProvider.isValue("hideSequenceNrs", args));

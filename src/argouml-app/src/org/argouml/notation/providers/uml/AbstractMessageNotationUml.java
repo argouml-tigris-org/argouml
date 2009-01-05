@@ -64,14 +64,14 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
     /**
      * The list of CustomSeparators to use when tokenizing parameters.
      */
-    protected final List<CustomSeparator> parameterCustomSep;
+    private final List<CustomSeparator> parameterCustomSep;
 
     protected static class MsgPtr {
             /**
              * The message pointed to.
              */
             public Object message;
-        }
+    }
 
     protected List<CustomSeparator> initParameterSeparators() {
         List<CustomSeparator> separators = new ArrayList<CustomSeparator>();
@@ -107,44 +107,45 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      * @param position the integer position of the given message
      * @return the generated sequence expression
      */
-    protected String generateMessageNumber(Object/*MMessage*/ m, Object/*MMessage*/ pre,
+    protected String generateMessageNumber(Object/*MMessage*/ m, 
+            Object/*MMessage*/ pre,
             int position) {
-                Collection c;
-                Iterator it;
-                String mname = "";
-                Object act;
-                int subpos = 0, submax = 1;
-            
-                if (m == null) {
-                    return null;
-                }
-            
-                act = Model.getFacade().getActivator(m);
-                if (act != null) {
-                    mname = generateMessageNumber(act);
-                }
-            
-                if (pre != null) {
-                    c = Model.getFacade().getSuccessors(pre);
-                    submax = c.size();
-                    it = c.iterator();
-                    while (it.hasNext() && it.next() != m) {
-                        subpos++;
-                    }
-                }
-            
-                if (mname.length() > 0) {
-                    if (submax > 1) {
-                        return mname + "." + position + (char) ('a' + subpos);
-                    }
-                    return mname + "." + position;
-                }
-            
-                if (submax > 1) {
-                    return Integer.toString(position) + (char) ('a' + subpos);
-                }
-                return Integer.toString(position);
+        Collection c;
+        Iterator it;
+        String mname = "";
+        Object act;
+        int subpos = 0, submax = 1;
+
+        if (m == null) {
+            return null;
+        }
+
+        act = Model.getFacade().getActivator(m);
+        if (act != null) {
+            mname = generateMessageNumber(act);
+        }
+
+        if (pre != null) {
+            c = Model.getFacade().getSuccessors(pre);
+            submax = c.size();
+            it = c.iterator();
+            while (it.hasNext() && it.next() != m) {
+                subpos++;
             }
+        }
+
+        if (mname.length() > 0) {
+            if (submax > 1) {
+                return mname + "." + position + (char) ('a' + subpos);
+            }
+            return mname + "." + position;
+        }
+
+        if (submax > 1) {
+            return Integer.toString(position) + (char) ('a' + subpos);
+        }
+        return Integer.toString(position);
+    }
 
     /**
      * Finds the break between message number and (possibly) message order.
@@ -252,707 +253,709 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      */
     protected void parseMessage(Object mes, String s)
         throws ParseException {
-            String fname = null;
-            StringBuilder guard = null;
-            String paramExpr = null;
-            String token;
-            StringBuilder varname = null;
-            List<List> predecessors = new ArrayList<List>();
-            List seqno = null;
-            List currentseq = new ArrayList();
-            List args = null;
-            boolean mustBePre = false;
-            boolean mustBeSeq = false;
-            boolean parallell = false;
-            boolean iterative = false;
-            boolean mayDeleteExpr = false;
-            boolean refindOperation = false;
-            boolean hasPredecessors = false;
-            int i;
-        
-            currentseq.add(null);
-            currentseq.add(null);
-        
-            try {
-                MyTokenizer st = new MyTokenizer(s, " ,\t,*,[,],.,:,=,/,\\,",
-                        MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
-        
-                while (st.hasMoreTokens()) {
-                    token = st.nextToken();
-        
-                    if (" ".equals(token) || "\t".equals(token)) {
-                        if (currentseq == null) {
-                            if (varname != null && fname == null) {
-                                varname.append(token);
-                            }
+        String fname = null;
+        StringBuilder guard = null;
+        String paramExpr = null;
+        String token;
+        StringBuilder varname = null;
+        List<List> predecessors = new ArrayList<List>();
+        List<Integer> seqno = null;
+        List<Integer> currentseq = new ArrayList<Integer>();
+        List<String> args = null;
+        boolean mustBePre = false;
+        boolean mustBeSeq = false;
+        boolean parallell = false;
+        boolean iterative = false;
+        boolean mayDeleteExpr = false;
+        boolean refindOperation = false;
+        boolean hasPredecessors = false;
+        int i;
+
+        currentseq.add(null);
+        currentseq.add(null);
+
+        try {
+            MyTokenizer st = new MyTokenizer(s, " ,\t,*,[,],.,:,=,/,\\,",
+                    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+
+            while (st.hasMoreTokens()) {
+                token = st.nextToken();
+
+                if (" ".equals(token) || "\t".equals(token)) {
+                    if (currentseq == null) {
+                        if (varname != null && fname == null) {
+                            varname.append(token);
                         }
-                    } else if ("[".equals(token)) {
-                        if (mustBePre) {
-                        	String msg = "parsing.error.message.pred-unqualified";
-                            throw new ParseException(Translator.localize(msg),
-                                    st.getTokenIndex());
+                    }
+                } else if ("[".equals(token)) {
+                    if (mustBePre) {
+                        String msg = "parsing.error.message.pred-unqualified";
+                        throw new ParseException(Translator.localize(msg),
+                                st.getTokenIndex());
+                    }
+                    mustBeSeq = true;
+
+                    if (guard != null) {
+                        String msg = "parsing.error.message.several-specs";
+                        throw new ParseException(Translator.localize(msg),
+                                st.getTokenIndex());
+                    }
+
+                    guard = new StringBuilder();
+                    while (true) {
+                        token = st.nextToken();
+                        if ("]".equals(token)) {
+                            break;
                         }
-                        mustBeSeq = true;
-        
-                        if (guard != null) {
-                        	String msg = "parsing.error.message.several-specs";
-                            throw new ParseException(Translator.localize(msg),
-                                    st.getTokenIndex());
+                        guard.append(token);
+                    }
+                } else if ("*".equals(token)) {
+                    if (mustBePre) {
+                        String msg = "parsing.error.message.pred-unqualified";
+                        throw new ParseException(Translator.localize(msg),
+                                st.getTokenIndex());
+                    }
+                    mustBeSeq = true;
+
+                    if (currentseq != null) {
+                        iterative = true;
+                    }
+                } else if (".".equals(token)) {
+                    if (currentseq == null) {
+                        String msg = "parsing.error.message.unexpected-dot";
+                        throw new ParseException(Translator.localize(msg),
+                                st.getTokenIndex());
+                    }
+                    if (currentseq.get(currentseq.size() - 2) != null
+                            || currentseq.get(currentseq.size() - 1) != null) {
+                        currentseq.add(null);
+                        currentseq.add(null);
+                    }
+                } else if (":".equals(token)) {
+                    if (st.hasMoreTokens()) {
+                        String t = st.nextToken();
+                        if ("=".equals(t)) {
+                            st.putToken(":=");
+                            continue;
                         }
-        
-                        guard = new StringBuilder();
-                        while (true) {
-                            token = st.nextToken();
-                            if ("]".equals(token)) {
-                                break;
-                            }
-                            guard.append(token);
-                        }
-                    } else if ("*".equals(token)) {
-                        if (mustBePre) {
-                        	String msg = "parsing.error.message.pred-unqualified";
-                            throw new ParseException(Translator.localize(msg),
-                                    st.getTokenIndex());
-                        }
-                        mustBeSeq = true;
-        
-                        if (currentseq != null) {
-                            iterative = true;
-                        }
-                    } else if (".".equals(token)) {
-                        if (currentseq == null) {
-                        	String msg = "parsing.error.message.unexpected-dot";
-                            throw new ParseException(Translator.localize(msg),
-                                    st.getTokenIndex());
-                        }
-                        if (currentseq.get(currentseq.size() - 2) != null
-                                || currentseq.get(currentseq.size() - 1) != null) {
-                            currentseq.add(null);
-                            currentseq.add(null);
-                        }
-                    } else if (":".equals(token)) {
-                        if (st.hasMoreTokens()) {
-                            String t = st.nextToken();
-                            if ("=".equals(t)) {
-                                st.putToken(":=");
-                                continue;
-                            }
-                            st.putToken(t);
-                        }
-        
-                        if (mustBePre) {
-                            String msg = "parsing.error.message.pred-colon";
-                            throw new ParseException(Translator.localize(msg),
-                                    st.getTokenIndex());
-                        }
-        
-                        if (currentseq != null) {
-                            if (currentseq.size() > 2
-                                && currentseq.get(currentseq.size() - 2) == null
-                                && currentseq.get(currentseq.size() - 1) == null) {
-                                currentseq.remove(currentseq.size() - 1);
-                                currentseq.remove(currentseq.size() - 1);
-                            }
-        
-                            seqno = currentseq;
-                            currentseq = null;
-                            mayDeleteExpr = true;
-                        }
-                    } else if ("/".equals(token)) {
-                        if (st.hasMoreTokens()) {
-                            String t = st.nextToken();
-                            if ("/".equals(t)) {
-                                st.putToken("//");
-                                continue;
-                            }
-                            st.putToken(t);
-                        }
-        
-                        if (mustBeSeq) {
-                        	String msg = "parsing.error.message.sequence-slash";
-                            throw new ParseException(Translator.localize(msg),
-                                    st.getTokenIndex());
-                        }
-        
-                        mustBePre = false;
-                        mustBeSeq = true;
-        
+                        st.putToken(t);
+                    }
+
+                    if (mustBePre) {
+                        String msg = "parsing.error.message.pred-colon";
+                        throw new ParseException(Translator.localize(msg),
+                                st.getTokenIndex());
+                    }
+
+                    if (currentseq != null) {
                         if (currentseq.size() > 2
-                                && currentseq.get(currentseq.size() - 2) == null
-                                && currentseq.get(currentseq.size() - 1) == null) {
+                            && currentseq.get(currentseq.size() - 2) == null
+                            && currentseq.get(currentseq.size() - 1) == null) {
                             currentseq.remove(currentseq.size() - 1);
                             currentseq.remove(currentseq.size() - 1);
                         }
-        
+
+                        seqno = currentseq;
+                        currentseq = null;
+                        mayDeleteExpr = true;
+                    }
+                } else if ("/".equals(token)) {
+                    if (st.hasMoreTokens()) {
+                        String t = st.nextToken();
+                        if ("/".equals(t)) {
+                            st.putToken("//");
+                            continue;
+                        }
+                        st.putToken(t);
+                    }
+
+                    if (mustBeSeq) {
+                        String msg = "parsing.error.message.sequence-slash";
+                        throw new ParseException(Translator.localize(msg),
+                                st.getTokenIndex());
+                    }
+
+                    mustBePre = false;
+                    mustBeSeq = true;
+
+                    if (currentseq.size() > 2
+                            && currentseq.get(currentseq.size() - 2) == null
+                            && currentseq.get(currentseq.size() - 1) == null) {
+                        currentseq.remove(currentseq.size() - 1);
+                        currentseq.remove(currentseq.size() - 1);
+                    }
+
+                    if (currentseq.get(currentseq.size() - 2) != null
+                            || currentseq.get(currentseq.size() - 1) != null) {
+
+                        predecessors.add(currentseq);
+
+                        currentseq = new ArrayList<Integer>();
+                        currentseq.add(null);
+                        currentseq.add(null);
+                    }
+                    hasPredecessors = true;
+                } else if ("//".equals(token)) {
+                    if (mustBePre) {
+                        String msg = "parsing.error.message.pred-parallelized";
+                        throw new ParseException(Translator.localize(msg),
+                                st.getTokenIndex());
+                    }
+                    mustBeSeq = true;
+
+                    if (currentseq != null) {
+                        parallell = true;
+                    }
+                } else if (",".equals(token)) {
+                    if (currentseq != null) {
+                        if (mustBeSeq) {
+                            String msg = "parsing.error.message.many-numbers";
+                            throw new ParseException(Translator.localize(msg),
+                                    st.getTokenIndex());
+                        }
+                        mustBePre = true;
+
+                        if (currentseq.size() > 2
+                            && currentseq.get(currentseq.size() - 2) == null
+                            && currentseq.get(currentseq.size() - 1) == null) {
+
+                            currentseq.remove(currentseq.size() - 1);
+                            currentseq.remove(currentseq.size() - 1);
+                        }
+
                         if (currentseq.get(currentseq.size() - 2) != null
-                                || currentseq.get(currentseq.size() - 1) != null) {
-        
+                            || currentseq.get(currentseq.size() - 1) != null) {
+
                             predecessors.add(currentseq);
-        
-                            currentseq = new ArrayList();
+
+                            currentseq = new ArrayList<Integer>();
                             currentseq.add(null);
                             currentseq.add(null);
                         }
                         hasPredecessors = true;
-                    } else if ("//".equals(token)) {
-                        if (mustBePre) {
-                        	String msg = "parsing.error.message.pred-parallelized";
+                    } else {
+                        if (varname == null && fname != null) {
+                            varname = new StringBuilder(fname + token);
+                            fname = null;
+                        } else if (varname != null && fname == null) {
+                            varname.append(token);
+                        } else {
+                            String msg = "parsing.error.message.found-comma";
+                            throw new ParseException(
+                                    Translator.localize(msg),
+                                    st.getTokenIndex());
+                        }
+                    }
+                } else if ("=".equals(token) || ":=".equals(token)) {
+                    if (currentseq == null) {
+                        if (varname == null) {
+                            varname = new StringBuilder(fname);
+                            fname = "";
+                        } else {
+                            fname = "";
+                        }
+                    }
+                } else if (currentseq == null) {
+                    if (paramExpr == null && token.charAt(0) == '(') {
+                        if (token.charAt(token.length() - 1) != ')') {
+                            String msg =
+                                "parsing.error.message.malformed-parameters";
                             throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
-                        mustBeSeq = true;
-        
-                        if (currentseq != null) {
-                            parallell = true;
-                        }
-                    } else if (",".equals(token)) {
-                        if (currentseq != null) {
-                            if (mustBeSeq) {
-                                String msg = "parsing.error.message.many-numbers";
-                                throw new ParseException(Translator.localize(msg),
-                                        st.getTokenIndex());
-                            }
-                            mustBePre = true;
-        
-                            if (currentseq.size() > 2
-                                 && currentseq.get(currentseq.size() - 2) == null
-                                 && currentseq.get(currentseq.size() - 1) == null) {
-        
-                                currentseq.remove(currentseq.size() - 1);
-                                currentseq.remove(currentseq.size() - 1);
-                            }
-        
-                            if (currentseq.get(currentseq.size() - 2) != null
-                                || currentseq.get(currentseq.size() - 1) != null) {
-        
-                                predecessors.add(currentseq);
-        
-                                currentseq = new ArrayList();
-                                currentseq.add(null);
-                                currentseq.add(null);
-                            }
-                            hasPredecessors = true;
-                        } else {
-                            if (varname == null && fname != null) {
-                                varname = new StringBuilder(fname + token);
-                                fname = null;
-                            } else if (varname != null && fname == null) {
-                                varname.append(token);
-                            } else {
-                                String msg = "parsing.error.message.found-comma";
-                                throw new ParseException(
-                                        Translator.localize(msg),
-                                        st.getTokenIndex());
-                            }
-                        }
-                    } else if ("=".equals(token) || ":=".equals(token)) {
-                        if (currentseq == null) {
-                            if (varname == null) {
-                                varname = new StringBuilder(fname);
-                                fname = "";
-                            } else {
-                                fname = "";
-                            }
-                        }
-                    } else if (currentseq == null) {
-                        if (paramExpr == null && token.charAt(0) == '(') {
-                            if (token.charAt(token.length() - 1) != ')') {
-                                String msg =
-                                    "parsing.error.message.malformed-parameters";
-                                throw new ParseException(Translator.localize(msg),
-                                        st.getTokenIndex());
-                            }
-                            if (fname == null || "".equals(fname)) {
-                                String msg =
-                                    "parsing.error.message.function-not-found";
-                                throw new ParseException(Translator.localize(msg),
-                                        st.getTokenIndex());
-                            }
-                            if (varname == null) {
-                                varname = new StringBuilder();
-                            }
-                            paramExpr = token.substring(1, token.length() - 1);
-                        } else if (varname != null && fname == null) {
-                            varname.append(token);
-                        } else if (fname == null || fname.length() == 0) {
-                            fname = token;
-                        } else {
-                        	String msg = "parsing.error.message.unexpected-token";
-                            Object[] parseExcArgs = {token};
-                            throw new ParseException(
-                            		Translator.localize(msg, parseExcArgs),
+                        if (fname == null || "".equals(fname)) {
+                            String msg =
+                                "parsing.error.message.function-not-found";
+                            throw new ParseException(Translator.localize(msg),
                                     st.getTokenIndex());
                         }
+                        if (varname == null) {
+                            varname = new StringBuilder();
+                        }
+                        paramExpr = token.substring(1, token.length() - 1);
+                    } else if (varname != null && fname == null) {
+                        varname.append(token);
+                    } else if (fname == null || fname.length() == 0) {
+                        fname = token;
                     } else {
-                        boolean hasVal =
-                            currentseq.get(currentseq.size() - 2) != null;
-                        boolean hasOrd =
-                            currentseq.get(currentseq.size() - 1) != null;
-                        boolean assigned = false;
-                        int bp = findMsgOrderBreak(token);
-        
-                        if (!hasVal && !assigned && bp == token.length()) {
-                            try {
-                                currentseq.set(currentseq.size() - 2, Integer.valueOf(
-                                        token));
-                                assigned = true;
-                            } catch (NumberFormatException nfe) { }
-                        }
-        
-                        if (!hasOrd && !assigned && bp == 0) {
-                            try {
-                                currentseq.set(currentseq.size() - 1, Integer.valueOf(
-                                        parseMsgOrder(token)));
-                                assigned = true;
-                            } catch (NumberFormatException nfe) { }
-                        }
-        
-                        if (!hasVal && !hasOrd && !assigned && bp > 0
-                                && bp < token.length()) {
-                            Integer nbr, ord;
-                            try {
-                                nbr = Integer.valueOf(token.substring(0, bp));
-                                ord = Integer.valueOf(
-                                        parseMsgOrder(token.substring(bp)));
-                                currentseq.set(currentseq.size() - 2, nbr);
-                                currentseq.set(currentseq.size() - 1, ord);
-                                assigned = true;
-                            } catch (NumberFormatException nfe) { }
-                        }
-        
-                        if (!assigned) {
-                        	String msg = "parsing.error.message.unexpected-token";
-                            Object[] parseExcArgs = {token};
-                            throw new ParseException(
-                            		Translator.localize(msg, parseExcArgs),
-                                    st.getTokenIndex());
-                        }
-                    }
-                }
-            } catch (NoSuchElementException nsee) {
-                String msg = "parsing.error.message.unexpected-end-message";
-                throw new ParseException(Translator.localize(msg), s.length());
-            } catch (ParseException pre) {
-                throw pre;
-            }
-        
-            if (paramExpr != null) {
-                MyTokenizer st = new MyTokenizer(paramExpr, "\\,",
-                        parameterCustomSep);
-                args = new ArrayList();
-                while (st.hasMoreTokens()) {
-                    token = st.nextToken();
-        
-                    if (",".equals(token)) {
-                        if (args.size() == 0) {
-                            args.add(null);
-                        }
-                        args.add(null);
-                    } else {
-                        if (args.size() == 0) {
-                            if (token.trim().length() == 0) {
-                                continue;
-                            }
-                            args.add(null);
-                        }
-                        String arg = (String) args.get(args.size() - 1);
-                        if (arg != null) {
-                            arg = arg + token;
-                        } else {
-                            arg = token;
-                        }
-                        args.set(args.size() - 1, arg);
-                    }
-                }
-            } else if (mayDeleteExpr) {
-                args = new ArrayList();
-            }
-        
-            if (LOG.isDebugEnabled()) {
-                StringBuffer buf = new StringBuffer();
-                buf.append("ParseMessage: " + s + "\n");
-                buf.append("Message: ");
-                for (i = 0; seqno != null && i + 1 < seqno.size(); i += 2) {
-                    if (i > 0) {
-                        buf.append(", ");
-                    }
-                    buf.append(seqno.get(i) + " (" + seqno.get(i + 1) + ")");
-                }
-                buf.append("\n");
-                buf.append("predecessors: " + predecessors.size() + "\n");
-                for (i = 0; i < predecessors.size(); i++) {
-                    int j;
-                    List v = predecessors.get(i);
-                    buf.append("    Predecessor: ");
-                    for (j = 0; v != null && j + 1 < v.size(); j += 2) {
-                        if (j > 0) {
-                            buf.append(", ");
-                        }
-                        buf.append(v.get(j) + " (" + v.get(j + 1) + ")");
-                    }
-                }
-                buf.append("guard: " + guard + " it: " + iterative + " pl: "
-                        + parallell + "\n");
-                buf.append(varname + " := " + fname + " ( " + paramExpr + " )"
-                        + "\n");
-                LOG.debug(buf);
-            }
-        
-            if (Model.getFacade().getAction(mes) == null) {
-                Object a = Model.getCommonBehaviorFactory()
-                        .createCallAction();
-                Model.getCoreHelper().addOwnedElement(Model.getFacade().getContext(
-                        Model.getFacade().getInteraction(mes)), a);
-                Model.getCollaborationsHelper().setAction(mes, a);
-            }
-        
-            if (guard != null) {
-                guard = new StringBuilder("[" + guard.toString().trim() + "]");
-                if (iterative) {
-                    if (parallell) {
-                        guard = guard.insert(0, "*//");
-                    } else {
-                        guard = guard.insert(0, "*");
-                    }
-                }
-                Object expr =
-                    Model.getDataTypesFactory().createIterationExpression(
-                            getExpressionLanguage(), guard.toString());
-                Model.getCommonBehaviorHelper().setRecurrence(
-                        Model.getFacade().getAction(mes), expr);
-            }
-        
-            if (fname == null) {
-                if (!mayDeleteExpr
-                        && Model.getFacade().getScript(
-                                Model.getFacade().getAction(mes))
-                                                != null) {
-                    String body =
-                        (String) Model.getFacade().getBody(
-                                Model.getFacade().getScript(
-                                        Model.getFacade().getAction(mes)));
-        
-                    int idx = body.indexOf(":=");
-                    if (idx >= 0) {
-                        idx++;
-                    } else {
-                        idx = body.indexOf("=");
-                    }
-        
-                    if (idx >= 0) {
-                        fname = body.substring(idx + 1);
-                    } else {
-                        fname = body;
+                        String msg = "parsing.error.message.unexpected-token";
+                        Object[] parseExcArgs = {token};
+                        throw new ParseException(
+                                Translator.localize(msg, parseExcArgs),
+                                st.getTokenIndex());
                     }
                 } else {
-                    fname = "";
+                    boolean hasVal =
+                        currentseq.get(currentseq.size() - 2) != null;
+                    boolean hasOrd =
+                        currentseq.get(currentseq.size() - 1) != null;
+                    boolean assigned = false;
+                    int bp = findMsgOrderBreak(token);
+
+                    if (!hasVal && !assigned && bp == token.length()) {
+                        try {
+                            currentseq.set(
+                                currentseq.size() - 2, Integer.valueOf(
+                                    token));
+                            assigned = true;
+                        } catch (NumberFormatException nfe) { }
+                    }
+
+                    if (!hasOrd && !assigned && bp == 0) {
+                        try {
+                            currentseq.set(
+                                currentseq.size() - 1, Integer.valueOf(
+                                    parseMsgOrder(token)));
+                            assigned = true;
+                        } catch (NumberFormatException nfe) { }
+                    }
+
+                    if (!hasVal && !hasOrd && !assigned && bp > 0
+                            && bp < token.length()) {
+                        Integer nbr, ord;
+                        try {
+                            nbr = Integer.valueOf(token.substring(0, bp));
+                            ord = Integer.valueOf(
+                                    parseMsgOrder(token.substring(bp)));
+                            currentseq.set(currentseq.size() - 2, nbr);
+                            currentseq.set(currentseq.size() - 1, ord);
+                            assigned = true;
+                        } catch (NumberFormatException nfe) { }
+                    }
+
+                    if (!assigned) {
+                        String msg = "parsing.error.message.unexpected-token";
+                        Object[] parseExcArgs = {token};
+                        throw new ParseException(
+                                Translator.localize(msg, parseExcArgs),
+                                st.getTokenIndex());
+                    }
                 }
             }
-        
-            if (varname == null) {
-                if (!mayDeleteExpr
-                        && Model.getFacade().getScript(
-                                Model.getFacade().getAction(mes))
-                                                != null) {
-                    String body =
-                        (String) Model.getFacade().getBody(
-                                Model.getFacade().getScript(
-                                        Model.getFacade().getAction(mes)));
-                    int idx = body.indexOf(":=");
-                    if (idx < 0) {
-                        idx = body.indexOf("=");
+        } catch (NoSuchElementException nsee) {
+            String msg = "parsing.error.message.unexpected-end-message";
+            throw new ParseException(Translator.localize(msg), s.length());
+        } catch (ParseException pre) {
+            throw pre;
+        }
+
+        if (paramExpr != null) {
+            MyTokenizer st = new MyTokenizer(paramExpr, "\\,",
+                    parameterCustomSep);
+            args = new ArrayList<String>();
+            while (st.hasMoreTokens()) {
+                token = st.nextToken();
+
+                if (",".equals(token)) {
+                    if (args.size() == 0) {
+                        args.add(null);
                     }
-        
-                    if (idx >= 0) {
-                        varname = new StringBuilder(body.substring(0, idx));
+                    args.add(null);
+                } else {
+                    if (args.size() == 0) {
+                        if (token.trim().length() == 0) {
+                            continue;
+                        }
+                        args.add(null);
+                    }
+                    String arg = args.get(args.size() - 1);
+                    if (arg != null) {
+                        arg = arg + token;
                     } else {
-                        varname = new StringBuilder();
+                        arg = token;
                     }
+                    args.set(args.size() - 1, arg);
+                }
+            }
+        } else if (mayDeleteExpr) {
+            args = new ArrayList<String>();
+        }
+
+        if (LOG.isDebugEnabled()) {
+            StringBuffer buf = new StringBuffer();
+            buf.append("ParseMessage: " + s + "\n");
+            buf.append("Message: ");
+            for (i = 0; seqno != null && i + 1 < seqno.size(); i += 2) {
+                if (i > 0) {
+                    buf.append(", ");
+                }
+                buf.append(seqno.get(i) + " (" + seqno.get(i + 1) + ")");
+            }
+            buf.append("\n");
+            buf.append("predecessors: " + predecessors.size() + "\n");
+            for (i = 0; i < predecessors.size(); i++) {
+                int j;
+                List v = predecessors.get(i);
+                buf.append("    Predecessor: ");
+                for (j = 0; v != null && j + 1 < v.size(); j += 2) {
+                    if (j > 0) {
+                        buf.append(", ");
+                    }
+                    buf.append(v.get(j) + " (" + v.get(j + 1) + ")");
+                }
+            }
+            buf.append("guard: " + guard + " it: " + iterative + " pl: "
+                    + parallell + "\n");
+            buf.append(varname + " := " + fname + " ( " + paramExpr + " )"
+                    + "\n");
+            LOG.debug(buf);
+        }
+
+        if (Model.getFacade().getAction(mes) == null) {
+            Object a = Model.getCommonBehaviorFactory()
+                .createCallAction();
+            Model.getCoreHelper().addOwnedElement(Model.getFacade().getContext(
+                    Model.getFacade().getInteraction(mes)), a);
+            Model.getCollaborationsHelper().setAction(mes, a);
+        }
+
+        if (guard != null) {
+            guard = new StringBuilder("[" + guard.toString().trim() + "]");
+            if (iterative) {
+                if (parallell) {
+                    guard = guard.insert(0, "*//");
+                } else {
+                    guard = guard.insert(0, "*");
+                }
+            }
+            Object expr =
+                Model.getDataTypesFactory().createIterationExpression(
+                        getExpressionLanguage(), guard.toString());
+            Model.getCommonBehaviorHelper().setRecurrence(
+                    Model.getFacade().getAction(mes), expr);
+        }
+
+        if (fname == null) {
+            if (!mayDeleteExpr
+                    && Model.getFacade().getScript(
+                            Model.getFacade().getAction(mes))
+                            != null) {
+                String body =
+                    (String) Model.getFacade().getBody(
+                            Model.getFacade().getScript(
+                                    Model.getFacade().getAction(mes)));
+
+                int idx = body.indexOf(":=");
+                if (idx >= 0) {
+                    idx++;
+                } else {
+                    idx = body.indexOf("=");
+                }
+
+                if (idx >= 0) {
+                    fname = body.substring(idx + 1);
+                } else {
+                    fname = body;
+                }
+            } else {
+                fname = "";
+            }
+        }
+
+        if (varname == null) {
+            if (!mayDeleteExpr
+                    && Model.getFacade().getScript(
+                            Model.getFacade().getAction(mes))
+                            != null) {
+                String body =
+                    (String) Model.getFacade().getBody(
+                            Model.getFacade().getScript(
+                                    Model.getFacade().getAction(mes)));
+                int idx = body.indexOf(":=");
+                if (idx < 0) {
+                    idx = body.indexOf("=");
+                }
+
+                if (idx >= 0) {
+                    varname = new StringBuilder(body.substring(0, idx));
                 } else {
                     varname = new StringBuilder();
                 }
+            } else {
+                varname = new StringBuilder();
             }
-        
-            if (fname != null) {
-                String expr = fname.trim();
-                if (varname.length() > 0) {
-                    expr = varname.toString().trim() + " := " + expr;
-                }
-        
-                if (Model.getFacade().getScript(
-                        Model.getFacade().getAction(mes)) == null
-                        || !expr.equals(Model.getFacade().getBody(
-                                Model.getFacade().getScript(
-                                        Model.getFacade().getAction(mes))))) {
-                    Object e =
-                        Model.getDataTypesFactory()
-                            .createActionExpression(
-                                    getExpressionLanguage(),
-                                    expr.trim());
-                    Model.getCommonBehaviorHelper().setScript(
-                            Model.getFacade().getAction(mes), e);
-                    refindOperation = true;
-                }
+        }
+
+        if (fname != null) {
+            String expr = fname.trim();
+            if (varname.length() > 0) {
+                expr = varname.toString().trim() + " := " + expr;
             }
-        
-            if (args != null) {
-                Collection c = new ArrayList(
+
+            if (Model.getFacade().getScript(
+                    Model.getFacade().getAction(mes)) == null
+                    || !expr.equals(Model.getFacade().getBody(
+                            Model.getFacade().getScript(
+                                    Model.getFacade().getAction(mes))))) {
+                Object e =
+                    Model.getDataTypesFactory()
+                        .createActionExpression(
+                            getExpressionLanguage(),
+                            expr.trim());
+                Model.getCommonBehaviorHelper().setScript(
+                        Model.getFacade().getAction(mes), e);
+                refindOperation = true;
+            }
+        }
+
+        if (args != null) {
+            Collection c = new ArrayList(
                     Model.getFacade().getActualArguments(
                             Model.getFacade().getAction(mes)));
-                Iterator it = c.iterator();
-                for (i = 0; i < args.size(); i++) {
-                    Object arg = (it.hasNext() ? /* (MArgument) */it.next() : null);
-                    if (arg == null) {
-                        arg = Model.getCommonBehaviorFactory()
-                                .createArgument();
-                        Model.getCommonBehaviorHelper().addActualArgument(
-                                Model.getFacade().getAction(mes), arg);
-                        refindOperation = true;
-                    }
-                    if (Model.getFacade().getValue(arg) == null
-                            || !args.get(i).equals(
-                                  Model.getFacade().getBody(
-                                          Model.getFacade().getValue(arg)))) {
-                        String value = (args.get(i) != null ? (String) args.get(i)
-                                : "");
-                        Object e =
-                            Model.getDataTypesFactory().createExpression(
-                                    getExpressionLanguage(),
-                                value.trim());
-                        Model.getCommonBehaviorHelper().setValue(arg, e);
-                    }
-                }
-        
-                while (it.hasNext()) {
-                    Model.getCommonBehaviorHelper()
-                            .removeActualArgument(Model.getFacade().getAction(mes),
-                                    it.next());
+            Iterator it = c.iterator();
+            for (i = 0; i < args.size(); i++) {
+                Object arg = (it.hasNext() ? /* (MArgument) */it.next() : null);
+                if (arg == null) {
+                    arg = Model.getCommonBehaviorFactory()
+                        .createArgument();
+                    Model.getCommonBehaviorHelper().addActualArgument(
+                            Model.getFacade().getAction(mes), arg);
                     refindOperation = true;
                 }
+                if (Model.getFacade().getValue(arg) == null
+                        || !args.get(i).equals(
+                                Model.getFacade().getBody(
+                                        Model.getFacade().getValue(arg)))) {
+                    String value = (args.get(i) != null ? args.get(i)
+                            : "");
+                    Object e =
+                        Model.getDataTypesFactory().createExpression(
+                                getExpressionLanguage(),
+                                value.trim());
+                    Model.getCommonBehaviorHelper().setValue(arg, e);
+                }
             }
-        
-            if (seqno != null) {
-                Object/* MMessage */root;
-                // Find the preceding message, if any, on either end of the
-                // association.
-                StringBuilder pname = new StringBuilder();
-                StringBuilder mname = new StringBuilder();
-                String gname = generateMessageNumber(mes);
-                boolean swapRoles = false;
-                int majval = 0;
-                if (seqno.get(seqno.size() - 2) != null) {
-                    majval =
-                        Math.max(((Integer) seqno.get(seqno.size() - 2)).intValue()
-                                 - 1,
-                                 0);
+
+            while (it.hasNext()) {
+                Model.getCommonBehaviorHelper()
+                    .removeActualArgument(Model.getFacade().getAction(mes),
+                        it.next());
+                refindOperation = true;
+            }
+        }
+
+        if (seqno != null) {
+            Object/* MMessage */root;
+            // Find the preceding message, if any, on either end of the
+            // association.
+            StringBuilder pname = new StringBuilder();
+            StringBuilder mname = new StringBuilder();
+            String gname = generateMessageNumber(mes);
+            boolean swapRoles = false;
+            int majval = 0;
+            if (seqno.get(seqno.size() - 2) != null) {
+                majval =
+                    Math.max((seqno.get(seqno.size() - 2)).intValue()
+                            - 1,
+                            0);
+            }
+            int minval = 0;
+            if (seqno.get(seqno.size() - 1) != null) {
+                minval =
+                    Math.max((seqno.get(seqno.size() - 1)).intValue(),
+                            0);
+            }
+
+            for (i = 0; i + 1 < seqno.size(); i += 2) {
+                int bv = 1;
+                if (seqno.get(i) != null) {
+                    bv = Math.max((seqno.get(i)).intValue(), 1);
                 }
-                int minval = 0;
-                if (seqno.get(seqno.size() - 1) != null) {
-                    minval =
-                        Math.max(((Integer) seqno.get(seqno.size() - 1)).intValue(),
-                                0);
+
+                int sv = 0;
+                if (seqno.get(i + 1) != null) {
+                    sv = Math.max((seqno.get(i + 1)).intValue(), 0);
                 }
-        
-                for (i = 0; i + 1 < seqno.size(); i += 2) {
-                    int bv = 1;
-                    if (seqno.get(i) != null) {
-                        bv = Math.max(((Integer) seqno.get(i)).intValue(), 1);
-                    }
-        
-                    int sv = 0;
-                    if (seqno.get(i + 1) != null) {
-                        sv = Math.max(((Integer) seqno.get(i + 1)).intValue(), 0);
-                    }
-        
+
+                if (i > 0) {
+                    mname.append(".");
+                }
+                mname.append(Integer.toString(bv) + (char) ('a' + sv));
+
+                if (i + 3 < seqno.size()) {
                     if (i > 0) {
-                        mname.append(".");
+                        pname.append(".");
                     }
-                    mname.append(Integer.toString(bv) + (char) ('a' + sv));
-        
-                    if (i + 3 < seqno.size()) {
-                        if (i > 0) {
-                            pname.append(".");
-                        }
-                        pname.append(Integer.toString(bv) + (char) ('a' + sv));
-                    }
+                    pname.append(Integer.toString(bv) + (char) ('a' + sv));
                 }
-        
-                root = null;
-                if (pname.length() > 0) {
-                    root = findMsg(Model.getFacade().getSender(mes), 
+            }
+
+            root = null;
+            if (pname.length() > 0) {
+                root = findMsg(Model.getFacade().getSender(mes), 
+                        pname.toString());
+                if (root == null) {
+                    root = findMsg(Model.getFacade().getReceiver(mes), 
                             pname.toString());
-                    if (root == null) {
-                        root = findMsg(Model.getFacade().getReceiver(mes), 
-                                pname.toString());
-                        if (root != null) {
-                            swapRoles = true;
-                        }
+                    if (root != null) {
+                        swapRoles = true;
                     }
-                } else if (!hasMsgWithActivator(Model.getFacade().getSender(mes),
-                                                null)
-                        && hasMsgWithActivator(Model.getFacade().getReceiver(mes),
-                                               null)) {
-                    swapRoles = true;
                 }
-        
-                if (compareMsgNumbers(mname.toString(), gname.toString())) {
-                    // Do nothing
-                } else if (isMsgNumberStartOf(gname.toString(), mname.toString())) {
-                	String msg = "parsing.error.message.subtree-rooted-self";
-                    throw new ParseException(Translator.localize(msg), 0);
-                } else if (Model.getFacade().getPredecessors(mes).size() > 1
-                        && Model.getFacade().getSuccessors(mes).size() > 1) {
-                	String msg = "parsing.error.message.start-end-many-threads";
-                    throw new ParseException(Translator.localize(msg), 0);
-                } else if (root == null && pname.length() > 0) {
-                	String msg = "parsing.error.message.activator-not-found";
-                    throw new ParseException(Translator.localize(msg), 0);
-                } else if (swapRoles
-                        && Model.getFacade().getActivatedMessages(mes).size() > 0
-                        && (Model.getFacade().getSender(mes)
-                                != Model.getFacade().getReceiver(mes))) {
-                	String msg = "parsing.error.message.reverse-direction-message";
-                    throw new ParseException(Translator.localize(msg), 0);
-                } else {
-                    /* Disconnect the message from the call graph
-                     * Make copies of returned live collections
-                     * since we're modifying
-                     */
-                    Collection c = new ArrayList(
-                            Model.getFacade().getPredecessors(mes));
-                    Collection c2 = new ArrayList(
-                            Model.getFacade().getSuccessors(mes));
-                    Iterator it;
-        
-                    it = c2.iterator();
-                    while (it.hasNext()) {
-                        Model.getCollaborationsHelper().removeSuccessor(mes,
-                                it.next());
+            } else if (!hasMsgWithActivator(Model.getFacade().getSender(mes),
+                    null)
+                    && hasMsgWithActivator(Model.getFacade().getReceiver(mes),
+                            null)) {
+                swapRoles = true;
+            }
+
+            if (compareMsgNumbers(mname.toString(), gname.toString())) {
+                // Do nothing
+            } else if (isMsgNumberStartOf(gname.toString(), mname.toString())) {
+                String msg = "parsing.error.message.subtree-rooted-self";
+                throw new ParseException(Translator.localize(msg), 0);
+            } else if (Model.getFacade().getPredecessors(mes).size() > 1
+                    && Model.getFacade().getSuccessors(mes).size() > 1) {
+                String msg = "parsing.error.message.start-end-many-threads";
+                throw new ParseException(Translator.localize(msg), 0);
+            } else if (root == null && pname.length() > 0) {
+                String msg = "parsing.error.message.activator-not-found";
+                throw new ParseException(Translator.localize(msg), 0);
+            } else if (swapRoles
+                    && Model.getFacade().getActivatedMessages(mes).size() > 0
+                    && (Model.getFacade().getSender(mes)
+                            != Model.getFacade().getReceiver(mes))) {
+                String msg = "parsing.error.message.reverse-direction-message";
+                throw new ParseException(Translator.localize(msg), 0);
+            } else {
+                /* Disconnect the message from the call graph
+                 * Make copies of returned live collections
+                 * since we're modifying
+                 */
+                Collection c = new ArrayList(
+                        Model.getFacade().getPredecessors(mes));
+                Collection c2 = new ArrayList(
+                        Model.getFacade().getSuccessors(mes));
+                Iterator it;
+
+                it = c2.iterator();
+                while (it.hasNext()) {
+                    Model.getCollaborationsHelper().removeSuccessor(mes,
+                            it.next());
+                }
+
+                it = c.iterator();
+                while (it.hasNext()) {
+                    Iterator it2 = c2.iterator();
+                    Object pre = /* (MMessage) */it.next();
+                    Model.getCollaborationsHelper().removePredecessor(mes, pre);
+                    while (it2.hasNext()) {
+                        Model.getCollaborationsHelper().addPredecessor(
+                                it2.next(), pre);
                     }
-        
-                    it = c.iterator();
-                    while (it.hasNext()) {
-                        Iterator it2 = c2.iterator();
-                        Object pre = /* (MMessage) */it.next();
-                        Model.getCollaborationsHelper().removePredecessor(mes, pre);
-                        while (it2.hasNext()) {
-                            Model.getCollaborationsHelper().addPredecessor(
-                                    it2.next(), pre);
-                        }
-                    }
-        
-                    // Connect the message at a new spot
-                    Model.getCollaborationsHelper().setActivator(mes, root);
-                    if (swapRoles) {
-                        Object/* MClassifierRole */r =
-                            Model.getFacade().getSender(mes);
-                        Model.getCollaborationsHelper().setSender(mes,
-                                Model.getFacade().getReceiver(mes));
-                        Model.getCommonBehaviorHelper().setReceiver(mes, r);
-                    }
-        
-                    if (root == null) {
-                        c =
-                            filterWithActivator(
+                }
+
+                // Connect the message at a new spot
+                Model.getCollaborationsHelper().setActivator(mes, root);
+                if (swapRoles) {
+                    Object/* MClassifierRole */r =
+                        Model.getFacade().getSender(mes);
+                    Model.getCollaborationsHelper().setSender(mes,
+                            Model.getFacade().getReceiver(mes));
+                    Model.getCommonBehaviorHelper().setReceiver(mes, r);
+                }
+
+                if (root == null) {
+                    c =
+                        filterWithActivator(
                                 Model.getFacade().getSentMessages(
                                         Model.getFacade().getSender(mes)),
                                         null);
-                    } else {
-                        c = Model.getFacade().getActivatedMessages(root);
-                    }
-                    c2 = findCandidateRoots(c, root, mes);
-                    it = c2.iterator();
-                    // If c2 is empty, then we're done (or there is a
-                    // cycle in the message graph, which would be bad) If
-                    // c2 has more than one element, then the model is
-                    // crappy, but we'll just use one of them anyway
-                    if (majval <= 0) {
-                        while (it.hasNext()) {
-                            Model.getCollaborationsHelper().addSuccessor(mes,
-                                    /* (MMessage) */it.next());
-                        }
-                    } else if (it.hasNext()) {
-                        Object/* MMessage */pre =
-                            walk(/* (MMessage) */it.next(), majval - 1, false);
-                        Object/* MMessage */post = successor(pre, minval);
-                        if (post != null) {
-                            Model.getCollaborationsHelper()
-                                .removePredecessor(post, pre);
-                            Model.getCollaborationsHelper()
-                                .addPredecessor(post, mes);
-                        }
-                        insertSuccessor(pre, mes, minval);
-                    }
-                    refindOperation = true;
+                } else {
+                    c = Model.getFacade().getActivatedMessages(root);
                 }
-            }
-        
-            if (fname != null && refindOperation) {
-                Object role = Model.getFacade().getReceiver(mes);
-                List ops =
-                    getOperation(
-                            Model.getFacade().getBases(role),
-                            fname.trim(),
-                            Model.getFacade().getActualArguments(
-                                    Model.getFacade().getAction(mes)).size());
-        
-                // TODO: Should someone choose one, if there are more
-                // than one?
-                if (Model.getFacade().isACallAction(
-                        Model.getFacade().getAction(mes))) {
-                    Object a = /* (MCallAction) */Model.getFacade().getAction(mes);
-                    if (ops.size() > 0) {
-                        Model.getCommonBehaviorHelper().setOperation(a,
-                                /* (MOperation) */ops.get(0));
-                    } else {
-                        Model.getCommonBehaviorHelper().setOperation(a, null);
-                    }
-                }
-            }
-        
-            // TODO: Predecessors is not implemented, because it
-            // causes some problems that I've not found an easy way to handle yet,
-            // d00mst. The specific problem is that the notation currently is
-            // ambiguous on second message after a thread split.
-        
-            // Why not implement it anyway? d00mst
-        
-            if (hasPredecessors) {
-                Collection roots =
-                    findCandidateRoots(
-                            Model.getFacade().getMessages(
-                                    Model.getFacade().getInteraction(mes)),
-                            null,
-                            null);
-                List pre = new ArrayList();
-                Iterator it;
-            predfor:
-                for (i = 0; i < predecessors.size(); i++) {
-                    it = roots.iterator();
+                c2 = findCandidateRoots(c, root, mes);
+                it = c2.iterator();
+                // If c2 is empty, then we're done (or there is a
+                // cycle in the message graph, which would be bad) If
+                // c2 has more than one element, then the model is
+                // crappy, but we'll just use one of them anyway
+                if (majval <= 0) {
                     while (it.hasNext()) {
-                        Object msg =
-                            walkTree(it.next(), predecessors.get(i));
-                        if (msg != null && msg != mes) {
-                            if (isBadPreMsg(mes, msg)) {
-                                String parseMsg = "parsing.error.message.one-pred";
-                                throw new ParseException(
-                                        Translator.localize(parseMsg), 0);
-                            }
-                            pre.add(msg);
-                            continue predfor;
-                        }
+                        Model.getCollaborationsHelper().addSuccessor(mes,
+                                /* (MMessage) */it.next());
                     }
-                    String parseMsg = "parsing.error.message.pred-not-found";
-                    throw new ParseException(Translator.localize(parseMsg), 0);
+                } else if (it.hasNext()) {
+                    Object/* MMessage */pre =
+                        walk(/* (MMessage) */it.next(), majval - 1, false);
+                    Object/* MMessage */post = successor(pre, minval);
+                    if (post != null) {
+                        Model.getCollaborationsHelper()
+                            .removePredecessor(post, pre);
+                        Model.getCollaborationsHelper()
+                            .addPredecessor(post, mes);
+                    }
+                    insertSuccessor(pre, mes, minval);
                 }
-                MsgPtr ptr = new MsgPtr();
-                recCountPredecessors(mes, ptr);
-                if (ptr.message != null && !pre.contains(ptr.message)) {
-                    pre.add(ptr.message);
-                }
-                Model.getCollaborationsHelper().setPredecessors(mes, pre);
+                refindOperation = true;
             }
         }
+
+        if (fname != null && refindOperation) {
+            Object role = Model.getFacade().getReceiver(mes);
+            List ops =
+                getOperation(
+                        Model.getFacade().getBases(role),
+                        fname.trim(),
+                        Model.getFacade().getActualArguments(
+                                Model.getFacade().getAction(mes)).size());
+
+            // TODO: Should someone choose one, if there are more
+            // than one?
+            if (Model.getFacade().isACallAction(
+                    Model.getFacade().getAction(mes))) {
+                Object a = /* (MCallAction) */Model.getFacade().getAction(mes);
+                if (ops.size() > 0) {
+                    Model.getCommonBehaviorHelper().setOperation(a,
+                            /* (MOperation) */ops.get(0));
+                } else {
+                    Model.getCommonBehaviorHelper().setOperation(a, null);
+                }
+            }
+        }
+
+        // TODO: Predecessors is not implemented, because it
+        // causes some problems that I've not found an easy way to handle yet,
+        // d00mst. The specific problem is that the notation currently is
+        // ambiguous on second message after a thread split.
+
+        // Why not implement it anyway? d00mst
+
+        if (hasPredecessors) {
+            Collection roots =
+                findCandidateRoots(
+                        Model.getFacade().getMessages(
+                                Model.getFacade().getInteraction(mes)),
+                                null,
+                                null);
+            List<Object> pre = new ArrayList<Object>();
+            Iterator it;
+        predfor:
+            for (i = 0; i < predecessors.size(); i++) {
+                it = roots.iterator();
+                while (it.hasNext()) {
+                    Object msg =
+                        walkTree(it.next(), predecessors.get(i));
+                    if (msg != null && msg != mes) {
+                        if (isBadPreMsg(mes, msg)) {
+                            String parseMsg = "parsing.error.message.one-pred";
+                            throw new ParseException(
+                                    Translator.localize(parseMsg), 0);
+                        }
+                        pre.add(msg);
+                        continue predfor;
+                    }
+                }
+                String parseMsg = "parsing.error.message.pred-not-found";
+                throw new ParseException(Translator.localize(parseMsg), 0);
+            }
+            MsgPtr ptr = new MsgPtr();
+            recCountPredecessors(mes, ptr);
+            if (ptr.message != null && !pre.contains(ptr.message)) {
+                pre.add(ptr.message);
+            }
+            Model.getCollaborationsHelper().setPredecessors(mes, pre);
+        }
+    }
 
     private String getExpressionLanguage() {
         return Notation.DEFAULT_NOTATION;
@@ -1035,35 +1038,33 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      * activator. If veto isn't null, then the message in veto will not be
      * included in the Collection of candidates.
      *
-     * @param c The collection.
+     * @param c The collection of UML Message objects.
      * @param a The message.
-     * @param veto The veto message.
+     * @param veto The excluded message.
      * @return The found roots.
      */
     private Collection findCandidateRoots(Collection c, Object a, Object veto) {
-        Iterator it = c.iterator();
-        List v = new ArrayList();
-        while (it.hasNext()) {
-            Object m = /* (MMessage) */it.next();
-            if (m == veto) {
+        List<Object> candidates = new ArrayList<Object>();
+        for (Object message : c) {
+            if (message == veto) {
                 continue;
             }
-            if (Model.getFacade().getActivator(m) != a) {
+            if (Model.getFacade().getActivator(message) != a) {
                 continue;
             }
-            Iterator it2 = Model.getFacade().getPredecessors(m).iterator();
-            boolean candidate = true;
-            while (it2.hasNext()) {
-                Object m2 = /* (MMessage) */it2.next();
-                if (Model.getFacade().getActivator(m2) == a) {
-                    candidate = false;
+            Collection predecessors =
+                Model.getFacade().getPredecessors(message);
+            boolean isCandidate = true;
+            for (Object predecessor : predecessors) {
+                if (Model.getFacade().getActivator(predecessor) == a) {
+                    isCandidate = false;
                 }
             }
-            if (candidate) {
-                v.add(m);
+            if (isCandidate) {
+                candidates.add(message);
             }
         }
-        return v;
+        return candidates;
     }
 
     /**
@@ -1184,6 +1185,9 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
         return v;
     }
 
+    /**
+     * @param message the UML Message object
+     */
     public AbstractMessageNotationUml(Object message) {
         super(message);
         parameterCustomSep = initParameterSeparators();
@@ -1273,8 +1277,9 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
     /**
      * Finds the messages in Collection c that has message a as activator.
      */
-    private Collection filterWithActivator(Collection c, Object/*MMessage*/a) {
-        List v = new ArrayList();
+    private Collection<Object> filterWithActivator(Collection c, 
+            Object/*MMessage*/a) {
+        List<Object> v = new ArrayList<Object>();
         for (Object msg : c) {
             if (Model.getFacade().getActivator(msg) == a) {
                 v.add(msg);
@@ -1292,7 +1297,8 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      *            MMessage
      */
     private void insertSuccessor(Object m, Object s, int p) {
-        List successors = new ArrayList(Model.getFacade().getSuccessors(m));
+        List<Object> successors = 
+            new ArrayList<Object>(Model.getFacade().getSuccessors(m));
         if (successors.size() > p) {
             successors.add(p, s);
         } else {
@@ -1302,8 +1308,9 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
     }
 
     /**
-     * Finds the operations in Collection c with the given name and the given number of
-     * parameters. If no operation is found, one is created. The applicable
+     * Finds the operations in Collection c with the given name 
+     * and the given number of parameters. 
+     * If no operation is found, one is created. The applicable
      * operations are returned.
      *
      * @param c the collection of operations to be searched
