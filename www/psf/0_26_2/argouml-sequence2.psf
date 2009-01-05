@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psf version="2.0">
+<provider id="org.tigris.subversion.subclipse.core.svnnature">
+<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/releases/VERSION_0_26_2/src/argouml-core-diagrams-sequence2,argouml-core-diagrams-sequence2"/>
+</provider>
+</psf>
