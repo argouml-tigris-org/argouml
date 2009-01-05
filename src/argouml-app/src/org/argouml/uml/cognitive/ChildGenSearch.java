@@ -25,58 +25,61 @@
 package org.argouml.uml.cognitive;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.util.ChildGenerator;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.util.ChildGenerator;
 
 /**
- * Convenience class gives critics access to parts of the project.
+ * Convenience class gives Find/Search dialog access to parts of the project.
  * 
- * It defines a gen() function that returns the "children" of any given part of
- * the UML model. It traverses a Project to Diagrams and Models, then uses
- * getModelElementContents to traverse the Models. <p>
+ * It defines a childIterator function that returns the "children" of any given
+ * part of the ArgoUML project. It traverses a Project to Diagrams and Models,
+ * then uses getModelElementContents to traverse the Models.
+ * <p>
  * 
- * @deprecated for 0.28 by tfmorris.  Use GEF-free variant 
- *      {@link ChildGenSearch}.
  * @stereotype singleton
  * @author jrobbins
- * @deprecated for 0.26 by tfmorris.  Use {@link org.argouml.ui.ChildGenSearch}.
  */
-@Deprecated
-public class ChildGenFind implements ChildGenerator {
-    private static final ChildGenFind SINGLETON = new ChildGenFind();
+public class ChildGenSearch implements ChildGenerator {
+    
+    private static final ChildGenSearch INSTANCE = new ChildGenSearch();
 
+    private ChildGenSearch() { 
+        super();
+    }
+    
     /**
-     * Reply a Collection of the children of the given Object
-     *
-     * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
+     * Reply a Collection of the children of the given Object.  Ordering of
+     * the iterated elements is undefined and should not be relied upon.
+     * 
+     * {@inheritDoc}
      */
-    public Enumeration gen(Object o) {
+    public Iterator childIterator(Object parent) {
         List res = new ArrayList();
-        if (o instanceof Project) {
-            Project p = (Project) o;
+        if (parent instanceof Project) {
+            Project p = (Project) parent;
             res.addAll(p.getUserDefinedModelList());
             res.addAll(p.getDiagramList());
-        } else if (o instanceof Diagram) {
-            Diagram d = (Diagram) o;
+        } else if (parent instanceof ArgoDiagram) {
+            ArgoDiagram d = (ArgoDiagram) parent;
             res.addAll(d.getGraphModel().getNodes());
             res.addAll(d.getGraphModel().getEdges());
-        } else if (Model.getFacade().isAModelElement(o)) {
-            res.addAll(Model.getFacade().getModelElementContents(o));
+        } else if (Model.getFacade().isAModelElement(parent)) {
+            res.addAll(Model.getFacade().getModelElementContents(parent));
         }
         
-	return Collections.enumeration(res);
+	return res.iterator();
     }
 
     /**
-     * @return Returns the SINGLETON.
+     * @return Returns the singleton instance.
      */
-    public static ChildGenFind getSingleton() {
-        return SINGLETON;
+    public static ChildGenSearch getInstance() {
+        return INSTANCE;
     }
+
 }
