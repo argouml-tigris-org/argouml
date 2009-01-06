@@ -474,6 +474,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         monitor.updateProgress(progress);
         if (files.size() == 0) {
             monitor.notifyNullAction();
+            monitor.close();
             return;
         }
         Model.getPump().stopPumpingEvents();
