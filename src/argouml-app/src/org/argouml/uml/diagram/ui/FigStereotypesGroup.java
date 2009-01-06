@@ -215,6 +215,8 @@ public class FigStereotypesGroup extends ArgoFigGroup {
 	List<Fig> figsWithOutIcon = new ArrayList<Fig>();
 	List<Fig> others = new ArrayList<Fig>();
 
+	// TODO: This doesn't do anything special with keywords.
+	// They should probably go first.
 	for (Fig f : allFigs) {
             if (f instanceof FigStereotype) {
                 FigStereotype s = (FigStereotype) f;
@@ -297,6 +299,8 @@ public class FigStereotypesGroup extends ArgoFigGroup {
             } else {
                 // The keyword fig already exists.
                 removeCollection.remove(keywordFig);
+                // Make sure it has the right text
+                keywordFig.setText(keyword);
             }
             ++stereotypeCount;
         }

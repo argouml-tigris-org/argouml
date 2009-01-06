@@ -47,7 +47,7 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigKeyword extends FigSingleLineText {
 
-    private final String keywordText;
+    private String keywordText;
 
     /**
      * @param keyword the text to show
@@ -69,6 +69,7 @@ public class FigKeyword extends FigSingleLineText {
         setJustification(FigText.JUSTIFY_CENTER);
         setRightMargin(3);
         setLeftMargin(3);
+        super.setLineWidth(0);
     }
     
     /* Force the line-width to 0, since the FigGroup that contains the 
@@ -81,6 +82,7 @@ public class FigKeyword extends FigSingleLineText {
     /**
      * This is needed for updating the guillemet style.
      */
+    @Override
     protected void setText() {
         setText(keywordText);
     }
@@ -89,8 +91,9 @@ public class FigKeyword extends FigSingleLineText {
      * Add guillemets to any text set to this Fig.
      * {@inheritDoc}
      */
+    @Override
     public void setText(String text) {
-        assert keywordText.equals(text);
+        keywordText = text;
         super.setText(NotationUtilityUml.formatStereotype(text,
                 getSettings().getNotationSettings().isUseGuillemets()));
     }
