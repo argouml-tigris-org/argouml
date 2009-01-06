@@ -77,11 +77,10 @@ public class ActionGenerateOne extends UndoableAction {
      */
     @Override
     public boolean isEnabled() {
-        if (!super.isEnabled()) {
-            return false;
-	}
-        List classes = getCandidates();
-        return classes.size() > 0;
+        // TODO: this seems to be called at startup only so no check so far
+        return true;
+        //List classes = getCandidates();
+        //return classes.size() > 0;
     }
 
     /**

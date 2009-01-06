@@ -102,8 +102,7 @@ public class ActionGenerateProjectCode extends UndoableAction {
      * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */
     public boolean isEnabled() {
-        ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();
-        return super.isEnabled() && (activeDiagram != null);
+        return true;
     }
 
     /**
