@@ -47,7 +47,8 @@ import org.argouml.notation.NotationSettings;
  * seq_expr := seqelem ['.' seqelem]*
  * ret_list := lvalue [',' lvalue]*
  * arg_list := rvalue [',' rvalue]*
- * message := [seq [',' seq]* '/'] seq_expr ':' [ret_list :=] name ([arg_list])
+ * predecessor := seq [',' seq]* '/'
+ * message := [predecessor] seq_expr ':' [ret_list :=] name ([arg_list])
  * </pre> <p>
  *
  * Which is rather complex, so a few examples:<p><ul>
@@ -175,42 +176,6 @@ public class MessageNotationUml extends AbstractMessageNotationUml {
         }
 
         return predecessors + number + " : " + action;
-    }
-
-    protected int recCountPredecessors(Object message, MsgPtr ptr) {
-        Collection predecessors;
-        Iterator it;
-        int pre = 0;
-        int local = 0;
-        Object/*MMessage*/ maxmsg = null;
-        Object activatorMessage;
-
-        if (message == null) {
-            ptr.message = null;
-            return 0;
-        }
-
-        activatorMessage = Model.getFacade().getActivator(message);
-        predecessors = Model.getFacade().getPredecessors(message);
-        it = predecessors.iterator();
-        while (it.hasNext()) {
-            Object msg = it.next();
-            if (Model.getFacade().getActivator(msg) != activatorMessage) {
-                continue;
-            }
-            int p = recCountPredecessors(msg, null) + 1;
-            if (p > pre) {
-                pre = p;
-                maxmsg = msg;
-            }
-            local++;
-        }
-
-        if (ptr != null) {
-            ptr.message = maxmsg;
-        }
-
-        return Math.max(pre, local);
     }
 
 }

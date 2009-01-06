@@ -49,7 +49,7 @@ import org.argouml.notation.SDNotationSettings;
  * ret_list := lvalue [',' lvalue]*
  * arg_list := rvalue [',' rvalue]*
  * predecessor := seq [',' seq]* '/'
- * message := [seq [',' seq]* '/'] seq_expr ':' [ret_list :=] name ([arg_list])
+ * message := [predecessor] seq_expr ':' [ret_list :=] name ([arg_list])
  * </pre> <p>
  *
  * Which is rather complex, so a few examples:<p><ul>
@@ -177,37 +177,6 @@ public class SDMessageNotationUml extends AbstractMessageNotationUml {
             return action;
         }
         return predecessors + number + " : " + action;
-    }
-
-    protected int recCountPredecessors(Object message, MsgPtr ptr) {
-        int pre = 0;
-        int local = 0;
-        Object/*MMessage*/ maxmsg = null;
-        Object activatorMessage;
-
-        if (message == null) {
-            ptr.message = null;
-            return 0;
-        }
-
-        activatorMessage = Model.getFacade().getActivator(message);
-        for (Object msg : Model.getFacade().getPredecessors(message)) {
-            if (Model.getFacade().getActivator(msg) != activatorMessage) {
-                continue;
-            }
-            int p = recCountPredecessors(msg, null) + 1;
-            if (p > pre) {
-                pre = p;
-                maxmsg = msg;
-            }
-            local++;
-        }
-
-        if (ptr != null) {
-            ptr.message = maxmsg;
-        }
-
-        return Math.max(pre, local);
     }
 
 }

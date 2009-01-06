@@ -49,7 +49,38 @@ import org.argouml.util.MyTokenizer;
  * It is extended by {@link MessageNotationUml}, with the 
  * notation of messages as seen in collaboration diagrams, 
  * and {@link SDMessageNotationUml}, with the notation of 
- * messages as seen in sequence diagrams.
+ * messages as seen in sequence diagrams.<p>
+ * 
+ * Parses a message line of the form:
+ *
+ * <pre>
+ * intno := integer|name
+ * seq := intno ['.' intno]*
+ * recurrance := '*'['//'] | '*'['//']'[' <i>iteration </i>']' | '['
+ * <i>condition </i>']'
+ * seqelem := {[intno] ['['recurrance']']}
+ * seq_expr := seqelem ['.' seqelem]*
+ * ret_list := lvalue [',' lvalue]*
+ * arg_list := rvalue [',' rvalue]*
+ * predecessor := seq [',' seq]* '/'
+ * message := [predecessor] seq_expr ':' [ret_list :=] name ([arg_list])
+ * </pre>
+ *
+ * Which is rather complex, so a few examples:<ul>
+ * <li> 2: display(x, y)
+ * <li> 1.3.1: p := find(specs)
+ * <li> [x &lt; 0] 4: invert(color)
+ * <li> A3, B4/ C3.1*: update()
+ * </ul>
+ *
+ * This syntax is compatible with the UML 1.4.2 specification.<p>
+ *
+ * Actually, only a subset of this syntax is currently supported, and some
+ * is not even planned to be supported. The exceptions are intno, which
+ * allows a number possibly followed by a sequence of letters in the range
+ * 'a' - 'z', seqelem, which does not allow a recurrance, and message, which
+ * does allow one recurrance near seq_expr. (formerly: name: action )
+ *
  *
  * @see MessageNotationUml
  * @see SDMessageNotationUml
@@ -71,6 +102,14 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
              * The message pointed to.
              */
             public Object message;
+    }
+
+    /**
+     * @param message the UML Message object
+     */
+    public AbstractMessageNotationUml(Object message) {
+        super(message);
+        parameterCustomSep = initParameterSeparators();
     }
 
     protected List<CustomSeparator> initParameterSeparators() {
@@ -215,35 +254,6 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      * Parse a Message textual description.<p>
      *
      * TODO: - This method is too complex, lets break it up. <p>
-     *
-     * Parses a message line of the form:
-     *
-     * <pre>
-     * intno := integer|name
-     * seq := intno ['.' intno]*
-     * recurrance := '*'['//'] | '*'['//']'[' <i>iteration </i>']' | '['
-     * <i>condition </i>']'
-     * seqelem := {[intno] ['['recurrance']']}
-     * seq_expr := seqelem ['.' seqelem]*
-     * ret_list := lvalue [',' lvalue]*
-     * arg_list := rvalue [',' rvalue]*
-     * message := [seq [',' seq]* '/'] seq_expr ':' [ret_list :=] name ([arg_list])
-     * </pre>
-     *
-     * Which is rather complex, so a few examples:<ul>
-     * <li> 2: display(x, y)
-     * <li> 1.3.1: p := find(specs)
-     * <li> [x &lt; 0] 4: invert(color)
-     * <li> A3, B4/ C3.1*: update()
-     * </ul>
-     *
-     * This syntax is compatible with the UML 1.4.2 specification.<p>
-     *
-     * Actually, only a subset of this syntax is currently supported, and some
-     * is not even planned to be supported. The exceptions are intno, which
-     * allows a number possibly followed by a sequence of letters in the range
-     * 'a' - 'z', seqelem, which does not allow a recurrance, and message, which
-     * does allow one recurrance near seq_expr. (formerly: name: action )
      *
      * @param mes the MMessage to apply any changes to
      * @param s   the String to parse
@@ -1186,14 +1196,6 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
     }
 
     /**
-     * @param message the UML Message object
-     */
-    public AbstractMessageNotationUml(Object message) {
-        super(message);
-        parameterCustomSep = initParameterSeparators();
-    }
-
-    /**
      * Finds the message in ClassifierRole r that has the message number written
      * in n. If it isn't found, null is returned.
      */
@@ -1397,6 +1399,44 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
         return count;
     }
 
-    protected abstract int recCountPredecessors(Object message, MsgPtr ptr);
+    /**
+     * Recursively count the number of predecessors of the given Message, 
+     * and return (a pointer to) the first Message in the chain.
+     * 
+     * @param message the UML Message to count the predecessors for
+     * @param ptr
+     * @return
+     */
+    protected int recCountPredecessors(Object message, MsgPtr ptr) {
+        int pre = 0;
+        int local = 0;
+        Object/*MMessage*/ maxmsg = null;
+        Object activator;
+
+        if (message == null) {
+            ptr.message = null;
+            return 0;
+        }
+
+        activator = Model.getFacade().getActivator(message);
+        for (Object predecessor : Model.getFacade().getPredecessors(message)) {
+            if (Model.getFacade().getActivator(predecessor) 
+                    != activator) {
+                continue;
+            }
+            int p = recCountPredecessors(predecessor, null) + 1;
+            if (p > pre) {
+                pre = p;
+                maxmsg = predecessor;
+            }
+            local++;
+        }
+
+        if (ptr != null) {
+            ptr.message = maxmsg;
+        }
+
+        return Math.max(pre, local);
+    }
     
 }
