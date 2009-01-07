@@ -67,6 +67,7 @@ import org.argouml.uml.diagram.static_structure.ui.FigModel;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.static_structure.ui.FigStereotypeDeclaration;
 import org.argouml.uml.diagram.static_structure.ui.FigSubsystem;
+import org.argouml.uml.diagram.ui.FigAbstraction;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigAssociationEnd;
@@ -77,7 +78,6 @@ import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.FigPermission;
-import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.FigUsage;
 import org.argouml.uml.diagram.use_case.ui.FigActor;
 import org.argouml.uml.diagram.use_case.ui.FigExtend;
@@ -270,7 +270,7 @@ public abstract class UmlDiagramRenderer
         } else if (Model.getFacade().isADependency(edge)) {
             if (Model.getExtensionMechanismsHelper().hasStereotype(edge, 
                     CoreFactory.REALIZE_STEREOTYPE)) {
-                newEdge = new FigRealization();
+                newEdge = new FigAbstraction();
             } else {
                 newEdge = new FigDependency();
             }
