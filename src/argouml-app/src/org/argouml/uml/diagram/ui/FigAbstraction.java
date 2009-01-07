@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 
 /**
@@ -37,16 +38,6 @@ import org.tigris.gef.presentation.ArrowHeadTriangle;
  */
 public class FigAbstraction extends FigDependency {
 
-    /*
-     * Implementation was copied here from FigRealization and parent type
-     * changed from FigEdgeModelElement to FigDependency to align better with
-     * UML spec and to allow reuse for other abstractions such as Derivation,
-     * Refinement, or Trace. FigRealization is just a shell for backward
-     * compatibility.
-     * 
-     */
-    private ArrowHeadTriangle endArrow;
-
     /**
      * The constructor.
      * 
@@ -57,13 +48,18 @@ public class FigAbstraction extends FigDependency {
     @Deprecated
     public FigAbstraction() {
         super();
-        constructFigs();
+        setDestArrowHead(createEndArrow());
     }
 
-    private void constructFigs() {
-        endArrow = new ArrowHeadTriangle();
-        endArrow.setFillColor(FILL_COLOR);
-        setDestArrowHead(endArrow);
+    /**
+     * Create the arrow head for the abstraction. This overrides the
+     * superclass to create a filled arrow head.
+     * @return the arrow head.
+     */
+    protected ArrowHead createEndArrow() {
+        final ArrowHead arrow = new ArrowHeadTriangle();
+        arrow.setFillColor(FILL_COLOR);
+        return arrow;
     }
 
     /**

@@ -29,6 +29,7 @@ import java.awt.Graphics;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.Fig;
 
@@ -45,8 +46,6 @@ public class FigDependency extends FigEdgeModelElement {
      */
     private static final long serialVersionUID = -1779182458484724448L;
 
-    private ArrowHeadGreater endArrow;
-    
     /*
      * Text group to contain name & stereotype
      */
@@ -71,13 +70,20 @@ public class FigDependency extends FigEdgeModelElement {
         addPathItem(middleGroup,
                 new PathConvPercent2(this, middleGroup, 50, 25));
         
-        endArrow = new ArrowHeadGreater();
-        // TODO: Why is this a different color than everything else? - tfm
-        endArrow.setFillColor(Color.red);
-        setDestArrowHead(endArrow);
+        setDestArrowHead(createEndArrow());
         
         setBetweenNearestPoints(true);
         getFig().setDashed(true);
+    }
+    
+    /**
+     * Create the arrow head for the dependency. By default this is a
+     * stick figure arrow head with no fill. Descendants may override this as
+     * required.
+     * @return the arrow head.
+     */
+    protected ArrowHead createEndArrow() {
+        return new ArrowHeadGreater();
     }
 
     /**
@@ -139,15 +145,13 @@ public class FigDependency extends FigEdgeModelElement {
         return false;
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
-     */
-    @Override
-    public void paint(Graphics g) {
-        endArrow.setLineColor(getLineColor());
-        super.paint(g);
+    public void setLineColor(Color color) {
+        ArrowHead arrow = getDestArrowHead();
+        if (arrow != null) {
+            arrow.setLineColor(getLineColor());
+        }
     }
-
+    
     @Override
     protected void updateNameText() {
         super.updateNameText();
