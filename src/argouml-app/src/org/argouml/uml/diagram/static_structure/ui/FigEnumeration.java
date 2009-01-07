@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,6 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
-import org.argouml.uml.diagram.ui.FigStereotypesGroup;
 import org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -71,8 +70,6 @@ public class FigEnumeration extends FigDataType
     @Deprecated
     public FigEnumeration() {
         super();
-        FigStereotypesGroup fsc = getStereotypeFig();
-        fsc.setKeyword("enumeration");
 
         enableSizeChecking(true);
         setSuppressCalcBounds(false);
@@ -114,7 +111,6 @@ public class FigEnumeration extends FigDataType
     public FigEnumeration(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        getStereotypeFig().setKeyword("enumeration");
 
         enableSizeChecking(true);
         setSuppressCalcBounds(false);
@@ -124,6 +120,11 @@ public class FigEnumeration extends FigDataType
         literalsCompartment.populate();
 
         setBounds(getBounds());
+    }
+
+    @Override
+    protected String getKeyword() {
+        return "enumeration";
     }
     
     /*

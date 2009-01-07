@@ -47,7 +47,7 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigKeyword extends FigSingleLineText {
 
-    private String keywordText;
+    private final String keywordText;
 
     /**
      * @param keyword the text to show
@@ -93,7 +93,7 @@ public class FigKeyword extends FigSingleLineText {
      */
     @Override
     public void setText(String text) {
-        keywordText = text;
+        assert keywordText.equals(text);
         super.setText(NotationUtilityUml.formatStereotype(text,
                 getSettings().getNotationSettings().isUseGuillemets()));
     }

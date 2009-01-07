@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,8 +44,11 @@ import org.tigris.gef.presentation.Fig;
  * (cloned from FigInterface - perhaps they should both specialize
  * a common supertype).
  * <p>
- * A Datatype may show compartments for stereotypes
- * and operations. Attributes are not supported in ArgoUML.
+ * A DataType may show compartments for stereotypes
+ * and operations. Attributes are not supported in ArgoUML. <p>
+ * 
+ * Every DataType shows a keyword, but it is not 
+ * always <<datatype>>, e.g. for an Enumeration.
  */
 public class FigDataType extends FigClassifierBox {
 
@@ -85,7 +88,7 @@ public class FigDataType extends FigClassifierBox {
     }
 
     private void constructFigs() {
-        getStereotypeFig().setKeyword("datatype");
+        getStereotypeFig().setKeyword(getKeyword());
 
 
         setSuppressCalcBounds(true);
@@ -161,7 +164,18 @@ public class FigDataType extends FigClassifierBox {
         this(gm, node);        
         getStereotypeFig().setKeyword(keyword);
     }
-    
+
+    /**
+     * This function shall return the keyword to be used by the constructor. <p>
+     * 
+     * Subclasses of DataType shall 
+     * override this method to set their own keyword.
+     * 
+     * @return the string to be used as the keyword
+     */
+    protected String getKeyword() {
+        return "datatype";
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
