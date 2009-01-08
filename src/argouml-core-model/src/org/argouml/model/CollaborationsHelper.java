@@ -168,8 +168,8 @@ public interface CollaborationsHelper {
     /**
      * Returns all possible bases for the given element
      * (a ClassifierRole or AssociationRole). <p>
-     * TODO: Beware: this function does not return the current base!
-     * Is that by design or a bug?
+     * Beware: this function does not return the current base!
+     * Which is by design; there are easier ways to retrieve the actual base.
      *
      * @param role the given classifierrole or associationrole
      * @return all available bases

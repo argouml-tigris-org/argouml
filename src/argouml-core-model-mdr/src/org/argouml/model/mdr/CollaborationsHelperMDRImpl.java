@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -501,8 +501,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
      * Returns all possible bases for some AssociationRole taking into account
      * the wellformednessrules as defined in section 2.10.3 of the UML 1.3 spec.
      * <p>
-     * TODO: Beware: this function does not return the actual base! 
-     * Is that by design or a bug?
+     * Beware: this function does not return the actual base! 
+     * Which is by design; there are easier ways to retrieve the actual base.
      * 
      * @param aRole
      *            the given associationrole
@@ -520,8 +520,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         // the bases are formed by all associations in the namespace of the
         // collaboration
         Set<Classifier> bases = new HashSet<Classifier>();
-                for (AssociationEnd end : aRole.getConnection()) {
-                    assert end instanceof AssociationEndRole;
+        for (AssociationEnd end : aRole.getConnection()) {
+            assert end instanceof AssociationEndRole;
             ClassifierRole type = (ClassifierRole) end.getParticipant();
             if (type != null) {
                 bases.addAll(type.getBase());
@@ -541,12 +541,12 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
              * - Use arrays in stead of a Set for bases
              * - Have the second loop start from the element after base1 
              * ... but I chose not to do this, since the gain is small,
-             * and this is only used for a lazily filled combo.*/
+             * and this is only used for a lazily filled combo.
+             * BTW: This is also used by Notation.*/
             for (Classifier base1 : bases)  {
                 for (Classifier base2 : bases) {
-                    if (base1 != base2) {
-                        ret.addAll(ch.getAssociations(base1, base2));
-                    }
+                    // include associations to self - see issue 5602
+                    ret.addAll(ch.getAssociations(base1, base2));
                 }
             }
         }
