@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -485,16 +485,13 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     private FigClassifierRole makeNewFigCR(Object classifierRole, 
             Point location) {
         if (classifierRole != null) {
-            FigClassifierRole newCR = new FigClassifierRole(getGraphModel(),
-                    getLayer(), classifierRole);
+            FigClassifierRole newCR = new FigClassifierRole(classifierRole,
+                    new Rectangle(location), getDiagramSettings());
             
             getGraphModel().getNodes().add(newCR.getOwner());
-            
-            newCR.setY(location.y);
-            newCR.setX(location.x);
+
             return newCR;
         }
-        
         return null;
     }
     
@@ -512,7 +509,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         DiagramSettings settings = getDiagramSettings();
         
         if (Model.getFacade().isAClassifierRole(droppedObject)) {
-            figNode = new FigClassifierRole(gm, lay, droppedObject);
+            figNode = new FigClassifierRole(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAMessage(droppedObject)) {
             figNode = new FigMessage(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComment(droppedObject)) {
