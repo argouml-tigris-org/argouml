@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -361,6 +361,9 @@ public abstract class FigNodeModelElement
      * Construct a figure at a specific position for a given model element
      * with the given settings. This is the constructor used by the PGML
      * parser when loading a diagram from a file.<p>
+     * 
+     * Beware: the width and height in the given Rectangle are currently ignored.
+     * According issue 5604 this is a bug.
      * 
      * @param element ModelElement associated with figure
      * @param bounds x & y are used to set position, width & height are ignored
