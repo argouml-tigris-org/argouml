@@ -41,8 +41,9 @@ import org.argouml.notation.NotationSettings;
  * <pre>
  * intno := integer|name
  * seq := intno ['.' intno]*
- * recurrance := '*'['//'] | '*'['//']'[' <code>iteration </code>']' | '['
- * <code>condition </code>']'
+ * recurrance := '*'['//'] 
+ *      | '*'['//']'[' <code>iteration </code>']' 
+ *      | '['<code>condition </code>']'
  * seqelem := {[intno] ['['recurrance']']}
  * seq_expr := seqelem ['.' seqelem]*
  * ret_list := lvalue [',' lvalue]*
@@ -59,6 +60,9 @@ import org.argouml.notation.NotationSettings;
  * </ul><p>
  *
  * This syntax is compatible with the UML 1.4.2 specification.<p>
+ * 
+ * TODO: The '//' in the recurrance should be '||' according the standard.
+See issue 5606. <p>
  *
  * Actually, only a subset of this syntax is currently supported, and some
  * is not even planned to be supported. The exceptions are intno, which
@@ -103,28 +107,32 @@ public class MessageNotationUml extends AbstractMessageNotationUml {
         return toString(modelElement);
     }
 
-    private String toString(final Object modelElement) {
+    private String toString(final Object umlMessage) {
         Iterator it;
-        Collection pre;
-        Object act;
-        Object/*MMessage*/ rt;
+        Collection umlPredecessors;
+        Object umlAction;
+        Object umlActivator; // this is a Message UML object
         MsgPtr ptr;
-
-        String action = "";
-        String number;
-        StringBuilder predecessors = new StringBuilder();
         int lpn;
 
-        if (modelElement == null) {
+        /* Supported format: 
+         *     predecessors number ":" action
+         * The 3 parts of the string to generate: */
+        StringBuilder predecessors = new StringBuilder(); // includes the "/"
+        String number; // the "seq_expr" from the header javadoc
+        // the ":" is not included in "number" - it is always present
+        String action = "";
+
+        if (umlMessage == null) {
             return "";
         }
 
         ptr = new MsgPtr();
-        lpn = recCountPredecessors(modelElement, ptr) + 1;
-        rt = Model.getFacade().getActivator(modelElement);
+        lpn = recCountPredecessors(umlMessage, ptr) + 1;
+        umlActivator = Model.getFacade().getActivator(umlMessage);
 
-        pre = Model.getFacade().getPredecessors(modelElement);
-        it = (pre != null) ? pre.iterator() : null;
+        umlPredecessors = Model.getFacade().getPredecessors(umlMessage);
+        it = (umlPredecessors != null) ? umlPredecessors.iterator() : null;
         if (it != null && it.hasNext()) {
             MsgPtr ptr2 = new MsgPtr();
             int precnt = 0;
@@ -134,7 +142,7 @@ public class MessageNotationUml extends AbstractMessageNotationUml {
                 int mpn = recCountPredecessors(msg, ptr2) + 1;
 
                 if (mpn == lpn - 1
-                    && rt == Model.getFacade().getActivator(msg)
+                    && umlActivator == Model.getFacade().getActivator(msg)
                     && Model.getFacade().getPredecessors(msg).size() < 2
                     && (ptr2.message == null
                         || countSuccessors(ptr2.message) < 2)) {
@@ -154,18 +162,20 @@ public class MessageNotationUml extends AbstractMessageNotationUml {
             }
         }
 
-        number = generateMessageNumber(modelElement, ptr.message, lpn);
+        number = generateMessageNumber(umlMessage, ptr.message, lpn);
 
-        act = Model.getFacade().getAction(modelElement);
-        if (act != null) {
-            if (Model.getFacade().getRecurrence(act) != null) {
-                number =
-                    generateRecurrence(Model.getFacade().getRecurrence(act))
+        umlAction = Model.getFacade().getAction(umlMessage);
+        if (umlAction != null) {
+            if (Model.getFacade().getRecurrence(umlAction) != null) {
+                number = generateRecurrence(
+                        Model.getFacade().getRecurrence(umlAction))
                     + " "
                     + number;
+                /* TODO: The recurrence goes in front of the action? 
+                 * Does this not contradict the header JavaDoc? */
             }
 
-            action = NotationUtilityUml.generateActionSequence(act);
+            action = NotationUtilityUml.generateActionSequence(umlAction);
 
             /* Dirty fix for issue 1758 (Needs to be amended
              * when we start supporting parameters):
