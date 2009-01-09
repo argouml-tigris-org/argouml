@@ -60,9 +60,6 @@ import org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram;
  * TODO: This whole class needs to be updated to remove use of deprecated
  * methods and (hopefully) test multi-root and multi-project methods.
  * 
- * TODO: This whole class needs to be updated to remove use of deprecated
- * methods and (hopefully) test multi-root and multi-project methods.
- * 
  * @since Nov 17, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -547,10 +544,4 @@ public class TestProject extends TestCase {
         (new InitProfileSubsystem()).init();
         ProjectManager.getManager().makeEmptyProject();
     }
-    
-    // TODO: Add tests for Profiles
-    // TODO: Add tests for getting default types
-    // TODO: Add tests to get Undo manager
-    // TODO: Add tests to get Project settings
-    
 }
