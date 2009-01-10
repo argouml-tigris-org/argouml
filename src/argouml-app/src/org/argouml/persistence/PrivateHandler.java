@@ -26,7 +26,6 @@ package org.argouml.persistence;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.PathItemPlacement;
 import org.argouml.util.IItemUID;
 import org.argouml.util.ItemUID;
@@ -36,6 +35,7 @@ import org.tigris.gef.persistence.pgml.FigEdgeHandler;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
 import org.tigris.gef.persistence.pgml.PGMLHandler;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -163,73 +163,69 @@ class PrivateHandler
             Attributes attributes) throws SAXException {
         if ("argouml:pathitem".equals(qname)
                 && container instanceof FigEdgeHandler) {
-            if (((FigEdgeHandler) container).getFigEdge() 
-                    instanceof FigEdgeModelElement) {
-                String classname = attributes.getValue("classname");
-                String figclassname = 
-                    attributes.getValue("figclassname");
-                String ownerhref = attributes.getValue("ownerhref");
-                String angle = attributes.getValue("angle");
-                String offset = attributes.getValue("offset");
-                if ( classname != null
-                        && figclassname != null
-                        && ownerhref != null
-                        && angle != null
-                        && offset != null ) {
-                    // Method 2: (assign data immediately, see end of file).
-                    // TODO: if we ever want to extend PathItemPlacement,
-                    // we should modify this, so that we also recognise any 
-                    // subclass of PathItemPlacement.
-                    // Is the class name a PathItemPlacment?
-                    if ("org.argouml.uml.diagram.ui.PathItemPlacement".equals(
-                            classname)) {
-                        PathItemPlacementStrategy pips 
-                            = getPips(figclassname, ownerhref);
-                        // Sanity check - the returned path item placement 
-                        // strategy should match the one in the UML.
-                        // If it doesn't, it could be that the UML was 
-                        // created with an older argo version, and the new
-                        // argo version use a different placement strategy.
-                        // If they don't match, just use the default.
-                        if (pips.getClass().getName().equals(classname)) {
-                            // Now we're into processing each specific path 
-                            // item strategy.
-                            // At the moment, we only know PathItemPlacement
-                            if (pips instanceof PathItemPlacement) {
-                                PathItemPlacement pip = 
-                                    (PathItemPlacement) pips;
-                                pip.setDisplacementVector(
-                                        Double.parseDouble(angle),
-                                        Integer.parseInt(offset));
-                            }
-                            // Continue (future PathItemPlacementStrategy impl) 
-                            //else if (...) {
-                            //}
+            String classname = attributes.getValue("classname");
+            String figclassname = 
+                attributes.getValue("figclassname");
+            String ownerhref = attributes.getValue("ownerhref");
+            String angle = attributes.getValue("angle");
+            String offset = attributes.getValue("offset");
+            if ( classname != null
+                    && figclassname != null
+                    && ownerhref != null
+                    && angle != null
+                    && offset != null ) {
+                // Method 2: (assign data immediately, see end of file).
+                // TODO: if we ever want to extend PathItemPlacement,
+                // we should modify this, so that we also recognise any 
+                // subclass of PathItemPlacement.
+                // Is the class name a PathItemPlacment?
+                if ("org.argouml.uml.diagram.ui.PathItemPlacement".equals(
+                        classname)) {
+                    PathItemPlacementStrategy pips 
+                        = getPips(figclassname, ownerhref);
+                    // Sanity check - the returned path item placement 
+                    // strategy should match the one in the UML.
+                    // If it doesn't, it could be that the UML was 
+                    // created with an older argo version, and the new
+                    // argo version use a different placement strategy.
+                    // If they don't match, just use the default.
+                    if (pips.getClass().getName().equals(classname)) {
+                        // Now we're into processing each specific path 
+                        // item strategy.
+                        // At the moment, we only know PathItemPlacement
+                        if (pips instanceof PathItemPlacement) {
+                            PathItemPlacement pip = 
+                                (PathItemPlacement) pips;
+                            pip.setDisplacementVector(
+                                    Double.parseDouble(angle),
+                                    Integer.parseInt(offset));
                         }
-                        // If the PathItemPlacement was unknown, leave the
-                        // diagram with the default settings.
-                        else {
-                            LOG.warn("PGML stored pathitem class name does "
-                                    + "not match the class name on the "
-                                    + "diagram. Label position will revert "
-                                    + "to defaults.");
-                        }
+                        // Continue (future PathItemPlacementStrategy impl) 
+                        //else if (...) {
+                        //}
+                    }
+                    // If the PathItemPlacement was unknown, leave the
+                    // diagram with the default settings.
+                    else {
+                        LOG.warn("PGML stored pathitem class name does "
+                                + "not match the class name on the "
+                                + "diagram. Label position will revert "
+                                + "to defaults.");
                     }
                 }
-                // If any of the values are null, ignore the element.
-                else {
-                    LOG.warn("Could not find all attributes for <" 
-                            + qname + "> tag, ignoring.");
-                    //System.out.println("Error - one of these is null:" 
-                    //        + "classname=" + classname
-                    //        + " figclassname=" + figclassname
-                    //        + " ownerhref=" + ownerhref
-                    //        + " angle=" + angle
-                    //        + " offset=" + offset);
-                }
+            }
+            // If any of the values are null, ignore the element.
+            else {
+                LOG.warn("Could not find all attributes for <" 
+                        + qname + "> tag, ignoring.");
+                //System.out.println("Error - one of these is null:" 
+                //        + "classname=" + classname
+                //        + " figclassname=" + figclassname
+                //        + " ownerhref=" + ownerhref
+                //        + " angle=" + angle
+                //        + " offset=" + offset);
             }
         }
-        
         super.startElement(uri, localname, qname, attributes);
     }
 
@@ -243,21 +239,17 @@ class PrivateHandler
     private PathItemPlacementStrategy getPips(String figclassname, 
             String ownerhref) {
         if (container instanceof FigEdgeHandler) {
-            FigEdgeHandler feh = ((FigEdgeHandler) container);
-            if (feh.getFigEdge() instanceof FigEdgeModelElement) {
-                FigEdgeModelElement feme = 
-                    (FigEdgeModelElement) feh.getFigEdge();
-                Object owner = getPGMLStackParser().findOwner(ownerhref);
+            FigEdge fe = ((FigEdgeHandler) container).getFigEdge();
+            Object owner = getPGMLStackParser().findOwner(ownerhref);
 
-                for (Object o : feme.getPathItemFigs()) {
-                    Fig f = (Fig) o;
-                    // For a match to be found, it has to have the same 
-                    // owner, and the same long class name.
-                    if (owner.equals(f.getOwner())
+            for (Object o : fe.getPathItemFigs()) {
+                Fig f = (Fig) o;
+                // For a match to be found, it has to have the same 
+                // owner, and the same long class name.
+                if (owner.equals(f.getOwner())
                         && figclassname.equals(f.getClass().getName())) {
-                        //System.out.println("MATCHED! " + figclassname);
-                        return feme.getPathItemPlacementStrategy(f);
-                    }
+                    //System.out.println("MATCHED! " + figclassname);
+                    return fe.getPathItemPlacementStrategy(f);
                 }
             }
         }
