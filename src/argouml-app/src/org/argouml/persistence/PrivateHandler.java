@@ -26,12 +26,17 @@ package org.argouml.persistence;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.PathItemPlacement;
 import org.argouml.util.IItemUID;
 import org.argouml.util.ItemUID;
+import org.tigris.gef.base.PathItemPlacementStrategy;
 import org.tigris.gef.persistence.pgml.Container;
 import org.tigris.gef.persistence.pgml.FigEdgeHandler;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
 import org.tigris.gef.persistence.pgml.PGMLHandler;
+import org.tigris.gef.presentation.Fig;
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
@@ -109,7 +114,158 @@ class PrivateHandler
         // Handle other uses of <private> contents
         super.gotElement(contents);
     }
+    
+    /**
+     * Process starting elements within the private tag.
+     * This method handles all attributes within tags within private methods.
+     * The only specific tags we handle here at the moment are pathitems.
+     * 
+     * The strategy for handling pathitems is as follows:
+     * <ul>
+     *  <li>Data is saved for each path item using one <argouml:pathitem ... /> 
+     *      tag per path item.
+     *  <li>The code that defines what is stored is in 
+     *      org.argouml.persistence.PGML.tee
+     *  <li>Each <argouml:pathitem> tag stores 
+     *  <ul>
+     *    <li>The class name of the PathItemPlacementStrategy
+     *    <li>The class name of the fig which it places.
+     *    <li>The href of the model element which owns the fig being placed.
+     *    <li>The angle of the placement vector (PathItemPlacement.angle)
+     *    <li>The distance along the displacement vector to place the fig
+     *        (PathItemPlacement.vectorOffset).
+     *  </ul>
+     *  </li>
+     *  <li>No specific data is stored to match pathitem tags to the
+     *      diagram figs which they control.
+     *  <li>The matching during file load depends entirely on
+     *      there being a unique figclassname and ownerhref combination
+     *      for each pathitem on the diagram.  For example, For a 
+     *      FigAssociation, the main label is a FigTextGroup, and it's
+     *      owner is assigned to the Association.  This combination is
+     *      unique, and is used to match the parsed pathitem data back 
+     *      to the instantiated PathItemPlacement.
+     *      Another example is the source multiplicity, which is a
+     *      FigMultiplicity, and it's owner is assigned to the
+     *      source model element.
+     *      In each case, the combination is unique, so there is only
+     *      one pathitem that matches when rebuilding the diagram.
+     *  </ul>
+     * 
+     * @param uri
+     * @param localname
+     * @param qname
+     * @param attributes
+     * @throws SAXException
+     * @see org.tigris.gef.persistence.pgml.BaseHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+     */
+    public void startElement(String uri, String localname, String qname,
+            Attributes attributes) throws SAXException {
+        if ("argouml:pathitem".equals(qname)
+                && container instanceof FigEdgeHandler) {
+            if (((FigEdgeHandler) container).getFigEdge() 
+                    instanceof FigEdgeModelElement) {
+                String classname = attributes.getValue("classname");
+                String figclassname = 
+                    attributes.getValue("figclassname");
+                String ownerhref = attributes.getValue("ownerhref");
+                String angle = attributes.getValue("angle");
+                String offset = attributes.getValue("offset");
+                if ( classname != null
+                        && figclassname != null
+                        && ownerhref != null
+                        && angle != null
+                        && offset != null ) {
+                    // Method 2: (assign data immediately, see end of file).
+                    // TODO: if we ever want to extend PathItemPlacement,
+                    // we should modify this, so that we also recognise any 
+                    // subclass of PathItemPlacement.
+                    // Is the class name a PathItemPlacment?
+                    if ("org.argouml.uml.diagram.ui.PathItemPlacement".equals(
+                            classname)) {
+                        PathItemPlacementStrategy pips 
+                            = getPips(figclassname, ownerhref);
+                        // Sanity check - the returned path item placement 
+                        // strategy should match the one in the UML.
+                        // If it doesn't, it could be that the UML was 
+                        // created with an older argo version, and the new
+                        // argo version use a different placement strategy.
+                        // If they don't match, just use the default.
+                        if (pips.getClass().getName().equals(classname)) {
+                            // Now we're into processing each specific path 
+                            // item strategy.
+                            // At the moment, we only know PathItemPlacement
+                            if (pips instanceof PathItemPlacement) {
+                                PathItemPlacement pip = 
+                                    (PathItemPlacement) pips;
+                                pip.setDisplacementVector(
+                                        Double.parseDouble(angle),
+                                        Integer.parseInt(offset));
+                            }
+                            // Continue (future PathItemPlacementStrategy impl) 
+                            //else if (...) {
+                            //}
+                        }
+                        // If the PathItemPlacement was unknown, leave the
+                        // diagram with the default settings.
+                        else {
+                            LOG.warn("PGML stored pathitem class name does "
+                                    + "not match the class name on the "
+                                    + "diagram. Label position will revert "
+                                    + "to defaults.");
+                        }
+                    }
+                }
+                // If any of the values are null, ignore the element.
+                else {
+                    LOG.warn("Could not find all attributes for <" 
+                            + qname + "> tag, ignoring.");
+                    //System.out.println("Error - one of these is null:" 
+                    //        + "classname=" + classname
+                    //        + " figclassname=" + figclassname
+                    //        + " ownerhref=" + ownerhref
+                    //        + " angle=" + angle
+                    //        + " offset=" + offset);
+                }
+            }
+        }
+        
+        super.startElement(uri, localname, qname, attributes);
+    }
 
+    /**
+     * Finds the path item placement strategy for a sub Fig, by its class name,
+     * and it's owner href.
+     * @param figclassname The class name of the fig being placed.
+     * @param ownerhref The href of the owner of the fig being placed.
+     * @return The path item placement strategy.
+     */
+    private PathItemPlacementStrategy getPips(String figclassname, 
+            String ownerhref) {
+        if (container instanceof FigEdgeHandler) {
+            FigEdgeHandler feh = ((FigEdgeHandler) container);
+            if (feh.getFigEdge() instanceof FigEdgeModelElement) {
+                FigEdgeModelElement feme = 
+                    (FigEdgeModelElement) feh.getFigEdge();
+                Object owner = getPGMLStackParser().findOwner(ownerhref);
+
+                for (Object o : feme.getPathItemFigs()) {
+                    Fig f = (Fig) o;
+                    // For a match to be found, it has to have the same 
+                    // owner, and the same long class name.
+                    if (owner.equals(f.getOwner())
+                        && figclassname.equals(f.getClass().getName())) {
+                        //System.out.println("MATCHED! " + figclassname);
+                        return feme.getPathItemPlacementStrategy(f);
+                    }
+                }
+            }
+        }
+        LOG.warn("Could not load path item for fig '" + figclassname 
+                + "', using default placement.");
+        return null;
+    }
+    
     /**
      * Determine if the string contains an ItemUID.
      *
@@ -199,3 +355,86 @@ class PrivateHandler
         return rv;
     }
 }
+
+// An alternative implementation of the parsing of pathitems is to collect 
+// everything at the start, then iterate through it all at the end.
+// The code below does this - it works, but it is currently not used,
+// since it is a unnecessarily complicated.
+// There are probably better ways to implement this than using an
+// ArrayList of Hashtables.
+// see option 1 in 
+// http://argouml.tigris.org/issues/show_bug.cgi?id=1048#desc66
+//
+
+///**
+// * A list of the path item attributes for this container.
+// * The list is populated during parsing, them processed at endElement() 
+// */
+//private List<Hashtable<String, String>> pathItemAttrs = 
+//    new ArrayList<Hashtable<String, String>>();
+
+// This code has to go within the startElement block after the strings
+// have been matched.
+
+//// Method 1:
+//// (collect data and assign later in endElement() method).
+//Hashtable<String, String> ht = 
+//    new Hashtable<String, String>(); 
+//ht.put("classname", classname);
+//ht.put("figclassname", figclassname);
+//ht.put("ownerhref", ownerhref);
+//ht.put("angle", angle);
+//ht.put("offset", offset);
+//pathItemAttrs.add(ht);
+
+//public void endElement(String uri, String localname, String qname)
+//throws SAXException {
+////System.out.print("Got endElement: " 
+////        + "uri='" + uri + "'\n" 
+////        + "localname='" + localname + "'\n" 
+////        + "qname='" + qname + "'\n" 
+////);
+//// If we collected any path items for a FigEdgeModelElement,
+//// process them now, and assign their values to real Figs on the diag.
+//if (!(pathItemAttrs.isEmpty())) {
+//    for (Hashtable<String, String> attrs : pathItemAttrs) {
+//        // Is the class name a PathItemPlacment?
+//        // TODO: if we ever want to extend PathItemPlacement,
+//        // we should modify this, so that we also recognise any 
+//        // subclass of PathItemPlacement.
+//        if ("org.argouml.uml.diagram.ui.PathItemPlacement".
+//                equals(attrs.get("classname"))) {
+//            //System.out.println("figclassname=" + attrs.get("figclassname"));
+//            
+//            PathItemPlacementStrategy pips 
+//                = getPips(attrs.get("figclassname"), 
+//                        attrs.get("ownerhref"));
+//            // Sanity check - the returned path item placement straty
+//            // should match the one in the uml.
+//            if (pips.getClass().getName().equals(attrs.get("classname"))) {
+//                // Now we're into processing each specific path item 
+//                // strategy.
+//                // At the moment, we only know about PathItemPlacement
+//                if (pips instanceof PathItemPlacement) {
+//                    PathItemPlacement pip = (PathItemPlacement) pips;
+//                    pip.setDisplacementVector(
+//                            Double.parseDouble(attrs.get("angle")),
+//                            Integer.parseInt(attrs.get("offset")));
+//                }
+//                // Continue (future PathItemPlacementStrategy impl) 
+//                //else if (...) {
+//                //    
+//                //}
+//                    
+//            }
+//            else {
+//                LOG.warn("PGML stored pathitem class name does not "
+//                        + "match the class name on the diagram."
+//                        + "Label position will revert to defaults.");
+//            }
+//        }
+//    }
+//}
+//    
+//super.endElement(uri, localname, qname);
+//}
