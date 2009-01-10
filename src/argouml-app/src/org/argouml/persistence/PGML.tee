@@ -160,7 +160,6 @@ height="<ocl>self.height.intValue</ocl>"
                   classname="<ocl>self.class.name</ocl>"
                   figclassname="<ocl>self.itemFig.class.name</ocl>"
                   ownerhref="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self.itemFig)</ocl>"
-                  percent="<ocl>self.percent</ocl>"
                   angle="<ocl>self.angle</ocl>"
                   offset="<ocl>self.vectorOffset</ocl>" />
 
