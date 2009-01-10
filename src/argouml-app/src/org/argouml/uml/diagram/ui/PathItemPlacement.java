@@ -446,10 +446,32 @@ public class PathItemPlacement extends PathConv {
     }
     
     /**
+     * Set the displacement vector to the given angle and distance.
+     * 
+     * @param vectorAngle angle in degrees relative to the edge at the anchor
+     *            point.
+     * @param vectorDistance distance along vector in drawing coordinate units
+     */
+    public void setDisplacementVector(double vectorAngle, 
+            int vectorDistance) {
+        setDisplacementAngle(vectorAngle);
+        setDisplacementDistance(vectorDistance);
+    }
+    
+    /**
      * @param offsetAngle the new angle for the displacement vector, 
      * specified in degrees relative to the edge at the anchor.
      */
     public void setDisplacementAngle(int offsetAngle) {
+        angle = offsetAngle * Math.PI / 180.0;
+        useAngle = true;
+    }
+
+    /**
+     * @param offsetAngle the new angle for the displacement vector, 
+     * specified in degrees relative to the edge at the anchor.
+     */
+    public void setDisplacementAngle(double offsetAngle) {
         angle = offsetAngle * Math.PI / 180.0;
         useAngle = true;
     }
@@ -698,24 +720,24 @@ public class PathItemPlacement extends PathConv {
     }
     
     /**
-     * Returns the value of the angle field.
+     * Returns the value of the angle field converted to degrees.
      * The angle of the path item relative to the edge.
      * @important Used by PGML.tee.
-     * @return The value of the angle field.
+     * @return The value of the angle field in degrees.
      */
     public double getAngle() {
-        return angle;
+        return angle * 180 / Math.PI;
     }
     
     /**
-     * Returns the value of the pathOffset field.
-     * The pathOffset field is the distance away from the edge, along the 
+     * Returns the value of the vectorOffset field.
+     * The vectorOffset field is the distance away from the edge, along the 
      * path vector that the item Fig is placed.
      * @important Used by PGML.tee.
-     * @return The value of the pathOffset field.
+     * @return The value of the vectorOffset field.
      */
-    public int getPathOffset() {
-        return pathOffset;
+    public int getVectorOffset() {
+        return vectorOffset;
     }
     /** End of methods used by PGML.tee */
     

@@ -141,10 +141,9 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<argouml:pathitem name="<ocl>org.argouml.persistence.PgmlUtility.getId(self.pathFig)</ocl>"
-                  description="<ocl>self.class.name</ocl>"
-                  href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self.pathFig)</ocl>"
-                  pathFig="<ocl>self.pathFig.toString</ocl>" />
+<argouml:pathitem figname="<ocl>org.argouml.persistence.PgmlUtility.getId(self.pathFig)</ocl>"
+                  classname="<ocl>self.class.name</ocl>"
+                  ownerhref="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self.pathFig)</ocl>" />
 
 ]]>
 
@@ -158,12 +157,12 @@ height="<ocl>self.height.intValue</ocl>"
 <![CDATA[
 
 <argouml:pathitem figname="<ocl>org.argouml.persistence.PgmlUtility.getId(self.itemFig)</ocl>"
-                  description="<ocl>self.class.name</ocl>"
-                  figdescription="<ocl>self.itemFig.class.name</ocl>"
-                  href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self.itemFig)</ocl>"
+                  classname="<ocl>self.class.name</ocl>"
+                  figclassname="<ocl>self.itemFig.class.name</ocl>"
+                  ownerhref="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self.itemFig)</ocl>"
                   percent="<ocl>self.percent</ocl>"
                   angle="<ocl>self.angle</ocl>"
-                  offset="<ocl>self.pathOffset</ocl>" />
+                  offset="<ocl>self.vectorOffset</ocl>" />
 
 ]]>
 
