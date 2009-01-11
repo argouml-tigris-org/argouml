@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigDiamond;
@@ -49,15 +50,38 @@ public class FigJunctionState extends FigStateVertex {
 
     private FigDiamond head;
 
+    
+    /**
+     * Construct a new FigJunctionState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigJunctionState(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
     /**
      * The constructor.
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigJunctionState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigJunctionState() {
+        super();
+        initFigs();
+    }
+
+    private void initFigs() {
         setEditable(false);
         setBigPort(new FigDiamond(X, Y, WIDTH, HEIGHT, false, 
-                Color.cyan, Color.cyan));
+                DEBUG_COLOR, DEBUG_COLOR));
         head = new FigDiamond(X, Y, WIDTH, HEIGHT, false, 
-                Color.black, Color.white);
+                LINE_COLOR, FILL_COLOR);
 
         addFig(getBigPort());
         addFig(head);
@@ -70,8 +94,13 @@ public class FigJunctionState extends FigStateVertex {
      *
      * @param gm ignored
      * @param node the owner
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigJunctionState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigJunctionState(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigJunctionState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
 	this();
 	setOwner(node);
     }

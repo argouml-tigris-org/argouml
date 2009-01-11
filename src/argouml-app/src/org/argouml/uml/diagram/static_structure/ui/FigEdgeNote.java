@@ -89,9 +89,14 @@ public class FigEdgeNote
     /**
      * Constructor that hooks the Fig to a CommentEdge.
      *
+     * TODO: What do we need to do about this constructor?  It's different
+     * from all the rest.
+     * 
      * @param commentEdge the CommentEdge
      * @param theLayer the layer (ignored)
+     * @deprecated for 0.27.4 by tfmorris.  Need to define replacement...
      */
+    @Deprecated
     public FigEdgeNote(Object commentEdge, Layer theLayer) {
         this();
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 
 import org.tigris.gef.presentation.Fig;
@@ -52,9 +51,11 @@ public class FigEdgePort extends FigNodeModelElement {
     /**
      * Constructor.
      */
+    @Deprecated
     public FigEdgePort() {
+        super();
         invisibleAllowed = true;
-        bigPort = new FigCircle(0, 0, 1, 1, Color.black, Color.white);
+        bigPort = new FigCircle(0, 0, 1, 1, LINE_COLOR, FILL_COLOR);
         addFig(bigPort);
     }
 
@@ -70,6 +71,7 @@ public class FigEdgePort extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     @Override
+    @Deprecated
     public void setOwner(Object own) {
         bigPort.setOwner(own);
         super.setOwner(own);

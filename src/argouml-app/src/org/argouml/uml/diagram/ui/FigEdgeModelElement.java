@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -201,6 +201,14 @@ public abstract class FigEdgeModelElement
         // so we can just use the default settings;
 //        settings = new DiagramSettings(renderSettings);
         settings = renderSettings;
+        
+        // TODO: It doesn't matter what these get set to because GEF can't 
+        // draw anything except 1 pixel wide lines
+        super.setLineColor(LINE_COLOR);
+        super.setLineWidth(LINE_WIDTH);
+        getFig().setLineColor(LINE_COLOR);
+        getFig().setLineWidth(LINE_WIDTH);
+        
         nameFig = new FigNameWithAbstract(element, 
                 new Rectangle(X0, Y0 + 20, 90, 20), 
                 renderSettings, false);
@@ -1314,7 +1322,7 @@ public abstract class FigEdgeModelElement
 
         // place the edge on the layer and update the diagram
         this.setBetweenNearestPoints(true);
-        edgeShape.setLineColor(Color.black);
+        edgeShape.setLineColor(LINE_COLOR);
         edgeShape.setFilled(false);
         edgeShape.setComplete(true);
         this.setFig(edgeShape);

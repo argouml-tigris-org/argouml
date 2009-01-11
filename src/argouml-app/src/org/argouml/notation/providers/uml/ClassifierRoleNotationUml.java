@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,6 +53,8 @@ import org.argouml.util.MyTokenizer;
  *
  * The <code>role </code> and <code>baselist</code> can be given in
  * any order.<p>
+ * 
+ * The <code>name</code> is the Instance name, not used for a ClassifierRole.<p>
  *
  * This syntax is compatible with the UML 1.3 and 1.4 specification.
  * 

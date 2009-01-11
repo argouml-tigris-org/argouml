@@ -38,6 +38,11 @@ public class IteratorEnumeration<T> implements Enumeration<T> {
 
     private Iterator<T> it;
     
+    /**
+     * Construct an Enumeration based on the given Iterator.
+     * 
+     * @param iterator the iterator to be wrapped 
+     */
     public IteratorEnumeration(Iterator<T> iterator) {
         it = iterator;
     }

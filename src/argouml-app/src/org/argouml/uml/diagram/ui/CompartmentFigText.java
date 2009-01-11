@@ -27,12 +27,15 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 import org.argouml.notation.NotationProvider;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
@@ -48,7 +51,8 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author thn
  */
-public class CompartmentFigText extends FigSingleLineTextWithNotation {
+public class CompartmentFigText extends FigSingleLineTextWithNotation
+        implements TargetListener {
     
     private static final int MARGIN = 3;
     
@@ -154,6 +158,7 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation {
     public CompartmentFigText(Object element, Rectangle bounds,
             DiagramSettings settings) {
         super(element, bounds, settings, true);
+        TargetManager.getInstance().addTargetListener(this);
 
         setJustification(FigText.JUSTIFY_LEFT);
         setRightMargin(MARGIN);
@@ -263,6 +268,7 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation {
     public CompartmentFigText(Object owner, Rectangle bounds, 
             DiagramSettings settings, String[] properties) {
         super(owner, bounds, settings, true, properties);
+        TargetManager.getInstance().addTargetListener(this);
     }
     
     /*
@@ -276,6 +282,7 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation {
             ((FigGroup) fg).removeFig(this);
             setGroup(null);
         }
+        TargetManager.getInstance().removeTargetListener(this);
     }
 
     /**
@@ -331,36 +338,8 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation {
             final int h = getHeight();
             g.setColor(Globals.getPrefs().handleColorFor(this));
             
-            g.drawRect(
-                    x - 1,
-                    y - 1,
-                    w + 2,
-                    h + 2);
-            g.drawRect(
-                    x - 1,
-                    y - 1,
-                    w + 2,
-                    h + 2);
-            g.fillRect(
-                x - Selection.HAND_SIZE / 2,
-                y - Selection.HAND_SIZE / 2,
-                Selection.HAND_SIZE,
-                Selection.HAND_SIZE);
-            g.fillRect(
-                x + w - Selection.HAND_SIZE / 2,
-                y - Selection.HAND_SIZE / 2,
-                Selection.HAND_SIZE,
-                Selection.HAND_SIZE);
-            g.fillRect(
-                x - Selection.HAND_SIZE / 2,
-                y + h - Selection.HAND_SIZE / 2,
-                Selection.HAND_SIZE,
-                Selection.HAND_SIZE);
-            g.fillRect(
-                x + w - Selection.HAND_SIZE / 2,
-                y + h - Selection.HAND_SIZE / 2,
-                Selection.HAND_SIZE,
-                Selection.HAND_SIZE);
+            g.drawRect(x - 1, y - 1, w + 2, h + 2);
+            g.drawRect(x, y, w, h);
         }
     }
 
@@ -380,5 +359,25 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation {
     protected void textEdited() {
         setHighlighted(true);
         super.textEdited();
+    }
+    
+    public void targetAdded(TargetEvent e) {
+        LOG.info("Target added " + e);
+        if (Arrays.asList(e.getNewTargets()).contains(getOwner())) {
+            setHighlighted(true);
+            this.damage();
+        }
+    }
+
+    public void targetRemoved(TargetEvent e) {
+        LOG.info("Target removed " + e);
+        if (e.getRemovedTargetCollection().contains(getOwner())) {
+            setHighlighted(false);
+            this.damage();
+        }
+    }
+
+    public void targetSet(TargetEvent e) {
+        // Nothing required here
     }
 }

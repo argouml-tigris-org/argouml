@@ -30,6 +30,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
@@ -98,14 +100,17 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             Object edge,
             Map styleAttributes) {
         
+        assert lay instanceof LayerPerspective;
+        ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
+        DiagramSettings settings = diag.getDiagramSettings();
+        
         FigEdge newEdge = null;
         if (Model.getFacade().isAAssociationClass(edge)) {
-            newEdge = new FigAssociationClass(edge, lay);
+            newEdge = new FigAssociationClass(edge, settings);
         } else if (Model.getFacade().isAAssociation(edge)) {
-            Object asc = /*(MAssociation)*/ edge;
-            newEdge = new FigAssociation(asc, lay);
+            newEdge = new FigAssociation(edge, settings);
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
-            FigAssociationEnd asend = new FigAssociationEnd(edge, lay);
+            FigAssociationEnd asend = new FigAssociationEnd(edge, settings);
             Model.getFacade().getAssociation(edge);
             FigNode associationFN =
                     (FigNode) lay.presentationFor(Model
@@ -120,9 +125,8 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             asend.setDestFigNode(classifierFN);
             newEdge = asend;
         } else if (Model.getFacade().isALink(edge)) {
-            Object lnk = /*(MLink)*/ edge;
-            FigLink lnkFig = new FigLink(lnk);
-            Collection linkEnds = Model.getFacade().getConnections(lnk);
+            FigLink lnkFig = new FigLink(edge);
+            Collection linkEnds = Model.getFacade().getConnections(edge);
             Object[] leArray = linkEnds.toArray();
             Object fromEnd = leArray[0];
             Object fromInst = Model.getFacade().getInstance(fromEnd);
@@ -136,13 +140,12 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             lnkFig.setDestFigNode(toFN);
             newEdge = lnkFig;
         } else if (Model.getFacade().isADependency(edge)) {
-            Object dep = /*(MDependency)*/ edge;
-            FigDependency depFig = new FigDependency(dep);
+            FigDependency depFig = new FigDependency(edge, settings);
 
             Object supplier =
-                ((Model.getFacade().getSuppliers(dep).toArray())[0]);
+                ((Model.getFacade().getSuppliers(edge).toArray())[0]);
             Object client =
-                ((Model.getFacade().getClients(dep).toArray())[0]);
+                ((Model.getFacade().getClients(edge).toArray())[0]);
 
             FigNode supFN = (FigNode) lay.presentationFor(supplier);
             FigNode cliFN = (FigNode) lay.presentationFor(client);
@@ -154,8 +157,7 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             depFig.getFig().setDashed(true);
             newEdge = depFig;
         } else if (Model.getFacade().isAGeneralization(edge)) {
-            Object gen = /*(MGeneralization)*/ edge;
-            newEdge = new FigGeneralization(gen, lay);
+            newEdge = new FigGeneralization(edge, settings);
         } else if (edge instanceof CommentEdge) {
             newEdge = new FigEdgeNote(edge, lay);
         }

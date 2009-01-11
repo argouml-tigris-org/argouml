@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -79,14 +79,14 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
     }
 
     private void initFigs() {
-        cover = new FigRect(BX, 10, DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.black,
-                Color.white);
+        cover = new FigRect(BX, 10, DEFAULT_WIDTH, DEFAULT_HEIGHT, LINE_COLOR,
+                FILL_COLOR);
         upperRect = new FigRect(0, 2 * FINGER_HEIGHT, 
                 FINGER_WIDTH, FINGER_HEIGHT,
-                Color.black, Color.white);
+                LINE_COLOR, FILL_COLOR);
         lowerRect = new FigRect(0, 5 * FINGER_HEIGHT, 
                 FINGER_WIDTH, FINGER_HEIGHT,
-                Color.black, Color.white);
+                LINE_COLOR, FILL_COLOR);
 
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);

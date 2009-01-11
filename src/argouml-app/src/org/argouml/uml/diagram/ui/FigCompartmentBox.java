@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
@@ -85,16 +84,17 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
         getStereotypeFig().setFilled(true);
-        getStereotypeFig().setLineWidth(1);
+        getStereotypeFig().setLineWidth(LINE_WIDTH);
         // +1 to have 1 pixel overlap with getNameFig()
-        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
+        getStereotypeFig().setHeight(STEREOHEIGHT + LINE_WIDTH);
 
         // The outside border of the box around all compartments.
         borderFig = new FigEmptyRect(X0, Y0, 0, 0);
-        borderFig.setLineWidth(1);
+        borderFig.setLineColor(LINE_COLOR);
+        borderFig.setLineWidth(LINE_WIDTH);
 
         getBigPort().setLineWidth(0);
-        getBigPort().setFillColor(Color.white);
+        getBigPort().setFillColor(FILL_COLOR);
     }
 
     /**

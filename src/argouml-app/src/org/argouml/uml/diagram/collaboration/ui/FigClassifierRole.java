@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,16 +27,13 @@ package org.argouml.uml.diagram.collaboration.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
-import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
-import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
@@ -63,8 +60,6 @@ public class FigClassifierRole extends FigNodeModelElement {
      */
     private static final int PADDING = 5;
 
-    private NotationProvider notationProvider;
-
     /**
      * The fig that is used for the complete classifier role.
      * Identical in size to {@link FigNodeModelElement#bigPort}.<p>
@@ -78,13 +73,64 @@ public class FigClassifierRole extends FigNodeModelElement {
      * connections ({@link FigNodeModelElement#bigPort}), with
      * matching rectangle providing the graphic rendering ({@link
      * #cover}). Stereotype and name are rendered centrally in the
-     * rectangle.<p>
+     * rectangle.
+     * 
+     * @deprecated for 0.27.4 by mvw. Use 
+     * {@link #FigClassifierRole(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigClassifierRole() {
+        initClassifierRoleFigs();
+        
+        // Set our bounds to those we are given.
+
+        Rectangle r = getBounds();
+        setBounds(r.x, r.y, r.width, r.height);
+    }
+
+    /**
+     * Variant constructor that associates the classifier role with a
+     * particular model element.<p>
+     *
+     * Classifier role is constructed with {@link #FigClassifierRole()}.<p>
+     *
+     * @param gm    The graph model to use. Ignored in this implementation.
+     * @param lay   The layer
+     * @param node  The model element object to associate with this Fig.
+     * @deprecated for 0.27.4 by mvw.  Use 
+     * {@link #FigClassifierRole(Object, Rectangle, DiagramSettings)}.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigClassifierRole(@SuppressWarnings("unused")
+            GraphModel gm, Layer lay, Object node) {
+        this();
+        setLayer(lay);
+        setOwner(node);
+    }
+
+    /**
+     * Construct a FigClassifierRole.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size (size is ignored)
+     * @param settings render settings
+     */
+    public FigClassifierRole(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initClassifierRoleFigs();
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
+    }
+
+    private void initClassifierRoleFigs() {
         // The big port and cover. Color of the big port is irrelevant
 
-        setBigPort(new FigRect(X0, Y0, 90, 50, Color.cyan, Color.cyan));
-        cover   = new FigRect(X0, Y0, 90, 50, Color.black, Color.white);
+        setBigPort(new FigRect(X0, Y0, 90, 50, DEBUG_COLOR, DEBUG_COLOR));
+        cover   = new FigRect(X0, Y0, 90, 50, LINE_COLOR, FILL_COLOR);
 
         // The stereotype. Width is the same as the cover, height is whatever
         // its minimum permitted is. The text should be centred.
@@ -94,7 +140,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         getStereotypeFig().setLineWidth(0);
         getStereotypeFig().setVisible(true);
         //getStereotypeFig().setFilled(false);
-        getStereotypeFig().setFillColor(Color.red);
+        getStereotypeFig().setFillColor(DEBUG_COLOR);
         getStereotypeFig().setBounds(X0, Y0, 90, stereoMin.height);
 
         // The name. Width is the same as the cover, height is whatever its
@@ -118,42 +164,26 @@ public class FigClassifierRole extends FigNodeModelElement {
         addFig(cover);
         addFig(getStereotypeFig());
         addFig(getNameFig());
-
-        // Set our bounds to those we are given.
-
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
-    }
-
-    /**
-     * Variant constructor that associates the classifier role with a
-     * particular model element.<p>
-     *
-     * Classifier role is constructed with {@link #FigClassifierRole()}.<p>
-     *
-     * @param gm    The graph model to use. Ignored in this implementation.
-     * @param lay   The layer
-     * @param node  The model element object to associate with this Fig.
-     */
-    public FigClassifierRole(GraphModel gm, Layer lay, Object node) {
-        this();
-        setLayer(lay);
-        setOwner(node);
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)
+     * The NotationProvider for the ClassifierRole. <p>
+     * 
+     * The syntax is for UML is:
+     * <pre>
+     * baselist := [base] [, base]*
+     * classifierRole := [name] [/ role] [: baselist]
+     * </pre></p>
+     * 
+     * The <code>name</code> is the Instance name, not used currently.
+     * See ClassifierRoleNotationUml for details.<p>
+     *
+     * This syntax is compatible with the UML 1.4 specification.
      */
     @Override
-    protected void initNotationProviders(Object own) {
-        super.initNotationProviders(own);
-        if (Model.getFacade().isAClassifierRole(own)) {
-            notationProvider =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_CLASSIFIERROLE, own);
-        }
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_CLASSIFIERROLE;
     }
-
 
     /**
      * Version of the clone to ensure all sub-figs are copied.<p>
@@ -179,7 +209,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     /**
      * Update the stereotype text.<p>
      *
-     * If the stereotype text is non-existant, we must make sure it is
+     * If the stereotype text is non-existent, we must make sure it is
      * marked not displayed, and update the display accordingly.<p>
      *
      * Similarly if there is text, we must make sure it is marked
@@ -373,57 +403,6 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         firePropChange("bounds", oldBounds, getBounds());
         updateEdges();
-    }
-
-    /**
-     * Called after text has been edited directly on the screen.<p>
-     *
-     * @param ft  The text that was edited.
-     * @throws PropertyVetoException by the parser
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    @Override
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        if (ft == getNameFig()) {
-            notationProvider.parse(getOwner(), ft.getText());
-            ft.setText(notationProvider.toString(getOwner(),
-                    getNotationSettings()));
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
-     */
-    @Override
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp(notationProvider.getParsingHelp());
-        }
-    }
-
-    /**
-     * Adjust the fig in the light of some change to the model.<p>
-     *
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-     */
-    @Override
-    protected void updateNameText() {
-        if (notationProvider != null) {
-            getNameFig().setText(notationProvider.toString(getOwner(), 
-                    getNotationSettings()));
-        }
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    @Override
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        if (mee instanceof AddAssociationEvent
-                || mee instanceof AttributeChangeEvent) {
-            notationProvider.updateListener(this, getOwner(), mee);
-        }
     }
 
     @Override

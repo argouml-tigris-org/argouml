@@ -25,11 +25,11 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigText;
@@ -54,18 +54,40 @@ public abstract class FigHistoryState extends FigStateVertex {
     private FigText h;
     private FigCircle head;
 
-
+    
+    /**
+     * Construct a new FigSubactivityState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigHistoryState(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
     /**
      * Main constructor.
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigHistoryState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigHistoryState() {
+        initFigs();
+    }
+
+    private void initFigs() {
         setEditable(false);
-        setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan));
-        head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
+        setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, DEBUG_COLOR, 
+                DEBUG_COLOR));
+        head = new FigCircle(X, Y, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
         h = new FigText(X, Y, WIDTH - 10, HEIGHT - 10);
-        h.setFont(getSettings().getFont(Font.PLAIN));
+        h.setFont(getSettings().getFontPlain());
         h.setText(getH());
-        h.setTextColor(Color.black);
+        h.setTextColor(TEXT_COLOR);
         h.setFilled(false);
         h.setLineWidth(0);
 
@@ -77,6 +99,23 @@ public abstract class FigHistoryState extends FigStateVertex {
         setBlinkPorts(false); //make port invisible unless mouse enters
     }
 
+
+    /**
+     * The constructor that hooks the Fig into the UML modelelement.
+     *
+     * @param gm ignored
+     * @param node the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigHistoryState(Object, Rectangle, DiagramSettings)}.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigHistoryState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
+        this();
+        setOwner(node);
+    }
+    
     /**
      * Override setBounds to keep shapes looking right.
      * {@inheritDoc}
@@ -114,16 +153,6 @@ public abstract class FigHistoryState extends FigStateVertex {
         return "H";
     }
 
-    /**
-     * The constructor that hooks the Fig into the UML modelelement.
-     *
-     * @param gm ignored
-     * @param node the UML element
-     */
-    public FigHistoryState(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
-    }
 
     /*
      * @see java.lang.Object#clone()

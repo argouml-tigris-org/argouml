@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,6 +34,8 @@ import java.util.Iterator;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -88,7 +90,8 @@ public class FigActionState extends FigStateVertex {
      */
     @SuppressWarnings("deprecation")
     @Deprecated
-    public FigActionState(@SuppressWarnings("unused") GraphModel gm, Object node) {
+    public FigActionState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         setOwner(node);
         initializeActionState();
     }
@@ -100,7 +103,8 @@ public class FigActionState extends FigStateVertex {
      * @param bounds rectangle describing bounds
      * @param settings rendering settings
      */
-    public FigActionState(Object owner, Rectangle bounds, DiagramSettings settings) {
+    public FigActionState(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
         super(owner, bounds, settings);
         initializeActionState();
     }
@@ -108,9 +112,10 @@ public class FigActionState extends FigStateVertex {
     private void initializeActionState() {
         
         setBigPort(new FigRRect(X0 + 1, Y0 + 1, STATE_WIDTH - 2, HEIGHT - 2,
-                Color.cyan, Color.cyan));
+                DEBUG_COLOR, DEBUG_COLOR));
         ((FigRRect) getBigPort()).setCornerRadius(getBigPort().getHeight() / 2);
-        cover = new FigRRect(X0, Y0, STATE_WIDTH, HEIGHT, Color.black, Color.white);
+        cover = new FigRRect(X0, Y0, STATE_WIDTH, HEIGHT, 
+                LINE_COLOR, FILL_COLOR);
         cover.setCornerRadius(getHeight() / 2);
 
         // overrule the single-line name-fig created by the parent
@@ -150,10 +155,12 @@ public class FigActionState extends FigStateVertex {
             notationProvider.cleanListener(this, own);
         }
         super.initNotationProviders(own);
+        NotationName notationName = Notation.findNotation(getNotationSettings()
+                .getNotationLanguage());
         if (Model.getFacade().isAActionState(own)) {
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        getNotationProviderType(), own, this);
+                        getNotationProviderType(), own, this, notationName);
         }
     }
     

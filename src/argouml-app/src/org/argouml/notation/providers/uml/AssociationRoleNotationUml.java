@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,8 +26,8 @@ package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -68,7 +68,7 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
         try {
             parseRole(modelElement, text);
         } catch (ParseException pe) {
-            String msg = "statusmsg.bar.error.parsing.association-end-name";
+            String msg = "statusmsg.bar.error.parsing.association-role";
             Object[] args = {
                 pe.getLocalizedMessage(),
                 Integer.valueOf(pe.getErrorOffset()),

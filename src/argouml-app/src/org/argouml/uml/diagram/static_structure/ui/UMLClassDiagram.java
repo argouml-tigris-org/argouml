@@ -53,7 +53,6 @@ import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -655,8 +654,7 @@ public class UMLClassDiagram extends UMLDiagram {
     @Override
     public FigNode drop(Object droppedObject, Point location) {        
         FigNode figNode = null;
-        GraphModel gm = getGraphModel();        
-        
+
         // If location is non-null, convert to a rectangle that we can use
         Rectangle bounds = null;
         if (location != null) {

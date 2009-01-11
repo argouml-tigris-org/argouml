@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.deployment.ui;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,6 +37,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
@@ -50,7 +52,6 @@ import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -556,28 +557,34 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     @Override
     public FigNode drop(Object droppedObject, Point location) {
         FigNode figNode = null;
-        GraphModel gm = getGraphModel();
+
+        // If location is non-null, convert to a rectangle that we can use
+        Rectangle bounds = null;
+        if (location != null) {
+            bounds = new Rectangle(location.x, location.y, 0, 0);
+        }
+        DiagramSettings settings = getDiagramSettings();
         
         if (Model.getFacade().isANode(droppedObject)) {
-            figNode = new FigMNode(gm, droppedObject);
+            figNode = new FigMNode(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAAssociation(droppedObject)) {
-            figNode = new FigNodeAssociation(gm, droppedObject);
+            figNode = new FigNodeAssociation(droppedObject, bounds, settings);
         } else if (Model.getFacade().isANodeInstance(droppedObject)) {
-            figNode = new FigNodeInstance(gm, droppedObject);
+            figNode = new FigNodeInstance(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComponent(droppedObject)) {
-            figNode = new FigComponent(gm, droppedObject);
+            figNode = new FigComponent(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComponentInstance(droppedObject)) {
-            figNode = new FigComponentInstance(gm, droppedObject);
+            figNode = new FigComponentInstance(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAClass(droppedObject)) {
-            figNode = new FigClass(gm, droppedObject);
+            figNode = new FigClass(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAInterface(droppedObject)) {
-            figNode = new FigInterface(gm, droppedObject);
+            figNode = new FigInterface(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAObject(droppedObject)) {
-            figNode = new FigObject(gm, droppedObject);
+            figNode = new FigObject(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAActor(droppedObject)) {
-            figNode = new FigActor(gm, droppedObject);
+            figNode = new FigActor(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(gm, droppedObject);
+            figNode = new FigComment(droppedObject, bounds, settings);
         }
         
         if (figNode != null) {

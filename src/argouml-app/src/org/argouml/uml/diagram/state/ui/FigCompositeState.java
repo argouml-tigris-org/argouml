@@ -28,7 +28,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
@@ -38,6 +37,7 @@ import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -53,25 +53,41 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigCompositeState extends FigState {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private FigRect cover;
     private FigLine divider;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    
+    /**
+     * Construct a new FigStubState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigCompositeState(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
     /**
      * The main constructor.
      *
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigCompositeState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigCompositeState() {
         super();
+        initFigs();
+    }
+
+    private void initFigs() {
         cover =
             new FigRRect(getInitialX(), getInitialY(),
 			      getInitialWidth(), getInitialHeight(),
-			      Color.black, Color.white);
+			      LINE_COLOR, FILL_COLOR);
 
         getBigPort().setLineWidth(0);
 
@@ -80,7 +96,7 @@ public class FigCompositeState extends FigState {
 			getInitialY() + 2 + getNameFig().getBounds().height + 1,
 			getInitialWidth() - 1,
 			getInitialY() + 2 + getNameFig().getBounds().height + 1,
-			Color.black);
+			LINE_COLOR);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
@@ -89,9 +105,7 @@ public class FigCompositeState extends FigState {
         addFig(divider);
         addFig(getInternal());
 
-        //setBlinkPorts(false); //make port invisble unless mouse enters
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
+        setBounds(getBounds());
     }
 
     /**
@@ -99,8 +113,12 @@ public class FigCompositeState extends FigState {
      *
      * @param gm ignored
      * @param node the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigCompositeState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigCompositeState(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigCompositeState(@SuppressWarnings("unused") GraphModel gm, Object node) {
         this();
         setOwner(node);
     }

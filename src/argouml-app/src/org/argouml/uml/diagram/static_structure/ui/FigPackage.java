@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -181,9 +181,9 @@ public class FigPackage extends FigNodeModelElement
 
         // Make all the parts match the main fig
         setFilled(true);
-        setFillColor(Color.white);
-        setLineColor(Color.black);
-        setLineWidth(1);
+        setFillColor(FILL_COLOR);
+        setLineColor(LINE_COLOR);
+        setLineWidth(LINE_WIDTH);
 
         updateEdges();
     }
@@ -340,8 +340,9 @@ public class FigPackage extends FigNodeModelElement
                 getNameFig().setTopMargin(0);
                 getStereotypeFig().setVisible(false);
             } else if (!getStereotypeFig().isVisible()) {
-                    getNameFig().setTopMargin(getStereotypeFig().getMinimumSize().height);
-                    getStereotypeFig().setVisible(true);
+                getNameFig().setTopMargin(
+                        getStereotypeFig().getMinimumSize().height);
+                getStereotypeFig().setVisible(true);
             } // else nothing changed
         }
 
@@ -385,7 +386,7 @@ public class FigPackage extends FigNodeModelElement
         // If we have any number of stereotypes displayed, then allow 
         // some space for that (only width, height is included in nameFig):
         if (isStereotypeVisible()) {
-           Dimension st = getStereotypeFig().getMinimumSize();
+            Dimension st = getStereotypeFig().getMinimumSize();
             aSize.width =
 		Math.max(aSize.width, st.width);
         }

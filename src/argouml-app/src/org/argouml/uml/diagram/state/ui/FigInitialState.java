@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -46,19 +47,42 @@ public class FigInitialState extends FigStateVertex {
 
     private static final int X = X0;
     private static final int Y = Y0;
-    private static final int WIDTH = 16;
+    private static final int STATE_WIDTH = 16;
     private static final int HEIGHT = 16;
 
     private FigCircle head;
 
+    
+    /**
+     * Construct a new FigSubactivityState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigInitialState(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
     /**
      * Default constructor.
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigInitialState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigInitialState() {
+        initFigs();
+    }
+
+    private void initFigs() {
         setEditable(false);
         FigCircle bigPort =
-            new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan);
-        head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.black);
+            new FigCircle(X, Y, STATE_WIDTH, HEIGHT, DEBUG_COLOR, DEBUG_COLOR);
+        head = new FigCircle(X, Y, STATE_WIDTH, HEIGHT, LINE_COLOR,
+                SOLID_FILL_COLOR);
 
         // add Figs to the FigNode in back-to-front order
         addFig(bigPort);
@@ -66,7 +90,7 @@ public class FigInitialState extends FigStateVertex {
 
         setBigPort(bigPort);
 
-        setBlinkPorts(false); //make port invisble unless mouse enters
+        setBlinkPorts(false); //make port invisible unless mouse enters
     }
 
     /**
@@ -74,8 +98,13 @@ public class FigInitialState extends FigStateVertex {
      *
      * @param gm ignored
      * @param node the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigInitialState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigInitialState(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigInitialState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
     }

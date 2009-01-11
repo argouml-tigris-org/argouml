@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -61,8 +61,8 @@ public class FigObject extends FigNodeModelElement {
     }
 
     private void initFigs() {
-        setBigPort(new FigRect(X0, Y0, 90, 50, Color.cyan, Color.cyan));
-        cover = new FigRect(X0, Y0, 90, 50, Color.black, Color.white);
+        setBigPort(new FigRect(X0, Y0, 90, 50, DEBUG_COLOR, DEBUG_COLOR));
+        cover = new FigRect(X0, Y0, 90, 50, LINE_COLOR, FILL_COLOR);
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
         getNameFig().setUnderline(true);

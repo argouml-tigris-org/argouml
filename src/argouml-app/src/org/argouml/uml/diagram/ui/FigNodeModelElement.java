@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -310,8 +310,7 @@ public abstract class FigNodeModelElement
         notationSettings = new NotationSettings();
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
-        bigPort = new FigRect(X0, Y0, 0, 0, ArgoFig.DEBUG_COLOR,
-                ArgoFig.DEBUG_COLOR);
+        bigPort = new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
         
         nameFig = new FigNameWithAbstractAndBold(X0, Y0, WIDTH, 21, true);
         stereotypeFig = new FigStereotypesGroup(X0, Y0, WIDTH, 15);
@@ -323,9 +322,8 @@ public abstract class FigNodeModelElement
      * rendering settings.
      */
     private void constructFigs() {
-
-
-        nameFig.setLineWidth(1);
+        // TODO: Why isn't this stuff managed by the nameFig itself?
+        nameFig.setLineWidth(LINE_WIDTH);
         nameFig.setFilled(true);
         nameFig.setText(placeString());
         nameFig.setBotMargin(7); // make space for the clarifier
@@ -364,6 +362,9 @@ public abstract class FigNodeModelElement
      * with the given settings. This is the constructor used by the PGML
      * parser when loading a diagram from a file.<p>
      * 
+     * Beware: the width and height in the given Rectangle are currently ignored.
+     * According issue 5604 this is a bug.
+     * 
      * @param element ModelElement associated with figure
      * @param bounds x & y are used to set position, width & height are ignored
      * @param renderSettings  the rendering settings to use for the Fig
@@ -372,10 +373,20 @@ public abstract class FigNodeModelElement
             DiagramSettings renderSettings) {
         super();
         super.setOwner(element);
+        
         // TODO: We currently don't support per-fig settings for most stuff, so
         // we can just use the defaults that we were given.
 //        settings = new DiagramSettings(renderSettings);
         settings = renderSettings;
+        
+        // Be careful here since subclasses could have overridden this with
+        // the assumption that it wouldn't be called before the constructors
+        // finished
+        super.setFillColor(FILL_COLOR);
+        super.setLineColor(LINE_COLOR);
+        super.setLineWidth(LINE_WIDTH);
+        super.setTextColor(TEXT_COLOR); // Some subclasses will try to use this
+        
         /*
          * Notation settings are different since, we know that, at a minimum,
          * the isShowPath() setting can change because with implement
@@ -386,12 +397,11 @@ public abstract class FigNodeModelElement
 
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
-        bigPort = new FigRect(X0, Y0, 0, 0, ArgoFig.DEBUG_COLOR,
-                ArgoFig.DEBUG_COLOR);
+        bigPort = new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
         nameFig = new FigNameWithAbstractAndBold(element, 
                 new Rectangle(X0, Y0, WIDTH, 21), getSettings(), true);
         stereotypeFig = new FigStereotypesGroup(element, 
-                new Rectangle(X0, Y0, WIDTH, 15), settings);
+                new Rectangle(X0, Y0, WIDTH, STEREOHEIGHT), settings);
         constructFigs();
         if (element == null) {
             throw new IllegalArgumentException("An owner must be supplied");

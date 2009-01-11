@@ -1234,11 +1234,15 @@ public final class NotationUtilityUml {
         } else {
             throw new IllegalArgumentException();
         }
-        int upper = Model.getFacade().getUpper(multiplicity);
-        int lower = Model.getFacade().getLower(multiplicity);
-        if (lower != 1 || upper != 1 || showSingularMultiplicity) {
-            // TODO: I18N
-            return Model.getFacade().toString(multiplicity);
+        // it can still be null if the UML element 
+        // did not have a multiplicity defined.
+        if (multiplicity != null) {
+            int upper = Model.getFacade().getUpper(multiplicity);
+            int lower = Model.getFacade().getLower(multiplicity);
+            if (lower != 1 || upper != 1 || showSingularMultiplicity) {
+                // TODO: I18N
+                return Model.getFacade().toString(multiplicity);
+            }
         }
         return "";
     }

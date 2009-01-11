@@ -129,9 +129,10 @@ public class ActionGenerateAll extends UndoableAction {
      */
     @Override
     public boolean isEnabled() {
-	ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();
-	return super.isEnabled()
-	    && (activeDiagram instanceof UMLClassDiagram);
+        // TODO: this seems to be called at startup only so no check so far
+        return true;
+	//ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();
+	//return (activeDiagram instanceof UMLClassDiagram);
     }
 
     /**

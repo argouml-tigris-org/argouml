@@ -149,7 +149,7 @@ public class ModeCreateMessage extends ModeCreate {
         Point snapPt = new Point();
         synchronized (snapPt) {
             snapPt.setLocation(
-                startPortFig.getX() + FigClassifierRole.WIDTH / 2,
+                startPortFig.getX() + FigClassifierRole.ROLE_WIDTH / 2,
                 startPortFig.getY());
             editor.snap(snapPt);
             anchorX = snapPt.x;

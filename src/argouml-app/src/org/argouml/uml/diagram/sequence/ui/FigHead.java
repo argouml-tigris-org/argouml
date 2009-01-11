@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 
@@ -53,7 +52,7 @@ class FigHead extends ArgoFigGroup {
             new FigRect(0, 0,
                 FigClassifierRole.MIN_HEAD_WIDTH,
                 FigClassifierRole.MIN_HEAD_HEIGHT,
-                Color.black, Color.white);
+                LINE_COLOR, FILL_COLOR);
         addFig(rectFig);
         addFig(name);
         addFig(stereotype);
@@ -126,7 +125,7 @@ class FigHead extends ArgoFigGroup {
         }
         nameFig.setFilled(false);
         nameFig.setLineWidth(0);
-        nameFig.setTextColor(Color.black);
+        nameFig.setTextColor(TEXT_COLOR);
         nameFig.setBounds(x, yy, w, nameFig.getHeight());
         _x = x;
         _y = y;

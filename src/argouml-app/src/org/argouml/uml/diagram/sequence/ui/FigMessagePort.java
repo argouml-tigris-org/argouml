@@ -58,7 +58,7 @@ public class FigMessagePort extends ArgoFigGroup {
     public FigMessagePort(Object owner, int x, int y, int x2) {
         super();
         setOwner(owner);
-        FigLine myLine = new FigLine(x, y, x2, y);
+        FigLine myLine = new FigLine(x, y, x2, y, LINE_COLOR);
         addFig(myLine);
         setVisible(false);
     }

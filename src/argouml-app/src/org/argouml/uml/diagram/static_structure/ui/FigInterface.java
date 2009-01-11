@@ -354,7 +354,7 @@ public class FigInterface extends FigClassifierBox {
         borderFig.setBounds(x, y, w, h);
 
         getNameFig().setLineWidth(0);
-        getNameFig().setLineColor(Color.red);
+        getNameFig().setLineColor(Color.red); // TODO: DEBUG_COLOR?
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {

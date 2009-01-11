@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
@@ -59,7 +58,7 @@ public class FigMultiLineText extends ArgoFigText {
     }
 
     private void initFigs() {
-        setTextColor(Color.black);
+        setTextColor(TEXT_COLOR);
         setReturnAction(FigText.INSERT);
         setLineSeparator("\n");
         setTabAction(FigText.END_EDITING);

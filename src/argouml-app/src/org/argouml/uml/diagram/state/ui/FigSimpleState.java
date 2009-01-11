@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,9 +68,10 @@ public class FigSimpleState extends FigState {
      */
     @SuppressWarnings("deprecation")
     @Deprecated
-    public FigSimpleState(@SuppressWarnings("unused") GraphModel gm, Object node) {
+    public FigSimpleState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
 	this();
-	setOwner(node);
+        setOwner(node);
     }
 
     /**
@@ -80,7 +81,8 @@ public class FigSimpleState extends FigState {
      * @param bounds rectangle describing bounds
      * @param settings rendering settings
      */
-    public FigSimpleState(Object owner, Rectangle bounds, DiagramSettings settings) {
+    public FigSimpleState(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
         super(owner, bounds, settings);
         initializeSimpleState();
     }
@@ -89,7 +91,7 @@ public class FigSimpleState extends FigState {
         cover =
             new FigRRect(getInitialX(), getInitialY(),
                          getInitialWidth(), getInitialHeight(),
-                         Color.black, Color.white);
+                         LINE_COLOR, FILL_COLOR);
 
         getBigPort().setLineWidth(0);
 
@@ -98,7 +100,7 @@ public class FigSimpleState extends FigState {
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
                         getInitialWidth() - 1,
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
-                        Color.black);
+                        LINE_COLOR);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());

@@ -97,16 +97,16 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
         getStereotypeFig().setFilled(true);
-        getStereotypeFig().setLineWidth(1);
+        getStereotypeFig().setLineWidth(LINE_WIDTH);
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
 
         borderFig = new FigEmptyRect(X0, Y0, 0, 0);
-        borderFig.setLineWidth(ArgoFig.LINE_WIDTH);
-        borderFig.setLineColor(ArgoFig.LINE_COLOR);
+        borderFig.setLineWidth(LINE_WIDTH);
+        borderFig.setLineColor(LINE_COLOR);
 
         getBigPort().setLineWidth(0);
-        getBigPort().setFillColor(ArgoFig.FILL_COLOR);
+        getBigPort().setFillColor(FILL_COLOR);
     }
 
     private Rectangle getDefaultBounds() {

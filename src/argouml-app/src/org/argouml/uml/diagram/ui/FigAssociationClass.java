@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -257,7 +257,7 @@ public class FigAssociationClass extends FigAssociation implements
     /**
      * Set fill color of contained FigClassAssociationClass.
      * 
-     * @param color new fill color.
+     * @param color new fill color
      */
     @Override
     public void setFillColor(Color color) {
@@ -274,14 +274,14 @@ public class FigAssociationClass extends FigAssociation implements
         if (getAssociationClass() != null) {
             return getAssociationClass().getFillColor();
         } else {
-            return Color.white;
+            return FILL_COLOR;
         }
     }
 
     /**
      * Set line color of contained FigClassAssociationClass.
      * 
-     * @param arg0 new line color.
+     * @param arg0 new line color
      */
     @Override
     public void setLineColor(Color arg0) {

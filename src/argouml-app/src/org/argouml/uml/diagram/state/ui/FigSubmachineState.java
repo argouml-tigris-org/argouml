@@ -31,6 +31,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
@@ -46,6 +47,9 @@ import org.tigris.gef.presentation.FigText;
 
 public class FigSubmachineState extends FigState {
 
+    private static final int INCLUDE_HEIGHT = 21;
+    private static final int WIDTH = 90;
+    
     private FigRect cover;
     private FigLine divider;
     private FigLine divider2;
@@ -54,16 +58,40 @@ public class FigSubmachineState extends FigState {
     private FigLine circle1tocircle2;
     private FigText include;
 
+    
+    /**
+     * Construct a new FigSubmachineState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigSubmachineState(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        include = new FigSingleLineText(owner, 
+                new Rectangle(X0, Y0, WIDTH, INCLUDE_HEIGHT), settings, true);
+        initFigs();
+    }
 
     /**
      * The constructor.
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigSubmachineState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigSubmachineState() {
         super();
+        include = new FigSingleLineText(X0, Y0, WIDTH, INCLUDE_HEIGHT, true);
+        initFigs();
+    }
+
+    private void initFigs() {
         cover =
             new FigRRect(getInitialX(), getInitialY(),
                 getInitialWidth(), getInitialHeight(),
-                Color.black, Color.white);
+                LINE_COLOR, FILL_COLOR);
 
         getBigPort().setLineWidth(0);
 
@@ -72,9 +100,8 @@ public class FigSubmachineState extends FigState {
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
                         getInitialWidth() - 1,
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
-                        Color.black);
+                        LINE_COLOR);
 
-        include = new FigSingleLineText(X0, Y0, 90, 21, true);
         include.setText(placeString());
         include.setBounds(getInitialX() + 2, getInitialY() + 2,
                 getInitialWidth() - 4, include.getBounds().height);
@@ -86,25 +113,25 @@ public class FigSubmachineState extends FigState {
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
                         getInitialWidth() - 1,
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
-                        Color.black);
+                        LINE_COLOR);
 
         circle1 =
             new FigRRect(getInitialX() + getInitialWidth() - 55,
                 getInitialY() + getInitialHeight() - 15,
                 20, 10,
-                Color.black, Color.white);
+                LINE_COLOR, FILL_COLOR);
         circle2 =
             new FigRRect(getInitialX() + getInitialWidth() - 25,
                 getInitialY() + getInitialHeight() - 15,
                 20, 10,
-                Color.black, Color.white);
+                LINE_COLOR, FILL_COLOR);
 
         circle1tocircle2 =
                 new FigLine(getInitialX() + getInitialWidth() - 35,
                         getInitialY() + getInitialHeight() - 10,
                         getInitialX() + getInitialWidth() - 25,
                         getInitialY() + getInitialHeight() - 10,
-                        Color.black);
+                        LINE_COLOR);
 
         addFig(getBigPort());
         addFig(cover);
@@ -117,9 +144,7 @@ public class FigSubmachineState extends FigState {
         addFig(circle2);
         addFig(circle1tocircle2);
 
-        //setBlinkPorts(false); //make port invisble unless mouse enters
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
+        setBounds(getBounds());
     }
 
     /**
@@ -127,8 +152,12 @@ public class FigSubmachineState extends FigState {
      *
      * @param gm (ignored)
      * @param node the owner UML object
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigSubmachineState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigSubmachineState(GraphModel gm, Object node) {
+    @Deprecated
+    public FigSubmachineState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
     }
@@ -136,6 +165,8 @@ public class FigSubmachineState extends FigState {
     /*
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     @Override
     public void setOwner(Object node) {
         super.setOwner(node);

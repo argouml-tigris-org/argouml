@@ -24,6 +24,9 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import java.awt.Rectangle;
+
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.graph.GraphModel;
 
 /** Class to display graphics for a UML DeepHistoryState in a diagram.
@@ -31,12 +34,43 @@ import org.tigris.gef.graph.GraphModel;
  * @author jrobbins
  */
 public class FigDeepHistoryState extends FigHistoryState {
+    
+    /**
+     * Construct a new FigDeepHistoryState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigDeepHistoryState(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+    }
+    
     /**
      * The main constructor
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigDeepHistoryState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigDeepHistoryState() {
         super();
     }
+
+    /**
+     * The constructor which links the Fig into the existing UML element
+     * @param gm ignored
+     * @param node the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigDeepHistoryState(Object, Rectangle, DiagramSettings)}.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigDeepHistoryState(GraphModel gm, Object node) {
+        super(gm, node);
+    }
+
 
     /*
      * @see org.argouml.uml.diagram.state.ui.FigHistoryState#getH()
@@ -45,13 +79,4 @@ public class FigDeepHistoryState extends FigHistoryState {
         return "H*";
     }
 
-    /**
-     * The constructor which links the Fig into the existing UML element
-     * @param gm ignored
-     * @param node the UML element
-     */
-    public FigDeepHistoryState(GraphModel gm, Object node) {
-        super(gm, node);
-    }
-
-} /* end class FigDeepHistoryState */
+}

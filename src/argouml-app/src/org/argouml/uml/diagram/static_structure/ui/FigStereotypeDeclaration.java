@@ -101,6 +101,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      *
      * @param gm   Not actually used in the current implementation
      * @param node The UML object being placed.
+     * @deprecated for 0.27.3 by tfmorris.  Use 
      * {@link #FigStereotypeDeclaration(Object, Rectangle, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
@@ -233,7 +234,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         // final int whitespace = h - getMinimumSize().height;
 
         getNameFig().setLineWidth(0);
-        getNameFig().setLineColor(Color.red);
+        getNameFig().setLineColor(Color.red); // TODO: DEBUG_COLOR?
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {

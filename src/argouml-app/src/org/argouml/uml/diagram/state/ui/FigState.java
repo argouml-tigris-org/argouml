@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
@@ -113,13 +112,14 @@ public abstract class FigState extends FigStateVertex {
                 getNotationSettings().getNotationLanguage());
         notationProviderBody =
             NotationProviderFactory2.getInstance().getNotationProvider(
-                    NotationProviderFactory2.TYPE_STATEBODY, getOwner(), this, notation);
+                    NotationProviderFactory2.TYPE_STATEBODY, getOwner(), this, 
+                    notation);
     }
 
     private void initializeState() {
         setBigPort(new FigRRect(getInitialX() + 1, getInitialY() + 1,
                 getInitialWidth() - 2, getInitialHeight() - 2,
-                Color.cyan, Color.cyan));
+                DEBUG_COLOR, DEBUG_COLOR));
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(getInitialX() + 2, getInitialY() + 2,
                        getInitialWidth() - 4,
@@ -132,7 +132,7 @@ public abstract class FigState extends FigStateVertex {
                     getInitialWidth() - 4,
                     getInitialHeight() - (getInitialY() + 2 + 21 + 4));
         internal.setFont(getSettings().getFont(Font.PLAIN));
-        internal.setTextColor(Color.black);
+        internal.setTextColor(TEXT_COLOR);
         internal.setLineWidth(0);
         internal.setFilled(false);
         internal.setExpandOnly(true);
@@ -165,7 +165,8 @@ public abstract class FigState extends FigStateVertex {
         if (Model.getFacade().isAState(own)) {
             notationProviderBody =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_STATEBODY, own, this, notation);
+                        NotationProviderFactory2.TYPE_STATEBODY, own, this, 
+                        notation);
         }
     }
 

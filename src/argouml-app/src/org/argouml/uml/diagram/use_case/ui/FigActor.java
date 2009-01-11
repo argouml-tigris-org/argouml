@@ -95,6 +95,11 @@ public class FigActor extends FigNodeModelElement {
         FigLine arms = new FigLine(X0, Y0 + 20, 30, 30, fg);
         FigLine leftLeg = new FigLine(X0 + 10, Y0 + 30, 15, 55, fg);
         FigLine rightLeg = new FigLine(X0 + 10, Y0 + 30, 25, 55, fg);
+        body.setLineWidth(LINE_WIDTH);
+        arms.setLineWidth(LINE_WIDTH);
+        leftLeg.setLineWidth(LINE_WIDTH);
+        rightLeg.setLineWidth(LINE_WIDTH);
+        
         getNameFig().setBounds(X0, Y0 + 45, 20, 20);
 
         getNameFig().setTextFilled(false);
@@ -156,6 +161,12 @@ public class FigActor extends FigNodeModelElement {
     @Override
     public void setLineWidth(int width) {
         // Miss out the text fix, this should have no line
+        for (int i = HEAD_POSN; i < RIGHT_LEG_POSN; i++) {
+            Fig f = getFigAt(i);
+            if (f != null) {
+                f.setLineWidth(width);
+            }
+        }
         getFigAt(HEAD_POSN).setLineWidth(width);
         getFigAt(BODY_POSN).setLineWidth(width);
         getFigAt(ARMS_POSN).setLineWidth(width);

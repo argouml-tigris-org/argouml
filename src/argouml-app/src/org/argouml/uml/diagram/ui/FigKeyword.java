@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 
 import org.argouml.notation.providers.uml.NotationUtilityUml;
@@ -65,11 +64,12 @@ public class FigKeyword extends FigSingleLineText {
     
     private void initialize() {
         setEditable(false);
-        setTextColor(Color.black);
+        setTextColor(TEXT_COLOR);
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
         setRightMargin(3);
         setLeftMargin(3);
+        super.setLineWidth(0);
     }
     
     /* Force the line-width to 0, since the FigGroup that contains the 
@@ -82,6 +82,7 @@ public class FigKeyword extends FigSingleLineText {
     /**
      * This is needed for updating the guillemet style.
      */
+    @Override
     protected void setText() {
         setText(keywordText);
     }
@@ -90,6 +91,7 @@ public class FigKeyword extends FigSingleLineText {
      * Add guillemets to any text set to this Fig.
      * {@inheritDoc}
      */
+    @Override
     public void setText(String text) {
         assert keywordText.equals(text);
         super.setText(NotationUtilityUml.formatStereotype(text,

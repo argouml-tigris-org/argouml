@@ -60,7 +60,6 @@ import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
 
@@ -71,14 +70,9 @@ import org.tigris.gef.presentation.FigNode;
  * "UMLStatechartDiagram". See issue 2306.
  */
 public class UMLStateDiagram extends UMLDiagram {
-    /**
-     * 
-     */
+
     private static final long serialVersionUID = -1541136327444703151L;
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG = Logger.getLogger(UMLStateDiagram.class);
 
     /**
@@ -118,58 +112,91 @@ public class UMLStateDiagram extends UMLDiagram {
     private Action actionJunctionPseudoState;
 
     /**
-     * This constructor is used to build a dummy statechart diagram so
-     * that a project will load properly.
+     * Constructor used by PGML parser to create a new diagram.  Use of
+     * this constructor by other callers is deprecated.
+     * 
+     * @deprecated for 0.27.3 by tfmorris.  Use 
+     * {@link #UMLStateDiagram(String, Object)}
      */
+    @Deprecated
     public UMLStateDiagram() {
-
+        super(new StateDiagramGraphModel());
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) {
             // nothing we can do about veto, so just ignore it
         }
-        // TODO: All super constructors should take a GraphModel
-        setGraphModel(createGraphModel());
     }
 
     /**
      * Constructor.
-     *
-     * @param namespace the NameSpace for the new diagram
+     * 
+     * @param name the name of the diagram
      * @param machine the StateMachine for the new diagram
      */
-    public UMLStateDiagram(Object namespace, Object machine) {
+    public UMLStateDiagram(String name, Object machine) {
+        super(name, machine, new StateDiagramGraphModel());
+
+        if (!Model.getFacade().isAStateMachine(machine)) {
+            throw new IllegalStateException(
+                "No StateMachine given to create a Statechart diagram");
+        }
+        namespace = getNamespaceFromMachine(machine);
+        if (!Model.getFacade().isANamespace(namespace)) {
+            throw new IllegalArgumentException();
+        }
+
+        nameDiagram(namespace);
+        setup(namespace, machine);
+    }
+
+   
+    /**
+     * Constructor.
+     * 
+     * @param ns the NameSpace for the new diagram
+     * @param machine the StateMachine for the new diagram
+     * @deprecated for 0.27.3 by tfmorris. Use
+     *             {@link #UMLStateDiagram(String, Object)}/
+     */
+    @Deprecated
+    public UMLStateDiagram(Object ns, Object machine) {
         this();
 
         if (!Model.getFacade().isAStateMachine(machine)) {
             throw new IllegalStateException(
                 "No StateMachine given to create a Statechart diagram");
         }
-        if (namespace == null) {
-            namespace = getNamespaceFromMachine(machine);
+        if (ns == null) {
+            ns = getNamespaceFromMachine(machine);
         }
-        if (!Model.getFacade().isANamespace(namespace)) {
+        if (!Model.getFacade().isANamespace(ns)) {
             throw new IllegalArgumentException();
         }
 
-        if (Model.getFacade().getName(namespace) != null) {
-            if (!Model.getFacade().getName(namespace).trim().equals("")) {
-                String name = null;
-                String diagramName = Model.getFacade().getName(namespace);
-                int number =
-                    (Model.getFacade().getBehaviors(namespace)) == null
-                    ? 0
-                            : Model.getFacade().getBehaviors(namespace).size();
-                name = diagramName + " " + (number++);
-                LOG.info("UMLStateDiagram constructor: String name = " + name);
-                try {
-                    setName(name);
-                } catch (PropertyVetoException pve) {
-                    // nothing we can do about veto, so just ignore it
-                }
+        nameDiagram(ns);
+        setup(ns, machine);
+    }
+
+    /**
+     * Name the diagram based on the name of its namespace and the number of
+     * behaviors that it contains.
+     * @param ns containing namespace
+     */
+    private void nameDiagram(Object ns) {
+        String nname = Model.getFacade().getName(ns);
+        if (nname != null && nname.trim().length() != 0) {
+            int number = (Model.getFacade().getBehaviors(ns)) == null ? 0
+                    : Model.getFacade().getBehaviors(ns).size();
+            String name = nname + " " + (number++);
+            LOG.info("UMLStateDiagram constructor: String name = " + name);
+            try {
+                setName(name);
+            } catch (PropertyVetoException pve) {
+                // nothing we can do about veto, so just ignore it
             }
         }
-        setup(namespace, machine);
+
     }
 
     /**
@@ -757,7 +784,6 @@ public class UMLStateDiagram extends UMLDiagram {
     @Override
     public FigNode drop(Object droppedObject, Point location) {
         FigNode figNode = null;
-        GraphModel gm = getGraphModel();
 
         // If location is non-null, convert to a rectangle that we can use
         Rectangle bounds = null;
@@ -769,19 +795,19 @@ public class UMLStateDiagram extends UMLDiagram {
         if (Model.getFacade().isAActionState(droppedObject)) {
             figNode = new FigActionState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAFinalState(droppedObject)) {
-            figNode = new FigFinalState(gm, droppedObject);
+            figNode = new FigFinalState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAStubState(droppedObject)) {
-            figNode = new FigStubState(gm, droppedObject);
+            figNode = new FigStubState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isASubmachineState(droppedObject)) {
-            figNode = new FigSubmachineState(gm, droppedObject);
+            figNode = new FigSubmachineState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isACompositeState(droppedObject)) {
-            figNode = new FigCompositeState(gm, droppedObject);
+            figNode = new FigCompositeState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isASynchState(droppedObject)) {
-            figNode = new FigSynchState(gm, droppedObject);
+            figNode = new FigSynchState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAState(droppedObject)) {
-            figNode = new FigSimpleState(gm, droppedObject);
+            figNode = new FigSimpleState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(gm, droppedObject);
+            figNode = new FigComment(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAPseudostate(droppedObject)) {
             Object kind = Model.getFacade().getKind(droppedObject);
             if (kind == null) {
@@ -789,25 +815,27 @@ public class UMLStateDiagram extends UMLDiagram {
                 return null;
             }
             if (kind.equals(Model.getPseudostateKind().getInitial())) {
-                figNode = new FigInitialState(gm, droppedObject);
+                figNode = new FigInitialState(droppedObject, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getChoice())) {
-                figNode = new FigBranchState(gm, droppedObject);
+                figNode = new FigBranchState(droppedObject, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getJunction())) {
-                figNode = new FigJunctionState(gm, droppedObject);
+                figNode = new FigJunctionState(droppedObject, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getFork())) {
-                figNode = new FigForkState(gm, droppedObject);
+                figNode = new FigForkState(droppedObject, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getJoin())) {
-                figNode = new FigJoinState(gm, droppedObject);
+                figNode = new FigJoinState(droppedObject, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getShallowHistory())) {
-                figNode = new FigShallowHistoryState(gm, droppedObject);
+                figNode = new FigShallowHistoryState(droppedObject, bounds, 
+                        settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getDeepHistory())) {
-                figNode = new FigDeepHistoryState(gm, droppedObject);
+                figNode = new FigDeepHistoryState(droppedObject, bounds, 
+                        settings);
             } else {
                 LOG.warn("found a type not known");
             }

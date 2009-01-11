@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,10 @@ import org.tigris.gef.presentation.FigLine;
  * make the whole compartment invisible, and
  * a NotationProvider is used to handle (generate and parse) 
  * the texts shown in the compartment, i.e. 
- * the compartment texts are editable by the user.
+ * the compartment texts are editable by the user. <p>
+ * 
+ * This FigGroup shall only contain its bigPort, 
+ * and Figs of type FigSeparator, and CompartmentFigText.
  */
 public abstract class FigEditableCompartment extends FigCompartment {
 
@@ -110,7 +113,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * children.
      * This is to save on resources and increase efficiency as multiple
      * figs need not exist and be resized, moved etc if they are not visible.
-     * If a compartment is later made visible the its child figs are rebuilt
+     * If a compartment is later made visible then its child figs are rebuilt
      * from the model.
      * {@inheritDoc}
      */
@@ -156,7 +159,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
     protected abstract Collection getUmlCollection();
 
     /**
-     * @return the type of the notationprovider 
+     * @return the type of the notationProvider 
      *              used to handle the text in the compartment 
      */
     protected abstract int getNotationType();
@@ -188,21 +191,24 @@ public abstract class FigEditableCompartment extends FigCompartment {
                 comp = findCompartmentFig(figs, umlObject);
                 acounter++;                
 
+                // TODO: Some of these magic numbers probably assume a line
+                // width of 1.  Replace with appropriate constants/variables.
+                
                 // If we don't have a fig for this UML object, we'll need to add
                 // one. We set the bounds, but they will be reset later.
                 if (comp == null) {
                     comp = createFigText(umlObject, new Rectangle(
-                            xpos + 1,
-                            ypos + 1 + acounter
-                            * ArgoFig.ROWHEIGHT,
+                            xpos + 1 /*?LINE_WIDTH?*/,
+                            ypos + 1 /*?LINE_WIDTH?*/ + acounter
+                            * ROWHEIGHT,
                             0,
-                            ArgoFig.ROWHEIGHT - 2),
+                            ROWHEIGHT - 2 /*? 2*LINE_WIDTH? */), 
                             getSettings());
                 } else {
                     /* This one is still usable, so let's retain it, */
                     /* but its position may have been changed: */
                     Rectangle b = comp.getBounds();
-                    b.y = ypos + 1 + acounter * ArgoFig.ROWHEIGHT;
+                    b.y = ypos + 1 /*?LINE_WIDTH?*/ + acounter * ROWHEIGHT;
                     // bounds not relevant here, but I am perfectionist...
                     comp.setBounds(b);
                 }
@@ -376,6 +382,8 @@ public abstract class FigEditableCompartment extends FigCompartment {
                 } else {
                     fw = fig.getMinimumSize().width;
                 }
+                // TODO: Some of these magic numbers probably assume a line
+                // width of 1.  Replace with appropriate constants/variables.
                 fig.setBounds(x + 1, yy + 1, fw, fig.getMinimumSize().height);
                 if (newW < fw + 2) {
                     newW = fw + 2;
@@ -389,6 +397,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
 
     /**
      * Fig representing separator for compartment.
+     * This is a horizontal line.
      */
     protected static class FigSeperator extends FigLine {
         /**
@@ -399,7 +408,8 @@ public abstract class FigEditableCompartment extends FigCompartment {
          * @param len
          */
         FigSeperator(int x, int y, int len) {
-            super(x, y, (x + len) - 1, y);
+            super(x, y, (x + len) - 1, y, LINE_COLOR);
+            setLineWidth(LINE_WIDTH);
         }
 
         /*
@@ -427,7 +437,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
             setX1(x);
             setY1(y);
             setX2((x + w) - 1);
-            setY2((y + h) - 1);
+            setY2(y);
         }
 
         /**

@@ -87,10 +87,12 @@ public class FigSingleLineText extends ArgoFigText  {
     }
 
     private void initialize() {
+        setFillColor(FILL_COLOR); // in case someone turns it on
         setFilled(false);
         setTabAction(FigText.END_EDITING);
         setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
+        setTextColor(TEXT_COLOR);
     }
 
     /**

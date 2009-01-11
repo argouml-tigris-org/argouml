@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,6 +35,7 @@ import java.util.Set;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
@@ -69,13 +70,36 @@ public class FigSubactivityState extends FigStateVertex {
     private FigRRect s2;
     private FigLine s3;
 
+    
+    /**
+     * Construct a new FigSubactivityState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigSubactivityState(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
+
     /**
      * Main Constructor (called from file loading).
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigSubactivityState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigSubactivityState() {
-        FigRRect bigPort = new FigRRect(X, Y, W, H, Color.cyan, Color.cyan);
+        initFigs();
+    }
+
+    private void initFigs() {
+        FigRRect bigPort = new FigRRect(X, Y, W, H, DEBUG_COLOR, DEBUG_COLOR);
         bigPort.setCornerRadius(bigPort.getHeight() / 2);
-        cover = new FigRRect(X, Y, W, H, Color.black, Color.white);
+        cover = new FigRRect(X, Y, W, H, LINE_COLOR, FILL_COLOR);
         cover.setCornerRadius(getHeight() / 2);
 
         bigPort.setLineWidth(0);
@@ -97,8 +121,7 @@ public class FigSubactivityState extends FigStateVertex {
         makeSubStatesIcon(X + W, Y);
 
         setBigPort(bigPort);
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
+        setBounds(getBounds());
     }
 
     /**
@@ -106,15 +129,15 @@ public class FigSubactivityState extends FigStateVertex {
      * @param y the y coordinate of the bottom corner
      */
     private void makeSubStatesIcon(int x, int y) {
-        s1 = new FigRRect(x - 22, y + 3, 8, 6, Color.black, Color.white);
-        s2 = new FigRRect(x - 11, y + 9, 8, 6, Color.black, Color.white);
+        s1 = new FigRRect(x - 22, y + 3, 8, 6, LINE_COLOR, FILL_COLOR);
+        s2 = new FigRRect(x - 11, y + 9, 8, 6, LINE_COLOR, FILL_COLOR);
         s1.setFilled(true);
         s2.setFilled(true);
-        s1.setLineWidth(1);
-        s2.setLineWidth(1);
+        s1.setLineWidth(LINE_WIDTH);
+        s2.setLineWidth(LINE_WIDTH);
         s1.setCornerRadius(SH);
         s2.setCornerRadius(SH);
-        s3 = new FigLine(x - 18, y + 6, x - 7, y + 12, Color.black);
+        s3 = new FigLine(x - 18, y + 6, x - 7, y + 12, LINE_COLOR);
 
         addFig(s3); // add them back to front
         addFig(s1);
@@ -127,8 +150,13 @@ public class FigSubactivityState extends FigStateVertex {
      *
      * @param gm ignored!
      * @param node owner, i.e. the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigSubactivityState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigSubactivityState(GraphModel gm, Object node) {
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public FigSubactivityState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
     }

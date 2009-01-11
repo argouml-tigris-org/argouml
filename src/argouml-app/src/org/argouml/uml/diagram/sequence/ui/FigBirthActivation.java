@@ -32,6 +32,8 @@ public class FigBirthActivation extends FigActivation {
 
     FigBirthActivation(int x, int y) {
         super(x, y, FigLifeLine.WIDTH, SequenceDiagramLayer.LINK_DISTANCE / 4);
+        // TODO: For some reason this doesn't implement ArgoFig, so we don't
+        // have access to our standard colors
         setFillColor(Color.black);
     }
 }

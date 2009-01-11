@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2008 The Regents of the University of California. All
+// Copyright (c) 2003-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,6 +33,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -51,6 +53,9 @@ import org.tigris.gef.presentation.Handle;
  */
 public class FigPartition extends FigNodeModelElement {
 
+    private static final int MIN_WIDTH = 64;
+    private static final int MIN_HEIGHT = 256;
+    
     private FigLine leftLine;
     private FigLine rightLine;
     private FigLine topLine;
@@ -61,22 +66,45 @@ public class FigPartition extends FigNodeModelElement {
     private FigPartition nextPartition;
     
     /**
-     * Constructor.
+     * Construct a new FigPartition.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
      */
+    public FigPartition(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
+    /**
+     * Constructor.
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigPartition(Object, Rectangle, DiagramSettings)}.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigPartition() {
-        setBigPort(new FigRect(X0, Y0, 160, 200, Color.cyan, Color.cyan));
+        initFigs();
+    }
+
+    private void initFigs() {
+        // TODO: define constants for magic numbers
+        setBigPort(new FigRect(X0, Y0, 160, 200, DEBUG_COLOR, DEBUG_COLOR));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
-        leftLine = new FigLine(X0, Y0, 10, 300);
-        rightLine = new FigLine(150, Y0, 160, 300);
-        bottomLine = new FigLine(X0, 300, 150, 300);
-        topLine = new FigLine(X0, Y0, 150, 10);
+        
+        leftLine = new FigLine(X0, Y0, 10, 300, LINE_COLOR);
+        rightLine = new FigLine(150, Y0, 160, 300, LINE_COLOR);
+        bottomLine = new FigLine(X0, 300, 150, 300, LINE_COLOR);
+        topLine = new FigLine(X0, Y0, 150, 10, LINE_COLOR);
 
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(X0, Y0, 50, 25);
         getNameFig().setFilled(false);
         
-        seperator = new FigLine(X0, Y0 + 15, 150, 25);
+        seperator = new FigLine(X0, Y0 + 15, 150, 25, LINE_COLOR);
 
         addFig(getBigPort());
         addFig(rightLine);
@@ -87,9 +115,7 @@ public class FigPartition extends FigNodeModelElement {
         addFig(seperator);
         
         setFilled(false);
-
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
+        setBounds(getBounds());
     }
 
     /**
@@ -97,7 +123,11 @@ public class FigPartition extends FigNodeModelElement {
      *
      * @param gm ignored
      * @param node the UML element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigPartition(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigPartition(@SuppressWarnings("unused")
             GraphModel gm, Object node) {
         this();
@@ -209,8 +239,8 @@ public class FigPartition extends FigNodeModelElement {
         int h = nameDim.height;
 
         // we want to maintain a minimum size for the partition
-        w = Math.max(64, w);
-        h = Math.max(256, h);
+        w = Math.max(MIN_WIDTH, w);
+        h = Math.max(MIN_HEIGHT, h);
 
         return new Dimension(w, h);
     }

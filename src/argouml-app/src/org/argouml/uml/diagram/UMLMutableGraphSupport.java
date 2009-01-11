@@ -73,11 +73,11 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     private List edges = new ArrayList();
 
     /**
-     * The "home" UML model of this diagram, not all ModelElements in this
-     * graph are in the home model, but if they are added and don't
-     * already have a model, they are placed in the "home model".
-     * Also, elements from other models will have their FigNodes add a
-     * line to say what their model is.
+     * The owning namespace or "home model" of this diagram, not all
+     * ModelElements in this graph are in the home model, but if they are added
+     * and don't already have a model, they are placed in the "home model".
+     * Also, elements from other models will have their FigNodes add a line to
+     * say what their model is.
      */
     private Object homeModel;
 
@@ -180,7 +180,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     }
 
     /**
-     * Get the homemodel.
+     * Get the namespace, also known as homemodel, which owns the diagram.
      *
      * @return the homemodel
      */
@@ -189,7 +189,9 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     }
 
     /**
-     * Set the homemodel.
+     * Set the namespace or homemodel of the diagram.  This will become the
+     * default namespace for any model elements which are created on 
+     * the diagram.
      *
      * @param ns the namespace
      */
@@ -459,7 +461,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
                             toStyle,
                             unidirectional,
                             namespace);
-        	LOG.info("Created " + connection + " between " + fromElement + " and " + toElement);
+        	LOG.info("Created " + connection + " between " 
+        	        + fromElement + " and " + toElement);
             } catch (UmlException ex) {
                 // fail silently as we expect users to accidentally drop
                 // on to wrong component

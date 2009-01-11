@@ -44,8 +44,6 @@ import javax.swing.Action;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider;
-import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -212,6 +210,7 @@ public class FigUseCase extends FigNodeModelElement
         // The separator, again with arbitrary bounds for now.
 
         epSep = new FigLine(0, 30, 100, 100, fg);
+        epSep.setLineWidth(LINE_WIDTH);
 
         epSep.setVisible(false);
 
@@ -720,7 +719,7 @@ public class FigUseCase extends FigNodeModelElement
                 : h;
 
         // set new bounds for all included figs
-        Iterator figs = epVec.iterator();
+        Iterator figs = epVec.getFigs().iterator();
         figs.next(); // skip epBigPort
         Fig fi;
         int fw, fh;
@@ -759,20 +758,24 @@ public class FigUseCase extends FigNodeModelElement
     /**
      * Set the line colour for the use case oval.<p>
      *
-     * This involves setting the _cover oval, not the bigPort.<p>
+     * This involves setting the <code>cover</code> oval, not the bigPort.
+     * Calling the super method would cause all FigGroup elements
+     * to follow suit - which is not wanted.
      *
      * @param col The colour desired.
      */
     @Override
     public void setLineColor(Color col) {
-        cover.setLineColor(col);
+        if (cover != null) {
+            cover.setLineColor(col);
+        }
     }
 
     /**
      * Get the line colour for the use case oval.<p>
      *
-     * This involves getting the _cover oval colour, not the bigPort.<p>
-     *
+     * This involves getting the <code>cover</code> oval colour, not the bigPort.
+     * 
      * @return  The colour in use.
      */
     @Override
@@ -783,19 +786,23 @@ public class FigUseCase extends FigNodeModelElement
     /**
      * Set the fill colour for the use case oval.<p>
      *
-     * This involves setting the _cover oval, not the bigPort.<p>
+     * This involves setting the <code>cover</code> oval, not the bigPort.
+     * Calling the super method would cause all FigGroup elements
+     * to follow suit - which is not wanted.
      *
      * @param col  The colour desired.
      */
     @Override
     public void setFillColor(Color col) {
-        cover.setFillColor(col);
+        if (cover != null) {
+            cover.setFillColor(col);
+        }
     }
 
     /**
      * Get the line colour for the use case oval.<p>
      *
-     * This involves getting the _cover oval colour, not the bigPort.<p>
+     * This involves getting the <code>cover</code> oval colour, not the bigPort.
      *
      * @return  The colour in use.
      */
@@ -807,20 +814,25 @@ public class FigUseCase extends FigNodeModelElement
     /**
      * Set whether the use case oval is to be filled.<p>
      *
-     * This involves setting the _cover oval, not the bigPort.<p>
+     * This involves setting the <code>cover</code> oval, not the bigPort.<p>
+     * Calling the super method would cause all FigGroup elements
+     * to be filled, too - which is not wanted for e.g. the stereotype figs.
+     * See issue 5581.
      *
      * @param f  <code>true</code> if the oval is to be filled,
      *           <code>false</code> if not.
      */
     @Override
     public void setFilled(boolean f) {
-        cover.setFilled(f);
+        if (cover != null) {
+            cover.setFilled(f);
+        }
     }
 
     /**
      * Get whether the use case oval is to be filled.<p>
      *
-     * This involves getting the _cover oval, not the bigPort.<p>
+     * This involves getting the <code>cover</code> oval, not the bigPort.<p>
      *
      * @return  <code>true</code> if the oval is to be filled,
      *          <code>false</code> if not.
@@ -833,19 +845,23 @@ public class FigUseCase extends FigNodeModelElement
     /**
      * Set the line width for the use case oval.<p>
      *
-     * This involves setting the _cover oval, not the bigPort.<p>
+     * This involves setting the <code>cover</code> oval, not the bigPort.
+     * Calling the super method would cause all FigGroup elements
+     * to be filled, too - which is not wanted for e.g. the stereotype figs.
      *
      * @param w  The line width desired.
      */
     @Override
     public void setLineWidth(int w) {
-        cover.setLineWidth(w);
+        if (cover != null) {
+            cover.setLineWidth(w);
+        }
     }
 
     /**
      * Get the line width for the use case oval.<p>
      *
-     * This involves getting the _cover oval colour, not the bigPort.<p>
+     * This involves getting the <code>cover</code> oval colour, not the bigPort.<p>
      *
      * @return  The line width set.
      */
@@ -1166,19 +1182,12 @@ public class FigUseCase extends FigNodeModelElement
                 // If we don't have a fig for this EP, we'll need to add
                 // one. We set the bounds, but they will be reset later.
                 if (epFig == null) {
-                    NotationProvider np = 
-                        NotationProviderFactory2.getInstance()
-                            .getNotationProvider(
-                                NotationProviderFactory2.TYPE_EXTENSION_POINT, 
-                                ep);
-
-                    epFig = new CompartmentFigText(ep, new Rectangle(
+                     epFig = new CompartmentFigText(ep, new Rectangle(
                             xpos,
 			    ypos + (epCount - 1) * ROWHEIGHT,
 			    0,
 			    ROWHEIGHT),
-			    getSettings(),
-                            np);
+			    getSettings());
                     
                     epFig.setFilled(false);
                     epFig.setLineWidth(0);

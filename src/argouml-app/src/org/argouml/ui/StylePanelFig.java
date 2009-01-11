@@ -43,6 +43,7 @@ import javax.swing.text.Document;
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.uml.diagram.DiagramSettings.StereotypeStyle;
+import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.util.ArgoFrame;
@@ -466,7 +467,7 @@ public class StylePanelFig
         if (c instanceof Color) {
             target.setLineColor((Color) c);
         }
-        target.setLineWidth((c instanceof Color) ? 1 : 0);
+        target.setLineWidth((c instanceof Color) ? ArgoFig.LINE_WIDTH : 0);
         target.endTrans();
     }
 

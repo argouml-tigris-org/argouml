@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.SelectionMoveClarifiers;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -51,52 +52,65 @@ public class FigStubState extends FigStateVertex {
     
     private static final Logger LOG = Logger.getLogger(FigStubState.class);
 
-    ////////////////////////////////////////////////////////////////
-    // constants
+    private static final int X = 0;
+    private static final int Y = 0;
+    private static final int WIDTH = 45;
+    private static final int HEIGHT = 20;
 
-    private int x = 0;
-    private int y = 0;
-    private int width = 45;
-    private int height = 20;
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
     private FigText referenceFig;
     private FigLine stubline;
     
     private Facade facade;
     private StateMachinesHelper stateMHelper;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    
+    /**
+     * Construct a new FigStubState.
+     * 
+     * @param owner owning UML element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigStubState(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initFigs();
+    }
+    
     /**
      * The constructor.
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigStubState(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
+    @Deprecated
     public FigStubState() {
         super();
-        
+        initFigs();
+    }
+
+    private void initFigs() {
         facade = Model.getFacade();
         stateMHelper = Model.getStateMachinesHelper();
 
-        setBigPort(new FigRect(x, y, width, height));
+        setBigPort(new FigRect(X, Y, WIDTH, HEIGHT));
         getBigPort().setLineWidth(0);
         getBigPort().setFilled(false);
-        stubline = new FigLine(x,
-                y,
-                width,
-                y,
-                Color.black);
+        stubline = new FigLine(X,
+                Y,
+                WIDTH,
+                Y,
+                TEXT_COLOR);
 
-        referenceFig = new FigText(0, 0, width, height, true);
-        referenceFig.setFont(getSettings().getFont(Font.PLAIN));
-        referenceFig.setTextColor(Color.black);
+        referenceFig = new FigText(0, 0, WIDTH, HEIGHT, true);
+        referenceFig.setFont(getSettings().getFontPlain());
+        referenceFig.setTextColor(TEXT_COLOR);
         referenceFig.setReturnAction(FigText.END_EDITING);
         referenceFig.setTabAction(FigText.END_EDITING);
         referenceFig.setJustification(FigText.JUSTIFY_CENTER);
         referenceFig.setLineWidth(0);
-        referenceFig.setBounds(x, y,
-                width, referenceFig.getBounds().height);
+        referenceFig.setBounds(X, Y,
+                WIDTH, referenceFig.getBounds().height);
         referenceFig.setFilled(false);
         referenceFig.setEditable(false);
 
@@ -114,8 +128,12 @@ public class FigStubState extends FigStateVertex {
      *
      * @param gm (ignored)
      * @param node the UML owner element
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigStubState(Object, Rectangle, DiagramSettings)}.
      */
-    public FigStubState(GraphModel gm, Object node) {
+    @Deprecated
+    public FigStubState(@SuppressWarnings("unused") GraphModel gm, 
+            Object node) {
         this();
         setOwner(node);
     }
@@ -346,7 +364,7 @@ public class FigStubState extends FigStateVertex {
         try {
             text = facade.getReferenceState(getOwner());
         } catch (Exception e) {
-            LOG.error(e);
+            LOG.error("Exception caught and ignored!!", e);
         }
         if (text != null) {
             referenceFig.setText((String) text);
@@ -443,10 +461,11 @@ public class FigStubState extends FigStateVertex {
 
     @Override
     protected void updateListeners(Object oldV, Object newOwner) {
-        Object container = null;
         if (oldV != null) {
-            removeElementListener(oldV);
-            container = facade.getContainer(oldV);
+            if (oldV != newOwner) {
+                removeElementListener(oldV);
+            }
+            Object container = facade.getContainer(oldV);
             while (container != null && !facade.isTop(container)) {
                 removeElementListener(container);
                 container = facade.getContainer(container);

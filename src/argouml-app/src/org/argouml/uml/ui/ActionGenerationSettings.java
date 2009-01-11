@@ -66,9 +66,7 @@ public class ActionGenerationSettings extends UndoableAction {
      */
     @Override
     public boolean isEnabled() {
-	ArgoDiagram activeDiagram = DiagramUtils.getActiveDiagram();
-	return super.isEnabled()
-	    && (activeDiagram != null);
+	return true;
     }
 
 }

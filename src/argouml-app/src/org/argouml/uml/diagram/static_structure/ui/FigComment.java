@@ -135,7 +135,7 @@ public class FigComment
         outlineFig.addPoint(0, height - 1);
         outlineFig.addPoint(0, 0);
         outlineFig.setFilled(true);
-        outlineFig.setLineWidth(1);
+        outlineFig.setLineWidth(LINE_WIDTH);
 
         urCorner = new FigPoly(fg, fill);
         urCorner.addPoint(width - 1 - dogear, 0);
@@ -145,7 +145,7 @@ public class FigComment
         urCorner.setFilled(true);
         Color col = outlineFig.getFillColor();
         urCorner.setFillColor(col.darker());
-        urCorner.setLineWidth(1);
+        urCorner.setLineWidth(LINE_WIDTH);
 
         setBigPort(new FigRect(0, 0, width, height, null, null));
         getBigPort().setFilled(false);

@@ -39,6 +39,7 @@ public class FigTrace extends FigEdgeLine {
      * The constructor.
      */
     public FigTrace() {
+        // TODO: Why are these different colors? - tfm
 	getFig().setLineColor(Color.red);
 	ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
 	endArrow.setFillColor(Color.red);
@@ -58,4 +59,4 @@ public class FigTrace extends FigEdgeLine {
 
     static final long serialVersionUID = -2094146244090391544L;
 
-} /* end class FigTrace */
+}

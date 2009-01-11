@@ -24,6 +24,8 @@
 
 package org.argouml.gefext;
 
+import java.awt.Color;
+
 import javax.management.ListenerNotFoundException;
 import javax.management.MBeanNotificationInfo;
 import javax.management.Notification;
@@ -49,10 +51,21 @@ public class ArgoFigLine extends FigLine implements NotificationEmitter {
     }
     
     public ArgoFigLine(int x1, int y1, int x2, int y2) {
-        super(x1, y1, x2, y2);
+        super(x1, y1, x2, y2 );
     }
 
-
+    /**
+     * Create a line from x1,y1 to x2,y2 in the given color
+     * @param x1 x1
+     * @param y1 y1
+     * @param x2 x2
+     * @param y2 y2
+     * @param lineColor color of line
+     */
+    public ArgoFigLine(int x1, int y1, int x2, int y2, Color lineColor) {
+        super(x1, y1, x2, y2, lineColor);
+    }
+        
     /*
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
      */

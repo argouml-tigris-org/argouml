@@ -795,7 +795,6 @@ public class UMLActivityDiagram extends UMLDiagram {
     @Override
     public FigNode drop(Object droppedObject, Point location) {
         FigNode figNode = null;
-        GraphModel gm = getGraphModel();
 
         // If location is non-null, convert to a rectangle that we can use
         Rectangle bounds = null;
@@ -805,17 +804,17 @@ public class UMLActivityDiagram extends UMLDiagram {
         DiagramSettings settings = getDiagramSettings();
 
         if (Model.getFacade().isAPartition(droppedObject)) {
-            figNode = new FigPartition(gm, droppedObject);
+            figNode = new FigPartition(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAActionState(droppedObject)) {
             figNode = new FigActionState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isACallState(droppedObject)) {
-            figNode = new FigCallState(gm, droppedObject);
+            figNode = new FigCallState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAObjectFlowState(droppedObject)) {
-            figNode = new FigObjectFlowState(gm, droppedObject);
+            figNode = new FigObjectFlowState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isASubactivityState(droppedObject)) {
-            figNode = new FigSubactivityState(gm, droppedObject);
+            figNode = new FigSubactivityState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAFinalState(droppedObject)) {
-            figNode = new FigFinalState(gm, droppedObject);
+            figNode = new FigFinalState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAPseudostate(droppedObject)) {
             Object kind = Model.getFacade().getKind(droppedObject);
             if (kind == null) {
@@ -823,24 +822,24 @@ public class UMLActivityDiagram extends UMLDiagram {
                 return null;
             }
             if (kind.equals(Model.getPseudostateKind().getInitial())) {
-                figNode = new FigInitialState(gm, droppedObject);
+                figNode = new FigInitialState(droppedObject, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getChoice())) {
-                figNode = new FigBranchState(gm, droppedObject);
+                figNode = new FigBranchState(droppedObject, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getJunction())) {
-                figNode = new FigJunctionState(gm, droppedObject);
+                figNode = new FigJunctionState(droppedObject, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getFork())) {
-                figNode = new FigForkState(gm, droppedObject);
+                figNode = new FigForkState(droppedObject, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getJoin())) {
-                figNode = new FigJoinState(gm, droppedObject);
+                figNode = new FigJoinState(droppedObject, bounds, settings);
             } else {
                 LOG.warn("found a type not known");
             }
         } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(gm, droppedObject);
+            figNode = new FigComment(droppedObject, bounds, settings);
         }
         
         if (figNode != null) {

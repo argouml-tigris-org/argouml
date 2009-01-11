@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,21 +66,35 @@ public interface ArgoFig {
     static final int LINE_WIDTH = 1;
 
     /**
-     * Default color for lines.  This constant is an interim measure to get
-     * rid of all the Color.black references before moving to settable defaults.
+     * Default color for lines. This constant is an interim measure before
+     * moving to settable defaults.
      */
     static final Color LINE_COLOR = Color.black;
     
     /**
-     * Default color for filled figures. This constant is an interim measure to
-     * get rid of all the Color.white references before moving to settable
-     * defaults.
+     * Color for a solid fill.  It's probably always going to be the same as
+     * the line color, but we'll identify it separately for flexibility in the
+     * future.
      */
-    static final Color FILL_COLOR = Color.white;
+    static final Color SOLID_FILL_COLOR = LINE_COLOR;
     
     /**
-     * Default color for text.  This constant is an interim measure to get
-     * rid of all the Color.black references before moving to settable defaults.
+     * Default color for filled figures. This is an interim measure before
+     * moving to settable defaults.
+     */
+    static final Color FILL_COLOR = Color.white;
+
+    /**
+     * Color for a line which is supposed to blend into the fill.  It's the same
+     * color for right now, but we'll keep it separate so we can identify it
+     * easily in the future.
+     */
+    static final Color INVISIBLE_LINE_COLOR = FILL_COLOR;
+
+    
+    /**
+     * Default color for text. This is an interim measure before moving to
+     * settable defaults.
      */
     static final Color TEXT_COLOR = Color.black;
     

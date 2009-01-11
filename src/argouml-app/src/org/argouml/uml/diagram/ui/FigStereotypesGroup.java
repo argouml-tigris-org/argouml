@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -106,7 +105,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
     }
 
     private void constructFigs(int x, int y, int w, int h) {
-        bigPort = new FigRect(x, y, w, h, Color.black, Color.white);
+        bigPort = new FigRect(x, y, w, h, LINE_COLOR, FILL_COLOR);
         addFig(bigPort);
 
         /* Do not show border line, make transparent: */
@@ -216,6 +215,8 @@ public class FigStereotypesGroup extends ArgoFigGroup {
 	List<Fig> figsWithOutIcon = new ArrayList<Fig>();
 	List<Fig> others = new ArrayList<Fig>();
 
+	// TODO: This doesn't do anything special with keywords.
+	// They should probably go first.
 	for (Fig f : allFigs) {
             if (f instanceof FigStereotype) {
                 FigStereotype s = (FigStereotype) f;
@@ -337,9 +338,9 @@ public class FigStereotypesGroup extends ArgoFigGroup {
                 bigPort.getX() + 1,
                 bigPort.getY() + 1
                 + (stereotypeCount
-                * ArgoFig.ROWHEIGHT),
+                * ROWHEIGHT),
                 0,
-                ArgoFig.ROWHEIGHT - 2);
+                ROWHEIGHT - 2);
     }
 
     private void updateHiddenStereotypes() {
