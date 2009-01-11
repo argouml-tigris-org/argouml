@@ -83,9 +83,15 @@ class FigLifeLine extends ArgoFigGroup {
         stackedActivations = createStackedActivations(messages);
         
         for (FigActivation figAct : activations) {
+            // TODO: shouldn't this be done in creation, and
+            // with the info from DiagramSettings?
+            figAct.setFillColor(getFillColor());
             addFig(figAct);
         }
         for (FigActivation figAct : stackedActivations) {
+            // TODO: shouldn't this be done in creation, and
+            // with the info from DiagramSettings?
+            figAct.setFillColor(getFillColor());
             addFig(figAct);
         }       
         calcBounds();

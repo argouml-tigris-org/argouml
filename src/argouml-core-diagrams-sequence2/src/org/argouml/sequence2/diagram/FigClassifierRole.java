@@ -318,6 +318,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     @Override
     public void setFillColor(Color color) {
         headFig.setFillColor(color);
+        lifeLineFig.setFillColor(color);
     }
     
     @Override
