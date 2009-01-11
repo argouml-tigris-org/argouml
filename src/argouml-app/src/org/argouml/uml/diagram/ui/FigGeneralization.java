@@ -74,7 +74,8 @@ public class FigGeneralization extends FigEdgeModelElement {
 	discriminator.setLineWidth(0);
 	discriminator.setReturnAction(FigText.END_EDITING);
 	discriminator.setTabAction(FigText.END_EDITING);
-	addPathItem(discriminator, new PathConvPercent(this, 40, -10));
+	addPathItem(discriminator, 
+	        new PathItemPlacement(this, discriminator, 50, -10));
 
         endArrow = new ArrowHeadTriangle();
 	endArrow.setFillColor(FILL_COLOR);
