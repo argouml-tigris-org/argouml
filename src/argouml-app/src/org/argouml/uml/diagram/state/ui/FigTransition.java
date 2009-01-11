@@ -36,7 +36,7 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-import org.argouml.uml.diagram.ui.PathConvPercent2;
+import org.argouml.uml.diagram.ui.PathItemPlacement;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCreateAction;
@@ -117,7 +117,7 @@ public class FigTransition extends FigEdgeModelElement {
 
     private void initializeTransition() {
         addPathItem(getNameFig(),
-                new PathConvPercent2(this, getNameFig(), 50, 10));
+                new PathItemPlacement(this, getNameFig(), 50, 10));
         getFig().setLineColor(LINE_COLOR);
         setDestArrowHead(endArrow);
         allowRemoveFromDiagram(false);
