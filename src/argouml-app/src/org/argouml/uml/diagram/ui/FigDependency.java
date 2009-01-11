@@ -68,7 +68,7 @@ public class FigDependency extends FigEdgeModelElement {
         middleGroup.addFig(getNameFig());
         middleGroup.addFig(getStereotypeFig());
         addPathItem(middleGroup,
-                new PathConvPercent2(this, middleGroup, 50, 25));
+                new PathItemPlacement(this, middleGroup, 50, 25));
         
         setDestArrowHead(createEndArrow());
         
