@@ -24,11 +24,8 @@
 
 package org.argouml.notation.providers.uml;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
-import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationSettings;
 import org.argouml.notation.SDNotationSettings;
@@ -42,9 +39,9 @@ import org.argouml.notation.SDNotationSettings;
  * <pre>
  * intno := integer|name
  * seq := intno ['.' intno]*
- * recurrance := '*'['//'] | '*'['//']'[' <code>iteration </code>']' | '['
+ * recurrence := '*'['//'] | '*'['//']'[' <code>iteration </code>']' | '['
  * <code>condition </code>']'
- * seqelem := {[intno] ['['recurrance']']}
+ * seqelem := {[intno] ['['recurrence']']}
  * seq_expr := seqelem ['.' seqelem]*
  * ret_list := lvalue [',' lvalue]*
  * arg_list := rvalue [',' rvalue]*
@@ -64,8 +61,8 @@ import org.argouml.notation.SDNotationSettings;
  * Actually, only a subset of this syntax is currently supported, and some
  * is not even planned to be supported. The exceptions are intno, which
  * allows a number possibly followed by a sequence of letters in the range
- * 'a' - 'z', seqelem, which does not allow a recurrance, and message, which
- * does allow one recurrance near seq_expr. (formerly: name: action )
+ * 'a' - 'z', seqelem, which does not allow a recurrence, and message, which
+ * does allow one recurrence near seq_expr. (formerly: name: action )
  *
  * @author michiel
  */
@@ -105,78 +102,6 @@ public class SDMessageNotationUml extends AbstractMessageNotationUml {
     public String toString(final Object modelElement, final Map args) {
         return toString(modelElement, 
                 !NotationProvider.isValue("hideSequenceNrs", args));
-    }
-
-    private String toString(final Object modelElement, 
-            boolean showSequenceNumbers) {
-        String action = "";
-        StringBuilder predecessors = new StringBuilder();
-        int lpn;
-
-        if (modelElement == null) {
-            return "";
-        }
-
-        MsgPtr ptr = new MsgPtr();
-        lpn = recCountPredecessors(modelElement, ptr) + 1;
-        Object rt = Model.getFacade().getActivator(modelElement);
-
-        Collection pre = Model.getFacade().getPredecessors(modelElement);
-        Iterator it = (pre != null) ? pre.iterator() : null;
-        if (it != null && it.hasNext()) {
-            MsgPtr ptr2 = new MsgPtr();
-            int precnt = 0;
-
-            while (it.hasNext()) {
-                Object msg = /*(MMessage)*/ it.next();
-                int mpn = recCountPredecessors(msg, ptr2) + 1;
-
-                if (mpn == lpn - 1
-                    && rt == Model.getFacade().getActivator(msg)
-                    && Model.getFacade().getPredecessors(msg).size() < 2
-                    && (ptr2.message == null
-                        || countSuccessors(ptr2.message) < 2)) {
-                    continue;
-                }
-
-                if (predecessors.length() > 0) {
-                    predecessors.append(", ");
-                }
-                predecessors.append(
-                        generateMessageNumber(msg, ptr2.message, mpn));
-                precnt++;
-            }
-
-            if (precnt > 0) {
-                predecessors.append(" / ");
-            }
-        }
-
-        String number = generateMessageNumber(modelElement, ptr.message, lpn);
-
-        Object act = Model.getFacade().getAction(modelElement);
-        if (act != null) {
-            if (Model.getFacade().getRecurrence(act) != null) {
-                number =
-                    generateRecurrence(Model.getFacade().getRecurrence(act))
-                    + " "
-                    + number;
-            }
-
-            action = NotationUtilityUml.generateActionSequence(act);
-
-            /* Dirty fix for issue 1758 (Needs to be amended
-             * when we start supporting parameters):
-             */
-            if (!action.endsWith(")")) {
-                action = action + "()";
-            }
-        }
-
-        if (!showSequenceNumbers) {
-            return action;
-        }
-        return predecessors + number + " : " + action;
     }
 
 }
