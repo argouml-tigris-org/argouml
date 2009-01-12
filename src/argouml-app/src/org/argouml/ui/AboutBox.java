@@ -201,7 +201,7 @@ public class AboutBox extends ArgoDialog {
         buf.append("* NetBeans MDR (mdr.netbeans.org    )\n");
         buf.append("* TU-Dresden OCL-Compiler "
                 	  + "(dresden-ocl.sourceforge.net)\n");
-        buf.append("* ANTLR 2.7.2 (www.antlr.org) *DEPRECATED*\n");
+        buf.append("* ANTLR 2.7.7 (www.antlr.org) *DEPRECATED*\n");
 
         buf.append("\n");
         buf.append(localize("aboutbox.loaded-modules-header"));
