@@ -34,6 +34,7 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ArgoFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
@@ -126,37 +127,39 @@ public class FigClassifierRole extends FigNodeModelElement {
         }
     }
 
+    /**
+     * There should be no size calculations here, 
+     * since not all attributes are set yet.
+     */
     private void initClassifierRoleFigs() {
         // The big port and cover. Color of the big port is irrelevant
 
         setBigPort(new FigRect(X0, Y0, 90, 50, DEBUG_COLOR, DEBUG_COLOR));
         cover   = new FigRect(X0, Y0, 90, 50, LINE_COLOR, FILL_COLOR);
 
-        // The stereotype. Width is the same as the cover, height is whatever
-        // its minimum permitted is. The text should be centred.
-
-        Dimension stereoMin = getStereotypeFig().getMinimumSize();
+        // The stereotype. Width is the same as the cover, height is its default
+        // (since the font is not yet set). The text should be centered.
 
         getStereotypeFig().setLineWidth(0);
         getStereotypeFig().setVisible(true);
         //getStereotypeFig().setFilled(false);
         getStereotypeFig().setFillColor(DEBUG_COLOR);
-        getStereotypeFig().setBounds(X0, Y0, 90, stereoMin.height);
+        getStereotypeFig().setBounds(X0, Y0, 
+                90, ArgoFigText.DEFAULT_TEXT_HEIGHT);
 
-        // The name. Width is the same as the cover, height is whatever its
-        // minimum permitted is. The text of the name will be centred by
+        // The name. Width is the same as the cover, height is the default.
+        // The text of the name will be centered by
         // default. In the same place as the stereotype, since at this stage
         // the stereotype is not displayed. Being a classifier role it is
         // underlined
-
-        Dimension nameMin = getNameFig().getMinimumSize();
 
         getNameFig().setLineWidth(0);
         getNameFig().setReturnAction(FigText.END_EDITING);
         getNameFig().setFilled(false);
         getNameFig().setUnderline(true);
 
-        getNameFig().setBounds(X0, Y0, 90, nameMin.height);
+        getNameFig().setBounds(X0, Y0, 
+                90, ArgoFigText.DEFAULT_TEXT_HEIGHT);
 
         // add Figs to the FigNode in back-to-front order
 
