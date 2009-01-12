@@ -31,6 +31,7 @@ import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.JPanel;
@@ -40,6 +41,8 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import org.argouml.i18n.Translator;
+import org.argouml.moduleloader.ModuleLoader2;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.util.ArgoDialog;
 import org.argouml.util.Tools;
 
@@ -198,10 +201,21 @@ public class AboutBox extends ArgoDialog {
         buf.append("* NetBeans MDR (mdr.netbeans.org    )\n");
         buf.append("* TU-Dresden OCL-Compiler "
                 	  + "(dresden-ocl.sourceforge.net)\n");
-        buf.append("* ANTLR 2.7.2 (www.antlr.org)\n");
+        buf.append("* ANTLR 2.7.2 (www.antlr.org) *DEPRECATED*\n");
+
+        buf.append("\n");
+        buf.append(localize("aboutbox.loaded-modules-header"));
+        Iterator<String> iter = ModuleLoader2.allModules().iterator();
+        while (iter.hasNext()) {
+            String moduleName = iter.next();
+            buf.append("\nModule: ");
+            buf.append(moduleName);
+            buf.append("\nDescription: ");
+            String desc = ModuleLoader2.getDescription(moduleName);
+            buf.append(desc.replaceAll("\n\n", "\n"));
+        }
 
         buf.append("\n\n");
-
         buf.append(localize("aboutbox.thanks"));
         buf.append("\n");
         return buf.toString();
