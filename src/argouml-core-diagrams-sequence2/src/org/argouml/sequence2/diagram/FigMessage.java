@@ -210,7 +210,15 @@ public class FigMessage extends FigEdgeModelElement {
      * @return true if they are the same, otherwise false. 
      */
     boolean isSelfMessage() {
-        return getDestination().equals(getSource());
+        // If possible we determine this by checking the destination
+        // and source Figs are the same. If this is not possible
+        // because the edge is not yet connected then we check the
+        // model.
+        if (getDestPortFig() == null || getSourcePortFig() == null) {
+            return getDestination().equals(getSource());
+        } else {
+            return (getDestPortFig().equals(getSourcePortFig()));
+        }
     }
     
     /**
