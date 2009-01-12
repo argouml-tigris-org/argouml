@@ -62,7 +62,7 @@ public class FigMessage extends FigNodeModelElement {
     /**
      * The current arrow direction set to constants above.
      */
-    private int arrowDirection = 0;
+    private int arrowDirection = -1;
 
     /**
      * The main constructor.
@@ -500,10 +500,10 @@ public class FigMessage extends FigNodeModelElement {
 
 
     /**
-     * Determines the direction of the message arrow. Deetermination of the type
-     * of arrow happens in modelchanged.
+     * Determines the direction of the message arrow. Determination of the type
+     * of arrow happens in modelChanged.
      */
-    protected void updateArrow() {
+    public void updateArrow() {
   	Object mes = getOwner(); // Message
 	if (mes == null || getLayer() == null) {
 	    return;

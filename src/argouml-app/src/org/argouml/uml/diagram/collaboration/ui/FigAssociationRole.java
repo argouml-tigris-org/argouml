@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,7 +56,7 @@ public class FigAssociationRole extends FigAssociation {
     /**
      * Main Constructor
      * 
-     * @deprecate for 0.27.3 by tfmorris. Use
+     * @deprecated for 0.27.3 by tfmorris. Use
      *            {@link #FigAssociationRole(Object, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
@@ -72,7 +72,7 @@ public class FigAssociationRole extends FigAssociation {
      * 
      * @param edge the owning UML element
      * @param lay the layer
-     * @deprecate for 0.27.3 by tfmorris. Use
+     * @deprecated for 0.27.3 by tfmorris. Use
      *            {@link #FigAssociationRole(Object, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
@@ -112,6 +112,12 @@ public class FigAssociationRole extends FigAssociation {
     	messages.damage();
     }
 
+@Override
+public void computeRouteImpl() {
+    super.computeRouteImpl();
+    messages.updateArrows();
+}
+    
 } /* end class FigAssociationRole */
 
 /**
@@ -121,7 +127,7 @@ class FigMessageGroup extends ArgoFigGroup {
 
     /**
      * Constructor for FigMessageGroup.
-     * @deprecate for 0.27.3 by tfmorris. Use
+     * @deprecated for 0.27.3 by tfmorris. Use
      *            {@link #FigMessageGroup(Object, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
@@ -134,7 +140,7 @@ class FigMessageGroup extends ArgoFigGroup {
      * Constructor for FigMessageGroup.
      * 
      * @param figs
-      * @deprecate for 0.27.3 by tfmorris. Use
+     * @deprecated for 0.27.3 by tfmorris. Use
      *            {@link #FigMessageGroup(Object, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
@@ -209,7 +215,15 @@ class FigMessageGroup extends ArgoFigGroup {
     public void addFig(Fig f) {
 	super.addFig(f);
 	updateFigPositions();
+	updateArrows();
 	calcBounds();
     }
+    
+    void updateArrows() {
+        for (FigMessage fm : (List<FigMessage>) getFigs()) {
+            fm.updateArrow();
+        }
+    }
+
 }
 
