@@ -34,7 +34,6 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.ArgoFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
@@ -55,6 +54,10 @@ import org.tigris.gef.presentation.FigText;
  * @author agauthie
  */
 public class FigClassifierRole extends FigNodeModelElement {
+
+    private static final int DEFAULT_HEIGHT = 50;
+
+    private static final int DEFAULT_WIDTH = 90;
 
     /**
      * The minimum padding top and bottom.
@@ -134,8 +137,10 @@ public class FigClassifierRole extends FigNodeModelElement {
     private void initClassifierRoleFigs() {
         // The big port and cover. Color of the big port is irrelevant
 
-        setBigPort(new FigRect(X0, Y0, 90, 50, DEBUG_COLOR, DEBUG_COLOR));
-        cover   = new FigRect(X0, Y0, 90, 50, LINE_COLOR, FILL_COLOR);
+        setBigPort(new FigRect(X0, Y0, DEFAULT_WIDTH, DEFAULT_HEIGHT,
+                DEBUG_COLOR, DEBUG_COLOR));
+        cover = new FigRect(X0, Y0, DEFAULT_WIDTH, DEFAULT_HEIGHT, LINE_COLOR,
+                FILL_COLOR);
 
         // The stereotype. Width is the same as the cover, height is its default
         // (since the font is not yet set). The text should be centered.
@@ -145,7 +150,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         //getStereotypeFig().setFilled(false);
         getStereotypeFig().setFillColor(DEBUG_COLOR);
         getStereotypeFig().setBounds(X0, Y0, 
-                90, ArgoFigText.DEFAULT_TEXT_HEIGHT);
+                DEFAULT_WIDTH, getStereotypeFig().getHeight());
 
         // The name. Width is the same as the cover, height is the default.
         // The text of the name will be centered by
@@ -159,7 +164,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         getNameFig().setUnderline(true);
 
         getNameFig().setBounds(X0, Y0, 
-                90, ArgoFigText.DEFAULT_TEXT_HEIGHT);
+                DEFAULT_WIDTH, getStereotypeFig().getHeight());
 
         // add Figs to the FigNode in back-to-front order
 
@@ -386,7 +391,8 @@ public class FigClassifierRole extends FigNodeModelElement {
         int extraEach = (newH - nameMin.height - stereoMin.height) / 2;
         if (!(stereoMin.height == 0 && stereoMin.width == 0)) {
             /* At least one stereotype is visible */
-            getStereotypeFig().setBounds(x, y + extraEach, newW, getStereotypeFig().getHeight());
+            getStereotypeFig().setBounds(x, y + extraEach, newW, 
+                    getStereotypeFig().getHeight());
         }
         getNameFig().setBounds(x, y + stereoMin.height + extraEach, newW,
                 nameMin.height);
