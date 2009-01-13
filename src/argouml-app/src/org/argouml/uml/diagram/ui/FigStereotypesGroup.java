@@ -251,6 +251,22 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         return null;
     }
     
+    /**
+     * Get all the child figs that represent the individual stereotypes
+     * @return a List of the stereotype Figs
+     */
+    private List<FigStereotype> getStereotypeFigs() {
+        final List<FigStereotype> stereotypeFigs =
+            new ArrayList<FigStereotype>();
+        for (Object f : getFigs()) {
+            if (f instanceof FigStereotype) {
+                FigStereotype fs = (FigStereotype) f;
+                stereotypeFigs.add(fs);
+            }
+        }
+        return stereotypeFigs;
+    }
+    
     private FigKeyword findFigKeyword() {
         for (Object f : getFigs()) {
             if (f instanceof FigKeyword) {
@@ -431,7 +447,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         Object modelElement = getOwner();
         
         if (modelElement != null) {
-            Collection stereos = Model.getFacade().getStereotypes(modelElement);
+            List<FigStereotype> stereos = getStereotypeFigs();
             if (stereos.size() > 0 || keyword != null) {
                 int minWidth = 0;
                 int minHeight = 0;

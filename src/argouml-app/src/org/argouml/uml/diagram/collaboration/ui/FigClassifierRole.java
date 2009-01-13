@@ -55,6 +55,10 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigClassifierRole extends FigNodeModelElement {
 
+    private static final int DEFAULT_HEIGHT = 50;
+
+    private static final int DEFAULT_WIDTH = 90;
+
     /**
      * The minimum padding top and bottom.
      */
@@ -126,37 +130,41 @@ public class FigClassifierRole extends FigNodeModelElement {
         }
     }
 
+    /**
+     * There should be no size calculations here, 
+     * since not all attributes are set yet.
+     */
     private void initClassifierRoleFigs() {
         // The big port and cover. Color of the big port is irrelevant
 
-        setBigPort(new FigRect(X0, Y0, 90, 50, DEBUG_COLOR, DEBUG_COLOR));
-        cover   = new FigRect(X0, Y0, 90, 50, LINE_COLOR, FILL_COLOR);
+        setBigPort(new FigRect(X0, Y0, DEFAULT_WIDTH, DEFAULT_HEIGHT,
+                DEBUG_COLOR, DEBUG_COLOR));
+        cover = new FigRect(X0, Y0, DEFAULT_WIDTH, DEFAULT_HEIGHT, LINE_COLOR,
+                FILL_COLOR);
 
-        // The stereotype. Width is the same as the cover, height is whatever
-        // its minimum permitted is. The text should be centred.
-
-        Dimension stereoMin = getStereotypeFig().getMinimumSize();
+        // The stereotype. Width is the same as the cover, height is its default
+        // (since the font is not yet set). The text should be centered.
 
         getStereotypeFig().setLineWidth(0);
         getStereotypeFig().setVisible(true);
         //getStereotypeFig().setFilled(false);
         getStereotypeFig().setFillColor(DEBUG_COLOR);
-        getStereotypeFig().setBounds(X0, Y0, 90, stereoMin.height);
+        getStereotypeFig().setBounds(X0, Y0, 
+                DEFAULT_WIDTH, getStereotypeFig().getHeight());
 
-        // The name. Width is the same as the cover, height is whatever its
-        // minimum permitted is. The text of the name will be centred by
+        // The name. Width is the same as the cover, height is the default.
+        // The text of the name will be centered by
         // default. In the same place as the stereotype, since at this stage
         // the stereotype is not displayed. Being a classifier role it is
         // underlined
-
-        Dimension nameMin = getNameFig().getMinimumSize();
 
         getNameFig().setLineWidth(0);
         getNameFig().setReturnAction(FigText.END_EDITING);
         getNameFig().setFilled(false);
         getNameFig().setUnderline(true);
 
-        getNameFig().setBounds(X0, Y0, 90, nameMin.height);
+        getNameFig().setBounds(X0, Y0, 
+                DEFAULT_WIDTH, getStereotypeFig().getHeight());
 
         // add Figs to the FigNode in back-to-front order
 
@@ -383,7 +391,8 @@ public class FigClassifierRole extends FigNodeModelElement {
         int extraEach = (newH - nameMin.height - stereoMin.height) / 2;
         if (!(stereoMin.height == 0 && stereoMin.width == 0)) {
             /* At least one stereotype is visible */
-            getStereotypeFig().setBounds(x, y + extraEach, newW, getStereotypeFig().getHeight());
+            getStereotypeFig().setBounds(x, y + extraEach, newW, 
+                    getStereotypeFig().getHeight());
         }
         getNameFig().setBounds(x, y + stereoMin.height + extraEach, newW,
                 nameMin.height);

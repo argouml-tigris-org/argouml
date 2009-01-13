@@ -24,12 +24,9 @@
 
 package org.argouml.notation.providers.uml;
 
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.Model;
 import org.argouml.notation.NotationSettings;
 
 /**
@@ -41,10 +38,10 @@ import org.argouml.notation.NotationSettings;
  * <pre>
  * intno := integer|name
  * seq := intno ['.' intno]*
- * recurrance := '*'['//'] 
+ * recurrence := '*'['//'] 
  *      | '*'['//']'[' <code>iteration </code>']' 
  *      | '['<code>condition </code>']'
- * seqelem := {[intno] ['['recurrance']']}
+ * seqelem := {[intno] ['['recurrence']']}
  * seq_expr := seqelem ['.' seqelem]*
  * ret_list := lvalue [',' lvalue]*
  * arg_list := rvalue [',' rvalue]*
@@ -61,14 +58,14 @@ import org.argouml.notation.NotationSettings;
  *
  * This syntax is compatible with the UML 1.4.2 specification.<p>
  * 
- * TODO: The '//' in the recurrance should be '||' according the standard.
+ * TODO: The '//' in the recurrence should be '||' according the standard.
 See issue 5606. <p>
  *
  * Actually, only a subset of this syntax is currently supported, and some
  * is not even planned to be supported. The exceptions are intno, which
  * allows a number possibly followed by a sequence of letters in the range
- * 'a' - 'z', seqelem, which does not allow a recurrance, and message, which
- * does allow one recurrance near seq_expr. (formerly: name: action )
+ * 'a' - 'z', seqelem, which does not allow a recurrence, and message, which
+ * does allow one recurrence near seq_expr. (formerly: name: action )
  *
  * @author michiel
  */
@@ -91,7 +88,7 @@ public class MessageNotationUml extends AbstractMessageNotationUml {
 
     @Override
     public String toString(Object modelElement, NotationSettings settings) {
-        return toString(modelElement);
+        return toString(modelElement, true);
     }
 
     /*
@@ -104,88 +101,7 @@ public class MessageNotationUml extends AbstractMessageNotationUml {
     @SuppressWarnings("deprecation")
     @Deprecated
     public String toString(final Object modelElement, final Map args) {
-        return toString(modelElement);
-    }
-
-    private String toString(final Object umlMessage) {
-        Iterator it;
-        Collection umlPredecessors;
-        Object umlAction;
-        Object umlActivator; // this is a Message UML object
-        MsgPtr ptr;
-        int lpn;
-
-        /* Supported format: 
-         *     predecessors number ":" action
-         * The 3 parts of the string to generate: */
-        StringBuilder predecessors = new StringBuilder(); // includes the "/"
-        String number; // the "seq_expr" from the header javadoc
-        // the ":" is not included in "number" - it is always present
-        String action = "";
-
-        if (umlMessage == null) {
-            return "";
-        }
-
-        ptr = new MsgPtr();
-        lpn = recCountPredecessors(umlMessage, ptr) + 1;
-        umlActivator = Model.getFacade().getActivator(umlMessage);
-
-        umlPredecessors = Model.getFacade().getPredecessors(umlMessage);
-        it = (umlPredecessors != null) ? umlPredecessors.iterator() : null;
-        if (it != null && it.hasNext()) {
-            MsgPtr ptr2 = new MsgPtr();
-            int precnt = 0;
-
-            while (it.hasNext()) {
-                Object msg = /*(MMessage)*/ it.next();
-                int mpn = recCountPredecessors(msg, ptr2) + 1;
-
-                if (mpn == lpn - 1
-                    && umlActivator == Model.getFacade().getActivator(msg)
-                    && Model.getFacade().getPredecessors(msg).size() < 2
-                    && (ptr2.message == null
-                        || countSuccessors(ptr2.message) < 2)) {
-                    continue;
-                }
-
-                if (predecessors.length() > 0) {
-                    predecessors.append(", ");
-                }
-                predecessors.append(
-                        generateMessageNumber(msg, ptr2.message, mpn));
-                precnt++;
-            }
-
-            if (precnt > 0) {
-                predecessors.append(" / ");
-            }
-        }
-
-        number = generateMessageNumber(umlMessage, ptr.message, lpn);
-
-        umlAction = Model.getFacade().getAction(umlMessage);
-        if (umlAction != null) {
-            if (Model.getFacade().getRecurrence(umlAction) != null) {
-                number = generateRecurrence(
-                        Model.getFacade().getRecurrence(umlAction))
-                    + " "
-                    + number;
-                /* TODO: The recurrence goes in front of the action? 
-                 * Does this not contradict the header JavaDoc? */
-            }
-
-            action = NotationUtilityUml.generateActionSequence(umlAction);
-
-            /* Dirty fix for issue 1758 (Needs to be amended
-             * when we start supporting parameters):
-             */
-            if (!action.endsWith(")")) {
-        	action = action + "()";
-            }
-        }
-
-        return predecessors + number + " : " + action;
+        return toString(modelElement, true);
     }
 
 }
