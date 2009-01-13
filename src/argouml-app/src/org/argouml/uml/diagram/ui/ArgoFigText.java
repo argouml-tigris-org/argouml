@@ -106,8 +106,11 @@ public class ArgoFigText extends FigText
         // per-fig basis, so we can just use the project/diagram defaults
 //        settings = new DiagramSettings(renderSettings);
         settings = renderSettings;
-        setFontFamily(settings.getFontName());
-        setFontSize(settings.getFontSize());
+        super.setFontFamily(settings.getFontName());
+        super.setFontSize(settings.getFontSize());
+        super.setFillColor(FILL_COLOR);
+        super.setTextFillColor(FILL_COLOR);
+        super.setTextColor(TEXT_COLOR);
         // Certain types of fixed text (e.g. a FigStereotype with a keyword)
         // may not have an owner
         if (owner != null) {
