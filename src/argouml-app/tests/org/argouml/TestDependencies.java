@@ -146,7 +146,7 @@ public class TestDependencies extends TestCase {
             {"org.argouml.moduleloader", "org.argouml.persistence"},
             {"org.argouml.notation", "org.argouml.notation.ui"},
             {"org.argouml.ui.targetmanager", "org.argouml.ui"},
-            {"org.argouml.ui", "org.argouml.moduleloader"},
+            {"org.argouml.moduleloader", "org.argouml.ui"},
             {"org.argouml.cognitive", "org.argouml.ui"},
             {"org.argouml.cognitive.critics", "org.argouml.cognitive.ui"},
             {"org.argouml.ui", "org.argouml.cognitive.critics.ui"},
