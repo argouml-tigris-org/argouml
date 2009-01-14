@@ -467,17 +467,7 @@ public abstract class FigEdgeModelElement
      * @param g the graphics
      */
     protected void indicateBounds(FigText f, Graphics g) {
-        if (f == null || isReadOnly()) {
-            return;
-        }
-        String text = f.getText();
-        if (text == null || text.length() == 0) {
-            Rectangle rect = f.getBounds();
-            Color c = g.getColor();
-            g.setColor(Globals.getPrefs().handleColorFor(f));
-            g.drawRect(rect.x, rect.y, rect.width, rect.height);
-            g.setColor(c); // TODO: Is this needed?
-        }
+        // No longer necessary, see issue 1048.
     }
     
     /**

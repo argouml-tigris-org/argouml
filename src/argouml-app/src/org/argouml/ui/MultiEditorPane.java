@@ -45,7 +45,13 @@ import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.ModeLabelDragFactory;
 import org.argouml.uml.diagram.ui.TabDiagram;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.ModeDragScrollFactory;
+import org.tigris.gef.base.ModeFactory;
+import org.tigris.gef.base.ModePopupFactory;
+import org.tigris.gef.base.ModeSelectFactory;
 
 /**
  * The upper right pane in the ArgoUML user interface.  It may have several
@@ -57,6 +63,18 @@ public class MultiEditorPane
     extends JPanel
     implements ChangeListener, MouseListener, TargetListener {
 
+    {
+        // I hate this so much even before I start writing it.
+        // Re-initialising a global in a place where no-one will see it just
+        // feels wrong.  Oh well, here goes.
+        ArrayList<ModeFactory> modeFactories = new ArrayList<ModeFactory>();
+        modeFactories.add(new ModeLabelDragFactory());
+        modeFactories.add(new ModeSelectFactory());
+        modeFactories.add(new ModePopupFactory());
+        modeFactories.add(new ModeDragScrollFactory()); 
+        Globals.setDefaultModeFactories(modeFactories);
+    }
+    
     /** logger */
     private static final Logger LOG = Logger.getLogger(MultiEditorPane.class);
         

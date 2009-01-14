@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 
 /**
  * Custom class to group FigTexts in such a way that they don't
@@ -185,7 +186,27 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
             if (f instanceof MouseListener) {
                 ((MouseListener) f).mouseClicked(me);
             }
+            if (me.isConsumed()) {
+                return;
+            }
+            // If the mouse event hasn't been consumed, it means that the user
+            // double clicked on an area that didn't contain an editable fig.
+            // in this case, scan through the list and start editing the first 
+            // fig with editable text.  This allows us to remove the editable 
+            // box clarifier outline, and just outline the whole FigTextGroup, 
+            // see issue 1048.
+            for (Object o : this.getFigs()) {
+                f = (Fig) o;
+                if (f instanceof MouseListener && f instanceof FigText) {
+                    if ( ((FigText) f).getEditable()) {
+                        ((MouseListener) f).mouseClicked(me);
+                    }
+                }
+            }
         }
+        // TODO: 21/12/2008 dthompson mouseClicked(me) above consumes the 
+        // mouse event internally, so I suspect that this line might not be 
+        // necessary.
         me.consume();
     }
 }

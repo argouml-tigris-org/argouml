@@ -30,7 +30,7 @@ import java.awt.Rectangle;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
-import org.tigris.gef.base.PathConvPercent;
+import org.argouml.uml.diagram.ui.PathItemPlacement;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.Fig;
 
@@ -83,7 +83,7 @@ public class FigInclude extends FigEdgeModelElement {
         label.setEditable(false);
         label.setText("<<include>>");
         
-        addPathItem(label, new PathConvPercent(this, 50, 10));
+        addPathItem(label, new PathItemPlacement(this, label, 50, 10));
         
         // Make the line dashed
 

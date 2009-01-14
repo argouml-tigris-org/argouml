@@ -98,6 +98,11 @@ public class PathItemPlacement extends PathConv {
      */
     private Point offset;
     
+    /**
+     * Set true to keep items on same side (top or bottom) of path as
+     * it rotates through vertical.
+     */
+    private final boolean swap = true;
     
     /**
      * Construct a new path to coordinate conversion object which positions at a
@@ -146,7 +151,7 @@ public class PathItemPlacement extends PathConv {
         super(pathFig);
         itemFig = theItemFig;
         setAnchor(pathPercent, pathDelta);
-        setDisplacementVector(displacementAngle, displacementDistance);
+        setDisplacementVector(displacementAngle + 180, displacementDistance);
     }
 
     /**
@@ -171,6 +176,17 @@ public class PathItemPlacement extends PathConv {
         itemFig = theItemFig;
         setAnchor(pathPercent, pathDelta);
         setAbsoluteOffset(absoluteOffset);
+    }
+    
+    /**
+     * Returns the Fig that this PathItemPlacement places.
+     * To get the Fig of the Edge which owns this fig, use use getPathFig()
+     * @see org.tigris.gef.base.PathConv#getPathFig()
+     * @note Used by PGML.tee.
+     * @return The fig that this path item places.
+     */
+    public Fig getItemFig() {
+        return itemFig;
     }
 
     /**
@@ -373,6 +389,22 @@ public class PathItemPlacement extends PathConv {
         offset = newOffset;
         useAngle = false;
     }
+    
+    /**
+     * Attempts to set a new location for the fig being controlled
+     * by this path item.  Takes the given Point which represents an x,y 
+     * position, and calculates the most appropriate angle and displacement
+     * to achieve this new position.  Used when the user drags a label
+     * on the diagram.  
+     * @override
+     * @param newPoint The new target location for the PathItem fig.
+     * @see org.tigris.gef.base.PathConv#setPoint(java.awt.Point)
+     */
+    public void setPoint(Point newPoint) {
+        int vect[] = computeVector(newPoint);
+        setDisplacementAngle(vect[0]);
+        setDisplacementDistance(vect[1]);
+    }
 
 
     /**
@@ -380,21 +412,25 @@ public class PathItemPlacement extends PathConv {
      * This is a convenience method to help callers get coordinates in a form
      * that can be passed back in using {@link #setDisplacementVector(int, int)}
      * 
-     * TODO: Untested.
      * @param point the desired target point
      * @return an array of two integers containing the angle and distance
      */
     public int[] computeVector(Point point) {
         Point anchor = getAnchorPosition();
         int distance = (int) anchor.distance(point);
+        int angl = 0;
         double pathSlope = getSlope();
         double offsetSlope = getSlope(anchor, point);
-        // TODO: This is completely untested.  The angle probably needs to
-        // be adjusted to get it to match what is expected on input.
-        int angle = (int) ((offsetSlope - pathSlope) / Math.PI * 180);
-        int[] result = new int[] {angle, distance};
-        throw new UnsupportedOperationException();
-//        return result;
+
+        if (swap && pathSlope > Math.PI / 2 && pathSlope < Math.PI * 3 / 2) {
+            angl = -(int) ((offsetSlope - pathSlope) / Math.PI * 180);
+        }
+        else {
+            angl = (int) ((offsetSlope - pathSlope) / Math.PI * 180);
+        }
+
+        int[] result = new int[] {angl, distance};
+        return result;
     }
     
     /**
@@ -410,10 +446,32 @@ public class PathItemPlacement extends PathConv {
     }
     
     /**
+     * Set the displacement vector to the given angle and distance.
+     * 
+     * @param vectorAngle angle in degrees relative to the edge at the anchor
+     *            point.
+     * @param vectorDistance distance along vector in drawing coordinate units
+     */
+    public void setDisplacementVector(double vectorAngle, 
+            int vectorDistance) {
+        setDisplacementAngle(vectorAngle);
+        setDisplacementDistance(vectorDistance);
+    }
+    
+    /**
      * @param offsetAngle the new angle for the displacement vector, 
      * specified in degrees relative to the edge at the anchor.
      */
     public void setDisplacementAngle(int offsetAngle) {
+        angle = offsetAngle * Math.PI / 180.0;
+        useAngle = true;
+    }
+
+    /**
+     * @param offsetAngle the new angle for the displacement vector, 
+     * specified in degrees relative to the edge at the anchor.
+     */
+    public void setDisplacementAngle(double offsetAngle) {
         angle = offsetAngle * Math.PI / 180.0;
         useAngle = true;
     }
@@ -526,10 +584,6 @@ public class PathItemPlacement extends PathConv {
     private Point applyOffset(double theta, int theOffset, 
             Point result) {
      
-        // Set true to keep items on same side (top or bottom) of path as
-        // it rotates through vertical.
-        final boolean swap = true;
-        
         // Set the following for some backward compatibility with old algorithm
         final boolean aboveAndRight = false;
 
@@ -555,12 +609,6 @@ public class PathItemPlacement extends PathConv {
         int dx = (int) (theOffset * Math.cos(theta));
         int dy = (int) (theOffset * Math.sin(theta));
         
-        // Invert signs for compatibility with callers notion 
-        // that positive offsets are above
-        // TODO: Do in polar domain?  Skip altogether?
-        dy = -dy;
-        dx = -dx;
-
         // For backward compatibility everything is above and right
         // TODO: Do in polar domain?
         if (aboveAndRight) {
@@ -660,4 +708,37 @@ public class PathItemPlacement extends PathConv {
         double y = m.getY1() + as * (m.getY2() - m.getY1());
         return new Point((int) x, (int) y);
     }
+    
+    /**
+     * Returns the value of the percent field - the position of the anchor
+     * point as a percentage of the edge.
+     * @important Used by PGML.tee.
+     * @return The value of the percent field. 
+     */
+    public int getPercent() {
+        return percent;
+    }
+    
+    /**
+     * Returns the value of the angle field converted to degrees.
+     * The angle of the path item relative to the edge.
+     * @important Used by PGML.tee.
+     * @return The value of the angle field in degrees.
+     */
+    public double getAngle() {
+        return angle * 180 / Math.PI;
+    }
+    
+    /**
+     * Returns the value of the vectorOffset field.
+     * The vectorOffset field is the distance away from the edge, along the 
+     * path vector that the item Fig is placed.
+     * @important Used by PGML.tee.
+     * @return The value of the vectorOffset field.
+     */
+    public int getVectorOffset() {
+        return vectorOffset;
+    }
+    /** End of methods used by PGML.tee */
+    
 }

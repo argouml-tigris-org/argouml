@@ -27,7 +27,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
-import org.argouml.uml.diagram.ui.PathConvPercent2;
+import org.argouml.uml.diagram.ui.PathItemPlacement;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -58,7 +58,7 @@ public class FigLink extends FigEdgeModelElement {
     public FigLink() {
         middleGroup.addFig(getNameFig());
         addPathItem(middleGroup,
-                new PathConvPercent2(this, middleGroup, 50, 25));
+                new PathItemPlacement(this, middleGroup, 50, 25));
         getNameFig().setUnderline(true);
 	getFig().setLineColor(LINE_COLOR);
 	setBetweenNearestPoints(true);

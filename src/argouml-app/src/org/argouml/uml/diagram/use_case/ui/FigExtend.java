@@ -36,7 +36,7 @@ import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ArgoFigText;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
-import org.tigris.gef.base.PathConvPercent;
+import org.argouml.uml.diagram.ui.PathItemPlacement;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.Fig;
 
@@ -127,7 +127,7 @@ public class FigExtend extends FigEdgeModelElement {
         // relationship, the arrow points to the base use case, but because of
         // the way we draw it, that is still the destination end.
 
-        addPathItem(fg, new PathConvPercent(this, 50, 10));
+        addPathItem(fg, new PathItemPlacement(this, fg, 50, 10));
 
         setDashed(true);
 
