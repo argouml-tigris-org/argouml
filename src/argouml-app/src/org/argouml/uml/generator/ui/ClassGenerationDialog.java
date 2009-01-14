@@ -290,12 +290,10 @@ public class ClassGenerationDialog
 
         // Generate Button --------------------------------------
         if (e.getSource() == getOkButton()) {
-            String path =
-                ((String) outputDirectoryComboBox.getModel()
-                        .getSelectedItem()).trim();
+            String path = null;
             // TODO: Get default output directory from user settings
-//            Project p = ProjectManager.getManager().getCurrentProject();
-//            p.getProjectSettings().setGenerationOutputDir(path);
+            // Project p = ProjectManager.getManager().getCurrentProject();
+            // p.getProjectSettings().setGenerationOutputDir(path);
             List<String>[] fileNames = new List[languages.size()];
             for (int i = 0; i < languages.size(); i++) {
                 fileNames[i] = new ArrayList<String>();
@@ -305,11 +303,20 @@ public class ClassGenerationDialog
                 Set nodes = classTableModel.getChecked(language);
 
                 if (!isPathInModel) {
-                    Collection<String> files =
-                            generator.generateFiles(nodes, path, false);
-                    for (String filename : files) {
-                        fileNames[i].add(path + CodeGenerator.FILE_SEPARATOR
-                                + filename);
+                    path =
+                        ((String) outputDirectoryComboBox.getModel()
+                                .getSelectedItem());
+                    if (path != null) {
+                        path = path.trim();
+                        if (path.length() > 0) {
+                            Collection<String> files =
+                                generator.generateFiles(nodes, path, false);
+                            for (String filename : files) {
+                                fileNames[i].add(
+                                    path + CodeGenerator.FILE_SEPARATOR
+                                        + filename);
+                            }
+                        }
                     }
                 } else {
                     // classify nodes by base path
