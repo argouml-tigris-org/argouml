@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2008 The Regents of the University of California. All
+// Copyright (c) 2003-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,6 +46,7 @@ import org.argouml.uml.diagram.DiagramSettings.StereotypeStyle;
 import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.StereotypeStyled;
 import org.argouml.util.ArgoFrame;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.ColorRenderer;
@@ -271,6 +272,7 @@ public class StylePanelFig
 
         if (target.getLineWidth() > 0) {
             Color c = target.getLineColor();
+            // TODO: This is going to cause the color to be reset on a refresh
             lineField.setSelectedItem(c);
             if (c != null && !lineField.getSelectedItem().equals(c)) {
                 lineField.insertItemAt(c, lineField.getItemCount() - 1);
@@ -280,11 +282,11 @@ public class StylePanelFig
             lineField.setSelectedIndex(0);
         }
 
-        stereoField.setEnabled(target instanceof FigNodeModelElement);
-        stereoLabel.setEnabled(target instanceof FigNodeModelElement);
+        stereoField.setEnabled(target instanceof StereotypeStyled);
+        stereoLabel.setEnabled(target instanceof StereotypeStyled);
         
-        if (target instanceof FigNodeModelElement) {
-            FigNodeModelElement fig = (FigNodeModelElement) target;
+        if (target instanceof StereotypeStyled) {
+            StereotypeStyled fig = (StereotypeStyled) target;
             stereoField.setSelectedIndex(fig.getStereotypeStyle().ordinal());
         }
     }
@@ -494,12 +496,12 @@ public class StylePanelFig
                 }
                 setTargetLine();
             } else if (src == stereoField) {
-                if (target instanceof FigNodeModelElement) {
+                if (target instanceof StereotypeStyled) {
                     Object item = e.getItem();
                     DefaultComboBoxModel model = 
                         (DefaultComboBoxModel) stereoField.getModel();
                     int idx = model.getIndexOf(item);
-                    FigNodeModelElement fig = (FigNodeModelElement) target;
+                    StereotypeStyled fig = (StereotypeStyled) target;
 
                     fig.setStereotypeStyle(StereotypeStyle.getEnum(idx));
 

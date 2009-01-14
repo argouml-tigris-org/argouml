@@ -131,7 +131,8 @@ public abstract class FigNodeModelElement
         Highlightable,
         IItemUID,
         Clarifiable,
-        ArgoFig {
+        ArgoFig,
+        StereotypeStyled {
 
 
     private static final Logger LOG =
@@ -150,6 +151,20 @@ public abstract class FigNodeModelElement
      */
     protected static final int WIDTH = 64;
 
+    /**
+     * The default minimum height of the name fig, computed to allow room for
+     * the Critics "clarifiers" (red squiggly line) with the default font. This
+     * should really go away and be managed internally to the name figs and
+     * fetched through getMinimumSize(). The final height can change based on
+     * the font selected.
+     */
+    protected static final int NAME_FIG_HEIGHT = 21;
+    
+    /**
+     * Padding to be used above and below the name.
+     */
+    protected static final int NAME_V_PADDING = 2;
+    
     private DiElement diElement;
 
     private NotationProvider notationProviderName;
@@ -312,8 +327,8 @@ public abstract class FigNodeModelElement
         // is inside it:
         bigPort = new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
         
-        nameFig = new FigNameWithAbstractAndBold(X0, Y0, WIDTH, 21, true);
-        stereotypeFig = new FigStereotypesGroup(X0, Y0, WIDTH, 15);
+        nameFig = new FigNameWithAbstractAndBold(X0, Y0, WIDTH, NAME_FIG_HEIGHT, true);
+        stereotypeFig = new FigStereotypesGroup(X0, Y0, WIDTH, STEREOHEIGHT);
         constructFigs();
     }
     
@@ -323,7 +338,6 @@ public abstract class FigNodeModelElement
      */
     private void constructFigs() {
         // TODO: Why isn't this stuff managed by the nameFig itself?
-        nameFig.setLineWidth(LINE_WIDTH);
         nameFig.setFilled(true);
         nameFig.setText(placeString());
         nameFig.setBotMargin(7); // make space for the clarifier
@@ -399,7 +413,7 @@ public abstract class FigNodeModelElement
         // is inside it:
         bigPort = new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
         nameFig = new FigNameWithAbstractAndBold(element, 
-                new Rectangle(X0, Y0, WIDTH, 21), getSettings(), true);
+                new Rectangle(X0, Y0, WIDTH, NAME_FIG_HEIGHT), getSettings(), true);
         stereotypeFig = new FigStereotypesGroup(element, 
                 new Rectangle(X0, Y0, WIDTH, STEREOHEIGHT), settings);
         constructFigs();
@@ -2277,7 +2291,8 @@ public abstract class FigNodeModelElement
     }
     
     /**
-     * @return the rendering style for stereotypes
+     * @return
+     * @see org.argouml.uml.diagram.ui.StereotypeStyled#getStereotypeStyle()
      */
     public StereotypeStyle getStereotypeStyle() {
         return stereotypeStyle;
@@ -2486,6 +2501,13 @@ public abstract class FigNodeModelElement
 
     protected NotationSettings getNotationSettings() {
         return notationSettings;
+    }
+
+    public void setLineWidth(int w) {
+        super.setLineWidth(w);
+        // Default for name and stereotype is no border
+        getNameFig().setLineWidth(0);
+        getStereotypeFig().setLineWidth(0);
     }
     
     /**

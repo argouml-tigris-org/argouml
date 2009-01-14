@@ -28,7 +28,6 @@ import java.awt.Graphics;
 
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.PathItemPlacementStrategy;
-import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.base.SelectionReshape;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -41,11 +40,10 @@ import org.tigris.gef.presentation.FigEdge;
  */
 public class SelectionEdgeClarifiers extends SelectionReshape {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
-    /** Construct a new SelectionEdgeClarifiers for the given Fig
-     *
+    /**
+     * Construct a new SelectionEdgeClarifiers for the given Fig
+     * 
      * @param f the given fig
      */
     public SelectionEdgeClarifiers(Fig f) { super(f); }
@@ -62,10 +60,12 @@ public class SelectionEdgeClarifiers extends SelectionReshape {
     public void paint(Graphics g) {
         super.paint(g);
         int selectionCount =
-            Globals.curEditor().getSelectionManager().selections().size();
+            Globals.curEditor().getSelectionManager().getSelections().size();
         if (selectionCount == 1) {
-            FigEdgeModelElement edge = (FigEdgeModelElement) getContent();
-            edge.paintClarifiers(g);
+            FigEdge edge = (FigEdge) getContent();
+            if (edge instanceof Clarifiable) {
+                ((Clarifiable) edge).paintClarifiers(g);
+            }
 	    for (PathItemPlacementStrategy strategy
 	            : edge.getPathItemStrategies()) {
 	        strategy.paint(g);
@@ -73,5 +73,4 @@ public class SelectionEdgeClarifiers extends SelectionReshape {
 	}
     }
 
-} /* end class SelectionEdgeClarifiers */
-
+}

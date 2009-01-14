@@ -123,7 +123,8 @@ public abstract class FigEdgeModelElement
         ArgoDiagramAppearanceEventListener,
         Highlightable,
         IItemUID,
-        ArgoFig {
+        ArgoFig,
+        Clarifiable {
 
     private static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);
@@ -197,6 +198,7 @@ public abstract class FigEdgeModelElement
      */
     protected FigEdgeModelElement(Object element, 
             DiagramSettings renderSettings) {
+        super();
         // TODO: We don't have any settings that can change per-fig currently
         // so we can just use the default settings;
 //        settings = new DiagramSettings(renderSettings);
@@ -421,7 +423,7 @@ public abstract class FigEdgeModelElement
     /**
      * @param g the <code>Graphics</code> object
      */
-    protected void paintClarifiers(Graphics g) {
+    public void paintClarifiers(Graphics g) {
         int iconPos = 25, gap = 1, xOff = -4, yOff = -4;
         Point p = new Point();
         ToDoList tdList = Designer.theDesigner().getToDoList();
@@ -1165,6 +1167,8 @@ public abstract class FigEdgeModelElement
     @Override
     public final void removeFromDiagram() {
         Fig delegate = getRemoveDelegate();
+        // TODO: Dependency cycle between FigNodeModelElement and FigEdgeME
+        // Is this needed?  If so, introduce a Removable interface to decouple
         if (delegate instanceof FigNodeModelElement) {
             ((FigNodeModelElement) delegate).removeFromDiagramImpl();
         } else if (delegate instanceof FigEdgeModelElement) {
@@ -1656,5 +1660,21 @@ public abstract class FigEdgeModelElement
      */
     protected NotationSettings getNotationSettings() {
         return getSettings().getNotationSettings();
+    }
+    
+//    public void setLineWidth(int w) {
+//        super.setLineWidth(w);
+//    }
+    
+    public void setLineColor(Color c) {
+        super.setLineColor(c);
+    }
+    
+    public void setFig(Fig f) {
+        super.setFig(f);
+        // GEF sets a different Fig than the one that we had at construction
+        // time, so we need to set its color and width
+        f.setLineColor(getLineColor());
+        f.setLineWidth(getLineWidth());
     }
 }
