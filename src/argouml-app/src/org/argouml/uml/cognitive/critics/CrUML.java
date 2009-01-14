@@ -30,8 +30,6 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ocl.CriticOclEvaluator;
 import org.argouml.uml.cognitive.UMLToDoItem;
@@ -162,10 +160,8 @@ public class CrUML extends Critic {
      */
     @Override
     public boolean predicate(Object dm, Designer dsgr) {
-	Project p = ProjectManager.getManager().getCurrentProject();
-        if (p.isInTrash(dm)
-                || (Model.getFacade().isAModelElement(dm)
-                && Model.getUmlFactory().isRemoved(dm))) {
+        if (Model.getFacade().isAModelElement(dm)
+                && Model.getUmlFactory().isRemoved(dm)) {
             return NO_PROBLEM;
         } else {
             return predicate2(dm, dsgr);

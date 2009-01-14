@@ -44,7 +44,7 @@ public interface FormatingStrategy {
      *                context namespace (may be null).
      * @return a string representing the model element
      */
-    public abstract String formatElement(Object element, Object namespace);
+    String formatElement(Object element, Object namespace);
 
     /**
      * Produce a string the represents the collection of model elements in the
@@ -56,5 +56,5 @@ public interface FormatingStrategy {
      *                context namespace (may be null).
      * @return a string representing the collection
      */
-    public abstract String formatCollection(Iterator iter, Object namespace);
+    String formatCollection(Iterator iter, Object namespace);
 }

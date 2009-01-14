@@ -36,7 +36,6 @@ import org.argouml.profile.FormatingStrategy;
  */
 public class JavaFormatingStrategy implements FormatingStrategy {
     
-
     public String formatElement(Object element, Object namespace) {
         String value = null;
         if (element == null) {

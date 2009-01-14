@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -146,7 +146,7 @@ public class TestDependencies extends TestCase {
             {"org.argouml.moduleloader", "org.argouml.persistence"},
             {"org.argouml.notation", "org.argouml.notation.ui"},
             {"org.argouml.ui.targetmanager", "org.argouml.ui"},
-            {"org.argouml.ui", "org.argouml.moduleloader"},
+            {"org.argouml.moduleloader", "org.argouml.ui"},
             {"org.argouml.cognitive", "org.argouml.ui"},
             {"org.argouml.cognitive.critics", "org.argouml.cognitive.ui"},
             {"org.argouml.ui", "org.argouml.cognitive.critics.ui"},
@@ -155,7 +155,6 @@ public class TestDependencies extends TestCase {
             {"org.argouml.uml.diagram", "org.argouml.ui"},
             {"org.argouml.ui", "org.argouml.notation.ui"},
             {"org.argouml.util", "org.argouml.ui.cmd"},
-            {"org.argouml.moduleloader", "org.argouml.ui"},
             //{"org.argouml.kernel", "org.argouml.uml.diagram.ui"},//why does this fail?
         };
         for (int i = 0; i < dep.length; i++) {
