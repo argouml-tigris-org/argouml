@@ -36,7 +36,6 @@ import org.argouml.profile.FormatingStrategy;
  */
 public class JavaFormatingStrategy implements FormatingStrategy {
     
-    @Override
     public String formatElement(Object element, Object namespace) {
         String value = null;
         if (element == null) {
@@ -199,7 +198,7 @@ public class JavaFormatingStrategy implements FormatingStrategy {
         return "[empty]";
     }
 
-    @Override
+
     public String formatCollection(Iterator iter, Object namespace) {
         String value = null;
         if (iter.hasNext()) {
