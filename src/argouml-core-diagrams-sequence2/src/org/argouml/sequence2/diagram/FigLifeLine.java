@@ -272,9 +272,9 @@ class FigLifeLine extends ArgoFigGroup {
         firePropChange("bounds", oldBounds, getBounds());
     }
     
-    public int getLineWidth() {
-        return lineFig.getLineWidth();
-    }
+//    public int getLineWidth() {
+//        return lineFig.getLineWidth();
+//    }
     
     public void setLineWidth(int w) {
         lineFig.setLineWidth(w);
