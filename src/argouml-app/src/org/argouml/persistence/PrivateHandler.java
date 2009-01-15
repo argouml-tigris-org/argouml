@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -179,6 +179,7 @@ class PrivateHandler
                 // we should modify this, so that we also recognise any 
                 // subclass of PathItemPlacement.
                 // Is the class name a PathItemPlacment?
+                // TODO: Use class reference to make this dependency obvious
                 if ("org.argouml.uml.diagram.ui.PathItemPlacement".equals(
                         classname)) {
                     PathItemPlacementStrategy pips 
@@ -189,7 +190,8 @@ class PrivateHandler
                     // created with an older argo version, and the new
                     // argo version use a different placement strategy.
                     // If they don't match, just use the default.
-                    if (pips.getClass().getName().equals(classname)) {
+                    if (pips != null 
+                            && classname.equals(pips.getClass().getName())) {
                         // Now we're into processing each specific path 
                         // item strategy.
                         // At the moment, we only know PathItemPlacement
