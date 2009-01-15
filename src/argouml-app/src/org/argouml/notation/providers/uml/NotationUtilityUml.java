@@ -1269,7 +1269,7 @@ public final class NotationUtilityUml {
     
     /**
      * @param m the action
-     * @return the generated text
+     * @return the generated text (never null)
      */
     static String generateAction(Object m) {
         Collection c;
@@ -1326,6 +1326,15 @@ public final class NotationUtilityUml {
         return s + " (" + p + ")";
     }
 
+    /**
+     * Generate a textual representation of the given Action or ActionSequence 
+     * according the UML standard notation.
+     * 
+     * @param a the UML Action or ActionSequence
+     * @return the generated textual representation 
+     * of the given action(sequence).
+     * This value is guaranteed NOT null.
+     */
     public static String generateActionSequence(Object a) {
         if (Model.getFacade().isAActionSequence(a)) {
             StringBuffer str = new StringBuffer("");
