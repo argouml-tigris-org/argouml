@@ -45,11 +45,6 @@ import org.tigris.gef.presentation.Fig;
  *
  */
 public class FigAssociationRole extends FigAssociation {
-
-    /**
-     * Serial version - Eclipse generated for rev. 1.30
-     */
-    private static final long serialVersionUID = -6543020797101620194L;
     
     private FigMessageGroup messages;
 
@@ -112,11 +107,11 @@ public class FigAssociationRole extends FigAssociation {
     	messages.damage();
     }
 
-@Override
-public void computeRouteImpl() {
-    super.computeRouteImpl();
-    messages.updateArrows();
-}
+    @Override
+    public void computeRouteImpl() {
+        super.computeRouteImpl();
+        messages.updateArrows();
+    }
     
 } /* end class FigAssociationRole */
 
@@ -149,6 +144,12 @@ class FigMessageGroup extends ArgoFigGroup {
         super(figs);
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param owner the UML Message object
+     * @param settings rendering properties
+     */
     public FigMessageGroup(Object owner, DiagramSettings settings) {
         super(owner, settings);
     }
