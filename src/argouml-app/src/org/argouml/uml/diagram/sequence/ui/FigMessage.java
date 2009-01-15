@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,9 +30,9 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
+import org.argouml.uml.diagram.ui.PathItemPlacement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.Handle;
@@ -57,7 +57,7 @@ public abstract class FigMessage
         textGroup = new FigTextGroup();
         textGroup.addFig(getNameFig());
         textGroup.addFig(getStereotypeFig());
-        addPathItem(textGroup, new PathConvPercent(this, 50, 10));
+        addPathItem(textGroup, new PathItemPlacement(this, textGroup, 50, 10));
         setOwner(owner);
     }
 
