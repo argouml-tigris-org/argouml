@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.notation.providers;
 
 import java.beans.PropertyChangeListener;
-import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -55,21 +54,33 @@ public abstract class MessageNotation extends NotationProvider {
      * @see org.argouml.notation.providers.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
      */
     public void initialiseListener(PropertyChangeListener listener, 
-             Object modelElement) {
-        addElementListener(listener, modelElement,
+             Object umlMessage) {
+        addElementListener(listener, umlMessage,
                 new String[] {"activator", "predecessor", "successor", 
-                    "sender", "receiver", "action"});
-        Object action = Model.getFacade().getAction(modelElement);
+                    "sender", "receiver", "action", "name"});
+        Object action = Model.getFacade().getAction(umlMessage);
         if (action != null) {
             addElementListener(listener, action,
                     new String[] {"remove", "recurrence", "script", 
-                        "actualArgument"});
+                        "actualArgument", "signal", "operation"});
             List args = Model.getFacade().getActualArguments(action);
-            Iterator it = args.iterator();
-            while (it.hasNext()) {
-                Object argument = it.next();
+            for (Object argument : args) {
                 addElementListener(listener, argument,
                         new String[] {"remove", "value"});
+            }
+            if (Model.getFacade().isACallAction(action)) {
+                Object operation = Model.getFacade().getOperation(action);
+                if (Model.getFacade().isAOperation(operation)) {
+                    addElementListener(listener, operation,
+                            new String[] {"name"});
+                }
+            }
+            if (Model.getFacade().isASendAction(action)) {
+                Object signal = Model.getFacade().getSignal(action);
+                if (Model.getFacade().isASignal(signal)) {
+                    addElementListener(listener, signal,
+                            new String[] {"name"});
+                }
             }
         }
     }

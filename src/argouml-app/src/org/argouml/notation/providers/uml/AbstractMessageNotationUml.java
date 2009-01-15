@@ -84,11 +84,10 @@ import org.argouml.util.MyTokenizer;
  * (formerly, the supported syntax was: name: action ) <p>
  *
  * Generating a string from the model has some extra functionality:
- * (to be implemented)
  * If obtaining the Script of the Action returns an empty string, 
  * then an alternative representation is given:
  * If the action is a CallAction, use the name of its Operation, 
- * and if it is a SendAction, the name of its Event.
+ * and if it is a SendAction, the name of its Signal.
  * If also this returns no string, then we display the name of the Message. <p>
  * 
  *  Rationale:
@@ -202,15 +201,23 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
                 /* TODO: The recurrence goes in front of the action? 
                  * Does this not contradict the header JavaDoc? */
             }
-
-            action = NotationUtilityUml.generateActionSequence(umlAction);
-
+        }
+        action = NotationUtilityUml.generateActionSequence(umlAction);
+        if ("".equals(action)) {
+            action = getInitiatorOfAction(umlAction);
+            if ("".equals(action)) {
+                // This may return null:
+                String n = Model.getFacade().getName(umlMessage);
+                if (n != null) {
+                    action = n;
+                }
+            }
+        }
+        else if (!action.endsWith(")")) {
             /* Dirty fix for issue 1758 (Needs to be amended
              * when we start supporting parameters):
              */
-            if (!action.endsWith(")")) {
-                action = action + "()";
-            }
+            action = action + "()";
         }
 
         if (!showSequenceNumbers) {
@@ -219,6 +226,29 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
         return predecessors + number + " : " + action;
     }
 
+    protected String getInitiatorOfAction(Object umlAction) {
+        String result = "";
+        if (Model.getFacade().isACallAction(umlAction)) {
+            Object umlOperation = Model.getFacade().getOperation(umlAction);
+            if (Model.getFacade().isAOperation(umlOperation)) {
+                StringBuilder sb = new StringBuilder(
+                        Model.getFacade().getName(umlOperation));
+                if (sb.length() > 0) {
+                    sb.append("()");
+                    result = sb.toString();
+                }
+            }
+        } else if (Model.getFacade().isASendAction(umlAction)) {
+            Object umlSignal = Model.getFacade().getSignal(umlAction);
+            if (Model.getFacade().isASignal(umlSignal)) {
+                String n = Model.getFacade().getName(umlSignal);
+                if (n != null) {
+                    result = n;
+                }
+            }
+        }
+        return result;
+    }
     
     protected List<CustomSeparator> initParameterSeparators() {
         List<CustomSeparator> separators = new ArrayList<CustomSeparator>();
