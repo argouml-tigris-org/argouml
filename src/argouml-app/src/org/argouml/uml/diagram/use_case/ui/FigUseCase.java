@@ -182,25 +182,26 @@ public class FigUseCase extends FigNodeModelElement
     }
 
     /**
-     * Initialization which is common to multiple constructors.
+     * Initialization which is common to multiple constructors.<p>
+     * 
+     * There should be no size calculations here, nor color setting,
+     * since not all attributes are set yet (like e.g. fill color).
      */
-    private void initialize() {
-        // We need to be initialized before we can use our own versions of these
-        Color fg = super.getLineColor();
-        Color fill = super.getFillColor();
-        
-        // Create all the things we need, then use getMinimumSize to work out
-        // the dimensions of the oval.
+    private void initialize() {        
+        // Create all the things we need
 
         // First the main port ellipse and the cover of identical size that
         // will realize it. Use arbitrary dimensions for now.
 
-        bigPort = new FigMyCircle(0, 0, 100, 60, fg, fill);
-        cover = new FigMyCircle(0, 0, 100, 60, fg, fill);
+        bigPort = new FigMyCircle(0, 0, 100, 60);
+        cover = new FigMyCircle(0, 0, 100, 60);
 
         // Mark the text, but not the box as filled, mark that the name may
-        // use multiline text (a bit odd - how do we enter a multi-line
+        // use multi-line text (a bit odd - how do we enter a multi-line
         // name?).
+        
+        /* TODO: The above comment hints that the ReturnAction 
+         * should be INSERT, not END_EDITING. */
 
         getNameFig().setTextFilled(false);
         getNameFig().setFilled(false);
@@ -209,7 +210,7 @@ public class FigUseCase extends FigNodeModelElement
 
         // The separator, again with arbitrary bounds for now.
 
-        epSep = new FigLine(0, 30, 100, 100, fg);
+        epSep = new FigLine(0, 30, 100, 100);
         epSep.setLineWidth(LINE_WIDTH);
 
         epSep.setVisible(false);
@@ -217,13 +218,12 @@ public class FigUseCase extends FigNodeModelElement
         // The surrounding box for the extension points, again with arbitrary
         // bounds for now (but made the same width as the name field, so the
         // name field width will dominate size calculations, but there is a
-        // space to double click in for a new EP. It is not filled
-        // (although we have to specify a fill color at creation), nor has it
+        // space to double click in for a new EP. It is not filled, nor has it
         // a surrounding line. Its bounds, which allow for one line (which is
         // empty) are the same as for the name box at this stage.
 
         epBigPort =
-	    new FigRect(0, 30, getNameFig().getBounds().width, 20, fg, fill);
+	    new FigRect(0, 30, getNameFig().getBounds().width, 20);
 
         epBigPort.setFilled(false);
         epBigPort.setLineWidth(0);
@@ -240,48 +240,6 @@ public class FigUseCase extends FigNodeModelElement
         epVec.setVisible(false);
 
         epVec.addFig(epBigPort);
-
-        // We now use getMiniumSize to work out the dimensions of the ellipse
-        // that we need, and then reset the bounds of everything.
-
-        Dimension ellipse = getMinimumSize();
-
-        // The size of the port and cover ellipses
-
-        bigPort.setBounds(0, 0, ellipse.width, ellipse.height);
-        cover.setBounds(0, 0, ellipse.width, ellipse.height);
-
-        // Space for the name. Centred horizontally, and (since we are minimum
-        // size) _MIN_VERT_PADDING from the top.
-
-        Dimension nameSize = getNameFig().getMinimumSize();
-
-        getNameFig().setBounds((ellipse.width - nameSize.width) / 2,
-			       MIN_VERT_PADDING,
-			       nameSize.width,
-			       nameSize.height);
-
-        getStereotypeFig().setBounds(0, 0, 0, 0);
-
-        // The separator. We cheat here. Since the name and extension points
-        // rectangles are the same size at this stage, this must be at the
-        // midpoint of the ellipse.
-
-        epSep.setShape(0,
-			ellipse.height / 2,
-			ellipse.width,
-			ellipse.height / 2);
-
-        // The surrounding box for the extension points. At this stage we know
-        // the separator is 1 pixel wide at the midpoint, and there is _SPACER
-        // below this before the extension box.
-
-        Dimension epSize = epBigPort.getMinimumSize();
-
-        epBigPort.setBounds((ellipse.width - epSize.width) / 2,
-			     ellipse.height / 2 + 1 + SPACER,
-			     epSize.width,
-			     epSize.height);
 
         setBigPort(bigPort);
 
@@ -768,6 +726,7 @@ public class FigUseCase extends FigNodeModelElement
     public void setLineColor(Color col) {
         if (cover != null) {
             cover.setLineColor(col);
+            epSep.setLineColor(col);
         }
     }
 
@@ -896,6 +855,23 @@ public class FigUseCase extends FigNodeModelElement
 			   Color lColor,
 			   Color fColor) {
             super(x, y, w, h, lColor, fColor);
+        }
+
+        /**
+         * Constructor just invokes the parent constructor.<p>
+         *
+         * @param x       X coordinate of the upper left corner of the bounding
+         *                box.
+         *
+         * @param y       Y coordinate of the upper left corner of the bounding
+         *                box.
+         *
+         * @param w       Width of the bounding box.
+         *
+         * @param h       Height of the bounding box.
+         */
+        public FigMyCircle(int x, int y, int w, int h) {
+            super(x, y, w, h);
         }
 
         /**
