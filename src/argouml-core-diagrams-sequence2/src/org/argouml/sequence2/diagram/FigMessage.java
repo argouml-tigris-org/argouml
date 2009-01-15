@@ -30,11 +30,11 @@ import java.awt.Point;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.SDNotationSettings;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
@@ -48,12 +48,7 @@ public class FigMessage extends FigEdgeModelElement {
 
     private static final long serialVersionUID = -2961220746360335159L;
     private FigTextGroup textGroup; 
-    
-    /**
-     * The arrow head. It depends on the owner attached action. 
-     */
-    private ArrowHead arrowHead;
-    
+
     /**
      * The action owned by the message
      */
@@ -65,17 +60,37 @@ public class FigMessage extends FigEdgeModelElement {
      * Constructs a new figlink and sets the owner of the figlink.
      *
      * @param owner is the owner.
+     * @deprecated for 0.28.alpha3 by penyaskito. Use
+     *             {@link #FigMessage(Object, DiagramSettings)}
      */
     public FigMessage(Object owner) {
         super();
         textGroup = new FigTextGroup();
+        initialize();
+        setOwner(owner);
+    }
+
+    /**
+     * Construct a fig owned by the given UML element with the provided render
+     * settings.
+     * @param edge owning UML element
+     * @param settings rendering settings
+     */
+    public FigMessage(Object edge, DiagramSettings settings) {
+        super(edge, settings);
+        textGroup = new FigTextGroup(edge, settings);
+        initialize();
+        action = Model.getFacade().getAction(getOwner());
+        updateArrow();
+    }
+    
+    private void initialize() {
         textGroup.addFig(getNameFig());
         textGroup.addFig(getStereotypeFig());
         addPathItem(textGroup, new PathConvPercent(this, 50, 10));
         notationSettings = new SDNotationSettings();
-        setOwner(owner);
     }
-    
+        
     @Override
     protected int getNotationProviderType() {
         /* Use a different notation as Messages on a collaboration diagram: */
@@ -110,7 +125,12 @@ public class FigMessage extends FigEdgeModelElement {
         return notationSettings;
     }
 
+    /**
+     * @deprecated for 0.28.alpha3 by penyaskito. Owner must be specified in the
+     * constructor and can't be changed afterwards.
+     */
     @Override
+    @Deprecated
     public void setOwner(Object owner) {       
         super.setOwner(owner);
         action = Model.getFacade().getAction(owner);
@@ -138,30 +158,30 @@ public class FigMessage extends FigEdgeModelElement {
      * to the action type..
      */
     private void updateArrow() {
-	Object action = getAction();
-	if (Model.getFacade().isAReturnAction(action)) {
-	    arrowHead = new ArrowHeadGreater();
+	if (Model.getFacade().isAReturnAction(getAction())) {
+	    setDestArrowHead(new ArrowHeadGreater());
 	    getFig().setDashed(true);
 	}
-	else if (Model.getFacade().isADestroyAction(action)) {
-	    arrowHead = new ArrowHeadGreater();
+	else if (Model.getFacade().isADestroyAction(getAction())) {
+	    setDestArrowHead(new ArrowHeadGreater());
 	    getFig().setDashed(true);
 	}
-	else if (Model.getFacade().isACreateAction(action)) {
-	    arrowHead = new ArrowHeadTriangle();
-	    // dashed it's false by default.
+	else if (Model.getFacade().isACreateAction(getAction())) {
+	    setDestArrowHead(new ArrowHeadTriangle());
+            getFig().setDashed(false);
 	}
-	else if (Model.getFacade().isACallAction(action)) {
-	    arrowHead = new ArrowHeadTriangle();
-	    // dashed it's false by default.
+	else if (Model.getFacade().isACallAction(getAction())) {
+	    setDestArrowHead(new ArrowHeadTriangle());
+            getFig().setDashed(false);
 	}
-
-	setDestArrowHead(arrowHead);
+	getDestArrowHead().setLineColor(getLineColor());
+	getDestArrowHead().setFillColor(getLineColor());
     }
 
     /**
      * Constructor here for saving and loading purposes.
-     *
+     * @deprecated for 0.28.alpha3 by penyaskito. Use
+     *             {@link #FigMessage(Object, DiagramSettings)}
      */
     public FigMessage() {
         this(null);
@@ -191,16 +211,18 @@ public class FigMessage extends FigEdgeModelElement {
     int getFinalY() {
 	int finalY = 0;
         Point[] points = getFig().getPoints();
-        if (points.length > 0)
+        if (points.length > 0) {
             finalY = points[points.length - 1].y;
+        }
         return finalY;
     }    
 
     int getStartY() {
 	int finalY = 0;
         Point[] points = getFig().getPoints();
-        if (points.length > 0)
+        if (points.length > 0) {
             finalY = points[0].y;
+        }
         return finalY;
     }    
 
@@ -242,22 +264,24 @@ public class FigMessage extends FigEdgeModelElement {
     private synchronized void updateActivations() {
 	// we update the activations...
 	FigClassifierRole source = (FigClassifierRole) getSourceFigNode();
-	if (source != null)
+	if (source != null) {
 	    source.createActivations();
+	}
 	
 	// for performance, we check if this is a selfmessage 
 	// if it is, we have just updated the activations
 	if (!isSelfMessage()) {
 	    FigClassifierRole dest = (FigClassifierRole) getDestFigNode();
-	    if (dest != null)
+	    if (dest != null) {
 		dest.createActivations();
+	    }
 	}
     }
 
     @Override
     public void setLineColor(Color c) {
     	super.setLineColor(c);
-    	arrowHead.setFillColor(c);
+    	getDestArrowHead().setFillColor(c);
     }
 
     @Override
@@ -285,7 +309,7 @@ public class FigMessage extends FigEdgeModelElement {
     @Override
     public void translate(int dx, int dy) {
         if (isSelfMessage()) {
-            ((FigMessageSpline)getFig()).translateFig(dx, dy);
+            ((FigMessageSpline) getFig()).translateFig(dx, dy);
         }        
         super.translate(dx, dy);
     }

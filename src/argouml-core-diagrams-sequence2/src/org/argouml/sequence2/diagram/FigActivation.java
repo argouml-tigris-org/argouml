@@ -24,30 +24,34 @@
 
 package org.argouml.sequence2.diagram;
 
-import org.tigris.gef.presentation.FigGroup;
+import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.presentation.FigRect;
 
 /**
- *
+ * TODO: Document!
+ * 
  * @author penyaskito
  */
-class FigActivation extends FigGroup {
-
-    
-    private FigRect rectFig;
-    private FigDestroy destroyFig;
+class FigActivation extends ArgoFigGroup {
     
     static final int DEFAULT_HEIGHT = 40;
     static final int DEFAULT_WIDTH = 20;
     
+    private FigRect rectFig;
+    private FigDestroy destroyFig;
+
+    
     /**
+     * TODO: Document!
+     * 
      * @param x
      * @param y
      * @param destroy 
      */
     public FigActivation(int x, int y, boolean destroy) {
         rectFig = new FigRect(x - DEFAULT_WIDTH / 2, y,
-                DEFAULT_WIDTH, DEFAULT_HEIGHT);
+                DEFAULT_WIDTH, DEFAULT_HEIGHT, LINE_COLOR, FILL_COLOR);
+        rectFig.setLineWidth(LINE_WIDTH);
         addFig(rectFig);
         setDestroy(destroy);
     }

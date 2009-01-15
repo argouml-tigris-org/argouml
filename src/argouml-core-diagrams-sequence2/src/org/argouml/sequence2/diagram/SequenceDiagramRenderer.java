@@ -91,7 +91,7 @@ class SequenceDiagramRenderer extends UmlDiagramRenderer {
         if (edge instanceof CommentEdge) {
             figEdge = new FigEdgeNote(edge, lay);
         } else if (Model.getFacade().isAMessage(edge)) {
-            figEdge = new FigMessage(edge);
+            figEdge = new FigMessage(edge, settings);
         } else {
             figEdge = getFigEdgeFor(edge, styleAttributes);
         }       

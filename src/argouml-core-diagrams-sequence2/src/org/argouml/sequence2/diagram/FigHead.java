@@ -24,6 +24,7 @@
 
 package org.argouml.sequence2.diagram;
 
+import java.awt.Color;
 import java.awt.Dimension;
 
 import org.argouml.uml.diagram.ui.ArgoFigGroup;
@@ -43,17 +44,23 @@ class FigHead extends ArgoFigGroup  {
     /**
      * Constructor.
      *
-     * @param stereotypeFigure
-     * @param nameFigure
+     * @param stereotypeFigure the stereotype fig
+     * @param nameFigure the name fig
      */
+    // TODO: Define a constructor which doesn't use deprecated super constructor
     FigHead(Fig stereotypeFigure, FigText nameFigure) {
         this.stereotypeFig = stereotypeFigure;
         this.nameFig = nameFigure;
+        
+        nameFig.setFilled(false);
+        nameFig.setLineWidth(0);
+        
         rectFig =
             new FigRect(0, 0,
                 DEFAULT_WIDTH,
                 DEFAULT_HEIGHT,
                 LINE_COLOR, FILL_COLOR);
+        rectFig.setLineWidth(LINE_WIDTH);
         addFig(rectFig);
         addFig(nameFig);
         addFig(stereotypeFig);
@@ -76,9 +83,7 @@ class FigHead extends ArgoFigGroup  {
                     stereotypeFig.getMinimumSize().height);
             yy += stereotypeFig.getMinimumSize().height;
         }
-        nameFig.setFilled(false);
-        nameFig.setLineWidth(0);
-        nameFig.setTextColor(TEXT_COLOR);
+
         nameFig.setBounds(x, yy, w, nameFig.getHeight());
         _x = x;
         _y = y;
@@ -93,9 +98,11 @@ class FigHead extends ArgoFigGroup  {
     
     int getMinimumHeight() {
         int h = stereotypeFig.getMinimumSize().height
+        // TODO: Move the magic number 4 to a descriptive constant
             + nameFig.getMinimumHeight() + 4;
-        if (h < DEFAULT_HEIGHT)
+        if (h < DEFAULT_HEIGHT) {
             h = DEFAULT_HEIGHT;
+        }
         return h;
     }
     
@@ -118,5 +125,13 @@ class FigHead extends ArgoFigGroup  {
     @Override
     public void setLineWidth(int w) {
         rectFig.setLineWidth(w);
+    }
+    
+    public void setFillColor(Color c) {
+        rectFig.setFillColor(c);
+    }
+    
+    public void setLineColor(Color c) {
+        rectFig.setLineColor(c);
     }
 }

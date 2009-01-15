@@ -59,7 +59,7 @@ class FigLifeLine extends ArgoFigGroup {
      */
     FigLifeLine(int x, int y) {
         super();
-       
+
         activations = new LinkedList<FigActivation>();
         stackedActivations = new LinkedList<FigActivation>();
         
@@ -68,7 +68,8 @@ class FigLifeLine extends ArgoFigGroup {
         rectFig.setLineWidth(0);
         lineFig = new FigLine(x + WIDTH / 2, y, 
                 x + WIDTH / 2, y + HEIGHT, LINE_COLOR);
-        lineFig.setDashed(true);       
+        lineFig.setDashed(true);
+        lineFig.setLineWidth(LINE_WIDTH);
         
         addFig(rectFig);
         addFig(lineFig);
@@ -83,15 +84,9 @@ class FigLifeLine extends ArgoFigGroup {
         stackedActivations = createStackedActivations(messages);
         
         for (FigActivation figAct : activations) {
-            // TODO: shouldn't this be done in creation, and
-            // with the info from DiagramSettings?
-            figAct.setFillColor(getFillColor());
             addFig(figAct);
         }
         for (FigActivation figAct : stackedActivations) {
-            // TODO: shouldn't this be done in creation, and
-            // with the info from DiagramSettings?
-            figAct.setFillColor(getFillColor());
             addFig(figAct);
         }       
         calcBounds();
@@ -275,5 +270,13 @@ class FigLifeLine extends ArgoFigGroup {
         damage();        
         calcBounds();        
         firePropChange("bounds", oldBounds, getBounds());
+    }
+    
+    public int getLineWidth() {
+        return lineFig.getLineWidth();
+    }
+    
+    public void setLineWidth(int w) {
+        lineFig.setLineWidth(w);
     }
 }

@@ -34,6 +34,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
@@ -48,11 +49,7 @@ import org.tigris.gef.presentation.FigRect;
  */
 public class FigClassifierRole extends FigNodeModelElement {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(FigClassifierRole.class);
+    private static final Logger LOG = Logger.getLogger(FigClassifierRole.class);
 
     /**
      * This is an empty rectangle placed above HeadFig. It creates a space
@@ -81,24 +78,63 @@ public class FigClassifierRole extends FigNodeModelElement {
     
     /**
      * Constructor 
+     * @deprecated for 0.28.alpha3 by penyaskito. Use
+     *           {@link #FigClassifierRole(Object, Rectangle, DiagramSettings)}.
      */
     public FigClassifierRole() {
         super();
+        initialize();
+    }
+
+    /**
+     * Constructor.
+     * @param node The model element
+     * @deprecated for 0.28.alpha3 by penyaskito. Use
+     *           {@link #FigClassifierRole(Object, Rectangle, DiagramSettings)}.
+
+     */
+    public FigClassifierRole(Object node) {
+        this();
+        setOwner(node);
+    }
+    
+    /**
+     * Construct a use case figure with the given owner, bounds, and rendering 
+     * settings.  This constructor is used by the PGML parser.
+     * 
+     * @param owner owning model element
+     * @param bounds position and size
+     * @param settings rendering settings
+     */
+    public FigClassifierRole(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initialize();
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
+    }
+    
+    /**
+     * Initialization which is common to multiple constructors.
+     */
+    private void initialize() {
         setBigPort(new FigClassifierRolePort());
         
         emptyFig = new FigEmptyRect(getX(), getY(), getWidth(), offset);
+        emptyFig.setLineWidth(0);
         
         headFig = new FigHead(getStereotypeFig(), getNameFig());
         headFig.setBounds(getX(), getY() + offset,
                 getWidth(), headFig.getHeight());
+        
         lifeLineFig = new FigLifeLine(headFig.getX(), 
-                getY() + offset + headFig.getHeight());
+                getY() + offset + headFig.getHeight() - getLineWidth());
         
         addFig(getBigPort());        
         getBigPort().setVisible(false);
-        
-        emptyFig.setLineWidth(0);
-        
+
+        // TODO: Move magic number 10 to descriptive constant
         minimumHeight = headFig.getMinimumHeight() + 10;
         
         addFig(emptyFig);        
@@ -106,15 +142,6 @@ public class FigClassifierRole extends FigNodeModelElement {
         addFig(headFig);
         
         createActivations();
-    }
-
-    /**
-     * Constructor.
-     * @param node The model element
-     */
-    public FigClassifierRole(Object node) {
-        this();
-        setOwner(node);
     }
 
     /**
@@ -130,7 +157,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * See ClassifierRoleNotationUml for details.<p>
      *
      * This syntax is compatible with the UML 1.4 specification.
-     * 
+     * @return TYPE_CLASSIFIERROLE
      */
     @Override
     protected int getNotationProviderType() {
@@ -147,7 +174,8 @@ public class FigClassifierRole extends FigNodeModelElement {
         
         emptyFig.setBounds(x, y, ww, offset);
         headFig.setBounds(x, y + offset, ww, headFig.getMinimumHeight());
-        lifeLineFig.setBounds(x, y + offset + headFig.getHeight(),
+        lifeLineFig.setBounds(x, 
+                y + offset + headFig.getHeight() - lifeLineFig.getLineWidth(), 
                 ww, h - offset - headFig.getHeight());
         getBigPort().setBounds(x, y, ww, h);
 
@@ -164,6 +192,8 @@ public class FigClassifierRole extends FigNodeModelElement {
      */
     public void superTranslate(int dx, int dy) {
         setBounds(getX() + dx, getY(), getWidth(), getHeight());
+        // TODO: Wouldn't the following be simpler?
+//        super.superTranslate(dx, 0);
     }
      
     /**
@@ -200,13 +230,17 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
     
     /**
-     * Gets the minimum size of the Fig<br>
+     * Gets the minimum size of the Fig.<p>
+     * 
      * The width is restricted by the notation making sure that the full
-     * classifier role description is displayed.<br>
+     * classifier role description is displayed.<p>
+     * 
      * The minimum height is restricted so that the all attached message will
      * remain in the same position relative to the Fig. If no messages are
      * attached then the minimum height will ensure box is shown plus at least
      * 10 pixels of the lifeline.
+     * 
+     * @return dimensions of the minimum size
      */
     public Dimension getMinimumSize() {       
          /**
@@ -235,6 +269,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         // TODO: Is this next line safe? What happens if there is just one
         // comment edge or a comment edge and a single message?
         if (figsEdges.size() == 1 && createMessage != null) {
+            // TODO: Move magic number 10 to descriptive constant
             minimumHeight = headFig.getMinimumSize().height + offset + 10;
         } else {
             for (Fig fig : figsEdges) {
@@ -246,6 +281,7 @@ public class FigClassifierRole extends FigNodeModelElement {
                     yMax = ((FigMessage) fig).getY();
                 }
             }
+            // TODO: Move magic number 10 to descriptive constant
             minimumHeight = yMax - getY() + 10;
         }
     }
