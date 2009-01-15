@@ -117,6 +117,8 @@ public abstract class FigState extends FigStateVertex {
     }
 
     private void initializeState() {
+        // TODO: Get rid of magic numbers!  Figure out which represent line
+        // widths vs padding vs offsets
         setBigPort(new FigRRect(getInitialX() + 1, getInitialY() + 1,
                 getInitialWidth() - 2, getInitialHeight() - 2,
                 DEBUG_COLOR, DEBUG_COLOR));
@@ -128,9 +130,10 @@ public abstract class FigState extends FigStateVertex {
 
         internal =
             new FigText(getInitialX() + 2,
-                    getInitialY() + 2 + 21 + 4,
+                    getInitialY() + 2 + NAME_FIG_HEIGHT + 4,
                     getInitialWidth() - 4,
-                    getInitialHeight() - (getInitialY() + 2 + 21 + 4));
+                    getInitialHeight() 
+                    - (getInitialY() + 2 + NAME_FIG_HEIGHT + 4));
         internal.setFont(getSettings().getFont(Font.PLAIN));
         internal.setTextColor(TEXT_COLOR);
         internal.setLineWidth(0);

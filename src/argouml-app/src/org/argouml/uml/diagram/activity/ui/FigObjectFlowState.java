@@ -86,7 +86,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     private static final int PADDING = 8;
     private static final int WIDTH = 70;
     private static final int HEIGHT = 50;
-    private static final int STATE_HEIGHT = 21;
+    private static final int STATE_HEIGHT = NAME_FIG_HEIGHT;
 
     private NotationProvider notationProviderType;
     private NotationProvider notationProviderState;

@@ -81,7 +81,8 @@ public class FigNodeAssociation extends FigNodeModelElement {
 //      The following does not seem to work - centered the Fig instead.
 //        getNameFig().setJustificationByName("center");
 
-        getStereotypeFig().setBounds(X + 10, Y + 22, 0, 21);
+        getStereotypeFig().setBounds(X + 10, Y + NAME_FIG_HEIGHT + 1, 
+                0, NAME_FIG_HEIGHT);
         getStereotypeFig().setFilled(false);
         getStereotypeFig().setLineWidth(0);
 
@@ -292,7 +293,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
         getNameFig().setBounds(x + (w - nm.width) / 2, 
                 y + h / 2 - nm.height / 2, 
                 nm.width, nm.height);
-        
+        // TODO: Replace magic numbers with constants
         if (getStereotypeFig().isVisible()) {
             /* TODO: Test this. */
             getStereotypeFig().setBounds(x, y + h / 2 - 20, w, 15);

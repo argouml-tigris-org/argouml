@@ -47,7 +47,7 @@ import org.tigris.gef.presentation.FigText;
 
 public class FigSubmachineState extends FigState {
 
-    private static final int INCLUDE_HEIGHT = 21;
+    private static final int INCLUDE_HEIGHT = NAME_FIG_HEIGHT;
     private static final int WIDTH = 90;
     
     private FigRect cover;
