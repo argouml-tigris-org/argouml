@@ -144,10 +144,7 @@ public class DiagramSettings {
      * defaulted. <p>
      */
     public DiagramSettings() {
-        super();
-        notationSettings = new NotationSettings();
-        recomputeFonts();
-        parent = null;
+        this(null);
     }
     
     
@@ -159,10 +156,14 @@ public class DiagramSettings {
      * overridden.
      */
     public DiagramSettings(DiagramSettings parentSettings) {
-        this();
+        super();
         parent = parentSettings;
-        // We just created one of these and now we're throwing it away, oh well
-        notationSettings = new NotationSettings(getNotationSettings());
+        if (parentSettings == null) {
+            notationSettings = new NotationSettings();
+        } else {
+            notationSettings = new NotationSettings(getNotationSettings());
+        }
+        recomputeFonts();
     }
 
     
@@ -412,17 +413,21 @@ public class DiagramSettings {
     }
 
     private void recomputeFonts() {
-        String name = getFontName();
-        int size = getFontSize();
-//        if (size == 0) {
-//            size = 10;
-//        }
-        
-        if (name != null && !"".equals(name) && size > 0) {
+        // If we've got a local (uninherited) font name or size or if we've got
+        // no parent to inherit from recompute our cached fonts
+        if ((fontName != null && !"".equals(fontName) && fontSize != null)
+                || parent == null) {
+            String name = getFontName();
+            int size = getFontSize();
             fontPlain = new Font(name, Font.PLAIN, size);
             fontItalic = new Font(name, Font.ITALIC, size);
             fontBold = new Font(name, Font.BOLD, size);
             fontBoldItalic = new Font(name, Font.BOLD | Font.ITALIC, size);
+        } else {
+            fontPlain = null;
+            fontItalic = null;
+            fontBold = null;
+            fontBoldItalic = null;
         }
     }
 
@@ -433,6 +438,9 @@ public class DiagramSettings {
      * @return plain diagram font
      */
     public Font getFontPlain() {
+        if (fontPlain == null) {
+            return parent.getFontPlain();
+        }
         return fontPlain;
     }
 
@@ -443,6 +451,9 @@ public class DiagramSettings {
      * @return italic diagram font
      */
     public Font getFontItalic() {
+        if (fontItalic == null) {
+            return parent.getFontItalic();
+        }
         return fontItalic;
     }
 
@@ -453,6 +464,9 @@ public class DiagramSettings {
      * @return bold diagram font
      */
     public Font getFontBold() {
+        if (fontBold == null) {
+            return parent.getFontBold();
+        }
         return fontBold;
     }
 
@@ -463,6 +477,9 @@ public class DiagramSettings {
      * @return bold-italic diagram font
      */
     public Font getFontBoldItalic() {
+        if (fontBoldItalic == null) {
+            return parent.getFontBoldItalic();
+        }
         return fontBoldItalic;
     }
 
@@ -475,15 +492,15 @@ public class DiagramSettings {
     public Font getFont(int fontStyle) {
         if ((fontStyle & Font.ITALIC) != 0) {
             if ((fontStyle & Font.BOLD) != 0) {
-                return fontBoldItalic;
+                return getFontBoldItalic();
             } else {
-                return fontItalic;
+                return getFontItalic();
             }
         } else {
             if ((fontStyle & Font.BOLD) != 0) {
-                return fontBold;
+                return getFontBold();
             } else {
-                return fontPlain;
+                return getFontPlain();
             }
         }
     }
