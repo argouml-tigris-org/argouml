@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
 import org.argouml.uml.diagram.ui.PathItemPlacement;
@@ -49,13 +50,21 @@ public class FigLink extends FigEdgeModelElement {
     /*
      * Text group to contain name & stereotype
      */
-    private FigTextGroup middleGroup = new FigTextGroup(); 
+    private FigTextGroup middleGroup; 
 
     /**
      * Constructor.
+     * 
+     * @deprecated for 0.28 by tfmorris. Use
+     *             {@link #FigLink(Object, DiagramSettings)}.
      */
     @Deprecated
     public FigLink() {
+        middleGroup = new FigTextGroup();
+        initialize();
+    }
+
+    private void initialize() {
         middleGroup.addFig(getNameFig());
         addPathItem(middleGroup,
                 new PathItemPlacement(this, middleGroup, 50, 25));
@@ -68,10 +77,26 @@ public class FigLink extends FigEdgeModelElement {
      * Constructor that hooks the Fig to a UML element.
      *
      * @param edge the UML element
+     * 
+     * @deprecated for 0.28 by tfmorris. Use
+     *             {@link #FigLink(Object, DiagramSettings)}.
      */
+    @Deprecated
     public FigLink(Object edge) {
-	this();
-	setOwner(edge);
+        this();
+        setOwner(edge);
+    }
+    
+    /**
+     * Create a Fig representing a Link
+     * 
+     * @param element owning UML element
+     * @param settings render settings
+     */
+    public FigLink(Object element, DiagramSettings settings) {
+        super(element, settings);
+        middleGroup = new FigTextGroup(element, settings);
+        initialize();
     }
 
     /*

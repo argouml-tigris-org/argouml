@@ -125,7 +125,7 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             asend.setDestFigNode(classifierFN);
             newEdge = asend;
         } else if (Model.getFacade().isALink(edge)) {
-            FigLink lnkFig = new FigLink(edge);
+            FigLink lnkFig = new FigLink(edge, settings);
             Collection linkEnds = Model.getFacade().getConnections(edge);
             Object[] leArray = linkEnds.toArray();
             Object fromEnd = leArray[0];

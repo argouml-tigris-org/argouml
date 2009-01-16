@@ -173,9 +173,8 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         } else if (Model.getFacade().isAAssociation(edge)) {
             newEdge = new FigAssociation(edge, settings);
         } else if (Model.getFacade().isALink(edge)) {
-            Object lnk = edge;
-            FigLink lnkFig = new FigLink(lnk);
-            Collection linkEndsColn = Model.getFacade().getConnections(lnk);
+            FigLink lnkFig = new FigLink(edge, settings);
+            Collection linkEndsColn = Model.getFacade().getConnections(edge);
 
             Object[] linkEnds = linkEndsColn.toArray();
             Object fromInst = Model.getFacade().getInstance(linkEnds[0]);
