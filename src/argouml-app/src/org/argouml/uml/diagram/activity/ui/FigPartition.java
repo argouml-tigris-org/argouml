@@ -34,7 +34,6 @@ import java.util.List;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -289,7 +288,7 @@ public class FigPartition extends FigNodeModelElement {
                 getOwner(), activityGraph);
 	
 	if (partitions.size() == 1) {
-	    FigPool fp = new FigPool(getBounds());
+	    FigPool fp = new FigPool(getOwner(), getBounds(), getSettings());
 	    getLayer().add(fp);
 	    getLayer().bringToFront(this);
 	} else if (partitions.size() > 1) {

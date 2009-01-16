@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2008 The Regents of the University of California. All
+// Copyright (c) 2003-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,13 +45,21 @@ public class FigPool extends FigNodeModelElement {
 
     /**
      * Constructor.
+     * 
      * @param r the bounds for the pool
+     * @deprecated for 0.28 by tfmorris. Use
+     *             {@link #FigPool(Object, Rectangle, DiagramSettings)}.
      */
+    @Deprecated
     public FigPool(Rectangle r) {
+        initialize(r);
+    }
+
+    private void initialize(Rectangle r) {
         setBigPort(new FigEmptyRect(r.x, r.y, r.width, r.height));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
-        
+
         addFig(getBigPort());
 
         setBounds(r);
@@ -60,14 +68,13 @@ public class FigPool extends FigNodeModelElement {
     /**
      * Constructor used by PGML parser when loading.
      * 
-     * @param owner ignored
+     * @param owner owning UML element
      * @param bounds bounding box rectangle
-     * @param settings diagram settings (unused)
+     * @param settings (ignored since this is just an empty rectangle)
      */
-    public FigPool(@SuppressWarnings("unused") Object owner, 
-            Rectangle bounds, 
-            @SuppressWarnings("unused") DiagramSettings settings) {
-        this(bounds);
+    public FigPool(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initialize(bounds);
     }
 
 
@@ -177,7 +184,7 @@ public class FigPool extends FigNodeModelElement {
      */
     @Override
     public boolean isSelectable() {
-	return false;
+        return false;
     }
 
 }
