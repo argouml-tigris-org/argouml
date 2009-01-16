@@ -141,8 +141,7 @@ height="<ocl>self.height.intValue</ocl>"
 
 <![CDATA[
 
-<argouml:pathitem figname="<ocl>org.argouml.persistence.PgmlUtility.getId(self.pathFig)</ocl>"
-                  classname="<ocl>self.class.name</ocl>"
+<argouml:pathitem classname="<ocl>self.class.name</ocl>"
                   ownerhref="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self.pathFig)</ocl>" />
 
 ]]>
@@ -159,7 +158,7 @@ height="<ocl>self.height.intValue</ocl>"
 <argouml:pathitem figname="<ocl>org.argouml.persistence.PgmlUtility.getId(self.itemFig)</ocl>"
                   classname="<ocl>self.class.name</ocl>"
                   figclassname="<ocl>self.itemFig.class.name</ocl>"
-                  ownerhref="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self.itemFig)</ocl>"
+                  ownerhref="<ocl>org.argouml.uml.UUIDHelper.getUUID(self.itemFig)</ocl>"
                   angle="<ocl>self.angle</ocl>"
                   offset="<ocl>self.vectorOffset</ocl>" />
 
