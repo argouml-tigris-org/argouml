@@ -89,7 +89,6 @@ import org.argouml.util.IItemUID;
 import org.argouml.util.ItemUID;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.persistence.pgml.PgmlUtility;
 import org.tigris.gef.presentation.Fig;
