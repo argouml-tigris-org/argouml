@@ -40,12 +40,12 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.text.Document;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.uml.diagram.DiagramSettings.StereotypeStyle;
 import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.StereotypeStyled;
 import org.argouml.util.ArgoFrame;
 import org.tigris.gef.presentation.Fig;
@@ -64,6 +64,9 @@ public class StylePanelFig
     extends StylePanel
     implements ItemListener,
         FocusListener, KeyListener {
+    
+    private static final Logger LOG = Logger.getLogger(StylePanelFig.class);
+    
     private static final String CUSTOM_ITEM =
         Translator.localize("label.stylepane.custom") + "...";
 
@@ -391,11 +394,18 @@ public class StylePanelFig
                 res.height = 6000 - res.y;
                 changed = true;
             }
-            if (res.x < 0 || res.y < 0 || res.width < 0 || res.height < 0) {
+            if (res.x < 0 || res.y < 0) {
                 // TODO: This exception will be thrown during autoscrolling
                 // when the edge of the canvas is reached causing either
                 // the width or height to be "adjusted" to a negative value
-                throw new IllegalArgumentException();
+                LOG.warn("Part of bounding box is off screen " + res);
+            }
+            if (res.width < 0 || res.height < 0) {
+                // TODO: This exception will be thrown during autoscrolling
+                // when the edge of the canvas is reached causing either
+                // the width or height to be "adjusted" to a negative value
+                throw new IllegalArgumentException(
+                        "Bounding box has negative size " + res);
             }
             if (changed) {
                 StringBuffer sb = new StringBuffer();
