@@ -95,7 +95,7 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
         
 
         if (edge instanceof CommentEdge) {
-            figEdge = new FigEdgeNote(edge, lay);
+            figEdge = new FigEdgeNote(edge, settings);
         } else {
             figEdge = getFigEdgeFor(edge, styleAttributes);
         }

@@ -39,6 +39,10 @@ import org.argouml.model.UUIDManager;
  * The source and destination are ModelElements.
  * At least one of them is a Comment - but they may be both Comments.
  *
+ * TODO: There's tons of special case code scattered around ArgoUML for this
+ * one class since it is the only "owner" of a FigEdgeModelElement which is not
+ * a UML element.  We should find a way to generalize this.<p>
+ * 
  * @since Jul 17, 2004
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -146,9 +150,10 @@ public class CommentEdge extends NotificationBroadcasterSupport {
         if (Model.getFacade().isAComment(source)) {
             Model.getCoreHelper().removeAnnotatedElement(source, dest);
         } else {
-            // not save to presume the destination is the comment
-            if (Model.getFacade().isAComment(dest))
+            // not safe to presume the destination is the comment
+            if (Model.getFacade().isAComment(dest)) {
                 Model.getCoreHelper().removeAnnotatedElement(dest, source);
+            }
         }
         this.sendNotification(new Notification("remove", this, 0));
     }

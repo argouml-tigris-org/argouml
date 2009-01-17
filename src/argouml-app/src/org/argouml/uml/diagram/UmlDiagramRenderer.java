@@ -275,7 +275,7 @@ public abstract class UmlDiagramRenderer
                 newEdge = new FigDependency();
             }
         } else if (edge instanceof CommentEdge) {
-            newEdge = new FigEdgeNote();
+            newEdge = null;
         } else if (Model.getFacade().isAAssociationRole(edge)) {
             newEdge = new FigAssociationRole();
         } else if (Model.getFacade().isATransition(edge)) {

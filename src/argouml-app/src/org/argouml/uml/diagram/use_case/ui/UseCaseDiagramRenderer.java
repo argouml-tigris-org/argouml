@@ -161,7 +161,7 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
         DiagramSettings settings = ((ArgoDiagram) ((LayerPerspective) lay)
                 .getDiagram()).getDiagramSettings();
         
-        FigEdgeModelElement newEdge = null;
+        FigEdge newEdge = null;
 
         if (Model.getFacade().isAAssociation(edge)) {
             newEdge = new FigAssociation(edge, settings);
@@ -226,7 +226,7 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
             newEdge.setDestFigNode(supplierFN);
 
         } else if (edge instanceof CommentEdge) {
-            newEdge = new FigEdgeNote(edge, lay);
+            newEdge = new FigEdgeNote(edge, settings);
         }
 
         if (newEdge == null) {
@@ -240,8 +240,8 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
         lay.add(newEdge);
         newEdge.setLayer(lay);
         
-        newEdge.setDiElement(
-                GraphChangeAdapter.getInstance().createElement(gm, edge));
+//        newEdge.setDiElement(
+//                GraphChangeAdapter.getInstance().createElement(gm, edge));
 
         return newEdge;
     }

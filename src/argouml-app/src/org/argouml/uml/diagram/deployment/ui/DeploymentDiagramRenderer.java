@@ -159,7 +159,7 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
         } else if (Model.getFacade().isAGeneralization(edge)) {
             newEdge = new FigGeneralization(edge, settings);
         } else if (edge instanceof CommentEdge) {
-            newEdge = new FigEdgeNote(edge, lay);
+            newEdge = new FigEdgeNote(edge, settings);
         }
         if (newEdge == null) {
             throw new IllegalArgumentException(

@@ -153,7 +153,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
         DiagramSettings settings = diag.getDiagramSettings();
         
-        FigEdgeModelElement newEdge = null;
+        FigEdge newEdge = null;
         if (Model.getFacade().isAAssociationClass(edge)) {
             newEdge = new FigAssociationClass(edge, settings);
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
@@ -231,7 +231,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
                 newEdge = depFig;
             }
         } else if (edge instanceof CommentEdge) {
-            newEdge = new FigEdgeNote(edge, lay);
+            newEdge = new FigEdgeNote(edge, settings);
         }
 
         if (newEdge == null) {
@@ -244,8 +244,8 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
 
         assert newEdge != null : "There has been no FigEdge created";
 
-        newEdge.setDiElement(
-            GraphChangeAdapter.getInstance().createElement(gm, edge));
+//        newEdge.setDiElement(
+//            GraphChangeAdapter.getInstance().createElement(gm, edge));
 
         assert newEdge != null : "There has been no FigEdge created";
         assert (newEdge.getDestFigNode() != null) 

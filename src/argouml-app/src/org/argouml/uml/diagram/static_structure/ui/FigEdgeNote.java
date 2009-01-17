@@ -24,137 +24,73 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.beans.VetoableChangeListener;
-import javax.swing.Action;
+
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.CommentEdge;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ArgoFig;
+import org.argouml.uml.diagram.ui.ArgoFigUtil;
+import org.argouml.util.IItemUID;
+import org.argouml.util.ItemUID;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdgePoly;
 import org.tigris.gef.presentation.FigNode;
 
-
 /**
- * Class to display a UML note connection to a
- * annotated model element.<p>
- *
- * The owner of this fig is always CommentEdge
- *
+ * Class to display a UML note connection to a annotated model element.
+ * <p>
+ * 
+ * The owner of this fig is always a CommentEdge. Because it is different from
+ * most every other FigEdge in ArgoUML, it doesn't subclass FigEdgeModelElement.
+ * 
  * @author Andreas Rueckert a_rueckert@gmx.net
  * @author jaap.branderhorst@xs4all.nl
  */
-public class FigEdgeNote
-    extends FigEdgeModelElement
-    implements VetoableChangeListener,
-	       DelayedVChangeListener,
-	       MouseListener,
-	       KeyListener,
-	       PropertyChangeListener {
-
-    private static final long serialVersionUID = 7210384676965727564L;
+public class FigEdgeNote extends FigEdgePoly implements ArgoFig, IItemUID,
+        PropertyChangeListener {
 
     private static final Logger LOG = Logger.getLogger(FigEdgeNote.class);
 
-    private CommentEdge owner;
-    
     private Object comment;
     private Object annotatedElement;
 
+    private DiagramSettings settings;
+
+    private ItemUID itemUid;
+    
     /**
-     * Construct a new note connection. Use the same layout as for
-     * other edges.
-     * @deprecated only for use by PGML parser
+     * @param element owning CommentEdge object. This is a special case since it
+     *            is not a UML element.
+     * @param theSettings render settings
      */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigEdgeNote() {
+    public FigEdgeNote(Object element, DiagramSettings theSettings) {
+        // element will normally be null when called from PGML parser
+        // It will get it's source & destination set later in attachEdges
         super();
-        LOG.info("Constructing a FigEdgeNote");
+        settings = theSettings;
+
+        if (element != null) {
+            setOwner(element);
+        } else {
+            setOwner(new CommentEdge());
+        }
+        
         setBetweenNearestPoints(true);
+        getFig().setLineWidth(LINE_WIDTH);
         getFig().setDashed(true);
-        allowRemoveFromDiagram(false);
+        
+        // Unfortunately the Fig and it's associated CommentEdge will not be
+        // fully initialized yet here if we're being loaded from a PGML file.
+        // The remainder of the initialization will happen when 
+        // set{Dest|Source}FigNode are called from PGMLStackParser.attachEdges()
     }
-
-    /**
-     * Constructor that hooks the Fig to a CommentEdge.
-     *
-     * TODO: What do we need to do about this constructor?  It's different
-     * from all the rest.
-     * 
-     * @param commentEdge the CommentEdge
-     * @param theLayer the layer (ignored)
-     * @deprecated for 0.27.4 by tfmorris.  Need to define replacement...
-     */
-    @Deprecated
-    public FigEdgeNote(Object commentEdge, Layer theLayer) {
-        this();
-
-        if (!(theLayer instanceof LayerPerspectiveMutable)) {
-            throw new IllegalArgumentException(
-                    "The layer must be a mutable perspective. Got "
-                    + theLayer);
-        }
-
-        if (!(commentEdge instanceof CommentEdge)) {
-            throw new IllegalArgumentException(
-                    "The owner must be a CommentEdge. Got " + commentEdge);
-        }
-
-        Object fromNode = ((CommentEdge) commentEdge).getSource();
-        if (!(Model.getFacade().isAModelElement(fromNode))) {
-            throw new IllegalArgumentException(
-                    "The given comment edge must start at a model element. "
-                    + "Got " + fromNode);
-        }
-
-        Object toNode = ((CommentEdge) commentEdge).getDestination();
-        if (!(Model.getFacade().isAModelElement(toNode))) {
-            throw new IllegalArgumentException(
-                    "The given comment edge must end at a model element. Got "
-                    + toNode);
-        }
-
-        Fig destFig = theLayer.presentationFor(toNode);
-        if (destFig instanceof FigEdgeModelElement) {
-            destFig = ((FigEdgeModelElement) destFig).getEdgePort();
-        }
-        if (!(destFig instanceof FigNodeModelElement)) {
-            throw new IllegalArgumentException(
-                    "The given comment edge must end at a model element"
-                    + " in the given layer.");
-        }
-
-        Fig sourceFig = theLayer.presentationFor(fromNode);
-        if (sourceFig instanceof FigEdgeModelElement) {
-            sourceFig = ((FigEdgeModelElement) sourceFig).getEdgePort();
-        }
-        if (!(sourceFig instanceof FigNodeModelElement)) {
-            throw new IllegalArgumentException(
-                    "The given comment edge must start at a model element "
-                    + "in the given layer.");
-        }
-
-        setLayer(theLayer);
-        setDestFigNode((FigNode) destFig);
-        setDestPortFig(destFig);
-        setSourceFigNode((FigNode) sourceFig);
-        setSourcePortFig(sourceFig);
-        computeRoute();
-
-        setOwner(commentEdge);
-    }
-
 
     /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
@@ -164,14 +100,8 @@ public class FigEdgeNote
         LOG.info("Setting the internal fig to " + f);
         super.setFig(f);
         getFig().setDashed(true);
-        //throw new IllegalArgumentException();
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
-     */
-    @Override
-    protected boolean canEdit(Fig f) { return false; }
 
     /*
      * @see java.lang.Object#toString()
@@ -187,7 +117,6 @@ public class FigEdgeNote
      * and this FigEdgeNote.
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    @Override
     protected void modelChanged(PropertyChangeEvent e) {
         if (e instanceof RemoveAssociationEvent
                 && e.getOldValue() == annotatedElement) {
@@ -203,80 +132,7 @@ public class FigEdgeNote
         return "Comment Edge"; // TODO: get tip string from comment
     }
 
-    
-    /*
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    @Deprecated
-    public void setOwner(Object newOwner) {
-        if (newOwner == null) {
-            // hack to avoid loading problems since we cannot store
-            // the whole model yet in XMI
-            newOwner = new CommentEdge(comment, annotatedElement);
-        }
-        owner = (CommentEdge) newOwner;
-    }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getOwner()
-     */
-    @Override
-    public Object getOwner() {
-        if (owner == null) {
-            // hack to avoid loading problems since we cannot store
-            // the whole model yet in XMI
-            owner = new CommentEdge();
-        }
-        return owner;
-    }
-
-    /**
-     * Overrides the standard method to return null. A note edge
-     * cannot have a stereotype.
-     *
-     * @return empty array of actions.
-     */
-    @Override
-    protected final Action[] getApplyStereotypeActions() {
-        return new Action[0];
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#postLoad()
-     */
-    @Override
-    public void postLoad() {
-        super.postLoad();
-        // TODO: Why is a Fig modifying the underlying model?!?!
-//        CommentEdge o = (CommentEdge) getOwner();
-//        o.setDestination(getDestFigNode().getOwner());
-//        o.setSource(getSourceFigNode().getOwner());
-    }
-    
-    /**
-     * generate the notation for the modelelement and stuff it into the text Fig
-     */
-    @Override
-    protected void updateNameText() {
-        return;
-    }
-    
-    /**
-     * generate the notation for the stereotype and stuff it into the text Fig
-     */
-    @Override
-    protected void updateStereotypeText() {
-        return;
-    }
-    
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object)
-     */
-    @Override
-    protected void updateListeners(Object oldOwner, Object newOwner) {
-        // no listeners to update
-    }
-    
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
@@ -285,15 +141,22 @@ public class FigEdgeNote
         modelChanged(pve);
     }
 
-    
+ 
+
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     @Override
-    public void removeFromDiagramImpl() {
-        superRemoveFromDiagram();
+    public final void removeFromDiagram() {
+        Object o = getOwner();
+        if (o != null) {
+            removeElementListener(o);
+        }
+
+        super.removeFromDiagram();
+        damage();
     }
-    
+ 
 
     /**
      * Returns the source of the edge. The source is the owner of the
@@ -301,7 +164,6 @@ public class FigEdgeNote
      * instance: for a classifierrole, this is the sender.
      * @return MModelElement
      */
-    @Override
     protected Object getSource() {
         Object theOwner = getOwner();
         if (theOwner != null) {
@@ -316,7 +178,6 @@ public class FigEdgeNote
      * receiver.
      * @return Object
      */
-    @Override
     protected Object getDestination() {
         Object theOwner = getOwner();
         if (theOwner != null) {
@@ -330,6 +191,8 @@ public class FigEdgeNote
      */
     @Override
     public void setDestFigNode(FigNode fn) {
+        // When this is called from PGMLStackParser.attachEdges, we finished
+        // the initialization of owning pseudo element (CommentEdge)
         if (fn != null && Model.getFacade().isAComment(fn.getOwner())) {
             Object oldComment = comment;
             if (oldComment != null) {
@@ -355,6 +218,8 @@ public class FigEdgeNote
      */
     @Override
     public void setSourceFigNode(FigNode fn) {
+        // When this is called from PGMLStackParser.attachEdges, we finished
+        // the initialization of owning pseudo element (CommentEdge)
         if (fn != null && Model.getFacade().isAComment(fn.getOwner())) {
             Object oldComment = comment;
             if (oldComment != null) {
@@ -371,5 +236,53 @@ public class FigEdgeNote
             ((CommentEdge) getOwner()).setAnnotatedElement(annotatedElement);
         }
         super.setSourceFigNode(fn);
+    }
+    
+    private void addElementListener(Object element) {
+        Model.getPump().addModelEventListener(this, element);
+    }
+    
+    private void removeElementListener(Object element) {
+        Model.getPump().removeModelEventListener(this, element);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public Project getProject() {
+        return ArgoFigUtil.getProject(this);
+    }
+
+    public DiagramSettings getSettings() {
+        return settings;
+    }
+
+    public void renderingChanged() {
+  
+    }
+
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public void setProject(Project project) {
+        // unimplemented
+    }
+
+    public void setSettings(DiagramSettings theSettings) {
+        settings = theSettings;
+    }
+
+    /**
+     * Setter for the UID
+     * @param newId the new UID
+     */
+    public void setItemUID(ItemUID newId) {
+        itemUid = newId;
+    }
+
+    /**
+     * Getter for the UID
+     * @return the UID
+     */
+    public ItemUID getItemUID() {
+        return itemUid;
     }
 } 

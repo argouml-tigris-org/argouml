@@ -58,7 +58,8 @@ import org.argouml.uml.diagram.state.ui.FigJoinState;
 import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
 import org.argouml.uml.diagram.state.ui.FigTransition;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -67,7 +68,6 @@ import org.argouml.uml.diagram.use_case.ui.FigExtend;
 import org.argouml.uml.diagram.use_case.ui.FigInclude;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
-import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.util.ItemUID;
 
 
@@ -190,21 +190,17 @@ public class TestItemUID extends TestCase {
         //FigState figstate = new FigState();
         FigTransition figtransition = new FigTransition();
         
-        // TODO: Someone apparently disabled this test rather than fixing it!
-//        Object clazz = Model.getCoreFactory().createClass();
-//        FigClass figclass = new FigClass(clazz, bounds, settings);
-//        checkAssignIDToObject(figclass, true, true);
-//        Model.getUmlFactory().delete(clazz);
+        Object clazz = Model.getCoreFactory().createClass();
+        FigClass figclass = new FigClass(clazz, bounds, settings);
+        checkAssignIDToObject(figclass, true, true);
+        Model.getUmlFactory().delete(clazz);
 
-        FigEdgeNote figedgenote = new FigEdgeNote();
-        checkAssignIDToObject(figedgenote, true, true);
-//      Model.getUmlFactory().delete(clazz);
+        // FigEdgeNote has no UUID
         
-        // TODO: Someone apparently disabled this test rather than fixing it!
-//        Object iface = Model.getCoreFactory().createInterface();
-//        FigInterface figinterface = new FigInterface(iface, bounds, settings);
-//        checkAssignIDToObject(figinterface, true, true);
-//        Model.getUmlFactory().delete(iface);
+        Object iface = Model.getCoreFactory().createInterface();
+        FigInterface figinterface = new FigInterface(iface, bounds, settings);
+        checkAssignIDToObject(figinterface, true, true);
+        Model.getUmlFactory().delete(iface);
 
         Object link = Model.getCommonBehaviorFactory().createLink();
         FigLink figlink = new FigLink();
@@ -215,7 +211,6 @@ public class TestItemUID extends TestCase {
         FigPackage figpackage = new FigPackage(pkg, bounds, settings);
         checkAssignIDToObject(figpackage, true, true);
         Model.getUmlFactory().delete(pkg);
-
 
 
         checkAssignIDToObject(figactionstate, true, true);

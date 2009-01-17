@@ -117,7 +117,7 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
         if (Model.getFacade().isATransition(edge)) {
             newEdge = new FigTransition(edge, settings);
         } else if (edge instanceof CommentEdge) {
-            newEdge = new FigEdgeNote(edge, lay); // TODO -> settings
+            newEdge = new FigEdgeNote(edge, settings); // TODO -> settings
         } 
         if (newEdge == null) {
             LOG.debug("TODO: StateDiagramRenderer getFigEdgeFor");
