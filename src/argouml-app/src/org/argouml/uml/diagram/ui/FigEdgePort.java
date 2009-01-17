@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Rectangle;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigEdge;
@@ -50,15 +51,33 @@ public class FigEdgePort extends FigNodeModelElement {
 
     /**
      * Constructor.
+     * 
+     * @deprecated for 0.28 by tfmorris. Use
+     *             {@link #FigEdgePort(Object, Rectangle, DiagramSettings)}.
      */
     @Deprecated
     public FigEdgePort() {
         super();
+        initialize();
+    }
+
+    private void initialize() {
         invisibleAllowed = true;
         bigPort = new FigCircle(0, 0, 1, 1, LINE_COLOR, FILL_COLOR);
         addFig(bigPort);
     }
 
+    /**
+     * @param owner owning uml element
+     * @param bounds ignored
+     * @param settings ignored
+     */
+    public FigEdgePort(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        initialize();
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#hit(java.awt.Rectangle)
      */
