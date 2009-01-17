@@ -157,7 +157,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         }
         
         try {
-            LOG.info("Loading to extent '" + extentName + "'");
+            LOG.info("Loading to extent '" + extentName + "' " + extent);
 
             InputConfig config = new InputConfig();
             config.setUnknownElementsListener(this);
