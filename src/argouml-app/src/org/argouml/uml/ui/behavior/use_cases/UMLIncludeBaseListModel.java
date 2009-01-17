@@ -25,37 +25,26 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- *
+ * List model to hold use cases of an includes bases.
+ * 
  * @author MarkusK
- *
  */
-public class UMLIncludeBaseListModel extends UMLModelElementListModel2 {
+public class UMLIncludeBaseListModel extends UMLIncludeListModel {
 
+    /**
+     * Constructor for UMLIncludeBaseListModel.
+     */
     public UMLIncludeBaseListModel() {
         super("base");
-        Model.getPump().addClassModelEventListener(this,
-                Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (!isEmpty())
-            removeAllElements();
+        super.buildModelList();
         addElement(Model.getFacade().getBase(getTarget()));
     }
-
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
-     */
-    protected boolean isValidElement(Object element) {
-        return Model.getFacade().isAUseCase(element)
-            && Model.getFacade().getNamespace(element)
-                == Model.getFacade().getNamespace(getTarget());
-    }
-
 }

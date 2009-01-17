@@ -25,42 +25,26 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- *
+ * List model to hold use cases of an includes additions.
+ * 
  * @author MarkusK
- *
  */
-public class UMLIncludeAdditionListModel extends UMLModelElementListModel2 {
+public class UMLIncludeAdditionListModel extends UMLIncludeListModel {
 
     /**
-     * Constructor for UMLIncludeAdditionComboBoxModel.
+     * Constructor for UMLIncludeAdditionListModel.
      */
     public UMLIncludeAdditionListModel() {
         super("addition");
-        Model.getPump().addClassModelEventListener(this,
-                Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (!isEmpty())
-            removeAllElements();
+        super.buildModelList();
         addElement(Model.getFacade().getAddition(getTarget()));
     }
-
-
-
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
-     */
-    protected boolean isValidElement(Object element) {
-        return Model.getFacade().isAUseCase(element)
-            && Model.getFacade().getNamespace(getTarget())
-                == Model.getFacade().getNamespace(element);
-    }
-
 }
