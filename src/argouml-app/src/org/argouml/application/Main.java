@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -87,6 +87,7 @@ import org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram;
 import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.util.ArgoFrame;
 import org.argouml.util.JavaRuntimeUtility;
+import org.argouml.util.logging.AwtExceptionHandler;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
 
@@ -148,6 +149,9 @@ public class Main {
             st.mark("arguments");
             parseCommandLine(args);
 
+            // Register our last chance exception handler
+            AwtExceptionHandler.registerExceptionHandler();
+            
             // Get the splash screen up as early as possible
             st.mark("create splash");
             SplashScreen splash = null;
