@@ -127,10 +127,10 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
     }
 
     /**
-     * @param message the UML Message object
+     * @param umlMessage the UML Message object
      */
-    public AbstractMessageNotationUml(Object message) {
-        super(message);
+    public AbstractMessageNotationUml(Object umlMessage) {
+        super(umlMessage);
         parameterCustomSep = initParameterSeparators();
     }
 
@@ -259,9 +259,9 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
         return separators;
     }
 
-    public void parse(final Object modelElement, final String text) {
+    public void parse(final Object umlMessage, final String text) {
         try {
-            parseMessage(modelElement, text);
+            parseMessage(umlMessage, text);
         } catch (ParseException pe) {
             final String msg = "statusmsg.bar.error.parsing.message";
             final Object[] args = {pe.getLocalizedMessage(),
@@ -280,13 +280,13 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      * TODO: Document syntax generated here. 
      * TODO: Document exceptional behaviour.
      * 
-     * @param m the UML message object to generate the sequence number for
-     * @param pre the predecessor message (UML object)
+     * @param umlMessage the UML message object to generate the sequence number for
+     * @param umlPredecessor the (first?) predecessor message (UML object)
      * @param position the integer position of the given message
      * @return the generated sequence expression
      */
-    protected String generateMessageNumber(Object/*MMessage*/ m, 
-            Object/*MMessage*/ pre,
+    protected String generateMessageNumber(Object umlMessage, 
+            Object umlPredecessor,
             int position) {
         Collection c;
         Iterator it;
@@ -294,20 +294,20 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
         Object act;
         int subpos = 0, submax = 1;
 
-        if (m == null) {
+        if (umlMessage == null) {
             return null;
         }
 
-        act = Model.getFacade().getActivator(m);
+        act = Model.getFacade().getActivator(umlMessage);
         if (act != null) {
             mname = generateMessageNumber(act);
         }
 
-        if (pre != null) {
-            c = Model.getFacade().getSuccessors(pre);
+        if (umlPredecessor != null) {
+            c = Model.getFacade().getSuccessors(umlPredecessor);
             submax = c.size();
             it = c.iterator();
-            while (it.hasNext() && it.next() != m) {
+            while (it.hasNext() && it.next() != umlMessage) {
                 subpos++;
             }
         }
@@ -344,15 +344,16 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
     }
 
     /**
-     * Generates the textual number of Message m. The number is a string
-     * of numbers separated by points which describes the message's order
+     * Generates the textual number of a given Message, called seq_expr. 
+     * The seq_expr is a string of numbers separated by points 
+     * which describes the message's order
      * and level in a collaboration.<p>
      *
-     * If you plan to modify this number, make sure that
+     * If you plan to modify this seq_expr, make sure that
      * the parsing of the Message is adapted accordingly to the change.
      *
-     * @param message A Message to generate the number for.
-     * @return A String with the message number of m.
+     * @param message A Message to generate the seq_expr for
+     * @return A String with the seq_expr of the given message
      */
     private String generateMessageNumber(Object message) {
         MsgPtr ptr = new MsgPtr();
@@ -376,9 +377,9 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
     }
 
     /**
-     * Generates a textual description of a MIterationExpression.
+     * Generates a textual description of an IterationExpression.
      *
-     * @param expr the given expression
+     * @param expr the given UML expression object or null
      * @return the string
      */
     protected String generateRecurrence(Object expr) {
@@ -394,16 +395,16 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      *
      * TODO: - This method is too complex, lets break it up. <p>
      *
-     * @param mes the MMessage to apply any changes to
+     * @param umlMessage the UML Message object to apply any changes to
      * @param s   the String to parse
      * @throws ParseException
      *            when it detects an error in the attribute string. See also
      *            ParseError.getErrorOffset().
      */
-    protected void parseMessage(Object mes, String s)
+    protected void parseMessage(Object umlMessage, String s)
         throws ParseException {
         String fname = null;
-        StringBuilder guard = null;
+        StringBuilder guard = null; // the condition or iteration expression (recurrence)
         String paramExpr = null;
         String token;
         StringBuilder varname = null;
@@ -749,147 +750,132 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
                     + "\n");
             LOG.debug(buf);
         }
+        
+        /* Now apply the changes to the model: */
 
-        if (Model.getFacade().getAction(mes) == null) {
-            Object a = Model.getCommonBehaviorFactory()
-                .createCallAction();
-            Model.getCoreHelper().addOwnedElement(Model.getFacade().getContext(
-                    Model.getFacade().getInteraction(mes)), a);
-            Model.getCollaborationsHelper().setAction(mes, a);
+        buildAction(umlMessage);
+
+        handleGuard(umlMessage, guard, parallell, iterative);
+
+        fname = fillBlankFunctionName(umlMessage, fname, mayDeleteExpr);
+
+        varname = fillBlankVariableName(umlMessage, varname, mayDeleteExpr);
+
+        refindOperation = handleFunctionName(umlMessage, fname, varname,
+                refindOperation);
+
+        refindOperation = handleArguments(umlMessage, args, refindOperation);
+
+        refindOperation = handleSequenceNumber(umlMessage, seqno,
+                refindOperation);
+
+        handleOperation(umlMessage, fname, refindOperation);
+
+        handlePredecessors(umlMessage, predecessors, hasPredecessors);
+    }
+
+    /**
+     * @param umlMessage
+     * @param predecessors
+     * @param hasPredecessors
+     * @throws ParseException
+     */
+    protected void handlePredecessors(Object umlMessage,
+            List<List> predecessors, boolean hasPredecessors)
+        throws ParseException {
+        int i;
+        // TODO: Predecessors is not implemented, because it
+        // causes some problems that I've not found an easy way to handle yet,
+        // d00mst. The specific problem is that the notation currently is
+        // ambiguous on second message after a thread split.
+
+        // Why not implement it anyway? d00mst
+
+        if (hasPredecessors) {
+            Collection roots =
+                findCandidateRoots(
+                        Model.getFacade().getMessages(
+                                Model.getFacade().getInteraction(umlMessage)),
+                                null,
+                                null);
+            List<Object> pre = new ArrayList<Object>();
+            Iterator it;
+        predfor:
+            for (i = 0; i < predecessors.size(); i++) {
+                it = roots.iterator();
+                while (it.hasNext()) {
+                    Object msg =
+                        walkTree(it.next(), predecessors.get(i));
+                    if (msg != null && msg != umlMessage) {
+                        if (isBadPreMsg(umlMessage, msg)) {
+                            String parseMsg = "parsing.error.message.one-pred";
+                            throw new ParseException(
+                                    Translator.localize(parseMsg), 0);
+                        }
+                        pre.add(msg);
+                        continue predfor;
+                    }
+                }
+                String parseMsg = "parsing.error.message.pred-not-found";
+                throw new ParseException(Translator.localize(parseMsg), 0);
+            }
+            MsgPtr ptr = new MsgPtr();
+            recCountPredecessors(umlMessage, ptr);
+            if (ptr.message != null && !pre.contains(ptr.message)) {
+                pre.add(ptr.message);
+            }
+            Model.getCollaborationsHelper().setPredecessors(umlMessage, pre);
         }
+    }
 
-        if (guard != null) {
-            guard = new StringBuilder("[" + guard.toString().trim() + "]");
-            if (iterative) {
-                if (parallell) {
-                    guard = guard.insert(0, "*//");
+    /**
+     * @param umlMessage
+     * @param fname
+     * @param refindOperation
+     */
+    protected void handleOperation(Object umlMessage, String fname,
+            boolean refindOperation) {
+        if (fname != null && refindOperation) {
+            Object role = Model.getFacade().getReceiver(umlMessage);
+            List ops =
+                getOperation(
+                        Model.getFacade().getBases(role),
+                        fname.trim(),
+                        Model.getFacade().getActualArguments(
+                                Model.getFacade().getAction(umlMessage)).size());
+
+            // TODO: Should someone choose one, if there are more
+            // than one?
+            if (Model.getFacade().isACallAction(
+                    Model.getFacade().getAction(umlMessage))) {
+                Object a = /* (MCallAction) */Model.getFacade().getAction(umlMessage);
+                if (ops.size() > 0) {
+                    Model.getCommonBehaviorHelper().setOperation(a,
+                            /* (MOperation) */ops.get(0));
                 } else {
-                    guard = guard.insert(0, "*");
+                    Model.getCommonBehaviorHelper().setOperation(a, null);
                 }
-            }
-            Object expr =
-                Model.getDataTypesFactory().createIterationExpression(
-                        getExpressionLanguage(), guard.toString());
-            Model.getCommonBehaviorHelper().setRecurrence(
-                    Model.getFacade().getAction(mes), expr);
-        }
-
-        if (fname == null) {
-            if (!mayDeleteExpr
-                    && Model.getFacade().getScript(
-                            Model.getFacade().getAction(mes))
-                            != null) {
-                String body =
-                    (String) Model.getFacade().getBody(
-                            Model.getFacade().getScript(
-                                    Model.getFacade().getAction(mes)));
-
-                int idx = body.indexOf(":=");
-                if (idx >= 0) {
-                    idx++;
-                } else {
-                    idx = body.indexOf("=");
-                }
-
-                if (idx >= 0) {
-                    fname = body.substring(idx + 1);
-                } else {
-                    fname = body;
-                }
-            } else {
-                fname = "";
             }
         }
+    }
 
-        if (varname == null) {
-            if (!mayDeleteExpr
-                    && Model.getFacade().getScript(
-                            Model.getFacade().getAction(mes))
-                            != null) {
-                String body =
-                    (String) Model.getFacade().getBody(
-                            Model.getFacade().getScript(
-                                    Model.getFacade().getAction(mes)));
-                int idx = body.indexOf(":=");
-                if (idx < 0) {
-                    idx = body.indexOf("=");
-                }
-
-                if (idx >= 0) {
-                    varname = new StringBuilder(body.substring(0, idx));
-                } else {
-                    varname = new StringBuilder();
-                }
-            } else {
-                varname = new StringBuilder();
-            }
-        }
-
-        if (fname != null) {
-            String expr = fname.trim();
-            if (varname.length() > 0) {
-                expr = varname.toString().trim() + " := " + expr;
-            }
-
-            if (Model.getFacade().getScript(
-                    Model.getFacade().getAction(mes)) == null
-                    || !expr.equals(Model.getFacade().getBody(
-                            Model.getFacade().getScript(
-                                    Model.getFacade().getAction(mes))))) {
-                Object e =
-                    Model.getDataTypesFactory()
-                        .createActionExpression(
-                            getExpressionLanguage(),
-                            expr.trim());
-                Model.getCommonBehaviorHelper().setScript(
-                        Model.getFacade().getAction(mes), e);
-                refindOperation = true;
-            }
-        }
-
-        if (args != null) {
-            Collection c = new ArrayList(
-                    Model.getFacade().getActualArguments(
-                            Model.getFacade().getAction(mes)));
-            Iterator it = c.iterator();
-            for (i = 0; i < args.size(); i++) {
-                Object arg = (it.hasNext() ? /* (MArgument) */it.next() : null);
-                if (arg == null) {
-                    arg = Model.getCommonBehaviorFactory()
-                        .createArgument();
-                    Model.getCommonBehaviorHelper().addActualArgument(
-                            Model.getFacade().getAction(mes), arg);
-                    refindOperation = true;
-                }
-                if (Model.getFacade().getValue(arg) == null
-                        || !args.get(i).equals(
-                                Model.getFacade().getBody(
-                                        Model.getFacade().getValue(arg)))) {
-                    String value = (args.get(i) != null ? args.get(i)
-                            : "");
-                    Object e =
-                        Model.getDataTypesFactory().createExpression(
-                                getExpressionLanguage(),
-                                value.trim());
-                    Model.getCommonBehaviorHelper().setValue(arg, e);
-                }
-            }
-
-            while (it.hasNext()) {
-                Model.getCommonBehaviorHelper()
-                    .removeActualArgument(Model.getFacade().getAction(mes),
-                        it.next());
-                refindOperation = true;
-            }
-        }
-
+    /**
+     * @param umlMessage
+     * @param seqno
+     * @param refindOperation
+     * @return
+     * @throws ParseException
+     */
+    protected boolean handleSequenceNumber(Object umlMessage,
+            List<Integer> seqno, boolean refindOperation) throws ParseException {
+        int i;
         if (seqno != null) {
             Object/* MMessage */root;
             // Find the preceding message, if any, on either end of the
             // association.
             StringBuilder pname = new StringBuilder();
             StringBuilder mname = new StringBuilder();
-            String gname = generateMessageNumber(mes);
+            String gname = generateMessageNumber(umlMessage);
             boolean swapRoles = false;
             int majval = 0;
             if (seqno.get(seqno.size() - 2) != null) {
@@ -931,18 +917,18 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
 
             root = null;
             if (pname.length() > 0) {
-                root = findMsg(Model.getFacade().getSender(mes), 
+                root = findMsg(Model.getFacade().getSender(umlMessage), 
                         pname.toString());
                 if (root == null) {
-                    root = findMsg(Model.getFacade().getReceiver(mes), 
+                    root = findMsg(Model.getFacade().getReceiver(umlMessage), 
                             pname.toString());
                     if (root != null) {
                         swapRoles = true;
                     }
                 }
-            } else if (!hasMsgWithActivator(Model.getFacade().getSender(mes),
+            } else if (!hasMsgWithActivator(Model.getFacade().getSender(umlMessage),
                     null)
-                    && hasMsgWithActivator(Model.getFacade().getReceiver(mes),
+                    && hasMsgWithActivator(Model.getFacade().getReceiver(umlMessage),
                             null)) {
                 swapRoles = true;
             }
@@ -952,17 +938,17 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
             } else if (isMsgNumberStartOf(gname.toString(), mname.toString())) {
                 String msg = "parsing.error.message.subtree-rooted-self";
                 throw new ParseException(Translator.localize(msg), 0);
-            } else if (Model.getFacade().getPredecessors(mes).size() > 1
-                    && Model.getFacade().getSuccessors(mes).size() > 1) {
+            } else if (Model.getFacade().getPredecessors(umlMessage).size() > 1
+                    && Model.getFacade().getSuccessors(umlMessage).size() > 1) {
                 String msg = "parsing.error.message.start-end-many-threads";
                 throw new ParseException(Translator.localize(msg), 0);
             } else if (root == null && pname.length() > 0) {
                 String msg = "parsing.error.message.activator-not-found";
                 throw new ParseException(Translator.localize(msg), 0);
             } else if (swapRoles
-                    && Model.getFacade().getActivatedMessages(mes).size() > 0
-                    && (Model.getFacade().getSender(mes)
-                            != Model.getFacade().getReceiver(mes))) {
+                    && Model.getFacade().getActivatedMessages(umlMessage).size() > 0
+                    && (Model.getFacade().getSender(umlMessage)
+                            != Model.getFacade().getReceiver(umlMessage))) {
                 String msg = "parsing.error.message.reverse-direction-message";
                 throw new ParseException(Translator.localize(msg), 0);
             } else {
@@ -971,14 +957,14 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
                  * since we're modifying
                  */
                 Collection c = new ArrayList(
-                        Model.getFacade().getPredecessors(mes));
+                        Model.getFacade().getPredecessors(umlMessage));
                 Collection c2 = new ArrayList(
-                        Model.getFacade().getSuccessors(mes));
+                        Model.getFacade().getSuccessors(umlMessage));
                 Iterator it;
 
                 it = c2.iterator();
                 while (it.hasNext()) {
-                    Model.getCollaborationsHelper().removeSuccessor(mes,
+                    Model.getCollaborationsHelper().removeSuccessor(umlMessage,
                             it.next());
                 }
 
@@ -986,7 +972,7 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
                 while (it.hasNext()) {
                     Iterator it2 = c2.iterator();
                     Object pre = /* (MMessage) */it.next();
-                    Model.getCollaborationsHelper().removePredecessor(mes, pre);
+                    Model.getCollaborationsHelper().removePredecessor(umlMessage, pre);
                     while (it2.hasNext()) {
                         Model.getCollaborationsHelper().addPredecessor(
                                 it2.next(), pre);
@@ -994,25 +980,25 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
                 }
 
                 // Connect the message at a new spot
-                Model.getCollaborationsHelper().setActivator(mes, root);
+                Model.getCollaborationsHelper().setActivator(umlMessage, root);
                 if (swapRoles) {
                     Object/* MClassifierRole */r =
-                        Model.getFacade().getSender(mes);
-                    Model.getCollaborationsHelper().setSender(mes,
-                            Model.getFacade().getReceiver(mes));
-                    Model.getCommonBehaviorHelper().setReceiver(mes, r);
+                        Model.getFacade().getSender(umlMessage);
+                    Model.getCollaborationsHelper().setSender(umlMessage,
+                            Model.getFacade().getReceiver(umlMessage));
+                    Model.getCommonBehaviorHelper().setReceiver(umlMessage, r);
                 }
 
                 if (root == null) {
                     c =
                         filterWithActivator(
                                 Model.getFacade().getSentMessages(
-                                        Model.getFacade().getSender(mes)),
+                                        Model.getFacade().getSender(umlMessage)),
                                         null);
                 } else {
                     c = Model.getFacade().getActivatedMessages(root);
                 }
-                c2 = findCandidateRoots(c, root, mes);
+                c2 = findCandidateRoots(c, root, umlMessage);
                 it = c2.iterator();
                 // If c2 is empty, then we're done (or there is a
                 // cycle in the message graph, which would be bad) If
@@ -1020,7 +1006,7 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
                 // crappy, but we'll just use one of them anyway
                 if (majval <= 0) {
                     while (it.hasNext()) {
-                        Model.getCollaborationsHelper().addSuccessor(mes,
+                        Model.getCollaborationsHelper().addSuccessor(umlMessage,
                                 /* (MMessage) */it.next());
                     }
                 } else if (it.hasNext()) {
@@ -1031,83 +1017,221 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
                         Model.getCollaborationsHelper()
                             .removePredecessor(post, pre);
                         Model.getCollaborationsHelper()
-                            .addPredecessor(post, mes);
+                            .addPredecessor(post, umlMessage);
                     }
-                    insertSuccessor(pre, mes, minval);
+                    insertSuccessor(pre, umlMessage, minval);
                 }
                 refindOperation = true;
             }
         }
+        return refindOperation;
+    }
 
-        if (fname != null && refindOperation) {
-            Object role = Model.getFacade().getReceiver(mes);
-            List ops =
-                getOperation(
-                        Model.getFacade().getBases(role),
-                        fname.trim(),
-                        Model.getFacade().getActualArguments(
-                                Model.getFacade().getAction(mes)).size());
-
-            // TODO: Should someone choose one, if there are more
-            // than one?
-            if (Model.getFacade().isACallAction(
-                    Model.getFacade().getAction(mes))) {
-                Object a = /* (MCallAction) */Model.getFacade().getAction(mes);
-                if (ops.size() > 0) {
-                    Model.getCommonBehaviorHelper().setOperation(a,
-                            /* (MOperation) */ops.get(0));
-                } else {
-                    Model.getCommonBehaviorHelper().setOperation(a, null);
+    /**
+     * @param umlMessage
+     * @param args
+     * @param refindOperation
+     * @return
+     */
+    protected boolean handleArguments(Object umlMessage, List<String> args,
+            boolean refindOperation) {
+        if (args != null) {
+            Collection c = new ArrayList(
+                    Model.getFacade().getActualArguments(
+                            Model.getFacade().getAction(umlMessage)));
+            Iterator it = c.iterator();
+            int ii;
+            for (ii = 0; ii < args.size(); ii++) {
+                Object umlArgument = (it.hasNext() ? it.next() : null);
+                if (umlArgument == null) {
+                    umlArgument = Model.getCommonBehaviorFactory()
+                        .createArgument();
+                    Model.getCommonBehaviorHelper().addActualArgument(
+                            Model.getFacade().getAction(umlMessage), umlArgument);
+                    refindOperation = true;
                 }
+                if (Model.getFacade().getValue(umlArgument) == null
+                        || !args.get(ii).equals(
+                                Model.getFacade().getBody(
+                                        Model.getFacade().getValue(umlArgument)))) {
+                    String value = (args.get(ii) != null ? args.get(ii)
+                            : "");
+                    Object umlExpression =
+                        Model.getDataTypesFactory().createExpression(
+                                getExpressionLanguage(),
+                                value.trim());
+                    Model.getCommonBehaviorHelper().setValue(umlArgument, umlExpression);
+                }
+            }
+
+            while (it.hasNext()) {
+                Model.getCommonBehaviorHelper()
+                    .removeActualArgument(Model.getFacade().getAction(umlMessage),
+                        it.next());
+                refindOperation = true;
             }
         }
+        return refindOperation;
+    }
 
-        // TODO: Predecessors is not implemented, because it
-        // causes some problems that I've not found an easy way to handle yet,
-        // d00mst. The specific problem is that the notation currently is
-        // ambiguous on second message after a thread split.
+    /**
+     * @param umlMessage
+     * @param fname
+     * @param varname
+     * @param refindOperation
+     * @return
+     */
+    protected boolean handleFunctionName(Object umlMessage, String fname,
+            StringBuilder varname, boolean refindOperation) {
+        if (fname != null) {
+            String expr = fname.trim();
+            if (varname.length() > 0) {
+                expr = varname.toString().trim() + " := " + expr;
+            }
 
-        // Why not implement it anyway? d00mst
+            if (Model.getFacade().getScript(
+                    Model.getFacade().getAction(umlMessage)) == null
+                    || !expr.equals(Model.getFacade().getBody(
+                            Model.getFacade().getScript(
+                                    Model.getFacade().getAction(umlMessage))))) {
+                Object e =
+                    Model.getDataTypesFactory()
+                        .createActionExpression(
+                            getExpressionLanguage(),
+                            expr.trim());
+                Model.getCommonBehaviorHelper().setScript(
+                        Model.getFacade().getAction(umlMessage), e);
+                refindOperation = true;
+            }
+        }
+        return refindOperation;
+    }
 
-        if (hasPredecessors) {
-            Collection roots =
-                findCandidateRoots(
-                        Model.getFacade().getMessages(
-                                Model.getFacade().getInteraction(mes)),
-                                null,
-                                null);
-            List<Object> pre = new ArrayList<Object>();
-            Iterator it;
-        predfor:
-            for (i = 0; i < predecessors.size(); i++) {
-                it = roots.iterator();
-                while (it.hasNext()) {
-                    Object msg =
-                        walkTree(it.next(), predecessors.get(i));
-                    if (msg != null && msg != mes) {
-                        if (isBadPreMsg(mes, msg)) {
-                            String parseMsg = "parsing.error.message.one-pred";
-                            throw new ParseException(
-                                    Translator.localize(parseMsg), 0);
-                        }
-                        pre.add(msg);
-                        continue predfor;
-                    }
+    /**
+     * @param umlMessage
+     * @param varname
+     * @param mayDeleteExpr
+     * @return
+     */
+    protected StringBuilder fillBlankVariableName(Object umlMessage,
+            StringBuilder varname, boolean mayDeleteExpr) {
+        /* If no variable name was given, then retain the one in the model. */
+        if (varname == null) {
+            if (!mayDeleteExpr
+                    && Model.getFacade().getScript(
+                            Model.getFacade().getAction(umlMessage))
+                            != null) {
+                String body =
+                    (String) Model.getFacade().getBody(
+                            Model.getFacade().getScript(
+                                    Model.getFacade().getAction(umlMessage)));
+                int idx = body.indexOf(":=");
+                if (idx < 0) {
+                    idx = body.indexOf("=");
                 }
-                String parseMsg = "parsing.error.message.pred-not-found";
-                throw new ParseException(Translator.localize(parseMsg), 0);
+
+                if (idx >= 0) {
+                    varname = new StringBuilder(body.substring(0, idx));
+                } else {
+                    varname = new StringBuilder();
+                }
+            } else {
+                varname = new StringBuilder();
             }
-            MsgPtr ptr = new MsgPtr();
-            recCountPredecessors(mes, ptr);
-            if (ptr.message != null && !pre.contains(ptr.message)) {
-                pre.add(ptr.message);
+        }
+        return varname;
+    }
+
+    /**
+     * @param umlMessage
+     * @param fname
+     * @param mayDeleteExpr
+     * @return
+     */
+    protected String fillBlankFunctionName(Object umlMessage, String fname,
+            boolean mayDeleteExpr) {
+        /* If no function-name was given, then retain the one in the model. */
+        if (fname == null) {
+            if (!mayDeleteExpr
+                    && Model.getFacade().getScript(
+                            Model.getFacade().getAction(umlMessage))
+                            != null) {
+                String body =
+                    (String) Model.getFacade().getBody(
+                            Model.getFacade().getScript(
+                                    Model.getFacade().getAction(umlMessage)));
+
+                int idx = body.indexOf(":=");
+                if (idx >= 0) {
+                    idx++;
+                } else {
+                    idx = body.indexOf("=");
+                }
+
+                if (idx >= 0) {
+                    fname = body.substring(idx + 1);
+                } else {
+                    fname = body;
+                }
+            } else {
+                fname = "";
             }
-            Model.getCollaborationsHelper().setPredecessors(mes, pre);
+        }
+        return fname;
+    }
+
+    /**
+     * Store the parsed guard in the UML objects related to the given Message. 
+     * 
+     * @param umlMessage the UML Message object
+     * @param guard the guard expression string
+     * @param parallell true if parallel execution was indicated
+     * @param iterative true if this is an iterative expression, as opposed to a condition
+     */
+    protected void handleGuard(Object umlMessage, StringBuilder guard,
+            boolean parallell, boolean iterative) {
+        /* Store the guard, i.e. condition or iteration expression, 
+         * in the recurrence field of the Action: */
+        if (guard != null) {
+            guard = new StringBuilder("[" + guard.toString().trim() + "]");
+            if (iterative) {
+                if (parallell) {
+                    guard = guard.insert(0, "*//");
+                } else {
+                    guard = guard.insert(0, "*");
+                }
+            }
+            Object expr =
+                Model.getDataTypesFactory().createIterationExpression(
+                        getExpressionLanguage(), guard.toString());
+            Model.getCommonBehaviorHelper().setRecurrence(
+                    Model.getFacade().getAction(umlMessage), expr);
         }
     }
 
+    /**
+     * Build an Action for the given UML Message if it did not have one yet.
+     * 
+     * @param umlMessage
+     */
+    protected void buildAction(Object umlMessage) {
+        if (Model.getFacade().getAction(umlMessage) == null) {
+            /* If there was no Action yet, create a CallAction: */
+            Object a = Model.getCommonBehaviorFactory()
+                .createCallAction();
+            Model.getCoreHelper().addOwnedElement(Model.getFacade().getContext(
+                    Model.getFacade().getInteraction(umlMessage)), a);
+            Model.getCollaborationsHelper().setAction(umlMessage, a);
+        }
+    }
+
+    /**
+     * TODO: This name of the expression language should be configurable by the user.
+     * 
+     * @return the name of the expression language
+     */
     private String getExpressionLanguage() {
-        return Notation.DEFAULT_NOTATION;
+        return "";
     }
 
     /**
@@ -1542,23 +1666,23 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      * Recursively count the number of predecessors of the given Message, 
      * and return (a pointer to) the first Message in the chain.
      * 
-     * @param message the UML Message to count the predecessors for
+     * @param umlMessage the UML Message to count the predecessors for
      * @param ptr an object to contain the returned first Message
      * @return the number of messages in the chain
      */
-    protected int recCountPredecessors(Object message, MsgPtr ptr) {
+    protected int recCountPredecessors(Object umlMessage, MsgPtr ptr) {
         int pre = 0;
         int local = 0;
         Object/*MMessage*/ maxmsg = null;
         Object activator;
 
-        if (message == null) {
+        if (umlMessage == null) {
             ptr.message = null;
             return 0;
         }
 
-        activator = Model.getFacade().getActivator(message);
-        for (Object predecessor : Model.getFacade().getPredecessors(message)) {
+        activator = Model.getFacade().getActivator(umlMessage);
+        for (Object predecessor : Model.getFacade().getPredecessors(umlMessage)) {
             if (Model.getFacade().getActivator(predecessor) 
                     != activator) {
                 continue;

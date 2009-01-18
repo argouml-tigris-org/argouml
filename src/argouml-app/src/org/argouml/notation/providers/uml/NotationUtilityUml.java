@@ -1268,20 +1268,20 @@ public final class NotationUtilityUml {
     }
     
     /**
-     * @param m the action
+     * @param umlAction the action
      * @return the generated text (never null)
      */
-    static String generateAction(Object m) {
+    static String generateAction(Object umlAction) {
         Collection c;
         Iterator it;
         String s;
         StringBuilder p;
         boolean first;
-        if (m == null) {
+        if (umlAction == null) {
             return "";
         }
 
-        Object script = Model.getFacade().getScript(m);
+        Object script = Model.getFacade().getScript(umlAction);
 
         if ((script != null) && (Model.getFacade().getBody(script) != null)) {
             s = Model.getFacade().getBody(script).toString();
@@ -1290,7 +1290,7 @@ public final class NotationUtilityUml {
         }
 
         p = new StringBuilder();
-        c = Model.getFacade().getActualArguments(m);
+        c = Model.getFacade().getActualArguments(umlAction);
         if (c != null) {
             it = c.iterator();
             first = true;
