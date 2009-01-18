@@ -76,6 +76,8 @@ import org.argouml.model.DiElement;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.NotationSettings;
@@ -1517,23 +1519,38 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Create the NotationProviders.
+     * Replace the NotationProvider(s). <p>
+     *
+     * This method shall not be used for the initial creation of
+     * notation providers, but only for replacing them when required.
+     * Initialization must be done in the
+     * constructor using methods which
+     * can't be overridden. <p>
+     * NotationProviders can not be updated - they
+     * are lightweight throw-away objects.
+     * Hence this method creates a (new) NotationProvider whenever
+     * needed. E.g. when the notation language is
+     * changed by the user, then the NPs are to be re-created.
+     * So, this method shall not be
+     * called from a Fig constructor.<p>
+     *
+     * After the removal of the deprecated method setOwner(),
+     * this method shall contain the following statement:
+     *     assert notationProviderName != null
      * 
      * @param own owning UML element
-     * @deprecated for 0.27.3 by tfmorris. Initialization of notation providers
-     *             and any later needed updates must be separated.
-     *             Initialization must be done in a way that can't be overridden
-     *             since the subclasses constructors won't have completed by the
-     *             time the subclass implementation is run.
      */
     protected void initNotationProviders(Object own) {
         if (notationProviderName != null) {
             notationProviderName.cleanListener(this, own);
         }
         if (Model.getFacade().isAUMLElement(own)) {
+            NotationName notation = Notation.findNotation(
+                    getNotationSettings().getNotationLanguage());
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        getNotationProviderType(), own, this);
+                        getNotationProviderType(), own, this,
+                        notation);
         }
     }
     

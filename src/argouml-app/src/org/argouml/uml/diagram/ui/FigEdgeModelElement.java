@@ -966,20 +966,27 @@ public abstract class FigEdgeModelElement
 
 
     /**
-     * Create the NotationProviders.
+     * Replace the NotationProvider(s). <p>
+     *
+     * This method shall not be used for the initial creation of
+     * notation providers, but only for replacing them when required.
+     * Initialization must be done in the
+     * constructor using methods which
+     * can't be overridden. <p>
+     * NotationProviders can not be updated - they
+     * are lightweight throw-away objects.
+     * Hence this method creates a (new) NotationProvider whenever
+     * needed. E.g. when the notation language is
+     * changed by the user, then the NPs are to be re-created.
+     * So, this method shall not be
+     * called from a Fig constructor.<p>
+     *
+     * After the removal of the deprecated method setOwner(),
+     * this method shall contain the following statement:
+     *     assert notationProviderName != null
      * 
      * @param own the current owner
-     * @deprecated for 0.27.3 by tfmorris.  Separate initialization of 
-     * notation providers from any later updates which are required. 
-     * Initialization must be done in the constructor using methods which 
-     * can't be overriden. <p>
-     * TODO: MVW: NotationProviders can not be updated - they
-     * are lightweight throw-away objects. Hence there is functionally
-     * only this method to create a (new) NotationProvider whenever
-     * needed. E.g. when the notation language is 
-     * changed by the user, then the NPs are to be re-created.
-     * So, why split this in 2 methods?
-     */
+     */ 
     protected void initNotationProviders(Object own) {
         if (notationProviderName != null) {
             notationProviderName.cleanListener(this, own);
