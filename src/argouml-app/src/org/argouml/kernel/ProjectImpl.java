@@ -49,6 +49,7 @@ import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileFacade;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
@@ -353,10 +354,12 @@ public class ProjectImpl implements java.io.Serializable, Project {
      */
     protected void removeProjectMemberDiagram(ArgoDiagram d) {
         if (activeDiagram == d) {
+            LOG.debug("Deleting active diagram " + d);
             ArgoDiagram defaultDiagram = null;
             if (diagrams.size() == 1) {
                 // We're deleting the last diagram so lets create a new one
                 // TODO: Once we go MDI we won't need this.
+                LOG.debug("Deleting last diagram - creating new default diag");
                 Object projectRoot = getRoot();
                 if (!Model.getUmlFactory().isRemoved(projectRoot)) {
                     defaultDiagram = DiagramFactory.getInstance()
@@ -367,11 +370,15 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 // Make the topmost diagram (that is not the one being deleted)
                 // current.
                 defaultDiagram = diagrams.get(0);
+                LOG.debug("Candidate default diagram is " + defaultDiagram);
                 if (defaultDiagram == d) {
                     defaultDiagram = diagrams.get(1);
+                    LOG.debug("Switching default diagram to " + defaultDiagram);
                 }
             }
             activeDiagram = defaultDiagram;
+            TargetManager.getInstance().setTarget(activeDiagram);
+            LOG.debug("New active diagram is " + defaultDiagram);
         }
 
         removeDiagram(d);
@@ -833,9 +840,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
         } else if (obj instanceof ArgoDiagram) {
             removeProjectMemberDiagram((ArgoDiagram) obj);
-            // TODO: Is the following still true?  fix it there! - tfm
-            // Need to manually delete diagrams from explorer because they
-            // don't have a decent event system set up:
+            // Fire an event some anyone who cares about diagrams being
+            // removed can listen for it
             ProjectManager.getManager()
                     .firePropertyChanged("remove", obj, null);
         } else if (obj instanceof Fig) {

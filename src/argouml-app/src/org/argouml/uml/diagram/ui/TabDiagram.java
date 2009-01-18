@@ -413,8 +413,13 @@ public class TabDiagram
 
     public void propertyChange(PropertyChangeEvent arg0) {
         if ("remove".equals(arg0.getPropertyName())) {
-            ArgoDiagram diagram = DiagramUtils.getActiveDiagram();
-            TargetManager.getInstance().setTarget(diagram);
+            LOG.debug("Got remove event for diagram = " + arg0.getSource() 
+                    + " old value = " + arg0.getOldValue());
+            // Although we register for notification of diagrams being
+            // deleted, we currently depend on the TargetManager to assign
+            // a new target when this happens
+            // When we implement MDI and have our own list of open diagrams
+            // we can ressurect the use of this
         }
     }
 }

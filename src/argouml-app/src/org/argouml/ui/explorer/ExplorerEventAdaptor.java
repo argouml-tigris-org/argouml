@@ -209,9 +209,7 @@ public final class ExplorerEventAdaptor
             // notation events
             treeModel.structureChanged();
         } else if (pce.getSource() instanceof ProjectManager) {
-            // TODO: Bob says - I think we don't need this any more
-            // we no longer get "remove" from ProjectManager but instead
-            // a DeleteInstanceEvent (trapped above)
+            // Handle remove for non-UML elements (e.g. diagrams)
             if ("remove".equals(pce.getPropertyName())) {
                 treeModel.modelElementRemoved(pce.getOldValue());
             }

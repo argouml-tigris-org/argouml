@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2007 The Regents of the University of California. All
+// Copyright (c) 2002-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -808,7 +808,6 @@ public final class TargetManager {
 			  + listeners[i + 1]
 			  + " an error is thrown.",
 			  e);
-                e.printStackTrace();
 	    }
         }
     }
@@ -897,6 +896,7 @@ public final class TargetManager {
      */
     public void navigateForward() throws IllegalStateException {
         historyManager.navigateForward();
+        LOG.debug("Navigate forward");
     }
 
     /**
@@ -908,6 +908,8 @@ public final class TargetManager {
      */
     public void navigateBackward() throws IllegalStateException {
         historyManager.navigateBackward();
+        LOG.debug("Navigate backward");
+
     }
 
     /**
@@ -953,13 +955,20 @@ public final class TargetManager {
     private abstract class Remover implements PropertyChangeListener, 
         NotificationListener 
     {
+        
+        protected Remover() {
+            // Listen for the removal of diagrams from project
+            ProjectManager.getManager().addPropertyChangeListener(this);
+        }
 
         private void addListener(Object o) {
             if (Model.getFacade().isAModelElement(o)) {
                 Model.getPump().addModelEventListener(this, o, "remove");
             } else if (o instanceof Diagram) {
+                // Figs on a diagram without an owning model element 
                 ((Diagram) o).addPropertyChangeListener(this);
             } else if (o instanceof NotificationEmitter) {
+                // CommentEdge - the owner of a FigEdgeNote
                 ((NotificationEmitter) o).addNotificationListener(
                         this, null, o);
             }
