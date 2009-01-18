@@ -38,6 +38,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.jmi.model.ModelPackage;
 import javax.jmi.model.MofPackage;
+import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
 
@@ -202,40 +203,50 @@ public class MDRModelImplementation implements ModelImplementation {
     }
 
     RefPackage createExtent(String name, boolean readOnly) {
-        try {
-            UmlPackage extent = (UmlPackage) getRepository().createExtent(name,
-                    getMofPackage());
-            extents.put(extent, Boolean.valueOf(readOnly));
-            
-            if (!readOnly) {
-                // TODO: This will need to change when we support multiple user
-                // models.
-                
-                // Delete the old extent first
-                if (umlPackage != null) {
-                    deleteExtent(umlPackage);
-                }                
-                umlPackage = extent;
+        synchronized (extents) {
+            try {
+                UmlPackage extent = (UmlPackage) getRepository().createExtent(
+                        name, getMofPackage());
+                extents.put(extent, Boolean.valueOf(readOnly));
+
+                if (!readOnly) {
+                    // TODO: This will need to change when we support multiple
+                    // user
+                    // models.
+
+                    // Delete the old extent first
+                    if (umlPackage != null) {
+                        deleteExtent(umlPackage);
+                    }
+                    umlPackage = extent;
+                }
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Created new " + (readOnly ? "readonly " : "")
+                            + "extent " + umlPackage);
+                    LOG.debug("All registered extents = "
+                            + Arrays.toString(repository.getExtentNames()));
+                }
+                return extent;
+            } catch (CreationFailedException e) {
+                LOG.error("Extent creation failed for " + name);
+                return null;
             }
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Created new " + (readOnly ? "readonly " : "")
-                        + "extent " + umlPackage);
-                LOG.debug("All registered extents = "
-                        + Arrays.toString(repository.getExtentNames()));
-            }
-            return extent;
-        } catch (CreationFailedException e) {
-            LOG.error("Extent creation failed for " + name);
-            return null;
         }
     }
 
     void deleteExtent(UmlPackage extent) {
-        if (umlPackage.equals(extent)) {
-            umlPackage = null;
+        synchronized (extents) {
+            if (extent.equals(umlPackage)) {
+                umlPackage = null;
+            }
+            extents.remove(extent);
+            try {
+                LOG.debug("Deleting extent " + extent);
+                extent.refDelete();
+            } catch (InvalidObjectException e) {
+                LOG.debug("Attempted to delete same extent twice " + extent);
+            }
         }
-        extents.remove(extent);
-        extent.refDelete();
     }
     
     Collection<UmlPackage> getExtents() {
@@ -446,20 +457,20 @@ public class MDRModelImplementation implements ModelImplementation {
 
 
     void createDefaultExtent() {
-        // Create a default extent for the user UML model.  This will get
+        // Create a default extent for the user UML model. This will get
         // replaced if a new model is read in from an XMI file.
-        umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);
-        if (umlPackage != null) {
-            // NOTE: If we switch to a persistent repository like the b-tree
-            // repository we'll want to keep the old extent(s) around
-            extents.remove(umlPackage);
-            umlPackage.refDelete();
-            umlPackage = null;
-            LOG.debug("MDR Init - UML extent existed - "
-                    + "deleted it and all UML data");
+        synchronized (extents) {
+            umlPackage = (UmlPackage) repository.getExtent(MODEL_EXTENT_NAME);
+            if (umlPackage != null) {
+                // NOTE: If we switch to a persistent repository like the b-tree
+                // repository we'll want to keep the old extent(s) around
+                deleteExtent(umlPackage);
+                LOG.debug("MDR Init - UML extent existed - "
+                        + "deleted it and all UML data");
+            }
+            umlPackage = (UmlPackage) createExtent(MODEL_EXTENT_NAME, false);
+            LOG.debug("Created default extent");
         }
-        umlPackage = (UmlPackage) createExtent(MODEL_EXTENT_NAME, false);
-        LOG.debug("Created default extent");
     }
 
     /**
