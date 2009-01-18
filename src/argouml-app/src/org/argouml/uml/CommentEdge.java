@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,6 +42,11 @@ import org.argouml.model.UUIDManager;
  * TODO: There's tons of special case code scattered around ArgoUML for this
  * one class since it is the only "owner" of a FigEdgeModelElement which is not
  * a UML element.  We should find a way to generalize this.<p>
+ * 
+ * TODO: Issue 3031 requires this class to be replaced by 
+ * a similar mechanism as the n-ary association class: 
+ * the node and the edges shall all have the same owner, 
+ * i.e. the UML Comment object. 
  * 
  * @since Jul 17, 2004
  * @author jaap.branderhorst@xs4all.nl
