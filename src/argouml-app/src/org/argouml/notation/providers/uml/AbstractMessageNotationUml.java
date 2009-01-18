@@ -51,7 +51,8 @@ import org.argouml.util.MyTokenizer;
  * and {@link SDMessageNotationUml}, with the notation of 
  * messages as seen in sequence diagrams.<p>
  * 
- * Parses a message line of the form:
+ * The Message notation syntax is a line of the following form,
+ * which we can generate and parse: <p>
  *
  * <pre>
  * intno := integer|name

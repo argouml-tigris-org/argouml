@@ -30,43 +30,8 @@ import org.apache.log4j.Logger;
 import org.argouml.notation.NotationSettings;
 
 /**
- * The UML notation for a message, as shown on a collaboration diagram. <p>
- *
- * The Message notation syntax is a line of the following form,
- * which we can generate and parse: <p>
- *
- * <pre>
- * intno := integer|name
- * seq := intno ['.' intno]*
- * recurrence := '*'['//'] 
- *      | '*'['//']'[' <code>iteration </code>']' 
- *      | '['<code>condition </code>']'
- * seqelem := {[intno] ['['recurrence']']}
- * seq_expr := seqelem ['.' seqelem]*
- * ret_list := lvalue [',' lvalue]*
- * arg_list := rvalue [',' rvalue]*
- * predecessor := seq [',' seq]* '/'
- * message := [predecessor] seq_expr ':' [ret_list :=] name ([arg_list])
- * </pre> <p>
- *
- * Which is rather complex, so a few examples:<p><ul>
- * <li> 2: display(x, y)
- * <li> 1.3.1: p := find(specs)
- * <li> [x &lt; 0] 4: invert(color)
- * <li> A3, B4/ C3.1*: update()
- * </ul><p>
- *
- * This syntax is compatible with the UML 1.4.2 specification.<p>
+ * The UML notation for a message, as shown on a collaboration diagram. 
  * 
- * TODO: The '//' in the recurrence should be '||' according the standard.
-See issue 5606. <p>
- *
- * Actually, only a subset of this syntax is currently supported, and some
- * is not even planned to be supported. The exceptions are intno, which
- * allows a number possibly followed by a sequence of letters in the range
- * 'a' - 'z', seqelem, which does not allow a recurrence, and message, which
- * does allow one recurrence near seq_expr. (formerly: name: action )
- *
  * @author michiel
  */
 public class MessageNotationUml extends AbstractMessageNotationUml {
