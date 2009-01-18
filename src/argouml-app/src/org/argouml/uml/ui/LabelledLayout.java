@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -125,6 +124,8 @@ class LabelledLayout implements LayoutManager, java.io.Serializable {
     /**
      * Construct a new horizontal LabelledLayout with the specified
      * cell spacing.
+     * @param hgap The horizontal gap between components
+     * @param vgap The vertical gap between components
      */
     public LabelledLayout(int hgap, int vgap) {
         this.ignoreSplitters = false;
@@ -389,13 +390,15 @@ class LabelledLayout implements LayoutManager, java.io.Serializable {
                                 unknownHeightCount--, 
                                 childComp);
                     } catch (ArithmeticException e) {
+                        String lookAndFeel = 
+                            UIManager.getLookAndFeel().getClass().getName();
                         throw new IllegalStateException(
                                 "Division by zero laying out "
                                 + childComp.getClass().getName()
                                 + " on " + parent.getClass().getName()
                                 + " in section " + sectionNo
                                 + " using "
-                                + UIManager.getLookAndFeel().getClass().getName(),
+                                + lookAndFeel,
                                 e);
                     }
                     totalHeight += rowHeight;
@@ -415,7 +418,8 @@ class LabelledLayout implements LayoutManager, java.io.Serializable {
     
     /**
      * @param childComp a component
-     * @return 0 for a resizable component or a positive value for its fixed height
+     * @return 0 for a resizable component or a positive value for its fixed
+     * height
      */
     private int getChildHeight(Component childComp) {
         if (isResizable(childComp)) {
@@ -445,10 +449,18 @@ class LabelledLayout implements LayoutManager, java.io.Serializable {
      * space.
      */
     private boolean isResizable(Component comp) {
-        if (comp == null) return false;
-        if (comp instanceof JComboBox) return false;
-        if (comp.getPreferredSize() == null) return false;
-        if (comp.getMinimumSize() == null) return false;
+        if (comp == null) {
+            return false;
+        }
+        if (comp instanceof JComboBox) {
+            return false;
+        }
+        if (comp.getPreferredSize() == null) {
+            return false;
+        }
+        if (comp.getMinimumSize() == null) {
+            return false;
+        }
         return (getMinimumHeight(comp) < getPreferredHeight(comp));
     }
 
@@ -478,22 +490,40 @@ class LabelledLayout implements LayoutManager, java.io.Serializable {
         return (int) comp.getMaximumSize().getWidth();
     }
     
+    /**
+     * Create a new instance of the Separator that splits the layout in columns
+     * @return the separator
+     */
     public static Seperator getSeparator() {
         return new Seperator();
     }
 
+    /**
+     * @return the horizontal gaps between components
+     */
     public int getHgap() {
         return this.hgap;
     }
 
+    /**
+     * Set the horizontal gaps between components
+     * @param hgap the horizontal gap
+     */
     public void setHgap(int hgap) {
         this.hgap = hgap;
     }
 
+    /**
+     * @return the vertical gaps between components
+     */
     public int getVgap() {
         return this.vgap;
     }
 
+    /**
+     * Set the vertical gaps between components
+     * @param vgap the horizontal gap
+     */
     public void setVgap(int vgap) {
         this.vgap = vgap;
     }
