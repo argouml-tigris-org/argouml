@@ -551,7 +551,11 @@ public interface Project {
      * @deprecated for 0.27.2 by tfmorris for all uses other than argo.tee. The
      *             active diagram is a concept associated with the current
      *             editing window, not a project. It can be retrieved from
-     *          {@link org.argouml.uml.diagram.DiagramUtils#getActiveDiagram()}.
+     *          {@link org.argouml.uml.diagram.DiagramUtils#getActiveDiagram()},
+     *          which will get the diagram for the window 
+     *          that last contained the mouse (from GEF).
+     *          Alternatively, to get the diagram from a Fig, use 
+     *          ((LayerPerspective) getLayer()).getDiagram().
      */
     @Deprecated
     public ArgoDiagram getActiveDiagram();
