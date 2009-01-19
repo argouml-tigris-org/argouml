@@ -153,12 +153,14 @@ public abstract class UMLDiagram
     private Action selectedAction;
     
     /**
-     * Default constructor will become protected.  All subclasses should have
+     * Default constructor will become protected. All subclasses should have
      * their constructors invoke the 3-arg version of the constructor.
-     * @deprecated for 0.27.2 by tfmorris.  
-     * Use {@link #UMLDiagram(String, Object, GraphModel)} or another explicit
-     * constructor.
+     * 
+     * @deprecated for 0.27.2 by tfmorris. Use
+     *             {@link #UMLDiagram(String, Object, GraphModel)} or another
+     *             explicit constructor.
      */
+    @SuppressWarnings("deprecation")
     @Deprecated
     public UMLDiagram() {
         super();
@@ -166,8 +168,8 @@ public abstract class UMLDiagram
 
     /**
      * @param ns the UML namespace of this diagram
-     * @deprecated for 0.27.2 by tfmorris.  Use 
-     * {@link #UMLDiagram(Object, GraphModel)}.
+     * @deprecated for 0.27.2 by tfmorris. Use
+     *             {@link #UMLDiagram(String, Object, GraphModel)}.
      */
     @Deprecated
     public UMLDiagram(Object ns) {
@@ -184,8 +186,8 @@ public abstract class UMLDiagram
     /**
      * @param name the name of the diagram
      * @param ns the UML namespace of this diagram
-     * @deprecated for 0.27.2 by tfmorris.  Use 
-     * {@link #UMLDiagram(String, Object, GraphModel)}.
+     * @deprecated for 0.27.2 by tfmorris. Use
+     *             {@link #UMLDiagram(String, Object, GraphModel)}.
      */
     @Deprecated
     public UMLDiagram(String name, Object ns) {
@@ -555,6 +557,7 @@ public abstract class UMLDiagram
      * @deprecated for 0.27.3 by tfmorris. This is a noop. Diagram name
      *             duplication is checked for and managed at the project level.
      */
+    @Deprecated
     public void resetDiagramSerial() {
     }
 
@@ -563,6 +566,7 @@ public abstract class UMLDiagram
      * @deprecated for 0.27.3 by tfmorris. This is always returns 1. Diagram
      *             naming is managed at the project level.
      */
+    @Deprecated
     protected int getNextDiagramSerial() {
         return 1;
     }

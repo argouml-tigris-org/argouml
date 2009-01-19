@@ -24,14 +24,16 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.ModeCreateFigText;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * A Mode to interprete user input while creating a FigText. All of
+ * A Mode to interpret user input while creating a FigText. All of
  * the actual event handling is inherited from ModeCreate. This class
  * just implements the differences needed to make it specific to
  * text.
@@ -40,6 +42,7 @@ import org.tigris.gef.presentation.Fig;
  */
 public class ArgoModeCreateFigText extends ModeCreateFigText {
     
+    @Override
     public String instructions() {
         return Translator.localize("statusmsg.help.create.text");
     }
@@ -48,7 +51,9 @@ public class ArgoModeCreateFigText extends ModeCreateFigText {
      * Create a new FigText instance based on the given mouse down
      * event and the state of the parent Editor. 
      */
+    @Override
     public Fig createNewItem(MouseEvent e, int snapX, int snapY) {
-        return new ArgoFigText(snapX, snapY, 0, 0, true);
+        return new ArgoFigText(null, new Rectangle(snapX, snapY, 0, 0), 
+                DiagramUtils.getActiveDiagram().getDiagramSettings(), true);
     }
 }

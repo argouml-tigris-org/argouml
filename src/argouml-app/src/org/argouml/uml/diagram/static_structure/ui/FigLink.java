@@ -58,6 +58,7 @@ public class FigLink extends FigEdgeModelElement {
      * @deprecated for 0.28 by tfmorris. Use
      *             {@link #FigLink(Object, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
     @Deprecated
     public FigLink() {
         middleGroup = new FigTextGroup();

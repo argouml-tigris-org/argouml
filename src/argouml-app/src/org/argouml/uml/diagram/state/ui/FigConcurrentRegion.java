@@ -75,6 +75,10 @@ public class FigConcurrentRegion extends FigState
     @Deprecated
     public FigConcurrentRegion() {
         super();
+        initialize();
+    }
+
+    private void initialize() {
         cover =
             new FigRect(getInitialX(),
                 getInitialY(),
@@ -123,7 +127,10 @@ public class FigConcurrentRegion extends FigState
      * @param col the line color
      * @param width the width
      * @param height the height
+     * @deprecated for 0.27.4 by tfmorris.  Use 
+     * {@link #FigConcurrentRegion(Object, Rectangle, DiagramSettings)}.
      */
+    @Deprecated
     public FigConcurrentRegion(GraphModel gm, Object node,
                                Color col, int width, int height) {
         this(gm, node);
@@ -132,9 +139,24 @@ public class FigConcurrentRegion extends FigState
         setBounds(r.x, r.y, width, height);
     }
 
+    /**
+     * Construct a new concurrent region fig.
+     * 
+     * @param node owning UML element
+     * @param bounds position and size
+     * @param settings render settings
+     */
+    public FigConcurrentRegion(Object node, Rectangle bounds, DiagramSettings
+            settings) {
+        super(node, bounds, settings);
+        initialize();
+//        setLineColor(settings.getLineColor());
+    }
+    
     /*
      * @see java.lang.Object#clone()
      */
+    @Override
     public Object clone() {
         FigConcurrentRegion figClone = (FigConcurrentRegion) super.clone();
         Iterator it = figClone.getFigs().iterator();
@@ -149,6 +171,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
+    @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         popUpActions.remove(
@@ -165,6 +188,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
+    @Override
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
         Dimension internalDim = getInternal().getMinimumSize();
@@ -176,6 +200,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
      */
+    @Override
     public boolean getUseTrapRect() {
         return true;
     }
@@ -188,6 +213,7 @@ public class FigConcurrentRegion extends FigState
      *
      * {@inheritDoc}
      */
+    @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
@@ -214,8 +240,9 @@ public class FigConcurrentRegion extends FigState
                 adjacentindex = index - 1;
             }
             if (((curHandle.index == 5) || (curHandle.index == 7))
-                    && (index < (regionsList.size() - 1)))
+                    && (index < (regionsList.size() - 1))) {
                 adjacentindex = index + 1;
+            }
             if (h <= getMinimumSize().height) {
                 if (h <= oldBounds.height) {
                     h = oldBounds.height;
@@ -378,6 +405,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
+    @Override
     public void setLineColor(Color col) {
         cover.setLineColor(INVISIBLE_LINE_COLOR);
         dividerline.setLineColor(col);
@@ -386,6 +414,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
+    @Override
     public Color getLineColor() {
         return dividerline.getLineColor();
     }
@@ -393,6 +422,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
+    @Override
     public void setFillColor(Color col) {
         cover.setFillColor(col);
     }
@@ -400,6 +430,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
+    @Override
     public Color getFillColor() {
         return cover.getFillColor();
     }
@@ -407,6 +438,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
+    @Override
     public void setFilled(boolean f) {
         cover.setFilled(f);
         getBigPort().setFilled(f);
@@ -421,6 +453,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
+    @Override
     public void setLineWidth(int w) {
         dividerline.setLineWidth(w);
     }
@@ -428,6 +461,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
+    @Override
     public int getLineWidth() {
         return dividerline.getLineWidth();
     }
@@ -438,6 +472,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
+    @Override
     public Selection makeSelection() {
         Selection sel = new SelectionState(this);
         ((SelectionState) sel).setIncomingButtonEnabled(false);
@@ -483,6 +518,7 @@ public class FigConcurrentRegion extends FigState
     /////////////////////////////////////////////////////////////////////////
     // event handlers - MouseListener and MouseMotionListener implementation
 
+    @Override
     protected void updateLayout(UmlChangeEvent event) {
         super.updateLayout(event);
         final String eName = event.getPropertyName();
@@ -522,6 +558,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
+    @Override
     public void mousePressed(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
@@ -532,6 +569,7 @@ public class FigConcurrentRegion extends FigState
     /*
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
+    @Override
     public void mouseReleased(MouseEvent e) {
         curHandle.index = -1;
     }

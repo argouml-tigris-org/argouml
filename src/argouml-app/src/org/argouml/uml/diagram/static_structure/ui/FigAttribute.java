@@ -73,6 +73,8 @@ public class FigAttribute extends FigFeature {
      * @param settings render settings
      * @param np notation provider
      */
+    @Deprecated
+    @SuppressWarnings("deprecation")
     public FigAttribute(Object owner, Rectangle bounds,
             DiagramSettings settings, NotationProvider np) {
         super(owner, bounds, settings, np);

@@ -55,6 +55,7 @@ public class FigEdgePort extends FigNodeModelElement {
      * @deprecated for 0.28 by tfmorris. Use
      *             {@link #FigEdgePort(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
     @Deprecated
     public FigEdgePort() {
         super();

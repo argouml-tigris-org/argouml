@@ -131,8 +131,13 @@ public class UMLActivityDiagram extends UMLDiagram {
 
     /**
      * Constructor.
+     * 
+     * @deprecated for 0.28 by tfmorris.  Use 
+     * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
+    @Deprecated
     public UMLActivityDiagram() {
+        super();
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) {
@@ -147,7 +152,10 @@ public class UMLActivityDiagram extends UMLDiagram {
      *
      * @param namespace the namespace for the diagram
      * @param agraph the ActivityGraph for the diagram
+     * @deprecated for 0.28 by tfmorris.  Use 
+     * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
+    @Deprecated
     public UMLActivityDiagram(Object namespace, Object agraph) {
 
         this();

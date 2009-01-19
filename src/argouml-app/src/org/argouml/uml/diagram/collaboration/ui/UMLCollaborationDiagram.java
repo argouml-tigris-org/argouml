@@ -95,7 +95,10 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     /**
      * This constructor is used to build a dummy collaboration diagram so
      * that a project will load properly.
+     * @deprecated for 0.28 by tfmorris.  Use 
+     * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
+    @Deprecated
     public UMLCollaborationDiagram() {
         try {
             setName(getNewDiagramName());
@@ -108,7 +111,10 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * The constructor.
      *
      * @param collaboration the collaboration aka namespace for the diagram
+     * @deprecated for 0.28 by tfmorris.  Use 
+     * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
+    @Deprecated
     public UMLCollaborationDiagram(Object collaboration) {
         this();
         setNamespace(collaboration);

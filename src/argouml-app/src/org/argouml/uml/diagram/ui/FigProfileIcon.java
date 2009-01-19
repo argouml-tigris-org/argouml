@@ -49,6 +49,7 @@ public class FigProfileIcon extends FigNode {
      * 
      * @param icon the icon
      * @param str the default name
+     * TODO: Define a constructor that takes diagram settings
      */
     public FigProfileIcon(Image icon, String str) {
 	image = new FigImage(0, 0, icon);

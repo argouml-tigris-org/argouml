@@ -124,12 +124,14 @@ public class FigClassifierRole extends FigNodeModelElement {
         emptyFig = new FigEmptyRect(getX(), getY(), getWidth(), offset);
         emptyFig.setLineWidth(0);
         
-        headFig = new FigHead(getStereotypeFig(), getNameFig());
+        headFig = new FigHead(getOwner(), getSettings(), getStereotypeFig(),
+                getNameFig());
         headFig.setBounds(getX(), getY() + offset,
                 getWidth(), headFig.getHeight());
         
-        lifeLineFig = new FigLifeLine(headFig.getX(), 
-                getY() + offset + headFig.getHeight() - getLineWidth());
+        lifeLineFig = new FigLifeLine(getOwner(), new Rectangle(headFig.getX(),
+                getY() + offset + headFig.getHeight() - getLineWidth(), 0, 0),
+                getSettings());
         
         addFig(getBigPort());        
         getBigPort().setVisible(false);
@@ -381,6 +383,7 @@ public class FigClassifierRole extends FigNodeModelElement {
          */
         FigClassifierRolePort() {
             super(0, 0, 0, 0, null, null);
+            setLineWidth(0);
         }
         
         @Override

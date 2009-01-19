@@ -95,7 +95,10 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     
     /**
      * Constructor.
+     * @deprecated for 0.28 by tfmorris.  Use 
+     * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
+    @Deprecated
     public UMLDeploymentDiagram() {
         try {
             setName(getNewDiagramName());
@@ -106,7 +109,10 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
     /**
      * @param namespace the namespace for the new diagram
+     * @deprecated for 0.28 by tfmorris.  Use 
+     * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
+    @Deprecated
     public UMLDeploymentDiagram(Object namespace) {
         this();
         setNamespace(namespace);

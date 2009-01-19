@@ -269,10 +269,8 @@ public abstract class FigEdgeModelElement
      */
     public void makeEdgePort() {
         if (edgePort == null) {
-            edgePort = new FigEdgePort();
-            if (getOwner() != null) {
-                edgePort.setOwner(getOwner());
-            }
+            edgePort = new FigEdgePort(getOwner(), new Rectangle(), 
+                    getSettings());
             edgePort.setVisible(false);
             addPathItem(edgePort,
                     new PathItemPlacement(this, edgePort, 50, 0));

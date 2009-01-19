@@ -70,6 +70,7 @@ public class FigOperation extends FigFeature {
      * @param settings rendering settings
      * @param np notation provider
      */
+    @SuppressWarnings("deprecation")
     @Deprecated
     public FigOperation(Object owner, Rectangle bounds,
             DiagramSettings settings, NotationProvider np) {

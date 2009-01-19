@@ -30,6 +30,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
@@ -43,8 +44,8 @@ class FigLifeLine extends ArgoFigGroup {
 
     private static final long serialVersionUID = 466925040550356L;
 
-    private final FigLine lineFig;
-    private final FigRect rectFig;
+    private FigLine lineFig;
+    private FigRect rectFig;
     
     private List<FigActivation> activations;
     private List<FigActivation> stackedActivations;
@@ -56,10 +57,17 @@ class FigLifeLine extends ArgoFigGroup {
      * Creates a FigLifeLine that starts in (x,y)
      * @param x The x coordinate of the FigLifeLine
      * @param y The y coordinate of the FigLifeLine
+     * @deprecated for 0.28 by tfmorris.  Use 
+     * {@link #FigLifeLine(Object, Rectangle, DiagramSettings)}.
      */
+    @Deprecated
     FigLifeLine(int x, int y) {
         super();
 
+        initialize(x, y);
+    }
+
+    private void initialize(int x, int y) {
         activations = new LinkedList<FigActivation>();
         stackedActivations = new LinkedList<FigActivation>();
         
@@ -73,6 +81,11 @@ class FigLifeLine extends ArgoFigGroup {
         
         addFig(rectFig);
         addFig(lineFig);
+    }
+    
+    FigLifeLine(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, settings);
+        initialize(bounds.x, bounds.y);
     }
     
     // TODO: Does this still need to be synchronized? If so then explain why.
@@ -106,8 +119,8 @@ class FigLifeLine extends ArgoFigGroup {
         // if not then create an activation at the top of the lifeline
         if (!hasIncomingCallActions(figMessages) 
                 && !hasOutgoingDestroyActions(figMessages)) {
-            currentAct = 
-                new FigActivation(lineFig.getX(), lineFig.getY(), false);
+            currentAct = new FigActivation(getOwner(), new Rectangle(lineFig
+                    .getX(), lineFig.getY(), 0, 0), getSettings());
         }
         
         for (FigMessage figMessage : figMessages) {
@@ -120,16 +133,16 @@ class FigLifeLine extends ArgoFigGroup {
                 // if we are the dest and is a call action, create the 
                 // activation, but don't add it until the height is set.
         	ySender = figMessage.getFinalY();        	
-                currentAct = 
-                    new FigActivation(lineFig.getX(), ySender, false); 
+                currentAct = new FigActivation(getOwner(), new Rectangle(
+                        lineFig.getX(), ySender, 0, 0), getSettings()); 
             } else if (currentAct == null
                     && cr.equals(figMessage.getDestFigNode())
                     && !cr.equals(figMessage.getSourceFigNode())
                     && Model.getFacade().isACreateAction(action)) {
                 // if we are the dest of a create action, create the
                 // entire activation, because we should need the destroy X
-                currentAct = 
-                    new FigActivation(lineFig.getX(), lineFig.getY(), false);
+                currentAct = new FigActivation(getOwner(), new Rectangle(
+                        lineFig.getX(), lineFig.getY(), 0, 0), getSettings());
             } else if (currentAct != null
                     && cr.equals(figMessage.getSourceFigNode()) 
                     && !cr.equals(figMessage.getDestFigNode())
@@ -182,10 +195,10 @@ class FigLifeLine extends ArgoFigGroup {
             if (figMessage.isSelfMessage()) {
                 if (figMessage.isCallAction()) {
                     ySender = figMessage.getFinalY();
-                    currentAct = new FigActivation(
-                            lineFig.getX() + FigActivation.DEFAULT_WIDTH / 2,
-                            ySender,
-                            false);
+                    currentAct = new FigActivation(figMessage.getOwner(),
+                            new Rectangle(lineFig.getX()
+                                    + FigActivation.DEFAULT_WIDTH / 2, ySender,
+                                    0, 0), getSettings(), false);
                 } else if (currentAct != null
                         && figMessage.isReturnAction()) {
                     ySender = figMessage.getStartY();

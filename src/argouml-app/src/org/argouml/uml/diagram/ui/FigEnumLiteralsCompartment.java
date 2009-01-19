@@ -54,7 +54,7 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
      * @param w width
      * @param h height
      * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigEnumLiteralsCompartment(Rectangle, DiagramSettings)}.
+     * {@link #FigEnumLiteralsCompartment(Object, Rectangle, DiagramSettings)}.
      */
     @SuppressWarnings("deprecation")
     @Deprecated

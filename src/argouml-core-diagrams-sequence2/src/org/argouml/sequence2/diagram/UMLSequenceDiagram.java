@@ -62,8 +62,12 @@ public class UMLSequenceDiagram extends UMLDiagram {
         .getLogger(UMLSequenceDiagram.class);
     
     /**
+     * TODO: Document!
      * 
+     * @deprecated for 0.28 by tfmorris.  Use 
+     * {@link #UMLActivityDiagram(String, Object, GraphModel)}.
      */
+    @Deprecated
     public UMLSequenceDiagram() {
         super();
         // Create the graph model
@@ -170,7 +174,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * A sequence diagram can accept all classifiers. It will add them as a new 
      * Classifier Role with that classifier as a base.
      * @param objectToAccept
-     * @return
+     * @return true if the element is acceptable
      * @see org.argouml.uml.diagram.ui.UMLDiagram#doesAccept(java.lang.Object)
      */
     @Override
@@ -214,32 +218,27 @@ public class UMLSequenceDiagram extends UMLDiagram {
     private FigClassifierRole makeNewFigCR(Object classifierRole, 
             Point location) {
         if (classifierRole != null) {
-            FigClassifierRole newCR = new FigClassifierRole(classifierRole);
-            
-            getGraphModel().getNodes().add(newCR.getOwner());
+            Rectangle bounds = new Rectangle();
             
             // Y position of the new CR should match existing CRs Y position
-            List nodes = getLayer().getContentsNoEdges();
-            int i = 0;
-            boolean figClassifierRoleFound = false;
-            Fig fig = null;
-            while (i < nodes.size() && !figClassifierRoleFound) {
-                fig = (Fig) nodes.get(i);
-                if (nodes.get(i) instanceof Fig) {
-                    if (fig != newCR && fig instanceof FigClassifierRole) {
-                        newCR.setY(((Fig) fig).getY());
-                        newCR.setHeight(((Fig) fig).getHeight());
-                        figClassifierRoleFound = true;
-                    }
+            for (Fig fig : (List<Fig>) getLayer().getContentsNoEdges()) {
+                if (fig instanceof FigClassifierRole) {
+                    bounds.y = fig.getY();
+                    bounds.height = fig.getHeight();
+                    break;
                 }
-                i++;
             }
             if (location != null) {
-                if (newCR.getY() == 0) {
-                    newCR.setY(location.y);
+                if (bounds.y == 0) {
+                    bounds.y = location.y;
                 }
-                newCR.setX(location.x);
+                bounds.x = location.x;
             }
+
+            FigClassifierRole newCR = new FigClassifierRole(classifierRole,
+                    bounds, getDiagramSettings());
+            getGraphModel().getNodes().add(newCR.getOwner());
+            
             return newCR;
         }
         return null;

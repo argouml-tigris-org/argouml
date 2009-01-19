@@ -27,6 +27,7 @@ package org.argouml.sequence2.diagram;
 import java.awt.Color;
 import java.awt.Dimension;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
@@ -34,21 +35,27 @@ import org.tigris.gef.presentation.FigText;
 
 class FigHead extends ArgoFigGroup  {
     
-    private final FigText nameFig;
-    private final Fig stereotypeFig;
-    private final FigRect rectFig;
+    private FigText nameFig;
+    private Fig stereotypeFig;
+    private FigRect rectFig;
 
     static final int DEFAULT_WIDTH = 150;
     static final int DEFAULT_HEIGHT = 50;
     
     /**
      * Constructor.
-     *
+     * 
      * @param stereotypeFigure the stereotype fig
      * @param nameFigure the name fig
+     * @deprecated for 0.28 by tfmorris. Use
+     *             {@link #FigHead(Object, DiagramSettings, Fig, FigText)}.
      */
-    // TODO: Define a constructor which doesn't use deprecated super constructor
+    @Deprecated
     FigHead(Fig stereotypeFigure, FigText nameFigure) {
+        initialize(stereotypeFigure, nameFigure);
+    }
+
+    private void initialize(Fig stereotypeFigure, FigText nameFigure) {
         this.stereotypeFig = stereotypeFigure;
         this.nameFig = nameFigure;
         
@@ -65,6 +72,13 @@ class FigHead extends ArgoFigGroup  {
         addFig(nameFig);
         addFig(stereotypeFig);
     }
+    
+    FigHead(Object owner, DiagramSettings settings, Fig stereotypeFigure,
+            FigText nameFigure) {
+        super(owner, settings);
+        initialize(stereotypeFigure, nameFigure);
+    }
+
 
 
     /**

@@ -24,6 +24,9 @@
 
 package org.argouml.sequence2.diagram;
 
+import java.awt.Rectangle;
+
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.presentation.FigRect;
 
@@ -42,18 +45,59 @@ class FigActivation extends ArgoFigGroup {
 
     
     /**
-     * TODO: Document!
+     * TODO: Document
      * 
      * @param x
      * @param y
      * @param destroy 
+     * @deprecated for 0.28 by tfmorris.  
      */
     public FigActivation(int x, int y, boolean destroy) {
-        rectFig = new FigRect(x - DEFAULT_WIDTH / 2, y,
-                DEFAULT_WIDTH, DEFAULT_HEIGHT, LINE_COLOR, FILL_COLOR);
-        rectFig.setLineWidth(LINE_WIDTH);
+        super();
+        initialize(new Rectangle(x, y, DEFAULT_HEIGHT, DEFAULT_WIDTH), destroy);
+    }
+
+    private void initialize(Rectangle bounds, boolean destroy) {
+        if (bounds.width == 0) {
+            bounds.width = DEFAULT_WIDTH;
+        }
+        if (bounds.height == 0) {
+            bounds.height = DEFAULT_HEIGHT;
+        }
+        rectFig = new FigRect(bounds.x - bounds.width / 2, bounds.y,
+                bounds.width, bounds.height, LINE_COLOR, FILL_COLOR);
+        rectFig.setLineWidth(0);
         addFig(rectFig);
         setDestroy(destroy);
+    }
+
+    /**
+     * Create a new default activation fig (ie one without a destroy fig at the
+     * end).
+     * 
+     * @param owner owning UML element or null
+     * @param bounds position (top center) and size. If the width or height is
+     *            0, the default will be used.
+     * @param settings rendering settings
+     */
+    public FigActivation(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        this(owner, bounds, settings, false);
+    }
+
+    /**
+     * Create a new activation fig which optionally ends with a destroy fig.
+     * 
+     * @param owner owning UML element or null
+     * @param bounds position (top center) and size.  If the width or height is
+     *            0, the default will be used.
+     * @param settings rendering settings
+     * @param destroy true if activation should end with a destroy fig.
+     */
+    public FigActivation(Object owner, Rectangle bounds,
+            DiagramSettings settings, boolean destroy) {
+        super(owner, settings);
+        initialize(bounds, destroy);
     }
     
     /**     
@@ -63,7 +107,7 @@ class FigActivation extends ArgoFigGroup {
         if (isDestroy) {
             if (destroyFig == null) {
                 destroyFig = 
-                    new FigDestroy(getX() + DEFAULT_WIDTH / 2,
+                    new FigDestroy(getX() + getWidth() / 2,
                             getY() + getHeight());
                 addFig(destroyFig);                
             }

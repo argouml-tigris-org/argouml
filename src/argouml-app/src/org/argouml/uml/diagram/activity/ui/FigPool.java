@@ -50,6 +50,7 @@ public class FigPool extends FigNodeModelElement {
      * @deprecated for 0.28 by tfmorris. Use
      *             {@link #FigPool(Object, Rectangle, DiagramSettings)}.
      */
+    @SuppressWarnings("deprecation")
     @Deprecated
     public FigPool(Rectangle r) {
         initialize(r);

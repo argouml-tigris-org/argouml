@@ -25,7 +25,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -38,6 +37,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesFactory;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
 import org.argouml.uml.diagram.state.ui.FigConcurrentRegion;
@@ -54,7 +54,9 @@ import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Add a concurrent region to a concurrent composite state
- *
+ * <p>
+ * TODO: Move all the magic numbers to constants
+ * 
  * @author pepargouml@yahoo.es
  */
 public class ActionAddConcurrentRegion extends UndoableAction {
@@ -86,7 +88,9 @@ public class ActionAddConcurrentRegion extends UndoableAction {
      */
     public boolean isEnabled() {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (Model.getStateMachinesHelper().isTopState(target)) return false;
+        if (Model.getStateMachinesHelper().isTopState(target)) {
+            return false;
+        }
         return TargetManager.getInstance().getModelTargets().size() < 2;
     }
 
@@ -129,13 +133,21 @@ public class ActionAddConcurrentRegion extends UndoableAction {
 
                 final Object region1 =
                     factory.buildCompositeState(compositeState);
+                // TODO: What do all these magic numbers represent??
+                Rectangle bounds = new Rectangle(
+                        f.getX() + 3, 
+                        f.getY() + rName.height + 5, 
+                        rFig.width - 6, 
+                        rFig.height - rName.height - 10);
+                // TODO: Get these settings from some place reasonable
+                DiagramSettings settings = new DiagramSettings();
                 final FigConcurrentRegion region =
-                    new FigConcurrentRegion(gm, region1,
-                                            Color.white,
-                                            rFig.width - 6,
-                                            rFig.height - rName.height - 10);
+                    new FigConcurrentRegion(
+                        region1, bounds, settings);
+                // Invisible border (was Color.white)
+                // TODO: Should this be LINE_COLOR's complement or something?
+                region.setLineColor(ArgoFig.INVISIBLE_LINE_COLOR);
 
-                region.setLocation(f.getX() + 3, f.getY() + rName.height + 5);
                 region.setEnclosingFig(figCompositeState);
                 region.setLayer(lay);
                 lay.add(region);
@@ -157,11 +169,15 @@ public class ActionAddConcurrentRegion extends UndoableAction {
             }
 
             final Object region2 = factory.buildCompositeState(compositeState);
+            // TODO: What are all these magic numbers?
+            Rectangle bounds = new Rectangle(f.getX() + 3, f.getY()
+                    + rFig.height - 1, rFig.width - 6, 126);
+            // TODO: Get the settings from someplace reasonable
+            DiagramSettings settings = new DiagramSettings();
             final FigConcurrentRegion regionNew =
-                new FigConcurrentRegion(gm, region2, Color.black,
-                        rFig.width - 6, 126);
-
-            regionNew.setLocation(f.getX() + 3, f.getY() + rFig.height - 1);
+                new FigConcurrentRegion(region2, bounds, settings);
+            // Uses default line color (was Color.black)
+//            regionNew.setLineColor(ArgoFig.LINE_COLOR);
 
             figCompositeState.setBounds(rFig.height + 130);
             regionNew.setEnclosingFig(figCompositeState);
