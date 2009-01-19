@@ -54,7 +54,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      * Default bounds for a compartment.
      */
     protected static final Rectangle DEFAULT_COMPARTMENT_BOUNDS = new Rectangle(
-            X0, Y0 + 20, WIDTH, ROWHEIGHT + 2);
+            X0, Y0 + 20 /* 20 = height of name fig ?*/, 
+            WIDTH, ROWHEIGHT + 2 /* 2*LINE_WIDTH?  or extra padding? */ );
     
     /**
      * Text highlighted by mouse actions on the diagram.<p>
@@ -79,10 +80,12 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      * Initialization shared by all constructors.
      */
     private void initialize() {
-        // Set properties of the stereotype box. Make it 1 pixel higher than
+        // Set properties of the stereotype box. Make it LINE_WIDTH higher than
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
+        // TODO: Overlapping figs won't work with when the colors have alpha
+        // channels
         getStereotypeFig().setFilled(true);
         getStereotypeFig().setLineWidth(LINE_WIDTH);
         // +1 to have 1 pixel overlap with getNameFig()

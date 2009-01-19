@@ -60,10 +60,8 @@ public class FigClass extends FigClassifierBoxWithAttributes {
      * outlines.<p>
      *
      * <em>Warning</em>. Much of the graphics positioning is hard
-     * coded. The overall figure is placed at location (10,10). The
-     * name compartment (in the parent
-     * {@link org.argouml.uml.diagram.ui.FigNodeModelElement} is
-     * 21 pixels high. The stereotype compartment is created 15 pixels
+     * coded. The overall figure is placed at location (10,10). 
+     * The stereotype compartment is created 15 pixels
      * high in the parent, but we change it to 19 pixels, 1 more than
      * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
      * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
@@ -96,10 +94,8 @@ public class FigClass extends FigClassifierBoxWithAttributes {
      * outlines.<p>
      *
      * <em>Warning</em>. Much of the graphics positioning is hard
-     * coded. The overall figure is placed at location (10,10). The
-     * name compartment (in the parent
-     * {@link org.argouml.uml.diagram.ui.FigNodeModelElement} is
-     * 21 pixels high. The stereotype compartment is created 15 pixels
+     * coded. The overall figure is placed at location (10,10). 
+     * The stereotype compartment is created 15 pixels
      * high in the parent, but we change it to 19 pixels, 1 more than
      * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
      * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
@@ -139,10 +135,8 @@ public class FigClass extends FigClassifierBoxWithAttributes {
      * outlines.<p>
      *
      * <em>Warning</em>. Much of the graphics positioning is hard
-     * coded. The overall figure is placed at location (10,10). The
-     * name compartment (in the parent
-     * {@link org.argouml.uml.diagram.ui.FigNodeModelElement} is
-     * 21 pixels high. The stereotype compartment is created 15 pixels
+     * coded. The overall figure is placed at location (10,10). 
+     * The stereotype compartment is created 15 pixels
      * high in the parent, but we change it to 19 pixels, 1 more than
      * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
      * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
@@ -155,7 +149,8 @@ public class FigClass extends FigClassifierBoxWithAttributes {
             DiagramSettings settings) {
         super(element, bounds, settings);
         constructFigs();
-        renderingChanged(); // fix for issue 5591
+        Rectangle r = getBounds();
+        setStandardBounds(r.x, r.y, r.width, r.height);
     }
 
     /*

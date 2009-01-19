@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -57,9 +56,6 @@ import org.tigris.gef.graph.GraphModel;
  */
 public class FigStereotypeDeclaration extends FigCompartmentBox {
 
-    /**
-     * The UID.
-     */
     private static final long serialVersionUID = -2702539988691983863L;
     
     /**
@@ -92,7 +88,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
 
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
-        setBounds(X0, Y0, WIDTH, 22 + 2 * ROWHEIGHT);
+        setBounds(X0, Y0, WIDTH, STEREOHEIGHT + NAME_FIG_HEIGHT);
     }
 
     /**
@@ -200,21 +196,13 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      * Sets the bounds, but the size will be at least the one returned by
      * {@link #getMinimumSize()}, unless checking of size is disabled.<p>
      *
-     * If the required height is bigger, then the additional height is
-     * equally distributed among all figs (i.e. compartments), such that the
-     * cumulated height of all visible figs equals the demanded height<p>.
-     *
-     * Some of this has "magic numbers" hardcoded in. In particular there is
-     * a knowledge that the minimum height of a name compartment is 21
-     * pixels.<p>
-     *
      * @param x  Desired X coordinate of upper left corner
      *
      * @param y  Desired Y coordinate of upper left corner
      *
-     * @param w  Desired width of the FigClass
+     * @param w  Desired width of the fig
      *
-     * @param h  Desired height of the FigClass
+     * @param h  Desired height of the fig
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
@@ -227,14 +215,6 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         getBigPort().setBounds(x, y, w, h);
         getBorderFig().setBounds(x, y, w, h);
 
-        // Save our old boundaries (needed later), and get minimum size
-        // info. "whitespace" will be used to maintain a running calculation
-        // of our size at various points.
-
-        // final int whitespace = h - getMinimumSize().height;
-
-        getNameFig().setLineWidth(0);
-        getNameFig().setLineColor(Color.red); // TODO: DEBUG_COLOR?
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {

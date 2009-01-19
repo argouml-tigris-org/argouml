@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
@@ -53,6 +52,8 @@ import org.tigris.gef.presentation.Fig;
 public class FigDataType extends FigClassifierBox {
 
     private static final Logger LOG = Logger.getLogger(FigDataType.class);
+    
+    private static final int MIN_WIDTH = 40;
 
     /**
      * Main constructor for a {@link FigDataType}.
@@ -67,9 +68,8 @@ public class FigDataType extends FigClassifierBox {
      * appropriately. The main boxes are all filled and have outlines.<p>
      * 
      * <em>Warning</em>. Much of the graphics positioning is hard coded. The
-     * overall figure is placed at location (10,10). The name compartment (in
-     * the parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
-     * is 21 pixels high. The stereotype compartment is created 15 pixels high
+     * overall figure is placed at location (10,10). 
+     * The stereotype compartment is created 15 pixels high
      * in the parent, but we change it to 19 pixels, 1 more than
      * ({@link #STEREOHEIGHT} here. The operations box is created at 19 pixels,
      * 2 more than {@link #ROWHEIGHT}.<p>
@@ -90,7 +90,6 @@ public class FigDataType extends FigClassifierBox {
     private void constructFigs() {
         getStereotypeFig().setKeyword(getKeyword());
 
-
         setSuppressCalcBounds(true);
         addFig(getBigPort());
         addFig(getStereotypeFig());
@@ -100,9 +99,9 @@ public class FigDataType extends FigClassifierBox {
 
         setSuppressCalcBounds(false);
 
-        // Set the bounds of the figure to the total of the above (hardcoded)
+        // Set the bounds of the figure to the total of the above 
         enableSizeChecking(true);
-        setBounds(X0, Y0, WIDTH, 21 + ROWHEIGHT);
+        super.setStandardBounds(X0, Y0, WIDTH, NAME_FIG_HEIGHT + ROWHEIGHT);
     }
 
     /**
@@ -136,9 +135,8 @@ public class FigDataType extends FigClassifierBox {
      * appropriately. The main boxes are all filled and have outlines.<p>
      * 
      * <em>Warning</em>. Much of the graphics positioning is hard coded. The
-     * overall figure is placed at location (10,10). The name compartment (in
-     * the parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
-     * is 21 pixels high. The stereotype compartment is created 15 pixels high
+     * overall figure is placed at location (10,10).
+     * The stereotype compartment is created 15 pixels high
      * in the parent, but we change it to 19 pixels, 1 more than
      * ({@link #STEREOHEIGHT} here. The operations box is created at 19 pixels,
      * 2 more than {@link #ROWHEIGHT}.
@@ -188,8 +186,7 @@ public class FigDataType extends FigClassifierBox {
     /**
      * Gets the minimum size permitted for a datatype on the diagram.<p>
      *
-     * Parts of this are hardcoded, notably the fact that the name
-     * compartment has a minimum height of 21 pixels.<p>
+     * Parts of this are hardcoded with magic numbers.<p>
      *
      * @return  the size of the minimum bounding box.
      */
@@ -200,9 +197,8 @@ public class FigDataType extends FigClassifierBox {
 
         Dimension aSize = getNameFig().getMinimumSize();
 
-        // +2 padding before and after name
-        aSize.height += 4;
-        aSize.height = Math.max(21, aSize.height);
+        aSize.height += NAME_V_PADDING * 2;
+        aSize.height = Math.max(NAME_FIG_HEIGHT, aSize.height);
 
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
@@ -210,7 +206,7 @@ public class FigDataType extends FigClassifierBox {
         aSize = addChildDimensions(aSize, getOperationsFig());
 
         // we want to maintain a minimum width for datatypes
-        aSize.width = Math.max(40, aSize.width);
+        aSize.width = Math.max(MIN_WIDTH, aSize.width);
 
         return aSize;
     }
@@ -313,11 +309,7 @@ public class FigDataType extends FigClassifierBox {
      *
      * If the required height is bigger, then the additional height is
      * equally distributed among all figs (i.e. compartments), such that the
-     * cumulated height of all visible figs equals the demanded height<p>.
-     *
-     * Some of this has "magic numbers" hardcoded in. In particular there is
-     * a knowledge that the minimum height of a name compartment is 21
-     * pixels.<p>
+     * accumulated height of all visible figs equals the demanded height<p>.
      *
      * @param x  Desired X coordinate of upper left corner
      *
@@ -332,22 +324,14 @@ public class FigDataType extends FigClassifierBox {
     protected void setStandardBounds(final int x, final int y, final int w,
             final int h) {
 
+        // Save our old boundaries to use in our property message later
         Rectangle oldBounds = getBounds();
-        // Save our old boundaries (needed later), and get minimum size
-        // info. "aSize will be used to maintain a running calculation of our
-        // size at various points.
-
-        // "extra_each" is the extra height per displayed fig if requested
-        // height is greater than minimal. "height_correction" is the height
-        // correction due to rounded division result, will be added to the name
-        // compartment
+        // and get minimum size info.
 
         // set bounds of big box
         getBigPort().setBounds(x, y, w, h);
         borderFig.setBounds(x, y, w, h);
 
-        getNameFig().setLineWidth(0);
-        getNameFig().setLineColor(Color.red); // TODO: debug color?
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {
@@ -366,7 +350,7 @@ public class FigDataType extends FigClassifierBox {
 
         if (getOperationsFig().isVisible()) {
             int operationsY = y + currentHeight;
-            int operationsHeight = (h + y) - operationsY - 1;
+            int operationsHeight = (h + y) - operationsY - LINE_WIDTH;
             getOperationsFig().setBounds(
                     x,
                     operationsY,

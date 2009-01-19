@@ -233,7 +233,9 @@ public class FigEnumeration extends FigDataType
         // Start with the minimum for our parent
         Dimension aSize = super.getMinimumSize();
 
-        aSize = addChildDimensions(aSize, literalsCompartment);
+        if (literalsCompartment != null) {
+            aSize = addChildDimensions(aSize, literalsCompartment);
+        }
         
         return aSize;
     }
@@ -242,23 +244,19 @@ public class FigEnumeration extends FigDataType
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     @Override
-    protected void setStandardBounds(final int x, final int y, final int w,
-            final int h) {
+    protected void setStandardBounds(final int x, final int y, final int width,
+            final int height) {
 
         // Save our old boundaries so it can be used in property message later
         Rectangle oldBounds = getBounds();
 
+        int w = Math.max(width, getMinimumSize().width);
+        int h = Math.max(height, getMinimumSize().height);
+        
         // set bounds of big box
         getBigPort().setBounds(x, y, w, h);
         borderFig.setBounds(x, y, w, h);
-
-        getNameFig().setLineWidth(0);
         
-        // Vertical whitespace to be distributed
-        // TODO: This continually adds more whitespace.  Figure out the problem.
-        //final int whitespace = Math.max(0, h - getMinimumSize().height);
-        final int whitespace = 0;
-                
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {
@@ -275,10 +273,13 @@ public class FigEnumeration extends FigDataType
         getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
         currentHeight += nameHeight;
 
+        int visibleCompartments = getOperationsFig().isVisible() ? 1 : 0;
         if (getLiteralsCompartment().isVisible()) {
+            visibleCompartments++;
             int literalsHeight = 
                 getLiteralsCompartment().getMinimumSize().height;
-            literalsHeight += whitespace / 2;
+            literalsHeight = Math.max(literalsHeight, 
+                    (h - currentHeight) / visibleCompartments);
             getLiteralsCompartment().setBounds(
                     x,
                     y + currentHeight,
@@ -289,7 +290,7 @@ public class FigEnumeration extends FigDataType
         
         if (getOperationsFig().isVisible()) {
             int operationsHeight = getOperationsFig().getMinimumSize().height;
-            operationsHeight += whitespace / 2;
+            operationsHeight = Math.max(operationsHeight, h - currentHeight);
             getOperationsFig().setBounds(
                     x,
                     y + currentHeight,

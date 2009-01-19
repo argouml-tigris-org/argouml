@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.HashSet;
@@ -32,6 +31,7 @@ import java.util.Set;
 
 import javax.swing.Action;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -52,6 +52,9 @@ import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 public class FigClassifierBoxWithAttributes extends FigClassifierBox 
     implements AttributesCompartmentContainer {
 
+    private static final Logger LOG = 
+        Logger.getLogger(FigClassifierBoxWithAttributes.class);
+    
     private FigAttributesCompartment attributesFigCompartment;
 
     /**
@@ -87,7 +90,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
     }
 
     /**
-     * @return The vector of graphics for operations (if any).
+     * @return The vector of graphics for the uml attributes (if any).
      * First one is the rectangle for the entire operations box.
      */
     protected FigAttributesCompartment getAttributesFig() {
@@ -248,8 +251,8 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         // name compartment and build up.
 
         Dimension aSize = getNameFig().getMinimumSize();
-        aSize.height += 4; // +2 padding above and below name
-        aSize.height = Math.max(21, aSize.height);
+        aSize.height += NAME_V_PADDING * 2;
+        aSize.height = Math.max(NAME_FIG_HEIGHT, aSize.height);
 
         aSize = addChildDimensions(aSize, getStereotypeFig());
         aSize = addChildDimensions(aSize, getAttributesFig());
@@ -268,40 +271,35 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
      * equally distributed among all figs (i.e. compartments), such that the
      * cumulated height of all visible figs equals the demanded height<p>.
      *
-     * Some of this has "magic numbers" hardcoded in. In particular there is
-     * a knowledge that the minimum height of a name compartment is 21
-     * pixels.<p>
+     * Some of this has "magic numbers" hardcoded in.<p>
      *
      * @param x  Desired X coordinate of upper left corner
      *
      * @param y  Desired Y coordinate of upper left corner
      *
-     * @param w  Desired width of the FigClass
+     * @param width  Desired width of the FigClass
      *
-     * @param h  Desired height of the FigClass
+     * @param height  Desired height of the FigClass
      * 
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     @Override
-    protected void setStandardBounds(final int x, final int y, final int w,
-            final int h) {
+    protected void setStandardBounds(final int x, final int y, final int width,
+            final int height) {
 
         // Save our old boundaries so it can be used in property message later
         Rectangle oldBounds = getBounds();
 
+        // Make sure we don't try to set things smaller than the minimum
+        int w = Math.max(width, getMinimumSize().width);
+        int h = Math.max(height, getMinimumSize().height);
+        
         // set bounds of big box
         getBigPort().setBounds(x, y, w, h);
         if (borderFig != null) {
             borderFig.setBounds(x, y, w, h);
         }
         
-        // Save our old boundaries (needed later), and get minimum size
-        // info. "whitespace" will be used to maintain a running calculation
-        // of our size at various points.
-        final int whitespace = h - getMinimumSize().height;
-
-        getNameFig().setLineWidth(0);
-        getNameFig().setLineColor(Color.red);  // TODO: Debug color?
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {
@@ -322,7 +320,8 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
             int attributesHeight = 
                 attributesFigCompartment.getMinimumSize().height;
             if (isOperationsVisible()) {
-                attributesHeight += whitespace / 2;
+                attributesHeight = Math.max(attributesHeight, 
+                        (h - currentHeight) / 2);
             }
             attributesFigCompartment.setBounds(
                     x,
@@ -334,7 +333,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
 
         if (isOperationsVisible()) {
             int operationsY = y + currentHeight;
-            int operationsHeight = (h + y) - operationsY - 1;
+            int operationsHeight = (h + y) - operationsY - LINE_WIDTH;
             if (operationsHeight < getOperationsFig().getMinimumSize().height) {
                 operationsHeight = getOperationsFig().getMinimumSize().height;
             }
@@ -351,6 +350,8 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
 
         calcBounds();
         updateEdges();
+        LOG.debug("Bounds change : old - " + oldBounds + ", new - " 
+                + getBounds());
         firePropChange("bounds", oldBounds, getBounds());
     }
 

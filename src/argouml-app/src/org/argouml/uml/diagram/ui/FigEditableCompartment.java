@@ -28,7 +28,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -56,7 +55,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
 
     private static final Logger LOG = Logger.getLogger(FigCompartment.class);
 
-    private static final int MIN_HEIGHT = 21;
+    private static final int MIN_HEIGHT = FigNodeModelElement.NAME_FIG_HEIGHT;
 
     private FigSeperator compartmentSeperator;
 
@@ -350,7 +349,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
     /**
      * The minimum width is the minimum width of the widest child element.
      * The minimum height is the total minimum height of all child figs but no
-     * less than MINIMUM_HEIGHT (21) pixels.
+     * less than MINIMUM_HEIGHT pixels.
      * @return the minimum width
      */
     @Override
@@ -370,28 +369,27 @@ public abstract class FigEditableCompartment extends FigCompartment {
         int newW = w;
         int newH = h;
 
-        Iterator figs = iterator();
-        Fig fig;
         int fw;
         int yy = y;
-        while (figs.hasNext()) {
-            fig = (Fig) figs.next();
+        int lineWidth = getLineWidth();
+        for (Fig fig : (List<Fig>) getFigs()) {
             if (fig.isVisible() && fig != getBigPort()) {
                 if (fig instanceof FigSeperator) {
                     fw = w;
                 } else {
                     fw = fig.getMinimumSize().width;
                 }
-                // TODO: Some of these magic numbers probably assume a line
-                // width of 1.  Replace with appropriate constants/variables.
-                fig.setBounds(x + 1, yy + 1, fw, fig.getMinimumSize().height);
-                if (newW < fw + 2) {
-                    newW = fw + 2;
+
+                fig.setBounds(x + lineWidth, yy + lineWidth, fw, 
+                        fig.getMinimumSize().height);
+                if (newW < fw + 2 * lineWidth) {
+                    newW = fw + 2 * lineWidth;
                 }
                 yy += fig.getMinimumSize().height;
             }
         }
-        getBigPort().setBounds(x + 1, y + 1, newW - 3, newH - 1);
+        getBigPort().setBounds(x + lineWidth, y + lineWidth, 
+                newW - 2 * lineWidth, newH - 2 * lineWidth);
         calcBounds();
     }
 

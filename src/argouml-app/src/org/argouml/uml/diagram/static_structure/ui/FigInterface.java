@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
@@ -66,9 +65,8 @@ public class FigInterface extends FigClassifierBox {
      * bottom line, and avoid three compartments showing.<p>
      *
      * <em>Warning</em>. Much of the graphics positioning is hard coded. The
-     * overall figure is placed at location (10,10). The name compartment (in
-     * the parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
-     * is 21 pixels high. The stereotype compartment is created 15 pixels high
+     * overall figure is placed at location (10,10).
+     * The stereotype compartment is created 15 pixels high
      * in the parent, but we change it to 19 pixels, 1 more than
      * ({@link #STEREOHEIGHT} here. The operations box is created at 19 pixels,
      * 2 more than {@link #ROWHEIGHT}.<p>
@@ -98,17 +96,23 @@ public class FigInterface extends FigClassifierBox {
         // we're all done for efficiency.
         enableSizeChecking(false);
         setSuppressCalcBounds(true);
+        
+        Dimension size = new Dimension(0, 0);
+        
         addFig(getBigPort());
         addFig(getStereotypeFig());
+        addChildDimensions(size, getStereotypeFig());
         addFig(getNameFig());
+        addChildDimensions(size, getNameFig());
         addFig(getOperationsFig());
+        addChildDimensions(size, getOperationsFig());
         addFig(borderFig);
 
         setSuppressCalcBounds(false);
 
-        // Set the bounds of the figure to the total of the above (hardcoded)
+        // Set the bounds of the figure to the total of the above 
         enableSizeChecking(true);
-        setBounds(X0, Y0, WIDTH, 21 + ROWHEIGHT);
+        setBounds(X0, Y0, size.width, size.height);
     }
 
     /**
@@ -151,47 +155,11 @@ public class FigInterface extends FigClassifierBox {
         return new SelectionInterface(this);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigCompartmentBox#setOperationsVisible(boolean)
-     * 
-     * TODO: This differs only very slightly from the version in the superclass
-     *       It probably can be merged, but I don't have time to verify
-     *       right now. - tfm - 20070109
-     */
-    public void setOperationsVisible(boolean isVisible) {
-        Rectangle rect = getBounds();
-        int h =
-                isCheckSize() ? ((ROWHEIGHT
-                * Math.max(1, getOperationsFig().getFigs().size() - 1) + 2)
-                * rect.height / getMinimumSize().height) : 0;
-        if (isOperationsVisible()) {
-            // TODO: Can these two legs be collapsed?  They differ only in the
-            // order the damage() method is invoked in
-            if (!isVisible) {
-                damage();
-                for (Object f : getOperationsFig().getFigs()) {
-                    ((Fig) f).setVisible(isVisible);
-                }
-                getOperationsFig().setVisible(isVisible);
-                setBounds(rect.x, rect.y, rect.width, rect.height - h);
-            }
-        } else {
-            if (isVisible) {
-                for (Object f : getOperationsFig().getFigs()) {
-                    ((Fig) f).setVisible(isVisible);
-                }
-                getOperationsFig().setVisible(isVisible);
-                setBounds(rect.x, rect.y, rect.width, rect.height + h);
-                damage();
-            }
-        }
-    }
 
     /**
      * Gets the minimum size permitted for an interface on the diagram.<p>
      *
-     * Parts of this are hardcoded, notably the fact that the name
-     * compartment has a minimum height of 21 pixels.<p>
+     * Parts of this are hardcoded.<p>
      *
      * @return  the size of the minimum bounding box.
      */
@@ -202,9 +170,8 @@ public class FigInterface extends FigClassifierBox {
 
         Dimension aSize = getNameFig().getMinimumSize();
 
-        // +2 padding before and after name
-        aSize.height += 4;
-        aSize.height = Math.max(21, aSize.height);
+        aSize.height += NAME_V_PADDING * 2;
+        aSize.height = Math.max(NAME_FIG_HEIGHT, aSize.height);
 
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
@@ -217,21 +184,6 @@ public class FigInterface extends FigClassifierBox {
         return aSize;
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
-     */
-    @Override
-    public void setLineWidth(int w) {
-        borderFig.setLineWidth(w);
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#getLineWidth()
-     */
-    @Override
-    public int getLineWidth() {
-        return borderFig.getLineWidth();
-    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
@@ -323,9 +275,7 @@ public class FigInterface extends FigClassifierBox {
      * equally distributed among all figs (i.e. compartments), such that the
      * cumulated height of all visible figs equals the demanded height<p>.
      *
-     * Some of this has "magic numbers" hardcoded in. In particular there is
-     * a knowledge that the minimum height of a name compartment is 21
-     * pixels.<p>
+     * Some of this has "magic numbers" hardcoded in.<p>
      *
      * @param x  Desired X coordinate of upper left corner
      *
@@ -339,22 +289,14 @@ public class FigInterface extends FigClassifierBox {
     protected void setStandardBounds(final int x, final int y, final int w,
             final int h) {
 
-        Rectangle oldBounds = getBounds();
         // Save our old boundaries (needed later), and get minimum size
-        // info. "aSize will be used to maintain a running calculation of our
-        // size at various points.
-
-        // "extra_each" is the extra height per displayed fig if requested
-        // height is greater than minimal. "height_correction" is the height
-        // correction due to rounded division result, will be added to the name
-        // compartment
+        // info. 
+        Rectangle oldBounds = getBounds();
 
         // set bounds of big box
         getBigPort().setBounds(x, y, w, h);
         borderFig.setBounds(x, y, w, h);
 
-        getNameFig().setLineWidth(0);
-        getNameFig().setLineColor(Color.red); // TODO: DEBUG_COLOR?
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {
