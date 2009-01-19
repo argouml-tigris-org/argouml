@@ -38,7 +38,6 @@ import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
 import org.argouml.notation.providers.MessageNotation;
 import org.argouml.util.CustomSeparator;
 import org.argouml.util.MyTokenizer;
@@ -77,7 +76,7 @@ import org.argouml.util.MyTokenizer;
  * This syntax is compatible with the UML 1.4.2 specification.<p>
  *
  * Actually, only a subset of this syntax is currently supported, and some
- * is not even planned to be supported. The exceptions are intno, which
+ * is not even planned to be supported. The exceptions are intno, which only
  * allows a number possibly followed by a sequence of letters in the range
  * 'a' - 'z', seqelem, which does not allow a recurrence, and message, which
  * does allow one recurrence near seq_expr. <p>
@@ -277,34 +276,51 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
     }
 
     /**
-     * TODO: Document syntax generated here. 
+     * Generate the "intno" of the given Message. <p>
+     * 
+     * If the predecessor of the given message has only one successor, then
+     * we return the string representation of the given integer. <p>
+     * If the predecessor of the given message has more than one successor, then
+     * this is a case of parallel execution of messages, e.g. 
+     * Message 3.1a and Message 3.1b are concurrent within activation 3.1.
+     * Hence In this case we use a syntax like: 1a, 1b, 1c. 
+     *  
+     * This means that the first successor 
+     * in the ordered list of successors that has more than one entry 
+     * will get the postfix a, the second b, etc.
+     *  
      * TODO: Document exceptional behaviour.
      * 
-     * @param umlMessage the UML message object to generate the sequence number for
-     * @param umlPredecessor the (first?) predecessor message (UML object)
-     * @param position the integer position of the given message
-     * @return the generated sequence expression
+     * @param umlMessage the UML message object to generate 
+     * the sequence number for
+     * @param umlPredecessor the immediate predecessor message (UML object)
+     * that has the given message as successor
+     * @param position the integer position of the given message 
+     * within its sequence
+     * @return the generated sequence expression string, 
+     * or null if the given Message was null
      */
     protected String generateMessageNumber(Object umlMessage, 
             Object umlPredecessor,
             int position) {
-        Collection c;
         Iterator it;
-        String mname = "";
-        Object act;
+        String activatorIntNo = "";
+        Object umlActivator;
         int subpos = 0, submax = 1;
 
         if (umlMessage == null) {
             return null;
         }
 
-        act = Model.getFacade().getActivator(umlMessage);
-        if (act != null) {
-            mname = generateMessageNumber(act);
+        umlActivator = Model.getFacade().getActivator(umlMessage);
+        if (umlActivator != null) {
+            activatorIntNo = generateMessageNumber(umlActivator);
+            // activatorIntNo is now guaranteed not null
         }
 
         if (umlPredecessor != null) {
-            c = Model.getFacade().getSuccessors(umlPredecessor);
+            // get the ordered list of immediate successors:
+            Collection c = Model.getFacade().getSuccessors(umlPredecessor);
             submax = c.size();
             it = c.iterator();
             while (it.hasNext() && it.next() != umlMessage) {
@@ -312,17 +328,15 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
             }
         }
 
-        if (mname.length() > 0) {
-            if (submax > 1) {
-                return mname + "." + position + (char) ('a' + subpos);
-            }
-            return mname + "." + position;
+        StringBuilder result = new StringBuilder(activatorIntNo);
+        if (activatorIntNo.length() > 0) {
+            result.append(".");
         }
-
+        result.append(position);
         if (submax > 1) {
-            return Integer.toString(position) + (char) ('a' + subpos);
+            result.append((char) ('a' + subpos));
         }
-        return Integer.toString(position);
+        return result.toString();
     }
 
     /**
@@ -353,7 +367,8 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
      * the parsing of the Message is adapted accordingly to the change.
      *
      * @param message A Message to generate the seq_expr for
-     * @return A String with the seq_expr of the given message
+     * @return A String with the seq_expr of the given message,
+     * or null if the given message was null
      */
     private String generateMessageNumber(Object message) {
         MsgPtr ptr = new MsgPtr();
@@ -361,6 +376,15 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
         return generateMessageNumber(message, ptr.message, pos);
     }
 
+    /**
+     * Count the number of successors of the given Message. <p>
+     * 
+     * Successors have the same Activator as the given message.
+     * This Activator may be null.
+     * 
+     * @param message the UML Message object
+     * @return the number of successors: 0..n
+     */
     protected int countSuccessors(Object message) {
         int count = 0;
         final Object activator = Model.getFacade().getActivator(message);
