@@ -79,7 +79,7 @@ public class FigOperationsCompartment extends FigEditableCompartment {
      * @see org.argouml.uml.diagram.ui.FigEditableCompartment#getUmlCollection()
      */
     protected Collection getUmlCollection() {
-        Object classifier = getGroup().getOwner();
+        Object classifier = getOwner();
         return Model.getFacade().getOperationsAndReceptions(classifier);
     }
 
@@ -99,6 +99,7 @@ public class FigOperationsCompartment extends FigEditableCompartment {
      * @return a FigSingleLineTextWithNotation which can be used to 
      *                          display the text.
      */
+    @SuppressWarnings("deprecation")
     @Deprecated
     @Override
     protected FigSingleLineTextWithNotation createFigText(Object owner, 
