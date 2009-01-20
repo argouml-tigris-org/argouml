@@ -237,6 +237,14 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         setBounds(getBounds());
     }
     
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    @Override
+    public void setOwner(Object owner) {
+        attributesFigCompartment.setOwner(owner);
+        super.setOwner(owner);
+    }
+    
     /**
      * @param isVisible true if the attribute compartment is visible
      *
