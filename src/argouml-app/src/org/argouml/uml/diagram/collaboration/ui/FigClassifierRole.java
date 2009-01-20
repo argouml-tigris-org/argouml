@@ -45,7 +45,7 @@ import org.tigris.gef.presentation.FigText;
  * Class to display graphics for a UML classifier role in a  collaboration
  * diagram.<p>
  *
- * Stereotype (if there is one) and name are displayed in the centre of the
+ * Stereotypes (if there are any) and name are displayed in the center of the
  * box.
  *
  * @author 10 Apr 2002. Jeremy Bennett (mail@jeremybennett.com). Modifications
