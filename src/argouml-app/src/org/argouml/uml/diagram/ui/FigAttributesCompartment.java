@@ -76,7 +76,7 @@ public class FigAttributesCompartment extends FigEditableCompartment {
      * @see org.argouml.uml.diagram.ui.FigEditableCompartment#getUmlCollection()
      */
     protected Collection getUmlCollection() {
-        Object cls = getGroup().getOwner();
+        Object cls = getOwner();
         return Model.getFacade().getStructuralFeatures(cls);
     }
 
@@ -100,6 +100,7 @@ public class FigAttributesCompartment extends FigEditableCompartment {
         TargetManager.getInstance().setTarget(attr);
     }
     
+    @SuppressWarnings("deprecation")
     @Deprecated
     @Override
     protected FigSingleLineTextWithNotation createFigText(Object owner, Rectangle bounds,
