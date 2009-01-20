@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -208,5 +209,42 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
         // mouse event internally, so I suspect that this line might not be 
         // necessary.
         me.consume();
+    }
+    
+    /**
+     * Checks to see if the given click point (Rectangle) hits
+     * the FigTextGroup.
+     * This overrides the FigGroup implementation of hit where the hit 
+     * rectangle must hit a sub fig.
+     * Now, we count a hit if the user clicks anywhere within the outer 
+     * bounds of the FigTextGroup, see issue 5620.
+     * This method is important for registering double clicks to edit text 
+     * boxes in a FigTextGroup.
+     * @param r The hit rectangle.
+     * @return True if the given hit rectangle intersects or is contained by
+     * the outer limits of this FigTextGroup.
+     * @see org.tigris.gef.presentation.FigGroup#hit(java.awt.Rectangle)
+     */
+    public boolean hit(Rectangle r) {
+        return this.intersects(r);
+    }
+    
+    /** 
+     * Returns true if the bounds of the group contain the given point. 
+     * Used to check if a mouse click occurs within the FigTextGroup.
+     * Overrides the FigGroup implementation of contains where the
+     * x, y point must hit a sub fig.
+     * Now we count a hit if the user clicks anywhere within the outer
+     * bounds of the FigTextGroup, see issue 5620.
+     * This method is important for handling mousePressed events including
+     * the start of mouse drags.
+     * @param x The x coordinate of the point to test.
+     * @param y The y coordinate of the point to test.
+     * @return True if the given point is within the outer limits of this
+     * FigTextGroup.
+     * @see org.tigris.gef.presentation.FigGroup#contains(int, int)
+     */
+    public boolean contains(int x, int y) {
+        return (_x <= x) && (x <= _x + _w) && (_y <= y) && (y <= _y + _h);
     }
 }
