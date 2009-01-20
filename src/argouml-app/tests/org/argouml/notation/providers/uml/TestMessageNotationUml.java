@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,7 +44,16 @@ import org.argouml.profile.init.InitProfileSubsystem;
  */
 public class TestMessageNotationUml extends TestCase {
 
-    /*
+    private Object cl1;
+    private Object cl2;
+    private Object cl3;
+    private Object cl4;
+    private Object cl5;
+
+    /**
+     * The constructor.
+     * 
+     * @param str the  name
      * @see junit.framework.TestCase#TestCase(String)
      */
     public TestMessageNotationUml(String str) {
@@ -89,11 +98,11 @@ public class TestMessageNotationUml extends TestCase {
         Object coll = Model.getCollaborationsFactory().createCollaboration();
         Object inter = Model.getCollaborationsFactory().buildInteraction(coll);
 
-        Object cl1 = Model.getCollaborationsFactory().createClassifierRole();
-        Object cl2 = Model.getCollaborationsFactory().createClassifierRole();
-        Object cl3 = Model.getCollaborationsFactory().createClassifierRole();
-        Object cl4 = Model.getCollaborationsFactory().createClassifierRole();
-        Object cl5 = Model.getCollaborationsFactory().createClassifierRole();
+        cl1 = Model.getCollaborationsFactory().createClassifierRole();
+        cl2 = Model.getCollaborationsFactory().createClassifierRole();
+        cl3 = Model.getCollaborationsFactory().createClassifierRole();
+        cl4 = Model.getCollaborationsFactory().createClassifierRole();
+        cl5 = Model.getCollaborationsFactory().createClassifierRole();
         Model.getCoreHelper().setNamespace(cl1, coll);
         Model.getCoreHelper().setNamespace(cl2, coll);
         Model.getCoreHelper().setNamespace(cl3, coll);
@@ -201,6 +210,18 @@ public class TestMessageNotationUml extends TestCase {
 
         checkParseException(m6, "1.2.2 :");
 
+        /* Try Changing the direction of m7 */
+        tryChangingDirection(m1, m6, m7);
+
+        /* TRY PREDECESSORS */
+        tryPredecessors(m1, m3, m4, m5, m7);
+
+        /* TRY SOME PREDECESSOR ERRORS */
+        trySomePredecessorErrors(m2, m3);
+    }
+
+    private void tryChangingDirection(Object m1, Object m6, Object m7)
+        throws ParseException {
         parseMessage(m7, "2:");
         assertTrue(Model.getFacade().getSender(m7) == cl1);
         assertTrue(Model.getFacade().getReceiver(m7) == cl3);
@@ -214,12 +235,6 @@ public class TestMessageNotationUml extends TestCase {
         assertTrue(Model.getFacade().getReceiver(m7) == cl1);
         assertTrue(Model.getFacade().getActivator(m7) == m6);
         assertTrue(Model.getFacade().getPredecessors(m7).size() == 0);
-
-        /* TRY PREDECESSORS */
-        tryPredecessors(m1, m3, m4, m5, m7);
-
-        /* TRY SOME PREDECESSOR ERRORS */
-        trySomePredecessorErrors(m2, m3);
     }
 
     /**
@@ -341,8 +356,9 @@ public class TestMessageNotationUml extends TestCase {
         assertEquals("var, var2, var3 := func", body);
 
         parseMessage(m3, "1.2 : load_the_accumulating_taxes");
-        //TODO: Why there is not test here ?
-        //It's just for resetting the message body ?
+        script = Model.getFacade().getScript(Model.getFacade().getAction(m3));
+        body = Model.getFacade().getBody(script);
+        assertEquals("load_the_accumulating_taxes", body);
     }
 
     /**
@@ -406,21 +422,36 @@ public class TestMessageNotationUml extends TestCase {
      */
     private void trySomeMoreComplexMoving(Object m1, Object m2,
             Object m3) throws ParseException {
+        assertTrue(Model.getFacade().getSender(m3) == cl2);
+        assertTrue(Model.getFacade().getReceiver(m3) == cl3);
+
+        // This swaps the direction of m3:
         parseMessage(m3, " 1.1.1 : ");
         assertTrue(Model.getFacade().getActivator(m3) == m2);
         assertTrue(Model.getFacade().getPredecessors(m3).size() == 0);
+        assertTrue(Model.getFacade().getSender(m3) == cl3);
+        assertTrue(Model.getFacade().getReceiver(m3) == cl2);
 
+        // This swaps the direction of m3 back:
+        // the colon is obliged, but the / not and the 2nd dot also not
         parseMessage(m3, " / 1..2 : ");
         assertTrue(Model.getFacade().getActivator(m3) == m1);
         assertTrue(Model.getFacade().getPredecessors(m2).size() == 0);
         assertTrue(
             Model.getFacade().getPredecessors(m3).iterator().next() == m2
                 && Model.getFacade().getPredecessors(m3).size() == 1);
+        assertTrue(Model.getFacade().getSender(m3) == cl2);
+        assertTrue(Model.getFacade().getReceiver(m3) == cl3);
+
+        // Notation allows to add or modify things, not remove.
+        // Hence, this does nothing:
         parseMessage(m3, "");
         assertTrue(Model.getFacade().getActivator(m3) == m1);
         assertTrue(
             Model.getFacade().getPredecessors(m3).iterator().next() == m2
                 && Model.getFacade().getPredecessors(m3).size() == 1);
+        assertTrue(Model.getFacade().getSender(m3) == cl2);
+        assertTrue(Model.getFacade().getReceiver(m3) == cl3);
     }
 
     /**

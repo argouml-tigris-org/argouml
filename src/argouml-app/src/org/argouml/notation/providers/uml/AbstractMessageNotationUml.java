@@ -105,6 +105,8 @@ import org.argouml.util.MyTokenizer;
  * <li>Locating an Operation by name and the number of arguments - 
  * the operation is hooked to the CallAction of the Message.
  * <li>Create an Operation with given name (no arguments).
+ * <li>Change the order of messages (predecessor/successor).
+ * <li>Reverting the direction of a message.
  * <li>etc.
  * </ul>
  * 
