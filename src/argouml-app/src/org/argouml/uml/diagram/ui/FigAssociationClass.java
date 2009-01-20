@@ -114,6 +114,17 @@ public class FigAssociationClass extends FigAssociation implements
     }
     
     /**
+     * This overrides the parent class to do nothing here. An association class
+     * has no name label but instead has the name and stereotype editable in
+     * the association-classes class box.
+     * 
+     * @param owner owning uml element
+     * @param settings rendering settings
+     */
+    protected void createNameLabel(Object owner, DiagramSettings settings) {
+    }
+    
+    /**
      * Remove entire composite Fig from Diagram. Discover the attached
      * FigEdgeAssociationClass and the FigClassAssociationClass attached to
      * that. Remove them from the diagram before removing this.

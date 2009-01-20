@@ -154,18 +154,8 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     public FigAssociation(Object owner, DiagramSettings settings) {
         super(owner, settings);
-
-        middleGroup = new FigTextGroup(owner, settings);
-
-        // let's use groups to construct the different text sections at
-        // the association
-        if (getNameFig() != null) {
-            middleGroup.addFig(getNameFig());
-        }
-        middleGroup.addFig(getStereotypeFig());
-        addPathItem(middleGroup,
-                new PathItemPlacement(this, middleGroup, 50, 25));
-        ArgoFigUtil.markPosition(this, 50, 0, 90, 25, Color.yellow);
+        
+        createNameLabel(owner, settings);
         
         Object[] ends = // UML objects of AssociationEnd type
             Model.getFacade().getConnections(owner).toArray();
@@ -211,7 +201,29 @@ public class FigAssociation extends FigEdgeModelElement {
         setLayer(lay);
     }
 
-
+    /**
+     * Create the main draggable label for the association.
+     * This can be overridden in subclasses to change behaviour.
+     * TODO: Consider introducing this to FigEdgeModelElement and
+     * using throughout all edges.
+     * 
+     * @param owner owning uml element
+     * @param settings rendering settings
+     */
+    protected void createNameLabel(Object owner, DiagramSettings settings) {
+        middleGroup = new FigTextGroup(owner, settings);
+     
+        // let's use groups to construct the different text sections at
+        // the association
+        if (getNameFig() != null) {
+            middleGroup.addFig(getNameFig());
+        }
+        middleGroup.addFig(getStereotypeFig());
+        addPathItem(middleGroup,
+                new PathItemPlacement(this, middleGroup, 50, 25));
+        ArgoFigUtil.markPosition(this, 50, 0, 90, 25, Color.yellow);
+    }
+    
     /**
      * Set the owner.
      * 
