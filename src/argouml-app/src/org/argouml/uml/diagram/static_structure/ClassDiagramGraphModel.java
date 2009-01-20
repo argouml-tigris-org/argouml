@@ -548,6 +548,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      *
      * delegates to rerouteXXX(,,,) for each of the 4 possible edges in
      * a class diagram: Association, Dependency, Generalization, Link.
+     * TODO: This should probably be in superclass. Many Figs can be on
+     * several diagram types.
      *
      * @param newNode this is the new node that one of the ends is dragged to.
      * @param oldNode this is the existing node that is already connected.
@@ -569,7 +571,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     }
 
     /**
-     * helper method for changeConnectedNode.
+     * Helper method for changeConnectedNode.
+     * TODO: This should probably be in superclass. Associations can be on
+     * several diagram types.
      */
     private void rerouteAssociation(Object newNode, Object oldNode,
 				    Object edge, boolean isSource) {
@@ -612,17 +616,6 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             theEnd = iter.next();
         }
 
-        // set the ends navigability see also Class ActionNavigability
-        if (Model.getFacade().isAInterface(newNode)) {
-            Model.getCoreHelper().setNavigable(theEnd, true);
-            Model.getCoreHelper().setNavigable(theOtherEnd, false);
-        }
-
-        if (Model.getFacade().isAInterface(otherNode)) {
-            Model.getCoreHelper().setNavigable(theOtherEnd, true);
-            Model.getCoreHelper().setNavigable(theEnd, false);
-        }
-
         //set the new end type!
         Model.getCoreHelper().setType(theEnd, newNode);
     }
@@ -657,5 +650,4 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         // empty at the moment
 
     }
-
 }
