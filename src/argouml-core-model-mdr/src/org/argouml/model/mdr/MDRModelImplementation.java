@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.jmi.model.ModelPackage;
 import javax.jmi.model.MofPackage;
@@ -186,7 +185,7 @@ public class MDRModelImplementation implements ModelImplementation {
      * Set of extents and their read-only status. 
      */
     private Map<UmlPackage, Boolean> extents = 
-        new ConcurrentHashMap<UmlPackage, Boolean>(10, (float) .5, 1);
+        new HashMap<UmlPackage, Boolean>(10, (float) .5);
 
     /**
      * @return Returns the root UML Factory package for user model.
@@ -196,27 +195,32 @@ public class MDRModelImplementation implements ModelImplementation {
      *             before this will be possible.
      */
     public UmlPackage getUmlPackage() {
-        if (umlPackage == null) {
-            LOG.debug("umlPackage is null - no current extent");
+        synchronized (extents) {
+            if (umlPackage == null) {
+                LOG.debug("umlPackage is null - no current extent");
+            }
+            return umlPackage;
         }
-        return umlPackage;
     }
 
     RefPackage createExtent(String name, boolean readOnly) {
-        synchronized (extents) {
-            try {
+        try {
+            synchronized (extents) {
                 UmlPackage extent = (UmlPackage) getRepository().createExtent(
                         name, getMofPackage());
                 extents.put(extent, Boolean.valueOf(readOnly));
 
                 if (!readOnly) {
                     // TODO: This will need to change when we support multiple
-                    // user
-                    // models.
+                    // user models.
 
                     // Delete the old extent first
                     if (umlPackage != null) {
-                        deleteExtent(umlPackage);
+                        try {
+                            deleteExtentUnchecked(umlPackage);
+                        } catch (InvalidObjectException e) {
+                            LOG.debug("User model extent already deleted");
+                        }
                     }
                     umlPackage = extent;
                 }
@@ -227,39 +231,46 @@ public class MDRModelImplementation implements ModelImplementation {
                             + Arrays.toString(repository.getExtentNames()));
                 }
                 return extent;
-            } catch (CreationFailedException e) {
-                LOG.error("Extent creation failed for " + name);
-                return null;
             }
+        } catch (CreationFailedException e) {
+            LOG.error("Extent creation failed for " + name);
+            return null;
         }
     }
 
     void deleteExtent(UmlPackage extent) {
         synchronized (extents) {
-            if (extent.equals(umlPackage)) {
-                umlPackage = null;
+            if (umlPackage.equals(extent)) {
+                // Make sure we always have a default extent.
+                // The old extent will get deleted as part of creating the
+                // new extent.
+                createDefaultExtent();
+            } else {
+                deleteExtentUnchecked(extent);
             }
+        }
+    }
+
+    private void deleteExtentUnchecked(UmlPackage extent) {
+        synchronized (extents) {
             extents.remove(extent);
-            try {
-                LOG.debug("Deleting extent " + extent);
-                extent.refDelete();
-            } catch (InvalidObjectException e) {
-                LOG.debug("Attempted to delete same extent twice " + extent);
-            }
+            extent.refDelete();
         }
     }
     
     Collection<UmlPackage> getExtents() {
-        return extents.keySet();
+        return Collections.unmodifiableSet(extents.keySet());
     }
     
     boolean isReadOnly(Object extent) {
-        Boolean result = extents.get(extent);
-        if (result == null) {
-            LOG.warn("Unable to find extent " + extent);
-            return false;
+        synchronized (extents) {
+            Boolean result = extents.get(extent);
+            if (result == null) {
+                LOG.warn("Unable to find extent " + extent);
+                return false;
+            }
+            return result.booleanValue();
         }
-        return result.booleanValue();
     }
     
     /**
@@ -456,7 +467,7 @@ public class MDRModelImplementation implements ModelImplementation {
     }
 
 
-    void createDefaultExtent() {
+    RefPackage createDefaultExtent() {
         // Create a default extent for the user UML model. This will get
         // replaced if a new model is read in from an XMI file.
         synchronized (extents) {
@@ -464,12 +475,19 @@ public class MDRModelImplementation implements ModelImplementation {
             if (umlPackage != null) {
                 // NOTE: If we switch to a persistent repository like the b-tree
                 // repository we'll want to keep the old extent(s) around
-                deleteExtent(umlPackage);
-                LOG.debug("MDR Init - UML extent existed - "
-                        + "deleted it and all UML data");
+                try {
+                    UmlPackage oldPackage = umlPackage;
+                    umlPackage = null;
+                    deleteExtentUnchecked(oldPackage);
+                    LOG.debug("MDR Init - UML extent existed - "
+                            + "deleted it and all UML data");
+                } catch (InvalidObjectException e) {
+                    LOG.debug("Got error deleting old default user extent");
+                }
             }
             umlPackage = (UmlPackage) createExtent(MODEL_EXTENT_NAME, false);
             LOG.debug("Created default extent");
+            return umlPackage;
         }
     }
 
