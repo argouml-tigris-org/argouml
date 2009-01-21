@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -351,6 +351,11 @@ public class FigAssociation extends FigEdgeModelElement {
      * be called from renderingChanged()?
      */
     protected void applyArrowHeads() {
+        if (srcGroup == null || destGroup == null) {
+            /* This only happens if model-change events arrive 
+             * before we are completely constructed. */
+            return;
+        }
         int sourceArrowType = srcGroup.getArrowType();
         int destArrowType = destGroup.getArrowType();
 

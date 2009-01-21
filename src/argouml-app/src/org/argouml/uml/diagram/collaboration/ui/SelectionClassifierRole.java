@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,11 +29,17 @@ import javax.swing.Icon;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.Handle;
 
 /**
- * The selection buttons for a classifier role.
- *
+ * The selection buttons for a classifier role. <p>
+ * 
+ * The AssociationRoles created shall be unidirectional.
  */
 public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
 
@@ -114,6 +120,13 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
 
     @Override
     protected Object getNewEdgeType(int index) {
+        /* The next 4 lines fix the first half of issue 5638.
+         * Is there no better way? */
+        Editor curEditor = Globals.curEditor();
+        ModeManager modeManager = curEditor.getModeManager();
+        Mode mode = modeManager.top();
+        mode.setArg("unidirectional", true);
+
         return Model.getMetaTypes().getAssociationRole();
     }
 
@@ -133,6 +146,18 @@ public class SelectionClassifierRole extends SelectionNodeClarifiers2 {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void dragHandle(int mx, int my, int anX, int anY, Handle hand) {
+        super.dragHandle(mx, my, anX, anY, hand);
+
+        /* The next 4 lines fix the 2nd half of issue 5638.
+         * Is there no better way? */
+        Editor curEditor = Globals.curEditor();
+        ModeManager modeManager = curEditor.getModeManager();
+        Mode mode = modeManager.top();
+        mode.setArg("unidirectional", true);
     }
 
 } 
