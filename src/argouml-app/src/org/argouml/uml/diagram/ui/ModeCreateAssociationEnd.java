@@ -30,6 +30,8 @@ import java.util.List;
 
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -78,6 +80,15 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
             Fig sourceFig,
             Fig destFig) {
         try {
+            // The source of an association end should not
+            // be the classifier. If it is the user has drawn the wrong way
+            // round so we swap here.
+            if (sourceFig instanceof FigClassifierBox) {
+                final Fig tempFig = sourceFig;
+                sourceFig = destFig;
+                destFig = tempFig;
+            }
+            
             Object associationEnd = 
                 Model.getUmlFactory().buildConnection(
                     edgeType,
