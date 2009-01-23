@@ -24,24 +24,41 @@
 
 package org.argouml.persistence;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.argouml.application.api.Argo;
+import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiWriter;
 import org.argouml.profile.CoreProfileReference;
 import org.argouml.profile.FileModelLoader;
+import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileModelLoader;
 import org.argouml.profile.ResourceModelLoader;
 import org.argouml.profile.UserProfileReference;
+import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.profile.internal.ProfileJava;
+import org.argouml.profile.internal.ProfileUML;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * Tests for the {@link ProfileConfigurationFilePersister} class.
@@ -54,10 +71,11 @@ public class TestProfileConfigurationFilePersister extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
     }
 
     /**
-     * Demonstrates that XmiWriterMDRImpl fails to write a profile 
+     * Tests whether XmiWriterMDRImpl fails to write a profile 
      * (i.e., the file will contain no model) previously loaded from a file.
      * 
      * @throws ProfileException if the loading of the profile fails.
@@ -90,4 +108,91 @@ public class TestProfileConfigurationFilePersister extends TestCase {
         assertEquals(umlModelName, Model.getFacade().getName(umlModel));
     }
 
+    private static final String TEST_PROFILE = 
+        "<?xml version = \"1.0\" encoding = \"UTF-8\" ?>\n"
+        // Although we've historically written out the DOCTYPE, the DTD doesn't
+        // actually exist and this line will get stripped by the .uml file
+        // persister
+//        + "<!DOCTYPE profile SYSTEM \"profile.dtd\" >\n"
+        + "<profile>\n"
+
+        // Standard UML 1.4 profile
+        + "\t\t<plugin>\n"
+        + "\t\t\tUML 1.4\n"
+        + "\t\t</plugin>\n"
+        
+        // Standard Java profile
+        + "\t\t<plugin>\n"
+        + "\t\t\tJava\n"
+        + "\t\t</plugin>\n"
+
+
+        // TODO: User defined profile support untested currently
+//        + "\t\t<userDefined>\n"
+//        + "\t\t\t<filename>\n"
+//        + "foo.profile\n"
+//        + "</filename>\n"
+//        + "\t\t\t<model>\n"
+//        + "foo.profile.package\n"
+//        + "\t\t\t</model>\n"
+//        + "\t\t</userDefined>\n"
+        
+        + "</profile>";
+        
+    /**
+     * Test the basic profile configuration parser.
+     * 
+     * @throws SAXException on a parse failure
+     * @throws UnsupportedEncodingException if our default encoding (UTF-8) is
+     *             unsupported. Should never happen.
+     */
+    public void testProfileConfigurationParser() throws SAXException,
+        UnsupportedEncodingException {
+        InputStream inStream = 
+            new ByteArrayInputStream(
+                    TEST_PROFILE.getBytes(Argo.getEncoding()));
+        ProfileConfigurationParser parser = new ProfileConfigurationParser();
+        parser.parse(new InputSource(inStream));
+        Collection<Profile> profiles = parser.getProfiles();
+        assertEquals("Wrong number of profiles", 2, profiles.size());
+        Iterator<Profile> profileIter = profiles.iterator();
+        assertTrue("Didn't get expected UML profile", 
+                profileIter.next() instanceof ProfileUML);
+        assertTrue("Didn't get expected Java profile", 
+                profileIter.next() instanceof ProfileJava);
+    }
+    
+    /**
+     * Test that we can save and restore the default profile configuration.
+     * 
+     * @throws IOException on io error
+     * @throws SaveException on save error
+     * @throws OpenException on load error
+     */
+    public void testSaveLoadDefaultConfiguration() throws IOException,
+        SaveException, OpenException {
+        
+        // Create a default profile and record its contents
+        Project project = ProjectManager.getManager().makeEmptyProject();
+        ProfileConfiguration pc = new ProfileConfiguration(project);
+        Collection<Profile> startingProfiles = 
+            new ArrayList<Profile>(pc.getProfiles());
+
+        // Write the profile out to a temp file
+        ProfileConfigurationFilePersister persister = 
+            new ProfileConfigurationFilePersister();
+        File file = File.createTempFile(this.getName(), ".profile");
+        OutputStream outStream = new FileOutputStream(file);
+        persister.save(pc, outStream);
+        outStream.close();
+        
+        // Read it back in to a new empty project
+        InputStream inStream = new FileInputStream(file);
+        project = ProjectManager.getManager().makeEmptyProject();
+        persister.load(project, inStream);
+ 
+        // Make sure we got what we started with
+        assertEquals(startingProfiles, 
+                project.getProfileConfiguration().getProfiles());
+    }
 }
