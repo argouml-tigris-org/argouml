@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -815,14 +815,14 @@ public class UmlFilePersister extends AbstractFilePersister {
         }
 
         /**
-         * Flush the stream.  This will throw an IllegalStateException if the
-         * stream is flushed before the header is completely processed.
+         * Flush the stream. If the stream is flushed before the header is
+         * completely processed, whatever has been written so far will get
+         * processed before the flush.
          */
         @Override
         public void flush() throws IOException {
             if (!headerProcessed) {
-                throw new IllegalStateException(
-                        "Attempted flush while still processing header");
+                processHeader();
             }
             out.flush();
         }
