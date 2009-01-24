@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -603,7 +603,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         if (aggregation != null
                 && aggregation.equals(AggregationKindEnum.AK_COMPOSITE)
-                && multi != null && getMaxUpper((Multiplicity) multi) > 1) {
+                && multi != null 
+                && compareMultiplicity(getMaxUpper((Multiplicity) multi), 1) 
+                    > 0) {
             throw new IllegalArgumentException("aggregation is composite "
                     + "and multiplicity > 1");
         }
@@ -657,6 +659,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return end;
     }
 
+    private static final int MULT_UNLIMITED = -1;
+    
     /**
      * Get the maximum value of a multiplicity
      * 
@@ -668,11 +672,33 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         int max = 0;
         for (MultiplicityRange mr : m.getRange()) {
             int value = mr.getUpper();
-            if (value > max) {
+            if (value == MULT_UNLIMITED) {
+                max = value;
+            } else if (max != MULT_UNLIMITED && value > max) {
                 max = value;
             }
         }
-        return 0;
+        return max;
+    }
+    
+    /**
+     * Compare two multiplicities taking care of the value 'unlimited' (-1).
+     * 
+     * @param mult1 first multiplicity
+     * @param mult2 second multiplicity
+     * @return 0 if equal, a positive integer (not necessarily 1) if mult1 is
+     *         greater than mult2 and a negative integer if mult2 is greater..
+     */
+    private static int compareMultiplicity(int mult1, int mult2) {
+        if (mult1 == MULT_UNLIMITED) {
+            if (mult2 == MULT_UNLIMITED) {
+                return 0; // equal
+            }
+            return 1; // greater
+        } else if (mult2 == MULT_UNLIMITED) {
+            return -1; // less than
+        }
+        return mult1 - mult2;
     }
 
     /**
@@ -938,9 +964,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // TODO: This is a part implementation of well-formedness rule
         // UML1.4.2 - 4.5.3.20 [3] Circular inheritance is not allowed.
         // not self.allParents->includes(self)
-        if ((!(child1 instanceof GeneralizableElement) 
-                || !(parent1 instanceof GeneralizableElement))
-                && child1 != parent1) {
+        if (!(child1 instanceof GeneralizableElement
+                && parent1 instanceof GeneralizableElement
+                && child1 != parent1)) {
             throw new IllegalArgumentException(
                     "Both items must be different generalizable elements");
         }

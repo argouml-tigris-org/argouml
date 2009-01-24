@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2007 The Regents of the University of California. All
+// Copyright (c) 2002-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -632,5 +632,88 @@ public class TestCoreFactory extends TestCase {
         
     }
 
+    /**
+     * Test buildGeneralization
+     */
+    public void testBuildGeneralization() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object client = Model.getCoreFactory().buildClass("ClassA", model);
+        Object supplier = Model.getCoreFactory().buildInterface("ClassB",
+                model);
 
+        try {
+            Model.getCoreFactory().buildGeneralization(supplier, supplier);
+            fail("buildGeneralization to self didn't throw exception");
+        } catch (Exception e) {
+            // success
+        }
+
+        try {
+            Model.getCoreFactory().buildGeneralization(client, client);
+            fail("buildGeneralization to self didn't throw exception");
+        } catch (Exception e) {
+            // success
+        }
+
+        Object generalization = Model.getCoreFactory().buildGeneralization(
+                client, supplier);
+        assertTrue(Model.getFacade().isAGeneralization(generalization));
+
+        try {
+            Model.getCoreFactory().buildGeneralization(supplier, client);
+            fail("circular buildGeneralization didn't throw exception");
+        } catch (Exception e) {
+            // success
+        }
+        
+        Model.getUmlFactory().delete(supplier);
+        assertTrue(Model.getUmlFactory().isRemoved(generalization));
+        Model.getUmlFactory().delete(model);
+    }
+    
+    public void testBuildAssociationEnd() {
+        Object model = Model.getModelManagementFactory().createModel();
+        Object class1 = Model.getCoreFactory().buildClass("Class1", model);
+        Object class2 = Model.getCoreFactory().buildClass("Class2", model);
+        Object assoc = Model.getCoreFactory().createAssociation();
+        Object unlimited = Model.getDataTypesFactory().createMultiplicity(0, -1);
+        Object ordering = Model.getOrderingKind().getUnordered();
+        Object aggComposite = Model.getAggregationKind().getComposite();
+        Object scope = Model.getScopeKind().getInstance(); // not static
+        Object changeable = Model.getChangeableKind().getChangeable();
+        Object visibility = Model.getVisibilityKind().getPrivate();
+        try {
+            Model.getCoreFactory().buildAssociationEnd(assoc, "End", class1,
+                    unlimited, null, false, ordering, aggComposite, scope,
+                    changeable, visibility);
+            fail("Creation of aggregate association end with multiplicity "
+                    + "of 'unlimited' should throw an exception");
+        } catch (IllegalArgumentException e) {
+            // Test passed
+        }
+
+        Object multi2 = Model.getDataTypesFactory().createMultiplicity(0, 2);
+        try {
+            Model.getCoreFactory().buildAssociationEnd(assoc, "End", class1,
+                    multi2, null, false, ordering, aggComposite, scope,
+                    changeable, visibility);
+            fail("Creation of aggregate association end with multiplicity "
+                    + "of 2 should throw an exception");
+        } catch (IllegalArgumentException e) {
+            // Test passed
+        }
+        
+        Object aggNone = Model.getAggregationKind().getNone();
+        Object ae = Model.getCoreFactory().buildAssociationEnd(assoc, "End",
+                class1, multi2, null, false, ordering, aggNone, scope,
+                changeable, visibility);
+        assertTrue(Model.getFacade().isAAssociationEnd(ae));
+        
+        ae = null;
+        Object multi1 = Model.getDataTypesFactory().createMultiplicity(0, 1);
+        ae = Model.getCoreFactory().buildAssociationEnd(assoc, "End",
+                class1, multi1, null, false, ordering, aggComposite, scope,
+                changeable, visibility);
+        assertTrue(Model.getFacade().isAAssociationEnd(ae));
+    }
 }
