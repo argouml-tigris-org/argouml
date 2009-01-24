@@ -193,9 +193,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.FigNode#superTranslate(int, int)
      */
     public void superTranslate(int dx, int dy) {
-        setBounds(getX() + dx, getY(), getWidth(), getHeight());
-        // TODO: Wouldn't the following be simpler?
-//        super.superTranslate(dx, 0);
+        super.superTranslate(dx, 0);
     }
      
     /**
