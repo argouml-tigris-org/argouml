@@ -66,7 +66,7 @@ class FigActivation extends ArgoFigGroup {
         }
         rectFig = new FigRect(bounds.x - bounds.width / 2, bounds.y,
                 bounds.width, bounds.height, LINE_COLOR, FILL_COLOR);
-        rectFig.setLineWidth(0);
+        rectFig.setLineWidth(LINE_WIDTH);
         addFig(rectFig);
         setDestroy(destroy);
     }
