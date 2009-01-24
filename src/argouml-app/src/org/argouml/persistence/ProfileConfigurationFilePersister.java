@@ -202,6 +202,8 @@ public class ProfileConfigurationFilePersister extends MemberFilePersister {
 		// TODO: This DTD doesn't exist, so we can't tell readers to
 		// look for it
 //		w.println("<!DOCTYPE profile SYSTEM \"profile.dtd\" >");
+		// but we need a 2nd line to make the funky UML persister work
+		w.println(""); // remove this line if the above is uncommented
 		w.println("<profile>");
 
 		for (Profile profile : pc.getProfiles()) {
