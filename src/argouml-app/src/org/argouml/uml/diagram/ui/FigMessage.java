@@ -105,11 +105,14 @@ public class FigMessage extends FigNodeModelElement {
     }
 
     private void initArrows() {
-        arrowDirections = new Vector<String>(4);
-        arrowDirections.add(SOUTH, "South");
-        arrowDirections.add(EAST, "East");
-        arrowDirections.add(WEST, "West");
-        arrowDirections.add(NORTH, "North");
+        if (arrowDirections == null) {
+            arrowDirections = new Vector<String>(4);
+            // TODO: i18n
+            arrowDirections.add(SOUTH, "South");
+            arrowDirections.add(EAST, "East");
+            arrowDirections.add(WEST, "West");
+            arrowDirections.add(NORTH, "North");
+        }
     }
 
     /**
