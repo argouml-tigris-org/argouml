@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,24 +24,48 @@
 
 package org.argouml.sequence2.diagram;
 
-import org.tigris.gef.presentation.FigGroup;
+import java.awt.Rectangle;
+
+import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.presentation.FigLine;
 
 /**
  *
  * @author penyaskito
  */
-class FigDestroy extends FigGroup {
+class FigDestroy extends ArgoFigGroup {
     
+    /**
+     * @param x
+     * @param y
+     * @deprecated for 0.28 by tfmorris
+     */
     FigDestroy(int x, int y) {
-        addFig(new FigLine(x - 10,
-                        y - 10,
-                        x + 10,
-                        y + 10));
+        createCross(new Rectangle(x, y, 10, 10));
+    }
+
+    private void createCross(Rectangle bounds) {
+        addFig(new FigLine(bounds.x,
+                        bounds.y,
+                        bounds.x + bounds.width,
+                        bounds.y + bounds.height));
         addFig(
-                new FigLine(x + 10,
-                        y - 10,
-                        x - 10,
-                        y + 10));
+                new FigLine(bounds.x,
+                        bounds.y + bounds.height,
+                        bounds.x + bounds.width,
+                        bounds.y));
+    }
+    
+    /**
+     * Create an X to mark the destruction of a lifeline
+     * @param owner owning UML element
+     * @param bounds position and size (X will be drawn from corner to corner)
+     * @param settings render settings
+     */
+    FigDestroy(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, settings);
+        createCross(bounds);
+        setLineWidth(LINE_WIDTH);
     }
 }
