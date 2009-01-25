@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
@@ -46,6 +47,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ArgoDiagramImpl;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.Relocatable;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.util.ToolBarUtility;
@@ -652,4 +654,42 @@ public abstract class UMLDiagram
         return new ModePlace(gf, instructions);
     }
     
+    /**
+     * Create a nary association diamond shaped FigNode on this diagram.
+     *  
+     * @param modelElement the model element this FigNode is to represent
+     * @param bounds the position and size for the diamond node.
+     * @param settings the diagram setting for presentation.
+     * @return The FigNode of the diamond representing the model element
+     */
+    protected FigNode createNaryAssociationNode(
+            final Object modelElement,
+            final Rectangle bounds,
+            final DiagramSettings settings) {
+        
+        final FigNodeAssociation diamondFig =
+            new FigNodeAssociation(modelElement, bounds, settings);
+        if (Model.getFacade().isAAssociationClass(modelElement)
+                && bounds != null) {
+            final FigClassAssociationClass classBoxFig =
+                new FigClassAssociationClass(
+                        modelElement, bounds, settings);
+            final FigEdgeAssociationClass dashEdgeFig =
+                new FigEdgeAssociationClass(
+                        classBoxFig, diamondFig, settings);
+            classBoxFig.renderingChanged();
+            
+            // TODO: Why isn't this calculation for location working?
+            Point location = bounds.getLocation();
+            location.y = (location.y - diamondFig.getHeight()) - 32;
+            if (location.y < 16) {
+                location.y = 16;
+            }
+            classBoxFig.setLocation(location);
+            this.add(diamondFig);
+            this.add(classBoxFig);
+            this.add(dashEdgeFig);
+        }
+        return diamondFig;
+    }
 }

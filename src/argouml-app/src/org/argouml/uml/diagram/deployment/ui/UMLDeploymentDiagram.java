@@ -574,7 +574,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (Model.getFacade().isANode(droppedObject)) {
             figNode = new FigMNode(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAAssociation(droppedObject)) {
-            figNode = new FigNodeAssociation(droppedObject, bounds, settings);
+            figNode =
+                createNaryAssociationNode(droppedObject, bounds, settings);
         } else if (Model.getFacade().isANodeInstance(droppedObject)) {
             figNode = new FigNodeInstance(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComponent(droppedObject)) {

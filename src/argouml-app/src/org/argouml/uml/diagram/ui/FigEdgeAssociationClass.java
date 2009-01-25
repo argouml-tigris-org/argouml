@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 
@@ -90,7 +91,7 @@ public class FigEdgeAssociationClass
     }
 
     private void constructFigs(FigClassAssociationClass classBoxFig,
-            FigAssociationClass ownerFig) {
+            Fig ownerFig) {
         LOG.info("FigEdgeAssociationClass constructor");
         if (classBoxFig == null) {
             throw new IllegalArgumentException("No class box found while "
@@ -102,10 +103,15 @@ public class FigEdgeAssociationClass
         }
         setDestFigNode(classBoxFig);
         setDestPortFig(classBoxFig);
-        ownerFig.makeEdgePort();
-        FigEdgePort edgePort = ownerFig.getEdgePort();
-        setSourcePortFig(edgePort);
-        setSourceFigNode(edgePort);
+        final FigNode port;
+        if (ownerFig instanceof FigEdgeModelElement) {
+            ((FigEdgeModelElement) ownerFig).makeEdgePort();
+            port = ((FigEdgeModelElement) ownerFig).getEdgePort();
+        } else {
+            port = (FigNode) ownerFig;
+        }
+        setSourcePortFig(port);
+        setSourceFigNode(port);
         computeRoute();
     }
 
@@ -118,6 +124,19 @@ public class FigEdgeAssociationClass
      */
     FigEdgeAssociationClass(FigClassAssociationClass classBoxFig,
             FigAssociationClass ownerFig, DiagramSettings settings) {
+        super(ownerFig.getOwner(), settings);
+        constructFigs(classBoxFig, ownerFig);
+    }
+    
+    /**
+     * The constructor for the AssociationClass fig.
+     * 
+     * @param classBoxFig the figure representing the Class
+     * @param ownerFig the owner fig
+     * @param settings render settings
+     */
+    public FigEdgeAssociationClass(FigClassAssociationClass classBoxFig,
+            FigNodeAssociation ownerFig, DiagramSettings settings) {
         super(ownerFig.getOwner(), settings);
         constructFigs(classBoxFig, ownerFig);
     }

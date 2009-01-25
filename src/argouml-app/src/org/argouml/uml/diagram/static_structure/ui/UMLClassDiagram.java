@@ -41,6 +41,8 @@ import org.argouml.uml.diagram.deployment.ui.FigMNode;
 import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.argouml.uml.diagram.ui.FigClassAssociationClass;
+import org.argouml.uml.diagram.ui.FigEdgeAssociationClass;
 import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.ModeCreateDependency;
 import org.argouml.uml.diagram.ui.ModeCreatePermission;
@@ -664,7 +666,8 @@ public class UMLClassDiagram extends UMLDiagram {
         DiagramSettings settings = getDiagramSettings();
         
         if (Model.getFacade().isAAssociation(droppedObject)) {
-            figNode = new FigNodeAssociation(droppedObject, bounds, settings);
+            figNode =
+                createNaryAssociationNode(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAClass(droppedObject)) {
             figNode = new FigClass(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAInterface(droppedObject)) {
@@ -713,9 +716,8 @@ public class UMLClassDiagram extends UMLDiagram {
             LOG.debug("Dropped object " + droppedObject + " converted to " 
                     + figNode);
         } else {
-            LOG.debug("Dropped object NOT added " + figNode);
+            LOG.debug("Dropped object NOT added " + droppedObject);
         }
         return figNode;
     }
-    
 }
