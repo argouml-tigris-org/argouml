@@ -57,7 +57,7 @@ public class FigMessage extends FigEdgeModelElement {
     private SDNotationSettings notationSettings;
     
     /**
-     * Constructs a new figlink and sets the owner of the figlink.
+     * Constructs a new FigMessage and sets the owner of the FigMessage.
      *
      * @param owner is the owner.
      * @deprecated for 0.28.alpha3 by penyaskito. Use
@@ -137,44 +137,48 @@ public class FigMessage extends FigEdgeModelElement {
         updateArrow();
     }
     
-    public boolean isCallAction() {
+    boolean isCallAction() {
     	return Model.getFacade().isACallAction(getAction());
     }
 
-    public boolean isCreateAction() {
+    boolean isCreateAction() {
     	return Model.getFacade().isACreateAction(getAction());
     }
 
-    public boolean isDestroyAction() {
+    boolean isDestroyAction() {
     	return Model.getFacade().isADestroyAction(getAction());
     }
 
-    public boolean isReturnAction() {
+    boolean isReturnAction() {
     	return Model.getFacade().isAReturnAction(getAction());
     }
 
+    boolean isSendAction() {
+        return Model.getFacade().isASendAction(getAction());
+    }
+    
     /**
      * Updates the arrow head and the arrow line according
      * to the action type..
      */
     private void updateArrow() {
-	if (Model.getFacade().isAReturnAction(getAction())) {
-	    setDestArrowHead(new ArrowHeadGreater());
-	    getFig().setDashed(true);
-	}
-	else if (Model.getFacade().isADestroyAction(getAction())) {
-	    setDestArrowHead(new ArrowHeadGreater());
-	    getFig().setDashed(true);
-	}
-	else if (Model.getFacade().isACreateAction(getAction())) {
-	    setDestArrowHead(new ArrowHeadTriangle());
+        if (isReturnAction()) {
+            setDestArrowHead(new ArrowHeadGreater());
+            getFig().setDashed(true);
+        } else if (isDestroyAction()) {
+            setDestArrowHead(new ArrowHeadGreater());
+            getFig().setDashed(true);
+        } else if (isCreateAction()) {
+            setDestArrowHead(new ArrowHeadTriangle());
             getFig().setDashed(false);
-	}
-	else if (Model.getFacade().isACallAction(getAction())) {
-	    setDestArrowHead(new ArrowHeadTriangle());
+        } else if (isCallAction()) {
+            setDestArrowHead(new ArrowHeadTriangle());
             getFig().setDashed(false);
-	}
-	getDestArrowHead().setLineColor(getLineColor());
+        } else if (isSendAction()) {
+            setDestArrowHead(new ArrowHeadGreater());
+            getFig().setDashed(false);
+        }
+        getDestArrowHead().setLineColor(getLineColor());
 	getDestArrowHead().setFillColor(getLineColor());
     }
 

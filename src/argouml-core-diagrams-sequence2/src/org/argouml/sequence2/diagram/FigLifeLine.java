@@ -219,7 +219,7 @@ class FigLifeLine extends ArgoFigGroup {
         for (FigMessage figMessage : figMessages) {
             if (cr.equals(figMessage.getDestFigNode())
                     && !cr.equals(figMessage.getSourceFigNode())
-                    && (figMessage.isCallAction())) {
+                    && figMessage.isCallAction()) {
                 return true;
             }
         }

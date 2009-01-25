@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -327,7 +327,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
             action = Model.getCommonBehaviorFactory().createDestroyAction();
         } else if (Model.getMetaTypes().getSendAction()
                 .equals(actionType)) {
-            // no implementation, not of importance to sequence diagrams
+            action = Model.getCommonBehaviorFactory().createSendAction();
         } else if (Model.getMetaTypes().getTerminateAction()
                 .equals(actionType)) {
             // not implemented yet

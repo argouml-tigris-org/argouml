@@ -112,21 +112,25 @@ public class UMLSequenceDiagram extends UMLDiagram {
     @Override
     protected Object[] getUmlActions() {
         if (actions == null) {
-            actions = new Object[7];
-            actions[0] = new RadioAction(new ActionAddClassifierRole());        
-            actions[1] = new RadioAction(new ActionSetAddMessageMode(
+            actions = new Object[8];
+            int i = 0;
+            actions[i++] = new RadioAction(new ActionAddClassifierRole());
+            actions[i++] = new RadioAction(new ActionSetAddMessageMode(
                     Model.getMetaTypes().getCallAction(),
                     "button.new-callaction"));
-            actions[2] = new RadioAction(new ActionSetAddMessageMode(
+            actions[i++] = new RadioAction(new ActionSetAddMessageMode(
+                    Model.getMetaTypes().getSendAction(),
+                    "button.new-sendaction"));
+            actions[i++] = new RadioAction(new ActionSetAddMessageMode(
                     Model.getMetaTypes().getReturnAction(),
                     "button.new-returnaction"));
-            actions[3] = new RadioAction(new ActionSetAddMessageMode(
+            actions[i++] = new RadioAction(new ActionSetAddMessageMode(
                     Model.getMetaTypes().getCreateAction(),
                     "button.new-createaction"));
-            actions[4] = new RadioAction(new ActionSetAddMessageMode(
+            actions[i++] = new RadioAction(new ActionSetAddMessageMode(
                     Model.getMetaTypes().getDestroyAction(),
                     "button.new-destroyaction"));
-            actions[5] = new RadioAction(new ActionSetMode(
+            actions[i++] = new RadioAction(new ActionSetMode(
                     ModeBroomMessages.class,
                     "button.broom-messages"));
         }
@@ -173,7 +177,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     /**
      * A sequence diagram can accept all classifiers. It will add them as a new 
      * Classifier Role with that classifier as a base.
-     * @param objectToAccept
+     * @param objectToAccept element to test for acceptability
      * @return true if the element is acceptable
      * @see org.argouml.uml.diagram.ui.UMLDiagram#doesAccept(java.lang.Object)
      */
