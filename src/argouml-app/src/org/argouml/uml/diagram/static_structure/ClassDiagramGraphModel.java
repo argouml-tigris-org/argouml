@@ -426,7 +426,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             while (iter.hasNext()) {
                 Object association =
                         Model.getFacade().getAssociation(iter.next());
-                if (canAddEdge(association)) {
+                if (!Model.getFacade().isANaryAssociation(association) 
+                        && canAddEdge(association)) {
                     addEdge(association);
                 }
             }
