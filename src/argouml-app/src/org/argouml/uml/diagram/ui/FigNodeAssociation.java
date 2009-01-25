@@ -89,8 +89,10 @@ public class FigNodeAssociation extends FigNodeModelElement {
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
         addFig(head);
-        addFig(getNameFig());
-        addFig(getStereotypeFig());
+        if (Model.getFacade().isAAssociationClass(getOwner())) {
+            addFig(getNameFig());
+            addFig(getStereotypeFig());
+        }
 
         setBlinkPorts(false); //make port invisible unless mouse enters
         Rectangle r = getBounds();
