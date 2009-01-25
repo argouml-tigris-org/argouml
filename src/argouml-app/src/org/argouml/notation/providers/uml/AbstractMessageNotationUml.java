@@ -213,7 +213,11 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
             }
         }
         action = NotationUtilityUml.generateActionSequence(umlAction);
-        if ("".equals(action)) {
+        if ("".equals(action) || action.trim().startsWith("(")) {
+            /* If the script of the Action is empty,
+             * (or only specifies arguments and no method name) 
+             * then we generate a string based on 
+             * a different model element: */
             action = getInitiatorOfAction(umlAction);
             if ("".equals(action)) {
                 // This may return null:
@@ -725,6 +729,35 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
 
         List<String> args = parseArguments(paramExpr, mayDeleteExpr);
 
+        printDebugInfo(s, fname, guard, paramExpr, varname, predecessors,
+                seqno, parallell, iterative);
+        
+        /* Now apply the changes to the model: */
+
+        buildAction(umlMessage);
+
+        handleGuard(umlMessage, guard, parallell, iterative);
+
+        fname = fillBlankFunctionName(umlMessage, fname, mayDeleteExpr);
+
+        varname = fillBlankVariableName(umlMessage, varname, mayDeleteExpr);
+
+        refindOperation = handleFunctionName(umlMessage, fname, varname,
+                refindOperation);
+
+        refindOperation = handleArguments(umlMessage, args, refindOperation);
+
+        refindOperation = handleSequenceNumber(umlMessage, seqno,
+                refindOperation);
+
+        handleOperation(umlMessage, fname, refindOperation);
+
+        handlePredecessors(umlMessage, predecessors, hasPredecessors);
+    }
+
+    private void printDebugInfo(String s, String fname, StringBuilder guard,
+            String paramExpr, StringBuilder varname, List<List> predecessors,
+            List<Integer> seqno, boolean parallell, boolean iterative) {
         if (LOG.isDebugEnabled()) {
             StringBuffer buf = new StringBuffer();
             buf.append("ParseMessage: " + s + "\n");
@@ -754,28 +787,6 @@ public abstract class AbstractMessageNotationUml extends MessageNotation {
                     + "\n");
             LOG.debug(buf);
         }
-        
-        /* Now apply the changes to the model: */
-
-        buildAction(umlMessage);
-
-        handleGuard(umlMessage, guard, parallell, iterative);
-
-        fname = fillBlankFunctionName(umlMessage, fname, mayDeleteExpr);
-
-        varname = fillBlankVariableName(umlMessage, varname, mayDeleteExpr);
-
-        refindOperation = handleFunctionName(umlMessage, fname, varname,
-                refindOperation);
-
-        refindOperation = handleArguments(umlMessage, args, refindOperation);
-
-        refindOperation = handleSequenceNumber(umlMessage, seqno,
-                refindOperation);
-
-        handleOperation(umlMessage, fname, refindOperation);
-
-        handlePredecessors(umlMessage, predecessors, hasPredecessors);
     }
 
     /**
