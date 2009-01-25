@@ -89,7 +89,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
         addFig(head);
-        if (Model.getFacade().isAAssociationClass(getOwner())) {
+        if (!Model.getFacade().isAAssociationClass(getOwner())) {
             addFig(getNameFig());
             addFig(getStereotypeFig());
         }
