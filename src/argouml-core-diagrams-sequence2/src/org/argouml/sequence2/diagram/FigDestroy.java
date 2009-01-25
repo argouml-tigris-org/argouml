@@ -31,7 +31,8 @@ import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.presentation.FigLine;
 
 /**
- *
+ * Fig containing an large X to mark the destruction of a lifeline.
+ * 
  * @author penyaskito
  */
 class FigDestroy extends ArgoFigGroup {
