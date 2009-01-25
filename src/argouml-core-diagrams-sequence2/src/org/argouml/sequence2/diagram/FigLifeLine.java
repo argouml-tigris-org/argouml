@@ -117,8 +117,7 @@ class FigLifeLine extends ArgoFigGroup {
         
         // Check here if there are no incoming call actions
         // if not then create an activation at the top of the lifeline
-        if (!hasIncomingCallActions(figMessages) 
-                && !hasOutgoingDestroyActions(figMessages)) {
+        if (!hasIncomingCallActions(figMessages)) {
             currentAct = new FigActivation(getOwner(), new Rectangle(lineFig
                     .getX(), lineFig.getY(), 0, 0), getSettings());
         }
@@ -148,16 +147,16 @@ class FigLifeLine extends ArgoFigGroup {
                     && !cr.equals(figMessage.getDestFigNode())
                     && Model.getFacade().isAReturnAction(action)) {
                 // if we are the source of a return action
-                // the figlifeline ends here.
+                // the activation ends here.
         	ySender = figMessage.getStartY();
                 currentAct.setHeight(ySender - currentAct.getY());
                 newActivations.add(currentAct);
                 currentAct = null;
             } else if (currentAct != null
-                    && cr.equals(figMessage.getSourceFigNode())
-                    && !cr.equals(figMessage.getDestFigNode())
+                    && cr.equals(figMessage.getDestFigNode())
+                    && !cr.equals(figMessage.getSourceFigNode())
                     && Model.getFacade().isADestroyAction(action)) {
-                // if we are the source of a destroy actionm
+                // if we are the target of a destroy action
                 // the figlifeline ends here and we add the activation
         	ySender = figMessage.getFinalY();
                 currentAct.setHeight(ySender - currentAct.getY());

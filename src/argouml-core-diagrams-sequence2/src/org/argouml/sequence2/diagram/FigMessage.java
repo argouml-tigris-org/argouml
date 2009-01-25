@@ -167,7 +167,7 @@ public class FigMessage extends FigEdgeModelElement {
             getFig().setDashed(true);
         } else if (isDestroyAction()) {
             setDestArrowHead(new ArrowHeadGreater());
-            getFig().setDashed(true);
+            getFig().setDashed(false);
         } else if (isCreateAction()) {
             setDestArrowHead(new ArrowHeadTriangle());
             getFig().setDashed(false);
