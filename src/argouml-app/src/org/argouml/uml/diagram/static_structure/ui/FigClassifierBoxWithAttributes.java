@@ -308,6 +308,10 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
             borderFig.setBounds(x, y, w, h);
         }
         
+        // Extra space to be distributed among compartments is the difference
+        // between the actual size and the min. size
+        final int whitespace = h - getMinimumSize().height;
+        
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {
@@ -328,8 +332,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
             int attributesHeight = 
                 attributesFigCompartment.getMinimumSize().height;
             if (isOperationsVisible()) {
-                attributesHeight = Math.max(attributesHeight, 
-                        (h - currentHeight) / 2);
+                attributesHeight += whitespace / 2;
             }
             attributesFigCompartment.setBounds(
                     x,
