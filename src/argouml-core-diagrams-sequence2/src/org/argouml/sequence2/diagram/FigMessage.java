@@ -253,6 +253,7 @@ public class FigMessage extends FigEdgeModelElement {
     public void convertToArc() {
         if (getPoints().length > 0) {
             FigMessageSpline spline = new FigMessageSpline(getPoint(0));
+            spline.setDashed(isReturnAction());
             super.setFig(spline);
             computeRoute();
         }        
