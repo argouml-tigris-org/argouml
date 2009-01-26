@@ -316,18 +316,23 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         Object action = null;
         if (Model.getMetaTypes().getCallAction().equals(actionType)) {
             action = Model.getCommonBehaviorFactory().createCallAction();
+            Model.getCommonBehaviorHelper().setAsynchronous(action, false);
         } else if (Model.getMetaTypes().getCreateAction()
                 .equals(actionType)) {
             action = Model.getCommonBehaviorFactory().createCreateAction();
+            Model.getCommonBehaviorHelper().setAsynchronous(action, false);
         } else if (Model.getMetaTypes().getReturnAction()
                 .equals(actionType)) {
             action = Model.getCommonBehaviorFactory().createReturnAction();
+            Model.getCommonBehaviorHelper().setAsynchronous(action, true);
         } else if (Model.getMetaTypes().getDestroyAction()
                 .equals(actionType)) {
             action = Model.getCommonBehaviorFactory().createDestroyAction();
+            Model.getCommonBehaviorHelper().setAsynchronous(action, false);
         } else if (Model.getMetaTypes().getSendAction()
                 .equals(actionType)) {
             action = Model.getCommonBehaviorFactory().createSendAction();
+            Model.getCommonBehaviorHelper().setAsynchronous(action, true);
         } else if (Model.getMetaTypes().getTerminateAction()
                 .equals(actionType)) {
             // not implemented yet

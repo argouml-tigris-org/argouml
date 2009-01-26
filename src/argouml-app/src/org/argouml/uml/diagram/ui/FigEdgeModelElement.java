@@ -598,7 +598,12 @@ public abstract class FigEdgeModelElement
         endTrans();
     }
 
-    /*
+    /**
+     * This method gets called when a bound property gets changed. This may
+     * represent a UML element value from the Model subsystem, a GEF property,
+     * or something which ArgoUML itself implements.
+     * 
+     * @param pve the event containing the property change information
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     @Override
@@ -611,7 +616,7 @@ public abstract class FigEdgeModelElement
                     try {
                         removeFromDiagram();
                     } catch (InvalidElementException e) {
-                            LOG.error("updateLayout method accessed "
+                        LOG.error("updateLayout method accessed "
                                     + "deleted element", e);
                     }
                 }  

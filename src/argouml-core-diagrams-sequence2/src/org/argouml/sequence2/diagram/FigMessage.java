@@ -26,6 +26,9 @@ package org.argouml.sequence2.diagram;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
@@ -82,6 +85,7 @@ public class FigMessage extends FigEdgeModelElement {
         initialize();
         action = Model.getFacade().getAction(getOwner());
         updateArrow();
+        addElementListener(action, "isAsynchronous");
     }
     
     private void initialize() {
@@ -163,20 +167,15 @@ public class FigMessage extends FigEdgeModelElement {
      */
     private void updateArrow() {
         if (isReturnAction()) {
-            setDestArrowHead(new ArrowHeadGreater());
             getFig().setDashed(true);
-        } else if (isDestroyAction()) {
+        } else {
+            getFig().setDashed(false);
+        }
+        Object act = getAction();
+        if (act != null && Model.getFacade().isAsynchronous(getAction())) {
             setDestArrowHead(new ArrowHeadGreater());
-            getFig().setDashed(false);
-        } else if (isCreateAction()) {
-            setDestArrowHead(new ArrowHeadTriangle());
-            getFig().setDashed(false);
-        } else if (isCallAction()) {
-            setDestArrowHead(new ArrowHeadTriangle());
-            getFig().setDashed(false);
-        } else if (isSendAction()) {
-            setDestArrowHead(new ArrowHeadGreater());
-            getFig().setDashed(false);
+        } else {
+            setDestArrowHead(new ArrowHeadTriangle());            
         }
         getDestArrowHead().setLineColor(getLineColor());
 	getDestArrowHead().setFillColor(getLineColor());
@@ -317,4 +316,31 @@ public class FigMessage extends FigEdgeModelElement {
         }        
         super.translate(dx, dy);
     }
+
+    /**
+     * {@inheritDoc}
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent pve) {
+        if ("isAsynchronous".equals(pve.getPropertyName())) {
+            updateArrow();
+        }
+        super.propertyChange(pve);
+    }
+    
+    /* 
+     * Overridden purely to keep our superclass from removing the listener
+     * that we just added.
+     * 
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    protected void updateListeners(Object o1, Object o2 ) {
+        Set<Object[]> listeners = new HashSet<Object[]>();
+        listeners.add(new Object[] {getOwner(), "remove"});
+        listeners.add(new Object[] {getAction(), "isAsynchronous"});
+        updateElementListeners(listeners);
+    }
+    
 }
