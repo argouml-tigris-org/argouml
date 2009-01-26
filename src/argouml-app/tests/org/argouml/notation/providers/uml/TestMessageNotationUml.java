@@ -32,6 +32,8 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
+import org.argouml.notation.NotationSettings;
+import org.argouml.notation.SDNotationSettings;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -49,6 +51,11 @@ public class TestMessageNotationUml extends TestCase {
     private Object cl3;
     private Object cl4;
     private Object cl5;
+    
+    private Object r1to2, r2to3, r3to4, r4to5, r3to1, r5to3;
+    private Object pack, coll, inter;
+
+    private SDNotationSettings npSettings;
 
     /**
      * The constructor.
@@ -71,6 +78,33 @@ public class TestMessageNotationUml extends TestCase {
         (new InitProfileSubsystem()).init();
         (new InitNotation()).init();
         (new InitNotationUml()).init();
+        
+        npSettings = new SDNotationSettings();
+    }
+
+    private void setupModel1() {
+        pack = Model.getModelManagementFactory().buildPackage("p1");
+        coll = Model.getCollaborationsFactory().buildCollaboration(pack);
+        inter = Model.getCollaborationsFactory().buildInteraction(coll);
+
+        cl1 = Model.getCollaborationsFactory().buildClassifierRole(coll);
+        cl2 = Model.getCollaborationsFactory().buildClassifierRole(coll);
+        cl3 = Model.getCollaborationsFactory().buildClassifierRole(coll);
+        cl4 = Model.getCollaborationsFactory().buildClassifierRole(coll);
+        cl5 = Model.getCollaborationsFactory().buildClassifierRole(coll);
+
+        r1to2 =
+            Model.getCollaborationsFactory().buildAssociationRole(cl1, cl2);
+        r2to3 =
+            Model.getCollaborationsFactory().buildAssociationRole(cl2, cl3);
+        r3to4 =
+            Model.getCollaborationsFactory().buildAssociationRole(cl3, cl4);
+        r4to5 =
+            Model.getCollaborationsFactory().buildAssociationRole(cl4, cl5);
+        r3to1 =
+            Model.getCollaborationsFactory().buildAssociationRole(cl3, cl1);
+        r5to3 =
+            Model.getCollaborationsFactory().buildAssociationRole(cl5, cl3);
     }
 
     /**
@@ -95,32 +129,7 @@ public class TestMessageNotationUml extends TestCase {
      * @throws ParseException if the parsing was in error.
      */
     public void testParseMessage() throws ParseException {
-        Object coll = Model.getCollaborationsFactory().createCollaboration();
-        Object inter = Model.getCollaborationsFactory().buildInteraction(coll);
-
-        cl1 = Model.getCollaborationsFactory().createClassifierRole();
-        cl2 = Model.getCollaborationsFactory().createClassifierRole();
-        cl3 = Model.getCollaborationsFactory().createClassifierRole();
-        cl4 = Model.getCollaborationsFactory().createClassifierRole();
-        cl5 = Model.getCollaborationsFactory().createClassifierRole();
-        Model.getCoreHelper().setNamespace(cl1, coll);
-        Model.getCoreHelper().setNamespace(cl2, coll);
-        Model.getCoreHelper().setNamespace(cl3, coll);
-        Model.getCoreHelper().setNamespace(cl4, coll);
-        Model.getCoreHelper().setNamespace(cl5, coll);
-
-        Object r1to2 =
-            Model.getCollaborationsFactory().buildAssociationRole(cl1, cl2);
-        Object r2to3 =
-            Model.getCollaborationsFactory().buildAssociationRole(cl2, cl3);
-        Object r3to4 =
-            Model.getCollaborationsFactory().buildAssociationRole(cl3, cl4);
-        Object r4to5 =
-            Model.getCollaborationsFactory().buildAssociationRole(cl4, cl5);
-        Object r3to1 =
-            Model.getCollaborationsFactory().buildAssociationRole(cl3, cl1);
-        Object r5to3 =
-            Model.getCollaborationsFactory().buildAssociationRole(cl5, cl3);
+        setupModel1();
 
         /* START TESTING STUFF */
 
@@ -502,6 +511,90 @@ public class TestMessageNotationUml extends TestCase {
     }
 
     /**
+     * Test if the Notation generates the correct text.
+     */
+    public void testGenerateSequenceNumbers() {
+        setupModel1();
+
+        Object m1 =
+             Model.getCollaborationsFactory()
+                .buildMessage(inter, r1to2);
+
+        /* Both diagram types shall show sequence numbers when requested: */
+        npSettings.setShowSequenceNumbers(true);
+        checkGenerateCD(m1, "1 : ", npSettings);
+        checkGenerateSD(m1, "1 : ", npSettings);
+        /* But the collaboration diagram refuses to leave them out: */
+        npSettings.setShowSequenceNumbers(false);
+        checkGenerateCD(m1, "1 : ", npSettings);
+        checkGenerateSD(m1, "", npSettings);
+    }
+
+    /**
+     * Test if the Notation generates the correct text.<p>
+     * 
+     * This is the specification tested here:
+     * If obtaining the Script of the Action returns an empty string, 
+     * then an alternative representation is given:
+     * If the action is a CallAction, use the name of its Operation, 
+     * and if it is a SendAction, the name of its Event.
+     * If also this returns no string, then we display the name of the Message.
+     */
+    public void testGenerateIssue5150() {
+        setupModel1();
+        npSettings.setShowSequenceNumbers(false);
+
+        Object m1 = Model.getCollaborationsFactory().buildMessage(inter, r1to2);
+
+        /* If the message has a name, but no action, then show the name: */
+        Model.getCoreHelper().setName(m1, "m1-name");
+        checkGenerateCD(m1, "1 : m1-name", npSettings);
+        checkGenerateSD(m1, "m1-name", npSettings);
+        
+        Object clazzA = Model.getCoreFactory().buildClass("A", pack);
+        Object clazzB = Model.getCoreFactory().buildClass("B", pack);
+        Object oper = 
+            Model.getCoreFactory().buildOperation2(clazzA, clazzB, "oper");
+        Object action = 
+            Model.getCommonBehaviorFactory().buildCallAction(oper, "action");
+        Model.getCoreHelper().setNamespace(action, coll);
+        Model.getCollaborationsHelper().setAction(m1, action);
+        Model.getCommonBehaviorHelper().setOperation(action, oper);
+        
+        /* If a message has a name and a named operation,
+         * then show the operation: */
+        checkGenerateCD(m1, "1 : oper()", npSettings);
+        checkGenerateSD(m1, "oper()", npSettings);
+        
+        Object aExpr = Model.getDataTypesFactory().createActionExpression(
+                "aELanguage", "aEBody");
+        Model.getCommonBehaviorHelper().setScript(action, aExpr);
+        
+        /* If a message has a name and a named operation and a script,
+         * then show the script: */
+        /* TODO: Should there really be () here? */
+        checkGenerateCD(m1, "1 : aEBody()", npSettings);
+        checkGenerateSD(m1, "aEBody()", npSettings);
+    }
+
+    
+    private void checkGenerateCD(Object message, String text, 
+            NotationSettings settings) {
+        AbstractMessageNotationUml notation = 
+            new MessageNotationUml(message); 
+        assertEquals("Incorrect generation for CD", 
+                text, notation.toString(message, settings));
+    }
+    
+    private void checkGenerateSD(Object message, String text, 
+            NotationSettings settings) {
+        AbstractMessageNotationUml notation = 
+            new SDMessageNotationUml(message); 
+        assertEquals("Incorrect generation for SD", 
+                text, notation.toString(message, settings));
+    }
+
+    /**
      * Test if help is correctly provided.
      */
     public void testGetHelp() {
@@ -519,10 +612,12 @@ public class TestMessageNotationUml extends TestCase {
      * without showing it the right UML element.
      */
     public void testValidObjectCheck() {
-        Object coll = Model.getCollaborationsFactory().createCollaboration();
-        Object inter = Model.getCollaborationsFactory().buildInteraction(coll);
+        Object collaboration = 
+            Model.getCollaborationsFactory().createCollaboration();
+        Object interaction = 
+            Model.getCollaborationsFactory().buildInteraction(collaboration);
         try {
-            new MessageNotationUml(inter);
+            new MessageNotationUml(interaction);
             fail("The NotationProvider did not throw for a wrong UML element.");
         } catch (IllegalArgumentException e) {
             /* Everything fine... */
