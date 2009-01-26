@@ -223,7 +223,9 @@ public interface CommonBehaviorFactory extends Factory {
     Object buildLink(Object fromInstance, Object toInstance);
 
     /**
-     * Builds an action (actually an CallAction) for some message.
+     * Builds a CallAction for a given Message.
+     * The action is named "action", and its namespace is set 
+     * to the Collaboration of the given Message.
      *
      * @param message the given message
      * @return the newly build callAction
