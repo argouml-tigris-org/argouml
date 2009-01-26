@@ -24,6 +24,7 @@
 
 package org.argouml.uml.reveng;
 
+import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.List;
@@ -157,8 +158,9 @@ public class DiagramInterface {
     public void addPackage(Object newPackage) {
         if (!isInDiagram(newPackage)) {
             if (currentGM.canAddNode(newPackage)) {
-                FigPackage newPackageFig = 
-                    new FigPackage(currentGM, newPackage);
+                FigPackage newPackageFig = new FigPackage(newPackage,
+                        new Rectangle(0, 0, 0, 0), currentDiagram
+                                .getDiagramSettings());
                 currentLayer.add(newPackageFig);
                 currentGM.addNode(newPackage);
                 currentLayer.putInPosition(newPackageFig);
@@ -286,9 +288,12 @@ public class DiagramInterface {
         if (currentGM.canAddNode(classifier)) {
             FigClassifierBox newFig;
             if (Model.getFacade().isAClass(classifier)) {
-                newFig = new FigClass(currentGM, classifier);
+                newFig = new FigClass(classifier, new Rectangle(0, 0, 0, 0),
+                        currentDiagram.getDiagramSettings());
             } else if (Model.getFacade().isAInterface(classifier)) {
-                newFig = new FigInterface(currentGM, classifier);
+                newFig = new FigInterface(classifier,
+                        new Rectangle(0, 0, 0, 0), currentDiagram
+                                .getDiagramSettings());
             } else {
                 return;
             }
@@ -307,7 +312,7 @@ public class DiagramInterface {
                 ((FigClass) newFig).setAttributesVisible(!minimise);
             }
 
-            newFig.setSize(newFig.getMinimumSize());
+            newFig.renderingChanged();
         } else {
             // the class is in the diagram
             // so we are on a second pass,
