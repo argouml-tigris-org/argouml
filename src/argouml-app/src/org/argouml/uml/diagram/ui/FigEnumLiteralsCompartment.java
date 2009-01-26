@@ -72,6 +72,16 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
     public FigEnumLiteralsCompartment(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
+        
+        // TODO: We don't really want this to be filled, but if it's not then
+        // the user can't double click in the compartment to add a new literal
+        // Apparently GEF thinks unfilled figs are only selectable by border
+//        setFilled(false);
+
+        // We need the width of the outline fig (bigPort) for the compartment
+        // to match the width of the outer fig so that the outer fig doesn't
+        // get overwritten by our fill
+        setLineWidth(LINE_WIDTH);
     }
     
     /*
@@ -102,16 +112,17 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
         TargetManager.getInstance().setTarget(literal);
     }
 
+    @SuppressWarnings("deprecation")
     @Deprecated
     @Override
-    protected FigSingleLineTextWithNotation createFigText(Object owner, Rectangle bounds,
-            DiagramSettings settings, NotationProvider np) {
+    protected FigSingleLineTextWithNotation createFigText(Object owner,
+            Rectangle bounds, DiagramSettings settings, NotationProvider np) {
         return new FigEnumerationLiteral(owner, bounds, settings, np);
     }
 
     @Override
-    protected FigSingleLineTextWithNotation createFigText(Object owner, Rectangle bounds,
-            DiagramSettings settings) {
+    protected FigSingleLineTextWithNotation createFigText(Object owner,
+            Rectangle bounds, DiagramSettings settings) {
         return new FigEnumerationLiteral(owner, bounds, settings);
     }  
 }

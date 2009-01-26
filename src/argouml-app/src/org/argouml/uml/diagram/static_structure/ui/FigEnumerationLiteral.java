@@ -74,6 +74,7 @@ public class FigEnumerationLiteral extends CompartmentFigText {
      * @param settings render settings
      * @param np The notationProvider. See NotationProviderFactory2.
      */
+    @SuppressWarnings("deprecation")
     @Deprecated
     public FigEnumerationLiteral(Object owner, Rectangle bounds,
             DiagramSettings settings, NotationProvider np) {

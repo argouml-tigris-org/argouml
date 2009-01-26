@@ -163,6 +163,9 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation
         setJustification(FigText.JUSTIFY_LEFT);
         setRightMargin(MARGIN);
         setLeftMargin(MARGIN);
+        // TODO: We'd like these to not be filled, but GEF won't let us
+        // select them if we do that.
+//        setFilled(false);
     }
     
     /**
@@ -286,7 +289,7 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation
     }
 
     /**
-     * @return  Current fill status&mdash;always <code>true</code>.
+     * @return  Current fill status&mdash;always <code>false</code>.
      */
     @Override
     public boolean isFilled() {
