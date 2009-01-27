@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -86,9 +86,8 @@ public class CmdSetPreferredSize extends Cmd {
         if (figs == null) {
             SelectionManager sm = ce.getSelectionManager();
             if (sm.getLocked()) {
-//                Globals.showStatus("Cannot Modify Locked Objects");
                 Globals.showStatus(
-                        Translator.localize("action.locked-objects-not-modify"));
+                    Translator.localize("action.locked-objects-not-modify"));
                 return;
             }
             figs = sm.getFigs();
@@ -114,9 +113,8 @@ public class CmdSetPreferredSize extends Cmd {
                             || fi.getEnclosedFigs().size() == 0)) {
                 fi.setSize(fi.getMinimumSize());
                 /* TODO: Beautify the 2nd part of this string: */
-//                Globals.showStatus("Setting size for " + fi);
-                Object[] args = {fi};
-                Globals.showStatus(Translator.localize("action.setting-size", args));
+                Globals.showStatus(Translator.localize("action.setting-size", 
+                        new Object[] {fi}));
             }
             fi.endTrans();
         }
