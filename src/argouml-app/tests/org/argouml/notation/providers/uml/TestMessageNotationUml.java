@@ -550,7 +550,7 @@ public class TestMessageNotationUml extends TestCase {
         Model.getCoreHelper().setName(m1, "m1-name");
         checkGenerateCD(m1, "1 : m1-name", npSettings);
         checkGenerateSD(m1, "m1-name", npSettings);
-        
+
         Object clazzA = Model.getCoreFactory().buildClass("A", pack);
         Object clazzB = Model.getCoreFactory().buildClass("B", pack);
         Object oper = 
@@ -560,32 +560,72 @@ public class TestMessageNotationUml extends TestCase {
         Model.getCoreHelper().setNamespace(action, coll);
         Model.getCollaborationsHelper().setAction(m1, action);
         Model.getCommonBehaviorHelper().setOperation(action, oper);
-        
+
         /* If a message has a name and a named operation,
          * then show the operation: */
         checkGenerateCD(m1, "1 : oper()", npSettings);
         checkGenerateSD(m1, "oper()", npSettings);
-        
+
         Object aExpr = Model.getDataTypesFactory().createActionExpression(
                 "aELanguage", "aEBody");
         Model.getCommonBehaviorHelper().setScript(action, aExpr);
-        
         /* If a message has a name and a named operation and a script,
          * then show the script: */
         /* TODO: Should there really be () here? */
         checkGenerateCD(m1, "1 : aEBody()", npSettings);
         checkGenerateSD(m1, "aEBody()", npSettings);
+
+        aExpr = Model.getDataTypesFactory().createActionExpression(
+                "aELanguage2", "");
+        Model.getCommonBehaviorHelper().setScript(action, aExpr);
+        /* If a message has a name and a named operation and an empty script,
+         * then show the operation: */
+        checkGenerateCD(m1, "1 : oper()", npSettings);
+        checkGenerateSD(m1, "oper()", npSettings);
+
+        Model.getCommonBehaviorHelper().setScript(action, null);
+        /* If a message has a name and a named operation 
+         * and an expression with no script,
+         * then show the operation: */
+        checkGenerateCD(m1, "1 : oper()", npSettings);
+        checkGenerateSD(m1, "oper()", npSettings);
+
+        aExpr = Model.getDataTypesFactory().createActionExpression(
+                "aELanguage", "aEBody");
+        Model.getCommonBehaviorHelper().setScript(action, aExpr);
+        Object argum1 = Model.getCommonBehaviorFactory().createArgument();
+        Object umlExpression = Model.getDataTypesFactory().createExpression(
+                    "aOElanguage",
+                    "argument-value");
+        Model.getCommonBehaviorHelper().setValue(argum1, umlExpression);
+        Model.getCommonBehaviorHelper().addActualArgument(action, argum1);
+        /* If a message has a name and a named operation 
+         * and a named script with parameters,
+         * then show the script: */
+        /* TODO: Why is there a space before the ( here, 
+         * and not in case of the operation name? */
+        checkGenerateCD(m1, "1 : aEBody (argument-value)", npSettings);
+        checkGenerateSD(m1, "aEBody (argument-value)", npSettings);
+
+        aExpr = Model.getDataTypesFactory().createActionExpression(
+                "aELanguage", "");
+        Model.getCommonBehaviorHelper().setScript(action, aExpr);
+        /* The action still has the argument from above. */
+        /* If a message has a name and a named operation 
+         * and a script with parameters but without name,
+         * then show the operation name: */
+        checkGenerateCD(m1, "1 : oper()", npSettings);
+        checkGenerateSD(m1, "oper()", npSettings);
     }
 
-    
     private void checkGenerateCD(Object message, String text, 
             NotationSettings settings) {
         AbstractMessageNotationUml notation = 
-            new MessageNotationUml(message); 
+            new MessageNotationUml(message);
         assertEquals("Incorrect generation for CD", 
                 text, notation.toString(message, settings));
     }
-    
+
     private void checkGenerateSD(Object message, String text, 
             NotationSettings settings) {
         AbstractMessageNotationUml notation = 
@@ -606,7 +646,7 @@ public class TestMessageNotationUml extends TestCase {
         assertTrue("Parsing help not conform for translation", 
                 help.startsWith("parsing."));
     }
-    
+
     /**
      * Test if the notationProvider refuses to instantiate 
      * without showing it the right UML element.
