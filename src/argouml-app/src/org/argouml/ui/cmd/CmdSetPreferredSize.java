@@ -86,7 +86,9 @@ public class CmdSetPreferredSize extends Cmd {
         if (figs == null) {
             SelectionManager sm = ce.getSelectionManager();
             if (sm.getLocked()) {
-                Globals.showStatus("Cannot Modify Locked Objects");
+//                Globals.showStatus("Cannot Modify Locked Objects");
+                Globals.showStatus(
+                        Translator.localize("action.locked-objects-not-modify"));
                 return;
             }
             figs = sm.getFigs();
@@ -112,7 +114,9 @@ public class CmdSetPreferredSize extends Cmd {
                             || fi.getEnclosedFigs().size() == 0)) {
                 fi.setSize(fi.getMinimumSize());
                 /* TODO: Beautify the 2nd part of this string: */
-                Globals.showStatus("Setting size for " + fi);
+//                Globals.showStatus("Setting size for " + fi);
+                Object[] args = {fi};
+                Globals.showStatus(Translator.localize("action.setting-size", args));
             }
             fi.endTrans();
         }
