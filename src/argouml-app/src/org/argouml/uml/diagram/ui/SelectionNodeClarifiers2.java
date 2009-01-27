@@ -244,6 +244,11 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
      * org.tigris.gef.presentation.Handle)
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
+        
+        // Don't allow drag outside of bounds of diagram
+        mX = Math.max(mX, 0);
+        mY = Math.max(mY, 0);
+        
         if (hand.index < 10) {
             setPaintButtons(false);
             super.dragHandle(mX, mY, anX, anY, hand);
