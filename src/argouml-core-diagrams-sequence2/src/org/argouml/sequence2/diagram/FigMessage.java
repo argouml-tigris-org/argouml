@@ -334,7 +334,8 @@ public class FigMessage extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
      */
     @Override
-    protected void updateListeners(Object o1, Object o2 ) {
+    protected void updateListeners(Object oldOwner, Object newOwner ) {
+        action = Model.getFacade().getAction(newOwner);
         Set<Object[]> listeners = new HashSet<Object[]>();
         listeners.add(new Object[] {getOwner(), "remove"});
         listeners.add(new Object[] {getAction(), "isAsynchronous"});
