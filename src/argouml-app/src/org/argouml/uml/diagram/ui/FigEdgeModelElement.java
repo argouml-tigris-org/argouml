@@ -73,6 +73,7 @@ import org.argouml.model.DiElement;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
@@ -607,7 +608,7 @@ public abstract class FigEdgeModelElement
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     @Override
-    public void propertyChange(PropertyChangeEvent pve) {
+    public void propertyChange(final PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
         if (pve instanceof DeleteInstanceEvent && src == getOwner()) {
@@ -646,6 +647,23 @@ public abstract class FigEdgeModelElement
             /* If the source of the event is an UML object,
              * then the UML model has been changed.*/
             modelChanged(pve);
+            
+            final UmlChangeEvent event = (UmlChangeEvent) pve;
+            
+            Runnable doWorkRunnable = new Runnable() {
+                public void run() {
+                    try {
+                        updateLayout(event);
+                    } catch (InvalidElementException e) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("updateLayout method accessed "
+                                    + "deleted element ", e);
+                        }
+                    }
+                }  
+            };
+            SwingUtilities.invokeLater(doWorkRunnable);
+            
         }
         /* The following is a possible future improvement 
          * of the modelChanged() function.
@@ -684,6 +702,20 @@ public abstract class FigEdgeModelElement
      */
     protected void modelAssociationRemoved(RemoveAssociationEvent rae) {
         // Default implementation is to do nothing
+    }
+    
+    /**
+     * This is a template method called by the ArgoUML framework as the result
+     * of a change to a model element. Do not call this method directly
+     * yourself.
+     * <p>Override this in any subclasses in order to restructure the FigNode
+     * due to change of any model element that this FigNode is listening to.</p>
+     * <p>This method is guaranteed by the framework to be running on the 
+     * Swing/AWT thread.</p>
+     *
+     * @param event the UmlChangeEvent that caused the change
+     */
+    protected void updateLayout(UmlChangeEvent event) {
     }
 
     /**
