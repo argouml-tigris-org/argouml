@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.SDNotationSettings;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -166,11 +167,7 @@ public class FigMessage extends FigEdgeModelElement {
      * to the action type..
      */
     private void updateArrow() {
-        if (isReturnAction()) {
-            getFig().setDashed(true);
-        } else {
-            getFig().setDashed(false);
-        }
+        getFig().setDashed(isReturnAction());
         Object act = getAction();
         if (act != null && Model.getFacade().isAsynchronous(getAction())) {
             setDestArrowHead(new ArrowHeadGreater());
@@ -320,14 +317,14 @@ public class FigMessage extends FigEdgeModelElement {
 
     /**
      * {@inheritDoc}
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#propertyChange(java.beans.PropertyChangeEvent)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateLayout(org.argouml.model.UmlChangeEvent)
      */
     @Override
-    public void propertyChange(PropertyChangeEvent pve) {
-        if ("isAsynchronous".equals(pve.getPropertyName())) {
+    public void updateLayout(UmlChangeEvent event) {
+        if ("isAsynchronous".equals(event.getPropertyName())) {
             updateArrow();
         }
-        super.propertyChange(pve);
+        super.updateLayout(event);
     }
     
     /* 
