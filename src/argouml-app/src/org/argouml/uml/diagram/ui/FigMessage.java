@@ -127,7 +127,7 @@ public class FigMessage extends FigNodeModelElement {
         super(owner, bounds, settings);
         initArrows();
         initFigs();
-        // TODO: Do we need the setBounds(getBounds()) hack here?
+        updateNameText();
     }
     
     /**
