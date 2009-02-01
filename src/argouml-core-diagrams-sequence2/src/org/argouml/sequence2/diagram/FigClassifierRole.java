@@ -181,7 +181,11 @@ public class FigClassifierRole extends FigNodeModelElement {
                 ww, h - offset - headFig.getHeight());
         getBigPort().setBounds(x, y, ww, h);
 
-        calcBounds();
+        _x = x;
+        _y = y;
+        _w = w;
+        _h = h;
+        
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }

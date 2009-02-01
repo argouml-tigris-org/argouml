@@ -102,6 +102,7 @@ class FigLifeLine extends ArgoFigGroup {
         for (FigActivation figAct : stackedActivations) {
             addFig(figAct);
         }       
+	// TODO: Do we need this?
         calcBounds();
     }
 
@@ -124,11 +125,10 @@ class FigLifeLine extends ArgoFigGroup {
         
         for (FigMessage figMessage : figMessages) {
             int ySender = 0;
-            final Object action = figMessage.getAction();
             if (currentAct == null
                     && cr.equals(figMessage.getDestFigNode())
                     && !cr.equals(figMessage.getSourceFigNode())
-                    && Model.getFacade().isACallAction(action)) {
+                    && figMessage.isCallAction()) {
                 // if we are the dest and is a call action, create the 
                 // activation, but don't add it until the height is set.
         	ySender = figMessage.getFinalY();        	
@@ -137,7 +137,7 @@ class FigLifeLine extends ArgoFigGroup {
             } else if (currentAct == null
                     && cr.equals(figMessage.getDestFigNode())
                     && !cr.equals(figMessage.getSourceFigNode())
-                    && Model.getFacade().isACreateAction(action)) {
+                    && figMessage.isCreateAction()) {
                 // if we are the dest of a create action, create the
                 // entire activation, because we should need the destroy X
                 currentAct = new FigActivation(getOwner(), new Rectangle(
@@ -145,7 +145,7 @@ class FigLifeLine extends ArgoFigGroup {
             } else if (currentAct != null
                     && cr.equals(figMessage.getSourceFigNode()) 
                     && !cr.equals(figMessage.getDestFigNode())
-                    && Model.getFacade().isAReturnAction(action)) {
+                    && figMessage.isReturnAction()) {
                 // if we are the source of a return action
                 // the activation ends here.
         	ySender = figMessage.getStartY();
@@ -155,13 +155,13 @@ class FigLifeLine extends ArgoFigGroup {
             } else if (currentAct != null
                     && cr.equals(figMessage.getDestFigNode())
                     && !cr.equals(figMessage.getSourceFigNode())
-                    && Model.getFacade().isADestroyAction(action)) {
+                    && figMessage.isDestroyAction()) {
                 // if we are the target of a destroy action
                 // the figlifeline ends here and we add the activation
         	ySender = figMessage.getFinalY();
                 currentAct.setHeight(ySender - currentAct.getY());
                 currentAct.setDestroy(true);
-                this.setHeight(ySender - getY());
+                lineFig.setHeight(ySender - getY());
                 newActivations.add(currentAct);
                 currentAct = null;
             }
@@ -279,8 +279,11 @@ class FigLifeLine extends ArgoFigGroup {
             }
             addFig(act);
         }
-        damage();        
-        calcBounds();        
+        damage();
+        _x = x;
+        _y = y;
+        _w = w;
+        _h = h;
         firePropChange("bounds", oldBounds, getBounds());
     }
     
