@@ -2370,7 +2370,7 @@ public abstract class FigNodeModelElement
     }
     
     /**
-     * Sets the bounds of this classifier. Takes the stereotype view into 
+     * Sets the bounds of this node taking the stereotype view into 
      * consideration.<br>
      * 
      * Do not override this method, override 
