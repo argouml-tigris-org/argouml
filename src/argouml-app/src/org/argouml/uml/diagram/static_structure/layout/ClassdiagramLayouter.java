@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996,2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -65,7 +65,7 @@ public class ClassdiagramLayouter implements Layouter {
      *
      * @author David Gunkel
      */
-    private class NodeRow {
+    private class NodeRow implements Iterable<ClassdiagramNode> {
         /**
          * Keeps all nodes of this row.
          */
@@ -140,12 +140,12 @@ public class ClassdiagramLayouter implements Layouter {
             boolean hasPackage = firstNode.isPackage();
 
             NodeRow newRow = new NodeRow(rowNumber + 1);
-            ClassdiagramNode node = null;
             ClassdiagramNode split = null;
-            Iterator<ClassdiagramNode> iter;
             int width = 0;
-            for (iter = ts.iterator(); iter.hasNext() && width < maxWidth;) {
-                node = iter.next();
+            int count = 0;
+            for (Iterator<ClassdiagramNode> iter = ts.iterator(); 
+                    iter.hasNext() && (width < maxWidth || count < 2);) {
+                ClassdiagramNode node = iter.next();
                 // split =
                 //     (split == null || split.isStandalone()) ? node : split;
                 split =
@@ -155,10 +155,11 @@ public class ClassdiagramLayouter implements Layouter {
                     ? node
                     : split;
                 width += node.getSize().width + gap;
+                count++;
             }
             nodes = new ArrayList<ClassdiagramNode>(ts.headSet(split));
-            for (iter = ts.tailSet(split).iterator(); iter.hasNext();) {
-                newRow.addNode(iter.next());
+            for (ClassdiagramNode n : ts.tailSet(split)) {
+                newRow.addNode(n);
             }
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Row split. This row width: " + getWidth(gap)
@@ -181,15 +182,6 @@ public class ClassdiagramLayouter implements Layouter {
             return rowNumber;
         }
 
-        /**
-         * Get an Iterator for the nodes of this row, sorted by their natural
-         * order.
-         *
-         * @return Iterator for sorted nodes
-         */
-        public Iterator<ClassdiagramNode> getSortedIterator() {
-            return (new TreeSet<ClassdiagramNode>(nodes)).iterator();
-        }
 
         /**
          * Get the width for this row using the given horizontal gap between
@@ -227,9 +219,7 @@ public class ClassdiagramLayouter implements Layouter {
             int col = 0;
             int numNodesWithDownlinks = 0;
             List<ClassdiagramNode> list = new ArrayList<ClassdiagramNode>();
-            for (Iterator<ClassdiagramNode> iter = getSortedIterator(); iter
-                    .hasNext();) {
-                ClassdiagramNode node = iter.next();
+            for (ClassdiagramNode node : this ) {
                 node.setRank(rowNumber);
                 node.setColumn(col++);
                 if (!node.getDownNodes().isEmpty()) {
@@ -242,6 +232,15 @@ public class ClassdiagramLayouter implements Layouter {
                 node.setEdgeOffset(offset);
                 offset += E_GAP;
             }
+        }
+
+        /**
+         * @return an Iterator for the nodes of this row, sorted by their
+         *         natural order.
+         * @see java.lang.Iterable#iterator()
+         */
+        public Iterator<ClassdiagramNode> iterator() {
+            return (new TreeSet<ClassdiagramNode>(nodes)).iterator();
         }
     }
 
@@ -447,8 +446,8 @@ public class ClassdiagramLayouter implements Layouter {
     private void placeNode(ClassdiagramNode node) {
         List<ClassdiagramNode> uplinks = node.getUpNodes();
         List<ClassdiagramNode> downlinks = node.getDownNodes();
-        int curW = node.getSize().width;
-        double xOffset = node.getSize().width + getHGap();
+        int width = node.getSize().width;
+        double xOffset = width + getHGap();
         int bumpX = getHGap() / 2; // (xOffset - curW) / 2;
         int xPosNew =
 	    Math.max(xPos + bumpX,
@@ -460,13 +459,15 @@ public class ClassdiagramLayouter implements Layouter {
                     + " Position: (" + xPosNew + "," + yPos + ") xPos: " 
                     + xPos + " hint: " + node.getPlacementHint());
         }
+        // If there's only a single child (and we're it's only parent),
+        // set a hint for where to place it when we get to its row
         if (downlinks.size() == 1) {
             ClassdiagramNode downNode = downlinks.get(0);
             if (downNode.getUpNodes().get(0).equals(node)) {
                 downNode.setPlacementHint(xPosNew);
             }
         }
-        xPos = (int) Math.max(node.getPlacementHint() + curW, xPos + xOffset);
+        xPos = (int) Math.max(node.getPlacementHint() + width, xPos + xOffset);
     }
 
     /**
@@ -479,18 +480,16 @@ public class ClassdiagramLayouter implements Layouter {
         int xInit = 0;
         yPos = getVGap() / 2;
         for (NodeRow row : nodeRows) {
-            Iterator<ClassdiagramNode> iNode = row.getSortedIterator();
             xPos = xInit;
             int rowHeight = 0;
-            while (iNode.hasNext()) {
-                ClassdiagramNode node = iNode.next();
+            for (ClassdiagramNode node : row) {
                 placeNode(node);
                 rowHeight = Math.max(rowHeight, node.getSize().height);
             }
             yPos += rowHeight + getVGap();
 
         }
-//        centerParents();
+        centerParents();
     }
 
     /**
@@ -498,10 +497,7 @@ public class ClassdiagramLayouter implements Layouter {
      */
     private void centerParents() {
         for (int i = nodeRows.size() - 1; i >= 0; i--) {
-            Iterator<ClassdiagramNode> iNode =
-                    nodeRows.get(i).getSortedIterator();
-            while (iNode.hasNext()) {
-                ClassdiagramNode node = iNode.next();
+            for (ClassdiagramNode node : nodeRows.get(i)) {
                 List<ClassdiagramNode> children = node.getDownNodes();
                 if (children.size() > 0) {
                     node.setLocation(new Point(xCenter(children)
