@@ -72,6 +72,7 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
     public FigEnumLiteralsCompartment(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
+        super.populate();
         
         // TODO: We don't really want this to be filled, but if it's not then
         // the user can't double click in the compartment to add a new literal

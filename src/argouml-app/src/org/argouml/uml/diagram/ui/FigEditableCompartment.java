@@ -89,6 +89,8 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * Construct a new FigGroup containing a "bigPort" or rectangle which
      * encloses the entire group for use in attaching edges, etc and a
      * separator.
+     * <p>
+     * NOTE: Subclasses should call populate() when they are fully constructed.
      * 
      * @param owner owning UML element
      * @param bounds bounding rectangle of fig
@@ -98,6 +100,8 @@ public abstract class FigEditableCompartment extends FigCompartment {
             DiagramSettings settings) {
         super(owner, bounds, settings); // This adds bigPort, i.e. number 1
         constructFigs();
+        // We'd like to call populate here, but our subclasses might not be
+        // completely built yet, so we defer this to them
     }
     
     /**

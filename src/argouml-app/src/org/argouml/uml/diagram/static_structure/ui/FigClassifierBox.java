@@ -130,7 +130,6 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         operationsFig = new FigOperationsCompartment(owner, getDefaultBounds(),
                 getSettings());
         constructFigs();
-        operationsFig.populate(); // this fixes issue 5673
     }
 
     /*

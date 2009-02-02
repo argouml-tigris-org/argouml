@@ -73,6 +73,7 @@ public class FigOperationsCompartment extends FigEditableCompartment {
     public FigOperationsCompartment(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
+        super.populate();
     }
 
     /*
