@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Copyright (c) 2006, 2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -73,6 +73,8 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      */
     protected static final int MAX_PROGRESS_IMPORT = 99;
 
+    protected static final int MAX_PROGRESS = MAX_PROGRESS_PREPARE
+            + MAX_PROGRESS_IMPORT;
     /**
      * keys are module name, values are PluggableImport instance.
      */
@@ -466,7 +468,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
      */
     protected void doImport(ProgressMonitor monitor) {
         // Roughly equivalent to and derived from old Import.doFile()
-        monitor.setMaximumProgress(MAX_PROGRESS_PREPARE + MAX_PROGRESS_IMPORT);
+        monitor.setMaximumProgress(MAX_PROGRESS);
         int progress = 0;
         monitor.updateSubTask(Translator.localize("dialog.import.preImport"));
         List<File> files = getFileList(monitor);
@@ -474,7 +476,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         monitor.updateProgress(progress);
         if (files.size() == 0) {
             monitor.notifyNullAction();
-            monitor.close();
             return;
         }
         Model.getPump().stopPumpingEvents();
@@ -491,9 +492,6 @@ public abstract class ImportCommon implements ImportSettingsInternal {
             // TODO: Send an event instead of calling Explorer directly
             ExplorerEventAdaptor.getInstance().structureChanged();
             Model.getPump().startPumpingEvents();
-            // Should already be closed.  If not, something bad happened, so
-            // make sure it's closed so the user isn't stuck
-            monitor.close();
         }
     }
 
@@ -532,10 +530,8 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                     Translator.localize("dialog.import.layoutAction"));
             layoutDiagrams(monitor, progress + filesLeft.size());
         }
-        monitor.updateMainTask(Translator.localize("dialog.import.done"));
-        monitor.updateSubTask(""); //$NON-NLS-1$
-        monitor.updateProgress(MAX_PROGRESS_PREPARE
-                + MAX_PROGRESS_IMPORT);
+        
+        // Add messages from caught exceptions
         if (problems != null && problems.length() > 0) {
             monitor.notifyMessage(
                     Translator.localize(
@@ -543,9 +539,12 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                             Translator.localize(
                             "label.import-problems"),        //$NON-NLS-1$
                             problems.toString());
-        } else {
-            monitor.close();
         }
+        
+        monitor.updateMainTask(Translator.localize("dialog.import.done"));
+        monitor.updateSubTask(""); //$NON-NLS-1$
+        monitor.updateProgress(MAX_PROGRESS);
+
     }
 
 

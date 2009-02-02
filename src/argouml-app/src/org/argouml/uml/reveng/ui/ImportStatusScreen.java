@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 2008, 2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,17 +25,24 @@
 package org.argouml.uml.reveng.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -44,20 +51,23 @@ import org.argouml.taskmgmt.ProgressEvent;
 import org.argouml.taskmgmt.ProgressMonitor;
 
 /**
- * A window that shows the progress bar and a cancel button.
- * As a convenience to callers which may be executing on a thread other
- * than the Swing event thread, all methods use SwingUtilities.invokeLater()
- * to make sure that Swing calls happen on the appropriate thread.
- *
+ * A window that shows the progress bar and a cancel button. As a convenience to
+ * callers which may be executing on a thread other than the Swing event thread,
+ * all methods use SwingUtilities.invokeLater() or
+ * SwingUtilities.invokeAndWait() to make sure that Swing calls happen on the
+ * appropriate thread.
+ *<p>
  * TODO: React on the close button as if the Cancel button was pressed.
  */
-public class ImportStatusScreen extends JDialog implements ProgressMonitor {
+public class ImportStatusScreen extends JDialog 
+    implements ProgressMonitor, WindowListener {
     
-    private Frame parentFrame;
     private JButton cancelButton;
     private JLabel progressLabel;
     private JProgressBar progress;
-    private boolean cancelled = false;
+    private JTextArea messageArea;
+    private boolean hasMessages = false;
+    private boolean canceled = false;
 
     /**
      * The constructor.
@@ -72,40 +82,71 @@ public class ImportStatusScreen extends JDialog implements ProgressMonitor {
         }
         Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
         getContentPane().setLayout(new BorderLayout(4, 4));
-        parentFrame = frame;
+        Container panel = new JPanel(new GridBagLayout());
 
         // Parsing file x of z.
-        JPanel topPanel = new JPanel();
         progressLabel = new JLabel();
-        progressLabel.setPreferredSize(new Dimension(400, 20));
         progressLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        topPanel.add(progressLabel);
-        getContentPane().add(topPanel, BorderLayout.NORTH);
 
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.gridheight = 1;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.1;
+        
+        panel.add(progressLabel, gbc);
+        gbc.gridy++;
+        
         // progress bar
         progress = new JProgressBar();
-        progress.setPreferredSize(new Dimension(350, 20));
-        getContentPane().add(progress, BorderLayout.CENTER);
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(progress, gbc);
+        gbc.gridy++;
+        
+        panel.add(
+                new JLabel(Translator.localize("label.import-messages")), gbc);
+        gbc.gridy++;
+        
+        // Error/warning messageArea
+        messageArea = new JTextArea(10, 50);
+        gbc.weighty = 0.8;
+//        gbc.gridheight = 10;
+        gbc.fill = GridBagConstraints.BOTH;
+        panel.add(new JScrollPane(messageArea), gbc);
+        gbc.gridy++;
 
-        // stop button
+        // cancel/close button
         cancelButton = new JButton(Translator.localize("button.cancel"));
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.add(cancelButton);
-        getContentPane().add(bottomPanel, BorderLayout.SOUTH);
+
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.SOUTH;
+        gbc.weighty = 0.1;
+        gbc.gridheight = GridBagConstraints.REMAINDER;
+        panel.add(cancelButton, gbc);
+        gbc.gridy++;
+        
         cancelButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                cancelled = true;
-
+                if (isComplete()) {
+                    close();
+                }
+                canceled = true;
             }
 
         });
-
+        
+        getContentPane().add(panel);
         pack();
         Dimension contentPaneSize = getContentPane().getPreferredSize();
         setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
                 scrSize.height / 2 - contentPaneSize.height / 2);
-        setResizable(false);
+        setResizable(true);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(this);
     }
 
     public void setMaximumProgress(final int i) {
@@ -121,8 +162,20 @@ public class ImportStatusScreen extends JDialog implements ProgressMonitor {
         SwingUtilities.invokeLater(new Runnable () {
             public void run() {
                 progress.setValue(i);
+                if (isComplete()) {
+                    if (hasMessages) {
+                        cancelButton.setText(
+                                Translator.localize("button.close"));
+                    } else {
+                        close();
+                    }
+                }
             }
         });
+    }
+    
+    private boolean isComplete() {
+        return progress.getValue() == progress.getMaximum();
     }
 
     /**
@@ -146,28 +199,19 @@ public class ImportStatusScreen extends JDialog implements ProgressMonitor {
      * @see org.argouml.application.api.ProgressMonitor#isCanceled()
      */
     public boolean isCanceled() {
-        return cancelled;
+        return canceled;
     }
 
     /*
      * @see org.argouml.application.api.ProgressMonitor#notifyMessage(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void notifyMessage(String title, String introduction,
-            String message) {
-        // TODO: Create an error dialog or panel in our progress dialog
-        // for now we just use our old style separate error dialog
-        // TODO: BUG - All Swing processing must take place on the AWT event
-        // thread and we are on the Import Thread here
-        ProblemsDialog problemsDialog = new ProblemsDialog(parentFrame, message);
-        problemsDialog.setTitle(title);
-        problemsDialog.setVisible(true);
-        cancelled = problemsDialog.isAborted();
-        // TODO: Only needed while we have a separate problem dialog
-        // (see above)
-        if (cancelled) {
-            setVisible(false);
-            dispose();
-        }
+    public void notifyMessage(final String title, final String introduction,
+            final String message) {
+        hasMessages = true;
+        // TODO: Add filename ?
+        messageArea.setText(messageArea.getText() + title + "\n" + introduction
+                + "\n" + message + "\n\n");
+        messageArea.setCaretPosition(messageArea.getText().length());
     }
 
     /*
@@ -206,5 +250,18 @@ public class ImportStatusScreen extends JDialog implements ProgressMonitor {
     public void progress(ProgressEvent event) throws InterruptedException {
         // ignored
     }
+
+    public void windowClosing(WindowEvent e) {
+        // User closing the progress window is interpreted as cancel request
+        canceled = true;
+        close();
+    }
+    
+    public void windowActivated(WindowEvent e) { }
+    public void windowClosed(WindowEvent e) { }
+    public void windowDeactivated(WindowEvent e) { }
+    public void windowDeiconified(WindowEvent e) { }
+    public void windowIconified(WindowEvent e) { }
+    public void windowOpened(WindowEvent e) { }
 
 }
