@@ -1,5 +1,5 @@
 // $Id:GenericArgoMenuBar.java 13104 2007-07-21 18:29:31Z mvw $
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996,2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,6 +38,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -123,6 +124,8 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
     private static List<Action> moduleCreateDiagramActions = 
         new ArrayList<Action>();
+    
+    private Collection<Action> disableableActions = new ArrayList<Action>();
     
     /**
      * The zoom factor - defaults to 90%/110%
@@ -226,7 +229,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
     private void initActions() {
         navigateTargetForwardAction = new NavigateTargetForwardAction();
+        disableableActions.add(navigateTargetForwardAction);
         navigateTargetBackAction = new NavigateTargetBackAction();
+        disableableActions.add(navigateTargetBackAction);
+        
         TargetManager.getInstance().addTargetListener(this);
     }
 
@@ -659,7 +665,9 @@ public class GenericArgoMenuBar extends JMenuBar implements
         ShortcutMgr.assignAccelerator(preferredSize,
                 ShortcutMgr.ACTION_PREFERRED_SIZE);
 
-        arrange.add(new ActionLayout());
+        Action layout = new ActionLayout();
+        disableableActions.add(layout);
+        arrange.add(layout);
 
         // This used to be deferred, but it's only 30-40 msec of work.
         initAlignMenu(align);
@@ -1068,10 +1076,13 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * Target changed - update the actions that depend on the target.
      */
     private void setTarget() {
-        navigateTargetForwardAction.setEnabled(navigateTargetForwardAction
-                .isEnabled());
-        navigateTargetBackAction.setEnabled(navigateTargetBackAction
-                .isEnabled());
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                for (Action action : disableableActions) {
+                    action.setEnabled(action.isEnabled());
+                }
+            }
+        });        
     }
 
     public void targetAdded(TargetEvent e) {

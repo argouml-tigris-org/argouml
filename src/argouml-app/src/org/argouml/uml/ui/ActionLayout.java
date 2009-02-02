@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996,2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,12 +25,12 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.ui.UndoableAction;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.activity.layout.ActivityDiagramLayouter;
@@ -38,18 +38,12 @@ import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.layout.Layouter;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.SelectionManager;
 
 /**
  * Action to automatically lay out a diagram.
  *
  */
 public class ActionLayout extends UndoableAction {
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
@@ -61,22 +55,26 @@ public class ActionLayout extends UndoableAction {
                 Translator.localize("action.layout"));
     }
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
     /**
-     * Check whether we deal with a supported diagram type
-     * (currently only UMLClassDiagram).
+     * Check whether we deal with a supported diagram type (currently only Class
+     * and Activity diagrams).
+     * <p>
+     * NOTE: This is only called at initialization time by Swing, so the 
+     * application is responsible for checking when the current diagram changes.
+     * Currently done in 
+     * {@link org.argouml.ui.cmd.GenericArgoMenuBar#setTarget()}.
+     * 
      * @return true if the action is enabled
-     * @see org.argouml.ui.ProjectBrowser
      */
     @Override
     public boolean isEnabled() {
-        if (!super.isEnabled()) {
-            return false;
+        ArgoDiagram d;
+        Object target = TargetManager.getInstance().getTarget();
+        if (target instanceof ArgoDiagram) {
+            d = (ArgoDiagram) target;
+        } else {
+            d = DiagramUtils.getActiveDiagram(); 
         }
-
-        ArgoDiagram d = DiagramUtils.getActiveDiagram();
         if (d instanceof UMLClassDiagram 
                 || d instanceof UMLActivityDiagram) {
             return true;
@@ -103,22 +101,8 @@ public class ActionLayout extends UndoableAction {
             return;
         }
 
-        // Using the selection manager to force a repaint seems like a
-        // heavyweight way to do this - tfm
-        
-        // Create a selection containing all figures in diagram
-        Editor ce = Globals.curEditor();
-        SelectionManager sm = ce.getSelectionManager();
-        Collection nodes = DiagramUtils.getActiveDiagram().getLayer()
-                .getContents();                    
-        sm.select(nodes);
-
         // Rearrange the diagram layout
         layouter.layout();
-        
-        // Tell the selection manager we're done and deselect everything
-        // This will force a repaint.
-        sm.endTrans(); 
-        sm.deselectAll();
+        diagram.damage();
     }
 }
