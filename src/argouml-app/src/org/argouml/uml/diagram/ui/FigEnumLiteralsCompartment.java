@@ -89,8 +89,7 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
      * @see org.argouml.uml.diagram.ui.FigEditableCompartment#getUmlCollection()
      */
     protected Collection getUmlCollection() {
-        Object enumeration = getGroup().getOwner();
-        return Model.getFacade().getEnumerationLiterals(enumeration);
+        return Model.getFacade().getEnumerationLiterals(getOwner());
     }
 
     /*
