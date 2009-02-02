@@ -230,6 +230,10 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             return;
         }
         ((FigEditableCompartment) fg).createModelElement();
+        /* Populate the compartment now, 
+         * so that we can put the last one in edit mode: 
+         * This fixes issue 5439. */
+        ((FigEditableCompartment) fg).populate();
         List figList = fg.getFigs();
         if (figList.size() > 0) {
             Fig fig = (Fig) figList.get(figList.size() - 1);
