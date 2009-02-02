@@ -563,6 +563,20 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
     
+    /**
+     * If the name is updated, update the bounds of the middle group.
+     * This makes the selection box appear correctly during prop-panel edit.
+     * This is a temporary solution, until a better architecture is decided 
+     * upon, see issue 5477 and 
+     * http://argouml.tigris.org/issues/show_bug.cgi?id=5621#desc19.
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateNameText()
+     */
+    protected void updateNameText() {
+        super.updateNameText();
+        middleGroup.calcBounds();
+    }
+    
+    
 } /* end class FigAssociation */
 
 /**
