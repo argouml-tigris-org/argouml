@@ -174,8 +174,7 @@ class ClassdiagramNode implements LayoutedNode, Comparable {
         for (ClassdiagramNode node : uplinks) {
             weight = Math.max(weight, node.getWeight()
                     * UPLINK_FACTOR
-                    * (1 + 1 / Math
-                            .max(1, node.getColumn() + UPLINK_FACTOR)));
+                    * (1 + 1 / Math.max(1, node.getColumn() + UPLINK_FACTOR)));
         }
         weight += getSubtreeWeight()
                 + (1 / Math.max(1, getColumn() + UPLINK_FACTOR));
