@@ -87,6 +87,7 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         super(owner, bounds, settings);
         attributesFigCompartment = new FigAttributesCompartment(owner,
                 DEFAULT_COMPARTMENT_BOUNDS, settings);
+        attributesFigCompartment.populate(); // this fixes issue 5673
     }
 
     /**
