@@ -234,6 +234,13 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
          * so that we can put the last one in edit mode: 
          * This fixes issue 5439. */
         ((FigEditableCompartment) fg).populate();
+        // TODO: The above populate works but seems rather heavy here.
+        // I can see something like this is needed though as events
+        // won't manage this quick enough. Could we make
+        // FigEditableCompartment.createModelElement() create
+        // the new child Fig instance? It may also be useful
+        // for it to return the new model element rather than
+        // the current void return - Bob.
         List figList = fg.getFigs();
         if (figList.size() > 0) {
             Fig fig = (Fig) figList.get(figList.size() - 1);
