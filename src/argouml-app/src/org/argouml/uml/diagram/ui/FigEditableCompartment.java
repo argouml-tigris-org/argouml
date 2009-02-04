@@ -232,6 +232,9 @@ public abstract class FigEditableCompartment extends FigCompartment {
                 comp.setBotMargin(0);
             }
         } catch (InvalidElementException e) {
+            // TODO: It would be better here to continue the loop and try to
+            // build the rest of the compartment. Hence try/catch should be
+            // internal to the loop.
             LOG.debug("Attempted to populate a FigEditableCompartment" 
                     + " using a deleted model element - aborting", e);
         } 
