@@ -84,6 +84,9 @@ public class DiagramUndoManager extends UndoManager {
                     // of what is being done.
                     undo.startInteraction("Diagram Interaction");
                 }
+                // TODO: I presume this would fix issue 5250 - but
+                // GEF would need to be adapted:
+//                if (!(memento instanceof SelectionMemento))  
                 undo.addCommand(new DiagramCommand(memento));
 
                 startChain = false;
