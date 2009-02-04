@@ -242,14 +242,29 @@ public class FigCompositeState extends FigState {
     @Override
     public Vector<Fig> getEnclosedFigs() {
         Vector<Fig> enclosedFigs = super.getEnclosedFigs();
-        
-        TreeMap<Integer, Fig> figsByY = new TreeMap<Integer, Fig>();
-        for (Fig fig : enclosedFigs) {
-            if (fig instanceof FigConcurrentRegion) {
-                figsByY.put(fig.getY(), fig);
+
+        if (isConcurrent()) {
+            TreeMap<Integer, Fig> figsByY = new TreeMap<Integer, Fig>();
+            for (Fig fig : enclosedFigs) {
+                if (fig instanceof FigConcurrentRegion) {
+                    figsByY.put(fig.getY(), fig);
+                }
             }
+            return new Vector<Fig>(figsByY.values());
         }
-        return new Vector<Fig>(figsByY.values());
+        return enclosedFigs;
+    }
+    
+    /**
+     * @return true if this is a concurrent state, 
+     * false otherwise, or if the owner is not known
+     */
+    public boolean isConcurrent() {
+        Object owner = getOwner();
+        if (owner == null) {
+            return false;
+        }
+        return Model.getFacade().isConcurrent(owner);
     }
 
     /**
