@@ -281,9 +281,9 @@ public class FigEnumeration extends FigDataType
             literalsHeight = Math.max(literalsHeight, 
                     (h - currentHeight) / visibleCompartments);
             getLiteralsCompartment().setBounds(
-                    x + 1,
+                    x + LINE_WIDTH,
                     y + currentHeight,
-                    w - 1,
+                    w - LINE_WIDTH,
                     literalsHeight);
             currentHeight += literalsHeight;
         }
