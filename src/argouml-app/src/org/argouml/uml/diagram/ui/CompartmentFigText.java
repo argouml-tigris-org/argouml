@@ -365,7 +365,6 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation
     }
     
     public void targetAdded(TargetEvent e) {
-        LOG.info("Target added " + e);
         if (Arrays.asList(e.getNewTargets()).contains(getOwner())) {
             setHighlighted(true);
             this.damage();
@@ -373,7 +372,6 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation
     }
 
     public void targetRemoved(TargetEvent e) {
-        LOG.info("Target removed " + e);
         if (e.getRemovedTargetCollection().contains(getOwner())) {
             setHighlighted(false);
             this.damage();
