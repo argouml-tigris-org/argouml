@@ -78,11 +78,6 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
         // the user can't double click in the compartment to add a new literal
         // Apparently GEF thinks unfilled figs are only selectable by border
 //        setFilled(false);
-
-        // We need the width of the outline fig (bigPort) for the compartment
-        // to match the width of the outer fig so that the outer fig doesn't
-        // get overwritten by our fill
-        setLineWidth(LINE_WIDTH);
     }
     
     /*
