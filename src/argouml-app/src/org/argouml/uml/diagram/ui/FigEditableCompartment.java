@@ -404,10 +404,12 @@ public abstract class FigEditableCompartment extends FigCompartment {
     protected static class FigSeperator extends FigLine {
         /**
          * Constructor.
+         * TODO: The line-width is set by the containing group - so
+         * no need to do that here also.
          *
-         * @param x
-         * @param y
-         * @param len
+         * @param x coordinate
+         * @param y coordinate
+         * @param len length of the line
          */
         FigSeperator(int x, int y, int len) {
             super(x, y, (x + len) - 1, y, LINE_COLOR);
