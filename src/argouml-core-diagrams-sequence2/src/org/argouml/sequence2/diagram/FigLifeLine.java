@@ -112,71 +112,102 @@ class FigLifeLine extends ArgoFigGroup {
         final List<FigActivation> newActivations =
             new LinkedList<FigActivation>();
 	
-        final FigClassifierRole cr =
-            (FigClassifierRole) getGroup();                
-        FigActivation currentAct = null;
-        
         // Check here if there are no incoming call actions
         // if not then create an activation at the top of the lifeline
-        if (!hasIncomingCallActions(figMessages)) {
-            currentAct = new FigActivation(getOwner(), new Rectangle(lineFig
-                    .getX(), lineFig.getY(), 0, 0), getSettings());
-        }
-        
-        for (FigMessage figMessage : figMessages) {
-            int ySender = 0;
-            if (currentAct == null
-                    && cr.equals(figMessage.getDestFigNode())
-                    && !cr.equals(figMessage.getSourceFigNode())
-                    && figMessage.isCallAction()) {
-                // if we are the dest and is a call action, create the 
-                // activation, but don't add it until the height is set.
-        	ySender = figMessage.getFinalY();        	
-                currentAct = new FigActivation(getOwner(), new Rectangle(
-                        lineFig.getX(), ySender, 0, 0), getSettings()); 
-            } else if (currentAct == null
-                    && cr.equals(figMessage.getDestFigNode())
-                    && !cr.equals(figMessage.getSourceFigNode())
-                    && figMessage.isCreateAction()) {
-                // if we are the dest of a create action, create the
-                // entire activation, because we should need the destroy X
-                currentAct = new FigActivation(getOwner(), new Rectangle(
-                        lineFig.getX(), lineFig.getY(), 0, 0), getSettings());
-            } else if (currentAct != null
-                    && cr.equals(figMessage.getSourceFigNode()) 
-                    && !cr.equals(figMessage.getDestFigNode())
-                    && figMessage.isReturnAction()) {
-                // if we are the source of a return action
-                // the activation ends here.
-        	ySender = figMessage.getStartY();
-                currentAct.setHeight(ySender - currentAct.getY());
-                newActivations.add(currentAct);
-                currentAct = null;
-            } else if (currentAct != null
-                    && cr.equals(figMessage.getDestFigNode())
-                    && !cr.equals(figMessage.getSourceFigNode())
-                    && figMessage.isDestroyAction()) {
-                // if we are the target of a destroy action
-                // the figlifeline ends here and we add the activation
-        	ySender = figMessage.getFinalY();
-                currentAct.setHeight(ySender - currentAct.getY());
-                currentAct.setDestroy(true);
-                lineFig.setHeight(ySender - getY());
-                newActivations.add(currentAct);
-                currentAct = null;
+        if (!hasIncomingCallActionFirst(figMessages)) {
+            newActivations.add(createActivationFig(
+                    getOwner(),
+                    lineFig.getX(),
+                    lineFig.getY(), 
+                    lineFig.getWidth(), 
+                    lineFig.getHeight(), 
+                    getSettings()));
+        } else {
+            final FigClassifierRole cr =
+                (FigClassifierRole) getGroup();                
+            
+            FigActivation currentActivation = null;
+            
+            for (FigMessage figMessage : figMessages) {
+                int ySender = 0;
+                if (currentActivation == null
+                        && cr.equals(figMessage.getDestFigNode())
+                        && !cr.equals(figMessage.getSourceFigNode())
+                        && figMessage.isCallAction()) {
+                    // if we are the dest and is a call action, create the 
+                    // activation, but don't add it until the height is set.
+                    ySender = figMessage.getFinalY();
+                    currentActivation = createActivationFig(
+                            getOwner(), 
+                            lineFig.getX(), 
+                            ySender, 
+                            0, 
+                            0, 
+                            getSettings()); 
+                } else if (currentActivation == null
+                        && cr.equals(figMessage.getDestFigNode())
+                        && !cr.equals(figMessage.getSourceFigNode())
+                        && figMessage.isCreateAction()) {
+                    // if we are the dest of a create action, create the
+                    // entire activation, because we should need the destroy X
+                    currentActivation = createActivationFig(
+                            getOwner(),
+                            lineFig.getX(),
+                            lineFig.getY(),
+                            0,
+                            0,
+                            getSettings());
+                } else if (currentActivation != null
+                        && cr.equals(figMessage.getSourceFigNode()) 
+                        && !cr.equals(figMessage.getDestFigNode())
+                        && figMessage.isReturnAction()) {
+                    // if we are the source of a return action
+                    // the activation ends here.
+                    ySender = figMessage.getStartY();
+                    currentActivation.setHeight(
+                            ySender - currentActivation.getY());
+                    newActivations.add(currentActivation);
+                    currentActivation = null;
+                } else if (currentActivation != null
+                        && cr.equals(figMessage.getDestFigNode())
+                        && !cr.equals(figMessage.getSourceFigNode())
+                        && figMessage.isDestroyAction()) {
+                    // if we are the target of a destroy action
+                    // the figlifeline ends here and we add the activation
+                    ySender = figMessage.getFinalY();
+                    currentActivation.setHeight(
+                            ySender - currentActivation.getY());
+                    currentActivation.setDestroy(true);
+                    lineFig.setHeight(ySender - getY());
+                    newActivations.add(currentActivation);
+                    currentActivation = null;
+                }
+            }
+            
+            // If we have a currentAct object that means have reached the end
+            // of the lifeline with a call or a create not returned.
+            // Add the activation to the list after setting its height to end
+            // at the end of the lifeline.
+            if (currentActivation != null) {
+                currentActivation.setHeight(getHeight() - (currentActivation.getY() - getY()));
+                newActivations.add(currentActivation);
             }
         }
         
-        // If we have a currentAct object that means have reached the end
-        // of the lifeline with a call or a create not returned.
-        // Add the activation to the list after setting its height to end
-        // at the end of the lifeline.
-        if (currentAct != null) {
-            currentAct.setHeight(getHeight() - (currentAct.getY() - getY()));
-            newActivations.add(currentAct);
-        }
-        
         return newActivations;
+    }
+    
+    FigActivation createActivationFig(
+            final Object owner, 
+            final int x, 
+            final int y, 
+            final int w, 
+            final int h, 
+            final DiagramSettings settings) {
+        return new FigActivation(
+                owner,
+                new Rectangle(x, y, w, h),
+                settings);
     }
     
     private List<FigActivation> createStackedActivations(
@@ -211,20 +242,22 @@ class FigLifeLine extends ArgoFigGroup {
     }
 
 
-    private boolean hasIncomingCallActions(
+    private boolean hasIncomingCallActionFirst(
     		final List<FigMessage> figMessages) {
         final FigClassifierRole cr =
-            (FigClassifierRole) getGroup();                
-        for (FigMessage figMessage : figMessages) {
-            if (cr.equals(figMessage.getDestFigNode())
-                    && !cr.equals(figMessage.getSourceFigNode())
-                    && figMessage.isCallAction()) {
-                return true;
-            }
+            (FigClassifierRole) getGroup();
+        if (figMessages.isEmpty()) {
+            return false;
+        }
+        FigMessage figMessage = figMessages.get(0);
+        if (cr.equals(figMessage.getDestFigNode())
+                && !cr.equals(figMessage.getSourceFigNode())
+                && figMessage.isCallAction()) {
+            return true;
         }
         return false;
     }
-
+    
     private boolean hasOutgoingDestroyActions(List<FigMessage> messages) {
         boolean found = false;
         final FigClassifierRole cr =
