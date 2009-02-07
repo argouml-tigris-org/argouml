@@ -150,7 +150,10 @@ public class FigConcurrentRegion extends FigState
             settings) {
         super(node, bounds, settings);
         initialize();
-//        setLineColor(settings.getLineColor());
+        if (bounds != null) {
+            setLocation(bounds.getLocation());
+        }
+        updateNameText();
     }
     
     /*
