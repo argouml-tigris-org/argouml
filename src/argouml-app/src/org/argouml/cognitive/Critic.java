@@ -274,8 +274,9 @@ public class Critic
 	decisionCategory = "Checking";
 
 	moreInfoURL = defaultMoreInfoURL();
-	description = "no description is availible";
-	headline = "default critic headline (" + getClass().getName() + ")";
+	description = Translator.localize("misc.critic.no-description");
+	headline = Translator.messageFormat("misc.critic.default-headline", 
+	        new Object[] {getClass().getName()});
 	priority = ToDoItem.MED_PRIORITY;
     }
 
@@ -325,7 +326,7 @@ public class Critic
      * @return a default category
      */
     public String getCriticCategory() {
-	return "unclassified";
+	return Translator.localize("misc.critic.unclassified");
     }
 
     /**
