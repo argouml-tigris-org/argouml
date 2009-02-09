@@ -42,7 +42,9 @@ class FigActivation extends ArgoFigGroup {
     
     private FigRect rectFig;
     private FigDestroy destroyFig;
-
+    
+    // The FigMessage that triggered this FigActivation into existence
+    private FigMessage activatingMessage;
     
     /**
      * TODO: Document
@@ -78,11 +80,16 @@ class FigActivation extends ArgoFigGroup {
      * @param owner owning UML element or null
      * @param bounds position (top center) and size. If the width or height is
      *            0, the default will be used.
+     * @param activatingMessage The FigMessage that triggered this activation
+     *            to exist
      * @param settings rendering settings
      */
-    public FigActivation(Object owner, Rectangle bounds,
-            DiagramSettings settings) {
-        this(owner, bounds, settings, false);
+    public FigActivation(
+            final Object owner,
+            final Rectangle bounds,
+            final DiagramSettings settings,
+            final FigMessage activatingMessage) {
+        this(owner, bounds, settings, activatingMessage, false);
     }
 
     /**
@@ -92,11 +99,18 @@ class FigActivation extends ArgoFigGroup {
      * @param bounds position (top center) and size.  If the width or height is
      *            0, the default will be used.
      * @param settings rendering settings
+     * @param activatingMessage The FigMessage that triggered this activation
+     *            to exist
      * @param destroy true if activation should end with a destroy fig.
      */
-    public FigActivation(Object owner, Rectangle bounds,
-            DiagramSettings settings, boolean destroy) {
+    public FigActivation(
+            final Object owner,
+            final Rectangle bounds,
+            final DiagramSettings settings,
+            final FigMessage activatingMessage,
+            final boolean destroy) {
         super(owner, settings);
+        this.activatingMessage = activatingMessage;
         initialize(bounds, destroy);
     }
     
@@ -127,5 +141,18 @@ class FigActivation extends ArgoFigGroup {
     public boolean isDestroy () {
         return destroyFig != null;
     }
-
+    
+    public boolean isActivatorEnd(FigMessage messageFig) {
+        if (messageFig == null) {
+            throw new IllegalArgumentException(
+                    "An instance of FigMessage is required");
+        }
+        if (!messageFig.isReturnAction()) {
+            return false;
+        }
+        if (activatingMessage == null) {
+            return true;
+        }
+        return messageFig.getDestFigNode() == activatingMessage.getSourceFigNode();
+    }
 }

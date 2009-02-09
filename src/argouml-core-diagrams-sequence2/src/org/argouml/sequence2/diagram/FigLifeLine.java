@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.tigris.gef.presentation.FigLine;
@@ -102,37 +101,36 @@ class FigLifeLine extends ArgoFigGroup {
         for (FigActivation figAct : stackedActivations) {
             addFig(figAct);
         }       
-	// TODO: Do we need this?
+        // TODO: Do we need this?
         calcBounds();
     }
 
     private List<FigActivation> createStandardActivations(
-    		final List<FigMessage> figMessages) {        
-	
+                final List<FigMessage> figMessages) {        
+        
         final List<FigActivation> newActivations =
             new LinkedList<FigActivation>();
-	
+        
         // Check here if there are no incoming call actions
         // if not then create an activation at the top of the lifeline
+        FigActivation currentActivation = null;
         if (!hasIncomingCallActionFirst(figMessages)) {
-            newActivations.add(createActivationFig(
+            currentActivation = createActivationFig(
                     getOwner(),
                     lineFig.getX(),
                     lineFig.getY(), 
                     lineFig.getWidth(), 
-                    lineFig.getHeight(), 
-                    getSettings()));
-        } else {
-            final FigClassifierRole cr =
-                (FigClassifierRole) getGroup();                
+                    lineFig.getHeight(),
+                    getSettings(),
+                    null);
+        }
+        
+        for (FigMessage figMessage : figMessages) {
+            int ySender = 0;
             
-            FigActivation currentActivation = null;
-            
-            for (FigMessage figMessage : figMessages) {
-                int ySender = 0;
+            if (!figMessage.isSelfMessage()) {
                 if (currentActivation == null
-                        && cr.equals(figMessage.getDestFigNode())
-                        && !cr.equals(figMessage.getSourceFigNode())
+                        && isIncoming(figMessage)
                         && figMessage.isCallAction()) {
                     // if we are the dest and is a call action, create the 
                     // activation, but don't add it until the height is set.
@@ -142,25 +140,26 @@ class FigLifeLine extends ArgoFigGroup {
                             lineFig.getX(), 
                             ySender, 
                             0, 
-                            0, 
-                            getSettings()); 
+                            0,
+                            getSettings(),
+                            figMessage);
                 } else if (currentActivation == null
-                        && cr.equals(figMessage.getDestFigNode())
-                        && !cr.equals(figMessage.getSourceFigNode())
+                        && isIncoming(figMessage)
                         && figMessage.isCreateAction()) {
-                    // if we are the dest of a create action, create the
-                    // entire activation, because we should need the destroy X
+                    // if we are the destination of a create action,
+                    // create the entire activation, because we should
+                    // need the destroy X
                     currentActivation = createActivationFig(
                             getOwner(),
                             lineFig.getX(),
                             lineFig.getY(),
                             0,
                             0,
-                            getSettings());
+                            getSettings(),
+                            figMessage);
                 } else if (currentActivation != null
-                        && cr.equals(figMessage.getSourceFigNode()) 
-                        && !cr.equals(figMessage.getDestFigNode())
-                        && figMessage.isReturnAction()) {
+                        && isOutgoing(figMessage)
+                        && currentActivation.isActivatorEnd(figMessage)) {
                     // if we are the source of a return action
                     // the activation ends here.
                     ySender = figMessage.getStartY();
@@ -169,8 +168,7 @@ class FigLifeLine extends ArgoFigGroup {
                     newActivations.add(currentActivation);
                     currentActivation = null;
                 } else if (currentActivation != null
-                        && cr.equals(figMessage.getDestFigNode())
-                        && !cr.equals(figMessage.getSourceFigNode())
+                        && isOutgoing(figMessage)
                         && figMessage.isDestroyAction()) {
                     // if we are the target of a destroy action
                     // the figlifeline ends here and we add the activation
@@ -183,41 +181,62 @@ class FigLifeLine extends ArgoFigGroup {
                     currentActivation = null;
                 }
             }
-            
-            // If we have a currentAct object that means have reached the end
-            // of the lifeline with a call or a create not returned.
-            // Add the activation to the list after setting its height to end
-            // at the end of the lifeline.
-            if (currentActivation != null) {
-                currentActivation.setHeight(getHeight() - (currentActivation.getY() - getY()));
-                newActivations.add(currentActivation);
-            }
+        }
+        
+        // If we have a currentAct object that means have reached the end
+        // of the lifeline with a call or a create not returned.
+        // Add the activation to the list after setting its height to end
+        // at the end of the lifeline.
+        if (currentActivation != null) {
+            currentActivation.setHeight(
+                    getHeight() - (currentActivation.getY() - getY()));
+            newActivations.add(currentActivation);
         }
         
         return newActivations;
     }
     
-    FigActivation createActivationFig(
+    /**
+     * Return true if the given message fig is pointing in to this lifeline.
+     * @param messageFig
+     * @return true if the message is incoming
+     */
+    private boolean isIncoming(FigMessage messageFig) {
+        return (messageFig.getDestFigNode().getOwner() == getOwner());
+    }
+    
+    /**
+     * Return true if the given message fig is pointing out from this lifeline.
+     * @param messageFig
+     * @return true if the message is outgoing
+     */
+    private boolean isOutgoing(FigMessage messageFig) {
+        return (messageFig.getSourceFigNode().getOwner() == getOwner());
+    }
+    
+    private FigActivation createActivationFig(
             final Object owner, 
             final int x, 
             final int y, 
             final int w, 
-            final int h, 
-            final DiagramSettings settings) {
+            final int h,
+            final DiagramSettings settings,
+            final FigMessage messageFig) {
         return new FigActivation(
                 owner,
                 new Rectangle(x, y, w, h),
-                settings);
+                settings,
+                messageFig);
     }
     
     private List<FigActivation> createStackedActivations(
-	    final List<FigMessage> figMessages) {
-	
-	final List<FigActivation> newActivations =
-	    new LinkedList<FigActivation>();
-	
-	FigActivation currentAct = null;
-	
+            final List<FigMessage> figMessages) {
+        
+        final List<FigActivation> newActivations =
+            new LinkedList<FigActivation>();
+        
+        FigActivation currentAct = null;
+        
         for (FigMessage figMessage : figMessages) {
             int ySender = 0;
             // if we are the dest and is a call action, create the 
@@ -228,7 +247,7 @@ class FigLifeLine extends ArgoFigGroup {
                     currentAct = new FigActivation(figMessage.getOwner(),
                             new Rectangle(lineFig.getX()
                                     + FigActivation.DEFAULT_WIDTH / 2, ySender,
-                                    0, 0), getSettings(), false);
+                                    0, 0), getSettings(), figMessage, false);
                 } else if (currentAct != null
                         && figMessage.isReturnAction()) {
                     ySender = figMessage.getStartY();
@@ -243,7 +262,7 @@ class FigLifeLine extends ArgoFigGroup {
 
 
     private boolean hasIncomingCallActionFirst(
-    		final List<FigMessage> figMessages) {
+                final List<FigMessage> figMessages) {
         final FigClassifierRole cr =
             (FigClassifierRole) getGroup();
         if (figMessages.isEmpty()) {
@@ -256,22 +275,6 @@ class FigLifeLine extends ArgoFigGroup {
             return true;
         }
         return false;
-    }
-    
-    private boolean hasOutgoingDestroyActions(List<FigMessage> messages) {
-        boolean found = false;
-        final FigClassifierRole cr =
-            (FigClassifierRole) getGroup();                
-        for (FigMessage message : messages) {
-            Object action = message.getAction();
-            if (cr.equals(message.getSourceFigNode())                    
-                    && !cr.equals(message.getDestFigNode())
-                    && Model.getFacade().isADestroyAction(action)) {
-                found = true;
-                break;
-            }
-        }
-        return found;
     }
     
     private void clearActivations() {
@@ -319,10 +322,6 @@ class FigLifeLine extends ArgoFigGroup {
         _h = h;
         firePropChange("bounds", oldBounds, getBounds());
     }
-    
-//    public int getLineWidth() {
-//        return lineFig.getLineWidth();
-//    }
     
     public void setLineWidth(int w) {
         lineFig.setLineWidth(w);
