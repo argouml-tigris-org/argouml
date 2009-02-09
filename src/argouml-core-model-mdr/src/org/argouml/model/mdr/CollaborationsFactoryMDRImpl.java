@@ -318,8 +318,11 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * Builds a message within some interaction related to some assocationrole.
      * The message is added as the last in the interaction sequence.
      * Furthermore, the message is added as the last to the list of messages
-     * allready attached to the role. Effectively, the already attached messages
+     * already attached to the role. Effectively, the already attached messages
      * become predecessors of this message.
+     * TODO: This sets the activator as a side effect. However it is impossible
+     * to determine the activator at this stage as we don't yet know what the
+     * action will be of the message we're creating. See issue 5692.
      *
      * @param inter
      *            The Interaction.
