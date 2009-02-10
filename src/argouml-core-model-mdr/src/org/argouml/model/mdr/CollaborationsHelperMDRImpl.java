@@ -250,7 +250,8 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             throw new IllegalArgumentException("message");
         }
         if (anactivator != null && !(anactivator instanceof Message)) {
-            throw new IllegalArgumentException("activator");
+            throw new IllegalArgumentException(
+                    "An activator must be a message");
         }
         Message mes = (Message) ames;
         Message activator = (Message) anactivator;
@@ -266,6 +267,7 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                                 + "of message should equal "
                                 + "interaction of activator");
             }
+            // TODO Replace this block and uncomment block below.
             if (mes.getPredecessor().contains(activator)) {
                 throw new IllegalArgumentException("In setActivator: the "
                         + "predecessors of the message "
@@ -279,6 +281,12 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                                 + "not be the activator for "
                                 + "the original activator");
             }
+            // TODO Replace commented block above with this
+            // Rather throw an exception we mutate the model to achieve
+            // what we want.
+//            if (mes.getPredecessor().contains(activator)) {
+//                mes.getPredecessor().remove(activator);
+//            }
         }
         List<Message> listToChange = new ArrayList<Message>();
         Collection<Message> predecessors = mes.getPredecessor();
@@ -290,6 +298,12 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 listToChange.add(mes2);
             }
         }
+        // This causes problems. It can make multiple return messages
+        // refer to the same activator even if not returning to the same
+        // classifier role as the activator emenates from.
+        // I'm not sure that changing the activator of one message
+        // should amend any other messages but this is certainly changing
+        // too many - Bob.
         for (Message mes2 : listToChange) {
             mes2.setActivator(activator);
         }
