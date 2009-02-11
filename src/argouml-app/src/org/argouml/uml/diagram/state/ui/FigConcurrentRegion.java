@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -60,11 +61,23 @@ public class FigConcurrentRegion extends FigState
         MouseListener,
         MouseMotionListener {
 
+    /**
+     * The horizontal margin between the region and its composite parent state.
+     */
+    public static final int INSET_HORZ = 3;
+    /**
+     * The vertical margin between the region and its composite parent state.
+     */
+    public static final int INSET_VERT = 5;
 
     private FigRect cover;
+    /**
+     * The divider line is the horizontal dashed line
+     * shown at the top side for
+     * every region except the first one.
+     */
     private FigLine dividerline;
     private static Handle curHandle = new Handle(-1);
-
 
     /**
      * The constructor.
@@ -101,7 +114,6 @@ public class FigConcurrentRegion extends FigState
         addFig(getInternal());
 
         setShadowSize(0);
-        setBounds(getBounds());
     }
 
     /**
@@ -151,7 +163,10 @@ public class FigConcurrentRegion extends FigState
         super(node, bounds, settings);
         initialize();
         if (bounds != null) {
-            setLocation(bounds.getLocation());
+            /* We have to use the specific methods written for this Fig: 
+             * This fixes issue 5070. */
+            setBounds(bounds.x - _x, bounds.y - _y, bounds.width, 
+                    bounds.height - _h, true);
         }
         updateNameText();
     }
@@ -406,6 +421,10 @@ public class FigConcurrentRegion extends FigState
     // fig accessors
 
     /*
+     * This function only sets the color of the divider line 
+     * (since that is the only visible part), and can be used to make 
+     * the divider line invisible for the top region in a composite state.
+     * 
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     @Override
@@ -472,6 +491,17 @@ public class FigConcurrentRegion extends FigState
     ////////////////////////////////////////////////////////////////
     // event processing
 
+    protected void modelChanged(PropertyChangeEvent mee) {
+        if ("container".equals(mee.getPropertyName())
+                || "isConcurrent".equals(mee.getPropertyName())
+                || "subvertex".equals(mee.getPropertyName())) {
+            //do nothing
+            // this only happens at creation time - I hope
+        } else {
+            super.modelChanged(mee);
+        }
+    }
+    
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
@@ -523,7 +553,10 @@ public class FigConcurrentRegion extends FigState
 
     @Override
     protected void updateLayout(UmlChangeEvent event) {
-        super.updateLayout(event);
+        if (!"container".equals(event.getPropertyName()) &&
+                !"isConcurrent".equals(event.getPropertyName())) {
+            super.updateLayout(event);
+        }
         final String eName = event.getPropertyName();
         /*
          * A Concurrent region cannot have incoming or outgoing transitions so

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +47,7 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * Class to display graphics for a UML MCompositeState in a diagram.
+ * Class to display graphics for a UML CompositeState in a diagram.
  *
  * @author jrobbins@ics.uci.edu
  */
@@ -68,6 +68,7 @@ public class FigCompositeState extends FigState {
             DiagramSettings settings) {
         super(owner, bounds, settings);
         initFigs();
+        updateNameText();
     }
     
     /**
@@ -181,12 +182,13 @@ public class FigCompositeState extends FigState {
         /* If it is concurrent and contains concurrent regions,
         the bottom region has a minimum height*/
         if (getOwner() != null) {
-            if (Model.getFacade().isConcurrent(getOwner())
+            if (isConcurrent()
                     && !regionsList.isEmpty()
                     && regionsList.get(regionsList.size() - 1)
                         instanceof FigConcurrentRegion) {
                 FigConcurrentRegion f = 
-                    ((FigConcurrentRegion) regionsList.get(regionsList.size() - 1));
+                    ((FigConcurrentRegion) regionsList.get(
+                            regionsList.size() - 1));
                 Rectangle regionBounds = f.getBounds();
                 if ((h - oldBounds.height + regionBounds.height)
                         <= (f.getMinimumSize().height)) {
@@ -221,7 +223,7 @@ public class FigCompositeState extends FigState {
         /*If it is concurrent and contains concurrent regions,
         the regions are resized*/
         if (getOwner() != null) {
-            if (Model.getFacade().isConcurrent(getOwner())
+            if (isConcurrent()
                     && !regionsList.isEmpty()
                     && regionsList.get(regionsList.size() - 1)
                         instanceof FigConcurrentRegion) {
@@ -230,15 +232,20 @@ public class FigCompositeState extends FigState {
                 for (int i = 0; i < regionsList.size() - 1; i++) {
                     ((FigConcurrentRegion) regionsList.get(i))
                         .setBounds(x - oldBounds.x, y - oldBounds.y,
-                                w - 6, true);
+                                w - 2 * FigConcurrentRegion.INSET_HORZ, true);
                 }
                 f.setBounds(x - oldBounds.x,
-                        y - oldBounds.y, w - 6, h - oldBounds.height, true);
+                        y - oldBounds.y, 
+                        w - 2 * FigConcurrentRegion.INSET_HORZ, 
+                        h - oldBounds.height, true);
             }
         }
 
     }
     
+    /*
+     * The returned list of Figs is sorted according layout: from top to bottom.
+     */
     @Override
     public Vector<Fig> getEnclosedFigs() {
         Vector<Fig> enclosedFigs = super.getEnclosedFigs();
@@ -270,13 +277,26 @@ public class FigCompositeState extends FigState {
     /**
      * To resize only when a new concurrent region is added,
      * changing the height.
-     * TODO: Badly named method, it actually sets height. Probably shouldn't
+     * TODO: Badly named method, it actually sets height. 
+     * @deprecated by mvw in V0.28alpha, 
+     * replaced by better named method.
+     * @param h the new height
+     */
+    @Deprecated
+    public void setBounds(int h) {
+        setCompositeStateHeight(h);
+    }
+
+    /**
+     * To resize only when a new concurrent region is added,
+     * changing the height.
+     * TODO: Probably shouldn't
      * exist as this class should be listening for added concurrent regions
      * and call this internally itself.
      *
      * @param h the new height
      */
-    public void setBounds(int h) {
+    public void setCompositeStateHeight(int h) {
         if (getNameFig() == null) {
             return;
         }
@@ -287,8 +307,10 @@ public class FigCompositeState extends FigState {
         int w = oldBounds.width;
 
         getInternal().setBounds(
-                x + 2, y + nameDim.height + 4,
-                w - 4, h - nameDim.height - 6);
+                x + MARGIN, 
+                y + nameDim.height + 4,
+                w - 2 * MARGIN, 
+                h - nameDim.height - 6);
         getBigPort().setBounds(x, y, w, h);
         cover.setBounds(x, y, w, h);
 
@@ -376,8 +398,9 @@ public class FigCompositeState extends FigState {
 
     @Override 
     protected void updateLayout(UmlChangeEvent event) {
-                
-        if (!(event instanceof RemoveAssociationEvent)) {
+        /* We only handle the case where a region has been removed: */
+        if (!(event instanceof RemoveAssociationEvent) || 
+                !"subvertex".equals(event.getPropertyName())) {
             return;
         }
         
@@ -444,8 +467,4 @@ public class FigCompositeState extends FigState {
         return 0;
     }
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -8173637358029852407L;
 } /* end class FigCompositeState */
