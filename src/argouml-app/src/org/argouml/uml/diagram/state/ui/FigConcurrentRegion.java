@@ -44,8 +44,10 @@ import org.argouml.ui.ProjectActions;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -169,6 +171,30 @@ public class FigConcurrentRegion extends FigState
                     bounds.height - _h, true);
         }
         updateNameText();
+    }
+
+    /**
+     * The moment we add this fig to a layer, 
+     * especially during load,
+     * it needs to be made aware that it 
+     * is enclosed by a FigCompositeState.
+     * This fixes issue 3736.
+     * 
+     * @param lay the layer
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#setLayer(org.tigris.gef.base.Layer)
+     */
+    @Override
+    public void setLayer(Layer lay) {
+        super.setLayer(lay);
+        for (Fig f : lay.getContents()) {
+            if (f instanceof FigCompositeState) {
+                if (f.getOwner() 
+                        == Model.getFacade().getContainer(getOwner())) {
+                    setEnclosingFig(f);
+                    break; // there can only be one
+                }
+            }
+        }
     }
     
     /*
