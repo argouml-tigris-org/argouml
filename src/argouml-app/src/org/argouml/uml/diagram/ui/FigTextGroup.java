@@ -59,7 +59,7 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
      * Construct a FigGroup with the given render settings.
      * 
      * @param owner owning UML element
-     * @param settings rendering settigns
+     * @param settings rendering settings.
      */
     public FigTextGroup(Object owner, DiagramSettings settings) {
         super(owner, settings);
