@@ -714,6 +714,19 @@ class FigRole extends FigSingleLineTextWithNotation {
     protected int getNotationProviderType() {
         return NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME;
     }
+    
+    /**
+     * Property change listener to recalculate bounds of enclosing
+     * group whenever any properties of the FigRole get changed.
+     * This is only really needed for the name, see issue 5621.
+     * @param pce The property change event to process.
+     * @see org.argouml.uml.diagram.ui.FigSingleLineTextWithNotation#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent pce) {
+        super.propertyChange(pce);
+        this.getGroup().calcBounds();
+    }
 
 }
 
