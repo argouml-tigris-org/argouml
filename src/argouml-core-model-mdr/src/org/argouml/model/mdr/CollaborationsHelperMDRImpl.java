@@ -267,12 +267,6 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                                 + "of message should equal "
                                 + "interaction of activator");
             }
-            // TODO Replace this block and uncomment block below.
-            if (mes.getPredecessor().contains(activator)) {
-                throw new IllegalArgumentException("In setActivator: the "
-                        + "predecessors of the message "
-                        + "may not contain the " + "activator");
-            }
             // we must find out if the activator itself does not have
             // message as it's activator
             if (hasAsActivator(activator, mes)) {
@@ -281,12 +275,10 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                                 + "not be the activator for "
                                 + "the original activator");
             }
-            // TODO Replace commented block above with this
-            // Rather throw an exception we mutate the model to achieve
-            // what we want.
-//            if (mes.getPredecessor().contains(activator)) {
-//                mes.getPredecessor().remove(activator);
-//            }
+            // An activator can't also be a predecessor of a message
+            if (mes.getPredecessor().contains(activator)) {
+                mes.getPredecessor().remove(activator);
+            }
         }
         List<Message> listToChange = new ArrayList<Message>();
         Collection<Message> predecessors = mes.getPredecessor();
