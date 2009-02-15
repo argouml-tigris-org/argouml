@@ -26,10 +26,12 @@ package org.argouml.sequence2.diagram;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.NotationProviderFactory2;
@@ -51,6 +53,10 @@ import org.tigris.gef.presentation.FigText;
 public class FigMessage extends FigEdgeModelElement {
 
     private static final long serialVersionUID = -2961220746360335159L;
+    
+    private static final Logger LOG =
+        Logger.getLogger(FigEdgeModelElement.class);
+    
     private FigTextGroup textGroup; 
 
     /**
@@ -339,7 +345,41 @@ public class FigMessage extends FigEdgeModelElement {
         Set<Object[]> listeners = new HashSet<Object[]>();
         listeners.add(new Object[] {getOwner(), "remove"});
         listeners.add(new Object[] {getAction(), "isAsynchronous"});
-        updateElementListeners(listeners);
+        try {
+            updateElementListeners(listeners);
+        } catch (Exception e) {
+            // This call seems not very robust. Yet to determine cause.
+            LOG.error("Exception caught", e);
+        }
     }
     
+    /**
+     * Determines the activator of this message based on the message position
+     * in relation to other messages.
+     * <p>Currently this only manages return messages. Any other message type
+     * returns with no action taking place.
+     * <p>The activator is set to the first call or create message found above
+     * this message.
+     * @return the activator that has been applied to the message.
+     */
+    public Object determineActivator() {
+        final FigClassifierRole fcr = (FigClassifierRole) getSourceNode();
+        final List<FigMessage> messageFigs = fcr.getFigMessages();
+        final Iterator<FigMessage> it = messageFigs.iterator();
+        Object activator = null;
+        while (it.hasNext()) {
+            FigMessage messageFig = it.next();
+            if ((messageFig.isCreateAction() || messageFig.isCallAction())
+                    && messageFig.getDestNode() == fcr) {
+                activator = messageFig.getOwner();
+            } else if (messageFig == this) {
+                Model.getCollaborationsHelper().setActivator(
+                        getOwner(), activator);
+                return activator;
+            } else if (messageFig.isReturnAction()) {
+                activator = null;
+            }
+        }
+        return null;
+    }
 }

@@ -125,60 +125,74 @@ class FigLifeLine extends ArgoFigGroup {
                     null);
         }
         
+        // This counts the number of repeated call/returns that take place
+        // after the first activation. This shouldn't be required once
+        // we handle stacked activations better and once issue 5692 and 5693
+        // are sorted.
+        int activationsCount = 0;
+        //
+        
         for (FigMessage figMessage : figMessages) {
             int ySender = 0;
             
             if (!figMessage.isSelfMessage()) {
-                if (currentActivation == null
-                        && isIncoming(figMessage)
-                        && figMessage.isCallAction()) {
-                    // if we are the dest and is a call action, create the 
-                    // activation, but don't add it until the height is set.
-                    ySender = figMessage.getFinalY();
-                    currentActivation = createActivationFig(
-                            getOwner(), 
-                            lineFig.getX(), 
-                            ySender, 
-                            0, 
-                            0,
-                            getSettings(),
-                            figMessage);
-                } else if (currentActivation == null
-                        && isIncoming(figMessage)
-                        && figMessage.isCreateAction()) {
-                    // if we are the destination of a create action,
-                    // create the entire activation, because we should
-                    // need the destroy X
-                    currentActivation = createActivationFig(
-                            getOwner(),
-                            lineFig.getX(),
-                            lineFig.getY(),
-                            0,
-                            0,
-                            getSettings(),
-                            figMessage);
-                } else if (currentActivation != null
-                        && isOutgoing(figMessage)
-                        && currentActivation.isActivatorEnd(figMessage)) {
-                    // if we are the source of a return action
-                    // the activation ends here.
-                    ySender = figMessage.getStartY();
-                    currentActivation.setHeight(
-                            ySender - currentActivation.getY());
-                    newActivations.add(currentActivation);
-                    currentActivation = null;
-                } else if (currentActivation != null
-                        && isOutgoing(figMessage)
-                        && figMessage.isDestroyAction()) {
-                    // if we are the target of a destroy action
-                    // the figlifeline ends here and we add the activation
-                    ySender = figMessage.getFinalY();
-                    currentActivation.setHeight(
-                            ySender - currentActivation.getY());
-                    currentActivation.setDestroy(true);
-                    lineFig.setHeight(ySender - getY());
-                    newActivations.add(currentActivation);
-                    currentActivation = null;
+                if (isIncoming(figMessage)) {
+                    if (currentActivation == null) {
+                        if (figMessage.isCallAction()) {
+                            // if we are the dest and is a call action, create the 
+                            // activation, but don't add it until the height is set.
+                            ySender = figMessage.getFinalY();
+                            currentActivation = createActivationFig(
+                                    getOwner(), 
+                                    lineFig.getX(), 
+                                    ySender, 
+                                    0, 
+                                    0,
+                                    getSettings(),
+                                    figMessage);
+                            activationsCount++;
+                        } else if (figMessage.isCreateAction()) {
+                            // if we are the destination of a create action,
+                            // create the entire activation
+                            currentActivation = createActivationFig(
+                                    getOwner(),
+                                    lineFig.getX(),
+                                    lineFig.getY(),
+                                    0,
+                                    0,
+                                    getSettings(),
+                                    figMessage);
+                            activationsCount++;
+                        }
+                    } else if (figMessage.isCallAction()
+                                && isSameClassifierRoles(
+                                        currentActivation.getActivatingMessage(),
+                                        figMessage)) {
+                        activationsCount++;
+                    }
+                }
+                
+                if (isOutgoing(figMessage) && currentActivation != null) {
+                    if (currentActivation.isActivatorEnd(figMessage)
+                            && --activationsCount == 0) {
+                        // if we are the source of a return action
+                        // the activation ends here.
+                        ySender = figMessage.getStartY();
+                        currentActivation.setHeight(
+                                ySender - currentActivation.getY());
+                        newActivations.add(currentActivation);
+                        currentActivation = null;
+                    } else if (figMessage.isDestroyAction()) {
+                        // if we are the target of a destroy action
+                        // the figlifeline ends here and we add the activation
+                        ySender = figMessage.getFinalY();
+                        currentActivation.setHeight(
+                                ySender - currentActivation.getY());
+                        currentActivation.setDestroy(true);
+                        lineFig.setHeight(ySender - getY());
+                        newActivations.add(currentActivation);
+                        currentActivation = null;
+                    }
                 }
             }
         }
@@ -194,6 +208,14 @@ class FigLifeLine extends ArgoFigGroup {
         }
         
         return newActivations;
+    }
+    
+    private boolean isSameClassifierRoles(
+            final FigMessage mess1,
+            final FigMessage mess2) {
+        return mess1 != null
+                && mess1.getDestFigNode() == mess2.getDestFigNode()
+                && mess1.getSourceFigNode() == mess2.getSourceFigNode();
     }
     
     /**

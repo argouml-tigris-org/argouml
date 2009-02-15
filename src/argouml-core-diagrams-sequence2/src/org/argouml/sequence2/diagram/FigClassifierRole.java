@@ -29,6 +29,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -220,7 +221,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @return a figmessage.
      */
     private FigMessage getFirstCreateFigMessage() {
-        List<FigMessage> messages = getCompleteMessages();
+        List<FigMessage> messages = getFigMessages();
         FigMessage createMessage = null;
         for (FigMessage message : messages) {
             if (message.getDestFigNode().equals(this)
@@ -331,15 +332,15 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
     
     /**
-     * Return all message edges that are complete (ie the user has finished
-     * drawing).
+     * Return an ordered list of message edges that are complete (ie the user
+     * has finished drawing). Messages are ordered from top to bottom.
      * @return A list with all the messages that are complete
      */
-    private List<FigMessage> getCompleteMessages() {
-        List<FigMessage> completeMessages = new ArrayList<FigMessage>(10);
+    public List<FigMessage> getFigMessages() {
+        final List<FigMessage> completeMessages = new ArrayList<FigMessage>(10);
         for (Object o : getFigEdges()) {
             if (o instanceof FigMessage) {
-                FigMessage fm = (FigMessage) o;
+                final FigMessage fm = (FigMessage) o;
                 if (fm.getPoints().length > 1
                         && fm.getDestFigNode() != null
                         && fm.getSourceFigNode() != null) {
@@ -347,11 +348,12 @@ public class FigClassifierRole extends FigNodeModelElement {
                 }
             }
         }
+        Collections.sort(completeMessages, new FigMessageComparator());
         return completeMessages;
     }
     
     void createActivations() {
-        lifeLineFig.createActivations(getCompleteMessages());
+        lifeLineFig.createActivations(getFigMessages());
         forceRepaintShadow();
     }
     

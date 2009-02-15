@@ -90,6 +90,11 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
         ensureSpace(figMessage);
         
         if (figMessage.isCallAction()) {
+            // Auto-create a return message for a call message
+            
+            // TODO: Maybe a return message already exists. Check first and
+            // and if the first found has no activator then set this call
+            // message as the activator and skip the code below.
             
             // get the source of the return message
             final Object returnMessageSource =
@@ -105,6 +110,10 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
                     returnMessageDest, 
                     Model.getMetaTypes().getMessage(),
                     Model.getMetaTypes().getReturnAction());
+            
+            // Correct the activator value
+            Model.getCollaborationsHelper().setActivator(
+                    returnMessage, message);
             
             final LayerPerspective layer = 
                 (LayerPerspective) editor.getLayerManager().getActiveLayer();
@@ -144,6 +153,8 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             // contained poly
             FigPoly poly = (FigPoly) returnEdge.getFig();
             poly.setComplete(true);
+        } else if (figMessage.isReturnAction()) {
+            figMessage.determineActivator();
         }
         
         dcr.createActivations();
@@ -160,7 +171,6 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
      * @param figMessage
      */
     private void ensureSpace(final FigMessage figMessage) {
-        
         // Make sure there is the minimum gap above the message being drawn
         final FigMessage firstMessageAbove = getNearestMessage(
                 (FigClassifierRole) getSourceFigNode(),
@@ -178,6 +188,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
         }
         
         // Make sure there is the minimum gap below the message being drawn
+        LOG.info("Looking for minimum space below");
         final FigMessage firstMessageBelow = getNearestMessage(
                 (FigClassifierRole) getSourceFigNode(),
                 figMessage,

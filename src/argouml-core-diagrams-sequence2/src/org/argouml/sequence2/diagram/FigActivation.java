@@ -142,6 +142,14 @@ class FigActivation extends ArgoFigGroup {
         return destroyFig != null;
     }
     
+    /**
+     * Return true if the given message should signal the end of this
+     * activation.
+     * This is true if the message is a return message pointing the
+     * other way to the activator.
+     * @param messageFig
+     * @return
+     */
     public boolean isActivatorEnd(FigMessage messageFig) {
         if (messageFig == null) {
             throw new IllegalArgumentException(
@@ -151,8 +159,15 @@ class FigActivation extends ArgoFigGroup {
             return false;
         }
         if (activatingMessage == null) {
-            return true;
+            return false;
         }
-        return messageFig.getDestFigNode() == activatingMessage.getSourceFigNode();
+        // We know this is a return action now. It must be pointing the
+        // opposite way to the activator.
+        return activatingMessage.getSourceFigNode()
+            == messageFig.getDestFigNode();
+    }
+    
+    public FigMessage getActivatingMessage() {
+        return activatingMessage;
     }
 }
