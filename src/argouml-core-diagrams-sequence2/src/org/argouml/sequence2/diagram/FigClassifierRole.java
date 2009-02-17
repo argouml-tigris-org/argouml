@@ -187,7 +187,11 @@ public class FigClassifierRole extends FigNodeModelElement {
         _w = w;
         _h = h;
         
+        //TODO: I suspect this isn't needed call isn't needed but don't remove
+        // till out of alpha/beta stage
         updateEdges();
+        //
+        
         firePropChange("bounds", oldBounds, getBounds());
     }
     
