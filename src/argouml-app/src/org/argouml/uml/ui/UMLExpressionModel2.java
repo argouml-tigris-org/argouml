@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,17 +24,32 @@
 
 package org.argouml.uml.ui;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.SwingUtilities;
+
 import org.argouml.model.Model;
+import org.argouml.ui.TabTarget;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.tigris.gef.presentation.Fig;
 
 /**
+ * The model for an expression. 
+ * An expression consists of a body and a language.
+ * 
  * @author mkl
  */
-public abstract class UMLExpressionModel2  {
+public abstract class UMLExpressionModel2  
+    implements TargetListener, PropertyChangeListener {
     private UMLUserInterfaceContainer container;
     private String propertyName;
-    private Object/*MExpression*/ expression;
+    private Object expression;
     private boolean mustRefresh;
     private static final String EMPTYSTRING = "";
+    
+    private Object target = null;
 
     /**
      * The constructor.
@@ -167,6 +182,80 @@ public abstract class UMLExpressionModel2  {
      */
     protected UMLUserInterfaceContainer getContainer() {
         return container;
+    }
+
+    /**
+     * TODO: The next text was copied - to adapt.
+     * 
+     * Sets the target. If the old target is an UML Element, it also removes
+     * the model from the element listener list of the target. If the new target
+     * is an UML Element, the model is added as element listener to the
+     * new target. <p>
+     *
+     * This function is called when the user changes the target. 
+     * Hence, this shall not result in any UML model changes.<p>
+     * 
+     * This function looks a lot like the one in UMLComboBoxModel2.
+     * <p>
+     * As a possible future extension, we could allow listening to 
+     * other model elements.
+     * 
+     * @param theNewTarget the new target
+     */
+    public void setTarget(Object theNewTarget) {
+        theNewTarget = theNewTarget instanceof Fig
+            ? ((Fig) theNewTarget).getOwner() : theNewTarget;
+        if (Model.getFacade().isAUMLElement(target)) {
+            Model.getPump().removeModelEventListener(this, target,
+                    propertyName);
+            // Allow listening to other elements:
+            //                removeOtherModelEventListeners(listTarget);
+        }
+
+        if (Model.getFacade().isAUMLElement(theNewTarget)) {
+            target = theNewTarget;
+            Model.getPump().addModelEventListener(this, target,
+                    propertyName);
+            // Allow listening to other elements:
+            //                addOtherModelEventListeners(listTarget);
+
+            if (container instanceof TabTarget) {
+                ((TabTarget) container).refresh();
+            }
+        } else {
+            target = null;
+        }
+    }
+    
+    public void propertyChange(PropertyChangeEvent e) {
+        if (target != null && target == e.getSource()) {
+            mustRefresh = true;
+            expression = null;
+            /* This works - we do get an event - and now 
+             * refresh the UI: */
+            if (container instanceof TabTarget) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        ((TabTarget) container).refresh();
+                        /* TODO: The above statement also refreshes when 
+                         * we are not shown (to be verified) - hence 
+                         * not entirely correct. */
+                    }
+                });
+            }
+        }
+    }
+
+    public void targetAdded(TargetEvent e) {
+        setTarget(e.getNewTarget());
+    }
+
+    public void targetRemoved(TargetEvent e) {
+        setTarget(e.getNewTarget());
+    }
+
+    public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTarget());
     }
 
 }

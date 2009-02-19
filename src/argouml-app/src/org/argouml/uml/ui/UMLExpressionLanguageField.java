@@ -42,14 +42,15 @@ public class UMLExpressionLanguageField extends JTextField implements
     /**
      * Creates a new field that selects the language for an expression.
      *
-     * @param m Expression model, should be shared between
+     * @param expressionModel Expression model, should be shared between
      * Language and Body fields
-     * @param n Only one of Language and Body fields should
+     * @param notify Only one of Language and Body fields should
      * forward events to model
      */
-    public UMLExpressionLanguageField(UMLExpressionModel2 m, boolean n) {
-        model = m;
-        notifyModel = n;
+    public UMLExpressionLanguageField(UMLExpressionModel2 expressionModel, 
+            boolean notify) {
+        model = expressionModel;
+        notifyModel = notify;
         getDocument().addDocumentListener(this);
         setToolTipText(Translator.localize("label.language.tooltip"));
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
@@ -59,7 +60,9 @@ public class UMLExpressionLanguageField extends JTextField implements
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */
     public void targetChanged() {
-        if (notifyModel) model.targetChanged();
+        if (notifyModel) {
+            model.targetChanged();
+        }
         update();
     }
 
