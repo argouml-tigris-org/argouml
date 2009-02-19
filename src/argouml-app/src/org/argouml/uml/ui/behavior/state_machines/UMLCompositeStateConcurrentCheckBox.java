@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,9 +29,11 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
+ * @deprecated by mvw in V0.28alpha - not used, replaced by button in toolbar.
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
+@Deprecated
 public class UMLCompositeStateConcurrentCheckBox extends UMLCheckBox2 {
 
     /**
