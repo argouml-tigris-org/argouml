@@ -155,16 +155,31 @@ public class FigTransition extends FigEdgeModelElement {
      * 
      * @param lay diagram layer containing this fig
      * @param owner owning UML element
+     * @deprecated in 0.28 by Bob Tarling - The above TODO is from Michiel.
+     * I also don't understand the purpose of this method. The GEF framework
+     * should be setting source/dest or persistence should manage.
      */
+    @Deprecated
     private void initPorts(Layer lay, Object owner) {
-        Object sourceSV = Model.getFacade().getSource(owner);
-        Object destSV = Model.getFacade().getTarget(owner);
-        FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
-        FigNode destFN = (FigNode) lay.presentationFor(destSV);
-        setSourcePortFig(sourceFN);
-        setSourceFigNode(sourceFN);
-        setDestPortFig(destFN);
-        setDestFigNode(destFN);
+        final Object sourceSV = Model.getFacade().getSource(owner);
+        final FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
+        if (sourceFN != null) {
+            // The purpose of this method is not explained and it give give
+            // NPE depending on z order of figs as they are read. For now
+            // ignore if null but for future lets delete this.
+            setSourcePortFig(sourceFN);
+            setSourceFigNode(sourceFN);
+        }
+        
+        final Object destSV = Model.getFacade().getTarget(owner);
+        final FigNode destFN = (FigNode) lay.presentationFor(destSV);
+        if (destFN != null) {
+            // The purpose of this method is not explained and it give give
+            // NPE depending on z order of figs as they are read. For now
+            // ignore if null but for future lets delete this.
+            setDestPortFig(destFN);
+            setDestFigNode(destFN);
+        }
     }
 
     /*
