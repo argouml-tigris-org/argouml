@@ -26,16 +26,25 @@ package org.argouml.sequence2.diagram;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
+
+import javax.swing.JSeparator;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
+import org.argouml.notation.Notation;
+import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.SDNotationSettings;
+import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
@@ -200,7 +209,56 @@ public class FigMessage extends FigEdgeModelElement {
     public Object getAction() {
         return action;
     }
- 
+
+    /**
+     * @param me the MouseEvent that triggered the popup menu request
+     * @return a Vector containing a combination of these 4 types: Action,
+     *         JMenu, JMenuItem, JSeparator.
+     */
+    @Override
+    public Vector getPopUpActions(MouseEvent me) {
+        Vector popUpActions = super.getPopUpActions(me);
+        
+        // Operations ...
+        if (Model.getFacade().isACallAction(getAction())) {
+            ArgoJMenu opMenu = buildOperationMenu();
+            int index = popUpActions.size() - getPopupAddOffset() - 1;
+            if (index < 0) {
+                index = 0;
+            }
+            popUpActions.add(index, new JSeparator());
+            popUpActions.add(index, opMenu);
+        }
+
+        return popUpActions;
+    }
+
+    protected ArgoJMenu buildOperationMenu() {
+        ArgoJMenu opMenu = new ArgoJMenu("Operation");
+        Iterator<Object> iter = getReceiverOperations().iterator();
+        opMenu.setEnabled(iter.hasNext());
+        while (iter.hasNext()) {
+            Object op = iter.next();
+            NotationProvider np = null;
+            try {
+                String s = getNotationSettings().getNotationLanguage();
+                np = NotationProviderFactory2.getInstance()
+                    .getNotationProvider(
+                        NotationProviderFactory2.TYPE_OPERATION,
+                        op,
+                        Notation.findNotation(s));
+            } catch (Exception e) {
+                //TODO: add logging, but this will never happen and is handled
+                np = null;
+            }
+            String label = (np != null)
+                ? np.toString(op, getNotationSettings())
+                : Model.getFacade().getName(op);
+            opMenu.add(new ActionSetOperation(getAction(), op, label));
+        }
+        return opMenu;
+    }
+
     @Override
     public Selection makeSelection() {
         return new SelectionMessage(this);
@@ -352,7 +410,24 @@ public class FigMessage extends FigEdgeModelElement {
             LOG.error("Exception caught", e);
         }
     }
-    
+
+    private Collection<Object> getReceiverOperations() {
+        ArrayList<Object> opList = new ArrayList<Object>();
+        Object action = getAction();
+	    Object receiver = Model.getFacade().getReceiver(getOwner());
+        if (action != null && receiver != null) {
+            //TODO: What can we do with other kind of actions?
+            if (Model.getFacade().isACallAction(action)) {
+                Iterator bases =
+                    Model.getFacade().getBases(receiver).iterator();
+                while (bases.hasNext()) {
+                    Object base = bases.next();
+                    opList.addAll(Model.getFacade().getOperations(base));
+                }
+            }
+        }
+        return opList;
+    }
     /**
      * Determines the activator of this message based on the message position
      * in relation to other messages.
