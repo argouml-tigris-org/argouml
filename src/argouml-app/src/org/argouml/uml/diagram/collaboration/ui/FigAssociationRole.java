@@ -59,7 +59,6 @@ public class FigAssociationRole extends FigAssociation {
     public FigAssociationRole() {
         super();
         messages = new FigMessageGroup();
-        addPathItem(messages, new PathItemPlacement(this, messages, 50, 10));
     }
 
     /**
@@ -88,7 +87,6 @@ public class FigAssociationRole extends FigAssociation {
     public FigAssociationRole(Object owner, DiagramSettings settings) {
         super(owner, settings);
         messages = new FigMessageGroup(owner, settings);
-        addPathItem(messages, new PathItemPlacement(this, messages, 50, 10));
     }
     
     /*
@@ -176,6 +174,7 @@ class FigMessageGroup extends ArgoFigGroup {
 
     /*
      * @see org.tigris.gef.presentation.Fig#calcBounds()
+     * Why does this need to be overridden?
      */
     public void calcBounds() {
 	super.calcBounds();
@@ -211,6 +210,7 @@ class FigMessageGroup extends ArgoFigGroup {
 
     /*
      * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
+     * Why does this need to be overridden?
      */
     @Override
     public void addFig(Fig f) {
