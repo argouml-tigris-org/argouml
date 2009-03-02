@@ -38,7 +38,14 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 
 /**
- * This class represents a Pool of Swimlanes for Activity diagrams.
+ * This class represents a Pool of Swimlanes for Activity diagrams. This is
+ * exists only to act as the GEF style encloser. Other nodes in the same
+ * muist be placed entirely within or outside the boundaries of this Fig
+ * but cannot intersect with the boundary.
+ * TODO: There is no actual model element being represented here so we are
+ * inheriting a lot of behaviour from FigNodeModelElement that we don't want.
+ * We require to split FigNodeModelElement to separate the code that requires
+ * a model element owner. See issue 
  *
  * @author mkl
  */
@@ -75,7 +82,7 @@ public class FigPool extends FigNodeModelElement {
      * @param settings (ignored since this is just an empty rectangle)
      */
     public FigPool(Object owner, Rectangle bounds, DiagramSettings settings) {
-        super(owner, bounds, settings);
+        super(null, bounds, settings);
         initialize(bounds);
     }
 
