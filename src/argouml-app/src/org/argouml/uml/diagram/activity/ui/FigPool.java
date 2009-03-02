@@ -33,6 +33,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigStereotypesGroup;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 
@@ -78,6 +79,16 @@ public class FigPool extends FigNodeModelElement {
         initialize(bounds);
     }
 
+
+    /**
+     * Get the Fig containing the stereotype(s). As there is no stereotype
+     * display for this Fig we return null
+     *
+     * @return the stereotype FigGroup
+     */
+    protected FigStereotypesGroup getStereotypeFig() {
+        return null;
+    }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#clone()

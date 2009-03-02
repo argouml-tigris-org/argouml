@@ -288,7 +288,7 @@ public class FigPartition extends FigNodeModelElement {
                 getOwner(), activityGraph);
 	
 	if (partitions.size() == 1) {
-	    FigPool fp = new FigPool(getOwner(), getBounds(), getSettings());
+	    FigPool fp = new FigPool(null, getBounds(), getSettings());
 	    getLayer().add(fp);
 	    getLayer().bringToFront(this);
 	} else if (partitions.size() > 1) {

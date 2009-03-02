@@ -416,13 +416,14 @@ public abstract class FigNodeModelElement
         bigPort = new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
         nameFig = new FigNameWithAbstractAndBold(element, 
                 new Rectangle(X0, Y0, WIDTH, NAME_FIG_HEIGHT), getSettings(), true);
-        stereotypeFig = new FigStereotypesGroup(element, 
-                new Rectangle(X0, Y0, WIDTH, STEREOHEIGHT), settings);
         constructFigs();
-        if (element == null) {
-            throw new IllegalArgumentException("An owner must be supplied");
-        }
-        if (!Model.getFacade().isAUMLElement(element)) {
+        
+        // TODO: For a FigPool the element will be null.
+        // When issue 5031 is resolved this constraint can be reinstated
+//        if (element == null) {
+//            throw new IllegalArgumentException("An owner must be supplied");
+//        }
+        if (element != null && !Model.getFacade().isAUMLElement(element)) {
             throw new IllegalArgumentException(
                     "The owner must be a model element - got a "
                     + element.getClass().getName());
@@ -430,17 +431,19 @@ public abstract class FigNodeModelElement
 
         nameFig.setText(placeString());
         
-        notationProviderName =
-            NotationProviderFactory2.getInstance().getNotationProvider(
-                    getNotationProviderType(), element, this);
+        if (element != null) {
+            notationProviderName =
+                NotationProviderFactory2.getInstance().getNotationProvider(
+                        getNotationProviderType(), element, this);
 
-        /* This next line presumes that the 1st fig with this owner 
-         * is the previous port - and consequently nullifies the owner 
-         * of this 1st fig. */
-        bindPort(element, bigPort);
+            /* This next line presumes that the 1st fig with this owner 
+             * is the previous port - and consequently nullifies the owner 
+             * of this 1st fig. */
+            bindPort(element, bigPort);
 
-        // Add a listener for changes to any property
-        addElementListener(element);
+            // Add a listener for changes to any property
+            addElementListener(element);
+        }
 
         if (bounds != null) {
             setLocation(bounds.x, bounds.y);
@@ -502,7 +505,7 @@ public abstract class FigNodeModelElement
                  * BTW: In some other FigNodeModelElement 
                  * classes I see the same mistake. */
             }
-            if (thisFig == stereotypeFig) {
+            if (thisFig == getStereotypeFig()) {
                 clone.stereotypeFig = (FigStereotypesGroup) thisFig;
                 /* Idem here:
                  * clone.stereotypeFig = (FigStereotypesGroup) cloneFig; */
@@ -1506,7 +1509,7 @@ public abstract class FigNodeModelElement
         }
         super.setOwner(owner);
         nameFig.setOwner(owner); // for setting abstract
-        stereotypeFig.setOwner(owner);
+        getStereotypeFig().setOwner(owner);
         initNotationProviders(owner);
         readyToEdit = true;
         renderingChanged();
@@ -1574,7 +1577,7 @@ public abstract class FigNodeModelElement
                     + this.getClass());
             return;
         }
-        stereotypeFig.populate();
+        getStereotypeFig().populate();
     }
 
     /**
@@ -1962,7 +1965,7 @@ public abstract class FigNodeModelElement
         setShadowSize(0);
         super.removeFromDiagram();
         // Get model listeners removed:
-        stereotypeFig.removeFromDiagram();
+        getStereotypeFig().removeFromDiagram();
     }
 
     /**
@@ -1971,6 +1974,10 @@ public abstract class FigNodeModelElement
      * @return the stereotype FigGroup
      */
     protected FigStereotypesGroup getStereotypeFig() {
+        if (stereotypeFig == null) {
+            stereotypeFig = new FigStereotypesGroup(getOwner(), 
+                    new Rectangle(X0, Y0, WIDTH, STEREOHEIGHT), settings);
+        }
         return stereotypeFig;
     }
 
@@ -2524,7 +2531,9 @@ public abstract class FigNodeModelElement
         super.setLineWidth(w);
         // Default for name and stereotype is no border
         getNameFig().setLineWidth(0);
-        getStereotypeFig().setLineWidth(0);
+        if (getStereotypeFig() != null) {
+            getStereotypeFig().setLineWidth(0);
+        }
     }
     
     /**
