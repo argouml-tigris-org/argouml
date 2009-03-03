@@ -156,6 +156,8 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
         } else if (figMessage.isReturnAction()) {
             figMessage.determineActivator();
         }
+        FigPoly poly = (FigPoly) fe.getFig();
+        poly.setComplete(true);
         
         dcr.createActivations();
         dcr.renderingChanged();

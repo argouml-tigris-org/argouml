@@ -53,6 +53,8 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -324,6 +326,32 @@ public class FigMessage extends FigEdgeModelElement {
     public void computeRouteImpl() {
 	super.computeRouteImpl();
 	updateActivations();
+    }
+    
+    public void calcBounds() {
+        final FigPoly fp = (FigPoly) getFig();
+        if (isSelfMessage() && fp.isComplete()) {
+            // TODO: calcBounds is called by SelectionManager when the Fig is
+            // dragged. This code is needed to reposition any self message
+            // as they are become detached from their classifier role
+            // (see issue 5562). The cause of the detachment is not yet
+            // understood.
+            // Unfortunately calcBounds is called from several other places
+            // so the code here is not optimal but is the best workaround until
+            // ArgoUML can provide its own replacement SelectionManager for
+            // sequence diagram requirements
+            // See - http://gef.tigris.org/issues/show_bug.cgi?id=344
+            final FigNode node = getSourceFigNode();
+            final int x =
+                node.getX()
+                + (node.getWidth() + FigActivation.DEFAULT_WIDTH) / 2;
+            final Point startPoint = new Point(x, getYs()[0]);
+            final FigMessageSpline spline = new FigMessageSpline(startPoint);
+            spline.setComplete(true);
+            spline.setDashed(isReturnAction());
+            super.setFig(spline);
+        }
+        super.calcBounds();
     }
 
     private synchronized void updateActivations() {
