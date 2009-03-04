@@ -316,4 +316,12 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             }
         }
     }
+    
+    /*
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    public void setLineWidth(int w) {
+        borderFig.setLineWidth(w);
+    }
+
 }

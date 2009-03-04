@@ -211,15 +211,6 @@ public class FigDataType extends FigClassifierBox {
         return aSize;
     }
 
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
-     */
-    @Override
-    public void setLineWidth(int w) {
-        borderFig.setLineWidth(w);
-    }
-
     /*
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
