@@ -268,11 +268,11 @@ public class PathItemPlacement extends PathConv {
         }
         
         double slope = getSlope();
-        applyOffset(slope, vectorOffset, result);
+        result.setLocation(applyOffset(slope, vectorOffset, anchor));
 
         // Check for a collision between our computed position and the edge
         if (useCollisionCheck) {
-            double scaleFactor = 1.2; // increase offset by 20% at a time
+            int increment = 2; // increase offset by 2px at a time
 
             // TODO: The size of text figs, which is what we care about most,
             // isn't computed correctly by GEF. If we got ambitious, we could
@@ -285,19 +285,16 @@ public class PathItemPlacement extends PathConv {
             Point[] points = fp.getPoints();
             if (intersects(points, result, size)) {
 
-                // increase offset by 20% at a time until we're clear
-                int scaledOffset = (int) (vectorOffset * scaleFactor);
-                // If offset is zero, use a default based on the size of the fig
-                if (scaledOffset == 0) {
-                    scaledOffset = (size.width + size.height) / 4;
-                }
+                // increase offset by increments until we're clear
+                int scaledOffset = vectorOffset + increment;
 
                 int limit = 20;
                 int count = 0;
                 // limit our retries in case its too hard to get free
                 while (intersects(points, result, size) && count++ < limit) {
-                    applyOffset(slope, scaledOffset, result);
-                    scaledOffset *= scaleFactor;
+                    result.setLocation(
+                            applyOffset(slope, scaledOffset, anchor));
+                    scaledOffset += increment;
                 }
                 // If we timed out, give it one more try on the other side
                 if (false /* count >= limit */) {
@@ -306,13 +303,15 @@ public class PathItemPlacement extends PathConv {
                     // TODO: This works for 90 degree angles, but is suboptimal
                     // for other angles. It should reflect the angle, rather
                     // than just using a negative offset along the same vector
-                    applyOffset(slope, -vectorOffset, result);
+                    result.setLocation(
+                            applyOffset(slope, -vectorOffset, anchor));
                     count = 0;
                     scaledOffset = -scaledOffset;
                     while (intersects(points, result, size) 
                             && count++ < limit) {
-                        applyOffset(slope, scaledOffset, result);
-                        scaledOffset *= scaleFactor;
+                        result.setLocation(
+                                applyOffset(slope, scaledOffset, anchor));
+                        scaledOffset += increment;
                     }
                 }
 //                LOG.debug("Final point #" + count + " " + result
@@ -577,13 +576,15 @@ public class PathItemPlacement extends PathConv {
      * @param p1 point one of line to use in computing normal vector
      * @param p2 point two of line to use in computing normal vector
      * @param theOffset distance to displace fig along normal vector
-     * @param result computed point returned
-     * @return computed point. A modified version of the point provided as
-     *         input.
+     * @param anchor The start point to apply the offset from.  Not modified.
+     * @return A new computed point describing the location after the offset 
+     * has been applied to the anchor.
      */
     private Point applyOffset(double theta, int theOffset, 
-            Point result) {
+            Point anchor) {
      
+        Point result = new Point(anchor);
+        
         // Set the following for some backward compatibility with old algorithm
         final boolean aboveAndRight = false;
 
