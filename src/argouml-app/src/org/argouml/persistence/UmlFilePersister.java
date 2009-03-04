@@ -774,7 +774,7 @@ public class UmlFilePersister extends AbstractFilePersister {
             
             Matcher matcher = xmlDeclarationPattern.matcher(outCB);
             // Remove anything that matches our pattern
-            String headerRemainder = matcher.replaceAll("");
+            String headerRemainder = matcher.replaceAll("").trim() + '\n';
 
             // Reencode the remaining characters as bytes again
             ByteBuffer bb = decoder.charset().encode(headerRemainder);
