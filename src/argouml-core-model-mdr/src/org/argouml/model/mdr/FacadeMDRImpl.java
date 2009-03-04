@@ -2851,7 +2851,9 @@ class FacadeMDRImpl implements Facade {
     public Collection<Message> getPredecessors(Object handle) {
         try {
             if (handle instanceof Message) {
-                return ((Message) handle).getPredecessor();
+                return Collections.unmodifiableCollection(
+                        new ArrayList<Message>(
+                                ((Message) handle).getPredecessor()));
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
