@@ -164,16 +164,28 @@ class FigLifeLine extends ArgoFigGroup {
                                     figMessage);
                             activationsCount++;
                         }
-                    } else if (figMessage.isCallAction()
+                    } else {
+                        if (figMessage.isCallAction()
                                 && isSameClassifierRoles(
                                         currentActivation.getActivatingMessage(),
                                         figMessage)) {
-                        activationsCount++;
+                            activationsCount++;
+                        } else if (figMessage.isDestroyAction()) {
+                            // if we are the target of a destroy action
+                            // the figlifeline ends here and we add the activation
+                            ySender = figMessage.getFinalY();
+                            currentActivation.setHeight(
+                                    ySender - currentActivation.getY());
+                            currentActivation.setDestroy(true);
+                            lineFig.setHeight(ySender - getY());
+                            newActivations.add(currentActivation);
+                            currentActivation = null;
+                        }
                     }
                 }
                 
-                if (isOutgoing(figMessage) && currentActivation != null) {
-                    if (currentActivation.isActivatorEnd(figMessage)
+                if (isOutgoing(figMessage) && currentActivation != null
+                    && currentActivation.isActivatorEnd(figMessage)
                             && --activationsCount == 0) {
                         // if we are the source of a return action
                         // the activation ends here.
@@ -182,17 +194,6 @@ class FigLifeLine extends ArgoFigGroup {
                                 ySender - currentActivation.getY());
                         newActivations.add(currentActivation);
                         currentActivation = null;
-                    } else if (figMessage.isDestroyAction()) {
-                        // if we are the target of a destroy action
-                        // the figlifeline ends here and we add the activation
-                        ySender = figMessage.getFinalY();
-                        currentActivation.setHeight(
-                                ySender - currentActivation.getY());
-                        currentActivation.setDestroy(true);
-                        lineFig.setHeight(ySender - getY());
-                        newActivations.add(currentActivation);
-                        currentActivation = null;
-                    }
                 }
             }
         }
