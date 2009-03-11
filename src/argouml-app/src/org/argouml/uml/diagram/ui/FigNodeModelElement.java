@@ -1509,7 +1509,9 @@ public abstract class FigNodeModelElement
         }
         super.setOwner(owner);
         nameFig.setOwner(owner); // for setting abstract
-        getStereotypeFig().setOwner(owner);
+        if (getStereotypeFig() != null) {
+            getStereotypeFig().setOwner(owner);
+        }
         initNotationProviders(owner);
         readyToEdit = true;
         renderingChanged();
@@ -1577,7 +1579,9 @@ public abstract class FigNodeModelElement
                     + this.getClass());
             return;
         }
-        getStereotypeFig().populate();
+        if (getStereotypeFig() != null) {
+            getStereotypeFig().populate();
+        }
     }
 
     /**
@@ -1819,7 +1823,9 @@ public abstract class FigNodeModelElement
 	 
 	boolean hiding = 
 	    practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON;
-	getStereotypeFig().setHidingStereotypesWithIcon(hiding);
+        if (getStereotypeFig() != null) {
+            getStereotypeFig().setHidingStereotypesWithIcon(hiding);
+        }
 
         if (practicalView == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON) {
 
@@ -1965,7 +1971,9 @@ public abstract class FigNodeModelElement
         setShadowSize(0);
         super.removeFromDiagram();
         // Get model listeners removed:
-        getStereotypeFig().removeFromDiagram();
+        if (getStereotypeFig() != null) {
+            getStereotypeFig().removeFromDiagram();
+        }
     }
 
     /**
