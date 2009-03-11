@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,6 +49,7 @@ public class FigFinalState extends FigStateVertex {
     private static final int HEIGHT = 24;
 
     private FigCircle inCircle;
+    private FigCircle outCircle;
 
     
     /**
@@ -81,6 +82,8 @@ public class FigFinalState extends FigStateVertex {
         Color handleColor = Globals.getPrefs().getHandleColor();
         FigCircle bigPort =
             new FigCircle(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
+        outCircle =
+            new FigCircle(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
         inCircle =
             new FigCircle(
         		  X0 + 5,
@@ -90,10 +93,12 @@ public class FigFinalState extends FigStateVertex {
         		  handleColor,
         		  LINE_COLOR);
 
-        bigPort.setLineWidth(LINE_WIDTH);
+        outCircle.setLineWidth(LINE_WIDTH);
+        outCircle.setLineColor(LINE_COLOR);
         inCircle.setLineWidth(0);
 
         addFig(bigPort);
+        addFig(outCircle);
         addFig(inCircle);
         setBigPort(bigPort);
 
@@ -120,6 +125,7 @@ public class FigFinalState extends FigStateVertex {
         FigFinalState figClone = (FigFinalState) super.clone();
         Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigCircle) it.next());
+        figClone.outCircle = (FigCircle) it.next();
         figClone.inCircle = (FigCircle) it.next();
 
         return figClone;
@@ -161,7 +167,8 @@ public class FigFinalState extends FigStateVertex {
      */
     @Override
     public void setLineColor(Color col) {
-        getBigPort().setLineColor(col);
+        outCircle.setLineColor(col);
+        inCircle.setFillColor(col);
     }
 
     /*
@@ -169,7 +176,7 @@ public class FigFinalState extends FigStateVertex {
      */
     @Override
     public Color getLineColor() {
-        return getBigPort().getLineColor();
+        return outCircle.getLineColor();
     }
 
     /*
@@ -177,7 +184,14 @@ public class FigFinalState extends FigStateVertex {
      */
     @Override
     public void setFillColor(Color col) {
-        inCircle.setFillColor(col);
+        if (Color.black.equals(col)) {
+            /* See issue 5721. 
+             * Projects before 0.28 have their fill color set to black.
+             * We refuse that color and replace by white.
+             * All other fill colors are accepted: */
+            col = Color.white;
+        }
+        outCircle.setFillColor(col);
     }
 
     /*
@@ -185,7 +199,7 @@ public class FigFinalState extends FigStateVertex {
      */
     @Override
     public Color getFillColor() {
-        return inCircle.getFillColor();
+        return outCircle.getFillColor();
     }
 
     /*
@@ -207,7 +221,7 @@ public class FigFinalState extends FigStateVertex {
      */
     @Override
     public void setLineWidth(int w) {
-        getBigPort().setLineWidth(w);
+        outCircle.setLineWidth(w);
     }
 
     /*
@@ -215,7 +229,7 @@ public class FigFinalState extends FigStateVertex {
      */
     @Override
     public int getLineWidth() {
-	return getBigPort().getLineWidth();
+	return outCircle.getLineWidth();
     }
 
     /*
@@ -254,6 +268,7 @@ public class FigFinalState extends FigStateVertex {
         Rectangle oldBounds = getBounds();
 
         getBigPort().setBounds(x, y, w, h);
+        outCircle.setBounds(x, y, w, h);
         inCircle.setBounds(x + 5, y + 5, w - 10, h - 10);
 
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
