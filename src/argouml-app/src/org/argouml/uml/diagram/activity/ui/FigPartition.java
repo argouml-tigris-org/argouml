@@ -224,8 +224,7 @@ public class FigPartition extends FigNodeModelElement {
      */
     @Override
     public String placeString() {
-	// TODO: i18n
-        return "new Swimlane";
+        return "";
     }
 
     /*
