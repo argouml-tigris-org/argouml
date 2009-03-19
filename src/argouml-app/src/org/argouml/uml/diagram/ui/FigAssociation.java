@@ -573,7 +573,12 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     protected void updateNameText() {
         super.updateNameText();
-        middleGroup.calcBounds();
+        // TODO: Without the null check the following throws a NPE so many
+        // times when it is called from FigEdgeModelElement.modelChanged(),
+        // we need to think about it.
+        if (middleGroup != null) {
+            middleGroup.calcBounds();
+        }
     }
     
     
