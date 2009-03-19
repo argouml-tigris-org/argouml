@@ -368,6 +368,11 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
     
     @Override
+    public Color getFillColor() {
+        return headFig.getFillColor();
+    }
+    
+    @Override
     public void setFilled(boolean filled) {
         headFig.setFilled(filled);
     }

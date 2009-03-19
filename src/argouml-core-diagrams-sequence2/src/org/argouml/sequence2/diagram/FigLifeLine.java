@@ -25,12 +25,14 @@
 package org.argouml.sequence2.diagram;
 
 import java.awt.Rectangle;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ArgoFigGroup;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 
@@ -95,16 +97,26 @@ class FigLifeLine extends ArgoFigGroup {
         activations = createStandardActivations(messages);
         stackedActivations = createStackedActivations(messages);
         
-        for (FigActivation figAct : activations) {
-            addFig(figAct);
-        }
-        for (FigActivation figAct : stackedActivations) {
-            addFig(figAct);
-        }       
+        addActivations(activations);
+        addActivations(stackedActivations);
+
         // TODO: Do we need this?
         calcBounds();
     }
-
+    
+    /**
+     * Add the given list of activation Figs to the lifeline. The fill colour
+     * is forced to the lifeline colour in the process.
+     * @param activationFigs
+     */
+    private void addActivations(
+            final List<FigActivation> activationFigs) {
+        for (final FigActivation figAct : activationFigs) {
+            figAct.setFillColor(getFillColor());
+            addFig(figAct);
+        }
+    }
+    
     private List<FigActivation> createStandardActivations(
                 final List<FigMessage> figMessages) {        
         

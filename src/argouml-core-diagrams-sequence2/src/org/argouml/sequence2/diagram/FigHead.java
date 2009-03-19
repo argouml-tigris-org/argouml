@@ -33,7 +33,10 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-class FigHead extends ArgoFigGroup  {
+// TODO: We really want this class to have package scope however the reflection
+// used to process PGML.tee forces this to be public. I don't understand why.
+// Is there a way around this?
+public class FigHead extends ArgoFigGroup  {
     
     private FigText nameFig;
     private Fig stereotypeFig;
@@ -141,10 +144,17 @@ class FigHead extends ArgoFigGroup  {
         rectFig.setLineWidth(w);
     }
     
+    @Override
     public void setFillColor(Color c) {
         rectFig.setFillColor(c);
     }
     
+    @Override
+    public Color getFillColor() {
+        return rectFig.getFillColor();
+    }
+    
+    @Override
     public void setLineColor(Color c) {
         rectFig.setLineColor(c);
     }
