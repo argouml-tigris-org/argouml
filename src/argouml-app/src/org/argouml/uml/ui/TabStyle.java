@@ -195,12 +195,18 @@ public class TabStyle extends AbstractArgoJPanel implements TabFigTarget,
         // know what's the correct target for some tab.
         if (!(t instanceof Fig)) {
             if (Model.getFacade().isAModelElement(t)) {
-                Project p = ProjectManager.getManager().getCurrentProject();
-                Collection col = p.findFigsForMember(t);
-                if (col == null || col.isEmpty()) {
-                    return;
+                ArgoDiagram diagram = DiagramUtils.getActiveDiagram();
+                if (diagram != null) {
+                    t = diagram.presentationFor(t);
                 }
-                t = col.iterator().next();
+                if (!(t instanceof Fig)) {
+                    Project p = ProjectManager.getManager().getCurrentProject();
+                    Collection col = p.findFigsForMember(t);
+                    if (col == null || col.isEmpty()) {
+                        return;
+                    }
+                    t = col.iterator().next();
+                }
                 if (!(t instanceof Fig)) {
                     return;
                 }
