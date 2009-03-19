@@ -330,7 +330,8 @@ public class FigMessage extends FigEdgeModelElement {
     
     public void calcBounds() {
         final FigPoly fp = (FigPoly) getFig();
-        if (isSelfMessage() && fp.isComplete()) {
+        final FigNode node = getSourceFigNode();
+        if (node != null && isSelfMessage() && fp.isComplete()) {
             // TODO: calcBounds is called by SelectionManager when the Fig is
             // dragged. This code is needed to reposition any self message
             // as they are become detached from their classifier role
@@ -341,7 +342,6 @@ public class FigMessage extends FigEdgeModelElement {
             // ArgoUML can provide its own replacement SelectionManager for
             // sequence diagram requirements
             // See - http://gef.tigris.org/issues/show_bug.cgi?id=344
-            final FigNode node = getSourceFigNode();
             final int x =
                 node.getX()
                 + (node.getWidth() + FigActivation.DEFAULT_WIDTH) / 2;
