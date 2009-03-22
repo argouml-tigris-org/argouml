@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -239,7 +239,7 @@ public class AboutBox extends ArgoDialog {
         buf.append("Linus Tolke (linus@tigris.org)");
         buf.append("\n\n");
         buf.append(localize("aboutbox.module-owners"));
-        buf.append(":\n");
+        buf.append("\n");
 
         buf.append("+ UML Model, Diagrams, GUI, Persistence: Bob Tarling\n");
 	buf.append("+ MDR Implementation: Tom Morris\n");
@@ -266,27 +266,40 @@ public class AboutBox extends ArgoDialog {
         buf.append(Translator.messageFormat(
                 "aboutbox.contrib-developers-for-release",
                 new Object[] {
+                    "0.28",
+                }));
+        buf.append("\n");
+
+        buf.append("+ Bob Tarling\n");
+        buf.append("+ Bogdan Szanto\n");
+        buf.append("+ Bogdan Pistol\n");
+        buf.append("+ Brian Hudson\n");
+        buf.append("+ Christian LÅÛpez EspÅÌnola\n");
+        buf.append("+ Dave Thompson\n");
+        buf.append("+ Harald Braun\n");
+        buf.append("+ Jan Magne Andersen\n");
+        buf.append("+ Luis Sergio Oliveira\n");
+        buf.append("+ Linus Tolke\n");
+        buf.append("+ Lukasz Gromanowski\n");
+        buf.append("+ Marcos Aurelio\n");
+        buf.append("+ Michiel van der Wulp\n");
+        buf.append("+ Thilina Hasantha\n");
+        buf.append("+ Thomas Neustupny\n");
+        buf.append("+ Tom Morris\n");
+        
+        buf.append("\n");
+
+        buf.append(Translator.messageFormat(
+                "aboutbox.contrib-developers-for-release",
+                new Object[] {
                     "0.26",
                 }));
         buf.append("\n");
 
         buf.append("+ Aleksandar\n");
         buf.append("+ Alexandre da Silva\n");
-        buf.append("+ Bob Tarling\n");
-        buf.append("+ Bogdan Szanto\n");
-        buf.append("+ Bogdan Pistol\n");
-        buf.append("+ Christian LÛpez EspÌnola\n");
-        buf.append("+ Dave Thompson\n");
-        buf.append("+ Harald Braun\n");
-        buf.append("+ Luis Sergio Oliveira\n");
-        buf.append("+ Linus Tolke\n");
-        buf.append("+ Lukasz Gromanowski\n");
-        buf.append("+ Marcos Aurelio\n");
-        buf.append("+ Michiel van der Wulp\n");
         buf.append("+ Scott Roberts\n");
         buf.append("+ SÈrgio Adriano Fernandes Lopes\n");
-        buf.append("+ Thomas Neustupny\n");
-        buf.append("+ Tom Morris\n");
         
         buf.append("\n");
 
@@ -299,7 +312,6 @@ public class AboutBox extends ArgoDialog {
         
         buf.append("+ Andrea Nironi\n");
         buf.append("+ Hans Fredrik Nordhaug\n");
-        buf.append("+ Jan Magne Andersen\n");
         buf.append("+ Markus Klink\n");
         buf.append("+ Sergio Agostinho\n");
         buf.append("+ Stewart Munoz\n");
