@@ -131,7 +131,7 @@ public class SequenceDiagramModule implements ModuleInterface {
         case AUTHOR:
             return "Christian López Espínola";
         case VERSION:
-            return "0.1";
+            return "0.28";
         case DOWNLOADSITE:
             return "http://argouml-sequence.tigris.org";
         default:
