@@ -48,8 +48,8 @@ public class TestSequenceDiagramModule extends TestCase {
      */
     public void testGetName() {
         assertEquals("The name of the module is incorrect",
-                theModule.getName(),
-                "ArgoUML-Sequence");
+		     "ArgoUML-Sequence",
+		     theModule.getName());
     }
 
     /**
@@ -58,11 +58,11 @@ public class TestSequenceDiagramModule extends TestCase {
      */
     public void testGetInfo() {
         assertEquals("The version of the module is incorrect",
-                theModule.getInfo(SequenceDiagramModule.VERSION),
-                "0.1");
+		     "0.28",
+		     theModule.getInfo(SequenceDiagramModule.VERSION));
         assertEquals("The version of the module is incorrect",
-                theModule.getInfo(SequenceDiagramModule.DOWNLOADSITE),
-                "http://argouml-sequence.tigris.org");
+		     "http://argouml-sequence.tigris.org",
+		     theModule.getInfo(SequenceDiagramModule.DOWNLOADSITE));
 
     }
 
