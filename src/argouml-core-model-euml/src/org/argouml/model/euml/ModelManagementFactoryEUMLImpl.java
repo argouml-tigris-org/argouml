@@ -1,5 +1,4 @@
-// $Id$
-// Copyright (c) 2007,2008 Tom Morris and other contributors
+// Copyright (c) 2007,2009 Tom Morris and other contributors
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -9,14 +8,14 @@
 //     * Redistributions in binary form must reproduce the above copyright
 //       notice, this list of conditions and the following disclaimer in the
 //       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the ArgoUML Project nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
+//     * Neither the name of the project or its contributors may be used 
+//       to endorse or promote products derived from this software without
+//       specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE ArgoUML PROJECT ``AS IS'' AND ANY
+// THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
 // EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE ArgoUML PROJECT BE LIABLE FOR ANY
+// DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
 // DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 // (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -112,6 +111,9 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
     }
 
     public Model createModel() {
+        // TODO: Check for Resource to hold this and create if necessary?
+        // This is a discrepancy between MDR which does it here and eUML which
+        // does it as part of setRootModel
         return UMLFactory.eINSTANCE.createModel();
     }
 
@@ -128,6 +130,10 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
     // TODO: get/setRootModel aren't specific to the Model implementation
     // they could probably be moved elsewhere - tfm - 20070530
     public void setRootModel(Object rootModel) {
+        // TODO: Hook this creating of a new resource in to someplace more
+        // more appropriate (perhaps createModel() ?)
+        // Better yet add a new method to Model API to create a new top level 
+        // project/model/xmi file so we don't depend on side effects
         if (rootModel != null 
                 && !(rootModel instanceof org.eclipse.uml2.uml.Package)) {
             throw new IllegalArgumentException(
