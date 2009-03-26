@@ -1,5 +1,4 @@
-// $Id$
-// Copyright (c) 2007, The ArgoUML Project
+// Copyright (c) 2007,2009 Bogdan Pistol and other contributors
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -9,14 +8,14 @@
 //     * Redistributions in binary form must reproduce the above copyright
 //       notice, this list of conditions and the following disclaimer in the
 //       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the ArgoUML Project nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
+//     * Neither the name of the project or its contributors may be used 
+//       to endorse or promote products derived from this software without
+//       specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE ArgoUML PROJECT ``AS IS'' AND ANY
+// THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
 // EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE ArgoUML PROJECT BE LIABLE FOR ANY
+// DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
 // DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 // (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -286,6 +285,16 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             return;
         }
 
+        ENamedElement feature = (ENamedElement) notification.getFeature();
+        String featureName = feature == null ? "" : feature.getName();
+        String oldValue = notification.getOldValue() != null ? notification.getOldValue().toString() : "Null";
+        String newValue = notification.getNewValue() != null ? notification.getNewValue().toString() : "Null";
+//        LOG.debug(notification.toString());
+        LOG.debug("event  - Property: "
+                + featureName 
+                + " Old: " + oldValue
+                + " New: " + newValue);
+        
         class EventAndListeners {
             public EventAndListeners(PropertyChangeEvent e,
                     List<PropertyChangeListener> l) {
