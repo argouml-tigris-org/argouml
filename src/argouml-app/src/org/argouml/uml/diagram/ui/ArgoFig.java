@@ -60,49 +60,63 @@ public interface ArgoFig {
      */
     public static final int STEREOHEIGHT = 18;
 
+
+    /**
+     * Enable this flag to switch to the debug default color scheme
+     */
+    static final boolean DEBUG = false;
+
     /**
      * Default line width in pixels.
      */
-    static final int LINE_WIDTH = 1;
+    static final int LINE_WIDTH = !DEBUG ? 1 : 20;
 
     /**
      * Default color for lines. This constant is an interim measure before
      * moving to settable defaults.
      */
-    static final Color LINE_COLOR = Color.black;
+    static final Color LINE_COLOR = !DEBUG ? Color.black 
+            : new Color(0, 100, 100, 50); // transparent cyan
     
     /**
      * Color for a solid fill.  It's probably always going to be the same as
      * the line color, but we'll identify it separately for flexibility in the
      * future.
      */
-    static final Color SOLID_FILL_COLOR = LINE_COLOR;
+    static final Color SOLID_FILL_COLOR = !DEBUG ? LINE_COLOR : new Color(
+            LINE_COLOR.getRed(), LINE_COLOR.getGreen(), LINE_COLOR.getBlue(),
+            75); // 
     
     /**
      * Default color for filled figures. This is an interim measure before
      * moving to settable defaults.
      */
-    static final Color FILL_COLOR = Color.white;
+    static final Color FILL_COLOR = !DEBUG ? Color.white 
+            : new Color(255, 255, 100, 100); // yellow
 
     /**
      * Color for a line which is supposed to blend into the fill.  It's the same
      * color for right now, but we'll keep it separate so we can identify it
      * easily in the future.
      */
-    static final Color INVISIBLE_LINE_COLOR = FILL_COLOR;
+    static final Color INVISIBLE_LINE_COLOR = !DEBUG ? FILL_COLOR : new Color(
+            FILL_COLOR.getRed(), FILL_COLOR.getGreen(), FILL_COLOR.getBlue(),
+            50);
 
     
     /**
      * Default color for text. This is an interim measure before moving to
      * settable defaults.
      */
-    static final Color TEXT_COLOR = Color.black;
+    static final Color TEXT_COLOR = !DEBUG ? Color.black 
+            : new Color(0, 100, 0, 100); // translucent green
     
     /**
      * The color used for things which shouldn't normally be visible, so we can
-     * spot them easily when they are.
+     * spot them easily when they are.  Completely transparent when we're not
+     * debugging.  Historically this was hardwired to either red or cyan.
      */
-    static final Color DEBUG_COLOR = Color.cyan;
+    static final Color DEBUG_COLOR = new Color(255, 0, 255, !DEBUG ? 0 : 255);
 
 
     /**
