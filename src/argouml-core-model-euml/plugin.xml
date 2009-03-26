@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         id="org.argouml.model.euml"
+         name="Eclipse UML2 Model Implementation"
+         point="org.argouml.core.model.model_subsystem">
+      <subsystem
+            className="org.argouml.model.euml.EUMLModelImplementation">
+      </subsystem>
+   </extension>
+
+</plugin>
