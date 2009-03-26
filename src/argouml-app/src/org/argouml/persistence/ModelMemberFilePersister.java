@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -72,9 +72,6 @@ class ModelMemberFilePersister extends MemberFilePersister
      * If there is a problem with the xmi file, an error is set in the
      * getLastLoadStatus() field. This needs to be examined by the
      * calling function.<p>
-     *
-     * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
-     * java.io.InputStream)
      */
     public void load(Project project, URL url)
         throws OpenException {
@@ -100,7 +97,7 @@ class ModelMemberFilePersister extends MemberFilePersister
     }
 
 
-    private void load(Project project, InputSource source)
+    public void load(Project project, InputSource source)
         throws OpenException {
 
         Object mmodel = null;

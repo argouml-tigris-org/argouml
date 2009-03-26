@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,6 +43,7 @@ import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
+import org.xml.sax.InputSource;
 
 /**
  * The file persister for the diagram members.
@@ -67,6 +68,17 @@ class DiagramMemberFilePersister extends MemberFilePersister {
     @Override
     public void load(Project project, InputStream inputStream)
         throws OpenException {
+        load(project, new InputSource(inputStream));
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            throw new OpenException("I/O error on stream close", e);
+        }
+    }
+    
+    @Override
+    public void load(Project project, InputSource inputSource)
+        throws OpenException {
 
         // If the model repository doesn't manage a DI model
         // then we must generate our Figs by inspecting PGML
@@ -87,8 +99,7 @@ class DiagramMemberFilePersister extends MemberFilePersister {
                         translation.getKey(),
                         translation.getValue());
             }
-            ArgoDiagram d = parser.readArgoDiagram(inputStream, false);
-            inputStream.close();
+            ArgoDiagram d = parser.readArgoDiagram(inputSource, false);
             project.addMember(d);
         } catch (Exception e) {
             if (e instanceof OpenException) {
@@ -100,11 +111,7 @@ class DiagramMemberFilePersister extends MemberFilePersister {
     
     @Override
     public void load(Project project, URL url) throws OpenException {   
-        try {
-            load(project, url.openStream());
-        } catch (IOException e) {
-            throw new OpenException(e);
-        }
+        load(project, new InputSource(url.toExternalForm()));
     }
 
     @Override

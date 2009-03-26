@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,12 +33,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.net.URL;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
+import org.xml.sax.InputSource;
 
 /**
  * A base class file persister for project members.
@@ -56,7 +56,7 @@ abstract class MemberFilePersister {
         throws OpenException;
 
     /**
-     * Load a project member from an InputStream.
+     * Load a project member from a URL.
      *
      * @param project the project to persist
      * @param url the URL to open and parse to load the member.
@@ -64,6 +64,18 @@ abstract class MemberFilePersister {
      */
     public abstract void load(Project project, URL url)
         throws OpenException;
+
+    /**
+     * Load a project member from a SAX InputSource.
+     *
+     * @param project the project to persist
+     * @param inputSource the InputSource to load from
+     * @throws OpenException on any parsing errors.
+     * @since 0.29.1
+     */
+    public abstract void load(Project project, InputSource inputSource)
+        throws OpenException;
+    
     
     /**
      * Gets the tag name which is the root tag for this member.

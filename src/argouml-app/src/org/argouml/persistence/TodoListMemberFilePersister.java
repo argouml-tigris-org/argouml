@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,13 +24,11 @@
 
 package org.argouml.persistence;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
@@ -43,6 +41,7 @@ import org.argouml.ocl.OCLExpander;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.TemplateReader;
+import org.xml.sax.InputSource;
 
 /**
  * The file persister for the Todo members.
@@ -55,19 +54,24 @@ class TodoListMemberFilePersister extends MemberFilePersister {
 
     private static final String TO_DO_TEE = "/org/argouml/persistence/todo.tee";
 
-    /**
-     * Load the todo member.
-     * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
-     * java.io.InputStream)
-     */
+
     public void load(Project project, InputStream inputStream)
+        throws OpenException {
+        try {
+            load(project, new InputSource(new InputStreamReader(inputStream,
+                    Argo.getEncoding())));
+        } catch (UnsupportedEncodingException e) {
+            throw new OpenException(e);
+        }
+    }
+    
+
+    public void load(Project project, InputSource inputSource)
         throws OpenException {
 
         try {
             TodoParser parser = new TodoParser();
-            Reader reader = new InputStreamReader(inputStream,
-                    Argo.getEncoding());
-            parser.readTodoList(reader);
+            parser.readTodoList(inputSource);
             ProjectMemberTodoList pm = new ProjectMemberTodoList("", project);
             project.addMember(pm);
         } catch (Exception e) {
@@ -80,11 +84,7 @@ class TodoListMemberFilePersister extends MemberFilePersister {
     
     @Override
     public void load(Project project, URL url) throws OpenException {   
-        try {
-            load(project, url.openStream());
-        } catch (IOException e) {
-            throw new OpenException(e);
-        }
+        load(project, new InputSource(url.toExternalForm()));
     }
 
     /*

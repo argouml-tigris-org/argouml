@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,12 +27,13 @@ package org.argouml.persistence;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
-
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ResolvedCritic;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.ListSet;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 
@@ -90,6 +91,18 @@ class TodoParser extends SAXParserBase {
     }
 
 
+    /**
+     * Read an XML todo list and enter any todo items into the current designer.
+     * 
+     * @param inputSource The stream containing TodoList XML data.
+     * @throws SAXException on any error
+     */
+    public synchronized void readTodoList(
+            InputSource inputSource) throws SAXException {
+        LOG.info("Reading ToDo list");
+        parse(inputSource);
+    }
+    
     /**
      * Reads an XML todo list from InputStream is and enters
      * any todo items into the current designer.
