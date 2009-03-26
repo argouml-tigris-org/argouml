@@ -26,7 +26,6 @@ package org.argouml.persistence;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -187,9 +186,8 @@ public class TestProfileConfigurationFilePersister extends TestCase {
         outStream.close();
         
         // Read it back in to a new empty project
-        InputStream inStream = new FileInputStream(file);
         project = ProjectManager.getManager().makeEmptyProject();
-        persister.load(project, inStream);
+        persister.load(project, new InputSource(file.toURL().toExternalForm()));
  
         // Make sure we got what we started with
         assertEquals(startingProfiles, 
