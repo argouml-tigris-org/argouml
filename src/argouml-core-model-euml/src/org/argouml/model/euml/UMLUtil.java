@@ -1,5 +1,4 @@
-// $Id: UMLUtil.java 13394 2007-08-18 12:48:34Z b00__1 $
-// Copyright (c) 2007,2008 Bogdan Pistol and other contributors
+// Copyright (c) 2007,2009 Bogdan Pistol and other contributors
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -9,14 +8,14 @@
 //     * Redistributions in binary form must reproduce the above copyright
 //       notice, this list of conditions and the following disclaimer in the
 //       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the ArgoUML Project nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
+//     * Neither the name of the project or its contributors may be used 
+//       to endorse or promote products derived from this software without
+//       specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE ArgoUML PROJECT ``AS IS'' AND ANY
+// THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
 // EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE ArgoUML PROJECT BE LIABLE FOR ANY
+// DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
 // DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 // (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -52,7 +51,8 @@ public class UMLUtil extends org.eclipse.uml2.uml.util.UMLUtil {
     /**
      * The default URI used for eUML
      */
-    public static final URI DEFAULT_URI = URI.createURI("http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
+    public static final URI DEFAULT_URI = 
+        URI.createURI("http://argouml.tigris.org/euml/resource/default_uri.xmi"); //$NON-NLS-1$
         
     /**
      * Getter for the attributes of a Type
@@ -177,11 +177,18 @@ public class UMLUtil extends org.eclipse.uml2.uml.util.UMLUtil {
     static Resource getResource(
             EUMLModelImplementation modelImplementation, URI uri,
             boolean readOnly) {
+        if (!"xmi".equals(uri.fileExtension())) {
+            // Make sure we have a recognized file extension
+            uri = uri.appendFileExtension("xmi");
+        }
         Resource r = modelImplementation.getEditingDomain().getResourceSet()
                 .getResource(uri, false);
         if (r == null) {
             r = modelImplementation.getEditingDomain().getResourceSet()
                     .createResource(uri);
+        }
+        if (r == null) {
+            throw new NullPointerException("Failed to create resource for URI " + uri);
         }
         modelImplementation.getReadOnlyMap().put(r, Boolean.valueOf(readOnly));
         return r;
