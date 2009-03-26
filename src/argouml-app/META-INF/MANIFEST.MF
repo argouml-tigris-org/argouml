@@ -2,11 +2,9 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %pluginProvider
-Bundle-SymbolicName: org.argouml.app
-Bundle-Version: 0.25.5
-Export-Package: Acme,
- Acme.JPM.Encoders,
- antlr,
+Bundle-SymbolicName: org.argouml.app;singleton:=true
+Bundle-Version: 0.28
+Export-Package: antlr,
  antlr.ASdebug,
  antlr.actions.cpp,
  antlr.actions.csharp,
@@ -119,7 +117,6 @@ Export-Package: Acme,
  org.argouml.util.osdep,
  org.easymock,
  org.easymock.internal,
- org.tigris.gef.Images,
  org.tigris.gef.base,
  org.tigris.gef.demo,
  org.tigris.gef.di,
@@ -137,7 +134,6 @@ Export-Package: Acme,
  org.tigris.gef.ui,
  org.tigris.gef.undo,
  org.tigris.gef.util,
- org.tigris.gef.xml.dtd,
  org.tigris.gef.xml.svg,
  org.tigris.swidgets,
  org.tigris.toolbar,
