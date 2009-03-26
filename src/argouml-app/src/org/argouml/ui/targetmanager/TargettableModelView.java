@@ -28,9 +28,8 @@ package org.argouml.ui.targetmanager;
  * JList or a JComboBox) has a Model that implements TargetListener. <p>
  *
  * UMLLinkedList is such an implementor. Via this interface it is
- * easy to collect all targetlisteners on a property panel as is done in the
- * setTarget() method of the class PropPanel
- * (see registrateTargetListeners method).<p>
+ * easy to collect all targetlisteners on a property panel as is done in
+ * {@link org.argouml.uml.ui.PropPanel#collectTargetListeners}.
  *
  * @author jaap.branderhorst@xs4all.nl
  */
