@@ -37,6 +37,9 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.util.PathComparator;
 
 /**
+ * TODO: For UML 2.x, powertypes are accessed indirectly through the 
+ * GeneralizationSets that contain a Generalization.
+ * 
  * @since Nov 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */

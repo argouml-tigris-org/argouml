@@ -68,6 +68,8 @@ public class PropPanelGeneralization extends PropPanelRelationship {
         addField(Translator.localize("label.child"),
                 getSingleRowScroll(new UMLGeneralizationChildListModel()));
 
+        // TODO: For UML 2.x, powertypes are accessed indirectly through the 
+        //  GeneralizationSets that contain a Generalization.
         addField(Translator.localize("label.powertype"),
                 new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(),
                         ActionSetGeneralizationPowertype.getInstance()));
