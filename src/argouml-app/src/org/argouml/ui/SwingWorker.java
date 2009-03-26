@@ -138,8 +138,8 @@ public abstract class SwingWorker {
     	try {
     	    retVal = construct(pmw);
     	} catch (Exception exc) {
-	        // what should we do here?
-    	    LOG.error("Error while loading project: " + exc);
+	    // TODO: This error needs to be reported!
+    	    LOG.error("Error while loading project: ", exc);
         } finally {
             pmw.close();
         }
