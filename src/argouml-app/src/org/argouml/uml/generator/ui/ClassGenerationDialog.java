@@ -55,6 +55,7 @@ import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.uml.generator.CodeGenerator;
@@ -254,24 +255,10 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
     }
 
     private void buildLanguages() {
-        ArrayList<Language> tmp = new ArrayList<Language>(GeneratorManager
+        languages = new ArrayList<Language>(GeneratorManager
                 .getInstance().getLanguages());
 
-        languages = new ArrayList<Language>();
-
-        for (int i = 0, length = tmp.size(); i < length; i++) {
-            Language current = tmp.get(i);
-            int index = languages.size();
-
-            for (int j = 0, length_j = languages.size(); j < length_j; j++) {
-                if (current.getName().compareToIgnoreCase(
-                        languages.get(j).getName()) < 0) {
-                    index = j;
-                    break;
-                }
-            }
-            languages.add(index, current);
-        }
+        Collections.sort(languages);
     }
 
     private static Collection<String> getClasspathEntries() {
