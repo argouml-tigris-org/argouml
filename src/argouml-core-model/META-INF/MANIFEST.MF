@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %pluginProvider
-Bundle-SymbolicName: org.argouml.core.model
+Bundle-SymbolicName: org.argouml.core.model;singleton:=true
 Bundle-Version: 0.25.5
 Bundle-ClassPath: org.argouml.core.model.jar
 Bundle-Localization: plugin
