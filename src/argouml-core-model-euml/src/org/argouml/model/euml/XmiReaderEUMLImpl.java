@@ -1,7 +1,7 @@
 // $Id$
-// Copyright (c) 2007,2008 Tom Morris and other contributors
+/// Copyright (c) 2007,2009 Tom Morris and other contributors
 // All rights reserved.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
 //     * Redistributions of source code must retain the above copyright
@@ -9,14 +9,14 @@
 //     * Redistributions in binary form must reproduce the above copyright
 //       notice, this list of conditions and the following disclaimer in the
 //       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the ArgoUML Project nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
-// 
-// THIS SOFTWARE IS PROVIDED BY THE ArgoUML PROJECT ``AS IS'' AND ANY
+//     * Neither the name of the project or its contributors may be used 
+//       to endorse or promote products derived from this software without
+//       specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
 // EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE ArgoUML PROJECT BE LIABLE FOR ANY
+// DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
 // DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 // (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -40,17 +40,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.xml.sax.InputSource;
 
 /**
  * The implementation of the XmiReader for EUML2.
  */
 class XmiReaderEUMLImpl implements XmiReader {
+    
+    private static final Logger LOG = Logger.getLogger(XmiReaderEUMLImpl.class);
 
     /**
      * The model implementation.
@@ -104,12 +107,21 @@ class XmiReaderEUMLImpl implements XmiReader {
         }
         InputStream is = null;
         boolean needsClosing = false;
+        String name = inputSource.getSystemId();
+        if (name == null) {
+            name = inputSource.getPublicId();
+        }
+        if (name == null) {
+            name = inputSource.toString();
+        }
+        LOG.debug("Parsing " + name);
         if (inputSource.getByteStream() != null) {
             is = inputSource.getByteStream();
         } else if (inputSource.getSystemId() != null) {
             try {
                 URL url = new URL(inputSource.getSystemId());
                 if (url != null) {
+                    LOG.debug("Parsing URL " + url);
                     is = url.openStream();
                     if (is != null) {
                         is = new BufferedInputStream(is);
@@ -127,13 +139,13 @@ class XmiReaderEUMLImpl implements XmiReader {
             throw new UnsupportedOperationException();
         }
 
-
-        // TODO: This won't work if the user loads a profile and then 
-        // a user model or multiple user models. - tfm
-        modelImpl.clearEditingDomain();
+        String id = inputSource.getSystemId();
+        if (id == null) {
+            id = inputSource.getPublicId();
+        }
+        Resource r = UMLUtil.getResource(modelImpl, 
+                URI.createURI(id), readOnly);
         
-        Resource r = UMLUtil.getResource(modelImpl, UMLUtil.DEFAULT_URI,
-                readOnly);
         try {
             modelImpl.getModelEventPump().stopPumpingEvents();
             r.load(is, null);
@@ -150,6 +162,8 @@ class XmiReaderEUMLImpl implements XmiReader {
             }
         }
         resource = r;
+        LOG.debug("Parsed resource " + resource 
+                + " with " + resource.getContents().size() + " elements");
         return r.getContents();
     }
 
@@ -160,11 +174,12 @@ class XmiReaderEUMLImpl implements XmiReader {
 
     public String getTagName() {
         if (resource == null) {
-            throw new IllegalStateException();
+            return "uml:Model"; //$NON-NLS-1$
         }
         List l = resource.getContents();
         if (!l.isEmpty()) {
-            return "uml:" + modelImpl.getMetaTypes().getName(l.get(0)); //$NON-NLS-1$
+            return "uml:" //$NON-NLS-1$
+                    + modelImpl.getMetaTypes().getName(l.get(0)); 
         } else {
             return null;
         }
