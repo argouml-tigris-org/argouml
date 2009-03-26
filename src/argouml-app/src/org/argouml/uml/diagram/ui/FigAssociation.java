@@ -683,7 +683,8 @@ class FigOrdering extends FigSingleLineText {
 
 /**
  * A Fig representing the association end role of some model element.
- * 
+ * This class is designed as a composite part and should always be 
+ * part of a FigGroup.
  * @author Bob Tarling
  */
 class FigRole extends FigSingleLineTextWithNotation {
@@ -724,12 +725,14 @@ class FigRole extends FigSingleLineTextWithNotation {
      * Property change listener to recalculate bounds of enclosing
      * group whenever any properties of the FigRole get changed.
      * This is only really needed for the name, see issue 5621.
+     * 
      * @param pce The property change event to process.
      * @see org.argouml.uml.diagram.ui.FigSingleLineTextWithNotation#propertyChange(java.beans.PropertyChangeEvent)
      */
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         super.propertyChange(pce);
+        assert(getGroup() != null);
         this.getGroup().calcBounds();
     }
 
