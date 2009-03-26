@@ -1,5 +1,4 @@
-// $Id$
-// Copyright (c) 2007,2008 The ArgoUML Project
+// Copyright (c) 2007,2009 Tom Morris and other contributors
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -9,14 +8,14 @@
 //     * Redistributions in binary form must reproduce the above copyright
 //       notice, this list of conditions and the following disclaimer in the
 //       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the ArgoUML Project nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
+//     * Neither the name of the project or its contributors may be used 
+//       to endorse or promote products derived from this software without
+//       specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE ArgoUML PROJECT ``AS IS'' AND ANY
+// THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
 // EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE ArgoUML PROJECT BE LIABLE FOR ANY
+// DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
 // DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 // (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -73,6 +72,7 @@ import org.eclipse.uml2.uml.StructuralFeature;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.TypedElement;
 import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.ValueSpecification;
 import org.eclipse.uml2.uml.VisibilityKind;
 
 /**
@@ -1224,10 +1224,20 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException(
                     "aggregationKind must be instance of AggregationKind"); //$NON-NLS-1$
         }
+        final Property property = (Property) handle;
+        final AggregationKind aggregation = (AggregationKind) aggregationKind;
         RunnableClass run = new RunnableClass() {
             public void run() {
-                ((Property) handle)
-                        .setAggregation((AggregationKind) aggregationKind);
+                property.setAggregation(aggregation);
+                if (aggregation == AggregationKind.COMPOSITE_LITERAL 
+                        || aggregation == AggregationKind.SHARED_LITERAL) {
+                    for (Property end 
+                            : property.getAssociation().getMemberEnds()) {
+                        if (!end.equals(property)) {
+                            end.setAggregation(AggregationKind.NONE_LITERAL);
+                        }
+                    }
+                }  
             }
         };
         editingDomain.getCommandStack().execute(
@@ -1351,7 +1361,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setInitialValue(Object attribute, Object expression) {
-        throw new NotYetImplementedException();
+        ((Property) attribute).setDefaultValue((ValueSpecification) expression);
     }
 
     public void setKind(Object handle, Object kind) {
@@ -1386,11 +1396,28 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException();
         }
         if (arg instanceof String) {
+            String s = (String) arg;
             int lower = 1, upper = 1;
+            
             try {
-                int i = Integer.parseInt((String) arg);
-                lower = i;
-                upper = i;
+                if ("*".equals(s.trim())) {
+                    lower = 0;
+                    upper = -1;
+                } else if (s.contains("..")) {
+                    String[] pieces = s.trim().split("\\.\\.");
+                    if (pieces.length > 2) {
+                        throw new IllegalArgumentException((String) arg);
+                    }
+                    lower = Integer.parseInt(pieces[0]);
+                    if ("*".equals(pieces[1])) {
+                        upper = -1;
+                    } else {
+                        upper = Integer.parseInt(pieces[1]);
+                    }
+                } else { 
+                    lower = Integer.parseInt(s);
+                    upper = lower;
+                }
             } catch (NumberFormatException e) {
                 // TODO: lower..upper
                 throw new NotYetImplementedException();
@@ -1441,9 +1468,16 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException(
                     "handle must be instance of Property"); //$NON-NLS-1$
         }
+        final Property prop = (Property) handle;
+        if (flag == prop.isNavigable()) {
+            return;
+        }
         RunnableClass run = new RunnableClass() {
             public void run() {
-                ((Property) handle).setIsNavigable(flag);
+                // WARNING - This has containment side effects!
+                // Eclipse UML2 will move the Property from the Classifier to
+                // the Association when the navigability is changed.
+                prop.setIsNavigable(flag);
             }
         };
         editingDomain.getCommandStack().execute(
@@ -1458,8 +1492,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setOrdering(Object handle, Object ordering) {
-        // ((Property) handle).setIsOrdered(ordering);
-        throw new NotYetImplementedException();
+        ((MultiplicityElement) handle).setIsOrdered(
+                OrderingKindEUMLImpl.ORDERED.equals(ordering));
     }
 
     public void setOwner(Object handle, Object owner) {
