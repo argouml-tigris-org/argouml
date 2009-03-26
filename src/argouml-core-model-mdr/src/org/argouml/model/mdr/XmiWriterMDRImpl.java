@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -127,9 +127,15 @@ class XmiWriterMDRImpl implements XmiWriter {
         XMIWriter xmiWriter = XMIWriterFactory.getDefault().createXMIWriter(
                 config);
         try {
-            RefPackage extent = ((RefObject) model).refOutermostPackage();
-            xmiWriter.write(oStream, "file:///ThisIsADummyName.xmi", extent,
-                    XMI_VERSION);
+            modelImpl.getRepository().beginTrans(false);
+            try {
+                RefPackage extent = ((RefObject) model).refOutermostPackage();
+                xmiWriter.write(oStream, "file:///ThisIsADummyName.xmi", extent,
+                        XMI_VERSION);
+            } finally {
+                // end our transaction
+                modelImpl.getRepository().endTrans();
+            }
         } catch (IOException e) {
             throw new UmlException(e);
         } 
