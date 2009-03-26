@@ -2669,9 +2669,12 @@ class FacadeMDRImpl implements Facade {
 
     public List<Feature> getOperationsAndReceptions(Object classifier) {
         List<Feature> opsAndReceps = new ArrayList<Feature>();
-        for (Feature f : getFeatures(classifier)) {
-            if (isAOperation(f) || isAReception(f)) {
-                opsAndReceps.add(f);
+        // TODO: Return empty collection on null input or throw IllegalArgument?
+        if (classifier != null) {
+            for (Feature f : getFeatures(classifier)) {
+                if (isAOperation(f) || isAReception(f)) {
+                    opsAndReceps.add(f);
+                }
             }
         }
         return opsAndReceps;
@@ -2851,6 +2854,7 @@ class FacadeMDRImpl implements Facade {
     public Collection<Message> getPredecessors(Object handle) {
         try {
             if (handle instanceof Message) {
+            // TODO: This has different semantics than everything else
                 return Collections.unmodifiableCollection(
                         new ArrayList<Message>(
                                 ((Message) handle).getPredecessor()));
