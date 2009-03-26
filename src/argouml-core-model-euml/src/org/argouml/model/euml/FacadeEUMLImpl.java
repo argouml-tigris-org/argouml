@@ -1,5 +1,4 @@
-//$Id$
-// Copyright (c) 2007, 2008 The ArgoUML Project
+/// Copyright (c) 2007,2009 Tom Morris and other contributors
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -9,14 +8,14 @@
 //     * Redistributions in binary form must reproduce the above copyright
 //       notice, this list of conditions and the following disclaimer in the
 //       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the ArgoUML Project nor the
-//       names of its contributors may be used to endorse or promote products
-//       derived from this software without specific prior written permission.
+//     * Neither the name of the project or its contributors may be used 
+//       to endorse or promote products derived from this software without
+//       specific prior written permission.
 //
-// THIS SOFTWARE IS PROVIDED BY THE ArgoUML PROJECT ``AS IS'' AND ANY
+// THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
 // EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 // WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE ArgoUML PROJECT BE LIABLE FOR ANY
+// DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
 // DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
 // (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 // LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
@@ -34,7 +33,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -72,10 +74,14 @@ import org.eclipse.uml2.uml.ExtensionPoint;
 import org.eclipse.uml2.uml.Feature;
 import org.eclipse.uml2.uml.FinalState;
 import org.eclipse.uml2.uml.Generalization;
+import org.eclipse.uml2.uml.GeneralizationSet;
 import org.eclipse.uml2.uml.Include;
 import org.eclipse.uml2.uml.InputPin;
 import org.eclipse.uml2.uml.InstanceSpecification;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.LiteralBoolean;
+import org.eclipse.uml2.uml.LiteralInteger;
+import org.eclipse.uml2.uml.LiteralString;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.MultiplicityElement;
@@ -106,6 +112,7 @@ import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.StructuralFeature;
+import org.eclipse.uml2.uml.TemplateBinding;
 import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.TimeEvent;
 import org.eclipse.uml2.uml.Transition;
@@ -121,9 +128,14 @@ import org.eclipse.uml2.uml.VisibilityKind;
 
 /**
  * The implementation of the Facade for EUML2.
+ * 
+ * @author Tom Morris
+ * @author Bogdan Pistol
  */
 class FacadeEUMLImpl implements Facade {
 
+    private static final Logger LOG = Logger.getLogger(FacadeEUMLImpl.class);
+    
     /**
      * The model implementation.
      */
@@ -266,12 +278,21 @@ class FacadeEUMLImpl implements Facade {
         return Collections.EMPTY_SET;
     }
 
-    public List getAttributes(Object handle) {
-        if (!(handle instanceof Classifier)) {
+    public List<Property> getAttributes(Object handle) {
+        try {
+            Classifier classifier = (Classifier) handle;
+            EList<Property> attributes = classifier.getAttributes();
+            List<Property> result = new ArrayList<Property>();
+            for (Property p : attributes) {
+                if (p.getAssociation() == null) {
+                    result.add(p);
+                }
+            }
+            return result;
+        } catch (ClassCastException e) {
             throw new IllegalArgumentException(
                     "handle must be instance of Classifier"); //$NON-NLS-1$
         }
-        return UMLUtil.getOwnedAttributes((Classifier) handle);
     }
 
     public Object getBase(Object handle) {
@@ -314,9 +335,34 @@ class FacadeEUMLImpl implements Facade {
     public Object getBody(Object handle) {
         if (handle instanceof Comment) {
             return ((Comment) handle).getBody();
+        } else if (handle instanceof Constraint) {
+            return getValueSpecification(
+                    ((Constraint) handle).getSpecification());
+        } else if (handle instanceof ValueSpecification) {
+            return getValueSpecification((ValueSpecification) handle);
+        } else if (handle instanceof Operation) {
+            throw new NotYetImplementedException();
         }
-        throw new NotYetImplementedException();
+        throw new IllegalArgumentException(
+                "Unsupported argument type - must be Comment, Constraint," +
+                " Expression, or Method ");
 
+    }
+
+    private String getValueSpecification(ValueSpecification handle) {
+//        return handle.stringValue();
+        if (handle instanceof OpaqueExpression) {
+            return modelImpl.getDataTypesHelper().getBody(handle);
+        } else if (handle instanceof LiteralBoolean) {
+            return Boolean.toString(((LiteralBoolean) handle).isValue());
+        } else if (handle instanceof LiteralInteger) {
+            return Integer.toString(((LiteralInteger) handle).getValue());
+        } else if (handle instanceof LiteralString) {
+            return ((LiteralString) handle).getValue();
+        } else {
+            // TODO: Lots more types - Duration, Instance, Interval
+            throw new NotYetImplementedException();
+        }
     }
 
     public int getBound(Object handle) {
@@ -442,7 +488,7 @@ class FacadeEUMLImpl implements Facade {
         if (handle == null) {
             // this is wrongly called with a null handle,
             // as a workaround we return an empty collection
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         if (!(handle instanceof Association)) {
             throw new IllegalArgumentException(
@@ -623,7 +669,14 @@ class FacadeEUMLImpl implements Facade {
         if (!(handle instanceof Classifier)) {
             throw new IllegalArgumentException();
         }
-        return ((Classifier) handle).getFeatures();
+        List<Feature> result = new ArrayList<Feature>();
+        for (Feature f : ((Classifier) handle).getFeatures()) {
+            if (!(f instanceof Property) 
+                    || ((Property) f).getAssociation() == null) {
+                result.add(f);
+            }
+        }
+        return result;
     }
 
     public Object getGeneralization(Object handle, Object parent) {
@@ -687,7 +740,7 @@ class FacadeEUMLImpl implements Facade {
         if (!(handle instanceof Property)) {
             throw new IllegalArgumentException();
         }
-        return ((Property) handle).getDefault();
+        return ((Property) handle).getDefaultValue();
     }
 
     public Object getInstance(Object handle) {
@@ -805,7 +858,8 @@ class FacadeEUMLImpl implements Facade {
 
     public String getName(Object handle) {
         if (!(handle instanceof EObject) // should be Element not EObject really
-                && !(handle instanceof String)) {
+                && !(handle instanceof String)
+                && !(handle instanceof Enumerator)) {
             throw new IllegalArgumentException();
         }
         if (handle instanceof String) {
@@ -816,6 +870,8 @@ class FacadeEUMLImpl implements Facade {
             } else {
                 return ""; //$NON-NLS-1$
             }
+        } else if (handle instanceof Enumerator) {
+            return ((Enumerator) handle).getName();
         } else {
             // TODO: Some elements such as Generalization are
             // no longer named.  For a transitional period we'll
@@ -977,7 +1033,15 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getPowertype(Object handle) {
-        throw new NotYetImplementedException();
+        if (handle instanceof Generalization) {
+            EList<GeneralizationSet> genSets = ((Generalization) handle).getGeneralizationSets();
+            for (GeneralizationSet gs : genSets) {
+                Classifier powerType = gs.getPowertype();
+            }
+        }
+        // TODO: This probably can't be implemented in a way that will make
+        // the UML 1.4 UI happy.  Needs to be generalized to UML 2 semantics.
+        return null;
     }
 
     public Collection getPowertypeRanges(Object handle) {
@@ -1141,10 +1205,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public List<StructuralFeature> getStructuralFeatures(Object handle) {
-        if (!(handle instanceof Classifier)) {
-            throw new IllegalArgumentException();
-        }
-        List<Feature> features = ((Classifier) handle).getFeatures();
+        List<Feature> features = getFeatures(handle);
         List<StructuralFeature> result = new ArrayList<StructuralFeature>();
         for (Feature f : features) {
             if (f instanceof StructuralFeature) {
@@ -1303,7 +1364,9 @@ class FacadeEUMLImpl implements Facade {
         }
         Resource r = ((EObject) element).eResource();
         if (r == null) {
-            throw new UnsupportedOperationException();
+            return "";
+            // TODO: Figure out when this is getting thrown
+//            throw new UnsupportedOperationException();
         }
         return r.getURIFragment((EObject) element);
     }
@@ -1437,7 +1500,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isABinding(Object handle) {
-        throw new NotYetImplementedException();
+        return handle instanceof TemplateBinding;
     }
 
 
@@ -1929,7 +1992,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isInitialized(Object handle) {
-        throw new NotYetImplementedException();
+        return ((Property) handle).getDefaultValue() != null;
     }
 
     public boolean isInternal(Object handle) {
@@ -1954,7 +2017,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isNavigable(Object handle) {
-        return !((Property) handle).isNavigable();
+        return ((Property) handle).isNavigable();
     }
 
     public boolean isPackage(Object handle) {
@@ -2116,9 +2179,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isA(String metatypeName, Object element) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-        
+        return getUMLClassName(element).equals(metatypeName);
     }
 
 }
