@@ -53,6 +53,13 @@ public class FigGeneralization extends FigEdgeModelElement {
      */
     private static final long serialVersionUID = 3983170503390943894L;
 
+
+    /**
+     * Group for the FigTexts concerning the name and stereotype of the
+     * association itself.
+     */
+    private FigTextGroup middleGroup;
+    
     /**
      * Text box for discriminator.
      */
@@ -70,18 +77,23 @@ public class FigGeneralization extends FigEdgeModelElement {
     public FigGeneralization() {
         discriminator = new ArgoFigText(null, new Rectangle(X0, Y0,
                 DISCRIMINATOR_WIDTH, TEXT_HEIGHT), getSettings(), false);
+        middleGroup = new FigTextGroup();
         initialize();
     }
 
     private void initialize() {
-        // UML spec for Generalizations doesn't call for name or stereotype
+        // UML spec for Generalizations doesn't call for name
 
 	discriminator.setFilled(false);
 	discriminator.setLineWidth(0);
 	discriminator.setReturnAction(FigText.END_EDITING);
 	discriminator.setTabAction(FigText.END_EDITING);
-	addPathItem(discriminator, 
-	        new PathItemPlacement(this, discriminator, 50, -10));
+	
+        middleGroup.addFig(discriminator);
+        middleGroup.addFig(getStereotypeFig());        
+	
+	addPathItem(middleGroup, 
+	        new PathItemPlacement(this, middleGroup, 50, -10));
 
         endArrow = new ArrowHeadTriangle();
 	endArrow.setFillColor(FILL_COLOR);
@@ -101,6 +113,7 @@ public class FigGeneralization extends FigEdgeModelElement {
     @Deprecated
     public FigGeneralization(Object edge, Layer lay) {
 	this();
+        middleGroup = new FigTextGroup();
 	setLayer(lay);
 	setOwner(edge);
     }
@@ -116,6 +129,9 @@ public class FigGeneralization extends FigEdgeModelElement {
         super(owner, settings);
         discriminator = new ArgoFigText(owner, new Rectangle(X0, Y0,
                 DISCRIMINATOR_WIDTH, TEXT_HEIGHT), settings, false);
+        middleGroup = new FigTextGroup(owner, settings);
+        
+        
         initialize();
         fixup(owner);
         addListener(owner);
