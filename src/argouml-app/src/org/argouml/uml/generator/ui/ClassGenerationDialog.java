@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,7 +55,6 @@ import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.uml.generator.CodeGenerator;
@@ -67,7 +66,8 @@ import org.tigris.swidgets.Dialog;
 /**
  * The dialog that starts the generation of classes.
  */
-public class ClassGenerationDialog extends ArgoDialog implements ActionListener {
+public class ClassGenerationDialog extends ArgoDialog 
+        implements ActionListener {
 
     private static final String SOURCE_LANGUAGE_TAG = "src_lang";
 
@@ -104,10 +104,11 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
 
     /**
      * Constructor.
+     * <p>
+     * TODO: Correct?
      * 
      * @param nodes The UML elements, typically classifiers, to generate.
-     * @param inModel <code>true</code> if the path is in the model. TODO:
-     *            Correct?
+     * @param inModel <code>true</code> if the path is in the model.
      */
     public ClassGenerationDialog(List<Object> nodes, boolean inModel) {
         super(Translator.localize("dialog.title.generate-classes"),
@@ -172,7 +173,8 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
         contentPanel.add(centerPanel, BorderLayout.CENTER);
 
         // Output Directory
-        outputDirectoryComboBox = new JComboBox(getClasspathEntries().toArray());
+        outputDirectoryComboBox = 
+            new JComboBox(getClasspathEntries().toArray());
 
         JButton browseButton = new JButton();
         nameButton(browseButton, "button.browse");
@@ -317,7 +319,8 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                     }
                 } else {
                     // classify nodes by base path
-                    Map<String, Set<Object>> nodesPerPath = new HashMap<String, Set<Object>>();
+                    Map<String, Set<Object>> nodesPerPath = 
+                        new HashMap<String, Set<Object>>();
                     for (Object node : nodes) {
                         if (!Model.getFacade().isAClassifier(node)) {
                             continue;
@@ -372,7 +375,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
 
     /**
      * Save the source language in the model.
-     * 
+     * <p>
      * TODO: Support multiple languages now that we have UML 1.4 tagged values.
      * 
      * @param node
