@@ -3,7 +3,6 @@
 	<name>argouml-core-diagrams-sequence2</name>
 	<comment></comment>
 	<projects>
-		<project>argouml</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
