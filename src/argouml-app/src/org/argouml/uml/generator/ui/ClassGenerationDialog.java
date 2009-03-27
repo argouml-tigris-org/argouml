@@ -125,9 +125,6 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
         classTable = new JTable(classTableModel);
         classTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
         classTable.setShowVerticalLines(false);
-        if (languages.size() <= 1) {
-            classTable.setTableHeader(null);
-        }
         setClassTableColumnWidths();
         classTable.setPreferredScrollableViewportSize(new Dimension(300, 300));
 
