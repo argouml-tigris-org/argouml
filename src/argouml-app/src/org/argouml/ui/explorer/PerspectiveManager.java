@@ -63,6 +63,7 @@ import org.argouml.ui.explorer.rules.GoModelElementToComment;
 import org.argouml.ui.explorer.rules.GoModelElementToContainedDiagrams;
 import org.argouml.ui.explorer.rules.GoModelElementToContainedLostElements;
 import org.argouml.ui.explorer.rules.GoModelElementToContents;
+import org.argouml.ui.explorer.rules.GoModelElementToTemplateParameter;
 import org.argouml.ui.explorer.rules.GoModelToBaseElements;
 import org.argouml.ui.explorer.rules.GoModelToCollaboration;
 import org.argouml.ui.explorer.rules.GoModelToDiagrams;
@@ -346,6 +347,7 @@ public final class PerspectiveManager {
         classPerspective.addRule(new GoSummaryToInheritance());
         classPerspective.addRule(new GoSummaryToIncomingDependency());
         classPerspective.addRule(new GoSummaryToOutgoingDependency());
+        classPerspective.addRule(new GoModelElementToTemplateParameter());
 
         ExplorerPerspective packagePerspective =
             new ExplorerPerspective(
@@ -374,6 +376,8 @@ public final class PerspectiveManager {
         packagePerspective.addRule(new GoOperationToCollaboration());
         packagePerspective.addRule(new GoModelElementToComment());
         packagePerspective.addRule(new GoCollaborationToDiagram());
+        packagePerspective.addRule(new GoModelElementToTemplateParameter());
+
         /*
          * Removed the next one due to issue 2165.
          * packagePerspective.addRule(new GoOperationToCollaborationDiagram());
@@ -532,6 +536,7 @@ public final class PerspectiveManager {
             new GoInteractionToMessages(), new GoLinkToStimuli(),
             new GoMessageToAction(), new GoModelElementToComment(),
             new GoModelElementToBehavior(),
+            new GoModelElementToTemplateParameter(),
             new GoModelElementToContents(),
             new GoModelElementToContainedDiagrams(),
             new GoModelElementToContainedLostElements(),
