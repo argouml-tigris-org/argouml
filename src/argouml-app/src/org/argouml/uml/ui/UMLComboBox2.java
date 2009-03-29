@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,11 +25,13 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 import javax.swing.Action;
+import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.ListCellRenderer;
 
-import org.apache.log4j.Logger;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -46,8 +48,13 @@ import org.argouml.ui.targetmanager.TargettableModelView;
  */
 public class UMLComboBox2
     extends JComboBox
-    implements TargettableModelView, TargetListener {
-   
+    implements TargettableModelView, TargetListener, 
+        JComboBox.KeySelectionManager {
+
+    private static final int KEY_TIME_THRESHOLD_MILLIS = 1500;
+    private String searchString = "";
+    private long lastKeyEventTime;
+
     /**
      * Constructor for UMLComboBox2.
      * @deprecated As of ArgoUml version unknown (before 0.13.5),
@@ -73,8 +80,10 @@ public class UMLComboBox2
 			boolean showIcon) {
         super(model);
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
+        lastKeyEventTime = 0;
         addActionListener(action);
         // setDoubleBuffered(true);
+        setKeySelectionManager(this);
         setRenderer(new UMLListCellRenderer2(showIcon));
         addPopupMenuListener(model);
     }
@@ -97,6 +106,61 @@ public class UMLComboBox2
         if (i >= 0) {
             doIt(arg0);
         }
+    }
+    
+    /**
+     * Implementation of the JComboBox.KeySelectionManager interface. Helps with
+     * navigating through the ComboBox when using the keyboard.
+     * 
+     * @param key The key which has been pressed
+     * @param model Current ComboBoxModel
+     * @return int The index of the item that is to be selected
+     * @see javax.swing.JComboBox.KeySelectionManager#selectionForKey(char, javax.swing.ComboBoxModel)
+     */
+    public int selectionForKey(char key, ComboBoxModel model)
+    {        
+        long now = System.currentTimeMillis();
+        int index = -1;
+        int startAtIndex = 0;
+
+        // Implements backspace functionality
+        if (searchString != null && key == KeyEvent.VK_BACK_SPACE
+                && searchString.length() > 0) {
+            searchString = searchString.substring(0, searchString.length() - 1);
+        }
+        else {
+            if (lastKeyEventTime + KEY_TIME_THRESHOLD_MILLIS < now) {
+                searchString = Character.toString(key);
+            }
+            else {
+                searchString = searchString + key;
+                startAtIndex = getSelectedIndex();
+                if (startAtIndex < 0) {
+                    startAtIndex = 0;
+                }
+            }
+        }
+        
+        String umlElemName = "";
+        String searchStringLowerCase = searchString.toLowerCase();
+        ListCellRenderer cellRenderer = getRenderer();
+        
+        for (int i = startAtIndex, length = model.getSize(); i < length; i++) {
+            Object value = model.getElementAt(i);
+            if (cellRenderer instanceof UMLListCellRenderer2) {
+                umlElemName = 
+                    ((UMLListCellRenderer2) cellRenderer).makeText(value);
+            } else {
+                umlElemName = value.toString();
+            }
+            if (umlElemName.toLowerCase().startsWith(searchStringLowerCase)) {
+                index = i;
+                break;
+            }
+        }
+        lastKeyEventTime = now;
+
+        return index;
     }
 
     /**
