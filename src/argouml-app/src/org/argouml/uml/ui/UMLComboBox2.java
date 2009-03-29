@@ -39,12 +39,7 @@ import org.argouml.ui.targetmanager.TargettableModelView;
 
 
 /**
- * ComboBox for UML modelelements. <p>
- *
- * This implementation does not use
- * reflection and seperates Model, View and Controller better then does
- * UMLComboBox. The ancient UMLComboBoxModel and UMLComboBox are
- * replaced with this implementation to improve performance.
+ * ComboBox for selecting UML Elements.
  */
 public class UMLComboBox2
     extends JComboBox
@@ -70,10 +65,11 @@ public class UMLComboBox2
     }
 
     /**
-     * Constructor for UMLComboBox2. Via the given action, the
-     * action for this combobox is done.
-     * @param model the ComboBoxModel
-     * @param action the action
+     * Construct a UMLComboBox2.
+     * 
+     * @param model a UMLComboBoxModel2 which provides UML elements for the user
+     *            to choose from
+     * @param action action to invoke when an item is selected
      * @param showIcon true if an icon should be shown in front of the items
      */
     public UMLComboBox2(UMLComboBoxModel2 model, Action action,
@@ -89,7 +85,7 @@ public class UMLComboBox2
     }
 
     /**
-     * The constructor.
+     * Construct a UML Element ComboxBox which shows icons in front of each item
      *
      * @param arg0 the ComboBoxModel
      * @param action the action
@@ -101,6 +97,7 @@ public class UMLComboBox2
     /*
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
+    @Override
     public void actionPerformed(ActionEvent arg0) {
         int i = getSelectedIndex();
         if (i >= 0) {
@@ -169,7 +166,7 @@ public class UMLComboBox2
      *
      * @param event the event
      */
-    protected void doIt(ActionEvent event) { }
+    protected void doIt(@SuppressWarnings("unused") ActionEvent event) { }
 
     /**
      * Utility method to get the current target.

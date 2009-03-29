@@ -97,6 +97,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList,
      *      java.lang.Object, int, boolean, boolean)
      */
+    @Override
     public Component getListCellRendererComponent(JList list, Object value,
             int index, boolean isSelected, boolean cellHasFocus) {
         // Leave logging commented out by default for efficiency
@@ -154,8 +155,6 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      *
      * @param value the given modelelement
      * @return String the text to be shown
-     * 
-     * TODO: I18N needed
      */
     public String makeText(Object value) {
         if (value instanceof String) {
@@ -166,7 +165,9 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             Object type = Model.getFacade().getType(value);
             name = getName(value);
             String typeName = null;
-            if (type != null) typeName = Model.getFacade().getName(type);
+            if (type != null) {
+                typeName = Model.getFacade().getName(type);
+            }
             if (typeName != null || "".equals(typeName)) {
                 name = Translator.localize(
                         "misc.name.withType",
