@@ -243,9 +243,11 @@ public abstract class FigEdgeModelElement
                 edgePort.setOwner(getOwner());
             }
             stereotypeFig.setOwner(element); // this fixes issue 5414
+            NotationName nn = Notation.findNotation(
+                    settings.getNotationSettings().getNotationLanguage());
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        getNotationProviderType(), element, this);
+                        getNotationProviderType(), element, this, nn);
 
             addElementListener(element, "remove");
         }

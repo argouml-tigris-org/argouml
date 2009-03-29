@@ -199,7 +199,7 @@ public final class NotationProviderFactory2 {
     }
 
     /**
-     * Get a NotationProvider for the given language.
+     * Get a NotationProvider for the current language.
      * 
      * @param type the provider type
      * @return the provider
@@ -271,24 +271,6 @@ public final class NotationProviderFactory2 {
             }
         }
         return null;
-    }
-
-    /**
-     * Create a new NotationProvider.
-     * 
-     * @param type the provider type
-     * @return the provider
-     * @param object the constructor parameter
-     * @param listener the fig
-     * that refreshes after the NotationProvider has changed
-     * @deprecated for 0.27.2 by tfmorris.  Use 
-     * {@link #getNotationProvider(int, Object, PropertyChangeListener, NotationName)}.
-     */
-    @Deprecated
-    public NotationProvider getNotationProvider(int type,
-            Object object, PropertyChangeListener listener) {
-    	NotationName name = Notation.findNotation(currentLanguage);
-        return getNotationProvider(type, object, listener, name);
     }
 
     /**

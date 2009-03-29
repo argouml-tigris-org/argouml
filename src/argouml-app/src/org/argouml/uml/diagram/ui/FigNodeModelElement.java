@@ -432,9 +432,10 @@ public abstract class FigNodeModelElement
         nameFig.setText(placeString());
         
         if (element != null) {
+            NotationName nn = Notation.findNotation(notationSettings.getNotationLanguage());
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
-                        getNotationProviderType(), element, this);
+                        getNotationProviderType(), element, this, nn);
 
             /* This next line presumes that the 1st fig with this owner 
              * is the previous port - and consequently nullifies the owner 
