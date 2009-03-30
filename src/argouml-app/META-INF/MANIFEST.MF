@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %pluginProvider
 Bundle-SymbolicName: org.argouml.app;singleton:=true
-Bundle-Version: 0.28.0
+Bundle-Version: 0.28.0.qualifier
 Bundle-Localization: plugin
 Bundle-ActivationPolicy: lazy
 Export-Package: org.argouml.Images,

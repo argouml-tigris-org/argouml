@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.argouml.sequence2
-Bundle-Version: 0.28.0
+Bundle-Version: 0.28.0.qualifier
 Bundle-ClassPath: argouml-core-diagrams-sequence2.jar,
  lib/toolbar-1.4.1-20071227.jar,
  lib/log4j-1.2.6.jar
