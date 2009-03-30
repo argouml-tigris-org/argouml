@@ -814,9 +814,9 @@ public class SwingUIFactory implements UIFactory {
             model.setTarget(target);
             list = new ScrollList(new UMLSignalEventSignalList(model));                    
         } else if ("action".equals(prop.getName())) {
-            // TODO: we need to set up the target. 
-            // This creates a model without it.
-            list = new ScrollList(new UMLActionSequenceActionList());
+            model = new UMLActionSequenceActionListModel();
+            model.setTarget(target);
+            list = new ScrollList(new UMLActionSequenceActionList(model));
         }
         
         if (list != null) {

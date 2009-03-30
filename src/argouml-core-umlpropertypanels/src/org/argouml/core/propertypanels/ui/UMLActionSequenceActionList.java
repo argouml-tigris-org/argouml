@@ -26,6 +26,7 @@ package org.argouml.core.propertypanels.ui;
 
 import javax.swing.JPopupMenu;
 
+import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewAction;
 import org.argouml.uml.ui.behavior.common_behavior.PopupMenuNewAction;
@@ -35,8 +36,8 @@ class UMLActionSequenceActionList extends UMLMutableLinkedList {
     /**
      * Construct a default object with a new UMLActionSequenceActionListModel.
      */
-    public UMLActionSequenceActionList() {
-        super(new UMLActionSequenceActionListModel());
+    public UMLActionSequenceActionList(UMLModelElementListModel2 dataModel) {
+        super(dataModel);
     }
 
     /*
