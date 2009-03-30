@@ -3,7 +3,9 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %pluginProvider
 Bundle-SymbolicName: org.argouml.app;singleton:=true
-Bundle-Version: 0.28
+Bundle-Version: 0.28.0
+Bundle-Localization: plugin
+Bundle-ActivationPolicy: lazy
 Export-Package: org.argouml.Images,
  org.argouml.Images.plaf.javax.swing.plaf.metal.MetalLookAndFeel.toolbarButtonGraphics.argouml,
  org.argouml.Images.plaf.javax.swing.plaf.metal.MetalLookAndFeel.toolbarButtonGraphics.argouml.diagrams,

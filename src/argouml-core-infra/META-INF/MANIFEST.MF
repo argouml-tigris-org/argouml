@@ -3,7 +3,11 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %pluginProvider
 Bundle-SymbolicName: org.argouml.core.infra
-Bundle-Version: 0.25.5
+Bundle-Version: 0.28.0
+Bundle-Localization: plugin
+Eclipse-BuddyPolicy: registered
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/log4j-1.2.6.jar
 Export-Package: org.apache.log4j,
  org.apache.log4j.chainsaw,
@@ -25,5 +29,4 @@ Export-Package: org.apache.log4j,
  org.apache.log4j.spi,
  org.apache.log4j.varia,
  org.apache.log4j.xml
-Eclipse-BuddyPolicy: registered
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+
