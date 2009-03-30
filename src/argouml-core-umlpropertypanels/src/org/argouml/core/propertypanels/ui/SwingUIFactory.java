@@ -44,6 +44,7 @@ import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.LabelledLayout;
 import org.argouml.uml.ui.ScrollList;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -190,7 +191,6 @@ import org.argouml.uml.ui.foundation.core.UMLParameterDirectionKindRadioButtonPa
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.tigris.swidgets.GridLayout2;
-import org.tigris.swidgets.LabelledLayout;
 
 /**
  * Creates the XML Property panels
@@ -253,7 +253,7 @@ public class SwingUIFactory implements UIFactory {
                 buildTextArea(panel, target, prop);
             }
             else if ("separator".equals(prop.getType())) {
-                panel.add(LabelledLayout.getSeperator());
+                panel.add(LabelledLayout.getSeparator());
             }
         }
         return panel;
