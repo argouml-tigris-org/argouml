@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,17 +38,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.swingext.JLinkButton;
 import org.argouml.ui.ActionProjectSettings;
+import org.argouml.ui.GUIProjectSettingsTabInterface;
 import org.argouml.ui.ShadowComboBox;
 
 /**
@@ -66,7 +65,7 @@ import org.argouml.ui.ShadowComboBox;
  */
 public class SettingsTabNotation
     extends JPanel
-    implements GUISettingsTabInterface {
+    implements GUIProjectSettingsTabInterface {
 
     private JComboBox notationLanguage;
     private JCheckBox showBoldNames;
@@ -83,6 +82,7 @@ public class SettingsTabNotation
     private ShadowComboBox defaultShadowWidth;
 
     private int scope;
+    private Project p;
 
     /**
      * The constructor.
@@ -246,7 +246,7 @@ public class SettingsTabNotation
                     Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
         }
         if (scope == Argo.SCOPE_PROJECT) {
-            Project p = ProjectManager.getManager().getCurrentProject();
+            assert p != null;
             ProjectSettings ps = p.getProjectSettings();
 
             notationLanguage.setSelectedItem(Notation.findNotation(
@@ -312,7 +312,7 @@ public class SettingsTabNotation
                     defaultShadowWidth.getSelectedIndex());
         }
         if (scope == Argo.SCOPE_PROJECT) {
-            Project p = ProjectManager.getManager().getCurrentProject();
+            assert p != null;
             ProjectSettings ps = p.getProjectSettings();
             NotationName nn = (NotationName) notationLanguage.getSelectedItem();
             if (nn != null) ps.setNotationLanguage(nn.getConfigurationValue());
@@ -411,5 +411,10 @@ public class SettingsTabNotation
         if (visible) {
             handleSettingsTabRefresh();
         }
+    }
+
+    public void setProject(Project project) {
+        assert p != null;
+        p = project;
     }
 }

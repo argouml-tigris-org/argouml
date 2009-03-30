@@ -1,5 +1,5 @@
 // $Id: ProfileSelectionTab.java 13040 2007-07-10 20:00:25Z linus $
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,11 +48,9 @@ import javax.swing.JScrollPane;
 import javax.swing.MutableComboBoxModel;
 import javax.swing.filechooser.FileFilter;
 
-import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
@@ -67,7 +65,9 @@ import org.argouml.uml.diagram.DiagramAppearance;
  * @author Marcos Aurelio
  */
 public class ProjectSettingsTabProfile extends JPanel implements
-        GUISettingsTabInterface, ActionListener {
+        GUIProjectSettingsTabInterface, ActionListener {
+
+    private Project p;
 
     private JButton loadFromFile = new JButton(Translator
             .localize("tab.profiles.userdefined.load"));
@@ -119,8 +119,10 @@ public class ProjectSettingsTabProfile extends JPanel implements
         stereoField.addItemListener(new ItemListener() {
 
             public void itemStateChanged(ItemEvent e) {
-                ProjectSettings ps = ProjectManager.getManager()
-                        .getCurrentProject().getProjectSettings();
+                if (p == null) {
+                    return;
+                }
+                ProjectSettings ps = p.getProjectSettings();
                 Object src = e.getSource();
 
                 if (src == stereoField) {
@@ -207,8 +209,8 @@ public class ProjectSettingsTabProfile extends JPanel implements
     }
 
     private List<Profile> getUsedProfiles() {
-        return new ArrayList<Profile>(ProjectManager.getManager()
-                .getCurrentProject().getProfileConfiguration().getProfiles());
+        return new ArrayList<Profile>(
+                p.getProfileConfiguration().getProfiles());
     }
 
     private List<Profile> getAvailableProfiles() {
@@ -401,8 +403,8 @@ public class ProjectSettingsTabProfile extends JPanel implements
     }
 
     public void handleSettingsTabRefresh() {
-        ProjectSettings ps = ProjectManager.getManager().getCurrentProject()
-                .getProjectSettings();
+        assert p != null;
+        ProjectSettings ps = p.getProjectSettings();
 
         switch (ps.getDefaultStereotypeViewValue()) {
         case DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL:
@@ -420,9 +422,9 @@ public class ProjectSettingsTabProfile extends JPanel implements
     }
 
     public void handleSettingsTabSave() {
+        assert p != null;
         List<Profile> toRemove = new ArrayList<Profile>();
-        Project proj = ProjectManager.getManager().getCurrentProject();
-        ProfileConfiguration pc = proj.getProfileConfiguration();
+        ProfileConfiguration pc = p.getProfileConfiguration();
 
         List<Profile> usedItens = new ArrayList<Profile>();
 
@@ -449,7 +451,11 @@ public class ProjectSettingsTabProfile extends JPanel implements
             }
         }
 
-        proj.setProfileConfiguration(pc);
+        p.setProfileConfiguration(pc);
     }
 
+    public void setProject(Project project) {
+        assert p != null;
+        p = project;
+    }
 }

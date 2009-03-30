@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,16 +35,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.swingext.JLinkButton;
 import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.ArgoJFontChooser;
+import org.argouml.ui.GUIProjectSettingsTabInterface;
 import org.argouml.uml.diagram.DiagramAppearance;
 import org.argouml.util.ArgoFrame;
 
@@ -60,8 +59,10 @@ import org.argouml.util.ArgoFrame;
  * @author Aleksandar
  */
 public class SettingsTabDiagramAppearance extends JPanel implements
-        GUISettingsTabInterface {
+        GUIProjectSettingsTabInterface {
 
+    private Project p;
+    
     private JButton jbtnDiagramFont;
 
     private String selectedDiagramFontName;
@@ -159,7 +160,7 @@ public class SettingsTabDiagramAppearance extends JPanel implements
                     .getInteger(DiagramAppearance.KEY_FONT_SIZE);
         }
         if (scope == Argo.SCOPE_PROJECT) {
-            Project p = ProjectManager.getManager().getCurrentProject();
+            assert p != null;
             ProjectSettings ps = p.getProjectSettings();
 
             selectedDiagramFontName = ps.getFontName();
@@ -188,7 +189,7 @@ public class SettingsTabDiagramAppearance extends JPanel implements
                     selectedDiagramFontSize);
         }
         if (scope == Argo.SCOPE_PROJECT) {
-            Project p = ProjectManager.getManager().getCurrentProject();
+            assert p != null;
             ProjectSettings ps = p.getProjectSettings();
 
             ps.setFontName(selectedDiagramFontName);
@@ -266,5 +267,10 @@ public class SettingsTabDiagramAppearance extends JPanel implements
     public void setVisible(boolean arg0) {
         super.setVisible(arg0);
         if (arg0) handleSettingsTabRefresh();
+    }
+
+    public void setProject(Project project) {
+        assert p != null;
+        p = project;
     }
 } // @jve:decl-index=0:visual-constraint="10,10"

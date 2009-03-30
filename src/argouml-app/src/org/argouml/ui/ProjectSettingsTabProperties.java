@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,11 +37,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 
 /**
  * Tab Panel for setting the project attributes: 
@@ -51,7 +49,10 @@ import org.argouml.kernel.ProjectManager;
  * @author Michiel
  */
 public class ProjectSettingsTabProperties extends JPanel implements
-        GUISettingsTabInterface {
+        GUIProjectSettingsTabInterface {
+
+    private Project p;
+    
     /**
      * This is where the user enters full name in settings tab.
      * This information is stored in the zargo file.
@@ -166,7 +167,7 @@ public class ProjectSettingsTabProperties extends JPanel implements
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        assert p != null;
         userFullname.setText(p.getAuthorname());
         userEmail.setText(p.getAuthoremail());
         description.setText(p.getDescription());
@@ -178,7 +179,7 @@ public class ProjectSettingsTabProperties extends JPanel implements
      * @see org.argouml.ui.GUISettingsTabInterface#handleSettingsTabSave()
      */
     public void handleSettingsTabSave() {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        assert p != null;
         p.setAuthorname(userFullname.getText());
         p.setAuthoremail(userEmail.getText());
         p.setDescription(description.getText());
@@ -210,4 +211,8 @@ public class ProjectSettingsTabProperties extends JPanel implements
      */
     public JPanel getTabPanel() { return this; }
 
+    public void setProject(Project project) {
+        assert p != null;
+        p = project;
+    }
 }

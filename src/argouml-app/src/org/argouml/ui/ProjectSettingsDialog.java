@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,6 +38,8 @@ import javax.swing.SwingConstants;
 
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.util.ArgoDialog;
 
 /**
@@ -178,6 +180,12 @@ public class ProjectSettingsDialog
         for (int i = 0; i < tabs.getComponentCount(); i++) {
             Object o = tabs.getComponent(i);
             if (o instanceof GUISettingsTabInterface) {
+                if (o instanceof GUIProjectSettingsTabInterface) {
+                    /* We have to tell the settings tab in which project
+                     * the settings reside: */
+                    Project p = ProjectManager.getManager().getCurrentProject();
+                    ((GUIProjectSettingsTabInterface) o).setProject(p);
+                }
                 ((GUISettingsTabInterface) o).handleSettingsTabRefresh();
             }
         }
