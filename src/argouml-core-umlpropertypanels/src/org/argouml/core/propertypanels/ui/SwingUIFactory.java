@@ -378,8 +378,7 @@ public class SwingUIFactory implements UIFactory {
         } else if ("interaction".equals(prop.getName())) {
             if (Model.getFacade().isAMessage(target)) {
                 model = new UMLMessageInteractionListModel();
-            }
-            else {
+            } else {
                 model = new UMLCollaborationInteractionListModel();                
             }
             model.setTarget(target);
@@ -537,8 +536,7 @@ public class SwingUIFactory implements UIFactory {
                         true); 
                 list = new ScrollList(l);
                         
-            }
-            else {
+            } else {
                 model = new UMLClassifierParameterListModel();
                 model.setTarget(target);
                 list = new ScrollList(new UMLLinkedList(model, 
@@ -649,8 +647,7 @@ public class SwingUIFactory implements UIFactory {
                             model, null,
                             ActionNewUseCaseExtensionPoint.SINGLETON);
                 list = new ScrollList(l);
-            }
-            else {
+            } else {
                 model = new UMLExtendExtensionPointListModel();
                 model.setTarget(target);
                 JList l =
