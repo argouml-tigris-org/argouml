@@ -50,7 +50,7 @@ class UMLActivityGraphContextComboBoxModel
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLModelElementListModel#buildModelList()
      */
     protected void buildModelList() {
         Collection elements = new ArrayList();

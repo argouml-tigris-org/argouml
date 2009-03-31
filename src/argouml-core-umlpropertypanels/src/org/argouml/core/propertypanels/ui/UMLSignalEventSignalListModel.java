@@ -33,7 +33,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author MarkusK
  *
  */
-class UMLSignalEventSignalListModel extends UMLModelElementListModel2 {
+class UMLSignalEventSignalListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLTransitionTriggerListModel.

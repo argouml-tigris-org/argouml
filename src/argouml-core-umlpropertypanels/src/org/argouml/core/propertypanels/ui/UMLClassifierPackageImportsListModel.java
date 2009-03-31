@@ -27,14 +27,13 @@ package org.argouml.core.propertypanels.ui;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * Shows the ModelElements imported in a Package.
  * 
  * @author Michiel
  */
-class UMLClassifierPackageImportsListModel extends UMLModelElementListModel2 {
+class UMLClassifierPackageImportsListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLClassifierRoleBaseListModel.

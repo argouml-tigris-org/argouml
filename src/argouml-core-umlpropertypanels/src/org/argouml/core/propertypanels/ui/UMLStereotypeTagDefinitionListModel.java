@@ -34,7 +34,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Oct 11, 2005
  */
 class UMLStereotypeTagDefinitionListModel
-    extends UMLModelElementListModel2 {
+    extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLStereotypeTagDefinitionListModel.

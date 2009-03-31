@@ -27,14 +27,13 @@ package org.argouml.core.propertypanels.ui;
 import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 
 /**
  * Model for ActionSequence's list of Actions.
  */
 class UMLActionSequenceActionListModel
-    extends UMLModelElementOrderedListModel2 {
+    extends UMLModelElementOrderedListModel {
 
     /**
      * Constructor.
@@ -44,7 +43,7 @@ class UMLActionSequenceActionListModel
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLModelElementListModel#buildModelList()
      */
     protected void buildModelList() {
         if (getTarget() != null) {
@@ -53,7 +52,7 @@ class UMLActionSequenceActionListModel
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
+     * @see org.argouml.uml.ui.UMLModelElementListModel#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAAction(element);

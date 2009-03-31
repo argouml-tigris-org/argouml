@@ -24,8 +24,6 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import org.argouml.uml.ui.behavior.state_machines.*;
-
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -52,8 +50,6 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
@@ -66,73 +62,22 @@ import org.argouml.uml.ui.behavior.activity_graphs.UMLObjectFlowStateClassifierC
 import org.argouml.uml.ui.behavior.collaborations.ActionAddClassifierRoleBase;
 import org.argouml.uml.ui.behavior.collaborations.ActionAddMessagePredecessor;
 import org.argouml.uml.ui.behavior.collaborations.ActionRemoveClassifierRoleBase;
-import org.argouml.uml.ui.behavior.collaborations.UMLClassifierRoleAvailableContentsListModel;
-import org.argouml.uml.ui.behavior.collaborations.UMLClassifierRoleAvailableFeaturesListModel;
-import org.argouml.uml.ui.behavior.collaborations.UMLClassifierRoleBaseListModel;
-import org.argouml.uml.ui.behavior.collaborations.UMLCollaborationConstrainingElementListModel;
-import org.argouml.uml.ui.behavior.collaborations.UMLCollaborationInteractionListModel;
-import org.argouml.uml.ui.behavior.collaborations.UMLInteractionContextListModel;
-import org.argouml.uml.ui.behavior.collaborations.UMLInteractionMessagesListModel;
-import org.argouml.uml.ui.behavior.collaborations.UMLMessageActionListModel;
-import org.argouml.uml.ui.behavior.collaborations.UMLMessageInteractionListModel;
-import org.argouml.uml.ui.behavior.collaborations.UMLMessagePredecessorListModel;
-import org.argouml.uml.ui.behavior.collaborations.UMLMessageReceiverListModel;
-import org.argouml.uml.ui.behavior.collaborations.UMLMessageSenderListModel;
 import org.argouml.uml.ui.behavior.common_behavior.ActionAddContextSignal;
 import org.argouml.uml.ui.behavior.common_behavior.ActionAddCreateActionInstantiation;
 import org.argouml.uml.ui.behavior.common_behavior.ActionAddInstanceClassifier;
-import org.argouml.uml.ui.behavior.common_behavior.UMLActionArgumentListModel;
 import org.argouml.uml.ui.behavior.common_behavior.UMLActionAsynchronousCheckBox;
-import org.argouml.uml.ui.behavior.common_behavior.UMLCreateActionClassifierListModel;
-import org.argouml.uml.ui.behavior.common_behavior.UMLInstanceClassifierListModel;
-import org.argouml.uml.ui.behavior.common_behavior.UMLInstanceReceiverStimulusListModel;
-import org.argouml.uml.ui.behavior.common_behavior.UMLInstanceSenderStimulusListModel;
-import org.argouml.uml.ui.behavior.common_behavior.UMLSignalContextListModel;
 import org.argouml.uml.ui.behavior.state_machines.ActionNewTransition;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetContextStateMachine;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetStubStateReferenceState;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetSubmachineStateSubmachine;
-import org.argouml.uml.ui.behavior.state_machines.UMLCompositeStateSubvertexList;
-import org.argouml.uml.ui.behavior.state_machines.UMLCompositeStateSubvertexListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLGuardTransitionListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateDeferrableEventList;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateDeferrableEventListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateDoActivityList;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateDoActivityListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateEntryList;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateEntryListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateExitList;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateExitListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateInternalTransition;
 import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineContextComboBoxModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineSubmachineStateListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineTopListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineTransitionListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateVertexContainerListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateVertexIncomingListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateVertexOutgoingListModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLStubStateComboBoxModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLSubmachineStateComboBoxModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLSynchStateBoundDocument;
-import org.argouml.uml.ui.behavior.state_machines.UMLTransitionEffectListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLTransitionGuardListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLTransitionSourceListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLTransitionStateListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLTransitionStatemachineListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLTransitionTargetListModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLTransitionTriggerListModel;
 import org.argouml.uml.ui.behavior.use_cases.ActionAddExtendExtensionPoint;
 import org.argouml.uml.ui.behavior.use_cases.ActionNewExtendExtensionPoint;
 import org.argouml.uml.ui.behavior.use_cases.ActionNewUseCaseExtensionPoint;
-import org.argouml.uml.ui.behavior.use_cases.UMLExtendBaseListModel;
-import org.argouml.uml.ui.behavior.use_cases.UMLExtendExtensionListModel;
-import org.argouml.uml.ui.behavior.use_cases.UMLExtendExtensionPointListModel;
 import org.argouml.uml.ui.behavior.use_cases.UMLExtensionPointLocationDocument;
-import org.argouml.uml.ui.behavior.use_cases.UMLExtensionPointUseCaseListModel;
-import org.argouml.uml.ui.behavior.use_cases.UMLIncludeAdditionListModel;
-import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseExtendListModel;
-import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseExtensionPointListModel;
-import org.argouml.uml.ui.behavior.use_cases.UMLUseCaseIncludeListModel;
 import org.argouml.uml.ui.foundation.core.ActionAddAssociationSpecification;
 import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
 import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
@@ -140,53 +85,25 @@ import org.argouml.uml.ui.foundation.core.ActionSetAssociationEndType;
 import org.argouml.uml.ui.foundation.core.ActionSetGeneralizationPowertype;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
 import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
-import org.argouml.uml.ui.foundation.core.UMLAssociationAssociationRoleListModel;
-import org.argouml.uml.ui.foundation.core.UMLAssociationConnectionListModel;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndAggregationRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLAssociationEndAssociationListModel;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndChangeabilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndNavigableCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndOrderingCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLAssociationEndQualifiersListModel;
-import org.argouml.uml.ui.foundation.core.UMLAssociationEndSpecificationListModel;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndTargetScopeCheckbox;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndTypeComboBoxModel;
-import org.argouml.uml.ui.foundation.core.UMLAssociationLinkListModel;
 import org.argouml.uml.ui.foundation.core.UMLBehavioralFeatureQueryCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLClassAttributeListModel;
-import org.argouml.uml.ui.foundation.core.UMLClassOperationListModel;
-import org.argouml.uml.ui.foundation.core.UMLClassifierAssociationEndListModel;
-import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
-import org.argouml.uml.ui.foundation.core.UMLClassifierParameterListModel;
-import org.argouml.uml.ui.foundation.core.UMLCommentAnnotatedElementListModel;
-import org.argouml.uml.ui.foundation.core.UMLComponentResidentListModel;
-import org.argouml.uml.ui.foundation.core.UMLContainerResidentListModel;
-import org.argouml.uml.ui.foundation.core.UMLDependencyClientListModel;
-import org.argouml.uml.ui.foundation.core.UMLDependencySupplierListModel;
 import org.argouml.uml.ui.foundation.core.UMLDiscriminatorNameDocument;
-import org.argouml.uml.ui.foundation.core.UMLEnumerationLiteralsListModel;
-import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerListModel;
 import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerScopeCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationListModel;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
-import org.argouml.uml.ui.foundation.core.UMLGeneralizationChildListModel;
-import org.argouml.uml.ui.foundation.core.UMLGeneralizationParentListModel;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizationPowertypeComboBoxModel;
-import org.argouml.uml.ui.foundation.core.UMLModelElementClientDependencyListModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
-import org.argouml.uml.ui.foundation.core.UMLModelElementSupplierDependencyListModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLNamespaceOwnedElementListModel;
 import org.argouml.uml.ui.foundation.core.UMLOperationConcurrencyRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLOperationMethodsListModel;
-import org.argouml.uml.ui.foundation.core.UMLOperationRaisedSignalsListModel;
 import org.argouml.uml.ui.foundation.core.UMLOperationSpecificationDocument;
-import org.argouml.uml.ui.foundation.core.UMLParameterBehavioralFeatListModel;
 import org.argouml.uml.ui.foundation.core.UMLParameterDirectionKindRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
@@ -328,7 +245,7 @@ public class SwingUIFactory implements UIFactory {
     private void buildSingleRow(JPanel panel, Object target,
             XMLPropertyPanelsDataRecord prop) {
         
-        UMLModelElementListModel2 model = null;
+        UMLModelElementListModel model = null;
         UMLSingleRowSelector pane = null;
         
         if ("owner".equals(prop.getName())) {
@@ -469,7 +386,7 @@ public class SwingUIFactory implements UIFactory {
             XMLPropertyPanelsDataRecord prop) {
         
         ScrollList list = null;
-        UMLModelElementListModel2 model = null;
+        UMLModelElementListModel model = null;
         if ("clientDependency".equals(prop.getName())) {
             model = new UMLModelElementClientDependencyListModel();
             model.setTarget(target); 
@@ -760,7 +677,7 @@ public class SwingUIFactory implements UIFactory {
                     true);
             list = new ScrollList(l);
         } else if ("internalTransition".equals(prop.getName())) {
-            model = new UMLStateInternalTransition();
+            model = new UMLStateInternalTransitionListModel();
             model.setTarget(target);
             JList l = new UMLMutableLinkedList(model, null, 
                     new ActionNewTransition());

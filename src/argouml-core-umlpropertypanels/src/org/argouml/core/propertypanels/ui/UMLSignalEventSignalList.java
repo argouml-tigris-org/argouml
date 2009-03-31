@@ -27,8 +27,6 @@ package org.argouml.core.propertypanels.ui;
 import javax.swing.JPopupMenu;
 
 import org.argouml.uml.ui.AbstractActionAddModelElement2;
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewSignal;
 
 /**
@@ -42,7 +40,7 @@ class UMLSignalEventSignalList extends UMLMutableLinkedList {
      * Constructor for UMLTransitionTriggerList.
      * @param dataModel the model
      */
-    public UMLSignalEventSignalList(UMLModelElementListModel2 dataModel) {
+    public UMLSignalEventSignalList(UMLModelElementListModel dataModel) {
         super(dataModel, (AbstractActionAddModelElement2) null, null, null,
                 true);
         setDelete(false);
@@ -59,6 +57,4 @@ class UMLSignalEventSignalList extends UMLMutableLinkedList {
         menu.add(new ActionNewSignal());
         return menu;
     }
-
-
 }

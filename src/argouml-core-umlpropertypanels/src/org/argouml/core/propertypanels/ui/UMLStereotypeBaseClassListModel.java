@@ -35,7 +35,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  *
  * @author Michiel
  */
-class UMLStereotypeBaseClassListModel extends UMLModelElementListModel2 {
+class UMLStereotypeBaseClassListModel extends UMLModelElementListModel {
 
     /**
      * Construct the model, listen to changes of "baseClass".

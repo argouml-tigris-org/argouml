@@ -30,7 +30,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 /**
 * @author 5eichler
 */
-class UMLNodeDeployedComponentListModel extends UMLModelElementListModel2 {
+class UMLNodeDeployedComponentListModel extends UMLModelElementListModel {
     
     /**
      * Construct a list model for the deployed components of a Node.

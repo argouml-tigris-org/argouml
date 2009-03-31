@@ -25,7 +25,6 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * The model for the list of extended elements of a stereotype.
@@ -33,7 +32,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author michiel
  */
 class UMLExtendedElementsListModel
-    extends UMLModelElementListModel2 {
+    extends UMLModelElementListModel {
     
     /**
      * Constructor for UMLExtendedElementsListModel.

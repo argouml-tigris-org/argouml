@@ -25,12 +25,11 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * @author mkl
  */
-class UMLPartitionContentListModel extends  UMLModelElementListModel2 {
+class UMLPartitionContentListModel extends  UMLModelElementListModel {
 
     public UMLPartitionContentListModel() {
         super("contents");

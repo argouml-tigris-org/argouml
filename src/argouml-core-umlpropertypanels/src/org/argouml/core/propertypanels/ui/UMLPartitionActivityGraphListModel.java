@@ -30,8 +30,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 /**
  * @author mkl
  */
-class UMLPartitionActivityGraphListModel extends UMLModelElementListModel2
-{
+class UMLPartitionActivityGraphListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLStateVertexIncomingListModel.
