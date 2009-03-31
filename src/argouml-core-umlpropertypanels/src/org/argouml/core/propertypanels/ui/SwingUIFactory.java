@@ -490,32 +490,22 @@ public class SwingUIFactory implements UIFactory {
                     true));
         } else if ("generalization".equals(prop.getName())) {
             model = new UMLGeneralizableElementGeneralizationListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("specialization".equals(prop.getName())) {
             model = new UMLGeneralizableElementSpecializationListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("attribute".equals(prop.getName())) {
             model = new UMLClassAttributeListModel();
             model.setTarget(target);
             list = new ScrollList(model, true, false);
         } else if ("association".equals(prop.getName())) {
             model = new UMLClassifierAssociationEndListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("feature".equals(prop.getName())) {
             model = new UMLClassifierFeatureListModel();
             model.setTarget(target);
             list = new ScrollList(model, true, false);
         } else if ("operation".equals(prop.getName())) {
             model = new UMLClassOperationListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("ownedElement".equals(prop.getName())) {
             model = new UMLNamespaceOwnedElementListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("elementImport".equals(prop.getName())) {
             model = new UMLClassifierPackageImportsListModel();
             model.setTarget(target);
@@ -575,28 +565,16 @@ public class SwingUIFactory implements UIFactory {
                     true, true));
         } else if ("literal".equals(prop.getName())) {
             model = new UMLEnumerationLiteralsListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("supplier".equals(prop.getName())) {
             model = new UMLDependencySupplierListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("client".equals(prop.getName())) {
             model = new UMLDependencyClientListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("connection".equals(prop.getName())) {
             model = new UMLAssociationConnectionListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("associationRole".equals(prop.getName())) {
             model = new UMLAssociationAssociationRoleListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("link".equals(prop.getName())) {
             model = new UMLAssociationLinkListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("specification".equals(prop.getName())) {
             model = new UMLAssociationEndSpecificationListModel();
             model.setTarget(target);
@@ -606,8 +584,6 @@ public class SwingUIFactory implements UIFactory {
                     null, null, true));
         } else if ("qualifier".equals(prop.getName())) {
             model = new UMLAssociationEndQualifiersListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("annotatedElement".equals(prop.getName())) {
             model = new UMLCommentAnnotatedElementListModel();
             model.setTarget(target);
@@ -633,12 +609,8 @@ public class SwingUIFactory implements UIFactory {
             list = new ScrollList(l);
         } else if ("extend".equals(prop.getName())) {
             model = new UMLUseCaseExtendListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("include".equals(prop.getName())) {
             model = new UMLUseCaseIncludeListModel();
-            model.setTarget(target);
-            list = new ScrollList(model);
         } else if ("extensionPoint".equals(prop.getName())) {
             if (Model.getFacade().isAUseCase(target)) {
                 model = new UMLUseCaseExtensionPointListModel();
@@ -817,6 +789,14 @@ public class SwingUIFactory implements UIFactory {
             model = new UMLActionSequenceActionListModel();
             model.setTarget(target);
             list = new ScrollList(new UMLActionSequenceActionList(model));
+        }
+        
+        if (model != null && list == null) {
+            // If we have a model but no list then build the list with
+            // preferred constructor. Eventually all lists should be built
+            // this way.
+            model.setTarget(target);
+            list = new ScrollList(model);
         }
         
         if (list != null) {
