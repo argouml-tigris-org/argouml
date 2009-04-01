@@ -4,8 +4,8 @@ import javax.swing.JTextField;
 
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextField2;
-import org.omg.uml.foundation.core.ModelElement;
-import org.omg.uml.foundation.core.TemplateParameter;
+//import org.omg.uml.foundation.core.ModelElement;
+//import org.omg.uml.foundation.core.TemplateParameter;
 
 public class PropPanelTemplateParameter extends PropPanelStructuralFeature {
 
@@ -26,27 +26,28 @@ public class PropPanelTemplateParameter extends PropPanelStructuralFeature {
 		public UMLTemplateParameterDocument(String name) {
 			super(name);
 		}
-		
-		private ModelElement getParameter() {
-			Object target = getTarget();
-			if (target instanceof TemplateParameter) {
-				Object parameter =  ( (TemplateParameter)target).getParameter();
-				if (parameter instanceof ModelElement) {
-					return (ModelElement)parameter;
-				}
-				throw new IllegalArgumentException(parameter.getClass().getName() +" is not a ModelElement");
-			}
-			throw new IllegalArgumentException(target.getClass().getName() +" is not a TemplateParameter");
-		}
+//		
+//		private ModelElement getParameter() {
+//			Object target = getTarget();
+//			if (target instanceof TemplateParameter) {
+//				Object parameter =  ( (TemplateParameter)target).getParameter();
+//				if (parameter instanceof ModelElement) {
+//					return (ModelElement)parameter;
+//				}
+//				throw new IllegalArgumentException(parameter.getClass().getName() +" is not a ModelElement");
+//			}
+//			throw new IllegalArgumentException(target.getClass().getName() +" is not a TemplateParameter");
+//		}
 		
 		@Override
 		protected void setProperty(String text) {
-			getParameter().setName(text);
+//			getParameter().setName(text);
 		}
 
 		@Override
 		protected String getProperty() {
-			return getParameter().getName();
+		    return "";
+//			return getParameter().getName();
 		}
 	}
 
