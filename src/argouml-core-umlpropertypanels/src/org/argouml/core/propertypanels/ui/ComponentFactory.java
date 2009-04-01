@@ -31,7 +31,7 @@ import javax.swing.JComponent;
  * components for property panels.
  * @author Bob Tarling
  */
-public interface ComponentFactory {
+interface ComponentFactory {
     
     /**
      * Create the Component for the given model element
