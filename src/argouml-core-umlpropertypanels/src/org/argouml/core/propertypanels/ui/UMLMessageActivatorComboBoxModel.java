@@ -30,7 +30,7 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 /**
  * The model behind the UMLMessageActivatorComboBox.
  */
-public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel {
+class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel {
 
     private Object interaction = null;
 

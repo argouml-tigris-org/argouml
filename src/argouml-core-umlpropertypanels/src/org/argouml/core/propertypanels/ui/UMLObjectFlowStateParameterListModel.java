@@ -30,7 +30,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 /**
  * @author mkl
  */
-public class UMLObjectFlowStateParameterListModel extends UMLModelElementListModel {
+class UMLObjectFlowStateParameterListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLObjectFlowStateParameterListModel.

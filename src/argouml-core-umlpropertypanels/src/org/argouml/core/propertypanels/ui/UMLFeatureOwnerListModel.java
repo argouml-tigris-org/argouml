@@ -30,7 +30,7 @@ import org.argouml.model.Model;
  * @since Jan 29, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLFeatureOwnerListModel extends UMLModelElementListModel {
+class UMLFeatureOwnerListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLFeatureOwnerListModel.

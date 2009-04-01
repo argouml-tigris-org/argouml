@@ -33,7 +33,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  *
  * @author mvw@tigris.org
  */
-public class UMLCommentAnnotatedElementListModel
+class UMLCommentAnnotatedElementListModel
     extends UMLModelElementListModel {
 
     /**

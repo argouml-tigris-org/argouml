@@ -30,7 +30,7 @@ import org.argouml.model.Model;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLStateVertexContainerListModel
+class UMLStateVertexContainerListModel
         extends UMLModelElementListModel {
 
     /**

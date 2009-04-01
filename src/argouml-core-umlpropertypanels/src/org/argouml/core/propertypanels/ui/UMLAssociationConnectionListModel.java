@@ -48,7 +48,7 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public class UMLAssociationConnectionListModel
+class UMLAssociationConnectionListModel
     extends UMLModelElementOrderedListModel {
 
     private Collection others;

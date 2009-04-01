@@ -61,7 +61,7 @@ import org.argouml.uml.ui.UMLLinkedList;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
+class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
     
     private static final Logger LOG =
         Logger.getLogger(UMLMutableLinkedList.class);

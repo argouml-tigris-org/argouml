@@ -29,7 +29,7 @@ import org.argouml.model.Model;
 /**
  *
  */
-public class UMLInstanceLinkEndListModel
+class UMLInstanceLinkEndListModel
     extends UMLModelElementListModel {
 
     /**

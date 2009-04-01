@@ -31,7 +31,7 @@ import org.argouml.model.Model;
  * 
  * @author MarkusK
  */
-public class UMLIncludeAdditionListModel extends UMLIncludeListModel {
+class UMLIncludeAdditionListModel extends UMLIncludeListModel {
 
     /**
      * Constructor for UMLIncludeAdditionListModel.

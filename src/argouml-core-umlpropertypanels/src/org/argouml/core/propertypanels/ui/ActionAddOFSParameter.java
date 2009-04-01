@@ -35,7 +35,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement2;
 /**
  * @author mkl
  */
-public class ActionAddOFSParameter extends AbstractActionAddModelElement2 {
+class ActionAddOFSParameter extends AbstractActionAddModelElement2 {
     private Object choiceClass = Model.getMetaTypes().getParameter();
 
     /**

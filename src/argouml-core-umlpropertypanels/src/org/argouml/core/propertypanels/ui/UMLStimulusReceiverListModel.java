@@ -33,7 +33,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author mkl
  *
  */
-public class UMLStimulusReceiverListModel extends UMLModelElementListModel {
+class UMLStimulusReceiverListModel extends UMLModelElementListModel {
 
     /**
      * Constructor.

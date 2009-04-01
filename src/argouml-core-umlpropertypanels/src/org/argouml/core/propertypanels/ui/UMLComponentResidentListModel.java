@@ -35,7 +35,7 @@ import java.util.Iterator;
  *
  * @author pepargouml@yahoo.es
  */
-public class UMLComponentResidentListModel
+class UMLComponentResidentListModel
         extends UMLModelElementListModel {
 
     /**

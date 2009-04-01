@@ -41,7 +41,7 @@ import org.tigris.gef.presentation.Fig;
  *
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLClassifierRoleAvailableContentsListModel
+class UMLClassifierRoleAvailableContentsListModel
     extends UMLModelElementListModel {
 
     /**

@@ -31,7 +31,7 @@ import org.argouml.model.Model;
  * AssociationRole.
  *
  */
-public class UMLAssociationRoleMessageListModel
+class UMLAssociationRoleMessageListModel
     extends UMLModelElementListModel {
 
     /**

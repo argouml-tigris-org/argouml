@@ -31,7 +31,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Dec 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLStateMachineTopListModel extends UMLModelElementListModel {
+class UMLStateMachineTopListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLStateMachineTopListModel.

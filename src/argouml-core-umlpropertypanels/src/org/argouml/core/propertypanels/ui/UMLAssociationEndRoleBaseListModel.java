@@ -30,7 +30,7 @@ import org.argouml.model.Model;
  * @since Oct 5, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLAssociationEndRoleBaseListModel
+class UMLAssociationEndRoleBaseListModel
     extends UMLModelElementListModel {
 
     /**

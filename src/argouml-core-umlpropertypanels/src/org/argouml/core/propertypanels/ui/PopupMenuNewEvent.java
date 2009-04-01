@@ -43,7 +43,7 @@ import org.argouml.uml.ui.behavior.state_machines.ActionNewTimeEvent;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PopupMenuNewEvent extends JPopupMenu {
+class PopupMenuNewEvent extends JPopupMenu {
 
     /**
      * Constructor for PopupMenuNewEvent.<p>

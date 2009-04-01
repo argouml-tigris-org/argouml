@@ -32,7 +32,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  *
  * @author mvw@tigris.org
  */
-public class UMLSignalContextListModel extends UMLModelElementListModel {
+class UMLSignalContextListModel extends UMLModelElementListModel {
 
     /**
      * The constructor.

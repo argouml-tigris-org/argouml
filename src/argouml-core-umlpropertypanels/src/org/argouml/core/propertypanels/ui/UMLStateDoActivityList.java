@@ -31,7 +31,7 @@ import javax.swing.JPopupMenu;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLStateDoActivityList extends UMLMutableLinkedList {
+class UMLStateDoActivityList extends UMLMutableLinkedList {
 
     /**
      * Constructor for UMLStateDoActivityList.

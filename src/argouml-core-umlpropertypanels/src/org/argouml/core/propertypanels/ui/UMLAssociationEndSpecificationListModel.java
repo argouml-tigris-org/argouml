@@ -32,7 +32,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public class UMLAssociationEndSpecificationListModel
+class UMLAssociationEndSpecificationListModel
     extends UMLModelElementListModel {
 
     /**

@@ -35,7 +35,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  *
  * @author Michiel
  */
-public class UMLOperationRaisedSignalsListModel
+class UMLOperationRaisedSignalsListModel
     extends UMLModelElementListModel {
 
     /**

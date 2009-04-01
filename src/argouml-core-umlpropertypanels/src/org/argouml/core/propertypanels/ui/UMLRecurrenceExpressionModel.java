@@ -34,7 +34,7 @@ import org.argouml.ui.targetmanager.TargetManager;
  * @author mkl, penyaskito
  *
  */
-public class UMLRecurrenceExpressionModel extends UMLExpressionModel {
+class UMLRecurrenceExpressionModel extends UMLExpressionModel {
 
     private static final Logger LOG =
         Logger.getLogger(UMLRecurrenceExpressionModel.class);

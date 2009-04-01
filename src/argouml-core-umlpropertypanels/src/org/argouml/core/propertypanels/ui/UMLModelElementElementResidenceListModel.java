@@ -31,7 +31,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLModelElementElementResidenceListModel
+class UMLModelElementElementResidenceListModel
     extends UMLModelElementListModel {
 
     /**

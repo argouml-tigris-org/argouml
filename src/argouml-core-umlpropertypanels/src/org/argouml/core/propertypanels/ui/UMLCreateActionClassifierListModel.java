@@ -29,7 +29,7 @@ import org.argouml.model.Model;
 /**
  * Model for the list of classifiers for the create action.
  */
-public class UMLCreateActionClassifierListModel extends
+class UMLCreateActionClassifierListModel extends
         UMLModelElementListModel {
 
     /**

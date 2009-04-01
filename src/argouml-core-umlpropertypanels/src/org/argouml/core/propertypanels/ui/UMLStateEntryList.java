@@ -31,7 +31,7 @@ import javax.swing.JPopupMenu;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLStateEntryList extends UMLMutableLinkedList {
+class UMLStateEntryList extends UMLMutableLinkedList {
 
 
     /**

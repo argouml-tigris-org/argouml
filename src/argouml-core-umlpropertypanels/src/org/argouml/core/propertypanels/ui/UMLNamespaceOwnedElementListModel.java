@@ -33,7 +33,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 2, 2003
  */
-public class UMLNamespaceOwnedElementListModel
+class UMLNamespaceOwnedElementListModel
     extends UMLModelElementListModel {
 
     /**

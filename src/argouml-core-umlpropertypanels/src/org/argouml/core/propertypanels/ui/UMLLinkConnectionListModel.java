@@ -34,7 +34,7 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 /**
  *
  */
-public class UMLLinkConnectionListModel
+class UMLLinkConnectionListModel
     extends UMLModelElementOrderedListModel {
 
     private static final long serialVersionUID = 4459749162218567926L;

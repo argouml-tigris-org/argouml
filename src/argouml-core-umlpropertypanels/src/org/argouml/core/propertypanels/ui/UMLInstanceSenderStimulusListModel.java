@@ -32,7 +32,7 @@ import org.argouml.model.Model;
  * @author mkl
  *
  */
-public class UMLInstanceSenderStimulusListModel
+class UMLInstanceSenderStimulusListModel
     extends UMLModelElementListModel {
 
     /**

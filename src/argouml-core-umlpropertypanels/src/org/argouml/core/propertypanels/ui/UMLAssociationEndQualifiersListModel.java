@@ -33,7 +33,7 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 /**
  * @author pepargouml@yahoo.es
  */
-public class UMLAssociationEndQualifiersListModel
+class UMLAssociationEndQualifiersListModel
     extends UMLModelElementOrderedListModel {
 
     /**

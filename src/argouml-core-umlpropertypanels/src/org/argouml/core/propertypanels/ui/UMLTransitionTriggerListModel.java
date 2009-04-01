@@ -34,7 +34,7 @@ import org.argouml.uml.ui.behavior.state_machines.ActionNewEvent;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLTransitionTriggerListModel extends UMLModelElementListModel {
+class UMLTransitionTriggerListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLTransitionTriggerListModel.

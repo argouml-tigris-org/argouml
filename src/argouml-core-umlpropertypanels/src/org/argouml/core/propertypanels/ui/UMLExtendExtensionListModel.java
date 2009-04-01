@@ -30,7 +30,7 @@ import org.argouml.model.Model;
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLExtendExtensionListModel extends UMLModelElementListModel {
+class UMLExtendExtensionListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLExtendExtensionComboBoxModel.

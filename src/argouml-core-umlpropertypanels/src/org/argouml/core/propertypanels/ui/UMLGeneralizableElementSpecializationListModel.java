@@ -31,7 +31,7 @@ import org.argouml.model.Model;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 26, 2003
  */
-public class UMLGeneralizableElementSpecializationListModel
+class UMLGeneralizableElementSpecializationListModel
         extends UMLModelElementListModel {
 
     /**

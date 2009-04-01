@@ -33,7 +33,7 @@ import org.argouml.uml.ui.AbstractActionRemoveElement;
 /**
  * @author mkl
  */
-public class ActionRemoveOFSParameter extends AbstractActionRemoveElement {
+class ActionRemoveOFSParameter extends AbstractActionRemoveElement {
     /**
      * Constructor.
      */

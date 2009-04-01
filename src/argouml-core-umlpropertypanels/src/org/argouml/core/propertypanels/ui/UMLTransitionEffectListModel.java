@@ -35,7 +35,7 @@ import org.argouml.uml.ui.behavior.common_behavior.PopupMenuNewAction;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLTransitionEffectListModel extends UMLModelElementListModel {
+class UMLTransitionEffectListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLStateMachineTopListModel.

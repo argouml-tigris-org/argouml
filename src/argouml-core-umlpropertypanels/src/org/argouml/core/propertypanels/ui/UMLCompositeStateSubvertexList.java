@@ -42,7 +42,7 @@ import org.argouml.uml.ui.behavior.state_machines.ActionNewSynchState;
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
+class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
 
     private class PopupMenu extends JPopupMenu {
 

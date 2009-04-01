@@ -31,7 +31,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLUseCaseIncludeListModel extends UMLModelElementListModel {
+class UMLUseCaseIncludeListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLUseCaseIncludeListModel.

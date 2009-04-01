@@ -31,7 +31,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLExtensionPointExtendListModel
+class UMLExtensionPointExtendListModel
     extends UMLModelElementListModel2 {
 
     /**

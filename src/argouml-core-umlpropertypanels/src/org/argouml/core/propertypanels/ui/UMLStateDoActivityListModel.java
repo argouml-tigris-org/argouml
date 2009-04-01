@@ -31,7 +31,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLStateDoActivityListModel extends UMLModelElementListModel {
+class UMLStateDoActivityListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLStateDoActivityListModel.

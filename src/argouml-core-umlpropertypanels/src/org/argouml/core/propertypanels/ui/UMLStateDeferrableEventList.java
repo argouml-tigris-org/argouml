@@ -29,7 +29,7 @@ package org.argouml.core.propertypanels.ui;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLStateDeferrableEventList extends UMLMutableLinkedList {
+class UMLStateDeferrableEventList extends UMLMutableLinkedList {
 
     /**
      * Constructor for UMLTransitionTriggerList.

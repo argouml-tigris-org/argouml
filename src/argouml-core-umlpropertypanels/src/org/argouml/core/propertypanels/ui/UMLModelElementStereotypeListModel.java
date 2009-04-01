@@ -39,7 +39,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Oct 24, 2005
  * @author Bob Tarling
  */
-public class UMLModelElementStereotypeListModel
+class UMLModelElementStereotypeListModel
     extends UMLModelElementListModel {
 
     /**

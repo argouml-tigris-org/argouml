@@ -36,7 +36,7 @@ import org.argouml.ui.targetmanager.TargetManager;
  * @author mkl, penyaskito
  *
  */
-public class UMLConditionExpressionModel extends UMLExpressionModel {
+class UMLConditionExpressionModel extends UMLExpressionModel {
 
     private static final Logger LOG =
         Logger.getLogger(UMLConditionExpressionModel.class);

@@ -32,7 +32,7 @@ import org.argouml.model.Model;
  *
  * @author mkl
  */
-public class UMLEventTransitionListModel extends UMLModelElementListModel {
+class UMLEventTransitionListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLGuardTransitionListModel.

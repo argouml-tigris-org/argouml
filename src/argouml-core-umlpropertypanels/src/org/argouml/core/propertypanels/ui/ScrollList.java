@@ -41,7 +41,7 @@ import org.argouml.uml.ui.UMLLinkedList;
  * scrolling can be achieved instead with arrow keys.
  * @author Bob Tarling
  */
-public class ScrollList extends JScrollPane implements KeyListener {
+class ScrollList extends JScrollPane implements KeyListener {
 
     /**
      * The UID.

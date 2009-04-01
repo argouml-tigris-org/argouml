@@ -34,7 +34,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLMessagePredecessorListModel extends UMLModelElementListModel {
+class UMLMessagePredecessorListModel extends UMLModelElementListModel {
 
 
     /**

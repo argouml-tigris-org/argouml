@@ -32,7 +32,7 @@ import org.argouml.model.Model;
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLEventParameterListModel extends UMLModelElementListModel {
+class UMLEventParameterListModel extends UMLModelElementListModel {
 
 
     /**

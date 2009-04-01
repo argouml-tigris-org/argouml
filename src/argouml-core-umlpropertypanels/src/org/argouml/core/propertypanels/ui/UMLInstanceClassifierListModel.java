@@ -30,7 +30,7 @@ import org.argouml.model.Model;
  * The model for instances of a classifier.
  *
  */
-public class UMLInstanceClassifierListModel
+class UMLInstanceClassifierListModel
     extends UMLModelElementListModel {
 
 

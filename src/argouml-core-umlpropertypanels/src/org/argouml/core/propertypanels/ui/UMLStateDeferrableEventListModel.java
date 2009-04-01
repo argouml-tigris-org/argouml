@@ -34,7 +34,7 @@ import org.argouml.uml.ui.behavior.state_machines.ActionNewEvent;
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLStateDeferrableEventListModel
+class UMLStateDeferrableEventListModel
     extends UMLModelElementListModel {
 
     /**

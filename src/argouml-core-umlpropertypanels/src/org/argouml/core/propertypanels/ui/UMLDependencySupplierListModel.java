@@ -32,7 +32,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 3, 2003
  */
-public class UMLDependencySupplierListModel extends UMLModelElementListModel {
+class UMLDependencySupplierListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLDependencySupplierListModel.

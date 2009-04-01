@@ -36,7 +36,7 @@ import org.argouml.uml.ui.behavior.state_machines.ActionNewGuard;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLTransitionGuardListModel extends UMLModelElementListModel {
+class UMLTransitionGuardListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLStateMachineTopListModel.

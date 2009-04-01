@@ -31,7 +31,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLTransitionSourceListModel extends UMLModelElementListModel {
+class UMLTransitionSourceListModel extends UMLModelElementListModel {
 
    /**
      * Constructor for UMLStateMachineTopListModel.

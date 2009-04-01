@@ -40,7 +40,7 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLUseCaseExtensionPointListModel
+class UMLUseCaseExtensionPointListModel
     extends UMLModelElementOrderedListModel {
 
     /**

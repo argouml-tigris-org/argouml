@@ -28,7 +28,7 @@ import org.argouml.model.Model;
 
 /**
  */
-public class UMLGeneralizationParentListModel
+class UMLGeneralizationParentListModel
     extends UMLModelElementListModel {
 
     /**

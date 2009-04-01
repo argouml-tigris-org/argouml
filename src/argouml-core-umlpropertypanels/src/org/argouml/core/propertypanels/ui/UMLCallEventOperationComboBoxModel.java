@@ -35,7 +35,7 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  *
  * @author oliver.heyden@gentleware.de
  */
-public class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
+class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
     /**
      * The constructor.
      */

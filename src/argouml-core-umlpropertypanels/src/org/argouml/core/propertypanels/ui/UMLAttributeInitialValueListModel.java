@@ -31,7 +31,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author jaap.branderhorst@xs4all.nl
  * @since 29 jan 2003
  */
-public class UMLAttributeInitialValueListModel
+class UMLAttributeInitialValueListModel
 	extends UMLModelElementListModel {
 
     /**

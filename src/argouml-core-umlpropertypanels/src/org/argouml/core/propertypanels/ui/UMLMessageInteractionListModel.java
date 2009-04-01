@@ -32,7 +32,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 25, 2003
  */
-public class UMLMessageInteractionListModel extends UMLModelElementListModel {
+class UMLMessageInteractionListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for UMLMessageInteractionListModel.

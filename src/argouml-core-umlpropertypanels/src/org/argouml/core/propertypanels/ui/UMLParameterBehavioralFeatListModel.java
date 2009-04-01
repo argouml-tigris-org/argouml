@@ -31,7 +31,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Jan 29, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLParameterBehavioralFeatListModel
+class UMLParameterBehavioralFeatListModel
     extends UMLModelElementListModel {
 
     /**

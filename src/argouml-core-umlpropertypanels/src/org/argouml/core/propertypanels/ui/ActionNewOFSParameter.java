@@ -31,7 +31,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 /**
  * @author mkl
  */
-public class ActionNewOFSParameter extends AbstractActionNewModelElement {
+class ActionNewOFSParameter extends AbstractActionNewModelElement {
     @Override
     public void actionPerformed(ActionEvent e) {
         Object target = getTarget();

@@ -32,7 +32,7 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 /**
  * Model for action's actual argument list.
  */
-public class UMLActionArgumentListModel extends
+class UMLActionArgumentListModel extends
         UMLModelElementOrderedListModel {
 
     /**

@@ -45,7 +45,7 @@ import org.argouml.uml.ui.behavior.common_behavior.ActionNewUninterpretedAction;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PopupMenuNewAction extends JPopupMenu {
+class PopupMenuNewAction extends JPopupMenu {
 
 
     /**

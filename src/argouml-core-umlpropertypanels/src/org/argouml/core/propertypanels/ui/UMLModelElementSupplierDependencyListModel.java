@@ -30,7 +30,7 @@ import org.argouml.model.Model;
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLModelElementSupplierDependencyListModel
+class UMLModelElementSupplierDependencyListModel
     extends UMLModelElementListModel {
 
     /**

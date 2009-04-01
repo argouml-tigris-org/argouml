@@ -35,7 +35,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  *
  * @author thn@tigris.org
  */
-public class UMLOperationMethodsListModel
+class UMLOperationMethodsListModel
     extends UMLModelElementListModel {
 
     /**

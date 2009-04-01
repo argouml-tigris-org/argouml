@@ -34,7 +34,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author mkl
  *
  */
-public class UMLContainerResidentListModel
+class UMLContainerResidentListModel
     extends UMLModelElementListModel {
 
     /**
