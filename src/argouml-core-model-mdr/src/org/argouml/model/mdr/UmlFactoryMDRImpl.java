@@ -347,6 +347,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 UmlClass.class, Reception.class
             });
         
+        // specifies valid elements for a classifier to contain
+        validContainmentMap.put(Classifier.class, 
+            new Class<?>[] { 
+                TemplateParameter.class
+            });
+        
         // specifies valid elements for an Interface to contain
         validContainmentMap.put(Interface.class, 
                 new Class<?>[] { 
@@ -581,6 +587,16 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == this.metaTypes.getExtensionPoint()) {
             element = this.modelImpl.getUseCasesFactory().
                 buildExtensionPoint(container);            
+        } else if (elementType == this.metaTypes.getTemplateParameter()) {
+			TemplateParameter t = (TemplateParameter) Model.getCoreFactory().createTemplateParameter();
+			DataType d = getCore().createDataType();
+			d.setName("T");
+			t.setParameter(d);
+			if (container instanceof ModelElement) {
+				t.setTemplate((ModelElement)container);
+				((ModelElement) container).getTemplateParameter().add(t);
+			}
+            return t;            
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);

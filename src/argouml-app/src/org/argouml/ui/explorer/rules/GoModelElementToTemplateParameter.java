@@ -12,7 +12,7 @@ public class GoModelElementToTemplateParameter extends AbstractPerspectiveRule {
 
     @Override
     public Collection getChildren(Object parent) {
-        if (Model.getFacade().isAModelElement(parent)) {
+        if (Model.getFacade().isAClassifier(parent)) {
             return Model.getFacade().getTemplateParameters(parent);
         }
         return Collections.emptyList();
@@ -24,11 +24,11 @@ public class GoModelElementToTemplateParameter extends AbstractPerspectiveRule {
     }
 
     public Set getDependencies(Object parent) {
-        if (Model.getFacade().isAModelElement(parent)) {
-            Set set = new HashSet();
-            set.add(parent);
-            return set;
-        }
+//        if (Model.getFacade().isAClassifier(parent)) {
+//            Set set = new HashSet();
+//            set.add(parent);
+//            return set;
+//        }
         return Collections.emptySet();
     }
 

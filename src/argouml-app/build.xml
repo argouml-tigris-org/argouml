@@ -67,9 +67,12 @@ Building this requires:
       <fileset dir="../argouml-core-infra/build/">
         <include name="*.jar"/>
       </fileset>
-      <fileset dir="../argouml-core-model/build/">
-        <include name="*.jar"/>
-      </fileset>
+        <fileset dir="../argouml-core-model/build/">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="../argouml-core-model-mdr/build/">
+          <include name="*.jar"/>
+        </fileset>
     </path>
 
     <!-- This runtime classpath is used for tests and other things started

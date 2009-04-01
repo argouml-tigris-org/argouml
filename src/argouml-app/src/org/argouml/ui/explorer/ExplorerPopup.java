@@ -97,6 +97,8 @@ public class ExplorerPopup extends JPopupMenu {
      */
     private static final Object[] MODEL_ELEMENT_MENUITEMS = 
         new Object[] {
+    		Model.getMetaTypes().getTemplateParameter(),
+    		"button.new-template-parameter",
             Model.getMetaTypes().getPackage(), 
             "button.new-package",
             Model.getMetaTypes().getActor(), 

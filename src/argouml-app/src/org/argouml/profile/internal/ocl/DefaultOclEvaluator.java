@@ -67,7 +67,7 @@ public class DefaultOclEvaluator implements OclExpressionEvaluator {
         // XXX this seems to be a bug of the parser, 
         // it always requires a context
         
-        LOG.debug("OCL: " + ocl);
+        //LOG.debug("OCL: " + ocl);
         if (ocl.contains("ore")) {
             // TODO: Convert this to some sensible logging
             System.out.println("VOILA!");
