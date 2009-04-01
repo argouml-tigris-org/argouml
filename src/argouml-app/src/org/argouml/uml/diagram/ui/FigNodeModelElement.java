@@ -1135,7 +1135,11 @@ public abstract class FigNodeModelElement
      * @return The model element is read only.
      */
     private boolean isReadOnly() {
-        return Model.getModelManagementHelper().isReadOnly(getOwner());
+        try {
+            return Model.getModelManagementHelper().isReadOnly(getOwner());
+        } catch (InvalidElementException e) {
+            return true;
+        }
     }
 
     /**

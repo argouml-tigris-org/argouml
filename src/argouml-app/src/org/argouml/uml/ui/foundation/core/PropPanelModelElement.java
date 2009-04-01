@@ -40,6 +40,7 @@ import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.UmlModelMutator;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
@@ -159,8 +160,12 @@ public abstract class PropPanelModelElement extends PropPanel {
         super.setTarget(target);
         /* This for e.g. a CommentEdge: */
         if (Model.getFacade().isAUMLElement(target)) {
-            boolean enable =
-                !Model.getModelManagementHelper().isReadOnly(target);
+            boolean enable = false;
+            try {
+                enable = !Model.getModelManagementHelper().isReadOnly(target);
+            } catch (InvalidElementException e) {
+                // enable remains false if this element was deleted
+            }
             for (final Component component : getComponents()) {
                 if (component instanceof JScrollPane) {
                     Component c = 
