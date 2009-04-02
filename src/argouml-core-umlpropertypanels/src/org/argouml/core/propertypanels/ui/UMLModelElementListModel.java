@@ -120,6 +120,16 @@ public abstract class UMLModelElementListModel
         showPath = true;
     }
     
+    public UMLModelElementListModel(
+            final String name,
+            final boolean showIcon,
+            final boolean showPath) {
+        super();
+        eventName = name;
+        this.showIcon = showIcon;
+        this.showPath = showPath;
+    }
+    
     /**
      * Constructor for UMLModelElementListModel2.
      *
@@ -545,6 +555,6 @@ public abstract class UMLModelElementListModel
     }
 
     boolean isShowPath() {
-        return showIcon;
+        return showPath;
     }
 }

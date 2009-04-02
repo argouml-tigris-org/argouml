@@ -28,7 +28,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.behavior.collaborations.ActionAddClassifierRoleBase;
 import org.argouml.uml.ui.behavior.collaborations.ActionAddMessagePredecessor;
 import org.argouml.uml.ui.behavior.collaborations.ActionRemoveClassifierRoleBase;

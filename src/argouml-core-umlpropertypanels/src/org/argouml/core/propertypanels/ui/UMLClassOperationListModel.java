@@ -27,7 +27,6 @@ package org.argouml.core.propertypanels.ui;
 import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
  *
@@ -41,7 +40,7 @@ class UMLClassOperationListModel
      * Constructor for UMLClassifierFeatureListModel.
      */
     public UMLClassOperationListModel() {
-        super("feature");
+        super("feature", true, false);
     }
 
     /*

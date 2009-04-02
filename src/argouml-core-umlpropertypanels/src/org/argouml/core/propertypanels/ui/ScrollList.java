@@ -33,8 +33,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 
-import org.argouml.uml.ui.UMLLinkedList;
-
 /**
  * A scrollable list of items. This makes sure that there is no horizontal
  * scrollbar (which takes up too much screen real estate) and that sideways
