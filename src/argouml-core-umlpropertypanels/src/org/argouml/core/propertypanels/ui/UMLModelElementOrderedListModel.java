@@ -55,6 +55,19 @@ public abstract class UMLModelElementOrderedListModel extends
         super(name);
     }
 
+    /**
+     * The constructor.
+     *
+     * @param name
+     *            the name
+     */
+    public UMLModelElementOrderedListModel(
+            final String name,
+            final boolean showIcon,
+            final boolean showPath) {
+        super(name, showIcon, showPath);
+    }
+
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */

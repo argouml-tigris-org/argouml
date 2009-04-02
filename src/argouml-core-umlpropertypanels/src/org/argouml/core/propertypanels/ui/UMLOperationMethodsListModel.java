@@ -42,7 +42,7 @@ class UMLOperationMethodsListModel
      * The constructor.
      */
     public UMLOperationMethodsListModel() {
-        super("method");
+        super("method", true, false);
     }
 
     /*

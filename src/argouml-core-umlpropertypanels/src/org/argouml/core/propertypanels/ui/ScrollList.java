@@ -58,8 +58,12 @@ class ScrollList extends JScrollPane implements KeyListener {
      * in a scrollable view.
      * @param listModel The model from which to build the list
      */
-    public ScrollList(ListModel listModel) {
-        this(listModel, true, true);
+    public ScrollList(UMLModelElementListModel listModel) {
+        setHorizontalScrollBarPolicy(
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        list = new UMLLinkedList(listModel, listModel.isShowIcon(), listModel.isShowPath());
+        setViewportView(list);
+        
     }
 
     /**
@@ -77,20 +81,6 @@ class ScrollList extends JScrollPane implements KeyListener {
         setViewportView(list);
     }
 
-    /**
-     * Builds a JList from a given list model and wraps
-     * in a scrollable view.
-     * @param listModel The model from which to build the list
-     * @param showIcon show an icon with elements in the list
-     * @param showPath show containment path for elements in list
-     */
-    public ScrollList(ListModel listModel, boolean showIcon, boolean showPath) {
-        setHorizontalScrollBarPolicy(
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        list = new UMLLinkedList(listModel, showIcon, showPath);
-        setViewportView(list);
-    }
-    
     /**
      * Builds a ScrollList from a given list model and wraps
      * in a scrollable view.

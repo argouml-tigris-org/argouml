@@ -84,12 +84,27 @@ public abstract class UMLModelElementListModel
     private boolean reverseDropConnection;
 
     /**
+     * True if the icon for the modelelement should be shown. The icon is, for
+     * instance, a small class symbol for a class.
+     */
+    final private boolean showIcon;
+
+    /**
+     * True if the containment path should be shown 
+     * (to help the user disambiguate elements with the same name);
+     */
+    final private boolean showPath;
+
+    
+    /**
      * Constructor to be used if the subclass does not depend on the
      * MELementListener methods and setTarget method implemented in this
      * class.
      */
     public UMLModelElementListModel() {
         super();
+        showIcon = true;
+        showPath = true;
     }
 
     /**
@@ -101,6 +116,8 @@ public abstract class UMLModelElementListModel
     public UMLModelElementListModel(String name) {
         super();
         eventName = name;
+        showIcon = true;
+        showPath = true;
     }
     
     /**
@@ -115,6 +132,8 @@ public abstract class UMLModelElementListModel
         super();
         this.metaType = theMetaType;
         eventName = name;
+        showIcon = true;
+        showPath = true;
     }
     
     /**
@@ -135,6 +154,8 @@ public abstract class UMLModelElementListModel
         this.metaType = theMetaType;
         eventName = name;
         this.reverseDropConnection = reverseTheDropConnection;
+        showIcon = true;
+        showPath = true;
     }
     
     /**
@@ -519,4 +540,11 @@ public abstract class UMLModelElementListModel
         return false;
     }
 
+    boolean isShowIcon() {
+        return showIcon;
+    }
+
+    boolean isShowPath() {
+        return showIcon;
+    }
 }

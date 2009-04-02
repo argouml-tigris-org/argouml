@@ -41,7 +41,7 @@ class UMLClassAttributeListModel extends
      * Constructor for UMLClassifierStructuralFeatureListModel.
      */
     public UMLClassAttributeListModel() {
-        super("feature");
+        super("feature", true, false);
     }
 
     /*

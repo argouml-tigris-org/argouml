@@ -42,7 +42,7 @@ class UMLOperationRaisedSignalsListModel
      * The constructor.
      */
     public UMLOperationRaisedSignalsListModel() {
-        super("signal");
+        super("signal", true, false);
     }
 
     /*
