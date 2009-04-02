@@ -45,6 +45,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
@@ -144,6 +145,14 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         if (Globals.curEditor().getGraphModel()
                 instanceof ClassDiagramGraphModel) {
             result =  new DiagramInterface(Globals.curEditor());
+        } else {
+            Project p =  ProjectManager.getManager().getCurrentProject();
+            TargetManager.getInstance().setTarget(p.getInitialTarget());
+            // the previous line helps, but we better check again:
+            if (Globals.curEditor().getGraphModel()
+                    instanceof ClassDiagramGraphModel) {
+                result =  new DiagramInterface(Globals.curEditor());
+            }
         }
         return result;
     }
@@ -543,7 +552,7 @@ public abstract class ImportCommon implements ImportSettingsInternal {
         }
         // New style importers don't create diagrams, so we'll do it
         // based on the list of newElements that they created
-        if (isCreateDiagramsSelected()) {
+        if (isCreateDiagramsSelected() && diagramInterface != null) {
             addFiguresToDiagrams(newElements);
         }
 
