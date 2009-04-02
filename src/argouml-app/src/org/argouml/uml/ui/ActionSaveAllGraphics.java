@@ -37,6 +37,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoStatusEvent;
@@ -48,6 +49,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.util.ArgoFrame;
+import org.argouml.util.SuffixFilter;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.SaveGraphicsAction;
 import org.tigris.gef.util.Util;
@@ -63,7 +65,9 @@ import org.tigris.gef.util.Util;
  * @author Leonardo Souza Mario Bueno (lsbueno@tigris.org)
  */
 
-public class ActionSaveAllGraphics extends AbstractAction {
+public class ActionSaveAllGraphics extends AbstractAction
+    implements CommandLineInterface {
+
     private static final Logger LOG =
         Logger.getLogger(ActionSaveAllGraphics.class);
     
@@ -280,5 +284,31 @@ public class ActionSaveAllGraphics extends AbstractAction {
     private void showStatus(String text) {
         ArgoEventPump.fireEvent(new ArgoStatusEvent(
                 ArgoEventTypes.STATUS_TEXT, this, text));
+    }
+
+    /**
+     * Execute this action from the command line.
+     *
+     * @see org.argouml.application.api.CommandLineInterface#doCommand(String)
+     * @param argument is the directory name that we save to.
+     * @return true if it is OK.
+     */
+    public boolean doCommand(String argument) {
+        File dir = new File(argument);
+        if (!dir.exists() || !dir.isDirectory()) {
+            LOG.error("The argument must be a path to an existing directory.");
+            return false;
+        }
+        boolean result = true;
+        for (Project p : ProjectManager.getManager().getOpenProjects()) {
+            TargetManager tm = TargetManager.getInstance();
+            for (ArgoDiagram d : p.getDiagramList()) {
+                tm.setTarget(d);
+                if (!trySaveDiagram(d, dir)) {
+                    result = false;
+                }
+            }
+        }
+        return result;
     }
 }
