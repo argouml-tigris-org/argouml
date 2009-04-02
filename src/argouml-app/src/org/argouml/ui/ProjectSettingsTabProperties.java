@@ -212,7 +212,7 @@ public class ProjectSettingsTabProperties extends JPanel implements
     public JPanel getTabPanel() { return this; }
 
     public void setProject(Project project) {
-        assert p != null;
+        assert project != null;
         p = project;
     }
 }
