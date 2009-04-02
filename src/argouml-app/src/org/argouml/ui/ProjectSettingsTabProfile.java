@@ -455,7 +455,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
     }
 
     public void setProject(Project project) {
-        assert p != null;
+        assert project != null;
         p = project;
     }
 }

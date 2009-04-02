@@ -414,7 +414,7 @@ public class SettingsTabNotation
     }
 
     public void setProject(Project project) {
-        assert p != null;
+        assert project != null;
         p = project;
     }
 }
