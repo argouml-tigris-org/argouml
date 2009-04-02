@@ -157,8 +157,7 @@ class ListFactory implements ComponentFactory {
             model = new UMLCommentAnnotatedElementListModel();
             model.setTarget(modelElement);
             UMLMutableLinkedList l = new UMLMutableLinkedList(
-                    model, null, null);            
-            l.setDeleteAction(new ActionDeleteAnnotatedElement());
+                    model, null, null, null, true);
             list = new ScrollList(l);
         } else if ("context".equals(propName)) {
             model = new UMLSignalContextListModel();

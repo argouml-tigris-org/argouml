@@ -123,7 +123,7 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
         setAddAction(theAddAction);
         setNewAction(theNewAction);
         if (theDeleteAction != null)
-            setDeleteAction(theDeleteAction);
+            deleteAction = null;
         addMouseListener(this);
     }
 
@@ -170,7 +170,7 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
     protected UMLMutableLinkedList(UMLModelElementListModel dataModel) {
         this(dataModel, null, null, null, true);
         setDelete(false);
-        setDeleteAction(null);
+        deleteAction = null;
     }
 
     /**
@@ -371,15 +371,15 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
         return deleteAction;
     }
 
-    /**
-     * Sets the deleteAction.
-     *
-     * @param action
-     *            The deleteAction to set
-     */
-    public void setDeleteAction(AbstractActionRemoveElement action) {
-        deleteAction = action;
-    }
+//    /**
+//     * Sets the deleteAction.
+//     *
+//     * @param action
+//     *            The deleteAction to set
+//     */
+//    public void setDeleteAction(AbstractActionRemoveElement action) {
+//        deleteAction = action;
+//    }
 
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
