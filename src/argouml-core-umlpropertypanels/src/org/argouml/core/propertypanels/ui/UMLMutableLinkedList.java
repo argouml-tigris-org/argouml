@@ -37,7 +37,6 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
-import org.argouml.uml.ui.UMLLinkedList;
 
 /**
  * This class is the GUI front for a mutable linked list. The user can add,
