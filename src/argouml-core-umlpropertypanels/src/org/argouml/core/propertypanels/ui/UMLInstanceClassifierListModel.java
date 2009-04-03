@@ -25,6 +25,7 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
+import org.argouml.uml.ui.behavior.common_behavior.ActionAddInstanceClassifier;
 
 /**
  * The model for instances of a classifier.
@@ -36,8 +37,11 @@ class UMLInstanceClassifierListModel
 
     /** build default listmodel with unlimited size and
      * allowed elements CLASSIFIER */
-    public UMLInstanceClassifierListModel() {
-        super("classifier");
+    public UMLInstanceClassifierListModel(Object metaType) {
+        super("classifier", metaType,
+            new ActionAddInstanceClassifier(
+                    Model.getMetaTypes().getClassifier()), 
+            null, null);
     }
 
     /*

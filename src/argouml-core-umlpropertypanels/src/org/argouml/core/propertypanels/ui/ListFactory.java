@@ -24,23 +24,13 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.behavior.collaborations.ActionAddClassifierRoleBase;
-import org.argouml.uml.ui.behavior.collaborations.ActionAddMessagePredecessor;
-import org.argouml.uml.ui.behavior.collaborations.ActionRemoveClassifierRoleBase;
-import org.argouml.uml.ui.behavior.common_behavior.ActionAddContextSignal;
 import org.argouml.uml.ui.behavior.common_behavior.ActionAddCreateActionInstantiation;
-import org.argouml.uml.ui.behavior.common_behavior.ActionAddInstanceClassifier;
-import org.argouml.uml.ui.behavior.state_machines.ActionNewTransition;
 import org.argouml.uml.ui.behavior.use_cases.ActionAddExtendExtensionPoint;
 import org.argouml.uml.ui.behavior.use_cases.ActionNewExtendExtensionPoint;
 import org.argouml.uml.ui.behavior.use_cases.ActionNewUseCaseExtensionPoint;
-import org.argouml.uml.ui.foundation.core.ActionAddAssociationSpecification;
-import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
-import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
 
 /**
  * Creates the XML Property panels
@@ -100,15 +90,7 @@ class ListFactory implements ComponentFactory {
         } else if ("definedTag".equals(propName)) {
             model = new UMLStereotypeTagDefinitionListModel();
         } else if ("baseClass".equals(propName)) {
-            model = new UMLStereotypeBaseClassListModel();
-            model.setTarget(modelElement);
-            UMLMutableLinkedList l = new UMLMutableLinkedList(
-                    new UMLStereotypeBaseClassListModel(), 
-                    new ActionAddStereotypeBaseClass(),
-                    null,
-                    new ActionDeleteStereotypeBaseClass());
-            l.setCellRenderer(new DefaultListCellRenderer());
-            list = new ScrollList(l);
+            model = new UMLStereotypeBaseClassListModel(metaType);
         } else if ("extended_elements".equals(propName)) {
             model = new UMLExtendedElementsListModel();
         } else if ("literal".equals(propName)) {
@@ -124,12 +106,7 @@ class ListFactory implements ComponentFactory {
         } else if ("link".equals(propName)) {
             model = new UMLAssociationLinkListModel();
         } else if ("specification".equals(propName)) {
-            model = new UMLAssociationEndSpecificationListModel();
-            model.setTarget(modelElement);
-            list = new ScrollList(new UMLMutableLinkedList(
-                    model,
-                    ActionAddAssociationSpecification.getInstance(),
-                    null, null));
+            model = new UMLAssociationEndSpecificationListModel(metaType);
         } else if ("qualifier".equals(propName)) {
             model = new UMLAssociationEndQualifiersListModel();
         } else if ("annotatedElement".equals(propName)) {
@@ -139,21 +116,9 @@ class ListFactory implements ComponentFactory {
                     model, null, null, null);
             list = new ScrollList(l);
         } else if ("context".equals(propName)) {
-            model = new UMLSignalContextListModel();
-            model.setTarget(modelElement);
-            UMLMutableLinkedList l = new UMLMutableLinkedList(
-                    model,
-                    new ActionAddContextSignal(), null, 
-                    new ActionRemoveContextSignal());
-            list = new ScrollList(l);
+            model = new UMLSignalContextListModel(metaType);
         } else if ("reception".equals(propName)) {
-            model = new UMLSignalReceptionListModel();
-            model.setTarget(modelElement);
-            UMLMutableLinkedList l = new UMLMutableLinkedList(
-                    model,
-                    new ActionAddReceptionSignal(), null, 
-                    new ActionRemoveReceptionSignal());
-            list = new ScrollList(l);
+            model = new UMLSignalReceptionListModel(metaType);
         } else if ("extend".equals(propName)) {
             model = new UMLUseCaseExtendListModel();
         } else if ("include".equals(propName)) {
@@ -176,34 +141,17 @@ class ListFactory implements ComponentFactory {
                 list = new ScrollList(l);
             }
         } else if ("base".equals(propName)) {
-            model = new UMLClassifierRoleBaseListModel();
-            model.setTarget(modelElement);
-            JList l =
-                new UMLMutableLinkedList(model,
-                    ActionAddClassifierRoleBase.SINGLETON,
-                    null,
-                    ActionRemoveClassifierRoleBase.getInstance());
-            list = new ScrollList(l);
+            model = new UMLClassifierRoleBaseListModel(metaType);
         } else if ("availableFeature".equals(propName)) {
             model = new UMLClassifierRoleAvailableFeaturesListModel();
         } else if ("availableContents".equals(propName)) {
             model = new UMLClassifierRoleAvailableContentsListModel();
         } else if ("predecessor".equals(propName)) {
-            model = new UMLMessagePredecessorListModel();
-            model.setTarget(modelElement);
-            JList l = new UMLMutableLinkedList(model,
-                    ActionAddMessagePredecessor.getInstance(),
-                    null);
-            list = new ScrollList(l);
+            model = new UMLMessagePredecessorListModel(metaType);
         } else if ("actualArgument".equals(propName)) {
             model = new UMLActionArgumentListModel();
         } else if ("instantiation".equals(propName)) {
-            model = new UMLCreateActionClassifierListModel();
-            model.setTarget(modelElement);
-            JList l = new UMLMutableLinkedList(model,
-                    new ActionAddCreateActionInstantiation(), 
-                    null, null);
-            list = new ScrollList(l);
+            model = new UMLCreateActionClassifierListModel(metaType);
         } else if ("constrainingElement".equals(propName)) {
             model = new UMLCollaborationConstrainingElementListModel();
         } else if ("top".equals(propName)) {
@@ -221,13 +169,7 @@ class ListFactory implements ComponentFactory {
         } else if ("residentElement".equals(propName)) {
             model = new UMLComponentResidentListModel();
         } else if ("classifier".equals(propName)) {
-            model = new UMLInstanceClassifierListModel();
-            model.setTarget(modelElement);
-            JList l = new UMLMutableLinkedList(model,
-                             new ActionAddInstanceClassifier(
-                                     Model.getMetaTypes().getClassifier()), 
-                                     null, null);
-            list = new ScrollList(l);
+            model = new UMLInstanceClassifierListModel(metaType);
         } else if ("resident".equals(propName)) {
             model = new UMLContainerResidentListModel();
         } else if ("entry".equals(propName)) {
@@ -255,31 +197,16 @@ class ListFactory implements ComponentFactory {
         } else if ("incoming".equals(propName)) {
             model = new UMLStateVertexIncomingListModel();
         } else if ("classifierInState".equals(propName)) {
-            model = new UMLOFSStateListModel();
-            model.setTarget(modelElement);
-            JList l = new UMLMutableLinkedList(model,
-                    new ActionAddOFSState(),
-                    null,
-                    new ActionRemoveOFSState());
-            list = new ScrollList(l);
+            model = new UMLOFSStateListModel(metaType);
         } else if ("internalTransition".equals(propName)) {
-            model = new UMLStateInternalTransitionListModel();
-            model.setTarget(modelElement);
-            JList l = new UMLMutableLinkedList(model, null, 
-                    new ActionNewTransition());
-            list = new ScrollList(l);
+            model = new UMLStateInternalTransitionListModel(metaType);
         } else if ("subvertex".equals(propName)) {
             model = new UMLCompositeStateSubvertexListModel();
             model.setTarget(modelElement);
             JList l = new UMLCompositeStateSubvertexList(model);
             list = new ScrollList(l);
         } else if ("contents".equals(propName)) {
-            model = new UMLPartitionContentListModel();
-            model.setTarget(modelElement);
-            JList l = new UMLMutableLinkedList(model,
-                    new ActionAddPartitionContent(),
-                    null);
-            list = new ScrollList(l);
+            model = new UMLPartitionContentListModel(metaType);
         } else if ("partition".equals(propName)) {
             model = new UMLActivityGraphPartitionListModel();
         } else if ("signal".equals(propName)) {

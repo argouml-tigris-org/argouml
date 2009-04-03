@@ -31,8 +31,10 @@ import org.argouml.model.Model;
  */
 class UMLPartitionContentListModel extends  UMLModelElementListModel {
 
-    public UMLPartitionContentListModel() {
-        super("contents");
+    public UMLPartitionContentListModel(Object metaType) {
+        super("contents", metaType,
+                new ActionAddPartitionContent(),
+                null, null);
     }
 
     protected void buildModelList() {

@@ -40,8 +40,11 @@ class UMLStereotypeBaseClassListModel extends UMLModelElementListModel {
     /**
      * Construct the model, listen to changes of "baseClass".
      */
-    public UMLStereotypeBaseClassListModel() {
-        super("baseClass");
+    public UMLStereotypeBaseClassListModel(Object metaType) {
+        super("baseClass", metaType,
+                new ActionAddStereotypeBaseClass(),
+                null,
+                new ActionDeleteStereotypeBaseClass());
     }
 
     @Override

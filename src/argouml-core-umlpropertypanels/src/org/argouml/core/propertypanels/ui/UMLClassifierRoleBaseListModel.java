@@ -25,6 +25,8 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
+import org.argouml.uml.ui.behavior.collaborations.ActionAddClassifierRoleBase;
+import org.argouml.uml.ui.behavior.collaborations.ActionRemoveClassifierRoleBase;
 
 /**
  * Shows the bases belonging to some classifierrole.
@@ -36,8 +38,11 @@ class UMLClassifierRoleBaseListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLClassifierRoleBaseListModel.
      */
-    public UMLClassifierRoleBaseListModel() {
-        super("base");
+    public UMLClassifierRoleBaseListModel(Object metaType) {
+        super("base", metaType,
+            ActionAddClassifierRoleBase.SINGLETON,
+            null,
+            ActionRemoveClassifierRoleBase.getInstance());
     }
 
     /*

@@ -25,6 +25,7 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
+import org.argouml.uml.ui.behavior.common_behavior.ActionAddCreateActionInstantiation;
 
 /**
  * Model for the list of classifiers for the create action.
@@ -35,8 +36,10 @@ class UMLCreateActionClassifierListModel extends
     /**
      * Constructor for ClassifierCreateActionListModel.
      */
-    public UMLCreateActionClassifierListModel() {
-        super("instantiation");
+    public UMLCreateActionClassifierListModel(Object metaType) {
+        super("instantiation", metaType,
+            new ActionAddCreateActionInstantiation(), 
+            null, null);
     }
 
     /*

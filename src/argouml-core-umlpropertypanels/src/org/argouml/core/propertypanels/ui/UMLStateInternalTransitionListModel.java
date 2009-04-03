@@ -25,6 +25,7 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
+import org.argouml.uml.ui.behavior.state_machines.ActionNewTransition;
 
 /**
  * @since Dec 14, 2002
@@ -35,8 +36,11 @@ class UMLStateInternalTransitionListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateInternalTransition.
      */
-    public UMLStateInternalTransitionListModel() {
-        super("internalTransition");
+    public UMLStateInternalTransitionListModel(Object metaType) {
+        super("internalTransition", metaType,
+                null,
+                new ActionNewTransition(),
+                null);
     }
 
     /*

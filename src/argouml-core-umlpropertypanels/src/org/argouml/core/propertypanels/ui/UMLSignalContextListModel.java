@@ -26,6 +26,7 @@ package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.behavior.common_behavior.ActionAddContextSignal;
 
 /**
  * The model for the listbox showing the contexts of a signal.
@@ -37,8 +38,10 @@ class UMLSignalContextListModel extends UMLModelElementListModel {
     /**
      * The constructor.
      */
-    public UMLSignalContextListModel() {
-        super("context");
+    public UMLSignalContextListModel(Object metaType) {
+        super("context", metaType,
+            new ActionAddContextSignal(), null, 
+            new ActionRemoveContextSignal());
     }
 
     /*

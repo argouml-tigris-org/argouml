@@ -26,6 +26,7 @@ package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.foundation.core.ActionAddAssociationSpecification;
 
 /**
  *
@@ -38,8 +39,10 @@ class UMLAssociationEndSpecificationListModel
     /**
      * Constructor for UMLAssociationEndSpecificationListModel.
      */
-    public UMLAssociationEndSpecificationListModel() {
-        super("specification");
+    public UMLAssociationEndSpecificationListModel(Object metaType) {
+        super("specification", metaType,
+                ActionAddAssociationSpecification.getInstance(),
+                null, null);
     }
 
     /*

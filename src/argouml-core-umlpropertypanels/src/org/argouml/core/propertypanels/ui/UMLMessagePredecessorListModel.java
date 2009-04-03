@@ -29,6 +29,7 @@ import java.util.Iterator;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.behavior.collaborations.ActionAddMessagePredecessor;
 
 /**
  * @since Oct 2, 2002
@@ -40,8 +41,10 @@ class UMLMessagePredecessorListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLMessagePredecessorListModel.
      */
-    public UMLMessagePredecessorListModel() {
-        super("predecessor");
+    public UMLMessagePredecessorListModel(Object metaType) {
+        super("predecessor", metaType,
+            ActionAddMessagePredecessor.getInstance(),
+            null, null);
     }
 
     /*
