@@ -1,4 +1,4 @@
-// $Id: SwingUIFactory.java 17009 2009-03-31 22:53:20Z bobtarling $
+// $Id: ListFactory.java 17009 2009-03-31 22:53:20Z bobtarling $
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -27,13 +27,13 @@ package org.argouml.core.propertypanels.ui;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.behavior.common_behavior.ActionAddCreateActionInstantiation;
 import org.argouml.uml.ui.behavior.use_cases.ActionAddExtendExtensionPoint;
 import org.argouml.uml.ui.behavior.use_cases.ActionNewExtendExtensionPoint;
 import org.argouml.uml.ui.behavior.use_cases.ActionNewUseCaseExtensionPoint;
 
 /**
  * Creates the XML Property panels
+ * @author Bob Tarling
  */
 class ListFactory implements ComponentFactory {
     
