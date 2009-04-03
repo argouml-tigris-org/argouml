@@ -25,7 +25,6 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * @author mkl
@@ -35,8 +34,11 @@ class UMLObjectFlowStateParameterListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLObjectFlowStateParameterListModel.
      */
-    public UMLObjectFlowStateParameterListModel() {
-        super("parameter");
+    public UMLObjectFlowStateParameterListModel(Object metaType) {
+        super("parameter", metaType,
+              new ActionAddOFSParameter(),
+              new ActionNewOFSParameter(),
+              new ActionRemoveOFSParameter()); 
     }
 
     /*

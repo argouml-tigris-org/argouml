@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JPopupMenu;
 
@@ -42,6 +43,9 @@ import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
@@ -62,6 +66,11 @@ public abstract class UMLModelElementListModel
     private String eventName = null;
     private Object listTarget = null;
 
+    private AbstractActionAddModelElement2 addAction = null;
+    private AbstractActionNewModelElement newAction = null;
+    private AbstractActionRemoveElement removeAction = null;
+    
+    
     /**
      * Flag to indicate wether list events should be fired
      */
@@ -144,6 +153,30 @@ public abstract class UMLModelElementListModel
         eventName = name;
         showIcon = true;
         showPath = true;
+    }
+    
+    /**
+     * Constructor for UMLModelElementListModel2.
+     *
+     * @param name the name of the event to listen to, which triggers us
+     *             to update the list model from the UML data
+     * @param theMetaType the type of model element that the list model
+     *                 is designed to contain.
+     */
+    public UMLModelElementListModel(
+            final String name, 
+            final Object theMetaType, 
+            final AbstractActionAddModelElement2 addAction, 
+            final AbstractActionNewModelElement newAction, 
+            final AbstractActionRemoveElement removeAction) {
+        super();
+        this.metaType = theMetaType;
+        eventName = name;
+        showIcon = true;
+        showPath = true;
+        this.addAction = addAction;
+        this.newAction = newAction;
+        this.removeAction = removeAction;
     }
     
     /**
@@ -556,5 +589,17 @@ public abstract class UMLModelElementListModel
 
     boolean isShowPath() {
         return showPath;
+    }
+    
+    public AbstractActionAddModelElement2 getAddAction() {
+        return addAction;
+    }
+    
+    public AbstractActionNewModelElement getNewAction() {
+        return newAction;
+    }
+    
+    public AbstractActionRemoveElement getRemoveAction() {
+        return removeAction;
     }
 }

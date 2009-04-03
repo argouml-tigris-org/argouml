@@ -56,10 +56,21 @@ class ScrollList extends JScrollPane implements KeyListener {
      * in a scrollable view.
      * @param listModel The model from which to build the list
      */
-    public ScrollList(UMLModelElementListModel listModel) {
+    public ScrollList(final UMLModelElementListModel listModel) {
         setHorizontalScrollBarPolicy(
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        list = new UMLLinkedList(listModel, listModel.isShowIcon(), listModel.isShowPath());
+        if (listModel.getAddAction() == null && listModel.getNewAction() == null && listModel.getRemoveAction() == null) {
+            list = new UMLLinkedList(
+                    listModel,
+                    listModel.isShowIcon(),
+                    listModel.isShowPath());
+        } else {
+            list = new UMLMutableLinkedList(
+                    listModel, 
+                    listModel.getAddAction(), 
+                    listModel.getNewAction(), 
+                    listModel.getRemoveAction());
+        }
         setViewportView(list);
         
     }

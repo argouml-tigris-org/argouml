@@ -26,6 +26,7 @@ package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.foundation.core.ActionAddClientDependencyAction;
 
 /**
  * The listmodel of the client dependencies for some modelelement.
@@ -39,8 +40,12 @@ class UMLModelElementClientDependencyListModel
     /**
      * Constructor for UMLModelElementClientDependencyListModel.
      */
-    public UMLModelElementClientDependencyListModel() {
-        super("clientDependency", Model.getMetaTypes().getDependency());
+    public UMLModelElementClientDependencyListModel(Object metaType) {
+        super("clientDependency", 
+                metaType, 
+                new ActionAddClientDependencyAction(), 
+                null, 
+                null);
     }
 
     /*

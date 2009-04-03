@@ -41,9 +41,7 @@ class UMLSignalEventSignalList extends UMLMutableLinkedList {
      * @param dataModel the model
      */
     public UMLSignalEventSignalList(UMLModelElementListModel dataModel) {
-        super(dataModel, (AbstractActionAddModelElement2) null, null, null,
-                true);
-        setDelete(false);
+        super(dataModel, (AbstractActionAddModelElement2) null, null, null);
     }
 
     /*

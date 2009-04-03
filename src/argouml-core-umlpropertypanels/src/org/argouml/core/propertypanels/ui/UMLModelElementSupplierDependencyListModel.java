@@ -25,6 +25,7 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
+import org.argouml.uml.ui.foundation.core.ActionAddSupplierDependencyAction;
 
 /**
  * @since Oct 12, 2002
@@ -36,8 +37,8 @@ class UMLModelElementSupplierDependencyListModel
     /**
      * Constructor for UMLModelElementSupplierDependencyListModel.
      */
-    public UMLModelElementSupplierDependencyListModel() {
-        super("supplierDependency", Model.getMetaTypes().getDependency(), true);
+    public UMLModelElementSupplierDependencyListModel(Object metaType) {
+        super("supplierDependency", metaType, new ActionAddSupplierDependencyAction(), null, null);
     }
 
     /*

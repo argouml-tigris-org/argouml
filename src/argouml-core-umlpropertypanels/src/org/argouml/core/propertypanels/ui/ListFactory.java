@@ -55,24 +55,13 @@ class ListFactory implements ComponentFactory {
             final String propName) {
         ScrollList list = null;
         UMLModelElementListModel model = null;
+        
+        Object metaType = modelElement.getClass();
+            
         if ("clientDependency".equals(propName)) {
-            model = new UMLModelElementClientDependencyListModel();
-            model.setTarget(modelElement); 
-            list = new ScrollList(new UMLMutableLinkedList(
-                    model,
-                    new ActionAddClientDependencyAction(),
-                    null,
-                    null,
-                    true));
+            model = new UMLModelElementClientDependencyListModel(metaType);
         } else if ("supplierDependency".equals(propName)) {
-            model = new UMLModelElementSupplierDependencyListModel();
-            model.setTarget(modelElement);
-            list = new ScrollList(new UMLMutableLinkedList(
-                    model,
-                    new ActionAddSupplierDependencyAction(),
-                    null,
-                    null,
-                    true));
+            model = new UMLModelElementSupplierDependencyListModel(metaType);
         } else if ("generalization".equals(propName)) {
             model = new UMLGeneralizableElementGeneralizationListModel();
         } else if ("specialization".equals(propName)) {
@@ -94,19 +83,10 @@ class ListFactory implements ComponentFactory {
                     // TODO: It's OK to change the visibility of this actions?
                     null, // new ActionAddPackageImport(),
                     null,
-                    null, //new ActionRemovePackageImport(),
-                    true));
+                    null));
         } else if ("parameter".equals(propName)) {
             if (Model.getFacade().isAObjectFlowState(modelElement)) {
-                model = new UMLObjectFlowStateParameterListModel();
-                model.setTarget(modelElement);
-                JList l = new UMLMutableLinkedList(model,
-                        new ActionAddOFSParameter(),
-                        new ActionNewOFSParameter(),
-                        new ActionRemoveOFSParameter(),
-                        true); 
-                list = new ScrollList(l);
-                        
+                model = new UMLObjectFlowStateParameterListModel(metaType);
             } else {
                 model = new UMLClassifierParameterListModel();
                 model.setTarget(modelElement);
@@ -126,8 +106,7 @@ class ListFactory implements ComponentFactory {
                     new UMLStereotypeBaseClassListModel(), 
                     new ActionAddStereotypeBaseClass(),
                     null,
-                    new ActionDeleteStereotypeBaseClass(),
-                    true);
+                    new ActionDeleteStereotypeBaseClass());
             l.setCellRenderer(new DefaultListCellRenderer());
             list = new ScrollList(l);
         } else if ("extended_elements".equals(propName)) {
@@ -150,14 +129,14 @@ class ListFactory implements ComponentFactory {
             list = new ScrollList(new UMLMutableLinkedList(
                     model,
                     ActionAddAssociationSpecification.getInstance(),
-                    null, null, true));
+                    null, null));
         } else if ("qualifier".equals(propName)) {
             model = new UMLAssociationEndQualifiersListModel();
         } else if ("annotatedElement".equals(propName)) {
             model = new UMLCommentAnnotatedElementListModel();
             model.setTarget(modelElement);
             UMLMutableLinkedList l = new UMLMutableLinkedList(
-                    model, null, null, null, true);
+                    model, null, null, null);
             list = new ScrollList(l);
         } else if ("context".equals(propName)) {
             model = new UMLSignalContextListModel();
@@ -165,7 +144,7 @@ class ListFactory implements ComponentFactory {
             UMLMutableLinkedList l = new UMLMutableLinkedList(
                     model,
                     new ActionAddContextSignal(), null, 
-                    new ActionRemoveContextSignal(), true);
+                    new ActionRemoveContextSignal());
             list = new ScrollList(l);
         } else if ("reception".equals(propName)) {
             model = new UMLSignalReceptionListModel();
@@ -173,7 +152,7 @@ class ListFactory implements ComponentFactory {
             UMLMutableLinkedList l = new UMLMutableLinkedList(
                     model,
                     new ActionAddReceptionSignal(), null, 
-                    new ActionRemoveReceptionSignal(), true);
+                    new ActionRemoveReceptionSignal());
             list = new ScrollList(l);
         } else if ("extend".equals(propName)) {
             model = new UMLUseCaseExtendListModel();
@@ -203,8 +182,7 @@ class ListFactory implements ComponentFactory {
                 new UMLMutableLinkedList(model,
                     ActionAddClassifierRoleBase.SINGLETON,
                     null,
-                    ActionRemoveClassifierRoleBase.getInstance(),
-                    true);
+                    ActionRemoveClassifierRoleBase.getInstance());
             list = new ScrollList(l);
         } else if ("availableFeature".equals(propName)) {
             model = new UMLClassifierRoleAvailableFeaturesListModel();
@@ -224,7 +202,7 @@ class ListFactory implements ComponentFactory {
             model.setTarget(modelElement);
             JList l = new UMLMutableLinkedList(model,
                     new ActionAddCreateActionInstantiation(), 
-                    null, null, true);
+                    null, null);
             list = new ScrollList(l);
         } else if ("constrainingElement".equals(propName)) {
             model = new UMLCollaborationConstrainingElementListModel();
@@ -248,7 +226,7 @@ class ListFactory implements ComponentFactory {
             JList l = new UMLMutableLinkedList(model,
                              new ActionAddInstanceClassifier(
                                      Model.getMetaTypes().getClassifier()), 
-                                     null, null, true);
+                                     null, null);
             list = new ScrollList(l);
         } else if ("resident".equals(propName)) {
             model = new UMLContainerResidentListModel();
@@ -282,8 +260,7 @@ class ListFactory implements ComponentFactory {
             JList l = new UMLMutableLinkedList(model,
                     new ActionAddOFSState(),
                     null,
-                    new ActionRemoveOFSState(),
-                    true);
+                    new ActionRemoveOFSState());
             list = new ScrollList(l);
         } else if ("internalTransition".equals(propName)) {
             model = new UMLStateInternalTransitionListModel();

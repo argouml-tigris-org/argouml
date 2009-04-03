@@ -118,12 +118,11 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
     public UMLMutableLinkedList(UMLModelElementListModel dataModel,
             AbstractActionAddModelElement2 theAddAction,
             AbstractActionNewModelElement theNewAction,
-            AbstractActionRemoveElement theDeleteAction, boolean showIcon) {
-        super(dataModel, showIcon);
+            AbstractActionRemoveElement theDeleteAction) {
+        super(dataModel, true);
         setAddAction(theAddAction);
         setNewAction(theNewAction);
-        if (theDeleteAction != null)
-            deleteAction = null;
+        deleteAction = theDeleteAction;
         addMouseListener(this);
     }
 
@@ -137,7 +136,7 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
     public UMLMutableLinkedList(UMLModelElementListModel dataModel,
             AbstractActionAddModelElement2 theAddAction,
             AbstractActionNewModelElement theNewAction) {
-        this(dataModel, theAddAction, theNewAction, null, true);
+        this(dataModel, theAddAction, theNewAction, null);
     }
 
     /**
@@ -148,7 +147,7 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
      */
     public UMLMutableLinkedList(UMLModelElementListModel dataModel,
             AbstractActionAddModelElement2 theAddAction) {
-        this(dataModel, theAddAction, null, null, true);
+        this(dataModel, theAddAction, null, null);
     }
 
     /**
@@ -159,7 +158,7 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
      */
     public UMLMutableLinkedList(UMLModelElementListModel dataModel,
             AbstractActionNewModelElement theNewAction) {
-        this(dataModel, null, theNewAction, null, true);
+        this(dataModel, null, theNewAction, null);
     }
 
     /**
@@ -168,9 +167,10 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
      * @param dataModel the data model
      */
     protected UMLMutableLinkedList(UMLModelElementListModel dataModel) {
-        this(dataModel, null, null, null, true);
-        setDelete(false);
-        deleteAction = null;
+        this(dataModel,
+                dataModel.getAddAction(), 
+                dataModel.getNewAction(), 
+                dataModel.getRemoveAction());
     }
 
     /**
@@ -232,9 +232,9 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
      * @param delete
      *            The delete to set
      */
-    public void setDelete(boolean delete) {
-        deletePossible = delete;
-    }
+//    public void setDelete(boolean delete) {
+//        deletePossible = delete;
+//    }
 
     /**
      * Returns the addAction.
