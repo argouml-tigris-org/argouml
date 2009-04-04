@@ -1243,9 +1243,9 @@ public final class ProjectBrowser
             if (this.isFileReadonly(file)) {
                 JOptionPane.showMessageDialog(this, 
                         Translator.localize(
-                                "optionpane.save-project-cant-write"),
+                                "optionpane.save-project-read-only"),
                         Translator.localize(
-                                "optionpane.save-project-cant-write-title"),
+                                "optionpane.save-project-read-only-title"),
                               JOptionPane.INFORMATION_MESSAGE);
                 
                 return false;
