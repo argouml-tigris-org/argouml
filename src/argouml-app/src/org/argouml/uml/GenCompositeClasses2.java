@@ -24,8 +24,12 @@
 
 package org.argouml.uml;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
+import org.argouml.model.Model;
 import org.argouml.util.ChildGenerator;
 
 /**
@@ -36,7 +40,7 @@ import org.argouml.util.ChildGenerator;
  * @see org.argouml.uml.cognitive.critics.CrCircularComposition
  * @stereotype singleton
  */
-public class GenCompositeClasses2 extends GenCompositeClasses implements
+public class GenCompositeClasses2 implements
         ChildGenerator {
 
     /**
@@ -55,6 +59,44 @@ public class GenCompositeClasses2 extends GenCompositeClasses implements
     
     public Iterator childIterator(Object parent) {
         return collectChildren(parent).iterator();
+    }
+
+    /**
+     * Collect children.<p>
+     *
+     * @param o the parent element
+     * @return a collection of children.
+     */
+    protected Collection collectChildren(Object o) {
+        List res = new ArrayList();
+        if (!(Model.getFacade().isAClassifier(o))) {
+            return res;
+        }
+        Object cls = o;
+        List ends = new ArrayList(Model.getFacade().getAssociationEnds(cls));
+        if (ends == null) {
+            return res;
+        }
+        Iterator assocEnds = ends.iterator();
+        while (assocEnds.hasNext()) {
+            Object ae = assocEnds.next();
+            if (Model.getAggregationKind().getComposite().equals(
+                    Model.getFacade().getAggregation(ae))) {
+                Object asc = Model.getFacade().getAssociation(ae);
+                ArrayList conn =
+                    new ArrayList(Model.getFacade().getConnections(asc));
+                if (conn == null || conn.size() != 2) {
+                    continue;
+                }
+                Object otherEnd =
+                    (ae == conn.get(0)) ? conn.get(1) : conn.get(0);
+                if (Model.getFacade().getType(ae)
+                        != Model.getFacade().getType(otherEnd)) {
+                    res.add(Model.getFacade().getType(otherEnd));
+                }
+            }
+        }
+        return res;
     }
 
 }

@@ -172,22 +172,6 @@ public class Import extends ImportCommon implements ImportSettings {
         return (String) sourceEncoding.getSelectedItem();
     }
 
-    /*
-     * @see org.argouml.uml.reveng.ImportSettings#isAttributeSelected()
-     */
-    @Deprecated
-    public boolean isAttributeSelected() {
-        return false;
-    }
-
-    /*
-     * @see org.argouml.uml.reveng.ImportSettings#isDatatypeSelected()
-     */
-    @Deprecated
-    public boolean isDatatypeSelected() {
-        return false;
-    }
-
     /**
      * Close dialog window.
      */
