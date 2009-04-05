@@ -30,15 +30,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.DummyModelCommand;
-import org.argouml.model.ExtensionMechanismsFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
@@ -141,7 +138,6 @@ import org.omg.uml.foundation.core.TemplateParameter;
 import org.omg.uml.foundation.core.UmlAssociation;
 import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.foundation.core.Usage;
-import org.omg.uml.foundation.datatypes.AggregationKind;
 import org.omg.uml.modelmanagement.ElementImport;
 import org.omg.uml.modelmanagement.Subsystem;
 import org.omg.uml.modelmanagement.UmlPackage;
@@ -422,9 +418,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         if (elementType == metaTypes.getAssociation()) {
             connection =
-                getCore().buildAssociation((Classifier) fromElement,
-                    (AggregationKind) fromStyle, (Classifier) toElement,
-                    (AggregationKind) toStyle, (Boolean) unidirectional);
+                getCore().buildAssociation(fromElement,
+                    fromStyle, toElement,
+                    toStyle, ((Boolean) unidirectional).booleanValue());
         } else if (elementType == metaTypes.getAssociationEnd()) {
             if (fromElement instanceof UmlAssociation) {
                 connection =
@@ -440,7 +436,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getAssociationRole()) {
             connection =
                 getCollaborations().buildAssociationRole(fromElement,
-                    fromStyle, toElement, toStyle, (Boolean) unidirectional);
+                    fromStyle, toElement, toStyle,
+                    ((Boolean) unidirectional).booleanValue());
         } else if (elementType == metaTypes.getGeneralization()) {
             connection = getCore().buildGeneralization(fromElement, toElement);
         } else if (elementType == metaTypes.getPackageImport()) {
@@ -591,21 +588,25 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             element = this.modelImpl.getUseCasesFactory().
                 buildExtensionPoint(container);            
         } else if (elementType == this.metaTypes.getTemplateParameter()) {
-            TemplateParameter templateParam = getCore().createTemplateParameter();
+            TemplateParameter templateParam =
+                getCore().createTemplateParameter();
             Parameter param = getCore().createParameter();
             param.setName("T");
             templateParam.setParameter(param);
             // bounds are defined as param tagged values
             if (container instanceof ModelElement) {
-                for (String tagName : new String[]{"extends","super"}) {
-                    TaggedValue bound = (TaggedValue)getExtensionMechanisms().buildTaggedValue(
-                            getExtensionMechanisms().buildTagDefinition(tagName, null, 
-                                    ((ModelElement)container).getNamespace()),
+                for (String tagName : new String[]{"extends", "super"}) {
+                    TaggedValue bound = 
+                        getExtensionMechanisms().buildTaggedValue(
+                            getExtensionMechanisms().buildTagDefinition(
+                                    tagName, null, 
+                                    ((ModelElement) container).getNamespace()),
                             new String[]{""});
                     param.getTaggedValue().add(bound);
                 }
-                templateParam.setTemplate((ModelElement)container);
-                ((ModelElement) container).getTemplateParameter().add(templateParam);
+                ModelElement template = (ModelElement) container;
+                templateParam.setTemplate(template);
+                template.getTemplateParameter().add(templateParam);
             }
             return templateParam;            
         } else {
