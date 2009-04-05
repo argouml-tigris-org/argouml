@@ -37,7 +37,6 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
@@ -63,22 +62,6 @@ public class FigMessage extends FigNodeModelElement {
      * The current arrow direction set to constants above.
      */
     private int arrowDirection = -1;
-
-    /**
-     * The main constructor.
-     * @deprecated for 0.27.4 by tfmorris.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigMessage() {
-        super();
-        
-        initFigs();
-        initArrows();
-
-	Rectangle r = getBounds();
-	setBounds(r.x, r.y, r.width, r.height);
-    }
 
     private void initFigs() {
         setShadowSize(0); // Issue 2714.
@@ -130,23 +113,6 @@ public class FigMessage extends FigNodeModelElement {
         updateNameText();
     }
     
-    /**
-     * The constructor that hooks the Fig into an existing UML element
-     * @param gm ignored
-     * @param lay the layer
-     * @param node the UML element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigMessage(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigMessage(@SuppressWarnings("unused") GraphModel gm, Layer lay,
-            Object node) {
-        this();
-        setLayer(lay);
-        setOwner(node);
-    }
-
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#getNotationProviderType()
      */

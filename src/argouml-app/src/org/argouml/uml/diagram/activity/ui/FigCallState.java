@@ -29,7 +29,6 @@ import java.awt.Rectangle;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 
 
 /**
@@ -47,33 +46,6 @@ import org.tigris.gef.graph.GraphModel;
  */
 public class FigCallState extends FigActionState {
 
-    /**
-     * Main Constructor FigCallState (called from file loading)
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigCallState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigCallState() {
-        super();
-    }
-
-    /**
-     * Constructor FigCallState that hooks the Fig into
-     * an existing UML model element
-     * @param gm ignored!
-     * @param node owner, i.e. the UML element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigCallState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigCallState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        setOwner(node);
-    }
-    
     /**
      * Construct a new FigCallState.
      * 

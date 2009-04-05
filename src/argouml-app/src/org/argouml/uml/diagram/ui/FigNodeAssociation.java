@@ -37,7 +37,6 @@ import org.argouml.model.UmlChangeEvent;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphEdgeRenderer;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.FigDiamond;
 import org.tigris.gef.presentation.FigEdge;
@@ -58,18 +57,6 @@ public class FigNodeAssociation extends FigNodeModelElement {
     private static final int Y = 0;
 
     private FigDiamond head;
-
-    /**
-     * The constructor.
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *          {@link #FigNodeAssociation(Object, Rectangle, DiagramSettings)}
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigNodeAssociation() {
-        super();
-        initFigs();
-    }
 
     private void initFigs() {
         setEditable(false);
@@ -99,23 +86,6 @@ public class FigNodeAssociation extends FigNodeModelElement {
         setBounds(r);
         setResizable(true);
     }
-
-    /**
-     * The constructor.
-     * 
-     * @param gm the graphmodel
-     * @param node the owner (UML association)
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *          {@link #FigNodeAssociation(Object, Rectangle, DiagramSettings)}
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigNodeAssociation(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        setOwner(node);
-    }
-    
     
     /**
      * Construct a new FigNodeAssociation.

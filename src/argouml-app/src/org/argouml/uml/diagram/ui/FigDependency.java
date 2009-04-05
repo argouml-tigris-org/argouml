@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,10 +25,8 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
-import java.awt.Graphics;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.Fig;
@@ -51,19 +49,6 @@ public class FigDependency extends FigEdgeModelElement {
      */
     private FigTextGroup middleGroup; 
 
-    /**
-     * Constructor
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigDependency(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigDependency() {
-        super();
-        middleGroup = new FigTextGroup();
-        constructFigs();
-    }
-
     private void constructFigs() {
         middleGroup.addFig(getNameFig());
         middleGroup.addFig(getStereotypeFig());
@@ -84,34 +69,6 @@ public class FigDependency extends FigEdgeModelElement {
      */
     protected ArrowHead createEndArrow() {
         return new ArrowHeadGreater();
-    }
-
-    /**
-     * Constructor that sets the UML element
-     * 
-     * @param dependency the UML element
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigDependency(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigDependency(Object dependency) {
-        this();
-        setOwner(dependency);
-    }
-
-    /**
-     * @param dependency theUML element
-     * @param lay the layer
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigDependency(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigDependency(Object dependency, Layer lay) {
-        this();
-        setOwner(dependency);
-        setLayer(lay);
     }
 
     /**

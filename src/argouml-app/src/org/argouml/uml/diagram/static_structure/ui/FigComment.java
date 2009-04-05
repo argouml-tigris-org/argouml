@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -109,20 +109,6 @@ public class FigComment
      */
     private boolean newlyCreated;
 
-    /**
-     * The main constructor used for file loading.
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigComment(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigComment() {
-
-        bodyTextFig = new FigMultiLineText(2, 2, width - 2 - dogear,
-                height - 4, true);
-        initialize();
-    }
-
     private void initialize() {
         Color fg = super.getLineColor(); // Use super because not fully init'd
         Color fill = super.getFillColor();
@@ -178,20 +164,6 @@ public class FigComment
         newlyCreated = true;
     }
 
-    /**
-     * Construct a new comment.
-     *
-     * @param gm the graphmodel
-     * @param node the underlying UML Comment
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigComment(Object, Rectangle, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigComment(@SuppressWarnings("unused") GraphModel gm, Object node) {
-        this();
-        setOwner(node);
-    }
-    
     /**
      * Construct a comment figure with the given model element, bounds, and
      * settings. This constructor is used by the PGML parser.

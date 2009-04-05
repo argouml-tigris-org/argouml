@@ -57,22 +57,6 @@ public class FigInclude extends FigEdgeModelElement {
     
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
 
-    /**
-     * The default constructor, but should never be called directly (use
-     * {@link #FigInclude(Object, DiagramSettings)}. However we can't
-     * mark it as private, since GEF expects to be able to call this when
-     * creating the diagram.
-     * 
-     * @deprecated only for use by PGML parser
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigInclude() {
-        label = new FigSingleLineText(X0, Y0 + 20, 90, 20, false);
-        initialize();
-    }
-
-
     private void initialize() {
         // The <<include>> label.
         // It's not a true stereotype, so don't use the stereotype support
@@ -96,22 +80,6 @@ public class FigInclude extends FigEdgeModelElement {
         // Make the edge go between nearest points
 
         setBetweenNearestPoints(true);    
-    }
-
-
-    /**
-     * <p>The main constructor. Builds the FigEdge required and makes the given
-     *   edge object its owner.</p>
-     *
-     * @param edge  The edge that will own the fig
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigInclude(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigInclude(Object edge) {
-        this();
-        setOwner(edge);
     }
 
     /**

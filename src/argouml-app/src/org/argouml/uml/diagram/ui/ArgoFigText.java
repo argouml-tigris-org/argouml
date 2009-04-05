@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,39 +56,6 @@ public class ArgoFigText extends FigText
     private DiagramSettings settings;
     
     /**
-     * The constructor.
-     * 
-     * @param x initial location
-     * @param y initial location
-     * @param w initial width
-     * @param h initial height
-     * @deprecated 0.27.2 by tfmorris.  Use 
-     * {@link #ArgoFigText(Object, Rectangle, DiagramSettings, boolean)}.
-     */
-    @Deprecated
-    public ArgoFigText(int x, int y, int w, int h) {
-        super(x, y, w, h);
-        setFontFamily("dialog");
-    }
-
-    /**
-     * The constructor.
-     * 
-     * @param x initial location
-     * @param y initial location
-     * @param w initial width
-     * @param h initial height
-     * @param expandOnly true if this fig is supposed to grow only
-     * @deprecated 0.27.2 by tfmorris.  Use 
-     * {@link #ArgoFigText(Object, Rectangle, DiagramSettings, boolean)}.
-     */
-    @Deprecated
-    public ArgoFigText(int x, int y, int w, int h, boolean expandOnly) {
-        super(x, y, w, h, expandOnly);
-        setFontFamily("dialog"); /* TODO: Is this needed?*/
-    }
-    
-    /**
      * Construct a text fig owned by the given UML element. <p>
      * 
      * Even if there is no owner, then you still have to use this constructor;
@@ -100,8 +67,10 @@ public class ArgoFigText extends FigText
      * @param expandOnly true if Fig should never shrink
      */
     public ArgoFigText(Object owner, Rectangle bounds,
-            DiagramSettings renderSettings, boolean expandOnly) {
-        this(bounds.x, bounds.y, bounds.width, bounds.height, expandOnly);
+            DiagramSettings renderSettings, boolean expandOnly) {        
+        super(bounds.x, bounds.y, bounds.width, bounds.height, expandOnly);
+        setFontFamily("dialog"); /* TODO: Is this needed?*/
+
         // TODO: We don't currently have any settings that can change on a
         // per-fig basis, so we can just use the project/diagram defaults
 //        settings = new DiagramSettings(renderSettings);
@@ -195,17 +164,6 @@ public class ArgoFigText extends FigText
     }
 
     /**
-     * Handles diagram font changing.
-     * @param e the event
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link #renderingChanged()}.
-     */
-    @Deprecated
-    public void diagramFontChanged(
-            @SuppressWarnings("unused") ArgoDiagramAppearanceEvent e) {
-        renderingChanged();
-    }
-
-    /**
      * This function should, for all FigTexts, 
      * recalculate the font-style (plain, bold, italic, bold/italic),
      * and apply it by calling FigText.setFont().
@@ -226,21 +184,6 @@ public class ArgoFigText extends FigText
         return Font.PLAIN;
     }
 
-    /**
-     * Set owning UML element.
-     * 
-     * @param own uml element
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     * @deprecated for 0.27.3 by tfmorris. The owner must be specified in the
-     *             constructor and never changed.
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    @Deprecated
-    public void setOwner(Object own) {
-        super.setOwner(own);
-    }
-    
     /**
      * Update listeners for a new owner. Obsolete since owner is not allow to
      * change.

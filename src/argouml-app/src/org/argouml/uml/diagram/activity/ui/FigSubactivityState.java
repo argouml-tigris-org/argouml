@@ -37,7 +37,6 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
@@ -81,18 +80,6 @@ public class FigSubactivityState extends FigStateVertex {
     public FigSubactivityState(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        initFigs();
-    }
-    
-
-    /**
-     * Main Constructor (called from file loading).
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigSubactivityState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSubactivityState() {
         initFigs();
     }
 
@@ -142,23 +129,6 @@ public class FigSubactivityState extends FigStateVertex {
         addFig(s3); // add them back to front
         addFig(s1);
         addFig(s2);
-    }
-
-    /**
-     * Constructor that hooks the Fig into
-     * an existing UML model element.
-     *
-     * @param gm ignored!
-     * @param node owner, i.e. the UML element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigSubactivityState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSubactivityState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        setOwner(node);
     }
 
     /*

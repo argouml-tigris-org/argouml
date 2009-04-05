@@ -35,7 +35,6 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 
 /**
@@ -65,17 +64,6 @@ public class FigInitialState extends FigStateVertex {
         super(owner, bounds, settings);
         initFigs();
     }
-    
-    /**
-     * Default constructor.
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigInitialState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigInitialState() {
-        initFigs();
-    }
 
     private void initFigs() {
         setEditable(false);
@@ -92,23 +80,6 @@ public class FigInitialState extends FigStateVertex {
 
         setBlinkPorts(false); //make port invisible unless mouse enters
     }
-
-    /**
-     * Constructor which hooks the Fig into an existing UML element.
-     *
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigInitialState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigInitialState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        setOwner(node);
-    }
-
 
     @Override
     public Object clone() {

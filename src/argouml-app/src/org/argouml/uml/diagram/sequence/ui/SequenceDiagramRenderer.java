@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,7 +50,7 @@ import org.tigris.gef.presentation.FigNode;
 public class SequenceDiagramRenderer extends UmlDiagramRenderer {
     
     private static final long serialVersionUID = -5460387717430613088L;
-    
+    private DiagramSettings settings;
     /**
      * Logger.
      */
@@ -69,9 +69,10 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
         assert lay instanceof LayerPerspective;
         ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
         DiagramSettings settings = diag.getDiagramSettings();
+        Rectangle bounds = new Rectangle(10, 10, 20, 20);
         
         if (Model.getFacade().isAClassifierRole(node)) {
-            result = new FigClassifierRole(node);
+            result = new FigClassifierRole(node, bounds, settings);
 //            result = new FigClassifierRole(node, (Rectangle) null, settings);
         } else if (Model.getFacade().isAComment(node)) {
             result = new FigComment(node, (Rectangle) null, settings);
@@ -91,7 +92,7 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
         
         assert lay instanceof LayerPerspective;
         ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
-        DiagramSettings settings = diag.getDiagramSettings();
+        settings = diag.getDiagramSettings();
         
 
         if (edge instanceof CommentEdge) {
@@ -104,12 +105,6 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
         return figEdge;
     }
 
-    /*
-     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     *         java.lang.Object, java.util.Map)
-     */
-    @Override
     public FigEdge getFigEdgeFor(Object edge, Map styleAttributes) {
         if (edge == null) {
             throw new IllegalArgumentException("A model edge must be supplied");
@@ -118,20 +113,19 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
             Object action = Model.getFacade().getAction(edge);
             FigEdge result = null;
             if (Model.getFacade().isACallAction(action)) {
-                result = new FigCallActionMessage(edge);
+                result = new FigCallActionMessage(edge, settings);
             } else if (Model.getFacade().isAReturnAction(action)) {
-                result = new FigReturnActionMessage(edge);
+                result = new FigReturnActionMessage(edge, settings);
             } else if (Model.getFacade().isADestroyAction(action)) {
-                result = new FigDestroyActionMessage(edge);
+                result = new FigDestroyActionMessage(edge, settings);
             } else if (Model.getFacade().isACreateAction(action)) {
-                result = new FigCreateActionMessage(edge);
+                result = new FigCreateActionMessage(edge, settings);
             }
             return result;
         }
         throw new IllegalArgumentException("Failed to construct a FigEdge for "
 					   + edge);
     }
-
 
 }
 

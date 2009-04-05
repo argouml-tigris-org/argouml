@@ -32,7 +32,6 @@ import java.util.List;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
@@ -44,73 +43,6 @@ import org.tigris.gef.presentation.FigText;
  * attributes and operations.
  */
 public class FigClass extends FigClassifierBoxWithAttributes {
-
-
-    /**
-     * Constructor for a {@link FigClass} during file load.<p>
-     *
-     * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
-     * will have created the main box {@link #getBigPort()} and its
-     * name {@link #getNameFig()} and stereotype
-     * (@link #getStereotypeFig()}. This constructor
-     * creates a box for the attributes and operations.<p>
-     *
-     * The properties of all these graphic elements are adjusted
-     * appropriately. The main boxes are all filled and have
-     * outlines.<p>
-     *
-     * <em>Warning</em>. Much of the graphics positioning is hard
-     * coded. The overall figure is placed at location (10,10). 
-     * The stereotype compartment is created 15 pixels
-     * high in the parent, but we change it to 19 pixels, 1 more than
-     * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
-     * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
-     * 
-     * @param modelElement model element to be represented by this fig.
-     * @param x x-position
-     * @param y y-position
-     * @param w width
-     * @param h height
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigClass(Object, Rectangle, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigClass(Object modelElement, int x, int y, int w, int h) {
-        this(null, modelElement);
-        setBounds(x, y, w, h);
-    }
-
-    /**
-     * Constructor for a {@link FigClass} by diagram interaction.<p>
-     *
-     * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
-     * will have created the main box {@link #getBigPort()} and its
-     * name {@link #getNameFig()} and stereotype
-     * (@link #getStereotypeFig()}. This constructor
-     * creates a box for the attributes and operations.<p>
-     *
-     * The properties of all these graphic elements are adjusted
-     * appropriately. The main boxes are all filled and have
-     * outlines.<p>
-     *
-     * <em>Warning</em>. Much of the graphics positioning is hard
-     * coded. The overall figure is placed at location (10,10). 
-     * The stereotype compartment is created 15 pixels
-     * high in the parent, but we change it to 19 pixels, 1 more than
-     * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
-     * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
-     *
-     * @param gm   Not actually used in the current implementation
-     * @param node The UML object being placed.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigClass(Object, Rectangle, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigClass(GraphModel gm, Object node) {
-        super();
-        setOwner(node);
-        constructFigs();
-    }
 
     private void constructFigs() {
         addFig(getBigPort());

@@ -171,22 +171,6 @@ public abstract class FigEdgeModelElement
     private DiagramSettings settings;
     
     /**
-     * Construct a default FigEdgeElement.
-     * 
-     * @deprecated for 0.27.2 by tfmorris. The default constructor will become
-     *             private so that it can't be used externally. All concrete
-     *             subclasses must invoke an explicit constructor which passes
-     *             an owner and render s settings
-     *             {@link #FigEdgeModelElement(Object, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigEdgeModelElement() {
-        nameFig = new FigNameWithAbstract(X0, Y0 + 20, 90, 20, false);
-        stereotypeFig = new FigStereotypesGroup(X0, Y0, 90, 15);
-        initFigs();
-    }
-    
-    /**
      * Construct a new FigEdge. This method creates the name element that holds
      * the name of the model element and adds itself as a listener. Also a
      * stereotype is constructed.
@@ -251,20 +235,6 @@ public abstract class FigEdgeModelElement
 
             addElementListener(element, "remove");
         }
-    }
-
-
-    /**
-     * The constructor that hooks the Fig into the UML model element.
-     *
-     * @param edge the UML element
-     * @deprecated for 0.27.2 by tfmorris.  Use 
-     * {@link #FigEdgeModelElement(Object, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigEdgeModelElement(Object edge) {
-        this();
-        setOwner(edge);
     }
 
     /**

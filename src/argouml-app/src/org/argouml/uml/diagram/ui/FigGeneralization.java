@@ -32,7 +32,6 @@ import java.beans.PropertyChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
@@ -67,20 +66,6 @@ public class FigGeneralization extends FigEdgeModelElement {
 
     private ArrowHeadTriangle endArrow;
 
-    /**
-     * The constructor.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigGeneralization(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigGeneralization() {
-        discriminator = new ArgoFigText(null, new Rectangle(X0, Y0,
-                DISCRIMINATOR_WIDTH, TEXT_HEIGHT), getSettings(), false);
-        middleGroup = new FigTextGroup();
-        initialize();
-    }
-
     private void initialize() {
         // UML spec for Generalizations doesn't call for name
 
@@ -102,22 +87,6 @@ public class FigGeneralization extends FigEdgeModelElement {
 	setBetweenNearestPoints(true);
     }
 
-    /**
-     * The constructor that hooks the Fig into the UML element.
-     *
-     * @param edge the UML element
-     * @param lay the layer
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigGeneralization(Object, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigGeneralization(Object edge, Layer lay) {
-	this();
-        middleGroup = new FigTextGroup();
-	setLayer(lay);
-	setOwner(edge);
-    }
-    
     /**
      * Construct a new generalization edge with the given model element as the
      * owner.

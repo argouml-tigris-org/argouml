@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,12 +33,10 @@ import java.util.List;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -47,34 +45,6 @@ import org.tigris.gef.presentation.Fig;
  * @author 5eichler
  */
 public class FigComponentInstance extends AbstractFigComponent {
-
-    /**
-     * Construct a default ComponentInstance figure.
-     * @deprecated by for 0.27.4 by tfmorris.  Use 
-     *       {@link #FigComponentInstance(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigComponentInstance() {
-        super();
-        getNameFig().setUnderline(true);
-    }
-
-    /**
-     * Constructor that hooks the Fig into an existing UML element.
-     *
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated by for 0.27.4 by tfmorris.  Use 
-     *       {@link #FigComponentInstance(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigComponentInstance(GraphModel gm, Object node) {
-        super(gm, node);
-        getNameFig().setUnderline(true);
-    }
-    
     
     /**
      * Construct a new FigComponentInstance.

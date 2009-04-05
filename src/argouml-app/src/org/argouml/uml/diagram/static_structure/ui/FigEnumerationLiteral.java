@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,11 +26,9 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Rectangle;
 
-import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * Fig to show one EnumerationLiteral in a compartment.
@@ -38,48 +36,6 @@ import org.tigris.gef.presentation.Fig;
  * @author Michiel
  */
 public class FigEnumerationLiteral extends CompartmentFigText {
-
-    /**
-     * Build a new Enumeration Literal figText of the given dimensions, 
-     * within the compartment described by <code>aFig</code>.
-     * <p>
-     * 
-     * <em>Warning</em>. Won't work properly if <code>aFig</code> is null.
-     * A warning is printed.
-     * <p>
-     * 
-     * @param x X coordinate of the top left of the FigText.
-     * @param y Y coordinate of the top left of the FigText.
-     * @param w Width of the FigText.
-     * @param h Height of the FigText.
-     * @param aFig The figure describing the whole compartment
-     * @param np The notationProvider. See NotationProviderFactory2.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigEnumerationLiteral(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigEnumerationLiteral(int x, int y, int w, int h, Fig aFig, 
-            NotationProvider np) {
-        super(x, y, w, h, aFig, np);
-    }
-
-    /**
-     * Build a new Enumeration Literal figText of the given dimensions, 
-     * within the compartment described by <code>aFig</code>.
-     * @deprecated by mvw in V0.27.3. Use the constructor without np parameter.
-     * 
-     * @param owner owning UML element
-     * @param bounds position and size
-     * @param settings render settings
-     * @param np The notationProvider. See NotationProviderFactory2.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigEnumerationLiteral(Object owner, Rectangle bounds,
-            DiagramSettings settings, NotationProvider np) {
-        super(owner, bounds, settings, np);
-    }
 
     /**
      * Build a new Enumeration Literal figText of the given dimensions, 

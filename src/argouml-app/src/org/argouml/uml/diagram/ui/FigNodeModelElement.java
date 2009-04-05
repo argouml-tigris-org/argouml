@@ -316,23 +316,6 @@ public abstract class FigNodeModelElement
      * from DiagramSettings because it is more likely to change.
      */
     private NotationSettings notationSettings;
-
-    /**
-     * The default constructor. <p>
-     * @deprecated for 0.27.2 by tfmorris.  Use 
-     * {@link #FigNodeModelElement(Object, Rectangle, DiagramSettings)}.
-     */
-    @Deprecated
-    protected FigNodeModelElement() {
-        notationSettings = new NotationSettings();
-        // this rectangle marks the whole modelelement figure; everything
-        // is inside it:
-        bigPort = new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
-        
-        nameFig = new FigNameWithAbstractAndBold(X0, Y0, WIDTH, NAME_FIG_HEIGHT, true);
-        stereotypeFig = new FigStereotypesGroup(X0, Y0, WIDTH, STEREOHEIGHT);
-        constructFigs();
-    }
     
     /**
      * Construct an unplaced Fig with no owner using the given 
@@ -353,24 +336,6 @@ public abstract class FigNodeModelElement
          * from the project properties? */
         
         stereotypeStyle = getSettings().getDefaultStereotypeView();
-    }
-
-    /**
-     * Construct a figure at a specific position for a given model element. <p>
-     * 
-     * @param element ModelElement associated with figure
-     * @param x horizontal location
-     * @param y vertical location
-     * @deprecated for 0.27.2 by tfmorris.  Use 
-     * {@link #FigNodeModelElement(Object, Rectangle, DiagramSettings)}.
-     */
-    @Deprecated
-    protected FigNodeModelElement(Object element, int x, int y) {
-        this();
-        setOwner(element);
-        nameFig.setText(placeString());
-        readyToEdit = false;
-        setLocation(x, y);
     }
 
     /**
@@ -1500,6 +1465,7 @@ public abstract class FigNodeModelElement
      * constructor and may not be changed afterwards.
      */
     public void setOwner(Object owner) {
+        assert false; // This should never be called any more...
         if (owner == null) {
             throw new IllegalArgumentException("An owner must be supplied");
         }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,6 +38,7 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.sequence.ui.FigLifeLine.FigLifeLineHandler;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -131,8 +132,10 @@ public class FigClassifierRole extends FigNodeModelElement
      * Default constructor. Constructs the object rectangle, the lifeline,
      * the name box and the stereotype box.
      */
-    private FigClassifierRole() {
-        super();
+    public FigClassifierRole(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+        
         headFig = new FigHead(getStereotypeFig(), getNameFig());
         getStereotypeFig().setBounds(MIN_HEAD_WIDTH / 2,
 				     ROWHEIGHT + ROWDISTANCE,
@@ -160,34 +163,10 @@ public class FigClassifierRole extends FigNodeModelElement
         // TODO: Why does this give loading problems?
 //        addFig(getStereotypeFig());
 //        addFig(getNameFig());
+   
+        setBounds(bounds);
     }
 
-    /**
-     * Construct a ClassifierRole figure for the given model element.
-     * 
-     * @param node the ClassifierRole to own the Fig
-     * @param x x position
-     * @param y y position
-     * @param w width
-     * @param h height
-     */
-    public FigClassifierRole(Object node, int x, int y, int w, int h) {
-        this();
-        setBounds(x, y, w, h);
-        setOwner(node);
-    }
-
-    /**
-     * Construct a ClassifierRole figure for the given model element.
-     * 
-     * @param node the ClassifierRole to own the Fig
-     */
-    public FigClassifierRole(Object node) {
-        this();
-        setOwner(node);
-    }
-
-    
     /*
      * When the mouse button is released, this fig will be moved into position.
      *

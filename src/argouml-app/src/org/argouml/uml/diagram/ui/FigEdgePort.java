@@ -49,19 +49,6 @@ import org.tigris.gef.presentation.FigEdge;
 public class FigEdgePort extends FigNodeModelElement {
     private FigCircle bigPort;
 
-    /**
-     * Constructor.
-     * 
-     * @deprecated for 0.28 by tfmorris. Use
-     *             {@link #FigEdgePort(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigEdgePort() {
-        super();
-        initialize();
-    }
-
     private void initialize() {
         invisibleAllowed = true;
         bigPort = new FigCircle(0, 0, 1, 1, LINE_COLOR, FILL_COLOR);

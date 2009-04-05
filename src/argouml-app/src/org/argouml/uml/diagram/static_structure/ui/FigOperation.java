@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,10 +29,8 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * Fig with specific knowledge of Operation and Reception display. 
@@ -42,41 +40,6 @@ import org.tigris.gef.presentation.Fig;
  * @author Bob Tarling
  */
 public class FigOperation extends FigFeature {
-
-    /**
-     * Constructor.
-     * 
-     * @param x x
-     * @param y x
-     * @param w w
-     * @param h h
-     * @param aFig the fig
-     * @param np the notation provider for the text
-     * @deprecated for 0.27.3 by tfmorris.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigOperation(int x, int y, int w, int h, Fig aFig, 
-            NotationProvider np) {
-        super(x, y, w, h, aFig, np);
-    }
-
-    /**
-     * Construct a fig for a UML Operation.
-     * @deprecated by mvw in V0.27.3. Use the constructor without np parameter.
-     * 
-     * @param owner owning UML element
-     * @param bounds position and size
-     * @param settings rendering settings
-     * @param np notation provider
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigOperation(Object owner, Rectangle bounds,
-            DiagramSettings settings, NotationProvider np) {
-        super(owner, bounds, settings, np);
-        Model.getPump().addModelEventListener(this, owner, "isAbstract");
-    }
 
     /**
      * Construct a fig for a UML Operation
@@ -90,20 +53,6 @@ public class FigOperation extends FigFeature {
         super(owner, bounds, settings);
         Model.getPump().addModelEventListener(this, owner, "isAbstract");
     }    
-    /*
-     * @see org.argouml.uml.diagram.ui.FigSingleLineText#setOwner(java.lang.Object)
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public void setOwner(Object owner) {
-        super.setOwner(owner);
-
-        if (owner != null) {
-            diagramFontChanged(null);
-            Model.getPump().addModelEventListener(this, owner, "isAbstract");
-        }
-    }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()

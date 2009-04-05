@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,6 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
@@ -49,34 +48,6 @@ import org.tigris.gef.presentation.FigNode;
  * which has behavior for nestable nodes in UML Statechart diagrams.
  */
 public abstract class FigStateVertex extends FigNodeModelElement {
-
-    /**
-     * The main constructor
-     * @deprecated for 0.27.3 by mvw.  Use 
-     * {@link #FigStateVertex(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigStateVertex() {
-        this.allowRemoveFromDiagram(false);
-    }
-
-    /**
-     * The constructor which hooks the Fig into the UML element
-     * 
-     * @param gm
-     *            ignored
-     * @param node
-     *            the UML elm
-     * @deprecated for 0.27.3 by mvw.  Use 
-     * {@link #FigStateVertex(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigStateVertex(@SuppressWarnings("unused") GraphModel gm, Object node) {
-        this();
-        setOwner(node);
-    }
 
     /**
      * Constructor used by PGML parser.

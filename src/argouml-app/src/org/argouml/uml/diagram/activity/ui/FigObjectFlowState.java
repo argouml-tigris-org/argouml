@@ -35,8 +35,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.argouml.application.events.ArgoEvent;
-import org.argouml.application.events.ArgoEventPump;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
@@ -48,7 +46,6 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -109,19 +106,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
                 STATE_HEIGHT), settings, true);
         initFigs();
     }
-    
-    /**
-     * Main Constructor FigObjectFlowState (called from file loading).
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigObjectFlowState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigObjectFlowState() {
-        state = new FigSingleLineText(X0, Y0, WIDTH, STATE_HEIGHT, true);
-        initFigs();
-        ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
-    }
 
     private void initFigs() {
         setBigPort(new FigRect(X0, Y0, WIDTH, HEIGHT,
@@ -144,24 +128,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
     }
-
-    /**
-     * Constructor FigObjectFlowState that hooks the Fig into
-     * an existing UML model element.
-     *
-     * @param gm ignored!
-     * @param node owner, i.e. the UML element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigObjectFlowState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigObjectFlowState(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
-        enableSizeChecking(true);
-    }
-
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#initNotationProviders(java.lang.Object)

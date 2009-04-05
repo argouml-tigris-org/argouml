@@ -52,19 +52,6 @@ public class FigLink extends FigEdgeModelElement {
      */
     private FigTextGroup middleGroup; 
 
-    /**
-     * Constructor.
-     * 
-     * @deprecated for 0.28 by tfmorris. Use
-     *             {@link #FigLink(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigLink() {
-        middleGroup = new FigTextGroup();
-        initialize();
-    }
-
     private void initialize() {
         middleGroup.addFig(getNameFig());
         addPathItem(middleGroup,
@@ -74,20 +61,6 @@ public class FigLink extends FigEdgeModelElement {
 	setBetweenNearestPoints(true);
     }
 
-    /**
-     * Constructor that hooks the Fig to a UML element.
-     *
-     * @param edge the UML element
-     * 
-     * @deprecated for 0.28 by tfmorris. Use
-     *             {@link #FigLink(Object, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigLink(Object edge) {
-        this();
-        setOwner(edge);
-    }
-    
     /**
      * Create a Fig representing a Link
      * 

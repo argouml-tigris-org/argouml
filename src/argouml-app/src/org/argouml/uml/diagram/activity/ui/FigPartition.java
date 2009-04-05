@@ -38,7 +38,6 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
@@ -76,17 +75,6 @@ public class FigPartition extends FigNodeModelElement {
         super(owner, bounds, settings);
         initFigs();
     }
-    
-    /**
-     * Constructor.
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigPartition(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigPartition() {
-        initFigs();
-    }
 
     private void initFigs() {
         // TODO: define constants for magic numbers
@@ -115,22 +103,6 @@ public class FigPartition extends FigNodeModelElement {
         
         setFilled(false);
         setBounds(getBounds());
-    }
-
-    /**
-     * Constructor which hooks the Fig into an existing UML element.
-     *
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigPartition(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigPartition(@SuppressWarnings("unused")
-            GraphModel gm, Object node) {
-        this();
-        setOwner(node);
     }
     
     /*

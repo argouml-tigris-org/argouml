@@ -39,19 +39,6 @@ import org.tigris.gef.presentation.ArrowHeadTriangle;
 public class FigAbstraction extends FigDependency {
 
     /**
-     * The constructor.
-     * 
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigAbstraction(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigAbstraction() {
-        super();
-        setDestArrowHead(createEndArrow());
-    }
-
-    /**
      * Create the arrow head for the abstraction. This overrides the
      * superclass to create a filled arrow head.
      * @return the arrow head.
@@ -60,20 +47,6 @@ public class FigAbstraction extends FigDependency {
         final ArrowHead arrow = new ArrowHeadTriangle();
         arrow.setFillColor(FILL_COLOR);
         return arrow;
-    }
-
-    /**
-     * The constructor.
-     * 
-     * @param edge the owning UML element
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigAbstraction(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigAbstraction(Object edge) {
-        this();
-        setOwner(edge);
     }
 
     /**

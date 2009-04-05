@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,6 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -42,34 +41,6 @@ import org.tigris.gef.presentation.Fig;
  * @author 5eichler@informatik.uni-hamburg.de
  */
 public class FigNodeInstance extends AbstractFigNode {
-
-    /**
-     * Constructor
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *             {@link #FigNodeInstance(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigNodeInstance() {
-        super();
-        getNameFig().setUnderline(true);
-    }
-
-    /**
-     * Constructor which hooks the new Fig into an existing UML element.
-     * 
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *             {@link #FigNodeInstance(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigNodeInstance(GraphModel gm, Object node) {
-        super(gm, node);
-        getNameFig().setUnderline(true);
-    }
-
     
     /**
      * Construct a new FigNodeInstance.

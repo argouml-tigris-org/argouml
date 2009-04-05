@@ -56,24 +56,6 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         Logger.getLogger(FigClassifierBoxWithAttributes.class);
     
     private FigAttributesCompartment attributesFigCompartment;
-
-    /**
-     * The constructor.
-     * 
-     * @deprecated for 0.27.3 by tfmorris. Use
-     * {@link #FigClassifierBoxWithAttributes(Object,Rectangle,DiagramSettings)}
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigClassifierBoxWithAttributes() {
-        super();
-        attributesFigCompartment = new FigAttributesCompartment(
-                DEFAULT_COMPARTMENT_BOUNDS.x, 
-                DEFAULT_COMPARTMENT_BOUNDS.y,
-                DEFAULT_COMPARTMENT_BOUNDS.width, 
-                DEFAULT_COMPARTMENT_BOUNDS.height);
-    }
-
     
     /**
      * Construct a Fig with owner, bounds, and settings.

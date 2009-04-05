@@ -44,19 +44,6 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigMultiLineText extends ArgoFigText {
 
-    /**
-     * @see org.tigris.gef.presentation.FigText#FigText(
-     *         int, int, int, int, boolean)
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *  {@link #FigMultiLineText(Object, Rectangle, DiagramSettings, boolean)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigMultiLineText(int x, int y, int w, int h, boolean expandOnly) {
-        super(x, y, w, h, expandOnly);
-        initFigs();
-    }
-
     private void initFigs() {
         setTextColor(TEXT_COLOR);
         setReturnAction(FigText.INSERT);

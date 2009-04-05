@@ -36,7 +36,6 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -64,19 +63,6 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
     private FigRect cover;
     private FigRect upperRect;
     private FigRect lowerRect;
-
-    /**
-     * The constructor.
-     * 
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *        {@link #AbstractFigComponent(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public AbstractFigComponent() {
-        super();
-        initFigs();
-    }
 
     private void initFigs() {
         cover = new FigRect(BX, 10, DEFAULT_WIDTH, DEFAULT_HEIGHT, LINE_COLOR,
@@ -111,23 +97,6 @@ public abstract class AbstractFigComponent extends FigNodeModelElement {
             DiagramSettings settings) {
         super(owner, bounds, settings);
         initFigs();
-    }
-    
-    /**
-     * The constructor that hooks the Fig into an existing UML element.
-     *
-     * @param gm ignored
-     * @param node the UML element
-     * 
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *        {@link #AbstractFigComponent(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public AbstractFigComponent(@SuppressWarnings("unused") GraphModel gm,
-            Object node) {
-        this();
-        setOwner(node);
     }
 
     @Override

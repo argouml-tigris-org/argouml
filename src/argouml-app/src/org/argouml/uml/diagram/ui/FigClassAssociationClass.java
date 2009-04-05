@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,37 +39,6 @@ import org.tigris.gef.presentation.Fig;
 public class FigClassAssociationClass extends FigClass {
 
     private static final long serialVersionUID = -4101337246957593739L;
-    
-    /**
-     * The constructor.
-     *
-     * @param owner the UML object
-     * @param x the x of the initial location
-     * @param y the y of the initial location
-     * @param w the initial width
-     * @param h the initial height
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigClassAssociationClass(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigClassAssociationClass(Object owner, int x, int y, int w, int h) {
-        super(owner, x, y, w, h);
-        enableSizeChecking(true);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param owner the owner UML object
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigClassAssociationClass(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigClassAssociationClass(Object owner) {
-        super(null, owner);
-    }
     
     /**
      * Construct the Class box piece of a complex association class fig.

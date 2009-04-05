@@ -35,9 +35,7 @@ import org.argouml.model.UmlChangeEvent;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -69,50 +67,6 @@ public class FigClassifierRole extends FigNodeModelElement {
      * Identical in size to {@link FigNodeModelElement#bigPort}.<p>
      */
     private FigRect cover;
-
-    /**
-     * Constructor for a new classifier role.<p>
-     *
-     * An invisible {@link FigRect} as the point of contact for
-     * connections ({@link FigNodeModelElement#bigPort}), with
-     * matching rectangle providing the graphic rendering ({@link
-     * #cover}). Stereotype and name are rendered centrally in the
-     * rectangle.
-     * 
-     * @deprecated for 0.27.4 by mvw. Use 
-     * {@link #FigClassifierRole(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigClassifierRole() {
-        initClassifierRoleFigs();
-        
-        // Set our bounds to those we are given.
-
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
-    }
-
-    /**
-     * Variant constructor that associates the classifier role with a
-     * particular model element.<p>
-     *
-     * Classifier role is constructed with {@link #FigClassifierRole()}.<p>
-     *
-     * @param gm    The graph model to use. Ignored in this implementation.
-     * @param lay   The layer
-     * @param node  The model element object to associate with this Fig.
-     * @deprecated for 0.27.4 by mvw.  Use 
-     * {@link #FigClassifierRole(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigClassifierRole(@SuppressWarnings("unused")
-            GraphModel gm, Layer lay, Object node) {
-        this();
-        setLayer(lay);
-        setOwner(node);
-    }
 
     /**
      * Construct a FigClassifierRole.

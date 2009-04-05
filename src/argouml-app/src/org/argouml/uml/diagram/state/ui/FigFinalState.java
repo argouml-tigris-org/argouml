@@ -35,7 +35,6 @@ import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 
 /**
@@ -62,18 +61,6 @@ public class FigFinalState extends FigStateVertex {
     public FigFinalState(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        initFigs();
-    }
-    
-    /**
-     * The main constructor.
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigFinalState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigFinalState() {
-        super();
         initFigs();
     }
 
@@ -103,21 +90,6 @@ public class FigFinalState extends FigStateVertex {
         setBigPort(bigPort);
 
         setBlinkPorts(false); //make port invisible unless mouse enters
-    }
-
-    /**
-     * The constructor that hooks the Fig into the UML element.
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigFinalState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigFinalState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-    	this();
-    	setOwner(node);
     }
 
     @Override

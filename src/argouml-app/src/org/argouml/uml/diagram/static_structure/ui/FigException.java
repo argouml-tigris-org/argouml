@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 
 /**
  * Fig representing an Exception.
@@ -36,32 +35,6 @@ import org.tigris.gef.graph.GraphModel;
  * @author Tom Morris
  */
 public class FigException extends FigSignal {
-
-    /**
-     * Default constructor.
-     * 
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigException(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigException() {
-        super();
-    }
-
-    /**
-     * The Constructor.
-     * 
-     * @param gm the GraphModel
-     * @param node the UML object
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigException(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigException(GraphModel gm, Object node) {
-        super(gm, node);
-    }
 
     /**
      * Construct an Exception fig.

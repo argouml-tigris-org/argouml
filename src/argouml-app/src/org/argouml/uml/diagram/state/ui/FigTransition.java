@@ -65,43 +65,6 @@ public class FigTransition extends FigEdgeModelElement {
      * If the line is solid, then it represents "control flow".
      */
     private boolean dashed;
-
-
-    /**
-     * The main constructor.
-     *
-     * @deprecated for 0.27.3 by mvw.  Use 
-     * {@link #FigTransition(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigTransition() {
-        super();
-
-        initializeTransition();
-    }
-
-    /**
-     * The constructor that hooks the Fig into an existing UML element.
-     *
-     * It also adapts the line to be dashed if the source or destination
-     * is an ObjectFlowState.
-     *
-     * @param edge the UML element
-     * @param lay the layer
-     *
-     * @deprecated for 0.27.3 by mvw.  Use 
-     * {@link #FigTransition(Object, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigTransition(Object edge, Layer lay) {
-        this();
-        if (Model.getFacade().isATransition(edge)) {
-            initPorts(lay, edge);
-        }
-        setLayer(lay);
-        setOwner(edge);
-    }
     
     /**
      * Constructor used by PGML parser.
@@ -132,18 +95,6 @@ public class FigTransition extends FigEdgeModelElement {
         /* This presumes that the layer is set after the owner: */
         if (getLayer() != null && getOwner() != null) {
             initPorts(lay, getOwner());
-        }
-    }
-
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    @Override
-    public void setOwner(Object owner) {
-        super.setOwner(owner);
-
-        /* This presumes that the owner is set after the layer: */
-        if (getLayer() != null && getOwner() != null) {
-            initPorts(getLayer(), owner);
         }
     }
 

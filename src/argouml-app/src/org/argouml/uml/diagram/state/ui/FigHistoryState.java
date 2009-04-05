@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,6 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigText;
 
@@ -67,17 +66,6 @@ public abstract class FigHistoryState extends FigStateVertex {
         super(owner, bounds, settings);
         initFigs();
     }
-    
-    /**
-     * Main constructor.
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigHistoryState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigHistoryState() {
-        initFigs();
-    }
 
     private void initFigs() {
         setEditable(false);
@@ -99,23 +87,6 @@ public abstract class FigHistoryState extends FigStateVertex {
         setBlinkPorts(false); //make port invisible unless mouse enters
     }
 
-
-    /**
-     * The constructor that hooks the Fig into the UML modelelement.
-     *
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigHistoryState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigHistoryState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        setOwner(node);
-    }
-    
     /**
      * Override setBounds to keep shapes looking right.
      * {@inheritDoc}

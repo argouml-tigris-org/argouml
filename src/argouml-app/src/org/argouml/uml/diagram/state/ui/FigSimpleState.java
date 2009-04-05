@@ -30,7 +30,6 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
@@ -45,34 +44,6 @@ public class FigSimpleState extends FigState {
 
     private FigRect cover;
     private FigLine divider;
-
-    /**
-     * The main constructor.
-     * 
-     * @deprecated for 0.27.3 by mvw.  Use 
-     * {@link #FigSimpleState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSimpleState() {
-        initializeSimpleState();
-    }
-
-    /**
-     * The constructor that hooks into an existing UML element
-     * @param gm ignored
-     * @param node the UML element
-     * 
-     * @deprecated for 0.27.3 by mvw.  Use 
-     * {@link #FigSimpleState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSimpleState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-	this();
-        setOwner(node);
-    }
 
     /**
      * Constructor used by PGML parser.

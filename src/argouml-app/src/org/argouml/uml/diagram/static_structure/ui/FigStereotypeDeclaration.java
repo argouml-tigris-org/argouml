@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,7 +46,6 @@ import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 
 /**
  * Class to display a Stereotype declaration figure using
@@ -57,17 +56,6 @@ import org.tigris.gef.graph.GraphModel;
 public class FigStereotypeDeclaration extends FigCompartmentBox {
 
     private static final long serialVersionUID = -2702539988691983863L;
-    
-    /**
-     * Create a new Fig for a stereotype declaration.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigStereotypeDeclaration(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigStereotypeDeclaration() {
-        constructFigs();
-    }
 
     private void constructFigs() {
         getStereotypeFig().setKeyword("stereotype");
@@ -89,24 +77,6 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
         setBounds(X0, Y0, WIDTH, STEREOHEIGHT + NAME_FIG_HEIGHT);
-    }
-
-    /**
-     * Constructor for use if this figure is created for an existing class
-     * node in the metamodel.
-     *
-     * @param gm   Not actually used in the current implementation
-     * @param node The UML object being placed.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigStereotypeDeclaration(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigStereotypeDeclaration(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        setOwner(node);
-        enableSizeChecking(true);
     }
 
     /**

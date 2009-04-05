@@ -34,7 +34,6 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -47,18 +46,6 @@ import org.tigris.gef.presentation.FigText;
 public class FigObject extends FigNodeModelElement {
 
     private FigRect cover;
-
-    /**
-     * Main constructor.
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *             {@link #FigObject(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigObject() {
-        super();
-        initFigs();
-    }
 
     private void initFigs() {
         setBigPort(new FigRect(X0, Y0, 90, 50, DEBUG_COLOR, DEBUG_COLOR));
@@ -78,22 +65,6 @@ public class FigObject extends FigNodeModelElement {
         setBounds(r.x, r.y, nameMin.width, nameMin.height);
     }
 
-    /**
-     * Constructor that hooks the Fig to an existing UML element.
-     * 
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *             {@link #FigObject(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigObject(@SuppressWarnings("unused") GraphModel gm, Object node) {
-        this();
-        setOwner(node);
-    }
-
-    
     /**
      * Construct a new FigObject.
      * 

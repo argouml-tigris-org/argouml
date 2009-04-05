@@ -68,38 +68,6 @@ public class FigAssociationClass extends FigAssociation implements
     private static final long serialVersionUID = 3643715304027095083L;
 
     /**
-     * Construct a new FigAssociationClass during load from PGML.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigAssociationClass(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigAssociationClass() {
-        super();
-        setBetweenNearestPoints(true);
-        ((FigPoly) getFig()).setRectilinear(false);
-        setDashed(false);
-    }
-
-    /**
-     * Construct a new FigAssociationClass from user interaction.
-     *
-     * @param ed
-     *            the edge
-     * @param lay
-     *            the layer
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigAssociationClass(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigAssociationClass(Object ed, Layer lay) {
-        this();
-        setLayer(lay);
-        setOwner(ed);
-    }
-
-    /**
      * Construct an association class figure for the given AssociationClass
      * model element using the rendering settings.
      * 

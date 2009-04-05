@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,19 +46,6 @@ import org.tigris.gef.graph.GraphModel;
  * @author Tom Morris
  */
 public class FigSignal extends FigClassifierBoxWithAttributes {
-    
-
-    /**
-     * Default constructor for a {@link FigSignal}.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigSignal(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSignal() {
-        super();
-        constructFigs();
-    }
 
     private void constructFigs() {
         getStereotypeFig().setKeyword("signal");
@@ -73,23 +60,6 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
         // by default, do not show operations nor attributes:
         setOperationsVisible(false);
         setAttributesVisible(false);
-    }
-
-    /**
-     * Constructor for use if this figure is created for an
-     * existing interface node in the metamodel.
-     *
-     * @param gm   Not actually used in the current implementation
-     *
-     * @param node The UML object being placed.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigSignal(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSignal(@SuppressWarnings("unused") GraphModel gm, Object node) {
-        this();
-        setOwner(node);
     }
 
     /**

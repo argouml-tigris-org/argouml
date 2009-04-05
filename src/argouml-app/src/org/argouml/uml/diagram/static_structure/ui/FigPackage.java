@@ -131,28 +131,6 @@ public class FigPackage extends FigNodeModelElement
      */
     private boolean stereotypeVisible = true;
 
-    /**
-     * The main constructor.
-     *
-     * @param node the UML package
-     * @param x the x coordinate of the location
-     * @param y the y coordinate of the location
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigPackage(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigPackage(Object node, int x, int y) {
-        // Create a Body that reacts to double-clicks and jumps to a diagram.
-        body = new FigPackageFigText(0, textH, width, height - textH);
-
-        setOwner(node);
-
-        initialize();
-
-        setLocation(x, y);
-    }
-
     private void initialize() {
         body.setEditable(false);
         
@@ -186,19 +164,6 @@ public class FigPackage extends FigNodeModelElement
         setLineWidth(LINE_WIDTH);
 
         updateEdges();
-    }
-
-    /**
-     * Constructor that hooks the fig into the UML element.
-     * 
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigPackage(Object, Rectangle, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigPackage(@SuppressWarnings("unused") GraphModel gm, Object node) {
-        this(node, 0, 0);
     }
 
     /**
@@ -604,22 +569,6 @@ public class FigPackage extends FigNodeModelElement
      */
     class FigPackageFigText extends ArgoFigText {
         
-        /**
-         * The constructor.
-         * 
-         * @param xa
-         * @param ya
-         * @param w
-         * @param h
-         * @deprecated 0.27.2 by tfmorris. Use
-         * {@link #FigPackageFigText(Object, Rectangle, DiagramSettings)}
-         */
-        @SuppressWarnings("deprecation")
-        @Deprecated
-        public FigPackageFigText(int xa, int ya, int w, int h) {
-            super(xa, ya, w, h);
-        }
-
         /**
          * Construct a text fig for a Package which will jump to diagram for
          * the named package when double clicked.

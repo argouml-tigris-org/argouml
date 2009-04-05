@@ -35,7 +35,6 @@ import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -55,38 +54,6 @@ public class FigDataType extends FigClassifierBox {
     
     private static final int MIN_WIDTH = 40;
 
-    /**
-     * Main constructor for a {@link FigDataType}.
-     *
-     * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
-     * will have created the main box {@link #getBigPort()} and
-     * its name {@link #getNameFig()} and stereotype
-     * (@link #getStereotypeFig()}. This constructor
-     * creates a box for the operations.<p>
-     *
-     * The properties of all these graphic elements are adjusted
-     * appropriately. The main boxes are all filled and have outlines.<p>
-     * 
-     * <em>Warning</em>. Much of the graphics positioning is hard coded. The
-     * overall figure is placed at location (10,10). 
-     * The stereotype compartment is created 15 pixels high
-     * in the parent, but we change it to 19 pixels, 1 more than
-     * ({@link #STEREOHEIGHT} here. The operations box is created at 19 pixels,
-     * 2 more than {@link #ROWHEIGHT}.<p>
-     *
-     * CAUTION: This constructor (with no arguments) is the only one
-     * that does enableSizeChecking(false), all others must set it true.
-     * This is because this constructor is the only one called when loading
-     * a project. In this case, the parsed size must be maintained.<p>
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigDataType(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigDataType() {
-        constructFigs();
-    }
-
     private void constructFigs() {
         getStereotypeFig().setKeyword(getKeyword());
 
@@ -102,24 +69,6 @@ public class FigDataType extends FigClassifierBox {
         // Set the bounds of the figure to the total of the above 
         enableSizeChecking(true);
         super.setStandardBounds(X0, Y0, WIDTH, NAME_FIG_HEIGHT + ROWHEIGHT);
-    }
-
-    /**
-     * Constructor for use if this figure is created for an
-     * existing interface node in the metamodel.
-     *
-     * @param gm   Not actually used in the current implementation
-     *
-     * @param node The UML object being placed.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigDataType(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigDataType(@SuppressWarnings("unused") GraphModel gm, Object node) {
-        this();
-        setOwner(node);
-        enableSizeChecking(true);
     }
 
     /**
@@ -149,18 +98,6 @@ public class FigDataType extends FigClassifierBox {
             DiagramSettings settings) {
         super(owner, bounds, settings);
         constructFigs();
-    }
-    
-    /**
-     * Constructor that allows specification of keyword to be used for figure.
-     * 
-     * @param gm unused
-     * @param node node to be placed
-     * @param keyword string to be placed in guillemots at top of figure
-     */
-    public FigDataType(GraphModel gm, Object node, String keyword) {
-        this(gm, node);        
-        getStereotypeFig().setKeyword(keyword);
     }
 
     /**

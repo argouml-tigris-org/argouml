@@ -72,22 +72,6 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     protected Fig borderFig;
     
     /**
-     * Constructor.
-     * 
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigClassifierBox(Object, Rectangle, DiagramSettings)}
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    FigClassifierBox() {
-        super();
-        Rectangle bounds = getDefaultBounds();
-        operationsFig = new FigOperationsCompartment(bounds.x, bounds.y,
-                bounds.width, bounds.height);
-        constructFigs();
-    }
-
-    /**
      * Initialization shared by all constructors.
      */
     private void constructFigs() {

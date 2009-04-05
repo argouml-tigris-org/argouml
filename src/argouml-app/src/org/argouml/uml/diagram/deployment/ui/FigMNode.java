@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,6 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -38,32 +37,6 @@ import org.tigris.gef.presentation.FigText;
  * @author 5eichler@informatik.uni-hamburg.de
  */
 public class FigMNode extends AbstractFigNode {
-
-    /**
-     * Main constructor - only directly used for file loading.
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *             {@link #FigMNode(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigMNode() {
-        super();
-    }
-
-    /**
-     * Construct a FigMNode based on an existing UML Node element.
-     * 
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *             {@link #FigMNode(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigMNode(GraphModel gm, Object node) {
-        super(gm, node);
-    }
-
     
     /**
      * Construct a new FigMNode.

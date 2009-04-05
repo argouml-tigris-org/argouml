@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2008 The Regents of the University of California. All
+// Copyright (c) 2004-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,6 @@ import java.util.Iterator;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Geometry;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigDiamond;
 
 /**
@@ -64,18 +63,6 @@ public class FigJunctionState extends FigStateVertex {
         initFigs();
     }
     
-    /**
-     * The constructor.
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigJunctionState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigJunctionState() {
-        super();
-        initFigs();
-    }
-
     private void initFigs() {
         setEditable(false);
         setBigPort(new FigDiamond(X, Y, WIDTH, HEIGHT, false, 
@@ -87,22 +74,6 @@ public class FigJunctionState extends FigStateVertex {
         addFig(head);
 
         setBlinkPorts(false); //make port invisible unless mouse enters
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param gm ignored
-     * @param node the owner
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigJunctionState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigJunctionState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-	this();
-	setOwner(node);
     }
 
     /*

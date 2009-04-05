@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,6 @@ import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -47,43 +46,6 @@ import org.tigris.gef.presentation.Fig;
 public class FigInterface extends FigClassifierBox {
 
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
-
-    /**
-     * Main constructor for a {@link FigInterface}.
-     *
-     * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
-     * will have created the main box {@link #getBigPort()} and
-     * its name {@link #getNameFig()} and stereotype
-     * (@link #getStereotypeFig()}. This constructor
-     * creates a box for the operations.<p>
-     *
-     * The properties of all these graphic elements are adjusted
-     * appropriately. The main boxes are all filled and have outlines.<p>
-     *
-     * For reasons I don't understand the stereotype is created in a box
-     * with lines. So we have to created a blanking rectangle to overlay the
-     * bottom line, and avoid three compartments showing.<p>
-     *
-     * <em>Warning</em>. Much of the graphics positioning is hard coded. The
-     * overall figure is placed at location (10,10).
-     * The stereotype compartment is created 15 pixels high
-     * in the parent, but we change it to 19 pixels, 1 more than
-     * ({@link #STEREOHEIGHT} here. The operations box is created at 19 pixels,
-     * 2 more than {@link #ROWHEIGHT}.<p>
-     *
-     * CAUTION: This constructor (with no arguments) is the only one
-     * that does enableSizeChecking(false), all others must set it true.
-     * This is because this constructor is the only one called when loading
-     * a project. In this case, the parsed size must be maintained.<p>
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigInterface(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigInterface() {
-
-        initialize();
-    }
 
     /**
      * Initialization common to multiple constructors.  This can be merged back
@@ -113,25 +75,6 @@ public class FigInterface extends FigClassifierBox {
         // Set the bounds of the figure to the total of the above 
         enableSizeChecking(true);
         setBounds(X0, Y0, size.width, size.height);
-    }
-
-    /**
-     * Constructor for use if this figure is created for an
-     * existing interface node in the metamodel.
-     *
-     * @param gm   Not actually used in the current implementation
-     *
-     * @param node The UML object being placed.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigInterface(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigInterface(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        setOwner(node);
-        enableSizeChecking(true);
     }
 
     /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,9 +34,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.FigPoly;
 
 
 /**
@@ -63,32 +61,6 @@ public class FigEdgeAssociationClass
     
     private static final Logger LOG =
         Logger.getLogger(FigEdgeAssociationClass.class);
-    
-    /**
-     * The constructor.
-     * @deprecated for 0.27.3 by tfmorris.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigEdgeAssociationClass() {
-        setBetweenNearestPoints(true);
-        ((FigPoly) getFig()).setRectilinear(false);
-        setDashed(true);
-    }
-
-    /**
-     * The constructor for the AssociationClass fig.
-     * 
-     * @param classBoxFig the figure representing the Class
-     * @param ownerFig the owner fig
-     * @deprecated for 0.27.3 by tfmorris.
-     */
-    @Deprecated
-    public FigEdgeAssociationClass(FigClassAssociationClass classBoxFig,
-                                   FigAssociationClass ownerFig) {
-        this();
-        constructFigs(classBoxFig, ownerFig);
-    }
 
     private void constructFigs(FigClassAssociationClass classBoxFig,
             Fig ownerFig) {

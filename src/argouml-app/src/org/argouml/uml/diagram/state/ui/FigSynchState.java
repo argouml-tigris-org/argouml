@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,6 @@ import java.util.Iterator;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -68,17 +67,6 @@ public class FigSynchState extends FigStateVertex {
         initFigs();
     }
     
-    /**
-     * The constructor.
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigSynchState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSynchState() {
-        initFigs();
-    }
-
     private void initFigs() {
         setEditable(false);
 
@@ -103,21 +91,6 @@ public class FigSynchState extends FigStateVertex {
         setBlinkPorts(false); //make port invisible unless mouse enters
     }
 
-    /**
-     * The constructor.
-     *
-     * @param gm the graphmodel (not used)
-     * @param node the UML object
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigSynchState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSynchState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        setOwner(node);
-    }
     /**
      * Override setStandardBounds to keep shapes looking right.
      * {@inheritDoc}

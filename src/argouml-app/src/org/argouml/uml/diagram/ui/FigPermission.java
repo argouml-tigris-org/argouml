@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.ui;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.base.Layer;
 
 /**
  * The Fig for a permission, which is a form of dependency.
@@ -39,44 +38,6 @@ import org.tigris.gef.base.Layer;
  * @author Markus Klink
  */
 public class FigPermission extends FigDependency {
-
-    /**
-     * The constructor.
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigPermission(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigPermission() {
-        super();
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param edge the edge
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigPermission(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigPermission(Object edge) {
-        super(edge);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param edge the edge
-     * @param lay the layer
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigPermission(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigPermission(Object edge, Layer lay) {
-        super(edge, lay);
-    }
     
     /**
      * Construct a Fig.

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -65,27 +65,6 @@ public class FigSingleLineText extends ArgoFigText  {
      */
     private String[] properties;
 
-    /**
-     * The constructor.
-     *
-     * @param x the initial x position
-     * @param y the initial y position
-     * @param w the initial width
-     * @param h the initial height
-     * @param expandOnly true if the Fig should never shrink
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigSingleLineText(Object, Rectangle, DiagramSettings, boolean)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly) {
-        super(x, y, w, h, expandOnly);
-
-        initialize();
-
-//        initNotationArguments(); /* There is no NotationProvider yet! */
-    }
-
     private void initialize() {
         setFillColor(FILL_COLOR); // in case someone turns it on
         setFilled(false);
@@ -93,46 +72,6 @@ public class FigSingleLineText extends ArgoFigText  {
         setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
         setTextColor(TEXT_COLOR);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param x the initial x position
-     * @param y the initial y position
-     * @param w the initial width
-     * @param h the initial height
-     * @param expandOnly true if this fig shall not shrink
-     * @param property the property to listen to
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigSingleLineText(Object, Rectangle, DiagramSettings, boolean)}.
-     */
-    @Deprecated
-    public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly, 
-            String property) {
-        this(x, y, w, h, expandOnly, new String[] {property});
-    }
-
-
-    /**
-     * The constructor.
-     *
-     * @param x the initial x position
-     * @param y the initial y position
-     * @param w the initial width
-     * @param h the initial height
-     * @param expandOnly true if this fig shall not shrink
-     * @param allProperties the properties to listen to
-     * @see org.tigris.gef.presentation.FigText#FigText(
-     *         int, int, int, int, boolean)
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigSingleLineText(Object, Rectangle, DiagramSettings, boolean)}.
-     */
-    @Deprecated
-    public FigSingleLineText(int x, int y, int w, int h, boolean expandOnly, 
-            String[] allProperties) {
-        this(x, y, w, h, expandOnly);
-        this.properties = allProperties;
     }
 
     /**
@@ -228,17 +167,6 @@ public class FigSingleLineText extends ArgoFigText  {
             return super.isStartEditingKey(ke);
         } else {
             return false;
-        }
-    }
-    
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public void setOwner(Object owner) {
-        super.setOwner(owner);
-        if (owner != null && properties != null) {
-            addModelListener();
-            setText(); // TODO: MVW: Remove this!
         }
     }
 

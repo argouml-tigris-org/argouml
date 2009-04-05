@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,10 +26,8 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Rectangle;
 
-import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * Fig with specific knowledge of Attribute display. <p>
@@ -42,43 +40,6 @@ import org.tigris.gef.presentation.Fig;
  * @author Michiel
  */
 public class FigAttribute extends FigFeature {
-
-    /**
-     * Constructor for FigAttribute. 
-     * Build a new compartment figText of the given dimensions, within the
-     * compartment described by <code>aFig</code>.
-     * 
-     * @param x x
-     * @param y x
-     * @param w w
-     * @param h h
-     * @param aFig the figure describing the whole compartment
-     * @param np the notation provider for the text
-     * @deprecated for 0.27.3 by tfmorris. Use
-     * {@link #FigAttribute(Object, Rectangle, DiagramSettings)}
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigAttribute(int x, int y, int w, int h, Fig aFig, 
-            NotationProvider np) {
-        super(x, y, w, h, aFig, np);
-    }
-    
-    /**
-     * Construct an Attribute fig.
-     * @deprecated by mvw in V0.27.3. Use the constructor without np parameter.
-     * 
-     * @param owner owning UML element
-     * @param bounds position and size
-     * @param settings render settings
-     * @param np notation provider
-     */
-    @Deprecated
-    @SuppressWarnings("deprecation")
-    public FigAttribute(Object owner, Rectangle bounds,
-            DiagramSettings settings, NotationProvider np) {
-        super(owner, bounds, settings, np);
-    }
 
     /**
      * Construct an Attribute fig.

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,6 @@ import org.argouml.model.StateMachinesHelper;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.SelectionMoveClarifiers;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -76,18 +75,6 @@ public class FigStubState extends FigStateVertex {
         super(owner, bounds, settings);
         initFigs();
     }
-    
-    /**
-     * The constructor.
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigStubState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigStubState() {
-        super();
-        initFigs();
-    }
 
     private void initFigs() {
         facade = Model.getFacade();
@@ -121,21 +108,6 @@ public class FigStubState extends FigStateVertex {
 
         setShadowSize(0);
         setBlinkPorts(false); //make port invisible unless mouse enters
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param gm (ignored)
-     * @param node the UML owner element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigStubState(Object, Rectangle, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigStubState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        setOwner(node);
     }
 
     /*

@@ -30,12 +30,10 @@ import java.util.List;
 
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.PathItemPlacement;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 
 
@@ -48,36 +46,6 @@ public class FigAssociationRole extends FigAssociation {
     
     private FigMessageGroup messages;
 
-    /**
-     * Main Constructor
-     * 
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *            {@link #FigAssociationRole(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigAssociationRole() {
-        super();
-        messages = new FigMessageGroup();
-        addPathItem(messages, new PathItemPlacement(this, messages, 50, 10));
-    }
-
-    /**
-     * Constructor for FigAssociationRole.
-     * 
-     * @param edge the owning UML element
-     * @param lay the layer
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *            {@link #FigAssociationRole(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigAssociationRole(Object edge, Layer lay) {
-	this();
-	setLayer(lay);
-    	setOwner(edge);
-    }
-    
     /**
      * Construct an AssociationRole fig with the given onwer and render
      * settings.
@@ -119,30 +87,6 @@ public class FigAssociationRole extends FigAssociation {
  * A Fig for the group of Messages shown above the Association Role.
  */
 class FigMessageGroup extends ArgoFigGroup {
-
-    /**
-     * Constructor for FigMessageGroup.
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *            {@link #FigMessageGroup(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigMessageGroup() {
-	super();
-    }
-
-    /**
-     * Constructor for FigMessageGroup.
-     * 
-     * @param figs
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *            {@link #FigMessageGroup(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigMessageGroup(List<ArgoFig> figs) {
-        super(figs);
-    }
     
     /**
      * The constructor.

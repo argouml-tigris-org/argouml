@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,6 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
@@ -45,32 +44,6 @@ import org.tigris.gef.presentation.FigText;
  * @author 5eichler
  */
 public class FigComponent extends AbstractFigComponent {
-    
-    /**
-     * Constructor.
-     * 
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *             {@link #FigComponent(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigComponent() {
-        super();
-    }
-
-    /**
-     * The constructor that hooks the Fig into an existing UML element.
-     * 
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *             {@link #FigComponent(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigComponent(GraphModel gm, Object node) {
-        super(gm, node);
-    }
 
     /**
      * Construct a new FigComponent.

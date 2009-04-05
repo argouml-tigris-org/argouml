@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,10 +29,8 @@ import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -61,49 +59,6 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     private FigMultiplicity destMult;
 
     /**
-     * The constructor.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigAssociationEnd(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigAssociationEnd() {
-        super();
-        
-        destMult = new FigMultiplicity();
-        // Placed at a 45 degree angle close to the end
-        addPathItem(destMult, 
-                new PathItemPlacement(this, destMult, 100, -5, 45, 5));
-        ArgoFigUtil.markPosition(this, 100, -5, 45, 5, Color.green);
-
-        destGroup = new FigAssociationEndAnnotation(this);
-        addPathItem(destGroup, 
-                new PathItemPlacement(this, destGroup, 100, -5, -45, 5));
-        ArgoFigUtil.markPosition(this, 100, -5, -45, 5, Color.blue);
-
-        setBetweenNearestPoints(true);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param owner the UML object: association-end
-     * @param lay the layer that contains this Fig
-      * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigAssociationEnd(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigAssociationEnd(Object owner, Layer lay) {
-        this();
-        setLayer(lay);
-        setOwner(owner);
-        if (Model.getFacade().isAAssociationEnd(owner)) {
-            addElementListener(owner);
-        }
-    }
-    
-    /**
      * Construct Fig.
      * 
      * @param owner owning UML element (i.e. an AssociationEnd)
@@ -125,22 +80,6 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         setBetweenNearestPoints(true);
         
         initializeNotationProvidersInternal(owner);
-    }
-    
-    /**
-     * Set the owner.
-     * 
-     * @param owner the associationEnd
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#setOwner(java.lang.Object)
-     * @deprecated for 0.27.3 by mvw.  Set the owner in the constructor.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public void setOwner(Object owner) {
-        super.setOwner(owner);
-        destGroup.setOwner(owner);
-        destMult.setOwner(owner);
     }
 
     /*

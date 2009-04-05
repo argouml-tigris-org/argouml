@@ -28,7 +28,6 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigPoly;
 
 /** 
@@ -37,23 +36,6 @@ import org.tigris.gef.presentation.FigPoly;
 public class FigModel extends FigPackage {
 
     private FigPoly figPoly = new FigPoly(LINE_COLOR, SOLID_FILL_COLOR);
-
-    /**
-     * The Constructor.
-     * 
-     * @param modelElement the UML model
-     * @param x the x coordinate of the location
-     * @param y the y coordinate of the location
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigModel(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigModel(Object modelElement, int x, int y) {
-        super(modelElement, x, y);
-
-        constructFigs();
-    }
 
     private void constructFigs() {
         int[] xpoints = {125, 130, 135, 125};
@@ -66,18 +48,6 @@ public class FigModel extends FigPackage {
         setBounds(getBounds());
         
         updateEdges();
-    }
-
-    /**
-     * The constructor that hooks the Fig into the UML modelelement
-     * @param gm ignored
-     * @param node the UMl element
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigModel(Object, Rectangle, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigModel(@SuppressWarnings("unused") GraphModel gm, Object node) {
-        this(node, 0, 0);
     }
     
     /**

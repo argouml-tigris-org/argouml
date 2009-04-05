@@ -41,7 +41,6 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.diagram.ui.FigMultiLineTextWithBold;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -65,36 +64,6 @@ public class FigActionState extends FigStateVertex {
      * The notation provider for the textfield.
      */
     private NotationProvider notationProvider;
-
-
-    /**
-     * Constructor FigActionState.
-     * 
-     * @deprecated for 0.27.3 by mvw.  Use 
-     * {@link #FigActionState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigActionState() {
-        initializeActionState();
-    }
-
-    /**
-     * Constructor FigActionState.
-     *
-     * @param gm ignored!
-     * @param node owner
-     * 
-     * @deprecated for 0.27.3 by mvw.  Use 
-     * {@link #FigActionState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigActionState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        setOwner(node);
-        initializeActionState();
-    }
     
     /**
      * Constructor used by PGML parser.

@@ -41,7 +41,6 @@ import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
 import org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 
 /**
  * Class to display graphics for a UML Enumeration in a diagram.
@@ -60,46 +59,6 @@ public class FigEnumeration extends FigDataType
      * The Fig that represents the literals compartment.
      */
     private FigEnumLiteralsCompartment literalsCompartment;
-
-    /**
-     * Main constructor for a {@link FigEnumeration}.
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *             {@link #FigEnumeration(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigEnumeration() {
-        super();
-
-        enableSizeChecking(true);
-        setSuppressCalcBounds(false);
-
-        addFig(getLiteralsCompartment()); // This creates the compartment.
-        setBounds(getBounds());
-    }
-
-
-    /**
-     * Constructor for use if this figure is created for an existing interface
-     * node in the metamodel.
-     * 
-     * @param gm Not actually used in the current implementation
-     * @param node The UML object being placed.
-     * @deprecated by for 0.27.4 by tfmorris. Use
-     *             {@link #FigEnumeration(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigEnumeration(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        enableSizeChecking(true);
-        setEnumLiteralsVisible(true);
-        setOwner(node);
-        literalsCompartment.populate();
-        setBounds(getBounds());
-    }
-
 
     /**
      * Construct a new AbstractFigComponent.

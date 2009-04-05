@@ -46,7 +46,6 @@ import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
@@ -81,18 +80,6 @@ public class FigConcurrentRegion extends FigState
     private FigLine dividerline;
     private static Handle curHandle = new Handle(-1);
 
-    /**
-     * The constructor.
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigConcurrentRegion(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigConcurrentRegion() {
-        super();
-        initialize();
-    }
-
     private void initialize() {
         cover =
             new FigRect(getInitialX(),
@@ -116,41 +103,6 @@ public class FigConcurrentRegion extends FigState
         addFig(getInternal());
 
         setShadowSize(0);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param gm (not used)
-     * @param node the UML model element represented by this Fig
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigConcurrentRegion(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigConcurrentRegion(GraphModel gm, Object node) {
-        this();
-        setOwner(node);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param gm (not used)
-     * @param node the UML model element represented by this Fig
-     * @param col the line color
-     * @param width the width
-     * @param height the height
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigConcurrentRegion(Object, Rectangle, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigConcurrentRegion(GraphModel gm, Object node,
-                               Color col, int width, int height) {
-        this(gm, node);
-        setLineColor(col);
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, width, height);
     }
 
     /**

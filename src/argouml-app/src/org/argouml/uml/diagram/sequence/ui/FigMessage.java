@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.sequence.ui;
 import java.awt.Point;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.sequence.MessageNode;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
@@ -52,24 +53,15 @@ public abstract class FigMessage
      *
      * @param owner is the owner.
      */
-    public FigMessage(Object owner) {
-        super();
-        textGroup = new FigTextGroup();
+    public FigMessage(Object owner, DiagramSettings settings) {
+        super(owner, settings);
+        textGroup = new FigTextGroup(owner, settings);
         textGroup.addFig(getNameFig());
         textGroup.addFig(getStereotypeFig());
         addPathItem(textGroup, new PathItemPlacement(this, textGroup, 50, 10));
-        setOwner(owner);
     }
 
-    /**
-     * Constructor here for saving and loading purposes.
-     *
-     */
-    public FigMessage() {
-        this(null);
-    }
-
-    /**
+     /**
      * Returns the action attached to this link if any.<p>
      *
      * @return the action attached to this link or null if there isn't any.

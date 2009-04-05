@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.state.ui;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.graph.GraphModel;
 
 /** Class to display graphics for a UML ShallowHistoryState in a diagram.
  *
@@ -47,36 +46,12 @@ public class FigShallowHistoryState extends FigHistoryState {
             DiagramSettings settings) {
         super(owner, bounds, settings);
     }
-    
-    /**
-     * Main constructor
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigShallowHistoryState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigShallowHistoryState() {
-        super();
-    }
 
     /*
      * @see org.argouml.uml.diagram.state.ui.FigHistoryState#getH()
      */
     public String getH() {
         return "H";
-    }
-
-    /**
-     * The constructor which links the Fig into the existing UML element
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigShallowHistoryState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigShallowHistoryState(GraphModel gm, Object node) {
-        super(gm, node);
     }
 
 }

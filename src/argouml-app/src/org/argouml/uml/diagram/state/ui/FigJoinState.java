@@ -30,7 +30,6 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 
 /**
@@ -60,19 +59,6 @@ public class FigJoinState extends FigStateVertex {
         super(owner, bounds, settings);
         initFigs();
     }
-    
-
-    /**
-     * The main constructor.
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigJoinState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigJoinState() {
-        super();
-        initFigs();
-    }
 
     private void initFigs() {
         setEditable(false);
@@ -85,22 +71,6 @@ public class FigJoinState extends FigStateVertex {
         addFig(head);
 
         setBlinkPorts(false); //make port invisible unless mouse enters
-    }
-
-    /**
-     * The constructor which links the Fig into the existing UML element.
-     *
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigJoinState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigJoinState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        setOwner(node);
     }
 
     /*

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2007 The Regents of the University of California. All
+// Copyright (c) 2002-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -166,29 +166,50 @@ public class TestItemUID extends TestCase {
         
         Model.getUmlFactory().delete(namespace);
         
-        FigActionState figactionstate = new FigActionState();
+        Object actionState = Model.getActivityGraphsFactory().createActionState();
+        FigActionState figactionstate = new FigActionState(actionState, bounds, settings);
 
         // FigAssociationRole figassociationrole = new FigAssociationRole();
-        FigClassifierRole figclassifierrole = new FigClassifierRole();
+        Object cr = Model.getCollaborationsFactory().createClassifierRole();
+        FigClassifierRole figclassifierrole = new FigClassifierRole(cr, bounds, settings);
 
-        FigComponent figcomponent = new FigComponent();
-        FigComponentInstance figcomponentinstance = new FigComponentInstance();
-        FigMNode figmnode = new FigMNode();
-        FigNodeInstance figmnodeinstance = new FigNodeInstance();
-        FigObject figobject = new FigObject();
+        Object c = Model.getCoreFactory().createComponent();
+        FigComponent figcomponent = new FigComponent(c, bounds, settings);
+        Object ci = Model.getCommonBehaviorFactory().createComponentInstance();
+        FigComponentInstance figcomponentinstance = new FigComponentInstance(ci, bounds, settings);
+        Object nd = Model.getCoreFactory().createNode();
+        FigMNode figmnode = new FigMNode(nd, bounds, settings);
+        Object ndi = Model.getCommonBehaviorFactory().createNodeInstance();
+        FigNodeInstance figmnodeinstance = new FigNodeInstance(ndi, bounds, settings);
+        Object o = Model.getCommonBehaviorFactory().createObject();
+        FigObject figobject = new FigObject(o, bounds, settings);
 
-        FigBranchState figbranchstate = new FigBranchState();
-        FigCompositeState figcompositestate = new FigCompositeState();
-        FigDeepHistoryState figdeephistorystate = new FigDeepHistoryState();
-        FigFinalState figfinalstate = new FigFinalState();
-        FigForkState figforkstate = new FigForkState();
-        //FigHistoryState fighistorystate = new FigHistoryState();
-        FigInitialState figinitialstate = new FigInitialState();
-        FigJoinState figjoinstate = new FigJoinState();
+        Object psc = Model.getStateMachinesFactory().createPseudostate();
+        Model.getCoreHelper().setKind(psc, Model.getPseudostateKind().getChoice());
+        FigBranchState figbranchstate = new FigBranchState(psc, bounds, settings);
+        Object cs = Model.getStateMachinesFactory().createCompositeState();
+        FigCompositeState figcompositestate = new FigCompositeState(cs, bounds, settings);
+        Object psd = Model.getStateMachinesFactory().createPseudostate();
+        Model.getCoreHelper().setKind(psd, Model.getPseudostateKind().getDeepHistory());
+        FigDeepHistoryState figdeephistorystate = new FigDeepHistoryState(psd, bounds, settings);
+        Object fs = Model.getStateMachinesFactory().createFinalState();
+        FigFinalState figfinalstate = new FigFinalState(fs, bounds, settings);
+        Object psf = Model.getStateMachinesFactory().createPseudostate();
+        Model.getCoreHelper().setKind(psf, Model.getPseudostateKind().getFork());
+        FigForkState figforkstate = new FigForkState(psf, bounds, settings);
+        Object psi = Model.getStateMachinesFactory().createPseudostate();
+        Model.getCoreHelper().setKind(psi, Model.getPseudostateKind().getInitial());
+        FigInitialState figinitialstate = new FigInitialState(psi, bounds, settings);
+        Object psj = Model.getStateMachinesFactory().createPseudostate();
+        Model.getCoreHelper().setKind(psj, Model.getPseudostateKind().getJoin());
+        FigJoinState figjoinstate = new FigJoinState(psj, bounds, settings);
+        Object pss = Model.getStateMachinesFactory().createPseudostate();
+        Model.getCoreHelper().setKind(pss, Model.getPseudostateKind().getShallowHistory());
         FigShallowHistoryState figshallowhistorystate =
-            new FigShallowHistoryState();
-        //FigState figstate = new FigState();
-        FigTransition figtransition = new FigTransition();
+            new FigShallowHistoryState(pss, bounds, settings);
+
+        Object t = Model.getStateMachinesFactory().createTransition();
+        FigTransition figtransition = new FigTransition(t, settings);
         
         Object clazz = Model.getCoreFactory().createClass();
         FigClass figclass = new FigClass(clazz, bounds, settings);
@@ -203,7 +224,7 @@ public class TestItemUID extends TestCase {
         Model.getUmlFactory().delete(iface);
 
         Object link = Model.getCommonBehaviorFactory().createLink();
-        FigLink figlink = new FigLink();
+        FigLink figlink = new FigLink(link, settings);
         checkAssignIDToObject(figlink, true, true);
         Model.getUmlFactory().delete(link);
         

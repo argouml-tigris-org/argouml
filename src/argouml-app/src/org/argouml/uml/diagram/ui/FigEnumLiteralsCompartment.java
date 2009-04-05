@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.awt.Rectangle;
 import java.util.Collection;
 
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -45,22 +44,6 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
      * Serial version for initial implementation.
      */
     private static final long serialVersionUID = 829674049363538379L;
-
-    /**
-     * The constructor.
-     *
-     * @param x x
-     * @param y y
-     * @param w width
-     * @param h height
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigEnumLiteralsCompartment(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigEnumLiteralsCompartment(int x, int y, int w, int h) {
-        super(x, y, w, h);
-    }
 
     /**
      * Constructor.
@@ -105,14 +88,6 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
         Object literal = Model.getCoreFactory().buildEnumerationLiteral(
                 "literal",  enumeration);
         TargetManager.getInstance().setTarget(literal);
-    }
-
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    protected FigSingleLineTextWithNotation createFigText(Object owner,
-            Rectangle bounds, DiagramSettings settings, NotationProvider np) {
-        return new FigEnumerationLiteral(owner, bounds, settings, np);
     }
 
     @Override

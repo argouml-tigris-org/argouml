@@ -1,5 +1,5 @@
 // $Id: FigProfileIcon.java 13040 2007-07-10 20:00:25Z linus $
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 
 import org.tigris.gef.presentation.FigImage;
 import org.tigris.gef.presentation.FigNode;
@@ -34,7 +35,7 @@ import org.tigris.gef.presentation.FigText;
  * This FigNode displays the image and the name of a classifier with an
  * stereotype that provides an icon.
  *
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
 public class FigProfileIcon extends FigNode {
 
@@ -53,7 +54,8 @@ public class FigProfileIcon extends FigNode {
      */
     public FigProfileIcon(Image icon, String str) {
 	image = new FigImage(0, 0, icon);
-	label = new FigSingleLineText(0, image.getHeight() + GAP, 0, 0, true);
+	Rectangle bounds = new Rectangle(0, image.getHeight() + GAP, 0, 0);
+	label = new FigSingleLineText(bounds, null, true);
 	label.setText(str);
 	label.calcBounds();
 	

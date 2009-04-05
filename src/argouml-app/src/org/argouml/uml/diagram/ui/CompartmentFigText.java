@@ -30,7 +30,6 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
-import org.argouml.notation.NotationProvider;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -76,77 +75,6 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation
      * Set if the user has selected this component Fig inside the FigNode.
      */
     private boolean highlighted;
-
-    /**
-     * Build a new compartment figText of the given dimensions, within the
-     * compartment described by <code>aFig</code>.
-     * <p>
-     * 
-     * Invoke the parent constructor, then set the reference to the associated
-     * compartment figure. The associated FigText is marked as expand only.
-     * <p>
-     * 
-     * <em>Warning</em>. Won't work properly if <code>aFig</code> is null. A
-     * warning is printed.
-     * <p>
-     * 
-     * @param x X coordinate of the top left of the FigText.
-     * @param y Y coordinate of the top left of the FigText.
-     * @param w Width of the FigText.
-     * @param h Height of the FigText.
-     * @param aFig The figure describing the whole compartment
-     * @param np The notationProvider. See NotationProviderFactory2.
-     * @deprecated for 0.27.3 by tfmorris. Use
-     * {@link #CompartmentFigText(Object, Rectangle, DiagramSettings)}
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public CompartmentFigText(int x, int y, int w, int h, Fig aFig, 
-            NotationProvider np) {
-        super(x, y, w, h, true);
-
-        if (np == null) {
-            LOG.warn("Need a NotationProvider for CompartmentFigText.");
-        }
-        setNotationProvider(np);
-
-        // Set the enclosing compartment fig. Warn if its null (which will
-        // break).
-        refFig = aFig;
-
-        if (refFig == null) {
-            LOG.warn(this.getClass().toString()
-		     + ": Cannot create with null compartment fig");
-        }
-
-        setJustification(FigText.JUSTIFY_LEFT);
-        setRightMargin(MARGIN);
-        setLeftMargin(MARGIN);
-    }
-
-    /**
-     * Construct a CompartmentFigText.
-     * 
-     * @deprecated by mvw for 0.27.3; use a constructor without np parameter
-     * @param element owning uml element
-     * @param bounds position and size
-     * @param settings render settings
-     * @param np notation provider
-     */
-    @Deprecated
-    public CompartmentFigText(Object element, Rectangle bounds,
-            DiagramSettings settings, NotationProvider np) {
-        super(element, bounds, settings, true);
-
-        if (np == null) {
-            LOG.warn("Need a NotationProvider for CompartmentFigText.");
-        }
-        setNotationProvider(np);
-
-        setJustification(FigText.JUSTIFY_LEFT);
-        setRightMargin(MARGIN);
-        setLeftMargin(MARGIN);
-    }
     
     /**
      * Construct a CompartmentFigText.
@@ -166,77 +94,6 @@ public class CompartmentFigText extends FigSingleLineTextWithNotation
         // TODO: We'd like these to not be filled, but GEF won't let us
         // select them if we do that.
 //        setFilled(false);
-    }
-    
-    /**
-     * Build a new compartment figText of the given dimensions, within
-     * the compartment described by <code>aFig</code>.<p>
-     *
-     * Invoke the parent constructor, then set the reference to the
-     * associated compartment figure. The associated FigText is marked
-     * as expand only.<p>
-     *
-     * <em>Warning</em>. Won't work properly if <code>aFig</code> is
-     * null. A warning is printed.<p>
-     *
-     * @param x      X coordinate of the top left of the FigText.
-     *
-     * @param y      Y coordinate of the top left of the FigText.
-     *
-     * @param w      Width of the FigText.
-     *
-     * @param h      Height of the FigText.
-     *
-     * @param aFig  The figure describing the whole compartment
-     * 
-     * @param property The property this Fig should listen for
-     * @deprecated for 0.27.3 by tfmorris. Use
-     * {@link #CompartmentFigText(Object, Rectangle, DiagramSettings, String)}.
-     */
-    @Deprecated
-    public CompartmentFigText(int x, int y, int w, int h, Fig aFig, 
-            String property) {
-        this(x, y, w, h, aFig, new String[] {property});
-    }
-
-    /**
-     * Build a new compartment figText of the given dimensions, within
-     * the compartment described by <code>aFig</code>.<p>
-     *
-     * Invoke the parent constructor, then set the reference to the
-     * associated compartment figure. The associated FigText is marked
-     * as expand only.<p>
-     *
-     * <em>Warning</em>. Won't work properly if <code>aFig</code> is
-     * null. A warning is printed.<p>
-     *
-     * @param x      X coordinate of the top left of the FigText.
-     *
-     * @param y      Y coordinate of the top left of the FigText.
-     *
-     * @param w      Width of the FigText.
-     *
-     * @param h      Height of the FigText.
-     *
-     * @param aFig  The figure describing the whole compartment
-     * 
-     * @param properties The properties this Fig should listen for
-     * @deprecated for 0.27.3 by tfmorris. Use
-     * {@link #CompartmentFigText(Object, Rectangle, DiagramSettings, String[])}
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public CompartmentFigText(int x, int y, int w, int h, Fig aFig, 
-            String[] properties) {
-        super(x, y, w, h, true, properties);
-        
-        if (aFig == null) {
-            throw new IllegalArgumentException("A refFig must be provided");
-        }
-
-        // Set the enclosing compartment fig. Warn if its null (which will
-        // break).
-        refFig = aFig;
     }
 
     /**

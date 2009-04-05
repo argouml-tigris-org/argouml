@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,21 +39,6 @@ import org.argouml.uml.diagram.DiagramSettings;
  * @author Michiel
  */
 public class FigMultiLineTextWithBold extends FigMultiLineText {
-
-    /**
-     * @param x location x
-     * @param y location y
-     * @param w width
-     * @param h height
-     * @param expandOnly impacts behavior
-     * @deprecated for 0.27.3 by tfmorris.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigMultiLineTextWithBold(int x, int y, int w, int h,
-            boolean expandOnly) {
-        super(x, y, w, h, expandOnly);
-    }
 
     /**
      * @param owner owning UML element

@@ -39,7 +39,6 @@ import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
@@ -70,19 +69,6 @@ public class FigCompositeState extends FigState {
         initFigs();
         updateNameText();
     }
-    
-    /**
-     * The main constructor.
-     *
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigCompositeState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigCompositeState() {
-        super();
-        initFigs();
-    }
 
     private void initFigs() {
         cover =
@@ -107,21 +93,6 @@ public class FigCompositeState extends FigState {
         addFig(getInternal());
 
         setBounds(getBounds());
-    }
-
-    /**
-     * The constructor for when a new Fig is created for an existing UML elm.
-     *
-     * @param gm ignored
-     * @param node the UML element
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigCompositeState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigCompositeState(@SuppressWarnings("unused") GraphModel gm, Object node) {
-        this();
-        setOwner(node);
     }
 
     /*

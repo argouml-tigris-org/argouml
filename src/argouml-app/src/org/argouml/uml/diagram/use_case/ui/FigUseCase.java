@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,7 +56,6 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigGroup;
@@ -164,23 +163,6 @@ public class FigUseCase extends FigNodeModelElement
      */
     private CompartmentFigText highlightedFigText;
 
-
-    /**
-     * Constructor for a new use case fig. We work out the smallest
-     * oval that will fit round.<p>
-     *
-     * At creation the extension point box is not showing (for
-     * consistency with existing implementations). We can show it
-     * later.<p>
-     * @deprecated for 0.27.2 by tfmorris. Use
-     *             {@link #FigUseCase(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigUseCase() {
-        initialize();
-    }
-
     /**
      * Initialization which is common to multiple constructors.<p>
      * 
@@ -256,29 +238,6 @@ public class FigUseCase extends FigNodeModelElement
         // Having built the figure, getBounds finds the enclosing rectangle,
         // which we set as our bounds.
         setBounds(getBounds());
-    }
-
-    /**
-     * A version of the constructor used to associated the Fig with a
-     * particular model element object.<p>
-     *
-     * Used at creation time of a UseCase.
-     * And also when Add to Diagram is activated.
-     * However, the load routines use the main constructor and
-     * call setOwner directly.<p>
-     *
-     * @param gm    The graph model to associate with this Fig. Ignored in this
-     *              implementation.
-     *
-     * @param node  The model element object to associate with this Fig.
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigUseCase(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigUseCase(@SuppressWarnings("unused") GraphModel gm, Object node) {
-        this();
-        setOwner(node);
     }
     
     /**

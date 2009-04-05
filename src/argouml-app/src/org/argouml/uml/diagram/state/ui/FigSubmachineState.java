@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,6 @@ import java.util.Iterator;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
@@ -71,19 +70,6 @@ public class FigSubmachineState extends FigState {
         super(owner, bounds, settings);
         include = new FigSingleLineText(owner, 
                 new Rectangle(X0, Y0, WIDTH, INCLUDE_HEIGHT), settings, true);
-        initFigs();
-    }
-
-    /**
-     * The constructor.
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigSubmachineState(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSubmachineState() {
-        super();
-        include = new FigSingleLineText(X0, Y0, WIDTH, INCLUDE_HEIGHT, true);
         initFigs();
     }
 
@@ -145,21 +131,6 @@ public class FigSubmachineState extends FigState {
         addFig(circle1tocircle2);
 
         setBounds(getBounds());
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param gm (ignored)
-     * @param node the owner UML object
-     * @deprecated for 0.27.4 by tfmorris.  Use 
-     * {@link #FigSubmachineState(Object, Rectangle, DiagramSettings)}.
-     */
-    @Deprecated
-    public FigSubmachineState(@SuppressWarnings("unused") GraphModel gm, 
-            Object node) {
-        this();
-        setOwner(node);
     }
 
     /*

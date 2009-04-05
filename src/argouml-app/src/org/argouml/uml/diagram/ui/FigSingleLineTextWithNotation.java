@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,48 +53,6 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
     implements ArgoNotationEventListener {
 
     /**
-     * The constructor.
-     *
-     * @param x the initial x position
-     * @param y the initial y position
-     * @param w the initial width
-     * @param h the initial height
-     * @param expandOnly true if the Fig should never shrink
-     * @deprecated for 0.27.3 by mvw.  Use 
-     * {@link #FigSingleLineTextWithNotation(Object, Rectangle, DiagramSettings,
-     * boolean)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSingleLineTextWithNotation(int x, int y, int w, int h, 
-            boolean expandOnly) {
-        super(x, y, w, h, expandOnly);
-    }
-    
-    /**
-     * The constructor.
-     *
-     * @param x the initial x position
-     * @param y the initial y position
-     * @param w the initial width
-     * @param h the initial height
-     * @param expandOnly true if this fig shall not shrink
-     * @param allProperties the properties to listen to
-     * @see org.tigris.gef.presentation.FigText#FigText(
-     *         int, int, int, int, boolean)
-     * @deprecated for 0.27.3 by mvw.  Use 
-     * {@link #FigSingleLineTextWithNotation(Object, Rectangle,
-     * DiagramSettings, boolean)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigSingleLineTextWithNotation(int x, int y, int w, int h, 
-            boolean expandOnly, 
-            String[] allProperties) {
-        super(x, y, w, h, expandOnly, allProperties);
-    }
-
-    /**
      * @param owner the owning UML object
      * @param bounds the initial position and size
      * @param settings the diagram settings applicable for this Fig
@@ -130,22 +88,6 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
             DiagramSettings settings, boolean expandOnly, 
             String[] allProperties) {
         super(owner, bounds, settings, expandOnly, allProperties);
-        initNotationProviders();
-    }
-    
-    /**
-     * @deprecated by mvw for 0.27.3. 
-     * Remove this method completely 
-     * once the deprecated constructors are gone.
-     *
-     * @param owner the uml element
-     * @see org.argouml.uml.diagram.ui.FigSingleLineText#setOwner(java.lang.Object)
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public void setOwner(Object owner) {
-        super.setOwner(owner);
         initNotationProviders();
     }
 

@@ -75,21 +75,6 @@ public class FigExtend extends FigEdgeModelElement {
 
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
 
-
-    /**
-     * The default constructor, but should never be called directly
-     * (use {@link #FigExtend(Object, DiagramSettings)}, since that sets the
-     * owner. <p>
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigExtend(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigExtend() {
-        initialize(null);
-    }
-
-
     private void initialize(Object owner) {
         // The <<extend>> label.
         // It's not a true stereotype, so don't use the stereotype support
@@ -136,22 +121,6 @@ public class FigExtend extends FigEdgeModelElement {
         // Make the edge go between nearest points
 
         setBetweenNearestPoints(true);
-    }
-
-
-    /**
-     * The main constructor. Builds the FigEdge required and makes the
-     * given edge object its owner.<p>
-     *
-     * @param edge  The edge that will own the fig
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigExtend(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigExtend(Object edge) {
-        this();
-        setOwner(edge);
     }
 
     /**
