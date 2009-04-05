@@ -57,39 +57,10 @@ public class TestToDoItem extends TestCase {
                 moreInfo);
 
         // test that properties were correctly initialized by the constructor
-        assertTrue("ToDoItem.getHeadline() incorrect after initialized"
-                + " constructor", headline == item.getHeadline());
-        assertTrue("ToDoItem.getDescription() incorrect after initialized by"
-                + " constructor", description == item.getDescription());
-        assertTrue("ToDoItem.getPriority() incorrect after initialized by"
-                + " constructor", priority == item.getPriority());
-        assertTrue("ToDoItem.getMoreInfoURL() incorrect after initialized by"
-                + " constructor", moreInfo == item.getMoreInfoURL());
-        assertTrue(
-                "((Critic)ToDoItem.getPoster()).getHeadline() incorrect after "
-                        + "initialized by constructor",
-                headline == ((Critic) item.getPoster()).getHeadline());
-                
-        // reset the values to a different value
-        priority = ToDoItem.LOW_PRIORITY;
-        headline += " - Set Test";
-        description += " - Set Test";
-        moreInfo += "/settest.htm";             
-
-        // test that properties were correctly set by the setters
-        assertTrue(
-                "ToDoItem.getHeadline() incorrect after ToDoItem.setHeadline()",
-                headline == item.getHeadline());
-        assertTrue(
-                "ToDoItem.getDescription() incorrect after "
-                + "ToDoItem.setDescription()",
-                description == item.getDescription());
-        assertTrue(
-                "ToDoItem.getPriority() incorrect after ToDoItem.setPriority()",
-                priority == item.getPriority());
-        assertTrue(
-                "ToDoItem.getMoreInfoURL() incorrect after "
-                + "ToDoItem.setMoreInfoURL()",
-                moreInfo == item.getMoreInfoURL());
+        assertEquals(headline, item.getHeadline());
+        assertEquals(description, item.getDescription());
+        assertEquals(priority, item.getPriority());
+        assertEquals(moreInfo, item.getMoreInfoURL());
+        assertEquals(headline, ((Critic) item.getPoster()).getHeadline());
     }
 }
