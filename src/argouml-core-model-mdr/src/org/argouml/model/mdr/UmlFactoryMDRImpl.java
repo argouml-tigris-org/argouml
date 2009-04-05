@@ -30,12 +30,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.DummyModelCommand;
+import org.argouml.model.ExtensionMechanismsFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
@@ -588,15 +591,23 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             element = this.modelImpl.getUseCasesFactory().
                 buildExtensionPoint(container);            
         } else if (elementType == this.metaTypes.getTemplateParameter()) {
-			TemplateParameter t = (TemplateParameter) Model.getCoreFactory().createTemplateParameter();
-			DataType d = getCore().createDataType();
-			d.setName("T");
-			t.setParameter(d);
-			if (container instanceof ModelElement) {
-				t.setTemplate((ModelElement)container);
-				((ModelElement) container).getTemplateParameter().add(t);
-			}
-            return t;            
+            TemplateParameter templateParam = getCore().createTemplateParameter();
+            Parameter param = getCore().createParameter();
+            param.setName("T");
+            templateParam.setParameter(param);
+            // bounds are defined as param tagged values
+            if (container instanceof ModelElement) {
+                for (String tagName : new String[]{"extends","super"}) {
+                    TaggedValue bound = (TaggedValue)getExtensionMechanisms().buildTaggedValue(
+                            getExtensionMechanisms().buildTagDefinition(tagName, null, 
+                                    ((ModelElement)container).getNamespace()),
+                            new String[]{""});
+                    param.getTaggedValue().add(bound);
+                }
+                templateParam.setTemplate((ModelElement)container);
+                ((ModelElement) container).getTemplateParameter().add(templateParam);
+            }
+            return templateParam;            
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);
