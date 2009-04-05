@@ -226,17 +226,6 @@ public class FigComment
         return figClone;
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public void setOwner(Object own) {
-        super.setOwner(own);
-        updateBody();
-    }
-
     private void updateBody() {
         if (getOwner() != null) {
             String body = (String) Model.getFacade().getBody(getOwner());

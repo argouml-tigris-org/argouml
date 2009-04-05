@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -76,29 +76,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      * The minimum height of the classifier role.
      */
     private int minimumHeight;
-    
-    /**
-     * Constructor 
-     * @deprecated for 0.28.alpha3 by penyaskito. Use
-     *           {@link #FigClassifierRole(Object, Rectangle, DiagramSettings)}.
-     */
-    public FigClassifierRole() {
-        super();
-        initialize();
-    }
 
-    /**
-     * Constructor.
-     * @param node The model element
-     * @deprecated for 0.28.alpha3 by penyaskito. Use
-     *           {@link #FigClassifierRole(Object, Rectangle, DiagramSettings)}.
-
-     */
-    public FigClassifierRole(Object node) {
-        this();
-        setOwner(node);
-    }
-    
     /**
      * Construct a use case figure with the given owner, bounds, and rendering 
      * settings.  This constructor is used by the PGML parser.

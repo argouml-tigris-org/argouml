@@ -926,53 +926,6 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * This method should only be called once for any one Fig instance that
-     * represents a model element (ie not for a FigEdgeNote). It is called
-     * either by the constructor that takes a model element as an argument or
-     * it is called by PGMLStackParser after it has created the Fig by use of
-     * the empty constructor.
-     * <p>
-     * The assigned model element (owner) must not change during the lifetime of
-     * the Fig.
-     * 
-     * @param owner the model element that this Fig represents.
-     * @throws IllegalArgumentException if the owner given is not a model
-     *                 element
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     * @deprecated for 0.27.3 by tfmorris.  Owner must be specified in the
-     * constructor and can't be changed afterwards.
-     */
-    @Deprecated
-    @Override
-    public void setOwner(Object owner) {
-        if (owner == null) {
-            throw new IllegalArgumentException("An owner must be supplied");
-        }
-        if (getOwner() != null) {
-            throw new IllegalStateException(
-                    "The owner cannot be changed once set");
-        }
-        if (!Model.getFacade().isAUMLElement(owner)) {
-            throw new IllegalArgumentException(
-                    "The owner must be a model element - got a "
-                    + owner.getClass().getName());
-        }
-        super.setOwner(owner);
-        nameFig.setOwner(owner); // for setting abstract
-        if (edgePort != null) {
-            edgePort.setOwner(getOwner());
-        }
-        stereotypeFig.setOwner(owner); // this fixes issue 5414
-        initNotationProviders(owner);
-        updateListeners(null, owner);
-        // TODO: The following is redundant.  It's done when setLayer is 
-        // called after initialization complete
-//        renderingChanged();
-    }
-
-
-
-    /**
      * Replace the NotationProvider(s). <p>
      *
      * This method shall not be used for the initial creation of

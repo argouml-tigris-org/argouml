@@ -172,16 +172,6 @@ public class FigGeneralization extends FigEdgeModelElement {
         super.paint(g);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setOwner(Object)
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    public void setOwner(Object own) {
-        super.setOwner(own);
-        fixup(own);
-    }
-
     /**
      * Fix up bad figs.
      * <p>

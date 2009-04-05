@@ -115,17 +115,6 @@ public abstract class FigState extends FigStateVertex {
     }
 
     /*
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public void setOwner(Object newOwner) {
-        super.setOwner(newOwner);
-        renderingChanged();
-    }
-
-    /*
      * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
      */
     @Override

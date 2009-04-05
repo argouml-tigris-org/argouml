@@ -64,6 +64,7 @@ public class FigEdgePort extends FigNodeModelElement {
             DiagramSettings settings) {
         super(owner, bounds, settings);
         initialize();
+        bigPort.setOwner(owner);
     }
     
     /*
@@ -72,16 +73,6 @@ public class FigEdgePort extends FigNodeModelElement {
     @Override
     public boolean hit(Rectangle r) {
         return false;
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    @Override
-    @Deprecated
-    public void setOwner(Object own) {
-        bigPort.setOwner(own);
-        super.setOwner(own);
     }
     
     @Override

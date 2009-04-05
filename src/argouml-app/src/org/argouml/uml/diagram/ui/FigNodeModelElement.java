@@ -1446,55 +1446,6 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * This method should only be called once for any one Fig instance that
-     * represents a model element (ie not for a FigEdgeNote).
-     * It is called either by the constructor that takes an model element as an
-     * argument or it is called by PGMLStackParser after it has created the Fig
-     * by use of the empty constructor.
-     * The assigned model element (owner) must not change during the lifetime
-     * of the Fig.
-     * <p>
-     * TODO: It is planned to refactor so that there is only one Fig
-     * constructor. When this is achieved this method can refactored out.
-     * 
-     * @param owner the model element that this Fig represents.
-     * @throws IllegalArgumentException if the owner given is not a model
-     * element
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     * @deprecated for 0.27.3 by tfmorris.  Owner must be provided in 
-     * constructor and may not be changed afterwards.
-     */
-    public void setOwner(Object owner) {
-        assert false; // This should never be called any more...
-        if (owner == null) {
-            throw new IllegalArgumentException("An owner must be supplied");
-        }
-        if (getOwner() != null) {
-            throw new IllegalStateException(
-                    "The owner cannot be changed once set");
-        }
-        if (!Model.getFacade().isAUMLElement(owner)) {
-            throw new IllegalArgumentException(
-                    "The owner must be a model element - got a "
-                    + owner.getClass().getName());
-        }
-        super.setOwner(owner);
-        nameFig.setOwner(owner); // for setting abstract
-        if (getStereotypeFig() != null) {
-            getStereotypeFig().setOwner(owner);
-        }
-        initNotationProviders(owner);
-        readyToEdit = true;
-        renderingChanged();
-//        updateBounds(); // included in the previous line.
-        /* This next line presumes that the 1st fig with this owner 
-         * is the previous port - and consequently nullifies the owner 
-         * of this 1st fig. */
-        bindPort(owner, bigPort);
-        updateListeners(null, owner);
-    }
-
-    /**
      * Replace the NotationProvider(s). <p>
      *
      * This method shall not be used for the initial creation of

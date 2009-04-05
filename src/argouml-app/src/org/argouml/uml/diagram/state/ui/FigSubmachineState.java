@@ -134,17 +134,6 @@ public class FigSubmachineState extends FigState {
     }
 
     /*
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public void setOwner(Object node) {
-        super.setOwner(node);
-        updateInclude();
-    }
-
-    /*
      * @see java.lang.Object#clone()
      */
     @Override

@@ -141,33 +141,6 @@ public class FigAssociation extends FigEdgeModelElement {
                 new PathItemPlacement(this, middleGroup, 50, 25));
         ArgoFigUtil.markPosition(this, 50, 0, 90, 25, Color.yellow);
     }
-    
-    /**
-     * Set the owner.
-     * 
-     * @param owner ignored
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#setOwner(java.lang.Object)
-     * @deprecated for 0.27.3 by tfmorris.  Set the owner in the constructor.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public void setOwner(Object owner) {
-        super.setOwner(owner);
-        
-        Object[] ends = 
-            Model.getFacade().getConnections(owner).toArray();
-        
-        Object source = ends[0];
-        Object dest = ends[1];
-        
-        srcGroup.setOwner(source);
-        srcMult.setOwner(source);
-        
-        destGroup.setOwner(dest);
-        destMult.setOwner(dest);
-    }
-
 
     @Override
     public void renderingChanged() {

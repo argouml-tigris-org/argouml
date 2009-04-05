@@ -111,15 +111,6 @@ public class FigStubState extends FigStateVertex {
     }
 
     /*
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    @Override
-    public void setOwner(Object node) {
-        super.setOwner(node);
-        renderingChanged();
-    }
-
-    /*
      * @see java.lang.Object#clone()
      */
     @Override

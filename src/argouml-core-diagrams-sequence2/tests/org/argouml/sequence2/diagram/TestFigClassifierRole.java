@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,9 +24,9 @@
 
 package org.argouml.sequence2.diagram;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import junit.framework.TestCase;
 
@@ -34,12 +34,10 @@ import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
-import org.argouml.sequence2.diagram.FigClassifierRole;
-import org.argouml.sequence2.diagram.UMLSequenceDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * Tests the FigClassifierRole class.
@@ -82,8 +80,10 @@ public class TestFigClassifierRole extends TestCase {
         List<Object> bases = new ArrayList<Object>();
         bases.add(clazz);
         Model.getCollaborationsHelper().setBases(cr, bases);
-                
-        FigClassifierRole fig = new FigClassifierRole(cr);      
+
+        Rectangle bounds = new Rectangle(10, 10, 20, 20);
+        DiagramSettings settings = new DiagramSettings();
+        FigClassifierRole fig = new FigClassifierRole(cr, bounds, settings);      
      
         int count = 0;
         count = diagram.getLayer().getContents().size();
