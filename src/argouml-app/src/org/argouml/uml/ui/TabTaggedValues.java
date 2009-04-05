@@ -163,6 +163,11 @@ public class TabTaggedValues extends AbstractArgoJPanel
 
         Object t = (theTarget instanceof Fig)
                     ? ((Fig) theTarget).getOwner() : theTarget;
+        if ((Model.getFacade().isATemplateParameter(t))) {
+            target = Model.getFacade().getParameter(t);
+            shouldBeEnabled = true;
+            return;
+        }
         if (!(Model.getFacade().isAModelElement(t))) {
             target = null;
             shouldBeEnabled = false;
@@ -237,6 +242,10 @@ public class TabTaggedValues extends AbstractArgoJPanel
     public boolean shouldBeEnabled(Object theTarget) {
         Object t = (theTarget instanceof Fig)
             ? ((Fig) theTarget).getOwner() : theTarget;
+        if ((Model.getFacade().isATemplateParameter(t))) {
+            shouldBeEnabled = true;
+            return shouldBeEnabled;
+        }
         if (!(Model.getFacade().isAModelElement(t))) {
             shouldBeEnabled = false;
             return shouldBeEnabled;
