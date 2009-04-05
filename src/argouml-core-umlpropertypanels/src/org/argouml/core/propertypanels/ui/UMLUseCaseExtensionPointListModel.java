@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
+import org.argouml.uml.ui.behavior.use_cases.ActionNewUseCaseExtensionPoint;
 
 /**
  * Model for the ExtensionPoints of a UseCase. <p>
@@ -47,7 +48,11 @@ class UMLUseCaseExtensionPointListModel
      * Constructor for UMLUseCaseExtensionPointListModel.
      */
     public UMLUseCaseExtensionPointListModel() {
-        super("extensionPoint");
+        super("extensionPoint", 
+                Model.getMetaTypes().getExtensionPoint(), 
+                null, 
+                ActionNewUseCaseExtensionPoint.SINGLETON, 
+                null);
     }
 
     /*

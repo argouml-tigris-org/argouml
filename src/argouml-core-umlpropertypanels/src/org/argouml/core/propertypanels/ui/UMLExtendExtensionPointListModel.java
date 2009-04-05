@@ -27,6 +27,8 @@ package org.argouml.core.propertypanels.ui;
 import java.util.List;
 
 import org.argouml.model.Model;
+import org.argouml.uml.ui.behavior.use_cases.ActionAddExtendExtensionPoint;
+import org.argouml.uml.ui.behavior.use_cases.ActionNewExtendExtensionPoint;
 
 /**
  * @since Oct 6, 2002
@@ -38,8 +40,11 @@ class UMLExtendExtensionPointListModel
     /**
      * Constructor for UMLExtendExtensionPointListModel.
      */
-    public UMLExtendExtensionPointListModel() {
-        super("extensionPoint");
+    public UMLExtendExtensionPointListModel(Object modelElement) {
+        super("extensionPoint", Model.getMetaTypes().getExtensionPoint(), 
+              ActionAddExtendExtensionPoint.getInstance(),
+              ActionNewExtendExtensionPoint.SINGLETON,
+              null);
     }
 
     /*

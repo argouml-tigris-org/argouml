@@ -68,20 +68,11 @@ class ListFactory implements ComponentFactory {
             model = new UMLNamespaceOwnedElementListModel();
         } else if ("elementImport".equals(propName)) {
             model = new UMLClassifierPackageImportsListModel();
-            model.setTarget(modelElement);
-            list = new ScrollList(new UMLMutableLinkedList(model,
-                    // TODO: It's OK to change the visibility of this actions?
-                    null, // new ActionAddPackageImport(),
-                    null,
-                    null));
         } else if ("parameter".equals(propName)) {
             if (Model.getFacade().isAObjectFlowState(modelElement)) {
                 model = new UMLObjectFlowStateParameterListModel(metaType);
             } else {
                 model = new UMLClassifierParameterListModel();
-                model.setTarget(modelElement);
-                list = new ScrollList(new UMLLinkedList(model, 
-                        true, false));
             }
         } else if ("raisedSignal".equals(propName)) {
             model = new UMLOperationRaisedSignalsListModel();
@@ -111,10 +102,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLAssociationEndQualifiersListModel();
         } else if ("annotatedElement".equals(propName)) {
             model = new UMLCommentAnnotatedElementListModel();
-            model.setTarget(modelElement);
-            UMLMutableLinkedList l = new UMLMutableLinkedList(
-                    model, null, null, null);
-            list = new ScrollList(l);
         } else if ("context".equals(propName)) {
             model = new UMLSignalContextListModel(metaType);
         } else if ("reception".equals(propName)) {
@@ -126,19 +113,8 @@ class ListFactory implements ComponentFactory {
         } else if ("extensionPoint".equals(propName)) {
             if (Model.getFacade().isAUseCase(modelElement)) {
                 model = new UMLUseCaseExtensionPointListModel();
-                model.setTarget(modelElement);
-                JList l = new UMLMutableLinkedList(
-                            model, null,
-                            ActionNewUseCaseExtensionPoint.SINGLETON);
-                list = new ScrollList(l);
             } else {
-                model = new UMLExtendExtensionPointListModel();
-                model.setTarget(modelElement);
-                JList l =
-                    new UMLMutableLinkedList(model, 
-                        ActionAddExtendExtensionPoint.getInstance(),
-                        ActionNewExtendExtensionPoint.SINGLETON);
-                list = new ScrollList(l);
+                model = new UMLExtendExtensionPointListModel(modelElement);
             }
         } else if ("base".equals(propName)) {
             model = new UMLClassifierRoleBaseListModel(metaType);

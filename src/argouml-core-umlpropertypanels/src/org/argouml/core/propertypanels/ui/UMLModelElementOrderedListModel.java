@@ -30,6 +30,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -44,6 +47,21 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public abstract class UMLModelElementOrderedListModel extends
         UMLModelElementListModel {
+
+    /**
+     * The constructor.
+     *
+     * @param name
+     *            the name
+     */
+    public UMLModelElementOrderedListModel(
+            final String name, 
+            final Object theMetaType, 
+            final AbstractActionAddModelElement2 addAction, 
+            final AbstractActionNewModelElement newAction, 
+            final AbstractActionRemoveElement removeAction) {
+        super(name, theMetaType, addAction, newAction, removeAction);
+    }
 
     /**
      * The constructor.
