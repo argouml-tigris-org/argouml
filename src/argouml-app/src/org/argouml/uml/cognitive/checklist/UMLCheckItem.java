@@ -57,21 +57,6 @@ public class UMLCheckItem extends CheckItem {
      * @param d the description
      * @param m the more-info-url
      * @param p the predicate
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #UMLCheckItem(String, String, String, org.argouml.util.Predicate)}.
-     */
-    public UMLCheckItem(String c, String d, String m, 
-            org.tigris.gef.util.Predicate p) {
-        super(c, d, m, p);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param c the category
-     * @param d the description
-     * @param m the more-info-url
-     * @param p the predicate
      */
     public UMLCheckItem(String c, String d, String m, 
             org.argouml.util.Predicate p) {

@@ -37,8 +37,7 @@ import org.argouml.util.PredicateTrue;
  * @author MarkusK
  *
  */
-public abstract class AbstractGoList2 extends AbstractGoList implements
-        TreeModel {
+public abstract class AbstractGoList2 implements TreeModel {
 
     private Predicate listPredicate = PredicateTrue.getInstance();
 

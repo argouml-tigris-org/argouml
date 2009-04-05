@@ -263,18 +263,6 @@ public class ToDoItem implements Serializable, WizardItem {
     }
 
     /**
-     * @deprecated in 0.27.2 byb Bob Tarling. A ToDoItem should be immutable
-     * to guarantee it can be passed safely between threads. Only use the
-     * constructor to set this value.
-     * @param h the headline
-     */
-    @Deprecated
-    public void setHeadline(String h) {
-	theHeadline = h;
-	cachedExpandedHeadline = null;
-    }
-
-    /**
      * @return the description
      */
     public String getDescription() {
@@ -286,48 +274,14 @@ public class ToDoItem implements Serializable, WizardItem {
     }
 
     /**
-     * @deprecated in 0.27.2 byb Bob Tarling. A ToDoItem should be immutable
-     * to guarantee it can be passed safely between threads. Only use the
-     * constructor to set this value.
-     * @param d the description
-     */
-    @Deprecated
-    public void setDescription(String d) {
-	theDescription = d;
-	cachedExpandedDescription = null;
-    }
-
-    /**
      * @return the more-info-url
      */
     public String getMoreInfoURL() { return theMoreInfoURL; }
 
     /**
-     * @deprecated in 0.27.2 byb Bob Tarling. A ToDoItem should be immutable
-     * to guarantee it can be passed safely between threads. Only use the
-     * constructor to set this value.
-     * @param m the more-info-url
-     */
-    @Deprecated
-    public void setMoreInfoURL(String m) {
-        theMoreInfoURL = m;
-    }
-
-    /**
      * @return the priority
      */
     public int getPriority() { return thePriority; }
-
-    /**
-     * @deprecated in 0.27.2 by Bob Tarling. A ToDoItem should be immutable
-     * to guarantee it can be passed safely between threads. Only use the
-     * constructor to set this value.
-     * @param p the priority
-     */
-    @Deprecated
-    public void setPriority(int p) {
-        thePriority = p;
-    }
 
     /**
      * @return the wizard progress. An integer between 0 and 100,
@@ -352,22 +306,6 @@ public class ToDoItem implements Serializable, WizardItem {
         // much testing is done with assert on.
         assert theOffenders != null;
         return theOffenders;
-    }
-
-    /**
-     * Set the design material that is subject of this ToDoItem.
-     *
-     * @param offenders the offenders
-     * TODO: Offenders need to be more strongly typed. - tfm 20070630
-     * TODO: Provide a constructor argument for this so that the class can
-     * become immutable
-     * @deprecated in 0.27.2 by Bob Tarling. A ToDoItem should be immutable
-     * to guarantee it can be passed safely between threads. Only use the
-     * constructor to set this value.
-     */
-    @Deprecated
-    public void setOffenders(ListSet offenders) {
-        theOffenders = offenders;
     }
 
     /**

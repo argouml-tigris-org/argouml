@@ -38,7 +38,7 @@ import org.argouml.cognitive.ToDoList;
  * Rule for sorting the ToDo list: Priority -> Item.
  *
  */
-public class GoListToPriorityToItem extends AbstractGoList {
+public class GoListToPriorityToItem extends AbstractGoList2 {
 
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation

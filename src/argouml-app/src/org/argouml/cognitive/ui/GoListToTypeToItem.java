@@ -39,7 +39,7 @@ import org.argouml.cognitive.ToDoList;
  * Rule for sorting the ToDo list: Type -> Item.
  *
  */
-public class GoListToTypeToItem extends AbstractGoList {
+public class GoListToTypeToItem extends AbstractGoList2 {
 
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation

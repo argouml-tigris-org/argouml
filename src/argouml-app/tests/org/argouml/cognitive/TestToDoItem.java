@@ -75,15 +75,7 @@ public class TestToDoItem extends TestCase {
         headline += " - Set Test";
         description += " - Set Test";
         moreInfo += "/settest.htm";             
-                
-        // update the properties of the ToDoItem
-        // TODO: We are testing deprecated methods here that aren't actually used by
-        // the application. Just remove this when removing deprecated methods.
-        item.setHeadline(headline);
-        item.setPriority(priority);
-        item.setDescription(description);
-        item.setMoreInfoURL(moreInfo);          
-                
+
         // test that properties were correctly set by the setters
         assertTrue(
                 "ToDoItem.getHeadline() incorrect after ToDoItem.setHeadline()",

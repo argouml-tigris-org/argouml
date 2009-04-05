@@ -27,7 +27,6 @@ package org.argouml.cognitive.checklist;
 import java.io.Serializable;
 
 import org.argouml.util.Predicate;
-import org.argouml.util.PredicateGefWrapper;
 import org.argouml.util.PredicateTrue;
 
 
@@ -93,27 +92,6 @@ public class CheckItem implements Serializable {
      * @param d the description
      * @param m the more-info-url
      * @param p the predicate
-     * 
-     * @deprecated for 0.26 by tfmorris.  Use 
-     * {@link #CheckItem(String, String, String, Predicate)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public CheckItem(String c, String d, String m, 
-            org.tigris.gef.util.Predicate p) {
-	this(c, d);
-	setMoreInfoURL(m);
-	predicate = new PredicateGefWrapper(p);
-    }
-
-
-    /**
-     * The constructor.
-     *
-     * @param c the category
-     * @param d the description
-     * @param m the more-info-url
-     * @param p the predicate
      */
     public CheckItem(String c, String d, String m, 
             Predicate p) {
@@ -160,35 +138,10 @@ public class CheckItem implements Serializable {
     public void setMoreInfoURL(String m) { moreInfoURL = m; }
 
     /**
-     * @return the GEF predicate
-     * @deprecated for 0.26 by tfmorris.  Use {@link #getPredicate2()}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public org.tigris.gef.util.Predicate getPredicate() {
-        if (predicate instanceof PredicateGefWrapper) {
-            return ((PredicateGefWrapper) predicate).getGefPredicate();
-        }
-        throw new IllegalStateException("Mixing legacy API and new API is not"
-                + "supported.  Please update your code.");
-    }
-
-    /**
      * @return the predicate
      */
     public Predicate getPredicate2() {
         return predicate;
-    }
-
-    /**
-     * @param p the predicate
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link CheckItem#setPredicate(Predicate)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public void setPredicate(org.tigris.gef.util.Predicate p) { 
-        predicate = new PredicateGefWrapper(p); 
     }
 
     /**

@@ -186,17 +186,6 @@ public class Critic
     private String moreInfoURL;
 
     /**
-     * Arguments used to configure the critic.
-     * TODO: Could this be removed from the main critics class?
-     * @deprecated for 0.25.4 by Linus Tolke.
-     *             This way of storing information encourages
-     *             violation of type safety.
-     *             Create member attributes instead. 
-     */
-    @Deprecated
-    private Hashtable<String, Object> args = new Hashtable<String, Object>();
-
-    /**
      * The icon representing the resource.
      */
     public static final Icon DEFAULT_CLARIFIER =
@@ -970,57 +959,6 @@ public class Critic
     public String getMoreInfoURL() {
 	return getMoreInfoURL(null, null);
     }
-
-    /**
-     * @param name  the key
-     * @param value the value
-     * @deprecated for 0.25.4 by Linus Tolke.
-     *             This way of storing information encourages
-     *             violation of type safety.
-     *             Create member attributes instead. 
-     */
-    @Deprecated
-    protected void setArg(String name, Object value) {
-	args.put(name, value);
-    }
-
-    /**
-     * @param name the key
-     * @return     the value
-     * @deprecated for 0.25.4 by Linus Tolke.
-     *             This way of storing information encourages
-     *             violation of type safety.
-     *             Create member attributes instead. 
-     */
-    @Deprecated
-    protected Object getArg(String name) {
-	return args.get(name);
-    }
-
-    /**
-     * @return the (key, value) pairs
-     * @deprecated for 0.25.4 by Linus Tolke.
-     *             This way of storing information encourages
-     *             violation of type safety.
-     *             Create member attributes instead. 
-     */
-    @Deprecated
-    public Hashtable<String, Object> getArgs() {
-        return args;
-    }
-
-    /**
-     * @param h the new table of (key, value) pairs
-     * @deprecated for 0.25.4 by Linus Tolke.
-     *             This way of storing information encourages
-     *             violation of type safety.
-     *             Create member attributes instead. 
-     */
-    @Deprecated
-    public void setArgs(Hashtable<String, Object> h) {
-        args = h;
-    }
-
 
     /**
      *  Get the design materials to be criticized by this critic
