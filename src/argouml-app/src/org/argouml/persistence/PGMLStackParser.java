@@ -78,19 +78,6 @@ class PGMLStackParser
         new LinkedHashMap<FigEdge, Object>(50);
 
     private DiagramSettings diagramSettings;
-    
-    /**
-     * Constructor.
-     * @param modelElementsByUuid a map of model elements indexed
-     *                            by a unique string identifier.
-     * @deprecated for 0.27.2 by tfmorris.  Use 
-     * {@link #PGMLStackParser(Map, DiagramSettings)}/
-     */
-    @Deprecated
-    public PGMLStackParser(Map modelElementsByUuid) {
-        super(modelElementsByUuid);
-        addTranslations();
-    }
 
     // TODO: Use stylesheet to convert or wait till we use Fig
     // factories in diagram subsystem.
