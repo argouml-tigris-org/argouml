@@ -34,10 +34,10 @@ import java.net.URL;
  */
 public class CoreProfileReference extends ProfileReference {
     
-    static final String PROFILES_RESOURCE_PATH = 
+    static String PROFILES_RESOURCE_PATH = 
         "/org/argouml/profile/profiles/uml14/";
     
-    static final String PROFILES_BASE_URL = 
+    static String PROFILES_BASE_URL = 
         "http://argouml.org/profiles/uml14/";
 
     /**
@@ -58,5 +58,17 @@ public class CoreProfileReference extends ProfileReference {
             : "null isn't acceptable as the profile file name.";
         assert !"".equals(fileName)
         : "the empty string isn't acceptable as the profile file name.";
+    }
+    
+    /**
+     * Sets the directory name where the profiles can be found. Initially,
+     * 'uml14' is used. TODO: Intermediate solution for UML 2.x support,
+     * please implement a better solution.
+     * 
+     * @param dir Name of the directory for the profiles
+     */
+    public static void setProfileDirectory(String dir) {
+        PROFILES_RESOURCE_PATH = "/org/argouml/profile/profiles/" + dir + '/';
+        PROFILES_BASE_URL = "http://argouml.org/profiles" + dir + '/';
     }
 }
