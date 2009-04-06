@@ -392,9 +392,8 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getObject() {
-        throw new NotImplementedException();
-        // TODO: what to use: InstanceSpecification, ObjectNode, etc?
-//        return org.eclipse.uml2.uml.ObjectNode.class;
+        // is used as InstanceSpecification, see UMLDeploymentDiagram
+        return org.eclipse.uml2.uml.InstanceSpecification.class;
     }
 
     public Object getObjectFlowState() {
