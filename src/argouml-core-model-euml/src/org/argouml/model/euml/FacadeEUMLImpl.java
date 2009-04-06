@@ -115,6 +115,7 @@ import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.StructuralFeature;
 import org.eclipse.uml2.uml.TemplateBinding;
 import org.eclipse.uml2.uml.TemplateParameter;
+import org.eclipse.uml2.uml.TemplateableElement;
 import org.eclipse.uml2.uml.TimeEvent;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Trigger;
@@ -318,7 +319,7 @@ class FacadeEUMLImpl implements Facade {
             return list;
         }
         throw new IllegalArgumentException(
-                "handle must be instance of Stereotype");
+                "handle must be instance of Stereotype"); //$NON-NLS-1$
     }
 
     public Collection getBases(Object handle) {
@@ -1321,7 +1322,11 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public List getTemplateParameters(Object handle) {
-        throw new NotYetImplementedException();
+        if (handle instanceof TemplateableElement) {
+            return ((TemplateableElement) handle).getTemplateBindings();
+        }
+        throw new IllegalArgumentException(
+            "handle must be instance of TemplateableElement"); //$NON-NLS-1$
     }
 
     public String getTipString(Object modelElement) {
