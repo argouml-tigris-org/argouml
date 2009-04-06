@@ -113,6 +113,16 @@ public class FigEdgeAssociationClass
         constructFigs(classBoxFig, ownerFig);
     }
     
+    /**
+     * @param owner the owner
+     * @param settings the render settings
+     */
+    public FigEdgeAssociationClass(Object owner,
+            DiagramSettings settings) {
+        super(owner, settings);
+        setBetweenNearestPoints(true);
+    }
+    
     /*
      * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
      */
