@@ -54,7 +54,6 @@ import org.argouml.profile.ProfileModelLoader;
 import org.argouml.profile.ResourceModelLoader;
 import org.argouml.profile.UserProfileReference;
 import org.argouml.profile.init.InitProfileSubsystem;
-import org.argouml.profile.internal.ProfileJava;
 import org.argouml.profile.internal.ProfileUML;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -157,8 +156,6 @@ public class TestProfileConfigurationFilePersister extends TestCase {
         Iterator<Profile> profileIter = profiles.iterator();
         assertTrue("Didn't get expected UML profile", 
                 profileIter.next() instanceof ProfileUML);
-        assertTrue("Didn't get expected Java profile", 
-                profileIter.next() instanceof ProfileJava);
     }
     
     /**

@@ -86,8 +86,6 @@ public class ProfileManagerImpl implements ProfileManager {
 
     private ProfileUML profileUML;
     
-    private ProfileJava profileJava;
-    
     private ProfileGoodPractices profileGoodPractices;
     
     private ProfileCodeGeneration profileCodeGeneration;
@@ -101,7 +99,6 @@ public class ProfileManagerImpl implements ProfileManager {
             disableConfigurationUpdate = true;
             
             profileUML = new ProfileUML();
-            profileJava = new ProfileJava(profileUML);
             profileGoodPractices = new ProfileGoodPractices();
             profileCodeGeneration = new ProfileCodeGeneration(
                     profileGoodPractices);
@@ -111,9 +108,8 @@ public class ProfileManagerImpl implements ProfileManager {
                 // the UML Profile is always present and default
             
             // register the built-in profiles
-            registerProfile(profileJava);                
-            registerProfile(profileGoodPractices);                
-            registerProfile(profileCodeGeneration);                
+            registerProfile(profileGoodPractices);
+            registerProfile(profileCodeGeneration);
             registerProfile(new ProfileMeta());
 
         } catch (ProfileException e) {
@@ -140,7 +136,6 @@ public class ProfileManagerImpl implements ProfileManager {
                 // add the Java profile and the code generation and good practices
                 // profiles as default
 
-                addToDefaultProfiles(profileJava);
                 addToDefaultProfiles(profileGoodPractices);
                 addToDefaultProfiles(profileCodeGeneration);
                 
