@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1"
+    xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:uml="http://schema.omg.org/spec/UML/2.1.1" xsi:schemaLocation="http://schema.omg.org/spec/UML/2.1.1 http://www.eclipse.org/uml2/2.1.0/UML" xmi:id="_Y1uxkCKnEd66m7P7NosbnQ"
+    name="UML 2.2 Standard Elements">
+  <packagedElement xmi:type="uml:DataType" xmi:id="_rRCZ0CKoEd66m7P7NosbnQ" name="Integer"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_FpfUQCKpEd66m7P7NosbnQ" name="String"/>
+  <packagedElement xmi:type="uml:DataType" xmi:id="_IxwswCKpEd66m7P7NosbnQ" name="UnlimitedInteger"/>
+  <packagedElement xmi:type="uml:Enumeration" xmi:id="_Kkf1sCKpEd66m7P7NosbnQ" name="Boolean">
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_LgZdQCKpEd66m7P7NosbnQ" name="FALSE" enumeration="_Kkf1sCKpEd66m7P7NosbnQ"/>
+    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_QKIBcCKpEd66m7P7NosbnQ" name="TRUE" enumeration="_Kkf1sCKpEd66m7P7NosbnQ"/>
+  </packagedElement>
+</uml:Model>
