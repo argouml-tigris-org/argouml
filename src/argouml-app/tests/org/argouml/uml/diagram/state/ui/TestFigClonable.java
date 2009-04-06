@@ -28,8 +28,11 @@ import java.awt.Rectangle;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.notation.InitNotation;
+import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.uml.diagram.DiagramSettings;
 
@@ -59,6 +62,9 @@ public class TestFigClonable extends TestCase {
 	super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        ProjectManager.getManager().makeEmptyProject();
+        new InitNotation().init();
+        new InitNotationUml().init();
     }
 
     /**
