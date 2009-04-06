@@ -53,6 +53,7 @@ import org.eclipse.uml2.uml.BehavioralFeature;
 import org.eclipse.uml2.uml.CallAction;
 import org.eclipse.uml2.uml.CallEvent;
 import org.eclipse.uml2.uml.ChangeEvent;
+import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.CollaborationUse;
@@ -304,9 +305,20 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
-    public Collection getBaseClasses(Object handle) {
-        throw new NotYetImplementedException();
-
+    public Collection<String> getBaseClasses(Object handle) {
+        if (isAStereotype(handle)) {
+            // TODO: it's an implementation, but is it correct? - thn
+            EList<Class> eList =
+                ((Stereotype) handle).getAllExtendedMetaclasses();
+            ArrayList<String> list = new ArrayList<String>();
+            Iterator iter = eList.iterator();
+            while (iter.hasNext()) {
+                list.add(((Class) iter.next()).getName());
+            }
+            return list;
+        }
+        throw new IllegalArgumentException(
+                "handle must be instance of Stereotype");
     }
 
     public Collection getBases(Object handle) {
