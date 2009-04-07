@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -45,6 +46,7 @@ import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.SaveException;
 import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.ProfileManager;
 import org.argouml.profile.ProfileMother;
@@ -115,20 +117,20 @@ public class TestProjectWithProfiles extends TestCase {
      * 
      * This test does:
      * <ol>
-     *   <li>set UML Profile for Java as a default profile</li> 
-     *   <li>create a new project and assert that it has the UML profile for 
-     *   Java as part of the project's profile configuration</li>
-     *   <li>create a dependency from the project's model to the UML profile 
-     *   for Java</li>
-     *   <li>remove the Java profile from the project's profile 
+     *   <li>set UML Profile for MetaProfile as a default profile</li> 
+     *   <li>create a new project and assert that it has the MetaProfile 
+     *   as part of the project's profile configuration</li>
+     *   <li>create a dependency from the project's model to the
+     *   MetaProfile</li>
+     *   <li>remove the MetaProfile from the project's profile 
      *   configuration</li>
      *   <li>assert that the project's model elements that had a dependency to 
-     *   the UML profile for Java don't get inconsistent</li>
+     *   the MetaProfile don't get inconsistent</li>
      *   <li>save the project into a new file</li>
-     *   <li>reopen the project and assert that the Java profile isn't part of 
+     *   <li>reopen the project and assert that the MetaProfile isn't part of 
      *   the profile configuration</li>
      *   <li>assert that the project's model elements that had a dependency to 
-     *   the UML profile for Java are consistent</li>
+     *   the MetaProfile are consistent</li>
      * </ol>
      * @throws OpenException if there was an error during a project load
      * @throws SaveException if there was an error during a project save
@@ -136,42 +138,48 @@ public class TestProjectWithProfiles extends TestCase {
      */
     public void testRemoveProfileWithModelThatRefersToProfile()
         throws OpenException, SaveException, InterruptedException {
-        // set UML Profile for Java as a default profile
+        // set MetaProfile as a default profile
         ProfileManager profileManager = ProfileFacade.getManager();
-        Profile javaProfile = profileManager.getProfileForClass(
-                "org.argouml.profile.internal.ProfileJava");
-        if (!profileManager.getDefaultProfiles().contains(javaProfile)) {
-            profileManager.addToDefaultProfiles(javaProfile);
+        Profile metaProfile = profileManager.getProfileForClass(
+                "org.argouml.profile.internal.ProfileMeta");
+        if (!profileManager.getDefaultProfiles().contains(metaProfile)) {
+            profileManager.addToDefaultProfiles(metaProfile);
         }
-        // create a new project and assert that it has the UML profile for 
-        // Java as part of the project's profile configuration
+        // create a new project and assert that it has the MetaProfile 
+        // as part of the project's profile configuration
         Project project = ProjectManager.getManager().makeEmptyProject();
         assertTrue(project.getProfileConfiguration().getProfiles().contains(
-                javaProfile));
-        // create a dependency from the project's model to the UML profile for 
-        // Java
+                metaProfile));
+        Object pckge = null;
+        try {
+            pckge = metaProfile.getProfilePackages().iterator().next();
+        } catch (ProfileException pe) {
+            fail();
+        }
+        assertNotNull(pckge);
+        Object theStereotype = null;
+        Iterator iter = Model.getFacade().getOwnedElements(pckge).iterator();
+        while (theStereotype == null &&  iter.hasNext()) {
+            Object elem = iter.next();
+            if (Model.getFacade().isAStereotype(elem) &&
+                Model.getFacade().getName(elem).equals("Critic")) {
+                theStereotype = elem;
+            }
+        }
+        assertNotNull(theStereotype);
+        // create a dependency from the project's model to the MetaProfile
         Object model = project.getUserDefinedModelList().get(0);
         assertNotNull(model);
-        Object fooClass = Model.getCoreFactory().buildClass("Foo", model);
-        Object javaListType = project.findType("List", false);
-        assertNotNull(javaListType);
-        Object barOperation = Model.getCoreFactory().buildOperation2(fooClass, 
-                javaListType, "bar");
-        assertEquals(barOperation, 
-                getFacade().getOperations(fooClass).iterator().next());
-        Object returnParam = getFacade().getParameter(barOperation, 0);
-        assertNotNull(returnParam);
-        Object returnParamType = getFacade().getType(returnParam);
-        checkJavaListTypeExistsAndMatchesReturnParamType(project, 
-                returnParamType);
-        // remove the Java profile from the project's profile configuration
-        project.getProfileConfiguration().removeProfile(javaProfile);
-        // assert that the project's model elements that had a dependency to 
-        // the UML profile for Java don't get inconsistent
-        returnParamType = getFacade().getType(returnParam);
-        checkJavaListTypeExistsAndMatchesReturnParamType(project, 
-                returnParamType);
-        assertNotNull(project.findType("Foo", false));
+        Object foo = Model.getCoreFactory().buildComment(null, model);
+        Model.getCoreHelper().setName(foo, "foo");
+        Model.getCoreHelper().addStereotype(foo, theStereotype);
+        // remove the MetaProfile from the project's profile configuration
+        project.getProfileConfiguration().removeProfile(metaProfile);
+        // assert that the project's model element that had a dependency to 
+        // the MetaProfile doesn't get inconsistent
+        theStereotype =
+            Model.getFacade().getStereotypes(foo).iterator().next();
+        assertNotNull(theStereotype);
         // save the project into a new file
         File file = getFileInTestDir(
                 "testRemoveProfileWithModelThatRefersToProfile.zargo");
@@ -180,38 +188,35 @@ public class TestProjectWithProfiles extends TestCase {
         persister.save(project, file);
         project.remove();
         
-        // reopen the project and assert that the Java profile isn't part of 
-        // the profile configuration, including the fact that the type 
-        // java.util.List isn't found
+        // reopen the project and assert that the MetaProfile isn't part of 
+        // the profile configuration, including the fact that the stereotype 
+        // <<Critic>> isn't found
         project = persister.doLoad(file);
         project.postLoad();
         assertFalse(project.getProfileConfiguration().getProfiles().contains(
-                javaProfile));
-        assertNull(project.findType("List", false));
+                metaProfile));
         // assert that the project's model elements that had a dependency to 
         // the UML profile for Java are consistent
-        fooClass = project.findType("Foo", false);
-        assertNotNull(fooClass);
-        barOperation = getFacade().getOperations(fooClass).iterator().next();
-        returnParam = getFacade().getParameter(barOperation, 0);
-        assertNotNull(returnParam);
-        // Return type was java.util.List from Java profile - should be gone
-        returnParamType = getFacade().getType(returnParam);
+        pckge = project.getUserDefinedModelList().get(0);
+        assertNotNull(pckge);
+        foo = null;
+        iter = Model.getFacade().getOwnedElements(pckge).iterator();
+        while (foo == null &&  iter.hasNext()) {
+            Object elem = iter.next();
+            if (Model.getFacade().isAComment(elem) &&
+                Model.getFacade().getName(elem).equals("foo")) {
+                foo = elem;
+            }
+        }
+        assertNotNull(foo);
+        theStereotype =
+            Model.getFacade().getStereotypes(foo).iterator().next();
+        assertNotNull(theStereotype);
         // TODO: with new reference resolving scheme, the model sub-system will
         // cache the systemId of the profile, open it and resolve the profile 
         // on its own. Thus, the java.util.List will be found and the return 
         // value will be present again...
-        assertNotNull(returnParamType);
-    }
-
-    private void checkJavaListTypeExistsAndMatchesReturnParamType(
-            Project project, Object returnParamType) {
-        Object javaListType = project.findType("List", false);
-        assertNotNull(javaListType);
-        assertEquals(getFacade().getName(javaListType), 
-                getFacade().getName(returnParamType));
-        assertEquals(getFacade().getNamespace(javaListType), 
-                getFacade().getNamespace(returnParamType));
+        //assertNotNull(returnParamType);
     }
 
     private File getFileInTestDir(String fileName) {
