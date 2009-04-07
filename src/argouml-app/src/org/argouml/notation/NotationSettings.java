@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2008 Tom Morris and other contributors. All
+// Copyright (c) 2008-2009 Tom Morris and other contributors. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -195,7 +195,7 @@ public class NotationSettings {
             return fullyHandleStereotypes;
         } else {
             if (parent != null) {
-                return parent.fullyHandleStereotypes;
+                return parent.isFullyHandleStereotypes();
             } else {
                 return getDefaultSettings().isFullyHandleStereotypes();
             }
