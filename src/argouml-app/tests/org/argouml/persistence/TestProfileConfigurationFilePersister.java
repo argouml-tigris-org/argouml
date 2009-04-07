@@ -118,12 +118,6 @@ public class TestProfileConfigurationFilePersister extends TestCase {
         + "\t\t<plugin>\n"
         + "\t\t\tUML 1.4\n"
         + "\t\t</plugin>\n"
-        
-        // Standard Java profile
-        + "\t\t<plugin>\n"
-        + "\t\t\tJava\n"
-        + "\t\t</plugin>\n"
-
 
         // TODO: User defined profile support untested currently
 //        + "\t\t<userDefined>\n"
@@ -152,7 +146,7 @@ public class TestProfileConfigurationFilePersister extends TestCase {
         ProfileConfigurationParser parser = new ProfileConfigurationParser();
         parser.parse(new InputSource(inStream));
         Collection<Profile> profiles = parser.getProfiles();
-        assertEquals("Wrong number of profiles", 2, profiles.size());
+        assertEquals("Wrong number of profiles", 1, profiles.size());
         Iterator<Profile> profileIter = profiles.iterator();
         assertTrue("Didn't get expected UML profile", 
                 profileIter.next() instanceof ProfileUML);
