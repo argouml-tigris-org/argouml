@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.argouml.application.events.ArgoEventPump;
@@ -38,7 +37,6 @@ import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationSettings;
@@ -487,32 +485,6 @@ public class OperationNotationUml extends OperationNotation {
         return toString(modelElement, settings.isUseGuillemets(), 
                 settings.isShowVisibilities(), settings.isShowTypes(),
                 settings.isShowProperties());
-    }
-    
-    /**
-     * Generate an operation according to the UML notation:
-     * <pre>
-     *         stereotype visibility name (parameter-list) :
-     *                         return-type-expression {property-string}
-     * </pre>
-     * For the return-type-expression: only the types of the return parameters
-     * are shown.  Depending on settings in Notation, visibility and
-     * properties are shown/not shown.
-     *
-     * @author jaap.branderhorst@xs4all.nl
-     * {@inheritDoc}
-     * @see org.argouml.notation.NotationProvider#toString(java.lang.Object, java.util.Map)
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #toString(Object, NotationSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public String toString(Object modelElement, Map args) {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = p.getProjectSettings();
-        return toString(modelElement, ps.getUseGuillemotsValue(), 
-                ps.getShowVisibilityValue(), ps
-                .getShowTypesValue(), ps.getShowPropertiesValue());
     }
     
     /**

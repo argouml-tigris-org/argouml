@@ -27,7 +27,6 @@ package org.argouml.notation.providers.uml;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -182,23 +181,6 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
         throw new ParseException(Translator.localize(msg), 0);        
     }
 
-    /**
-     * Generate the name of an association role of the form:
-     *  ["/" name] [":" name_of_the_base_association]
-     * <p>
-     * Remark: 
-     * So, if both names are empty, then nothing is shown! 
-     * See issue 2712.
-     * 
-     * {@inheritDoc}
-     * @deprecated
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public String toString(Object modelElement, Map args) {
-        return toString(modelElement);
-    }
-
     private String toString(final Object modelElement) {
         //get the associationRole name
         String name = Model.getFacade().getName(modelElement);
@@ -219,12 +201,18 @@ public class AssociationRoleNotationUml extends AssociationRoleNotation {
         return name;
     }
 
+    /*
+     * Generate the name of an association role of the form:
+     *  ["/" name] [":" name_of_the_base_association]
+     * <p>
+     * Remark: 
+     * So, if both names are empty, then nothing is shown! 
+     * See issue 2712.
+     */
     @Override
     public String toString(final Object modelElement, 
             final NotationSettings settings) {
         return toString(modelElement);
     }
-    
-    
 
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,8 +25,6 @@
 package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
-import java.util.Map;
-import java.util.Stack;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -80,16 +78,6 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
         return "parsing.help.fig-nodemodelelement";
     }
 
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
-     */
-    public String toString(Object modelElement, Map args) {
-        return toString(modelElement, isValue("fullyHandleStereotypes", args), 
-                isValue("useGuillemets", args), 
-                isValue("visibilityVisible", args),  
-                isValue("pathVisible", args));
-    }
-
     private String toString(Object modelElement, boolean handleStereotypes, 
             boolean useGuillemets, boolean showVisibility, boolean showPath) {
         String name = Model.getFacade().getName(modelElement);
@@ -107,60 +95,6 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
             sb.append(name);
         }
         return sb.toString();
-    }
-
-    /**
-     * @param modelElement the UML element to generate for
-     * @param args arguments that influence the generation
-     * @return a string which represents the stereotypes
-     * @deprecated for 0.27.3 by tfmorris.
-     */
-    @Deprecated
-    protected String generateStereotypes(Object modelElement, Map args) {
-        return NotationUtilityUml.generateStereotype(modelElement, args);
-    }
-
-    /**
-     * @param modelElement the UML element to generate for
-     * @param args arguments that influence the generation
-     * @return a string which represents the path
-     * @deprecated for 0.27.3 by tfmorris.
-     */
-    @Deprecated
-    protected String generatePath(Object modelElement, Map args) {
-        StringBuilder s = new StringBuilder();
-        if (isValue("pathVisible", args)) {
-            Object p = modelElement;
-            Stack stack = new Stack();
-            Object ns = Model.getFacade().getNamespace(p);
-            while (ns != null && !Model.getFacade().isAModel(ns)) {
-                stack.push(Model.getFacade().getName(ns));
-                ns = Model.getFacade().getNamespace(ns);
-            }
-            while (!stack.isEmpty()) {
-                s.append((String) stack.pop() + "::");
-            }
-
-            if (s.length() > 0 && !(s.lastIndexOf(":") == s.length() - 1)) {
-                s.append("::");
-            }
-        }
-        return s.toString();
-    }
-
-    /**
-     * @param modelElement the UML element to generate for
-     * @param args arguments that influence the generation
-     * @return a string representing the visibility
-     * @deprecated for 0.27.3 by tfmorris.
-     */
-    @Deprecated
-    protected String generateVisibility(Object modelElement, Map args) {
-        if (isValue("visibilityVisible", args)) {
-            return generateVisibility(modelElement);
-        } else {
-            return "";
-        }
     }
 
     private String generateVisibility(Object modelElement) {

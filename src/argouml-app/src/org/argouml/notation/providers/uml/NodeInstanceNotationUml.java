@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.argouml.notation.providers.uml;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.argouml.model.Model;
@@ -103,15 +102,6 @@ public class NodeInstanceNotationUml extends NodeInstanceNotation {
      */
     public String getParsingHelp() {
         return "parsing.help.fig-nodeinstance";
-    }
-
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public String toString(Object modelElement, Map args) {
-        return toString(modelElement);
     }
 
     private String toString(Object modelElement) {

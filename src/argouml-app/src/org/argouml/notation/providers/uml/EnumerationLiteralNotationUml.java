@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.argouml.application.events.ArgoEventPump;
@@ -234,14 +233,6 @@ public class EnumerationLiteralNotationUml extends EnumerationLiteralNotation {
         StereotypeUtility.dealWithStereotypes(literal, stereotype, false);
 
         return;
-    }
-
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public String toString(Object modelElement, Map args) {
-        return toString(modelElement, 
-                NotationUtilityUml.isValue("useGuillemets", args));
     }
 
     private String toString(Object modelElement, boolean useGuillemets) {

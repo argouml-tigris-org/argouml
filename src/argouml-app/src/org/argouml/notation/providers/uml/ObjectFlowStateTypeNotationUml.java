@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.notation.providers.uml;
 
 import java.text.ParseException;
-import java.util.Map;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -116,15 +115,6 @@ public class ObjectFlowStateTypeNotationUml
      */
     public String getParsingHelp() {
         return "parsing.help.fig-objectflowstate1";
-    }
-
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public String toString(Object modelElement, Map args) {
-        return toString(modelElement);
     }
 
     private String toString(Object modelElement) {

@@ -171,9 +171,6 @@ public abstract class FigNodeModelElement
 
     private NotationProvider notationProviderName;
     
-    // TODO: Deprecated
-    private HashMap<String, Object> npArguments;
-    
     /**
      * True if an instance is allowed to be
      * invisible. This is currently only set true by FigEdgePort.
@@ -2172,31 +2169,6 @@ public abstract class FigNodeModelElement
         Set<Object[]> adds = new HashSet<Object[]>(listenerSet);
         adds.removeAll(listeners);
         addElementListeners(adds);
-    }
-    
-    /**
-     * @return the current notation arguments or null if none are set
-     * @deprecated for 0.27.3 by tfmorris.  Use {@link #getNotationSettings()}.
-     */
-    @Deprecated
-    protected HashMap<String, Object> getNotationArguments() {
-        return npArguments;
-    }
-
-    /**
-     * @param key
-     * @param value
-     * @deprecated for 0.27.3 by tfmorris.  Use {@link #getNotationSettings()}.
-     */
-    @Deprecated
-    protected void putNotationArgument(String key, Object value) {
-        if (notationProviderName != null) {
-            // Lazily initialize if not done yet
-            if (npArguments == null) {
-                npArguments = new HashMap<String, Object>();
-            }
-            npArguments.put(key, value);
-        }
     }
 
     /**

@@ -26,7 +26,6 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
-import java.util.HashMap;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -95,7 +94,6 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
      * The notation provider for the text shown in this compartment.
      */
     private NotationProvider notationProvider;
-    private HashMap<String, Object> npArguments = new HashMap<String, Object>();
 
     @Override
     public void removeFromDiagram() {
@@ -160,17 +158,6 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
             notationProvider.cleanListener(this, getOwner());
         }
         this.notationProvider = np;
-        initNotationArguments();
-    }
-
-    /**
-     * @return Returns the Notation Provider Arguments.
-     * @deprecated for 0.27.3 by tfmorris.  Use {@link #getSettings()} then
-     * getNotationSettings() on the settings object returned..
-     */
-    @Deprecated
-    public HashMap<String, Object> getNpArguments() {
-        return npArguments;
     }
 
     protected void initNotationProviders() {
@@ -183,24 +170,9 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
             notationProvider =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         getNotationProviderType(), getOwner(), this, notation);
-            initNotationArguments();
         }
     }
     
-    /**
-     * @deprecated for 0.27.3 by tfmorris.  No replacement.
-     */
-    @Deprecated
-    protected void initNotationArguments() {
-        npArguments.put("useGuillemets", 
-                getNotationSettings().isUseGuillemets());
-    }
-
-    @Deprecated
-    protected void putNotationArgument(String key, Object element) {
-        npArguments.put(key, element);
-    }
-
     /**
      * Show the help-text for parsing, and initialise the text.
      */

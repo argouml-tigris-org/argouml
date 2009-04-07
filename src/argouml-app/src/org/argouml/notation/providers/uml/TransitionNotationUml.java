@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.argouml.application.events.ArgoEventPump;
@@ -488,15 +487,6 @@ public class TransitionNotationUml extends TransitionNotation {
     public String toString(Object modelElement, NotationSettings settings) {
         return toString(modelElement);
     }    
-
-    /*
-     * @see org.argouml.uml.notation.NotationProvider#toString(java.lang.Object, java.util.Map)
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public String toString(Object modelElement, Map args) {
-        return toString(modelElement);
-    }
 
     private String toString(Object modelElement) {
         Object trigger = Model.getFacade().getTrigger(modelElement);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.argouml.notation.providers.java;
 
 import java.beans.PropertyChangeListener;
 import java.text.ParseException;
-import java.util.Map;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -89,25 +88,6 @@ public class AssociationNameNotationJava extends AssociationNameNotation {
                     ArgoEventTypes.HELP_CHANGED, this,
                 Translator.messageFormat(msg, args)));
         }
-    }
-
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public String toString(final Object modelElement, final Map args) {
-        String name;
-        name = Model.getFacade().getName(modelElement);
-        if (name == null) {
-            return "";
-        }
-        return NotationUtilityJava.generateLeaf(modelElement, args)
-            + NotationUtilityJava.generateAbstract(modelElement, args)
-            + NotationUtilityJava.generateVisibility(modelElement, args) 
-            + NotationUtilityJava.generatePath(modelElement, args) 
-            + name;
     }
 
     @Override

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,11 +28,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.model.Model;
 
 /**
@@ -66,27 +63,6 @@ public abstract class NotationProvider {
      */
     public abstract String getParsingHelp();
 
-    
-    /**
-     * Utility function to determine the presence of a key. 
-     * The default is false.
-     * 
-     * @param key the string for the key
-     * @param map the Map to check for the presence 
-     * and value of the key
-     * @return true if the value for the key is true, otherwise false
-     */
-    public static boolean isValue(final String key, final Map map) {
-        if (map == null) {
-            return false;
-        }
-        Object o = map.get(key);
-        if (!(o instanceof Boolean)) {
-            return false;
-        }
-        return ((Boolean) o).booleanValue();
-    }
-
     /**
      * Parses the given text, and adapts the modelElement and
      * maybe related elements accordingly.
@@ -98,33 +74,14 @@ public abstract class NotationProvider {
     public abstract void parse(Object modelElement, String text);
 
     /**
-     * Generates a string representation for the given model element.
-     * 
-     * @param modelElement the base UML modelelement
-     * @param args arguments that may determine the notation
-     * @return the string written in the correct notation
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #toString(Object, NotationSettings)}.
-     */
-    @Deprecated
-    public abstract String toString(Object modelElement, Map args);
-
-
-    /**
      * Generate a string representation for the given model element.
-     * <p>
-     * <em>WARNING:</em> All subclasses must implement this as if it were
-     * abstract. It will become abstract in a future release after the
-     * deprecation period for toString(Object, Map) expires.
      * 
      * @param modelElement the base UML element
      * @param settings settings that control rendering of the text
      * @return the string written in the correct notation
      */
-    public String toString(Object modelElement,
-            NotationSettings settings) {
-        return toString(modelElement, Collections.emptyMap());
-    }
+    public abstract String toString(Object modelElement,
+            NotationSettings settings);
     
     /**
      * Initialise the appropriate model change listeners 

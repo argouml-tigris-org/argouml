@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -163,19 +163,6 @@ public class NotationUtilityJava {
         //TODO: initial value
         return sb.toString();
     }
-    
-    /**
-     * @param modelElement the UML element
-     * @param args a set of arguments that may influence the generated notation
-     * @return a string which represents abstractness
-     * @deprecated for 0.27.3 by tfmorris. Use {@link #generateAbstract(Object)}
-     *             .
-     */
-    @Deprecated
-    static String generateAbstract(Object modelElement, 
-            @SuppressWarnings("unused") Map args) {
-        return generateAbstract(modelElement);
-    }
 
     /**
      * @param modelElement the UML element
@@ -189,19 +176,6 @@ public class NotationUtilityJava {
         }
         return "";
     }
-    
-     /**
-     * @param modelElement the UML element
-     * @param args a set of arguments that may influence 
-     * the generated notation
-     * @return a string which represents leaf
-     * @deprecated for 0.27.3 by tfmorris.  Use {@link #generateLeaf(Object)}.
-     */
-    @Deprecated
-    static String generateLeaf(Object modelElement, 
-            @SuppressWarnings("unused") Map args) {
-        return generateLeaf(modelElement);
-    }
 
     /**
      * @param modelElement the UML element
@@ -214,21 +188,6 @@ public class NotationUtilityJava {
             return "final ";
         }
         return "";
-    }
-
-    /**
-     * @param modelElement the UML element
-     * @param args a set of arguments that may influence 
-     * the generated notation
-     * @return a string which represents the path
-     */
-    static String generatePath(Object modelElement, 
-            Map args) {
-        if (NotationProvider.isValue("pathVisible", args)) {
-            return generatePath(modelElement);
-        } else {
-            return "";
-        }
     }
 
     static String generatePath(Object modelElement) {
@@ -249,24 +208,6 @@ public class NotationUtilityJava {
             s.append(".");
         }
         return s.toString();
-    }
-
-    /**
-     * @param modelElement the UML element
-     * @param args a set of arguments that may influence the generated notation
-     * @return a string which represents the visibility
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #generateVisibility(Object)} or
-     *             {@link #generateVisibility(Object, org.argouml.notation.NotationSettings)}
-     */
-    @Deprecated
-    static String generateVisibility(Object modelElement, 
-            Map args) {
-        String s = "";
-        if (NotationProvider.isValue("visibilityVisible", args)) {
-            s = NotationUtilityJava.generateVisibility(modelElement);
-        }
-        return s;
     }
     
     /**

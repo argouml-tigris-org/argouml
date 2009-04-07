@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,6 @@
 
 package org.argouml.notation.providers.uml;
 
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.argouml.kernel.ProjectManager;
@@ -202,22 +201,6 @@ public class ExtensionPointNotationUml extends ExtensionPointNotation {
      */
     public String getParsingHelp() {
         return "parsing.help.fig-extensionpoint";
-    }
-
-    /**
-     * Generate the display for an extension point.<p>
-     *
-     * The representation is "name: location". 
-     * The "name: " is omitted if there
-     * is no name given.
-     *
-     * {@inheritDoc}
-     * @deprecated
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public String toString(Object modelElement, Map args) {
-        return toString(modelElement);
     }
 
     private String toString(final Object modelElement) {

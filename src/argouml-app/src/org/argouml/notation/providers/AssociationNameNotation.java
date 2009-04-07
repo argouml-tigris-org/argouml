@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,6 +40,11 @@ import org.argouml.notation.NotationProvider;
  */
 public abstract class AssociationNameNotation extends NotationProvider {
 
+    /**
+     * The constructor.
+     * 
+     * @param modelElement the UML Association
+     */
     public AssociationNameNotation(Object modelElement) {
         if (!Model.getFacade().isAAssociation(modelElement)) {
             throw new IllegalArgumentException("This is not an Association.");

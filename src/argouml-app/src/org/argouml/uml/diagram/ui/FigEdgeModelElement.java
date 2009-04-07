@@ -144,9 +144,6 @@ public abstract class FigEdgeModelElement
     private static int popupAddOffset;
 
     private NotationProvider notationProviderName;
-    
-    @Deprecated
-    private HashMap<String, Object> npArguments;
 
     /**
      * The Fig that displays the name of this model element.
@@ -1472,31 +1469,6 @@ public abstract class FigEdgeModelElement
         addElementListeners(adds);
     }
 
-    /**
-     * @return the current notation arguments or null if none have been set
-     * @deprecated for 0.27.3 by tfmorris.  Use {@link #getNotationSettings()}.
-     */
-    @Deprecated
-    protected HashMap<String, Object> getNotationArguments() {
-        return npArguments;
-    }
-
-    /**
-     * @param key
-     * @param element
-     * @deprecated for 0.27.3 by tfmorris.  Use {@link #getNotationSettings()}.
-     */
-    @Deprecated
-    protected void putNotationArgument(String key, Object element) {
-        if (notationProviderName != null) {
-            // Lazily initialize if not done yet
-            if (npArguments == null) {
-                npArguments = new HashMap<String, Object>();
-            }
-            npArguments.put(key, element);
-        }
-    }
-    
     /**
      * This optional method is not implemented.  It will throw an
      * {@link UnsupportedOperationException} if used. Figs are 

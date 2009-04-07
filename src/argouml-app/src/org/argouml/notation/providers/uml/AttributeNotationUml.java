@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,6 @@ package org.argouml.notation.providers.uml;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.apache.log4j.Logger;
@@ -508,7 +507,6 @@ public class AttributeNotationUml extends AttributeNotation {
         return "parsing.help.attribute";
     }
 
-
     @Override
     public String toString(Object modelElement, NotationSettings settings) {
         return toString(modelElement, settings.isUseGuillemets(), settings
@@ -517,29 +515,14 @@ public class AttributeNotationUml extends AttributeNotation {
                 settings.isShowProperties());
     }
 
-    /**
+    /*
      * Generates a string representation for the provided
      * attribute. The string representation will be of the form:
      *          visibility name [multiplicity] : type-expression =
      *                          initial-value {property-string}
      * Depending on settings in Notation, visibility, multiplicity,
      * type-expression, initial value and properties are shown/not shown.
-     * 
-     * {@inheritDoc}
-     * @deprecated
      */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public String toString(Object modelElement, Map args) {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        ProjectSettings ps = p.getProjectSettings();
-
-        return toString(modelElement, ps.getUseGuillemotsValue(), 
-                ps.getShowVisibilityValue(), ps.getShowMultiplicityValue(),
-                ps.getShowTypesValue(), ps.getShowInitialValueValue(),
-                ps.getShowPropertiesValue());
-    }
-
     private String toString(Object modelElement, boolean useGuillemets, 
             boolean showVisibility, boolean showMultiplicity, boolean showTypes,
             boolean showInitialValues, boolean showProperties) {

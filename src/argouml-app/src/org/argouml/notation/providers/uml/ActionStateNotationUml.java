@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,12 +23,10 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.notation.providers.uml;
-
-import java.util.Map;
-
 import org.argouml.model.Model;
 import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ActionStateNotation;
+
 
 
 /**
@@ -73,15 +71,6 @@ public class ActionStateNotationUml extends ActionStateNotation {
      */
     public String getParsingHelp() {
         return "parsing.help.fig-actionstate";
-    }
-
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.HashMap)
-     */
-    @Deprecated
-    @Override
-    public String toString(Object modelElement, Map args) {
-        return toString(modelElement);
     }
 
     private String toString(Object modelElement) {

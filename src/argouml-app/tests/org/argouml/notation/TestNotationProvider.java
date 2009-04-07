@@ -1,5 +1,5 @@
 // $Id: TestNotationProvider.java $
-// Copyright (c) 2006-2007 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,8 +26,6 @@ package org.argouml.notation;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.HashMap;
-import java.util.Map;
 
 import junit.framework.TestCase;
 
@@ -58,7 +56,7 @@ public class TestNotationProvider extends TestCase
 
     /**
      * Test the existence of the 
-     * toString(Object modelElement, Map args) method.
+     * toString(Object modelElement, NotationSettings settings) method.
      * TODO: Need to find a more useful test.
      */
     public void testToString() {
@@ -68,27 +66,6 @@ public class TestNotationProvider extends TestCase
         assertTrue("Test toString()", "atrue".equals(
                 np.toString("a", settings)));
     }
-    
-    /**
-     * Test the isValue utility function.
-     */
-    public void testIsValue() {
-        Map<String, Object> args = new HashMap<String, Object>();
-        args.put("not a boolean", "c");
-        args.put("true", Boolean.TRUE);
-        args.put("false", Boolean.FALSE);
-        args.put("null", null);
-        assertTrue("Not a boolean", 
-                !NotationProvider.isValue("not a boolean", args));
-        assertTrue("Finding true", 
-                NotationProvider.isValue("true", args));
-        assertTrue("Finding false", 
-                !NotationProvider.isValue("false", args));
-        assertTrue("Finding null", 
-                !NotationProvider.isValue("null", args));
-        assertTrue("Not encountered", 
-                !NotationProvider.isValue("xyz", args));
-    }
 
     private class NPImpl extends NotationProvider {
 
@@ -97,15 +74,6 @@ public class TestNotationProvider extends TestCase
          */
         public String getParsingHelp() {
             return null;
-        }
-
-        /*
-         * @see org.argouml.notation.providers.NotationProvider#toString(java.lang.Object, java.util.Map)
-         */
-        @SuppressWarnings("deprecation")
-        @Deprecated
-        public String toString(Object modelElement, Map args) {
-            return modelElement.toString() + args.size();
         }
 
         public String toString(Object modelElement, NotationSettings settings) {
@@ -121,6 +89,9 @@ public class TestNotationProvider extends TestCase
 
     }
     
+    /**
+     * Test if the listener gets events when model elements change:
+     */
     public void testListener() {
         Object model =
             Model.getModelManagementFactory().createModel();
