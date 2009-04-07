@@ -60,8 +60,11 @@ class UMLTransitionTriggerListModel extends UMLModelElementListModel {
 
     @Override
     public boolean buildPopup(JPopupMenu popup, int index) {
-        PopupMenuNewEvent.buildMenu(popup, 
-                ActionNewEvent.Roles.TRIGGER, getTarget());
+        final PopupMenuNewEvent menu =
+            new PopupMenuNewEvent(ActionNewEvent.Roles.TRIGGER, getTarget());
+        
+        menu.buildMenu(popup,
+                ActionNewEvent.Roles.TRIGGER, getTarget());;
         return true;
     }
 

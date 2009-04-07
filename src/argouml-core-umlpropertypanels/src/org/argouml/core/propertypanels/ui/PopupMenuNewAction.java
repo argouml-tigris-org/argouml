@@ -48,6 +48,22 @@ import org.argouml.uml.ui.behavior.common_behavior.ActionNewUninterpretedAction;
 class PopupMenuNewAction extends JPopupMenu {
 
 
+    private static final Object[] actions = new Object[] {
+        "action.new",
+        new Object[] {
+            ActionNewCallAction.getInstance(),
+            ActionNewCreateAction.getInstance(),
+            ActionNewDestroyAction.getInstance(),
+            ActionNewReturnAction.getInstance(),
+            ActionNewSendAction.getInstance(),
+            ActionNewTerminateAction.getInstance(),
+            ActionNewUninterpretedAction.getInstance(),
+            ActionNewActionSequence.getInstance(),
+        },
+        null,
+        ActionRemoveModelElement.SINGLETON
+    };
+    
     /**
      * Constructs a new popupmenu. The given parameter role determines what
      * the purpose is of the actions that can be created via this popupmenu.
@@ -62,60 +78,75 @@ class PopupMenuNewAction extends JPopupMenu {
         buildMenu(this, role, list.getTarget());
     }
     
-    public static void buildMenu(JPopupMenu pmenu, 
+    public void buildMenu(JPopupMenu pmenu, 
             String role, Object target) {
       
+        init(role, target);
+        
         JMenu newMenu = new JMenu();
         newMenu.setText(Translator.localize("action.new"));
 
-        newMenu.add(ActionNewCallAction.getInstance());
+        String label = null;
+        for (Object action : actions) {
+            if (action == null) {
+                pmenu.addSeparator();
+            } else if (action instanceof String) {
+                label = (String) action;
+            } else if (action instanceof Action) {
+                pmenu.add((Action) action);
+            } else {
+                JMenu innerMenu = new JMenu(Translator.localize(label));
+                for (Object innerAction : (Object[]) action) {
+                    if (innerAction == null) {
+                        innerMenu.addSeparator();
+                    } else if (innerAction instanceof Action) {
+                        innerMenu.add((Action) innerAction);
+                    }
+                }
+                pmenu.add(innerMenu);
+            }
+        }
+    }
+    
+    private void init(
+            final String role,
+            final Object target) {
         ActionNewCallAction.getInstance().setTarget(target);
         ActionNewCallAction.getInstance().putValue(ActionNewAction.ROLE, role);
 
-        newMenu.add(ActionNewCreateAction.getInstance());
         ActionNewCreateAction.getInstance().setTarget(target);
         ActionNewCreateAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
-        newMenu.add(ActionNewDestroyAction.getInstance());
         ActionNewDestroyAction.getInstance().setTarget(target);
         ActionNewDestroyAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
-        newMenu.add(ActionNewReturnAction.getInstance());
         ActionNewReturnAction.getInstance().setTarget(target);
         ActionNewReturnAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
-        newMenu.add(ActionNewSendAction.getInstance());
         ActionNewSendAction.getInstance().setTarget(target);
         ActionNewSendAction.getInstance().putValue(ActionNewAction.ROLE, role);
 
-        newMenu.add(ActionNewTerminateAction.getInstance());
         ActionNewTerminateAction.getInstance().setTarget(target);
         ActionNewTerminateAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
-        newMenu.add(ActionNewUninterpretedAction.getInstance());
         ActionNewUninterpretedAction.getInstance().setTarget(target);
         ActionNewUninterpretedAction.getInstance()
             .putValue(ActionNewAction.ROLE, role);
 
 
-        newMenu.add(ActionNewActionSequence.getInstance());
         ActionNewActionSequence.getInstance().setTarget(target);
         ActionNewActionSequence.getInstance()
             .putValue(ActionNewAction.ROLE, role);
-
-        pmenu.add(newMenu);
-
-        pmenu.addSeparator();
 
         // TODO: This needs to be fixed to work for ActionSequences - tfm
         ActionRemoveModelElement.SINGLETON.setObjectToRemove(ActionNewAction
              .getAction(role, target));
         ActionRemoveModelElement.SINGLETON.putValue(Action.NAME, 
                 Translator.localize("action.delete-from-model"));
-        pmenu.add(ActionRemoveModelElement.SINGLETON);
+        
     }
 }

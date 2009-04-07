@@ -27,7 +27,6 @@ package org.argouml.core.propertypanels.ui;
 import javax.swing.JPopupMenu;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.behavior.state_machines.ActionNewEvent;
 
 /**
@@ -61,8 +60,12 @@ class UMLStateDeferrableEventListModel
 
     @Override
     public boolean buildPopup(JPopupMenu popup, int index) {
-        PopupMenuNewEvent.buildMenu(popup,
-                ActionNewEvent.Roles.DEFERRABLE_EVENT, getTarget());
+        final PopupMenuNewEvent menu =
+            new PopupMenuNewEvent(ActionNewEvent.Roles.DEFERRABLE_EVENT, getTarget());
+        
+        menu.buildMenu(popup,
+                ActionNewEvent.Roles.DEFERRABLE_EVENT, getTarget());;
+        
         return true;
     }
 }
