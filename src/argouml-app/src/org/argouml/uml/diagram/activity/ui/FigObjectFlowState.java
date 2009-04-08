@@ -397,11 +397,11 @@ public class FigObjectFlowState extends FigNodeModelElement {
         if (ft == getNameFig()) {
             notationProviderType.parse(getOwner(), ft.getText());
             ft.setText(notationProviderType.toString(getOwner(),
-                    NotationSettings.getDefaultSettings()));
+                    getNotationSettings()));
         } else if (ft == state) {
             notationProviderState.parse(getOwner(), ft.getText());
             ft.setText(notationProviderState.toString(getOwner(),
-                    NotationSettings.getDefaultSettings()));
+                    getNotationSettings()));
         }
     }
 
