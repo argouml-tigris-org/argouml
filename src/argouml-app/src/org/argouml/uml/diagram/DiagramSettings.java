@@ -25,7 +25,14 @@
 package org.argouml.uml.diagram;
 
 import java.awt.Font;
+import java.beans.PropertyChangeEvent;
 
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.configuration.Configuration;
+import org.argouml.configuration.ConfigurationKey;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.notation.NotationSettings;
 import org.tigris.gef.undo.Memento;
 
@@ -42,6 +49,10 @@ import org.tigris.gef.undo.Memento;
  * currently used in ArgoUML is Fig->Diagram->Project, although there's no
  * support for changing anything but the Project (and a few of the attributes
  * managed directly by GEF).
+ * <p>
+ * Notation settings have a semantic meaning in the UML, which
+ * defines the difference between notation settings and 
+ * diagram appearance settings.
  * 
  * @author Tom Morris <tfmorris@gmail.com>
  */
@@ -122,31 +133,29 @@ public class DiagramSettings {
     private String fontName;
     private Integer fontSize;
     
-    // TODO: Can we remove this and have the application manage things directly
-    // based on the font?
+    // We can not remove this and have the application manage things directly
+    // based on the font, since only the names should be bold.
     private Boolean showBoldNames;
-    
-    /* Some cached fonts based on the above settings */
-    private Font fontPlain;
-    private Font fontItalic;
-    private Font fontBold;
-    private Font fontBoldItalic;
-    
+
     private Boolean showBidirectionalArrows;
     
     private Integer defaultShadowWidth;
     
     private StereotypeStyle defaultStereotypeView;
 
+    /* Some cached fonts based on the above settings */
+    private Font fontPlain;
+    private Font fontItalic;
+    private Font fontBold;
+    private Font fontBoldItalic;
 
     /**
-     * Construct an empty project settings with no parent and all values
+     * Construct an empty diagram settings with no parent and all values
      * defaulted. <p>
      */
     public DiagramSettings() {
         this(null);
     }
-    
     
     /**
      * Construct a DiagramSettings object which inherits from the given
@@ -167,7 +176,49 @@ public class DiagramSettings {
         recomputeFonts();
     }
 
-    
+    /**
+     * Send all events when the settings are changed to refresh
+     * anything rendered with these settings.
+     */
+    public void notifyOfChangedSettings() {
+        /*
+         * Since body ever looks
+         * at the type of the diagram appearance event, we can simplify from
+         * sending every existing event to one event only. But since there is no
+         * catch-all event defined, we just use one. Rationale: reduce the
+         * number of total refreshes of the drawing.
+         */
+        ConfigurationKey key = 
+            Configuration.makeKey("diagramappearance", "all");
+        ArgoEventPump.fireEvent(new ArgoDiagramAppearanceEvent(
+                ArgoEventTypes.DIAGRAM_FONT_CHANGED, new PropertyChangeEvent(
+                        this, key.getKey(),  "0", "0")));
+    }
+
+    /**
+     * Initialize the diagram settings with application default values 
+     * from the Configuration retrieved from disk.
+     */
+    public void initFromConfiguration() {
+        setShowBoldNames(Configuration.getBoolean(
+                DiagramAppearance.KEY_SHOW_BOLD_NAMES));
+        
+        setShowBidirectionalArrows(!Configuration.getBoolean(
+                DiagramAppearance.KEY_HIDE_BIDIRECTIONAL_ARROWS, true));
+        
+        setDefaultShadowWidth(Configuration.getInteger(
+                DiagramAppearance.KEY_DEFAULT_SHADOW_WIDTH, 1));
+
+        setDefaultStereotypeView(Configuration.getInteger(
+                ProfileConfiguration.KEY_DEFAULT_STEREOTYPE_VIEW,
+                DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL));
+
+        setFontName(
+                DiagramAppearance.getInstance().getConfiguredFontName());
+        setFontSize(
+                Configuration.getInteger(DiagramAppearance.KEY_FONT_SIZE));
+    }
+
     /**
      * @return Returns the notationSettings.
      */
@@ -505,7 +556,6 @@ public class DiagramSettings {
             }
         }
     }
-    
 
     private void doUndoable(Memento memento) {
         // TODO: Undo should be managed externally or we should be given 

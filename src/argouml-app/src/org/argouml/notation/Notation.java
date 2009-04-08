@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -97,11 +97,6 @@ public final class Notation implements PropertyChangeListener {
     public static final ConfigurationKey KEY_SHOW_SINGULAR_MULTIPLICITIES =
         Configuration.makeKey("notation", "show", "singularmultiplicities");
 
-    /**
-     * The configuration key that indicates whether to show bold names.
-     */
-    public static final ConfigurationKey KEY_SHOW_BOLD_NAMES =
-        Configuration.makeKey("notation", "show", "bold", "names");
 
     /**
      * The configuration key that indicates whether to use guillemots
@@ -150,19 +145,7 @@ public final class Notation implements PropertyChangeListener {
     public static final ConfigurationKey KEY_SHOW_TYPES =
         Configuration.makeKey("notation", "show", "types");
 
-    /**
-     * Default value for the shadow size of classes, interfaces etc.
-     */
-    public static final ConfigurationKey KEY_DEFAULT_SHADOW_WIDTH =
-        Configuration.makeKey("notation", "default", "shadow-width");
 
-    /**
-     * Indicates if the user wants to see the arrows when both
-     * association ends in an association are navigable.
-     */    
-    public static final ConfigurationKey KEY_HIDE_BIDIRECTIONAL_ARROWS =
-        Configuration.makeKey("notation", "hide", "bidirectional-arrows");
-    
     /**
      * The instance.
      */
@@ -174,7 +157,6 @@ public final class Notation implements PropertyChangeListener {
      * TODO: Why does this method not handle all settings?
      */
     private Notation() {
-        Configuration.addListener(KEY_SHOW_BOLD_NAMES, this);
         Configuration.addListener(KEY_USE_GUILLEMOTS, this);
         Configuration.addListener(KEY_DEFAULT_NOTATION, this);
         Configuration.addListener(KEY_SHOW_TYPES, this);
@@ -183,7 +165,6 @@ public final class Notation implements PropertyChangeListener {
         Configuration.addListener(KEY_SHOW_ASSOCIATION_NAMES, this);
         Configuration.addListener(KEY_SHOW_VISIBILITY, this);
         Configuration.addListener(KEY_SHOW_INITIAL_VALUE, this);
-        Configuration.addListener(KEY_HIDE_BIDIRECTIONAL_ARROWS, this);
     }
 
     /**
@@ -199,7 +180,7 @@ public final class Notation implements PropertyChangeListener {
     /**
      * Convert a String into a NotationName.
      * @param s the String
-     * @return the matching Notationname
+     * @return the matching NotationName
      */
     public static NotationName findNotation(String s) {
         return NotationNameImpl.findNotation(s);
@@ -269,7 +250,7 @@ public final class Notation implements PropertyChangeListener {
 
     /**
      * Remove a complete Notation language.
-     * This is to be used by plugins that implement their own notation,
+     * This is to be used by plug-ins that implement their own notation,
      * and that are removed. <p>
      * This function fails if the given notation does not exist.
      *

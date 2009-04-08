@@ -57,6 +57,7 @@ import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserDefinedProfile;
 import org.argouml.uml.diagram.DiagramAppearance;
+import org.argouml.uml.diagram.DiagramSettings;
 
 /**
  * The Tab where new profiles can be added and the registered ones can be
@@ -123,6 +124,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
                     return;
                 }
                 ProjectSettings ps = p.getProjectSettings();
+                DiagramSettings ds = ps.getDefaultDiagramSettings();
                 Object src = e.getSource();
 
                 if (src == stereoField) {
@@ -133,15 +135,15 @@ public class ProjectSettingsTabProfile extends JPanel implements
 
                     switch (idx) {
                     case 0:
-                        ps.setDefaultStereotypeView(
+                        ds.setDefaultStereotypeView(
                                 DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL);
                         break;
                     case 1:
-                        ps.setDefaultStereotypeView(
+                        ds.setDefaultStereotypeView(
                                 DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON);
                         break;
                     case 2:
-                        ps.setDefaultStereotypeView(
+                        ds.setDefaultStereotypeView(
                                 DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON);
                         break;
                     }
@@ -352,10 +354,10 @@ public class ProjectSettingsTabProfile extends JPanel implements
 
         List<Profile> ret = new ArrayList<Profile>();
         for (int i = 0; i < modelAvl.getSize(); ++i) {
-            Profile p = (Profile) modelAvl.getElementAt(i);
+            Profile profile = (Profile) modelAvl.getElementAt(i);
 
-            if (!p.equals(selected) && selected.getDependencies().contains(p)) {
-                ret.add(p);
+            if (!profile.equals(selected) && selected.getDependencies().contains(profile)) {
+                ret.add(profile);
             }
         }
 
@@ -368,10 +370,10 @@ public class ProjectSettingsTabProfile extends JPanel implements
 
         List<Profile> ret = new ArrayList<Profile>();
         for (int i = 0; i < modelUsd.getSize(); ++i) {
-            Profile p = (Profile) modelUsd.getElementAt(i);
+            Profile profile = (Profile) modelUsd.getElementAt(i);
 
-            if (!p.equals(selected) && p.getDependencies().contains(selected)) {
-                ret.add(p);
+            if (!profile.equals(selected) && profile.getDependencies().contains(selected)) {
+                ret.add(profile);
             }
         }
 
@@ -405,8 +407,9 @@ public class ProjectSettingsTabProfile extends JPanel implements
     public void handleSettingsTabRefresh() {
         assert p != null;
         ProjectSettings ps = p.getProjectSettings();
-
-        switch (ps.getDefaultStereotypeViewValue()) {
+        DiagramSettings ds = ps.getDefaultDiagramSettings();
+        
+        switch (ds.getDefaultStereotypeViewInt()) {
         case DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL:
             stereoField.setSelectedIndex(0);
             break;

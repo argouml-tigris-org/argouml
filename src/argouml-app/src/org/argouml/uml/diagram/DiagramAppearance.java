@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,6 +30,9 @@ import java.beans.PropertyChangeListener;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 
@@ -62,6 +65,25 @@ public final class DiagramAppearance implements PropertyChangeListener {
     public static final ConfigurationKey KEY_FONT_SIZE = Configuration.makeKey(
             "diagramappearance", "fontsize");
 
+    /**
+     * The configuration key that indicates whether to show bold names.
+     */
+    public static final ConfigurationKey KEY_SHOW_BOLD_NAMES =
+        Configuration.makeKey("notation", "show", "bold", "names");
+
+    /**
+     * Default value for the shadow size of classes, interfaces etc.
+     */
+    public static final ConfigurationKey KEY_DEFAULT_SHADOW_WIDTH =
+        Configuration.makeKey("notation", "default", "shadow-width");
+
+    /**
+     * Indicates if the user wants to see the arrows when both
+     * association ends in an association are navigable.
+     */    
+    public static final ConfigurationKey KEY_HIDE_BIDIRECTIONAL_ARROWS =
+        Configuration.makeKey("notation", "hide", "bidirectional-arrows");
+    
     /**
      * The instance.
      */
@@ -98,12 +120,14 @@ public final class DiagramAppearance implements PropertyChangeListener {
 
     /**
      * The constructor.
+     * TODO: Why does this method not handle all settings
+     * (KEY_DEFAULT_SHADOW_WIDTH is missing)?
      */
     private DiagramAppearance() {
         Configuration.addListener(DiagramAppearance.KEY_FONT_NAME, this);
         Configuration.addListener(DiagramAppearance.KEY_FONT_SIZE, this);
-//        Configuration.addListener(DiagramAppearance.KEY_FONT_BOLD, this);
-//        Configuration.addListener(DiagramAppearance.KEY_FONT_ITALLIC, this);
+        Configuration.addListener(KEY_SHOW_BOLD_NAMES, this);
+        Configuration.addListener(KEY_HIDE_BIDIRECTIONAL_ARROWS, this);
     }
 
     /**
@@ -123,6 +147,8 @@ public final class DiagramAppearance implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent pce) {
         LOG.info("Diagram appearance change:" + pce.getOldValue() + " to "
                 + pce.getNewValue());
+        ArgoEventPump.fireEvent(
+                new ArgoDiagramAppearanceEvent(ArgoEventTypes.DIAGRAM_FONT_CHANGED, pce));
     }
 
     /**

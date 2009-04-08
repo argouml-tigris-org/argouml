@@ -45,10 +45,10 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
+import org.argouml.notation.NotationSettings;
 import org.argouml.swingext.JLinkButton;
 import org.argouml.ui.ActionProjectSettings;
 import org.argouml.ui.GUIProjectSettingsTabInterface;
-import org.argouml.ui.ShadowComboBox;
 
 /**
  * Settings tab panel for handling Notation settings. <p>
@@ -68,7 +68,6 @@ public class SettingsTabNotation
     implements GUIProjectSettingsTabInterface {
 
     private JComboBox notationLanguage;
-    private JCheckBox showBoldNames;
     private JCheckBox useGuillemots;
     private JCheckBox showAssociationNames;
     private JCheckBox showVisibility;
@@ -78,8 +77,6 @@ public class SettingsTabNotation
     private JCheckBox showTypes;
     private JCheckBox showStereotypes;
     private JCheckBox showSingularMultiplicities;
-    private JCheckBox hideBidirectionalArrows;
-    private ShadowComboBox defaultShadowWidth;
 
     private int scope;
     private Project p;
@@ -143,9 +140,6 @@ public class SettingsTabNotation
         notationLanguagePanel.add(notationLanguage);
         settings.add(notationLanguagePanel, constraints);
 
-        showBoldNames = createCheckBox("label.show-bold-names");
-        settings.add(showBoldNames, constraints);
-
         useGuillemots = createCheckBox("label.use-guillemots");
         settings.add(useGuillemots, constraints);
 
@@ -177,21 +171,6 @@ public class SettingsTabNotation
         showSingularMultiplicities = 
             createCheckBox("label.show-singular-multiplicities");
         settings.add(showSingularMultiplicities, constraints);
-        
-        hideBidirectionalArrows = 
-            createCheckBox("label.hide-bidirectional-arrows");
-        settings.add(hideBidirectionalArrows, constraints);        
-
-        constraints.insets = new Insets(5, 30, 0, 4);
-        JPanel defaultShadowWidthPanel = new JPanel(new FlowLayout(
-            FlowLayout.LEFT, 5, 0));
-        JLabel defaultShadowWidthLabel = createLabel(
-            "label.default-shadow-width");
-        defaultShadowWidth = new ShadowComboBox();
-        defaultShadowWidthLabel.setLabelFor(defaultShadowWidth);
-        defaultShadowWidthPanel.add(defaultShadowWidthLabel);
-        defaultShadowWidthPanel.add(defaultShadowWidth);
-        settings.add(defaultShadowWidthPanel, constraints);
 
         top.add(settings, BorderLayout.CENTER);
 
@@ -203,8 +182,6 @@ public class SettingsTabNotation
      */
     public void handleSettingsTabRefresh() {
         if (scope == Argo.SCOPE_APPLICATION) {
-            showBoldNames.setSelected(getBoolean(
-                    Notation.KEY_SHOW_BOLD_NAMES));
             useGuillemots.setSelected(getBoolean(
                     Notation.KEY_USE_GUILLEMOTS));
             notationLanguage.setSelectedItem(Notation.getConfiguredNotation());
@@ -234,38 +211,24 @@ public class SettingsTabNotation
              */
             showSingularMultiplicities.setSelected(Configuration.getBoolean(
                     Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES, true));
-            /*
-             * The next one defaults to TRUE, despite that this is
-             * NOT compatible with older ArgoUML versions
-             * (before 0.28?) that did
-             * not have this setting - see issue 535
-             */
-            hideBidirectionalArrows.setSelected(Configuration.getBoolean(
-                    Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS, true));
-            defaultShadowWidth.setSelectedIndex(Configuration.getInteger(
-                    Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
         }
         if (scope == Argo.SCOPE_PROJECT) {
             assert p != null;
             ProjectSettings ps = p.getProjectSettings();
+            NotationSettings ns = ps.getNotationSettings();
 
             notationLanguage.setSelectedItem(Notation.findNotation(
                     ps.getNotationLanguage()));
-            showBoldNames.setSelected(ps.getShowBoldNamesValue());
             useGuillemots.setSelected(ps.getUseGuillemotsValue());
-            showAssociationNames.setSelected(ps.getShowAssociationNamesValue());
-            showVisibility.setSelected(ps.getShowVisibilityValue());
-            showMultiplicity.setSelected(ps.getShowMultiplicityValue());
-            showInitialValue.setSelected(ps.getShowInitialValueValue());
-            showProperties.setSelected(ps.getShowPropertiesValue());
-            showTypes.setSelected(ps.getShowTypesValue());
+            showAssociationNames.setSelected(ns.isShowAssociationNames());
+            showVisibility.setSelected(ns.isShowVisibilities());
+            showMultiplicity.setSelected(ns.isShowMultiplicities());
+            showInitialValue.setSelected(ns.isShowInitialValues());
+            showProperties.setSelected(ns.isShowProperties());
+            showTypes.setSelected(ns.isShowTypes());
             showStereotypes.setSelected(ps.getShowStereotypesValue());
             showSingularMultiplicities.setSelected(
-                    ps.getShowSingularMultiplicitiesValue());
-            hideBidirectionalArrows.setSelected(
-                    ps.getHideBidirectionalArrowsValue());
-            defaultShadowWidth.setSelectedIndex(
-                    ps.getDefaultShadowWidthValue());
+                    ns.isShowSingularMultiplicities());
         }
     }
 
@@ -286,8 +249,6 @@ public class SettingsTabNotation
         if (scope == Argo.SCOPE_APPLICATION) {
             Notation.setDefaultNotation(
                     (NotationName) notationLanguage.getSelectedItem());
-            Configuration.setBoolean(Notation.KEY_SHOW_BOLD_NAMES,
-                    showBoldNames.isSelected());
             Configuration.setBoolean(Notation.KEY_USE_GUILLEMOTS,
                     useGuillemots.isSelected());
             Configuration.setBoolean(Notation.KEY_SHOW_ASSOCIATION_NAMES,
@@ -306,29 +267,23 @@ public class SettingsTabNotation
                     showStereotypes.isSelected());
             Configuration.setBoolean(Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES,
                     showSingularMultiplicities.isSelected());
-            Configuration.setBoolean(Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS,
-                    hideBidirectionalArrows.isSelected());            
-            Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH,
-                    defaultShadowWidth.getSelectedIndex());
         }
         if (scope == Argo.SCOPE_PROJECT) {
             assert p != null;
             ProjectSettings ps = p.getProjectSettings();
+            NotationSettings ns = ps.getNotationSettings();
             NotationName nn = (NotationName) notationLanguage.getSelectedItem();
             if (nn != null) ps.setNotationLanguage(nn.getConfigurationValue());
-            ps.setShowBoldNames(showBoldNames.isSelected());
             ps.setUseGuillemots(useGuillemots.isSelected());
-            ps.setShowAssociationNames(showAssociationNames.isSelected());
-            ps.setShowVisibility(showVisibility.isSelected());
-            ps.setShowMultiplicity(showMultiplicity.isSelected());
-            ps.setShowInitialValue(showInitialValue.isSelected());
-            ps.setShowProperties(showProperties.isSelected());
-            ps.setShowTypes(showTypes.isSelected());
+            ns.setShowAssociationNames(showAssociationNames.isSelected());
+            ns.setShowVisibilities(showVisibility.isSelected());
+            ns.setShowMultiplicities(showMultiplicity.isSelected());
+            ns.setShowInitialValues(showInitialValue.isSelected());
+            ns.setShowProperties(showProperties.isSelected());
+            ns.setShowTypes(showTypes.isSelected());
             ps.setShowStereotypes(showStereotypes.isSelected());
-            ps.setShowSingularMultiplicities(
+            ns.setShowSingularMultiplicities(
                     showSingularMultiplicities.isSelected());
-            ps.setDefaultShadowWidth(defaultShadowWidth.getSelectedIndex());
-            ps.setHideBidirectionalArrows(hideBidirectionalArrows.isSelected());
         }
     }
 
@@ -345,8 +300,6 @@ public class SettingsTabNotation
     public void handleResetToDefault() {
         if (scope == Argo.SCOPE_PROJECT) {
             notationLanguage.setSelectedItem(Notation.getConfiguredNotation());
-            showBoldNames.setSelected(getBoolean(
-                    Notation.KEY_SHOW_BOLD_NAMES));
             useGuillemots.setSelected(getBoolean(
                     Notation.KEY_USE_GUILLEMOTS));
             showAssociationNames.setSelected(Configuration.getBoolean(
@@ -365,10 +318,6 @@ public class SettingsTabNotation
                     Notation.KEY_SHOW_STEREOTYPES));
             showSingularMultiplicities.setSelected(Configuration.getBoolean(
                     Notation.KEY_SHOW_SINGULAR_MULTIPLICITIES));
-            hideBidirectionalArrows.setSelected(Configuration.getBoolean(
-                    Notation.KEY_HIDE_BIDIRECTIONAL_ARROWS, true));
-            defaultShadowWidth.setSelectedIndex(Configuration.getInteger(
-                    Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
         }
     }
 

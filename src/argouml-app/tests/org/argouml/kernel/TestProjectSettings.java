@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,6 +31,9 @@ import javax.swing.SwingUtilities;
 
 import junit.framework.TestCase;
 
+import org.argouml.application.events.ArgoDiagramAppearanceEvent;
+import org.argouml.application.events.ArgoDiagramAppearanceEventListener;
+import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
@@ -41,6 +44,8 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.uml.diagram.DiagramAppearance;
+import org.argouml.uml.diagram.DiagramSettings;
 
 /**
  * Tests for the ProjectSettings.
@@ -49,7 +54,7 @@ import org.argouml.profile.init.InitProfileSubsystem;
  */
 public class TestProjectSettings extends TestCase {
 
-    private ArgoNotationEvent rxdEvent;
+    private ArgoEvent rxdEvent;
 
     /**
      * Constructor.
@@ -68,12 +73,12 @@ public class TestProjectSettings extends TestCase {
      */
     public void testProjectSettingsCreation() {
         Configuration.setInteger(
-                Notation.KEY_DEFAULT_SHADOW_WIDTH, 2);
+                DiagramAppearance.KEY_DEFAULT_SHADOW_WIDTH, 2);
         Project p1 = ProjectManager.getManager().makeEmptyProject();
         assertTrue("Default Setting is not copied",
                 p1.getProjectSettings().getDefaultShadowWidthValue() == 2);
         Configuration.setInteger(
-                Notation.KEY_DEFAULT_SHADOW_WIDTH, 3);
+                DiagramAppearance.KEY_DEFAULT_SHADOW_WIDTH, 3);
         assertTrue("Project Setting is altered",
                 p1.getProjectSettings().getDefaultShadowWidth().equals("2"));
         ProjectManager.getManager().removeProject(p1);
@@ -88,7 +93,7 @@ public class TestProjectSettings extends TestCase {
         p2.getProjectSettings().setDefaultShadowWidth(4);
         assertTrue("Default is altered by project-setting",
                 Configuration.getInteger(
-                        Notation.KEY_DEFAULT_SHADOW_WIDTH) == 3);
+                        DiagramAppearance.KEY_DEFAULT_SHADOW_WIDTH) == 3);
     }
 
     /**
@@ -246,7 +251,7 @@ public class TestProjectSettings extends TestCase {
         Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES, false);
         Configuration.setBoolean(Notation.KEY_SHOW_TYPES, false);
         Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
-        Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 4);
+        Configuration.setInteger(DiagramAppearance.KEY_DEFAULT_SHADOW_WIDTH, 4);
         Configuration.setString(Notation.KEY_DEFAULT_NOTATION, "UML 1.4");
 
         final Project p = ProjectManager.getManager().makeEmptyProject();
@@ -325,19 +330,24 @@ public class TestProjectSettings extends TestCase {
             rxdEvent = null;
             SwingUtilities.invokeAndWait(new Runnable() {
                 public void run() {
-                    p.getProjectSettings().setDefaultShadowWidth(2);
+                    ProjectSettings ps = p.getProjectSettings();
+                    DiagramSettings ds = ps.getDefaultDiagramSettings();
+                    ds.setDefaultShadowWidth(2);
+                    ds.notifyOfChangedSettings();
                 }
             });
-            assertTrue("Got no notation event", rxdEvent != null);
-            pce = (PropertyChangeEvent) rxdEvent.getSource();
-            assertTrue("Wrong event name",
-                    pce.getPropertyName().equals(
-                            Notation.KEY_DEFAULT_SHADOW_WIDTH.getKey()));
-            String value = (String) pce.getOldValue();
-            int i = Integer.parseInt(value);
-            assertTrue("Wrong old event value", i == 4);
-            assertTrue("Wrong new event value",
-                    ((String) pce.getNewValue()).equals("2"));
+            assertTrue("Got no diagram settings event", rxdEvent != null);
+            /* We no longer send individual events,
+             *  so next code is obsolete: */
+//            pce = (PropertyChangeEvent) rxdEvent.getSource();
+//            assertTrue("Wrong event name",
+//                    pce.getPropertyName().equals(
+//                            DiagramAppearance.KEY_DEFAULT_SHADOW_WIDTH.getKey()));
+//            String value = (String) pce.getOldValue();
+//            int i = Integer.parseInt(value);
+//            assertTrue("Wrong old event value", i == 4);
+//            assertTrue("Wrong new event value",
+//                    ((String) pce.getNewValue()).equals("2"));
 
             rxdEvent = null;
             /* We initialised Java Notation, so let's activate it: */
@@ -352,7 +362,7 @@ public class TestProjectSettings extends TestCase {
             assertTrue("Wrong event name",
                     pce.getPropertyName().equals(
                             Notation.KEY_DEFAULT_NOTATION.getKey()));
-            value = (String) pce.getOldValue();
+            String value = (String) pce.getOldValue();
             assertTrue("Wrong old event value", "UML 1.4".equals(value));
             value = (String) pce.getNewValue();
             assertTrue("Wrong new event value", "Java".equals(value));
@@ -382,7 +392,8 @@ public class TestProjectSettings extends TestCase {
      *
      * @author michiel
      */
-    protected class EventCatcher implements ArgoNotationEventListener {
+    protected class EventCatcher implements ArgoNotationEventListener,
+    ArgoDiagramAppearanceEventListener {
         public void notationChanged(ArgoNotationEvent e) {
             rxdEvent = e;
         }
@@ -400,6 +411,10 @@ public class TestProjectSettings extends TestCase {
         }
 
         public void notationProviderRemoved(ArgoNotationEvent e) {
+            rxdEvent = e;
+        }
+
+        public void diagramFontChanged(ArgoDiagramAppearanceEvent e) {
             rxdEvent = e;
         }
     }
