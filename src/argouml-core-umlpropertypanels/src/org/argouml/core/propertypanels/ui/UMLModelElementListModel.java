@@ -48,6 +48,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.toolbar.ToolBar;
 
 /**
  * The model for a list that contains ModelElements. The state of the Element is
@@ -577,6 +578,19 @@ public abstract class UMLModelElementListModel
      */
     public boolean buildPopup(JPopupMenu popup, int index) {
         return false;
+    }
+    
+    /**
+     * Get a toolbar containing all the actions available on this JList.
+     * @return the toolbar.
+     */
+    public ToolBar getToolbar() {
+        // TODO: First implementation will be to call buildPopop
+        // and extract all the contained actions. The toolbar will
+        // be built to the same structure.
+        // The toolbar will be displayed to the left of the JList
+        // under the label.
+        return null;
     }
     
     protected boolean hasPopup() {
