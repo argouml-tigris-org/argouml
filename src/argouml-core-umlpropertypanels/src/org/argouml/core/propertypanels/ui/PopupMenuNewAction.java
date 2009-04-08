@@ -25,8 +25,6 @@
 package org.argouml.core.propertypanels.ui;
 
 import javax.swing.Action;
-import javax.swing.JMenu;
-import javax.swing.JPopupMenu;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionRemoveModelElement;
@@ -45,7 +43,7 @@ import org.argouml.uml.ui.behavior.common_behavior.ActionNewUninterpretedAction;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-class PopupMenuNewAction extends JPopupMenu {
+class PopupMenuNewAction extends ActionBuilder {
 
 
     private static final Object[] actions = new Object[] {
@@ -72,40 +70,12 @@ class PopupMenuNewAction extends JPopupMenu {
      * @param role the role
      * @param list the list
      */
-    public PopupMenuNewAction(String role, UMLMutableLinkedList list) {
+    PopupMenuNewAction(String role, UMLMutableLinkedList list) {
         super();
 
-        buildMenu(this, role, list.getTarget());
-    }
-    
-    public void buildMenu(JPopupMenu pmenu, 
-            String role, Object target) {
-      
-        init(role, target);
+        init(role, list.getTarget());
         
-        JMenu newMenu = new JMenu();
-        newMenu.setText(Translator.localize("action.new"));
-
-        String label = null;
-        for (Object action : actions) {
-            if (action == null) {
-                pmenu.addSeparator();
-            } else if (action instanceof String) {
-                label = (String) action;
-            } else if (action instanceof Action) {
-                pmenu.add((Action) action);
-            } else {
-                JMenu innerMenu = new JMenu(Translator.localize(label));
-                for (Object innerAction : (Object[]) action) {
-                    if (innerAction == null) {
-                        innerMenu.addSeparator();
-                    } else if (innerAction instanceof Action) {
-                        innerMenu.add((Action) innerAction);
-                    }
-                }
-                pmenu.add(innerMenu);
-            }
-        }
+        buildMenu(this, role, list.getTarget(), "action.new", actions);
     }
     
     private void init(

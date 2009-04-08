@@ -64,7 +64,7 @@ class UMLStateDeferrableEventListModel
             new PopupMenuNewEvent(ActionNewEvent.Roles.DEFERRABLE_EVENT, getTarget());
         
         menu.buildMenu(popup,
-                ActionNewEvent.Roles.DEFERRABLE_EVENT, getTarget());;
+                ActionNewEvent.Roles.DEFERRABLE_EVENT, getTarget(), "action.new");;
         
         return true;
     }

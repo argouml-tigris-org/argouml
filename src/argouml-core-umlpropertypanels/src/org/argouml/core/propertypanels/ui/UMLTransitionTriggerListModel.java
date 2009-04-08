@@ -64,7 +64,7 @@ class UMLTransitionTriggerListModel extends UMLModelElementListModel {
             new PopupMenuNewEvent(ActionNewEvent.Roles.TRIGGER, getTarget());
         
         menu.buildMenu(popup,
-                ActionNewEvent.Roles.TRIGGER, getTarget());;
+                ActionNewEvent.Roles.TRIGGER, getTarget(), "action.new");
         return true;
     }
 

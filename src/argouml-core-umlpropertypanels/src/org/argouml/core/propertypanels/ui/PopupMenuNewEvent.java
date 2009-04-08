@@ -25,8 +25,6 @@
 package org.argouml.core.propertypanels.ui;
 
 import javax.swing.Action;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.argouml.i18n.Translator;
@@ -43,13 +41,42 @@ import org.argouml.uml.ui.behavior.state_machines.ActionNewTimeEvent;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-class PopupMenuNewEvent extends JPopupMenu {
+class PopupMenuNewEvent extends ActionBuilder {
     
     /**
      * The UID.
      */
     private static final long serialVersionUID = -7624618103144695448L;
 
+    private static final Object[] dtactions = new Object[] {
+        "action.select",
+        new Object[] {
+            ActionAddEventAsDeferrableEvent.SINGLETON,
+            ActionAddEventAsTrigger.SINGLETON,
+        },
+        "action.new",
+        new Object[] {
+            ActionNewCallEvent.getSingleton(),
+            ActionNewChangeEvent.getSingleton(),
+            ActionNewSignalEvent.getSingleton(),
+            ActionNewTimeEvent.getSingleton(),
+        },
+        null,
+        ActionRemoveModelElement.SINGLETON
+    };
+    
+    private static final Object[] actions = new Object[] {
+        "action.new",
+        new Object[] {
+            ActionNewCallEvent.getSingleton(),
+            ActionNewChangeEvent.getSingleton(),
+            ActionNewSignalEvent.getSingleton(),
+            ActionNewTimeEvent.getSingleton(),
+        },
+        null,
+        ActionRemoveModelElement.SINGLETON
+    };
+    
     /**
      * Constructor for PopupMenuNewEvent.<p>
      *
@@ -64,10 +91,14 @@ class PopupMenuNewEvent extends JPopupMenu {
     PopupMenuNewEvent(String role, Object target) {
         super();
 
-        buildMenu(this, role, target);
+        buildMenu(this, role, target, "action.new");
     }
     
-    void buildMenu(JPopupMenu pmenu, String role, Object target) {
+    void buildMenu(
+            final JPopupMenu pmenu,
+            final String role,
+            final Object target,
+            String label) {
         
         assert role != null;
         assert target != null;
@@ -76,31 +107,10 @@ class PopupMenuNewEvent extends JPopupMenu {
 
         if (role.equals(ActionNewEvent.Roles.DEFERRABLE_EVENT)
                 || role.equals(ActionNewEvent.Roles.TRIGGER)) {
-            JMenu selectMenu = new JMenu(Translator.localize("action.select"));
-            if (role.equals(ActionNewEvent.Roles.DEFERRABLE_EVENT)) {
-                JMenuItem menuItem = new JMenuItem(
-                        ActionAddEventAsDeferrableEvent.SINGLETON);
-                selectMenu.add(menuItem);
-            } else if (role.equals(ActionNewEvent.Roles.TRIGGER)) {
-                selectMenu.add(ActionAddEventAsTrigger.SINGLETON);
-            }
-            pmenu.add(selectMenu);
+            buildMenu(pmenu, role, target, label, dtactions);
+        } else {
+            buildMenu(pmenu, role, target, label, actions);
         }
-
-        JMenu newMenu = new JMenu(Translator.localize("action.new"));
-        newMenu.add(ActionNewCallEvent.getSingleton());
-        newMenu.add(ActionNewChangeEvent.getSingleton());
-        newMenu.add(ActionNewSignalEvent.getSingleton());
-        newMenu.add(ActionNewTimeEvent.getSingleton());
-        pmenu.add(newMenu);
-
-        pmenu.addSeparator();
-
-        ActionRemoveModelElement.SINGLETON.setObjectToRemove(
-                ActionNewEvent.getAction(role, target));
-        ActionRemoveModelElement.SINGLETON.putValue(Action.NAME, 
-                Translator.localize("action.delete-from-model"));
-        pmenu.add(ActionRemoveModelElement.SINGLETON);
     }
     
     private static void init(
