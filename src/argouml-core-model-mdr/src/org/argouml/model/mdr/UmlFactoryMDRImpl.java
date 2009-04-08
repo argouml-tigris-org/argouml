@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -589,17 +589,16 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             element = this.modelImpl.getUseCasesFactory().
                 buildExtensionPoint(container);            
         } else if (elementType == this.metaTypes.getTemplateParameter()) {
-            TemplateParameter templateParam =
-                getCore().createTemplateParameter();
+            // TODO: the type of the model element used in a type parameter
+            // (ie the formal) needs to match the actual parameter that it
+            // gets replaced with later.  This code is going to restrict that
+            // to always being a Parameter which doesn't seem right, but I
+            // don't have time to debug it right now. - tfm - 20090608
             Parameter param = getCore().createParameter();
             param.setName("T"); // default parameter name
-            templateParam.setParameter(param);
-            if (container instanceof ModelElement) {
-                ModelElement template = (ModelElement) container;
-                templateParam.setTemplate(template);
-                template.getTemplateParameter().add(templateParam);
-            }
-            return templateParam;            
+            element = 
+                modelImpl.getCoreFactory().buildTemplateParameter(container, 
+                        param, null);            
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);
