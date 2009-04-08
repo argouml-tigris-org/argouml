@@ -1505,6 +1505,8 @@ public abstract class FigNodeModelElement
 
     /**
      * Updates the text of the name FigText.
+     * This includes text changes, 
+     * but also changes in rendering like bold.
      */
     protected void updateNameText() {
         if (readyToEdit) {
@@ -1514,7 +1516,6 @@ public abstract class FigNodeModelElement
             if (notationProviderName != null) {
                 nameFig.setText(notationProviderName.toString(
                         getOwner(), getNotationSettings()));
-                // TODO: Why does the font need updating? - tfm
                 updateFont();
                 updateBounds();
             }
