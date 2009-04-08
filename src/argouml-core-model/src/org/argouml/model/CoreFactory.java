@@ -701,6 +701,36 @@ public interface CoreFactory extends Factory {
     Object buildTemplateArgument(Object element);
     
     /**
+     * Build a TemplateArgument which has the given element as its modelElement.
+     * <p>
+     * <em>NOTE:</em> Although it's not shown in the UML 1.4 spec, a
+     * TemplateArgument is a value (like MultiplicityRange), not a ModelElement
+     * and can not be reused in multiple instances. The UML diagrams don't show
+     * it as a composition, but it effectively is.
+     * 
+     * @param binding Binding which will own this Template Argument
+     * @param argument
+     *            ModelElement to be used as argument
+     * @return newly created TemplateArgument
+     */
+    Object buildTemplateArgument(Object binding, Object argument);
+    
+    /**
+     * Build a TemplateParameter which has the given template and parameter and
+     * 
+     * @param template ModelElement which will be template
+     * @param parameter ModelElement which will be parameter. The only two two
+     *            things of significance are its type and name
+     * @param defaultElement an optional default Model Element which will be
+     *            used if not value is given in a Binding. Null if not used.
+     * 
+     * @param element ModelElement to be used as argument
+     * @return newly created TemplateParameter
+     */
+    Object buildTemplateParameter(Object template, Object parameter, 
+            Object defaultElement);
+    
+    /**
      * Builds a usage between some client and a supplier. If client
      * and supplier do not have the same model, an
      * {@link IllegalArgumentException} is thrown.
@@ -743,7 +773,7 @@ public interface CoreFactory extends Factory {
     Object buildConstraint(String name, Object bexpr);
     
     /**
-     * Build binding between a supplier templated element and its parameterized
+     * Build binding between a supplier template element and its parameterized
      * client using the given list or arguments to fill the template.
      * 
      * @param client
@@ -811,7 +841,7 @@ public interface CoreFactory extends Factory {
     /**
      * Create a generalization in the given extent.
      * 
-     * @extent the extent in which the generalization should be created
+     * @param extent the extent in which the generalization should be created
      * @return A generalization.
      */
     Object createGeneralization(Object extent);

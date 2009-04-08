@@ -1174,4 +1174,29 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return UMLFactory.eINSTANCE.createUsage();
     }
 
+    public Object buildTemplateArgument(Object binding, Object argument) {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
+        
+    }
+
+    public Object buildTemplateParameter(Object template, Object parameter,
+            Object defaultElement) {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
+        
+    }
+
+    public Object createTemplateArgument(Object extent) {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
+        
+    }
+
+    public Object createTemplateParameter(Object extent) {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
+        
+    }
+
 }
