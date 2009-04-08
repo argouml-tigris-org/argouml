@@ -83,13 +83,9 @@ public class StateBodyNotationUml extends StateBodyNotation {
         return "parsing.help.fig-statebody";
     }
 
-
     @Override
     public String toString(Object modelElement, NotationSettings settings) {
-        return toString(modelElement);
-    }
 
-    private String toString(Object modelElement) {
         StringBuffer s = new StringBuffer();
 
         Object entryAction = Model.getFacade().getEntry(modelElement);
@@ -125,7 +121,7 @@ public class StateBodyNotationUml extends StateBodyNotation {
                 }
                 /* TODO: Is this a good way of handling nested notation? */
                 s.append((new TransitionNotationUml(trans)).toString(trans,
-                        NotationSettings.getDefaultSettings()));
+                        settings));
             }
         }
         return s.toString();
