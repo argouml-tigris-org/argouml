@@ -415,12 +415,13 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
 
         Object connection = null;
-
+        boolean uni = (unidirectional instanceof Boolean) 
+            ? ((Boolean) unidirectional).booleanValue() : false;
         if (elementType == metaTypes.getAssociation()) {
             connection =
                 getCore().buildAssociation(fromElement,
                     fromStyle, toElement,
-                    toStyle, ((Boolean) unidirectional).booleanValue());
+                    toStyle, uni);
         } else if (elementType == metaTypes.getAssociationEnd()) {
             if (fromElement instanceof UmlAssociation) {
                 connection =
