@@ -591,19 +591,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             TemplateParameter templateParam =
                 getCore().createTemplateParameter();
             Parameter param = getCore().createParameter();
-            param.setName("T");
+            param.setName("T"); // default parameter name
             templateParam.setParameter(param);
-            // bounds are defined as param tagged values
             if (container instanceof ModelElement) {
-                for (String tagName : new String[]{"extends", "super"}) {
-                    TaggedValue bound = 
-                        getExtensionMechanisms().buildTaggedValue(
-                            getExtensionMechanisms().buildTagDefinition(
-                                    tagName, null, 
-                                    ((ModelElement) container).getNamespace()),
-                            new String[]{""});
-                    param.getTaggedValue().add(bound);
-                }
                 ModelElement template = (ModelElement) container;
                 templateParam.setTemplate(template);
                 template.getTemplateParameter().add(templateParam);
