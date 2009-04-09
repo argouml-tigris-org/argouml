@@ -99,7 +99,6 @@ import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
-import org.argouml.uml.ui.TabProps;
 import org.argouml.util.ArgoFrame;
 import org.argouml.util.JavaRuntimeUtility;
 import org.argouml.util.ThreadUtils;
@@ -108,7 +107,6 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.util.Util;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
@@ -718,11 +716,24 @@ public final class ProjectBrowser
                 }
                 activeDiagram.addPropertyChangeListener("name", this);
                 monitoredDiagram = activeDiagram;
-                setTitle(projectFileName + " - " + activeDiagram.getName()
-                        + " - " + getAppName() + changeIndicator);
-            } else {
-                setTitle(projectFileName + " - " + getAppName() 
+                setTitleInternal(projectFileName + " - "
+                        + activeDiagram.getName() + " - " + getAppName()
                         + changeIndicator);
+            } else {
+                setTitleInternal(projectFileName + " - " + getAppName() 
+                        + changeIndicator);
+            }
+        }
+        
+        private void setTitleInternal(final String title) {
+            if (SwingUtilities.isEventDispatchThread()) {
+                setTitle(title);
+            } else {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        setTitle(title);
+                    }
+                });
             }
         }
         

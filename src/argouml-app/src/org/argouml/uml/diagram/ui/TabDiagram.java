@@ -39,6 +39,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
@@ -49,7 +50,6 @@ import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.ui.ActionCopy;
 import org.argouml.uml.ui.ActionCut;
 import org.tigris.gef.base.Diagram;
@@ -337,6 +337,7 @@ public class TabDiagram
      * @param toolbar is the toolbar to be set.
      */
     public void setToolBar(JToolBar toolbar) {
+        // TODO: This must happen on the AWT thread
         if (!Arrays.asList(getComponents()).contains(toolbar)) {
             if (target != null) {
                 remove(((UMLDiagram) getTarget()).getJToolBar());
@@ -353,31 +354,48 @@ public class TabDiagram
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
      *          TargetEvent)
      */
-    public void targetAdded(TargetEvent e) {
-        setTarget(e.getNewTarget());
-        select(e.getNewTargets());
+    public void targetAdded(final TargetEvent e) {
+        setNewTargets(e);
     }
 
     /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
      *          TargetEvent)
      */
-    public void targetRemoved(TargetEvent e) {
+    public void targetRemoved(final TargetEvent e) {
         // how to handle empty target lists?
         // probably the TabDiagram should only show an empty pane in that case
-        setTarget(e.getNewTarget());
-        select(e.getNewTargets());
+        setNewTargets(e);
     }
 
     /*
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
      *          org.argouml.ui.targetmanager.TargetEvent)
      */
-    public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());
-        select(e.getNewTargets());
+    public void targetSet(final TargetEvent e) {
+        setNewTargets(e);
     }
 
+    /**
+     * We have no guarantee which thread our events will be delivered on,
+     * so make sure the work gets done on our AWT event thread.
+     * 
+     * @param e the target change event 
+     */
+    private void setNewTargets(final TargetEvent e) {
+        if (SwingUtilities.isEventDispatchThread()) {
+            setTarget(e.getNewTarget());
+            select(e.getNewTargets());            
+        } else {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    setTarget(e.getNewTarget());
+                    select(e.getNewTargets());                
+                }
+            });
+        }
+    }
+    
     private void select(Object[] targets) {
         LayerManager manager = graph.getEditor().getLayerManager();
         List<Fig> figList = new ArrayList<Fig>();
@@ -412,6 +430,9 @@ public class TabDiagram
     private static final long serialVersionUID = -3305029387374936153L;
 
     public void propertyChange(PropertyChangeEvent arg0) {
+        // Any Swing work done here needs to be queued to the AWT thread
+        // since we don't know what thread our event will arrive on 
+        
         if ("remove".equals(arg0.getPropertyName())) {
             LOG.debug("Got remove event for diagram = " + arg0.getSource() 
                     + " old value = " + arg0.getOldValue());
