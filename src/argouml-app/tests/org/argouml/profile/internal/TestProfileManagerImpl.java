@@ -59,14 +59,14 @@ public class TestProfileManagerImpl extends TestCase {
      */
     public void testProfileManagerImpl() {
         List<Profile> registeredProfiles = manager.getRegisteredProfiles();
-        assertTrue(2 <= registeredProfiles.size());
+        assertTrue(1 <= registeredProfiles.size());
         Set<String> internalProfileNameSet = new HashSet<String>();
         for (Profile profile : registeredProfiles) {
             if (profile.getDisplayName().equals(ProfileUML.NAME_UML14)) {
                 internalProfileNameSet.add(profile.getDisplayName());
             }
         }
-        assertEquals(2, internalProfileNameSet.size());
+        assertEquals(1, internalProfileNameSet.size());
     }
 
     /**
