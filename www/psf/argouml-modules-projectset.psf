@@ -7,6 +7,7 @@
 <project reference="0.9.3,http://argouml-idl.tigris.org/svn/argouml-idl/trunk,argouml-module-idl"/>
 <project reference="0.9.3,http://argouml-java.tigris.org/svn/argouml-java/trunk,argouml-module-java"/>
 <project reference="0.9.3,http://argouml-php.tigris.org/svn/argouml-php/trunk,argouml-module-php"/>
+<project reference="0.9.3,http://argouml-python.tigris.org/svn/argouml-python/trunk,argouml-module-python"/>
 <project reference="0.9.3,http://argouml-ruby.tigris.org/svn/argouml-ruby/trunk,argouml-module-ruby"/>
 <project reference="0.9.3,http://argouml-sql.tigris.org/svn/argouml-sql/trunk,argouml-module-sql"/>
 </provider>
