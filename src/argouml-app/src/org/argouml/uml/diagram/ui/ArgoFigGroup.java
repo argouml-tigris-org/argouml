@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -135,19 +135,6 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
     public void setSettings(DiagramSettings renderSettings) {
         settings = renderSettings;
         renderingChanged();
-    }
-    
-    /**
-     * Setting the owner of the Fig must be done in the constructor and
-     * not changed aftewards for all ArgoUML figs.
-     * 
-     * @param owner owning UML element
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     * @deprecated for 0.27.3 by tfmorris.  Set owner in constructor.
-     */
-    @Deprecated
-    public void setOwner(Object owner) {
-        super.setOwner(owner);
     }
 
 }
