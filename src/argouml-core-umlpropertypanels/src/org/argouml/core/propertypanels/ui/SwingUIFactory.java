@@ -48,7 +48,6 @@ import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
-import org.argouml.uml.ui.UMLSingleRowSelector;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.behavior.activity_graphs.ActionSetObjectFlowStateClassifier;
@@ -89,6 +88,8 @@ import org.argouml.uml.ui.foundation.core.UMLOperationSpecificationDocument;
 import org.argouml.uml.ui.foundation.core.UMLParameterDirectionKindRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionSetTagDefinitionType;
+import org.argouml.uml.ui.foundation.extension_mechanisms.UMLMetaClassComboBoxModel;
 import org.tigris.swidgets.GridLayout2;
 
 /**
@@ -511,7 +512,17 @@ public class SwingUIFactory implements UIFactory {
                         ActionSetStubStateReferenceState.getInstance());
             comp = new UMLComboBoxNavigator(Translator.localize(
                     "tooltip.nav-stubstate"), referencestateBox);            
-        }
+        } else if ("tagType".equals(prop.getName())) {
+            UMLComboBoxModel2 model = new UMLMetaClassComboBoxModel();
+            model.setTarget(target);
+            final JComboBox typeComboBox = new UMLComboBox2(model, 
+                    ActionSetTagDefinitionType.getInstance());
+            comp = new UMLComboBoxNavigator(
+                   Translator.localize("label.type.navigate.tooltip"),
+                   typeComboBox);
+            // TODO: Why is this disabled always?
+            comp.setEnabled(false);
+       }
         
         if (comp != null) {
             String name = prop.getName();
