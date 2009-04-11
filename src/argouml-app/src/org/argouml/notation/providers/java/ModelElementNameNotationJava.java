@@ -33,7 +33,6 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ModelElementNameNotation;
@@ -167,8 +166,8 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
         if (path != null) {
             Object nspe =
                 Model.getModelManagementHelper().getElement(
-                        path,
-                        Model.getFacade().getModel(modelElement));
+                    path,
+                    Model.getFacade().getRoot(modelElement));
 
             if (nspe == null || !(Model.getFacade().isANamespace(nspe))) {
                 String msg = 
@@ -176,10 +175,8 @@ public class ModelElementNameNotationJava extends ModelElementNameNotation {
                 throw new ParseException(Translator.localize(msg), 
                         0);
             }
-            Object model =
-                ProjectManager.getManager().getCurrentProject().getRoot();
-            if (!Model.getCoreHelper().getAllPossibleNamespaces(
-                    modelElement, model).contains(nspe)) {
+            if (!Model.getCoreHelper().isValidNamespace(
+                    modelElement, nspe)) {
                 String msg = 
                         "parsing.error.model-element-name.namespace-invalid";
                 throw new ParseException(Translator.localize(msg), 

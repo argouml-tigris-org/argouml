@@ -388,10 +388,7 @@ public final class NotationUtilityUml {
                 throw new ParseException(Translator.localize(msg), 
                         0);
             }
-            Object model =
-                ProjectManager.getManager().getCurrentProject().getRoot();
-            if (!Model.getCoreHelper().getAllPossibleNamespaces(me, model)
-                        .contains(nspe)) {
+            if (!Model.getCoreHelper().isValidNamespace(me, nspe)) {
                 String msg = 
                         "parsing.error.model-element-name.namespace-invalid";
                 throw new ParseException(Translator.localize(msg), 

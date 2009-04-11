@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,6 @@
 
 package org.argouml.notation.providers.java;
 
-import java.util.HashMap;
-
 import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
@@ -48,6 +46,54 @@ public class TestModelElementNameNotationJava extends TestCase {
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
         theClass = Model.getCoreFactory().buildClass("TheClass", getModel());
+    }
+    
+    /**
+     * Test if we can parse a class path and set it abstract.
+     */
+    public void testParsingPath() {
+        Object pack1 = Model.getModelManagementFactory().buildPackage("p1");
+        Model.getCoreHelper().setNamespace(pack1, getModel());
+        Object pack2 = Model.getModelManagementFactory().buildPackage("p2");
+        Model.getCoreHelper().setNamespace(pack2, pack1);
+        Model.getCoreHelper().setNamespace(theClass, pack2);
+        Model.getCoreHelper().setAbstract(theClass, false);
+        assertFalse("Could not build a non-abstract class", 
+                Model.getFacade().isAbstract(theClass));
+        ModelElementNameNotation notation = 
+            new ModelElementNameNotationJava(theClass);
+        notation.parse(theClass, "abstract p1.p2.TheClass");
+        assertTrue("Could not parse abstract class with path", 
+                Model.getFacade().isAbstract(theClass));
+        notation.parse(theClass, "TheClass");
+        assertTrue("Abstract class misbehavior",
+                Model.getFacade().isAbstract(theClass)); 
+    }
+
+    /**
+     * Test that we parse a class path and modify its location.
+     */
+    public void testParsingPathAndModify() {
+        Model.getCoreHelper().setName(getModel(), "root-model");
+        Object mod1 = Model.getModelManagementFactory().createModel();
+        Model.getCoreHelper().setName(mod1, "mod1");
+        Model.getCoreHelper().setNamespace(mod1, getModel());
+        Object pack1 = Model.getModelManagementFactory().buildPackage("p1");
+        Model.getCoreHelper().setNamespace(pack1, mod1);
+        Object pack2 = Model.getModelManagementFactory().buildPackage("p2");
+        Model.getCoreHelper().setNamespace(pack2, pack1);
+        Model.getCoreHelper().setNamespace(theClass, pack2);
+        Model.getCoreHelper().setAbstract(theClass, false);
+        ModelElementNameNotation notation = 
+            new ModelElementNameNotationJava(theClass);
+        notation.parse(theClass, "abstract mod1.p1.p2.TheClass");
+        assertTrue("Could not parse abstract class with path", 
+                Model.getFacade().isAbstract(theClass));
+        Object pack3 = Model.getModelManagementFactory().buildPackage("p3");
+        Model.getCoreHelper().setNamespace(pack3, pack1);
+        notation.parse(theClass, " mod1.p1.p3.TheClass  ");
+        assertTrue("Could not move a class into another package",
+                Model.getFacade().getOwnedElements(pack3).contains(theClass));
     }
 
     public void testToStringForRealization() {
