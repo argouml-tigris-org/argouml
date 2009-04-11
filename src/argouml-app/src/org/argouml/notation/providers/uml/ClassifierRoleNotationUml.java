@@ -223,7 +223,7 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
             if (ns != null && Model.getFacade().getNamespace(ns) != null) {
                 ns = Model.getFacade().getNamespace(ns);
             } else {
-                ns = Model.getFacade().getModel(cls);
+                ns = Model.getFacade().getRoot(cls);
             }
 
             while (it.hasNext()) {

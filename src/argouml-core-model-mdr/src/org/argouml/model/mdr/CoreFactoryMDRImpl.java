@@ -2154,8 +2154,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             // Note that if we're copying this element then we
             // must also be allowed to copy other necessary
             // objects.
-            Model targetModel = (Model) org.argouml.model.Model.getFacade()
-                    .getModel(targetME);
             for (Stereotype s : sourceME.getStereotype()) {
                 targetME.getStereotype().add(s);
             }

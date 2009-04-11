@@ -335,7 +335,7 @@ public class OperationNotationUml extends OperationNotation {
             if (ow != null && Model.getFacade().getNamespace(ow) != null) {
                 ns = Model.getFacade().getNamespace(ow);
             } else {
-                ns = Model.getFacade().getModel(op);
+                ns = Model.getFacade().getRoot(op);
             }
             Object mtype = NotationUtilityUml.getType(type.trim(), ns);
             setReturnParameter(op, mtype);

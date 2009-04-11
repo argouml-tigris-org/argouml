@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -208,7 +208,7 @@ public class WizOperName extends WizMEName {
                 // "create" and the base class BehavioralFeature in
                 // the model. If there is none then we create one and
                 // put it there.
-                Object m = Model.getFacade().getModel(oper);
+                Object m = Model.getFacade().getRoot(oper);
                 Object theStereotype = null;
                 for (Iterator iter =
                         Model.getFacade().getOwnedElements(m).iterator();
@@ -242,7 +242,7 @@ public class WizOperName extends WizMEName {
                             .addBaseClass(theStereotype, "BehavioralFeature");
                     Object targetNS =
                         findNamespace(Model.getFacade().getNamespace(oper),
-                                      Model.getFacade().getModel(oper));
+                                      Model.getFacade().getRoot(oper));
                     Model.getCoreHelper()
                         .addOwnedElement(targetNS, theStereotype);
                 }

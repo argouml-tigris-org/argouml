@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,14 +58,14 @@ public class ActionAddEventAsTrigger extends AbstractActionAddModelElement2 {
 
     protected List getChoices() {
         List vec = new ArrayList();
-        // TODO: the namespace of created events is currently the model. 
+        // TODO: the namespace of enlisted events is currently the model. 
         // I think this is wrong, they should be
         // in the namespace of the activitygraph!
 //        vec.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
 //                Model.getFacade().getNamespace(getTarget()),
 //                Model.getMetaTypes().getEvent()));
         vec.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
-                Model.getFacade().getModel(getTarget()),
+                Model.getFacade().getRoot(getTarget()),
                 Model.getMetaTypes().getEvent()));
 
         return vec;

@@ -822,11 +822,11 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
-    public Object getModel(Object handle) {
+    public Object getInnerContainingModel(Object handle) {
         if (!(handle instanceof Element)) {
             throw new IllegalArgumentException();
         }
-        return ((Element) handle).getModel();
+        return ((Element) handle).getModel();        
     }
     
     public Object getRoot(Object handle) {

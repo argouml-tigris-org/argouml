@@ -477,7 +477,7 @@ public class AttributeNotationUml extends AttributeNotation {
             if (ow != null && Model.getFacade().getNamespace(ow) != null) {
                 ns = Model.getFacade().getNamespace(ow);
             } else {
-                ns = Model.getFacade().getModel(attribute);
+                ns = Model.getFacade().getRoot(attribute);
             }
             Model.getCoreHelper().setType(attribute, 
                     NotationUtilityUml.getType(type.trim(), ns));

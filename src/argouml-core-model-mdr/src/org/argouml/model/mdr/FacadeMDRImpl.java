@@ -2006,8 +2006,7 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
-
-    public Object getModel(Object handle) {
+    public Object getInnerContainingModel(Object handle) {
         try {
             if (isAModel(handle)) {
                 return handle;
@@ -2019,9 +2018,10 @@ class FacadeMDRImpl implements Facade {
             // containing model element
             if (getModelElementContainer(handle) == null) {
                 return handle;
-            } else {
-                return getModel(getModelElementContainer(handle));
             }
+            // TODO: replace this recursive function by a loop like in getRoot:
+            return getInnerContainingModel(
+                getModelElementContainer(handle));
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }

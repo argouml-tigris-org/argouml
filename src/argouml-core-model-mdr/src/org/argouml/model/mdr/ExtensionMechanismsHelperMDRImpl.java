@@ -461,11 +461,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     public void setType(Object handle, Object type) {
         if (type == null || type instanceof TagDefinition) {
             if (handle instanceof TaggedValue) {
-                Object model = modelImpl.getFacade().getModel(handle);
-                if (!modelImpl.getFacade().isAModel(model)) {
-                    model = 
-                        modelImpl.getModelManagementFactory().getRootModel();
-                }
                 ((TaggedValue) handle).setType((TagDefinition) type);
                 return;
             }

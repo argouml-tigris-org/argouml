@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -153,7 +153,7 @@ public class StereotypeUtility {
             Set<Object> availableStereotypes, Object namespace) {
         
         Collection allProfiles = getAllProfilePackages(Model.getFacade()
-                .getModel(modelElement));
+                .getRoot(modelElement));
         Collection<Object> allAppliedProfiles = new ArrayList<Object>();
         
         for (Object profilePackage : allProfiles) {
@@ -314,7 +314,7 @@ public class StereotypeUtility {
      * @return A stereotype named name, or possibly null.
      */
     private static Object getStereotype(Object obj, String name) {
-        Object root = Model.getFacade().getModel(obj);
+        Object root = Model.getFacade().getRoot(obj);
         Object stereo;
 
         stereo = findStereotypeContained(obj, root, name);

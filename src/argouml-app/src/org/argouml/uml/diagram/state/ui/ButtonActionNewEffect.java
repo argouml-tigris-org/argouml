@@ -1,5 +1,5 @@
-// $Id: eclipse-argo-codetemplates.xml 10612 2006-05-25 12:58:04Z linus $
-// Copyright (c) 2006 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -57,7 +57,7 @@ abstract class ButtonActionNewEffect extends UndoableAction implements
         }
         super.actionPerformed(e);
         Object target = TargetManager.getInstance().getModelTarget();
-        Object model = Model.getFacade().getModel(target);
+        Object model = Model.getFacade().getInnerContainingModel(target);
         Object ns = Model.getStateMachinesHelper()
                     .findNamespaceForEvent(target, model);
         Object event = createEvent(ns);
