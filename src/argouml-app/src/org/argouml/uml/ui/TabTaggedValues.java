@@ -168,12 +168,7 @@ public class TabTaggedValues extends AbstractArgoJPanel
             shouldBeEnabled = false;
             return;
         }
-        // TODO: What is the purpose of this special case? - tfm
-        if (Model.getFacade().isATemplateParameter(t)) {
-            target = Model.getFacade().getParameter(t);
-        } else {
-            target = t;
-        }
+        target = t;
         shouldBeEnabled = true;
 
         // Only update our model if we're visible
