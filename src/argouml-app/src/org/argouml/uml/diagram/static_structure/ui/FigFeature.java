@@ -98,20 +98,6 @@ public abstract class FigFeature extends CompartmentFigText {
         Model.getPump().addModelEventListener(this, owner, EVENT_NAME);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigSingleLineText#setOwner(java.lang.Object)
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public void setOwner(Object owner) {
-        super.setOwner(owner);
-        
-        if (owner != null) {
-            updateOwnerScope(Model.getFacade().isStatic(owner));
-            Model.getPump().addModelEventListener(this, owner, EVENT_NAME);
-        }
-    }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigSingleLineText#removeFromDiagram()
