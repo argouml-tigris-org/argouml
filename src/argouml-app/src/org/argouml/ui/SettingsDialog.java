@@ -63,7 +63,6 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
               ArgoDialog.OK_CANCEL_OPTION,
               true);
 
-
         tabs = new JTabbedPane();
 
         applyButton = new JButton(Translator.localize("button.apply"));
@@ -81,13 +80,14 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
         // Add settings from the settings registry.
         settingsTabs = GUI.getInstance().getSettingsTabs();
         for (GUISettingsTabInterface stp : settingsTabs) {
+            // TODO: Only fetch names and defer fetching panels until needed
             tabs.addTab(
                     Translator.localize(stp.getTabKey()),
                     stp.getTabPanel());
         }
 
         // Increase width to accommodate all tabs on one row.
-        final int minimumWidth = 480;
+        final int minimumWidth = 500;
         tabs.setPreferredSize(new Dimension(Math.max(tabs
                 .getPreferredSize().width, minimumWidth), tabs
                 .getPreferredSize().height));

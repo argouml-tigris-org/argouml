@@ -67,6 +67,7 @@ public class SettingsTabNotation
     extends JPanel
     implements GUIProjectSettingsTabInterface {
 
+    private JPanel topPanel;
     private JComboBox notationLanguage;
     private JCheckBox useGuillemots;
     private JCheckBox showAssociationNames;
@@ -91,12 +92,15 @@ public class SettingsTabNotation
     public SettingsTabNotation(int settingsScope) {
         super();
         scope = settingsScope;
+    }
+
+    private void buildPanel() {
         setLayout(new BorderLayout());
 
-        JPanel top = new JPanel();
-        top.setLayout(new BorderLayout());
+        topPanel = new JPanel();
+        topPanel.setLayout(new BorderLayout());
 
-        if (settingsScope == Argo.SCOPE_APPLICATION) {
+        if (scope == Argo.SCOPE_APPLICATION) {
             JPanel warning = new JPanel();
             warning.setLayout(new BoxLayout(warning, BoxLayout.PAGE_AXIS));
             JLabel warningLabel = new JLabel(Translator
@@ -112,7 +116,7 @@ public class SettingsTabNotation
             projectSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
             warning.add(projectSettings);
 
-            top.add(warning, BorderLayout.NORTH);
+            topPanel.add(warning, BorderLayout.NORTH);
         }
 
         JPanel settings = new JPanel();
@@ -172,9 +176,9 @@ public class SettingsTabNotation
             createCheckBox("label.show-singular-multiplicities");
         settings.add(showSingularMultiplicities, constraints);
 
-        top.add(settings, BorderLayout.CENTER);
+        topPanel.add(settings, BorderLayout.CENTER);
 
-        add(top, BorderLayout.NORTH);
+        add(topPanel, BorderLayout.NORTH);
     }
 
     /*
@@ -273,7 +277,9 @@ public class SettingsTabNotation
             ProjectSettings ps = p.getProjectSettings();
             NotationSettings ns = ps.getNotationSettings();
             NotationName nn = (NotationName) notationLanguage.getSelectedItem();
-            if (nn != null) ps.setNotationLanguage(nn.getConfigurationValue());
+            if (nn != null) {
+                ps.setNotationLanguage(nn.getConfigurationValue());
+            }
             ps.setUseGuillemots(useGuillemots.isSelected());
             ns.setShowAssociationNames(showAssociationNames.isSelected());
             ns.setShowVisibilities(showVisibility.isSelected());
@@ -324,12 +330,19 @@ public class SettingsTabNotation
     /*
      * @see org.argouml.ui.GUISettingsTabInterface#getTabKey()
      */
-    public String getTabKey() { return "tab.notation"; }
+    public String getTabKey() {
+        return "tab.notation";
+    }
 
     /*
      * @see org.argouml.ui.GUISettingsTabInterface#getTabPanel()
      */
-    public JPanel getTabPanel() { return this; }
+    public JPanel getTabPanel() {
+        if (topPanel == null) {
+            buildPanel();
+        }
+        return this;
+    }
 
     /**
      * Create a localized JCheckBox.

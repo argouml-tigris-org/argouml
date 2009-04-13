@@ -69,42 +69,42 @@ import org.argouml.uml.diagram.DiagramAppearance;
 public class SettingsTabProfile extends JPanel implements
         GUISettingsTabInterface, ActionListener {
 
-    private JButton loadFromFile = new JButton(Translator
-            .localize("tab.profiles.userdefined.load"));
+    private JButton loadFromFile;
 
-    private JButton addButton = new JButton(">>");
+    private JButton addButton;
 
-    private JButton removeButton = new JButton("<<");
+    private JButton removeButton;
 
-    private JList availableList = new JList();
+    private JList availableList;
 
-    private JList defaultList = new JList();
+    private JList defaultList;
 
     // //////
 
-    private JList directoryList = new JList();
+    private JList directoryList;
 
-    private JButton addDirectory = new JButton(Translator
-            .localize("tab.profiles.directories.add"));
+    private JButton addDirectory;
 
-    private JButton removeDirectory = new JButton(Translator
-            .localize("tab.profiles.directories.remove"));
+    private JButton removeDirectory;
 
     private JButton refreshProfiles = new JButton(Translator
             .localize("tab.profiles.directories.refresh"));
 
     // /////
 
-    private JLabel stereoLabel = new JLabel(Translator
-            .localize("menu.popup.stereotype-view")
-            + ": ");
+    private JLabel stereoLabel;
 
-    private JComboBox stereoField = new JComboBox();
+    private JComboBox stereoField;
+
+    private boolean initialized = false;
 
     /**
-     * The default constructor for this class.
+     * Construct the Profile settings tab
      */
     public SettingsTabProfile() {
+    }
+
+    private void buildPanel() {
         setLayout(new BorderLayout());
 
         JPanel warning = new JPanel();
@@ -128,25 +128,29 @@ public class SettingsTabProfile extends JPanel implements
 
         profileSettings.add(initDefaultStereotypeViewSelector());
 
-        directoryList
-                .setPrototypeCellValue("123456789012345678901234567890123456789012345678901234567890");
-        directoryList.setMinimumSize(new Dimension(50, 50));
-
         JPanel sdirPanel = new JPanel();
         sdirPanel.setLayout(new BoxLayout(sdirPanel, BoxLayout.Y_AXIS));
 
-        JPanel dlist = new JPanel();
-        dlist.setLayout(new BorderLayout());
 
         JPanel lcb = new JPanel();
         lcb.setLayout(new BoxLayout(lcb, BoxLayout.Y_AXIS));
 
+        addDirectory = new JButton(Translator
+                .localize("tab.profiles.directories.add"));
+        removeDirectory = new JButton(Translator
+                .localize("tab.profiles.directories.remove"));
+        
         lcb.add(addDirectory);
         lcb.add(removeDirectory);
 
         addDirectory.addActionListener(this);
         removeDirectory.addActionListener(this);
 
+        directoryList = new JList();
+        directoryList.setMinimumSize(new Dimension(50, 50));
+
+        JPanel dlist = new JPanel();
+        dlist.setLayout(new BorderLayout());        
         dlist.add(new JScrollPane(directoryList), BorderLayout.CENTER);
         dlist.add(lcb, BorderLayout.EAST);
 
@@ -159,11 +163,8 @@ public class SettingsTabProfile extends JPanel implements
         JPanel configPanel = new JPanel();
         configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.X_AXIS));
 
-        availableList.setPrototypeCellValue("12345678901234567890");
-        defaultList.setPrototypeCellValue("12345678901234567890");
-
-        availableList.setMinimumSize(new Dimension(50, 50));
-        defaultList.setMinimumSize(new Dimension(50, 50));
+        availableList = createProfileList();
+        defaultList = createProfileList();
 
         refreshLists();
 
@@ -177,6 +178,8 @@ public class SettingsTabProfile extends JPanel implements
 
         JPanel centerButtons = new JPanel();
         centerButtons.setLayout(new BoxLayout(centerButtons, BoxLayout.Y_AXIS));
+        addButton = new JButton(">>");
+        removeButton = new JButton("<<");
         centerButtons.add(addButton);
         centerButtons.add(removeButton);
         configPanel.add(centerButtons);
@@ -197,6 +200,8 @@ public class SettingsTabProfile extends JPanel implements
 
         JPanel lffPanel = new JPanel();
         lffPanel.setLayout(new FlowLayout());
+        loadFromFile = new JButton(Translator
+                .localize("tab.profiles.userdefined.load"));
         lffPanel.add(loadFromFile);
         lffPanel.add(refreshProfiles);
 
@@ -206,12 +211,33 @@ public class SettingsTabProfile extends JPanel implements
         profileSettings.add(lffPanel);
 
         add(profileSettings, BorderLayout.CENTER);
+
+        initialized = true;
+    }
+
+    
+    @Override
+    public void setVisible(boolean flag) {
+        if (flag && !initialized) {
+            buildPanel();
+        }
+        super.setVisible(flag);
+    }
+    
+    private JList createProfileList() {
+        JList list = new JList();
+        list.setPrototypeCellValue("12345678901234567890");
+        list.setMinimumSize(new Dimension(50, 50));
+        return list;
     }
 
     private JPanel initDefaultStereotypeViewSelector() {
         JPanel setDefStereoV = new JPanel();
         setDefStereoV.setLayout(new FlowLayout());
-
+        stereoField = new JComboBox();
+        stereoLabel = new JLabel(Translator
+                .localize("menu.popup.stereotype-view")
+                + ": ");
         stereoLabel.setLabelFor(stereoField);
         setDefStereoV.add(stereoLabel);
         setDefStereoV.add(stereoField);
@@ -233,8 +259,8 @@ public class SettingsTabProfile extends JPanel implements
 
                 if (src == stereoField) {
                     Object item = e.getItem();
-                    DefaultComboBoxModel model = (DefaultComboBoxModel) stereoField
-                            .getModel();
+                    DefaultComboBoxModel model = 
+                        (DefaultComboBoxModel) stereoField.getModel();
                     int idx = model.getIndexOf(item);
 
                     switch (idx) {
@@ -409,7 +435,13 @@ public class SettingsTabProfile extends JPanel implements
         return this;
     }
 
+
+
+
     public void handleResetToDefault() {
+        if (!initialized) {
+            buildPanel();
+        }
         refreshLists();
     }
 
@@ -418,6 +450,9 @@ public class SettingsTabProfile extends JPanel implements
     }
 
     public void handleSettingsTabRefresh() {
+        if (!initialized) {
+            buildPanel();
+        }
         refreshLists();
 
         switch (Configuration.getInteger(
@@ -491,4 +526,5 @@ public class SettingsTabProfile extends JPanel implements
         }
 
     }
+
 }

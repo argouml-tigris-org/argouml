@@ -64,16 +64,22 @@ class SettingsTabAppearance
 
     private Locale locale;
 
+    private JPanel topPanel;
+    
     /**
      * The constructor.
      *
      */
     SettingsTabAppearance() {
+        // Defer initialization until we're visible
+    }
+
+    private void buildPanel() {
         setLayout(new BorderLayout());
 
         int labelGap = 10;
         int componentGap = 10;
-        JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));
+        topPanel = new JPanel(new LabelledLayout(labelGap, componentGap));
 
         JLabel label = new JLabel(Translator.localize("label.look-and-feel"));
         lookAndFeel =
@@ -85,8 +91,8 @@ class SettingsTabAppearance
             }
         });
         label.setLabelFor(lookAndFeel);
-        top.add(label);
-        top.add(lookAndFeel);
+        topPanel.add(label);
+        topPanel.add(lookAndFeel);
 
         metalLabel = new JLabel(Translator.localize("label.metal-theme"));
 
@@ -94,16 +100,16 @@ class SettingsTabAppearance
             new JComboBox(LookAndFeelMgr.getInstance()
                 .getAvailableThemeNames());
         metalLabel.setLabelFor(metalTheme);
-        top.add(metalLabel);
-        top.add(metalTheme);
+        topPanel.add(metalLabel);
+        topPanel.add(metalTheme);
         JCheckBox j = new JCheckBox(Translator.localize("label.smooth-edges"));
 
         smoothEdges = j;
         JLabel emptyLabel = new JLabel();
         emptyLabel.setLabelFor(smoothEdges);
 
-        top.add(emptyLabel);
-        top.add(smoothEdges);
+        topPanel.add(emptyLabel);
+        topPanel.add(smoothEdges);
 
         JLabel languageLabel =
             new JLabel(Translator.localize("label.language"));
@@ -122,11 +128,11 @@ class SettingsTabAppearance
             }
         });
         languageLabel.setLabelFor(language);
-        top.add(languageLabel);
-        top.add(language);
+        topPanel.add(languageLabel);
+        topPanel.add(language);
 
-        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        add(top, BorderLayout.CENTER);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        add(topPanel, BorderLayout.CENTER);
 
         JLabel restart =
             new JLabel(Translator.localize("label.restart-application"));
@@ -207,7 +213,12 @@ class SettingsTabAppearance
     /*
      * @see GUISettingsTabInterface#getTabPanel()
      */
-    public JPanel getTabPanel() { return this; }
+    public JPanel getTabPanel() {
+        if (topPanel == null) {
+            buildPanel();
+        }
+        return this;
+    }
 
     /**
      * The UID.

@@ -52,6 +52,7 @@ import org.tigris.swidgets.LabelledLayout;
 class SettingsTabEnvironment extends JPanel
     implements GUISettingsTabInterface {
 
+    private JPanel topPanel;
     private JTextField fieldArgoExtDir;
     private JTextField fieldJavaHome;
     private JTextField fieldUserHome;
@@ -66,17 +67,20 @@ class SettingsTabEnvironment extends JPanel
      */
     SettingsTabEnvironment() {
         super();
+    }
+
+    private void buildPanel() {
         setLayout(new BorderLayout());
         int labelGap = 10;
         int componentGap = 5;
-        JPanel top = new JPanel(new LabelledLayout(labelGap, componentGap));
+        topPanel = new JPanel(new LabelledLayout(labelGap, componentGap));
 
         JLabel label =
             new JLabel(Translator.localize("label.default.graphics-format"));
         fieldGraphicsFormat = new JComboBox();
         label.setLabelFor(fieldGraphicsFormat);
-        top.add(label);
-        top.add(fieldGraphicsFormat);
+        topPanel.add(label);
+        topPanel.add(fieldGraphicsFormat);
 
         label =
             new JLabel(
@@ -87,8 +91,8 @@ class SettingsTabEnvironment extends JPanel
         theResolutions.add(new GResolution(4, "combobox.item.resolution-4"));
         fieldGraphicsResolution = new JComboBox(); //filled in later
         label.setLabelFor(fieldGraphicsResolution);
-        top.add(label);
-        top.add(fieldGraphicsResolution);
+        topPanel.add(label);
+        topPanel.add(fieldGraphicsResolution);
 
  	// This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${argo.ext.dir}");
@@ -96,8 +100,8 @@ class SettingsTabEnvironment extends JPanel
         fieldArgoExtDir = j2;
 	fieldArgoExtDir.setEnabled(false);
         label.setLabelFor(fieldArgoExtDir);
-        top.add(label);
-        top.add(fieldArgoExtDir);
+        topPanel.add(label);
+        topPanel.add(fieldArgoExtDir);
 
   	// This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${java.home}");
@@ -105,8 +109,8 @@ class SettingsTabEnvironment extends JPanel
         fieldJavaHome = j3;
 	fieldJavaHome.setEnabled(false);
         label.setLabelFor(fieldJavaHome);
-        top.add(label);
-        top.add(fieldJavaHome);
+        topPanel.add(label);
+        topPanel.add(fieldJavaHome);
 
   	// This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${user.home}");
@@ -114,8 +118,8 @@ class SettingsTabEnvironment extends JPanel
         fieldUserHome = j4;
 	fieldUserHome.setEnabled(false);
         label.setLabelFor(fieldUserHome);
-        top.add(label);
-        top.add(fieldUserHome);
+        topPanel.add(label);
+        topPanel.add(fieldUserHome);
 
 	// This string is NOT to be translated! See issue 2381.
 	label = new JLabel("${user.dir}");
@@ -123,19 +127,19 @@ class SettingsTabEnvironment extends JPanel
         fieldUserDir = j5;
 	fieldUserDir.setEnabled(false);
         label.setLabelFor(fieldUserDir);
-        top.add(label);
-        top.add(fieldUserDir);
+        topPanel.add(label);
+        topPanel.add(fieldUserDir);
 
   	label = new JLabel(Translator.localize("label.startup-directory"));
   	JTextField j6 = new JTextField();
         fieldStartupDir = j6;
 	fieldStartupDir.setEnabled(false);
         label.setLabelFor(fieldStartupDir);
-        top.add(label);
-        top.add(fieldStartupDir);
+        topPanel.add(label);
+        topPanel.add(fieldStartupDir);
 
-        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-	add(top, BorderLayout.NORTH);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+	add(topPanel, BorderLayout.NORTH);
 	
 	JPanel bottom = new JPanel();
 	bottom.add(new JLabel(
@@ -203,12 +207,19 @@ class SettingsTabEnvironment extends JPanel
     /*
      * @see GUISettingsTabInterface#getTabKey()
      */
-    public String getTabKey() { return "tab.environment"; }
+    public String getTabKey() {
+        return "tab.environment";
+    }
 
     /*
      * @see GUISettingsTabInterface#getTabPanel()
      */
-    public JPanel getTabPanel() { return this; }
+    public JPanel getTabPanel() {
+        if (topPanel == null) {
+            buildPanel();
+        }
+        return this;
+    }
 
     /**
      * The UID.

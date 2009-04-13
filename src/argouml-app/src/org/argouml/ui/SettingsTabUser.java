@@ -50,6 +50,8 @@ import org.argouml.swingext.JLinkButton;
 class SettingsTabUser extends JPanel
     implements GUISettingsTabInterface {
 
+    private JPanel topPanel;
+    
     /**
      * This is where the user enters full name in settings tab.
      * This information is stored
@@ -66,13 +68,16 @@ class SettingsTabUser extends JPanel
 
     /**
      * The constructor.
-     *
      */
     SettingsTabUser() {
+        // defer work until fetched/visible
+    }
+
+    private void buildPanel() {
         setLayout(new BorderLayout());
         
-        JPanel top = new JPanel();
-        top.setLayout(new BorderLayout());
+        topPanel = new JPanel();
+        topPanel.setLayout(new BorderLayout());
         
         JPanel warning = new JPanel();
         warning.setLayout(new BoxLayout(warning, BoxLayout.PAGE_AXIS));
@@ -87,7 +92,7 @@ class SettingsTabUser extends JPanel
         projectSettings.setAlignmentX(Component.RIGHT_ALIGNMENT);
         warning.add(projectSettings);
         
-        top.add(warning, BorderLayout.NORTH);
+        topPanel.add(warning, BorderLayout.NORTH);
         
 	JPanel settings = new JPanel();
     	settings.setLayout(new GridBagLayout());
@@ -125,9 +130,9 @@ class SettingsTabUser extends JPanel
  	JTextField j1 = new JTextField();
         userEmail = j1;
 	settings.add(userEmail, fieldConstraints);
-	top.add(settings, BorderLayout.CENTER);
+	topPanel.add(settings, BorderLayout.CENTER);
 	
-	add(top, BorderLayout.NORTH);
+	add(topPanel, BorderLayout.NORTH);
     }
 
     /*
@@ -163,12 +168,19 @@ class SettingsTabUser extends JPanel
     /*
      * @see GUISettingsTabInterface#getTabKey()
      */
-    public String getTabKey() { return "tab.user"; }
+    public String getTabKey() {
+        return "tab.user";
+    }
 
     /*
      * @see GUISettingsTabInterface#getTabPanel()
      */
-    public JPanel getTabPanel() { return this; }
+    public JPanel getTabPanel() {
+        if (topPanel == null) {
+            buildPanel();
+        }
+        return this;
+    }
 
     /**
      * The UID.

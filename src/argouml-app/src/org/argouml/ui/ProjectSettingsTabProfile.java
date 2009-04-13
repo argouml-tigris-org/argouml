@@ -70,19 +70,17 @@ public class ProjectSettingsTabProfile extends JPanel implements
 
     private Project p;
 
-    private JButton loadFromFile = new JButton(Translator
-            .localize("tab.profiles.userdefined.load"));
+    private JButton loadFromFile;
 
-    private JButton unregisterProfile = new JButton(Translator
-            .localize("tab.profiles.userdefined.unload"));
+    private JButton unregisterProfile;
 
-    private JButton addButton = new JButton(">>");
+    private JButton addButton;
 
-    private JButton removeButton = new JButton("<<");
+    private JButton removeButton;
 
-    private JList availableList = new JList();
+    private JList availableList;
 
-    private JList usedList = new JList();
+    private JList usedList;
 
     // //////
 
@@ -92,10 +90,18 @@ public class ProjectSettingsTabProfile extends JPanel implements
 
     private JComboBox stereoField = new JComboBox();
 
+    private JFileChooser fileChooser;
+
+    private boolean initialized = false;
+    
     /**
      * The default constructor for this class
      */
     public ProjectSettingsTabProfile() {
+        // Defer all work until we're actually needed
+    }
+
+    private void buildDialog() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // ////////////
@@ -159,11 +165,8 @@ public class ProjectSettingsTabProfile extends JPanel implements
         JPanel configPanel = new JPanel();
         configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.X_AXIS));
 
-        availableList.setPrototypeCellValue("12345678901234567890");
-        usedList.setPrototypeCellValue("12345678901234567890");
-
-        availableList.setMinimumSize(new Dimension(50, 50));
-        usedList.setMinimumSize(new Dimension(50, 50));
+        availableList = createProfileList();
+        usedList = createProfileList();
 
         JPanel leftList = new JPanel();
         leftList.setLayout(new BorderLayout());
@@ -175,7 +178,10 @@ public class ProjectSettingsTabProfile extends JPanel implements
 
         JPanel centerButtons = new JPanel();
         centerButtons.setLayout(new BoxLayout(centerButtons, BoxLayout.Y_AXIS));
+
+        addButton = new JButton(">>");
         centerButtons.add(addButton);
+        removeButton = new JButton("<<");
         centerButtons.add(removeButton);
         configPanel.add(centerButtons);
 
@@ -187,6 +193,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
         rightList.add(new JScrollPane(usedList), BorderLayout.CENTER);
         configPanel.add(rightList);
 
+
         addButton.addActionListener(this);
         removeButton.addActionListener(this);
 
@@ -194,15 +201,37 @@ public class ProjectSettingsTabProfile extends JPanel implements
 
         JPanel lffPanel = new JPanel();
         lffPanel.setLayout(new FlowLayout());
-        lffPanel.add(unregisterProfile);
+
+        loadFromFile = new JButton(Translator
+                .localize("tab.profiles.userdefined.load"));
+        loadFromFile.addActionListener(this);
         lffPanel.add(loadFromFile);
 
-        loadFromFile.addActionListener(this);
+        unregisterProfile = new JButton(Translator
+                .localize("tab.profiles.userdefined.unload"));
         unregisterProfile.addActionListener(this);
+        lffPanel.add(unregisterProfile);
 
         add(lffPanel);
+        
+        initialized = true;
     }
-
+    
+   
+    @Override
+    public void setVisible(boolean flag) {
+        if (flag && !initialized) {
+            buildDialog();
+        }
+        super.setVisible(flag);
+    }
+    
+    private JList createProfileList() {
+        JList list = new JList();
+        list.setPrototypeCellValue("12345678901234567890");
+        list.setMinimumSize(new Dimension(50, 50));
+        return list;
+    }
     private void refreshLists() {
         availableList.setModel(new DefaultComboBoxModel(getAvailableProfiles()
                 .toArray()));
@@ -309,29 +338,12 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 }
             }
         } else if (arg0.getSource() == loadFromFile) {
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileFilter(new FileFilter() {
+            JFileChooser chooser = getFileChooser();
 
-                public boolean accept(File file) {
-                    return file.isDirectory()
-                            || (file.isFile() && (file.getName().endsWith(
-                                    ".xmi")
-                                    || file.getName().endsWith(".xml")
-                                    || file.getName().toLowerCase().endsWith(
-                                            ".xmi.zip") 
-                        || file.getName().toLowerCase().endsWith(".xml.zip")));
-                }
-
-                public String getDescription() {
-                    return "*.xmi *.xml *.xmi.zip *.xml.zip";
-                }
-
-            });
-
-            int ret = fileChooser.showOpenDialog(this);
+            int ret = chooser.showOpenDialog(this);
             if (ret == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-
+                File file = chooser.getSelectedFile();
+                chooser.setCurrentDirectory(file.getParentFile());
                 try {
                     UserDefinedProfile profile = new UserDefinedProfile(file);
                     ProfileFacade.getManager().registerProfile(profile);
@@ -348,6 +360,14 @@ public class ProjectSettingsTabProfile extends JPanel implements
         usedList.validate();
     }
 
+    private JFileChooser getFileChooser() {
+        if (fileChooser == null) {
+            fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new ProfileFileFilter());
+        }
+        return fileChooser;
+    }
+
     private List<Profile> getAvailableDependents(Profile selected) {
         MutableComboBoxModel modelAvl = ((MutableComboBoxModel) availableList
                 .getModel());
@@ -356,7 +376,8 @@ public class ProjectSettingsTabProfile extends JPanel implements
         for (int i = 0; i < modelAvl.getSize(); ++i) {
             Profile profile = (Profile) modelAvl.getElementAt(i);
 
-            if (!profile.equals(selected) && selected.getDependencies().contains(profile)) {
+            if (!profile.equals(selected) 
+                    && selected.getDependencies().contains(profile)) {
                 ret.add(profile);
             }
         }
@@ -372,7 +393,8 @@ public class ProjectSettingsTabProfile extends JPanel implements
         for (int i = 0; i < modelUsd.getSize(); ++i) {
             Profile profile = (Profile) modelUsd.getElementAt(i);
 
-            if (!profile.equals(selected) && profile.getDependencies().contains(selected)) {
+            if (!profile.equals(selected) 
+                    && profile.getDependencies().contains(selected)) {
                 ret.add(profile);
             }
         }
@@ -393,10 +415,16 @@ public class ProjectSettingsTabProfile extends JPanel implements
      * @see org.argouml.application.api.GUISettingsTabInterface#getTabPanel()
      */
     public JPanel getTabPanel() {
+        if (!initialized) {
+            buildDialog();
+        }
         return this;
     }
 
     public void handleResetToDefault() {
+        if (!initialized) {
+            buildDialog();
+        }
         refreshLists();
     }
 
@@ -405,6 +433,9 @@ public class ProjectSettingsTabProfile extends JPanel implements
     }
 
     public void handleSettingsTabRefresh() {
+        if (!initialized) {
+            buildDialog();
+        }
         assert p != null;
         ProjectSettings ps = p.getProjectSettings();
         DiagramSettings ds = ps.getDefaultDiagramSettings();
@@ -425,6 +456,9 @@ public class ProjectSettingsTabProfile extends JPanel implements
     }
 
     public void handleSettingsTabSave() {
+        if (!initialized) {
+            return;
+        }
         assert p != null;
         List<Profile> toRemove = new ArrayList<Profile>();
         ProfileConfiguration pc = p.getProfileConfiguration();
@@ -460,5 +494,28 @@ public class ProjectSettingsTabProfile extends JPanel implements
     public void setProject(Project project) {
         assert project != null;
         p = project;
+    }
+    
+    private class ProfileFileFilter extends FileFilter {
+        public boolean accept(File file) {
+            if (file.isDirectory()) {
+                return true;
+            }
+            if (file.isFile()) {
+                String filename = file.getName().toLowerCase();
+                String[] validEndings = {".xmi", ".xml", ".xmi.zip", 
+                                         ".xml.zip"};
+                for (String ending : validEndings) {
+                    if (filename.endsWith(ending)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public String getDescription() {
+            return "*.xmi *.xml *.xmi.zip *.xml.zip";
+        }
     }
 }

@@ -48,9 +48,11 @@ public class SubsystemUtility {
     static void initSubsystem(InitSubsystem subsystem) {
         subsystem.init();
         for (GUISettingsTabInterface tab : subsystem.getSettingsTabs()) {
+            // TODO: This work should be deferred until actually needed for display
             GUI.getInstance().addSettingsTab(tab);
         }
         for (GUISettingsTabInterface tab : subsystem.getProjectSettingsTabs()) {
+            // TODO: This work should be deferred until actually needed for display
             GUI.getInstance().addProjectSettingsTab(tab);
         }
         for (AbstractArgoJPanel tab : subsystem.getDetailsTabs()) {
