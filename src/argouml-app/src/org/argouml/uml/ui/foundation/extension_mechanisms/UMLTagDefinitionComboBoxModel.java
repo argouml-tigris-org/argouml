@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -124,9 +124,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        removeAllElements();
-        Object target = getTarget();
-        addAll(getApplicableTagDefinitions(target));
+        setElements(getApplicableTagDefinitions(getTarget()));
     }
 
     /*
@@ -161,9 +159,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
                 notValids.add(tagDef);
             }
         }
-        int size = availableTagDefs.size();
         availableTagDefs.removeAll(notValids);
-        int delta = size - availableTagDefs.size();
         return availableTagDefs;
     }
 
