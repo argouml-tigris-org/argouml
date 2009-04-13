@@ -121,7 +121,7 @@ public class ActionOpenProject extends UndoableAction
             chooser.setSelectedFile(new File(fn));
         }
 
-        int retval = chooser.showOpenDialog(ArgoFrame.getInstance());
+        int retval = chooser.showOpenDialog(ArgoFrame.getFrame());
         if (retval == JFileChooser.APPROVE_OPTION) {
             File theFile = chooser.getSelectedFile();
 

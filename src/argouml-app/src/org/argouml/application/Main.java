@@ -203,7 +203,7 @@ public class Main {
 
             st.mark("open window");
             updateProgress(splash, 95, "statusmsg.bar.open-project-browser");
-            ArgoFrame.getInstance().setVisible(true);
+            ArgoFrame.getFrame().setVisible(true);
 
             st.mark("close splash");
             if (splash != null) {
@@ -236,7 +236,7 @@ public class Main {
             LOG.info("");
 
             st = null;
-            ArgoFrame.getInstance().setCursor(
+            ArgoFrame.getFrame().setCursor(
                     Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
             //ToolTipManager.sharedInstance().setInitialDelay(500);

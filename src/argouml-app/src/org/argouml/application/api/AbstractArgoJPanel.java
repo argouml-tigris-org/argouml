@@ -194,7 +194,7 @@ public abstract class AbstractArgoJPanel extends JPanel
      */
     public AbstractArgoJPanel spawn() {
 
-        JDialog f = new JDialog(ArgoFrame.getInstance());
+        JDialog f = new JDialog(ArgoFrame.getFrame());
         f.getContentPane().setLayout(new BorderLayout());
         // TODO: Once we have fixed all subclasses the title will
         // always be localized so this localization can be removed.

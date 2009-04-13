@@ -1247,7 +1247,7 @@ public final class ProjectBrowser
 
         try {
             if (!PersistenceManager.getInstance().confirmOverwrite(
-                    ArgoFrame.getInstance(), overwrite, file)) {
+                    ArgoFrame.getFrame(), overwrite, file)) {
                 return false;
             }
 
@@ -1683,7 +1683,7 @@ public final class ProjectBrowser
                     public void run() {
                         JDialog dialog =
                             new ExceptionDialog(
-                                    ArgoFrame.getInstance(),
+                                    ArgoFrame.getFrame(),
                                     Translator.localize("dialog.error.title"),
                                     Translator.localize(
                                             "dialog.error.open.save.error"),
@@ -1719,7 +1719,7 @@ public final class ProjectBrowser
                     public void run() {
                         JDialog dialog =
                             new ExceptionDialog(
-                                    ArgoFrame.getInstance(),
+                                    ArgoFrame.getFrame(),
                                     Translator.localize("dialog.error.title"),
                                     message, 
                                     ExceptionDialog.formatException(
@@ -1764,7 +1764,7 @@ public final class ProjectBrowser
                     public void run() {
                         JDialog dialog =
                             new ExceptionDialog(
-                                    ArgoFrame.getInstance(),
+                                    ArgoFrame.getFrame(),
                                     Translator.localize("dialog.error.title"),
                                     explanation,
                                     message);

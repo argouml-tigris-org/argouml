@@ -90,7 +90,7 @@ public abstract class AbstractActionAddModelElement2 extends UndoableAction {
             new UMLAddDialog(getChoices(), getSelected(), getDialogTitle(),
                              isMultiSelect(),
                              isExclusive());
-        int result = dialog.showDialog(ArgoFrame.getInstance());
+        int result = dialog.showDialog(ArgoFrame.getFrame());
         if (result == JOptionPane.OK_OPTION) {
             doIt(dialog.getSelected());
         }

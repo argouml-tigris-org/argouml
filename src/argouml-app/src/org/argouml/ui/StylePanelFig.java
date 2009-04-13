@@ -445,7 +445,7 @@ public class StylePanelFig
     protected void handleCustomColor(JComboBox field, String title,
             Color targetColor) {
         Color newColor =
-            JColorChooser.showDialog(ArgoFrame.getInstance(),
+            JColorChooser.showDialog(ArgoFrame.getFrame(),
                     Translator.localize(title), targetColor);
         if (newColor != null) {
             field.insertItemAt(newColor, field.getItemCount() - 1);

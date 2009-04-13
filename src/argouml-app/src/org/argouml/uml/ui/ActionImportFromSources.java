@@ -28,7 +28,6 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Collection;
-import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JFrame;
@@ -38,7 +37,6 @@ import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.ExceptionDialog;
-import org.argouml.uml.reveng.FileImportUtils;
 import org.argouml.uml.reveng.Import;
 import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImporterManager;
@@ -50,7 +48,8 @@ import org.tigris.gef.undo.UndoableAction;
 /** Action to trigger importing from sources.
  * @stereotype singleton
  */
-public class ActionImportFromSources extends UndoableAction implements CommandLineInterface {
+public class ActionImportFromSources extends UndoableAction 
+        implements CommandLineInterface {
 
     /**
      * Logger.
@@ -82,10 +81,10 @@ public class ActionImportFromSources extends UndoableAction implements CommandLi
     public void actionPerformed(ActionEvent event) {
     	super.actionPerformed(event);
     	if (ImporterManager.getInstance().hasImporters()) {
-            new Import(ArgoFrame.getInstance());
+            new Import(ArgoFrame.getFrame());
     	} else {
     	    LOG.info("Import sources dialog not shown: no importers!");
-            ExceptionDialog ed = new ExceptionDialog(ArgoFrame.getInstance(),
+            ExceptionDialog ed = new ExceptionDialog(ArgoFrame.getFrame(),
                 Translator.localize("dialog.title.problem"),
                 Translator.localize("dialog.import.no-importers.intro"),
                 Translator.localize("dialog.import.no-importers.message"));

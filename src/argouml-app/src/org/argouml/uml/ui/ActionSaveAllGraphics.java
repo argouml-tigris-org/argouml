@@ -49,7 +49,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.util.ArgoFrame;
-import org.argouml.util.SuffixFilter;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.SaveGraphicsAction;
 import org.tigris.gef.util.Util;
@@ -183,7 +182,7 @@ public class ActionSaveAllGraphics extends AbstractAction
             chooser.setSelectedFile(new File(fn));
         }
 
-        int retval = chooser.showSaveDialog(ArgoFrame.getInstance());
+        int retval = chooser.showSaveDialog(ArgoFrame.getFrame());
 
         if ( retval == JFileChooser.APPROVE_OPTION ) {
             File theFile = chooser.getSelectedFile();
@@ -222,7 +221,7 @@ public class ActionSaveAllGraphics extends AbstractAction
                     "optionpane.confirm-overwrite.cancel")}; // 3
 
             int response = 
-		JOptionPane.showOptionDialog(ArgoFrame.getInstance(),
+		JOptionPane.showOptionDialog(ArgoFrame.getFrame(),
                     message,
                     title,
                     JOptionPane.YES_NO_CANCEL_OPTION,

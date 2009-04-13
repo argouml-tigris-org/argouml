@@ -81,7 +81,7 @@ public class SaveSwingWorker extends SwingWorker {
         Object[] msgArgs = new Object[] {file.getPath()};
         UIManager.put("ProgressMonitor.progressText", 
                 Translator.localize("filechooser.save-as-project"));
-        return new ProgressMonitorWindow(ArgoFrame.getInstance(),
+        return new ProgressMonitorWindow(ArgoFrame.getFrame(),
                 Translator.messageFormat("dialog.saveproject.title", msgArgs));
     }
 

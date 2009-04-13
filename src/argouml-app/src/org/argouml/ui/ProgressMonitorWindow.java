@@ -24,8 +24,9 @@
 
 package org.argouml.ui;
 
+import java.awt.Frame;
+
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.ProgressMonitor;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -54,7 +55,7 @@ public class ProgressMonitorWindow implements
      * @param parent	the Component to be set as parent
      * @param title     the (internationalized) title of the ProgressMonitor
      */
-    public ProgressMonitorWindow(JFrame parent, String title) {
+    public ProgressMonitorWindow(Frame parent, String title) {
         pbar = new ProgressMonitor(parent, 
                 title,
                 null, 0, 100);
@@ -137,7 +138,7 @@ public class ProgressMonitorWindow implements
             public void run() {
                 JDialog dialog =
                     new ExceptionDialog(
-                            ArgoFrame.getInstance(),
+                            ArgoFrame.getFrame(),
                             title,
                             introduction,
                             message);

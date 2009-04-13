@@ -126,7 +126,7 @@ public abstract class SwingWorker {
     	activateGlassPane();
         pmw = initProgressMonitorWindow();
 
-        ArgoFrame.getInstance().setCursor(
+        ArgoFrame.getFrame().setCursor(
         		Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
         Object retVal = null;
@@ -165,7 +165,7 @@ public abstract class SwingWorker {
      */
     protected void activateGlassPane() {
         // Mount the glasspane on the component window
-        GlassPane aPane = GlassPane.mount(ArgoFrame.getInstance(), true);
+        GlassPane aPane = GlassPane.mount(ArgoFrame.getFrame(), true);
 
         // keep track of the glasspane as an instance variable
         setGlassPane(aPane);
@@ -192,7 +192,7 @@ public abstract class SwingWorker {
      */
     public void finished() {
     	deactivateGlassPane();
-    	ArgoFrame.getInstance().setCursor(Cursor.getPredefinedCursor(
+    	ArgoFrame.getFrame().setCursor(Cursor.getPredefinedCursor(
                 Cursor.DEFAULT_CURSOR));
     }
     

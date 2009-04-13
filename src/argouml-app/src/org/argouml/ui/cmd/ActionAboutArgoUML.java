@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,10 +24,10 @@
 
 package org.argouml.ui.cmd;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JFrame;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
@@ -52,10 +52,9 @@ public class ActionAboutArgoUML extends AbstractAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	JFrame jframe = ArgoFrame.getInstance();
-	AboutBox box = new AboutBox(jframe, true);
-
-	box.setLocationRelativeTo(jframe);
+	Frame frame = ArgoFrame.getFrame();
+	AboutBox box = new AboutBox(frame, true);
+	box.setLocationRelativeTo(frame);
 	box.setVisible(true);
     }
 

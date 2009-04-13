@@ -123,7 +123,7 @@ public class ActionSaveGraphics extends AbstractAction
                 chooser.setSelectedFile(new File(fn));
             }
 
-            int retval = chooser.showSaveDialog(ArgoFrame.getInstance());
+            int retval = chooser.showSaveDialog(ArgoFrame.getFrame());
             if (retval == JFileChooser.APPROVE_OPTION) {
                 File theFile = chooser.getSelectedFile();
                 if (theFile != null) {
@@ -140,14 +140,14 @@ public class ActionSaveGraphics extends AbstractAction
                 }
             }
         } catch (OutOfMemoryError e) {
-            ExceptionDialog ed = new ExceptionDialog(ArgoFrame.getInstance(),
+            ExceptionDialog ed = new ExceptionDialog(ArgoFrame.getFrame(),
                 "You have run out of memory. "
                 + "Close down ArgoUML and restart with a larger heap size.", e);
             ed.setModal(true);
             ed.setVisible(true);
         } catch (Exception e) {
             ExceptionDialog ed = 
-                new ExceptionDialog(ArgoFrame.getInstance(), e);
+                new ExceptionDialog(ArgoFrame.getFrame(), e);
             ed.setModal(true);
             ed.setVisible(true);
             LOG.error("Got some exception", e);
@@ -185,7 +185,7 @@ public class ActionSaveGraphics extends AbstractAction
         }
 	if (theFile.exists() && useUI) {
 	    int response = JOptionPane.showConfirmDialog(
-                ArgoFrame.getInstance(),
+                ArgoFrame.getFrame(),
                 Translator.messageFormat("optionpane.confirm-overwrite",
                         new Object[] {theFile}),
                 Translator.localize("optionpane.confirm-overwrite-title"),

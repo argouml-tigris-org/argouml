@@ -184,7 +184,7 @@ public class SettingsTabDiagramAppearance extends JPanel implements
             jbtnDiagramFont.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     ArgoJFontChooser jFontChooser = new ArgoJFontChooser(
-                            ArgoFrame.getInstance(), jbtnDiagramFont,
+                            ArgoFrame.getFrame(), jbtnDiagramFont,
                             selectedDiagramFontName, selectedDiagramFontSize);
                     jFontChooser.setVisible(true);
 

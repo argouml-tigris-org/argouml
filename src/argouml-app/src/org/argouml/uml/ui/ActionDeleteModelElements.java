@@ -187,7 +187,7 @@ public class ActionDeleteModelElements extends UndoableAction {
                     Translator.localize(
                         "optionpane.remove-from-model-confirm-delete-title");
                 int response =
-                    JOptionPane.showConfirmDialog(ArgoFrame.getInstance(),
+                    JOptionPane.showConfirmDialog(ArgoFrame.getFrame(),
                           confirmStr,
                           text,
                           JOptionPane.YES_NO_OPTION);
@@ -254,7 +254,7 @@ public class ActionDeleteModelElements extends UndoableAction {
                 });
         int response =
             JOptionPane.showConfirmDialog(
-                    ArgoFrame.getInstance(),
+                    ArgoFrame.getFrame(),
                     confirmStr,
                     Translator.localize(
                     "optionpane.remove-from-model-confirm-delete-title"),
