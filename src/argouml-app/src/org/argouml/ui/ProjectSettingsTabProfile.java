@@ -228,7 +228,6 @@ public class ProjectSettingsTabProfile extends JPanel implements
     
     private JList createProfileList() {
         JList list = new JList();
-        list.setPrototypeCellValue("12345678901234567890");
         list.setMinimumSize(new Dimension(50, 50));
         return list;
     }

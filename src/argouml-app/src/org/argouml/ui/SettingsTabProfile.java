@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -226,7 +226,6 @@ public class SettingsTabProfile extends JPanel implements
     
     private JList createProfileList() {
         JList list = new JList();
-        list.setPrototypeCellValue("12345678901234567890");
         list.setMinimumSize(new Dimension(50, 50));
         return list;
     }
@@ -483,7 +482,8 @@ public class SettingsTabProfile extends JPanel implements
             usedItens.add((Profile) modelUsd.getElementAt(i));
         }
 
-        for (Profile profile : ProfileFacade.getManager().getDefaultProfiles()) {
+        for (Profile profile 
+                : ProfileFacade.getManager().getDefaultProfiles()) {
             if (!usedItens.contains(profile)) {
                 toRemove.add(profile);
             }
