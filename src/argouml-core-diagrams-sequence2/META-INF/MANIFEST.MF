@@ -14,4 +14,5 @@ Bundle-Vendor: %pluginProvider
 Require-Bundle: org.argouml.app,
  org.argouml.core.infra
 Bundle-Localization: plugin
+Eclipse-RegisterBuddy: org.argouml.core.infra
 
