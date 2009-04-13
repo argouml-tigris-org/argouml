@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,6 +68,8 @@ class SequenceDiagramRenderer extends UmlDiagramRenderer {
                 && ((UMLDiagram) diag).doesAccept(node)) {
             result = ((UMLDiagram) diag).drop(node, null);
         } else {
+            LOG.warn("SequenceDiagramRenderer getFigNodeFor unexpected node " 
+                    + node);
             return null;
         }
         LOG.debug("SequenceDiagramRenderer getFigNodeFor " + result);
