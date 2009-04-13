@@ -137,4 +137,20 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
         renderingChanged();
     }
 
+    /**
+     * Setting the owner of the Fig must be done in the constructor and not
+     * changed afterwards for all ArgoUML figs.
+     * 
+     * @param owner owning UML element
+     * @throws UnsupportedOperationException
+     * @deprecated for 0.27.3 by tfmorris. Set owner in constructor. This method
+     *             is implemented in GEF, so we'll leave this implementation
+     *             here to block any attempts to use it within ArgoUML.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public void setOwner(Object owner) {
+        throw new UnsupportedOperationException(
+                "Owner must be set in constructor and left unchanged");
+    }
 }

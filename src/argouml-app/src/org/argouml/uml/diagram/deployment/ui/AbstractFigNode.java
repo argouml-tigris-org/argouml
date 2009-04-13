@@ -40,12 +40,10 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCube;
 import org.tigris.gef.presentation.FigRect;
@@ -177,11 +175,6 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
         _h = h;
         firePropChange("bounds", oldBounds, getBounds());
         updateEdges();
-    }
-
-    @Override
-    protected void updateStereotypeText() {
-        getStereotypeFig().setOwner(getOwner());
     }
 
     @Override

@@ -36,7 +36,6 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -218,12 +217,10 @@ public abstract class FigEdgeModelElement
                         "The owner must be a model element - got a "
                         + element.getClass().getName());
             }
-            super.setOwner(element);
-            nameFig.setOwner(element); // for setting abstract
+            super.setOwner(element);  
             if (edgePort != null) {
                 edgePort.setOwner(getOwner());
             }
-            stereotypeFig.setOwner(element); // this fixes issue 5414
             NotationName nn = Notation.findNotation(
                     settings.getNotationSettings().getNotationLanguage());
             notationProviderName =
@@ -1604,5 +1601,24 @@ public abstract class FigEdgeModelElement
         // time, so we need to set its color and width
         f.setLineColor(getLineColor());
         f.setLineWidth(getLineWidth());
+    }
+    
+
+    /**
+     * Setting the owner of the Fig must be done in the constructor and not
+     * changed afterwards for all ArgoUML figs.
+     * 
+     * @param owner owning UML element
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     * @throws UnsupportedOperationException
+     * @deprecated for 0.27.3 by tfmorris. Set owner in constructor. This method
+     *             is implemented in GEF, so we'll leave this implementation
+     *             here to block any attempts to use it within ArgoUML.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public void setOwner(Object owner) {
+        throw new UnsupportedOperationException(
+                "Owner must be set in constructor and left unchanged");
     }
 }

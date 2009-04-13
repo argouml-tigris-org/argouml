@@ -56,7 +56,6 @@ import org.argouml.uml.diagram.ui.FigMultiLineText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRect;
@@ -678,8 +677,6 @@ public class FigComment
                 calcBounds();
             }
         } else {
-            getStereotypeFig().setOwner(getOwner());
-
             if (!getStereotypeFig().isVisible()) {
                 getStereotypeFig().setVisible(true);
 

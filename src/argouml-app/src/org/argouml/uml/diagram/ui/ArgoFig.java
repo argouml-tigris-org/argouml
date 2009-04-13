@@ -168,7 +168,7 @@ public interface ArgoFig {
     
     /**
      * Setting the owner of the Fig must be done in the constructor and
-     * not changed aftewards for all ArgoUML figs.
+     * not changed afterwards for all ArgoUML figs.
      * 
      * @param owner owning UML element
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)

@@ -659,28 +659,6 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         Model.getPump().addModelEventListener(this, owner, 
                 new String[] {"isNavigable", "aggregation", "participant"});
     }
-    
-    /**
-     * @deprecated by mvw in 0.27.3. Use non-deprecated constructors instead.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    @Override
-    public void setOwner(Object owner) {
-        if (owner != null) {
-            if (!Model.getFacade().isAAssociationEnd(owner)) {
-                throw new IllegalArgumentException(
-                        "An AssociationEnd was expected");
-            }
-            super.setOwner(owner);
-            ordering.setOwner(owner);
-            role.setOwner(owner);
-            role.setText();
-            determineArrowHead();
-            Model.getPump().addModelEventListener(this, owner, 
-                    new String[] {"isNavigable", "aggregation", "participant"});
-        }
-    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()

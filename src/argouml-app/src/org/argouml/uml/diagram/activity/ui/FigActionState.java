@@ -299,13 +299,6 @@ public class FigActionState extends FigStateVertex {
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
-     */
-    @Override
-    protected void updateStereotypeText() {
-        getStereotypeFig().setOwner(getOwner());
-    }
 
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)

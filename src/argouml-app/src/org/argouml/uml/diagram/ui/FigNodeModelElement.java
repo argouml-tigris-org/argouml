@@ -40,7 +40,6 @@ import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -2477,6 +2476,24 @@ public abstract class FigNodeModelElement
         protected boolean isReverseEdge(int index) {
             return false;
         }
+    }
+    
 
+    /**
+     * Setting the owner of the Fig must be done in the constructor and not
+     * changed afterwards for all ArgoUML figs.
+     * 
+     * @param owner owning UML element
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     * @throws UnsupportedOperationException
+     * @deprecated for 0.27.3 by tfmorris. Set owner in constructor. This method
+     *             is implemented in GEF, so we'll leave this implementation
+     *             here to block any attempts to use it within ArgoUML.
+     */
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    public void setOwner(Object owner) {
+        throw new UnsupportedOperationException(
+                "Owner must be set in constructor and left unchanged");
     }
 }

@@ -127,21 +127,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         Model.getPump().addModelEventListener(this, owner, "stereotype");
         populate();
     }
-    
-    /*
-     * Beware: The owner here is NOT the stereotype(s), 
-     * but the extended element!
-     */
-    @SuppressWarnings("deprecation")
-    @Override
-    @Deprecated
-    public void setOwner(Object own) {
-        if (own != null) {
-            super.setOwner(own);
-            Model.getPump().addModelEventListener(this, own, "stereotype");
-            populate();
-        }
-    }
+
     
     /*
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
