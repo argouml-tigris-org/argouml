@@ -40,7 +40,6 @@ import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigAssociationEnd;
 import org.argouml.uml.diagram.ui.FigDependency;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigPermission;
