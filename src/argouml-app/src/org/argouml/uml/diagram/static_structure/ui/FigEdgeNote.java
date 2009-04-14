@@ -299,7 +299,10 @@ public class FigEdgeNote extends FigEdgePoly implements ArgoFig, IItemUID,
     @SuppressWarnings("deprecation")
     @Deprecated
     public void setOwner(Object owner) {
-        throw new UnsupportedOperationException(
-                "Owner must be set in constructor and left unchanged");
+        if (owner != getOwner()) {
+            throw new UnsupportedOperationException(
+                    "Owner must be set in constructor and left unchanged");
+        }
     }
+
 } 
