@@ -2493,7 +2493,19 @@ public abstract class FigNodeModelElement
     @SuppressWarnings("deprecation")
     @Deprecated
     public void setOwner(Object owner) {
-        throw new UnsupportedOperationException(
-                "Owner must be set in constructor and left unchanged");
+        if (owner != getOwner()) {
+            throw new UnsupportedOperationException(
+                    "Owner must be set in constructor and left unchanged");
+        }
+    }
+    
+    /*
+     * Override FigNode implementation to keep setOwner from getting called.
+     */
+    @Override
+    public void bindPort(Object port, Fig f) {
+        if (f.getOwner() != port) {
+            f.setOwner(port);
+        }
     }
 }
