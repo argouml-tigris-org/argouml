@@ -57,7 +57,7 @@ Export-Package: javax.jmi.corbaidltypes,
  testmodels
 Require-Bundle: org.argouml.core.model,
  org.argouml.core.infra
-Bundle-ClassPath: org.argouml.core.model.mdr.jar,
+Bundle-ClassPath: .,
  lib/jmi.jar,
  lib/jmiutils.jar,
  lib/mdrapi.jar,

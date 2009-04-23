@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project basedir="." default="jar" name="argouml infra subsystem">
-  <target name="init">
-    <property name="build.dir" value="build"/>
+<project default="jar" name="argouml infra subsystem">
+  <target name="init" depends="pde-init">
+    <property name="build.dir" location="build"/>
     <property name="src.jar" value="log4j-1.2.6.jar"/>
   </target>
 
@@ -20,6 +20,72 @@
   <!-- =================================================================== -->
   <target name="clean" depends="init"
           description="Clean out all built files.">
-    <delete dir="${build.dir}" quiet="true"/>
+    <delete dir="${build.dir}" quiet="true" />
+    <antcall target="pde-clean" />
   </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Eclipse PDE targets from here to end of file                        -->
+  <!-- =================================================================== -->
+  <!-- 
+    Required targets (called in this order) are:
+    build.jars
+    gather.bin.parts - must create and populate "${destination.temp.folder}/<Bundle-SymbolicName>_<Bundle-Version>
+    gather.logs
+  -->
+
+  <target name="pde-init">
+
+    <property name="bundleId" value="org.argouml.core.infra" />
+
+    <!-- This property is magic and will have its value substituted by PDE -->
+    <property name="version.suffix" value="0.28.0.200904210336" />
+    <property name="bundleVersion" value="${version.suffix}" />
+
+    <condition property="pluginTemp" value="${buildTempFolder}/plugins">
+      <isset property="buildTempFolder" />
+    </condition>
+    <property name="pluginTemp" value="${basedir}" />
+    <condition property="build.result.folder" value="${pluginTemp}/${bundleId}_${bundleVersion}">
+      <isset property="buildTempFolder" />
+    </condition>
+    <property name="build.result.folder" value="${basedir}" />
+    <property name="plugin.destination" value="${basedir}" />
+  </target>
+
+  <target name="pde-clean" depends="pde-init">
+    <delete file="${plugin.destination}/${bundleId}_*.jar" />
+    <delete file="${plugin.destination}/${bundleId}_*.zip" />
+  </target>
+
+  <target name="build.jars" depends="jar">
+    <mkdir dir="${build.result.folder}/@dot"/>
+    <copy todir="${build.result.folder}/@dot" failonerror="true" overwrite="false">
+      <fileset dir="${build.dir}" includes="*.jar" />
+    </copy>
+  </target>
+
+  <target name="gather.bin.parts" depends="init" if="destination.temp.folder">
+    <mkdir dir="${destination.temp.folder}/${bundleId}_${bundleVersion}" />
+    <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="true" overwrite="false">
+      <fileset dir="${build.result.folder}/@dot" includes="**" />
+    </copy>
+
+    <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="true" overwrite="false">
+      <fileset dir="${basedir}">
+        <include name="META-INF/" />
+        <include name="plugin.xml" />
+        <include name="plugin.properties"/>
+        <include name="lib/log4j-1.2.6.jar" />
+        <include name="lib/log4j.LICENSE.txt" />
+      </fileset>
+    </copy>
+
+    <eclipse.versionReplacer path="${destination.temp.folder}/${bundleId}_${bundleVersion}" version="${bundleVersion}" />
+  </target>
+
+  <target name="gather.logs">
+  </target>
+
 </project>

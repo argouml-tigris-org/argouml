@@ -21,7 +21,7 @@ Building this requires:
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
 
-  <target name="init">
+  <target name="init" depends="pde-init">
 
     <tstamp>
       <format pattern="yyyy" property="year"/>
@@ -50,7 +50,7 @@ Building this requires:
 
     <property file="${argo.root.dir}/argouml-build/default.properties"/>
 
-    <property name="build.dir" value="build"/>
+    <property name="build.dir" location="build"/>
     <property name="build.classes" value="${build.dir}/classes"/>
 
     <property name="tests.classes" value="${build.dir}/tests/classes"/>
@@ -204,7 +204,9 @@ Building this requires:
       <fileset dir="src/org/argouml"
           includes="*argo.ini"/>
     </copy>
-
+  </target>
+  
+  <target name="prepare-tests" depends="init">
     <!-- copy test files -->
     <copy todir="${tests.classes}/testmodels">
       <fileset dir="tests/testmodels" includes="**/**"/>
@@ -252,10 +254,13 @@ Building this requires:
     	   includes="org/argouml/**/*.java"
            excludes="org/argouml/model/uml/**"
     	   optimize="${optimize}"
+           includeAntRuntime="no" 
+           bootclasspath="${bundleBootClasspath}" 
     	   srcdir="src"
     	   source="1.5"
     	   target="1.5">
       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+      <compilerarg line="-log ${build.dir}/compile.log" compiler="org.eclipse.jdt.core.JDTCompilerAdapter" />
       <classpath>
         <path refid="src.compile.classpath"/>
       </classpath>
@@ -300,6 +305,7 @@ Building this requires:
     <delete file="src/${version.package}/ArgoVersion.java"/>
 
     <antcall target="coverage-clean"/>
+    <antcall target="pde-clean" />
   </target>
 
 
@@ -386,7 +392,7 @@ Building this requires:
     </target>
 
   <!-- run immediately before JUnit tests to make sure instrumented files are gone-->
-  <target name="coverage-clean" depends="init-coverage" unless="test.coverage">
+  <target name="coverage-clean" depends="init" unless="test.coverage">
     <mkdir dir="${build.dir}/instrumented"/>
     <delete>
       <fileset dir="${build.dir}/instrumented">
@@ -399,7 +405,7 @@ Building this requires:
 
   </target>
   
-  <target name="coverage-report-clean" depends="init-coverage" if="test.coverage">
+  <target name="coverage-report-clean" depends="init" if="test.coverage">
     <mkdir dir="${tests.reports}"/>
     <mkdir dir="${tests.reports}/coverage"/>
     <mkdir dir="${tests.reports}/coverage/html"/>
@@ -433,7 +439,7 @@ Building this requires:
   <!-- =================================================================== -->
   <!-- Prepare for the junit tests.                                        -->
   <!-- =================================================================== -->
-  <target name="junit-setup" depends="junit-classpath,compile-tests"/>
+  <target name="junit-setup" depends="junit-classpath,compile-tests,prepare-tests"/>
   
   <target name="junit-classpath" 
     depends="init, junit-classpath-coverage, junit-classpath-nocoverage"/>
@@ -625,7 +631,105 @@ Building this requires:
     </java>
   </target>
 
-</project>
-<!-- End of file -->
+  
 
+  <!-- =================================================================== -->
+  <!-- Eclipse PDE targets from here to end of file                        -->
+  <!-- =================================================================== -->
+  <!-- 
+    Required targets (called in this order) are:
+      build.jars
+      gather.bin.parts - must create and populate "${destination.temp.folder}/<Bundle-SymbolicName>_<Bundle-Version>
+      gather.logs
+  -->
+  
+    <target name="pde-properties" if="eclipse.running">
+      <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+    </target>
+  
+    <target name="pde-init" depends="pde-properties">
+
+      <property name="bundleId" value="org.argouml.app" />
+
+      <!-- This property is magic and will have its value substituted by PDE -->
+      <property name="version.suffix" value="0.28.0.200904210336"/>
+      <property name="bundleVersion" value="${version.suffix}" />
+
+      <!-- Compiler settings. -->
+      <condition property="dir_bootclasspath" value="${java.home}/../Classes">
+        <os family="mac" />
+      </condition>
+      <property name="dir_bootclasspath" value="${java.home}/lib" />
+      <path id="path_bootclasspath">
+        <fileset dir="${dir_bootclasspath}">
+          <include name="*.jar" />
+        </fileset>
+      </path>
+      <property name="bootclasspath" refid="path_bootclasspath" />
+      <property name="bundleBootClasspath" value="${bootclasspath}" />
+
+      <condition property="pluginTemp" value="${buildTempFolder}/plugins">
+        <isset property="buildTempFolder" />
+      </condition>
+      <property name="pluginTemp" value="${basedir}" />
+      <condition property="build.result.folder" value="${pluginTemp}/${bundleId}_${bundleVersion}">
+        <isset property="buildTempFolder" />
+      </condition>
+      <property name="build.result.folder" value="${basedir}" />
+      <property name="plugin.destination" value="${basedir}" />            
+    </target>
+
+  <target name="pde-clean" depends="pde-init">
+    <delete file="${plugin.destination}/${bundleId}_*.jar" />
+    <delete file="${plugin.destination}/${bundleId}_*.zip" />
+  </target>
+
+  <target name="build.jars" depends="jar" description="Compile classes and build nested jars for the plug-in: ${bundleId}.">
+    <mkdir dir="${build.result.folder}/@dot"/>
+    <copy todir="${build.result.folder}/@dot" failonerror="true" overwrite="false">
+      <fileset dir="${build.classes}" includes="org/argouml/**" excludes="*.txt,*.bat,*.xml,*.sh" />
+    </copy>
+  </target>
+
+  <target name="gather.bin.parts" depends="init" if="destination.temp.folder">
+    <mkdir dir="${destination.temp.folder}/${bundleId}_${bundleVersion}" />
+    <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="true" overwrite="false">
+      <fileset dir="${build.result.folder}/@dot" includes="**"/>
+    </copy>
+    
+    <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="true" overwrite="false">
+      <fileset dir="${basedir}">
+        <include name="META-INF/"/>
+        <include name="plugin.xml"/>
+        <include name="plugin.properties"/>
+        <!-- Legacy plugin use only - shouldn't be needed for ArgoEclipse
+        <include name="lib/antlr-2.7.7.jar"/>
+        <include name="lib/antlr.LICENSE.txt"/>
+         -->
+        <include name="lib/commons-logging-1.0.2.jar"/>
+        <include name="lib/commons-logging.LICENSE.txt"/>
+        <include name="lib/gef-0.13.jar"/>
+        <include name="lib/gef.LICENSE.txt"/>
+        <include name="lib/ocl-argo-1.1.jar"/>
+        <include name="lib/ocl-argo.LICENSE.txt"/>
+        <include name="lib/swidgets-0.1.4.jar"/>
+        <include name="lib/swidgets.LICENSE.txt"/>
+        <include name="lib/toolbar-1.4.1-20071227.jar"/>
+        <include name="lib/toolbar.LICENSE.txt"/>
+      </fileset>
+    </copy>
+
+    <eclipse.versionReplacer path="${destination.temp.folder}/${bundleId}_${bundleVersion}" version="${bundleVersion}" />
+  </target>
+
+  <target name="gather.logs" depends="init" if="destination.temp.folder">
+    <mkdir dir="${destination.temp.folder}/${bundleId}_${bundleVersion}"/>
+    <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="false" overwrite="false">
+      <fileset dir="${build.dir}">
+        <include name="compile.log"/>  
+      </fileset>
+    </copy>
+  </target>
+
+</project>
 

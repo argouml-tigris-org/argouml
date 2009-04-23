@@ -4,7 +4,6 @@ Bundle-Name: %pluginName
 Bundle-Vendor: %pluginProvider
 Bundle-SymbolicName: org.argouml.core.model;singleton:=true
 Bundle-Version: 0.28.0.qualifier
-Bundle-ClassPath: org.argouml.core.model.jar
 Bundle-Localization: plugin
 Export-Package: org.argouml.model
 Eclipse-BuddyPolicy: registered

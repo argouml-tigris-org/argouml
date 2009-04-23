@@ -5,11 +5,11 @@
 
 -->
 
-<project basedir="." default="compile" name="argouml model subsystem">
+<project default="compile" name="ArgoUML model subsystem">
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
-  <target name="init">
+  <target name="init" depends="pde-init">
 
     <!-- ============================================================= -->
     <!-- when executed using target "dist-release", the properties     -->
@@ -24,7 +24,7 @@
     <property file="${local.build.properties}"/>
     <property file="${user.build.properties}"/>
 
-    <property name="build.dir" value="build"/>
+    <property name="build.dir" location="build"/>
     <property name="build.classes" value="${build.dir}/classes"/>
       
     <property name="name" value="argouml-model"/>
@@ -48,10 +48,13 @@
            destdir="${build.classes}"
            includes="org/argouml/**/*.java"
            optimize="${optimize}"
+           includeAntRuntime="no" 
+           bootclasspath="${bundleBootClasspath}" 
            srcdir="src"
            source="1.5"
            target="1.5">
-       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/> 
+       <compilerarg line="-log '${build.dir}/compile.log'" compiler="org.eclipse.jdt.core.JDTCompilerAdapter" />      
     </javac>
   </target>
 
@@ -72,5 +75,92 @@
   <target name="clean" depends="init"
           description="Clean out all built files.">
     <delete dir="${build.dir}" quiet="true"/>
+    <antcall target="pde-clean" />
   </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Eclipse PDE targets from here to end of file                        -->
+  <!-- =================================================================== -->
+  <!-- 
+    Required targets (called in this order) are:
+      build.jars
+      gather.bin.parts - must create and populate "${destination.temp.folder}/<Bundle-SymbolicName>_<Bundle-Version>
+      gather.logs
+  -->
+  
+    <target name="pde-properties" if="eclipse.running">
+      <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+    </target>
+  
+    <target name="pde-init" depends="pde-properties">
+
+      <property name="bundleId" value="org.argouml.core.model" />
+
+      <!-- This property is magic and will have its value substituted by PDE -->
+      <property name="version.suffix" value="0.28.0.200904210336"/>
+      <property name="bundleVersion" value="${version.suffix}" />
+
+      <!-- Compiler settings. -->
+      <condition property="dir_bootclasspath" value="${java.home}/../Classes">
+        <os family="mac" />
+      </condition>
+      <property name="dir_bootclasspath" value="${java.home}/lib" />
+      <path id="path_bootclasspath">
+        <fileset dir="${dir_bootclasspath}">
+          <include name="*.jar" />
+        </fileset>
+      </path>
+      <property name="bootclasspath" refid="path_bootclasspath" />
+      <property name="bundleBootClasspath" value="${bootclasspath}" />
+
+      <condition property="pluginTemp" value="${buildTempFolder}/plugins">
+        <isset property="buildTempFolder" />
+      </condition>
+      <property name="pluginTemp" value="${basedir}" />
+      <condition property="build.result.folder" value="${pluginTemp}/${bundleId}_${bundleVersion}">
+        <isset property="buildTempFolder" />
+      </condition>
+      <property name="build.result.folder" value="${basedir}" />
+      <property name="plugin.destination" value="${basedir}" />            
+    </target>
+
+  <target name="pde-clean" depends="pde-init">
+    <delete file="${plugin.destination}/${bundleId}_*.jar" />
+    <delete file="${plugin.destination}/${bundleId}_*.zip" />
+  </target>
+
+  <target name="build.jars" depends="jar" description="Compile classes and build nested jars for the plug-in: ${bundleId}.">
+    <mkdir dir="${build.result.folder}/@dot"/>
+    <copy todir="${build.result.folder}/@dot" failonerror="true" overwrite="false">
+      <fileset dir="${build.classes}" includes="org/argouml/**" excludes="*.txt,*.bat,*.xml,*.sh" />
+    </copy>
+  </target>
+
+  <target name="gather.bin.parts" depends="init" if="destination.temp.folder">
+    <mkdir dir="${destination.temp.folder}/${bundleId}_${bundleVersion}" />
+    <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="true" overwrite="false">
+      <fileset dir="${build.result.folder}/@dot" includes="**"/>
+    </copy>
+    
+    <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="true" overwrite="false">
+      <fileset dir="${basedir}">
+        <include name="META-INF/"/>
+        <include name="plugin.xml"/>
+        <include name="plugin.properties"/>
+      </fileset>
+    </copy>
+
+    <eclipse.versionReplacer path="${destination.temp.folder}/${bundleId}_${bundleVersion}" version="${bundleVersion}" />
+  </target>
+
+  <target name="gather.logs" depends="init" if="destination.temp.folder">
+    <mkdir dir="${destination.temp.folder}/${bundleId}_${bundleVersion}"/>
+    <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="false" overwrite="false">
+      <fileset dir="${build.dir}">
+        <include name="compile.log"/>  
+      </fileset>
+    </copy>
+  </target>
+
 </project>

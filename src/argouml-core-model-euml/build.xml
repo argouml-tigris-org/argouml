@@ -15,14 +15,14 @@ This is designed to work in two different environments:
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
-  <target name="init">
+  <target name="init" depends="pde-init">
     <tstamp/>
 
     <!-- argo.root.dir should be passed in to make sure it is correct -->
-    <property name="argo.root.dir" value="../.."/>
+    <property name="argo.root.dir" location="../.."/>
     <property name="argo.build.dir" value="${argo.root.dir}/build"/>
 
-    <property name="build.dir" value="build"/>
+    <property name="build.dir" location="build"/>
     <property name="build.classes" value="${build.dir}/classes"/>
     <property name="build.javas" value="${build.dir}/java"/>
 
@@ -134,10 +134,13 @@ This is designed to work in two different environments:
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}"
+           includeAntRuntime="no" 
+           bootclasspath="${bundleBootClasspath}" 
            source="1.5"
            target="1.5"
        >
        <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+       <compilerarg line="-log '${build.dir}/compile.log'" compiler="org.eclipse.jdt.core.JDTCompilerAdapter" />      
        <classpath>
          <path refid="compile.classpath"/>
        </classpath>
@@ -213,6 +216,7 @@ This is designed to work in two different environments:
         <include name="TEST-*.txt"/>
       </fileset>
     </delete>
+    <antcall target="pde-clean" />
   </target>
 
   <!-- =================================================================== -->
@@ -269,6 +273,92 @@ This is designed to work in two different environments:
       	<exclude name="**/CVS/*"/>
       </fileset>
     </delete>
+    <antcall target="pde-clean" />
   </target>
-        
+
+
+  <!-- =================================================================== -->
+  <!-- Eclipse PDE targets from here to end of file                        -->
+  <!-- =================================================================== -->
+  <!-- 
+    Required targets (called in this order) are:
+      build.jars
+      gather.bin.parts - must create and populate "${destination.temp.folder}/<Bundle-SymbolicName>_<Bundle-Version>
+      gather.logs
+  -->
+  
+    <target name="pde-properties" if="eclipse.running">
+      <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+    </target>
+  
+    <target name="pde-init" depends="pde-properties">
+
+      <property name="bundleId" value="org.argouml.model.euml" />
+
+      <!-- This property is magic and will have its value substituted by PDE -->
+      <property name="version.suffix" value="0.28.0.200904210336"/>
+      <property name="bundleVersion" value="${version.suffix}" />
+
+      <!-- Compiler settings. -->
+      <condition property="dir_bootclasspath" value="${java.home}/../Classes">
+        <os family="mac" />
+      </condition>
+      <property name="dir_bootclasspath" value="${java.home}/lib" />
+      <path id="path_bootclasspath">
+        <fileset dir="${dir_bootclasspath}">
+          <include name="*.jar" />
+        </fileset>
+      </path>
+      <property name="bootclasspath" refid="path_bootclasspath" />
+      <property name="bundleBootClasspath" value="${bootclasspath}" />
+
+      <condition property="pluginTemp" value="${buildTempFolder}/plugins">
+        <isset property="buildTempFolder" />
+      </condition>
+      <property name="pluginTemp" value="${basedir}" />
+      <condition property="build.result.folder" value="${pluginTemp}/${bundleId}_${bundleVersion}">
+        <isset property="buildTempFolder" />
+      </condition>
+      <property name="build.result.folder" value="${basedir}" />
+      <property name="plugin.destination" value="${basedir}" />            
+    </target>
+
+  <target name="pde-clean" depends="pde-init">
+    <delete file="${plugin.destination}/${bundleId}_*.jar" />
+    <delete file="${plugin.destination}/${bundleId}_*.zip" />
+  </target>
+
+  <target name="build.jars" depends="jar" description="Compile classes and build nested jars for the plug-in: ${bundleId}.">
+    <mkdir dir="${build.result.folder}/@dot"/>
+    <copy todir="${build.result.folder}/@dot" failonerror="true" overwrite="false">
+      <fileset dir="${module.build.dest}" includes="org/argouml/**" excludes="*.txt,*.bat,*.xml,*.sh" />
+    </copy>
+  </target>
+
+  <target name="gather.bin.parts" depends="init" if="destination.temp.folder">
+    <mkdir dir="${destination.temp.folder}/${bundleId}_${bundleVersion}" />
+    <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="true" overwrite="false">
+      <fileset dir="${build.result.folder}/@dot" includes="**"/>
+    </copy>
+    
+    <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="true" overwrite="false">
+      <fileset dir="${basedir}">
+        <include name="META-INF/"/>
+        <include name="plugin.xml"/>
+        <include name="plugin.properties"/>
+      </fileset>
+    </copy>
+
+    <eclipse.versionReplacer path="${destination.temp.folder}/${bundleId}_${bundleVersion}" version="${bundleVersion}" />
+  </target>
+
+  <target name="gather.logs" depends="init" if="destination.temp.folder">
+    <mkdir dir="${destination.temp.folder}/${bundleId}_${bundleVersion}"/>
+    <copy todir="${destination.temp.folder}/${bundleId}_${bundleVersion}" failonerror="false" overwrite="false">
+      <fileset dir="${module.build.dir}">
+        <include name="compile.log"/>  
+      </fileset>
+    </copy>
+  </target>
+  
 </project>
