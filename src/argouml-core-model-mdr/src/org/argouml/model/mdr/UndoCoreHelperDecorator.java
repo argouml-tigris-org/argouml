@@ -32,6 +32,7 @@ import org.argouml.model.CoreHelper;
 import org.argouml.model.DummyModelCommand;
 import org.argouml.model.Model;
 import org.argouml.model.ModelCommand;
+import org.argouml.model.NotImplementedException;
 
 
 /**
@@ -470,6 +471,16 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
     public void addRaisedSignal(Object handle, Object sig) {
         super.addRaisedSignal(handle, sig);
         Model.execute(new DummyModelCommand());
+    }
+    
+    /**
+     * Dummy method for UML 1.x
+     * 
+     * @author Andreas Rueckert <a_rueckert@gmx.net>
+     * @see org.argouml.model.CoreHelper#addRaisedException(java.lang.Object, java.lang.Object)
+     */
+    public void addRaisedException(Object handle, Object exception) {
+        throw new NotImplementedException("A UML 1.x operation has no exceptions");
     }
 
     public void addSourceFlow(Object handle, Object flow) {
