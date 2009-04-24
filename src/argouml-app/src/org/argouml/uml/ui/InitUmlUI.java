@@ -31,6 +31,7 @@ import java.util.List;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
+import org.argouml.model.Model;
 
 /**
  * Initialise this subsystem.
@@ -58,7 +59,10 @@ public class InitUmlUI implements InitSubsystem {
         result.add(new TabSrc());
         result.add(new TabConstraints());
         result.add(new TabStereotype());
-        result.add(new TabTaggedValues());
+        // Add the tagged values for UML 1.x
+        if( Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            result.add(new TabTaggedValues());
+        }
         return result;
     }
 
