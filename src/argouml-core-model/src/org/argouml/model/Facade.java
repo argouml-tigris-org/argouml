@@ -2432,6 +2432,14 @@ public interface Facade {
      * @return raised signals
      */
     Collection getRaisedSignals(Object handle);
+    
+    /**
+     *  Return the raised exceptions of an operation (UML 2 only).
+     *  
+     *  @param handle the operation
+     *  @return raised exceptions
+     */
+    Collection getRaisedExceptions(Object handle);
 
     /**
      * Return the receptions of a signal.

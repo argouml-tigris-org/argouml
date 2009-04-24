@@ -489,7 +489,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getConcurrency(Object handle) {
-        throw new NotYetImplementedException();
+        if (!(handle instanceof BehavioralFeature)) {
+            throw new IllegalArgumentException("handle must be a BehavioralFeature!");
+        }
+        return ((BehavioralFeature)handle).getConcurrency();
     }
 
     public Object getCondition(Object handle) {
@@ -772,7 +775,14 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getInteractions(Object handle) {
-        throw new NotYetImplementedException();
+        
+        // Comment by A- Rueckert: I don't think it makes much sense to query interactions
+        // from a Collaboration in UML2, since this diagram does no longer exist and 
+        // an Interaction means something different in UML2.
+        if (!(handle instanceof Collaboration)) {
+            throw new IllegalArgumentException("handle has to be a Collaboration!");
+        }
+        return ((Collaboration)handle).getCollaborationRoles();
     }
 
     public Collection getInternalTransitions(Object handle) {
@@ -819,6 +829,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getMethods(Object handle) {
+        if (handle instanceof BehavioralFeature) {
+            return ((BehavioralFeature)handle).getMethods();
+        }
+        // there's more to be handled, which still need to be implemented:
         throw new NotYetImplementedException();
     }
 
@@ -1075,6 +1089,13 @@ class FacadeEUMLImpl implements Facade {
     public Collection getRaisedSignals(Object handle) {
         throw new NotYetImplementedException();
     }
+    
+    public Collection getRaisedExceptions( Object handle) {
+        if (handle instanceof Operation) {
+            return ((Operation)handle).getRaisedExceptions();
+        }
+        return null;
+    }
 
     public Collection getReceivedMessages(Object handle) {
         throw new NotYetImplementedException();
@@ -1107,11 +1128,26 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getRepresentedClassifier(Object handle) {
-        throw new NotYetImplementedException();
+        
+        // Comment by A. Rueckert <a_rueckert@gmx.net> :
+        // I think, the handle holding the collaboration implementation, should
+        // rather be a CollaborationUse in UML2. 
+        // But as a workaround for now, I'll try to get a Collaboration representation
+        // (CollaborationUse) and then try to get the owning Classifier from there...
+        if (!(handle instanceof Collaboration)) {
+            throw new IllegalArgumentException("handle should be a Collaboration!"); //$NON-NLS-<n>$ 
+        }
+        CollaborationUse collabUse = ((Collaboration)handle).getRepresentation();
+        
+        return collabUse == null ? null : collabUse.getOwner();
     }
 
     public Object getRepresentedOperation(Object handle) {
-        throw new NotYetImplementedException();
+        
+        if (!(handle instanceof Collaboration)) {
+            throw new IllegalArgumentException("handle should be a Collaboration!"); //$NON-NLS-<n>$
+        }
+        return ((Collaboration)handle).getOperation(null,null,null);
     }
 
     public Object getResident(Object handle) {
@@ -1175,8 +1211,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getSpecification(Object handle) {
+        // TODO: The UML2 spec provides a specification for Behavior, which
+        // is a BehavioralFeature, but ArgoUML calls this for an Operation
+        // instance, so we must check what this method is intended for (bug?).
+        if( handle instanceof Behavior) {
+            return ((Behavior)handle).getSpecification().getName();
+        }
+        if( handle instanceof Operation) {
+            return null;
+        }
         throw new NotYetImplementedException();
-
     }
 
     public Collection getSpecifications(Object handle) {

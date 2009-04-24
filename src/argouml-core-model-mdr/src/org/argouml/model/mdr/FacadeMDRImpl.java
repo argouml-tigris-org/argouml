@@ -45,6 +45,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.Facade;
 import org.argouml.model.InvalidElementException;
+import org.argouml.model.NotImplementedException;
 import org.omg.uml.behavioralelements.activitygraphs.ActionState;
 import org.omg.uml.behavioralelements.activitygraphs.ActivityGraph;
 import org.omg.uml.behavioralelements.activitygraphs.CallState;
@@ -2982,6 +2983,17 @@ class FacadeMDRImpl implements Facade {
             throw new InvalidElementException(e);
         }
         return illegalArgumentCollection(handle);
+    }
+    
+    /**
+     * Dummy method for UML 1.x 
+     * 
+     * @author Andreas Rueckert <a_rueckert@gmx.net>
+     * 
+     * @see org.argouml.model.Facade#getRaisedExceptions(java.lang.Object)
+     */
+    public Collection getRaisedExceptions(Object handle) {
+        throw new NotImplementedException("There are no exceptions in UML 1.x operations");
     }
 
 
