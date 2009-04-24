@@ -24,15 +24,13 @@
 
 package org.argouml.sequence2;
 
+import junit.framework.TestCase;
+
 import org.argouml.model.InitializeModel;
 import org.argouml.profile.init.InitProfileSubsystem;
-
-import org.argouml.sequence2.SequenceDiagramPropPanelFactory;
 import org.argouml.sequence2.SequenceDiagramPropPanelFactory.PropPanelUMLSequenceDiagram;
 import org.argouml.sequence2.diagram.UMLSequenceDiagram;
 import org.argouml.uml.ui.PropPanel;
-
-import junit.framework.TestCase;
 
 public class TestSequenceDiagramPropPanelFactory extends TestCase {
 
@@ -56,7 +54,8 @@ public class TestSequenceDiagramPropPanelFactory extends TestCase {
                 
         Object o = new Object();
         pp = factory.createPropPanel(o);
-        assertEquals("Created a proppanel for an object that it's not a sequence diagram.",
+        assertEquals("Created a proppanel for an object that is not "
+                + "a sequence diagram.",
                 null, pp);
         
         UMLSequenceDiagram seqDiagram = new UMLSequenceDiagram();
