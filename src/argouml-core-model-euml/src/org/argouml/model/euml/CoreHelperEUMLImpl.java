@@ -413,6 +413,16 @@ class CoreHelperEUMLImpl implements CoreHelper {
         throw new NotYetImplementedException();
     }
 
+    public void addRaisedException(Object handle, Object exception) {
+        if (!(handle instanceof Operation)) {
+            throw new IllegalArgumentException( "The operation must be an instance of Operation");
+        }
+        if (!(exception instanceof Type)) {
+            throw new IllegalArgumentException( "The exception must be an instance of Type");
+        }
+        (((Operation)handle).getRaisedExceptions()).add((Type)exception);
+    }
+    
     public void addSourceFlow(Object handle, Object flow) {
         // TODO: implement
         throw new NotYetImplementedException();

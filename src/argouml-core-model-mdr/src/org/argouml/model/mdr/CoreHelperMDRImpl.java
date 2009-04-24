@@ -2435,6 +2435,16 @@ class CoreHelperMDRImpl implements CoreHelper {
                 + sig);
     }
 
+    /**
+     *  Dummy method for exceptions in MDR metamodel.
+     *  
+     * @author Andreas Rueckert <a_rueckert@gmx.net>
+     *  
+     * @see org.argouml.model.CoreHelper#addRaisedException(java.lang.Object, java.lang.Object)
+     */
+    public void addRaisedException(Object handle, Object Exception) {
+        throw new NotImplementedException( "UML 1.4 has no exceptions for operations");
+    }
 
     public void addSourceFlow(Object handle, Object flow) {
         if (handle instanceof ModelElement && flow instanceof Flow) {
