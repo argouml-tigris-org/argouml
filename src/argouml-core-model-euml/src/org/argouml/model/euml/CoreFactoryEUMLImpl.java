@@ -864,9 +864,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             public void run() {
                 Operation operation = createOperation();
                 UMLUtil.getOwnedOperations((Type) cls).add(operation);
-                operation.createReturnResult(null, (Type) returnType);
+                operation.createReturnResult("return", (Type) returnType);
                 if (name != null) {
                     operation.setName(name);
+                } else {
+                    operation.setName("newOperation");
                 }
                 getParams().add(operation);
             }
@@ -896,6 +898,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             public void run() {
                 Parameter param = createParameter();
                 param.setType((Type) type);
+                param.setName("arg" +
+                    ((BehavioralFeature) o).getOwnedParameters().size());
                 ((BehavioralFeature) o).getOwnedParameters().add(param);
                 getParams().add(param);
             }
