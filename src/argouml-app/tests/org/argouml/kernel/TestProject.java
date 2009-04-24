@@ -47,7 +47,6 @@ import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.InitCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.InitDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.InitSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.InitStateDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.InitClassDiagram;
@@ -537,7 +536,6 @@ public class TestProject extends TestCase {
         (new InitActivityDiagram()).init();
         (new InitCollaborationDiagram()).init();
         (new InitDeploymentDiagram()).init();
-        (new InitSequenceDiagram()).init();
         (new InitStateDiagram()).init();
         (new InitClassDiagram()).init();
         (new InitUseCaseDiagram()).init();

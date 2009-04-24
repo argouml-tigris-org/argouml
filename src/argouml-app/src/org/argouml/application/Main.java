@@ -79,7 +79,6 @@ import org.argouml.ui.cmd.PrintManager;
 import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.InitCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.InitDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.InitSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.InitStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.InitClassDiagram;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
@@ -409,7 +408,6 @@ public class Main {
         SubsystemUtility.initSubsystem(new InitActivityDiagram());
         SubsystemUtility.initSubsystem(new InitCollaborationDiagram());
         SubsystemUtility.initSubsystem(new InitDeploymentDiagram());
-        SubsystemUtility.initSubsystem(new InitSequenceDiagram());
         SubsystemUtility.initSubsystem(new InitStateDiagram());
         SubsystemUtility.initSubsystem(new InitClassDiagram());
         SubsystemUtility.initSubsystem(new InitUseCaseDiagram());

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,8 +35,8 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.SequenceDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 /**
@@ -70,7 +70,7 @@ public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
                 // of the statemachine or activitygraph they belong to.
                 if (diagram instanceof UMLStateDiagram
                         || diagram instanceof UMLActivityDiagram
-                        || diagram instanceof UMLSequenceDiagram) {
+                        || diagram instanceof SequenceDiagram) {
                     continue;
                 }
                 if (diagram.getNamespace() == namespace) {

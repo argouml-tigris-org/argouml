@@ -45,7 +45,6 @@ import org.argouml.uml.cognitive.critics.InitCognitiveCritics;
 import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.InitCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.InitDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.InitSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.InitStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.InitClassDiagram;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
@@ -83,7 +82,6 @@ public class GUITestInitSubsystem extends TestCase {
         initialisers.add(new InitNotationUI());
         initialisers.add(new InitNotationUml());
         initialisers.add(new InitPatternCritics());
-        initialisers.add(new InitSequenceDiagram());
         initialisers.add(new InitStateDiagram());
         initialisers.add(new InitUiCmdSubsystem()); // X
         initialisers.add(new InitUmlUI()); // X

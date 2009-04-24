@@ -47,7 +47,6 @@ import org.argouml.uml.diagram.deployment.ui.FigMNode;
 import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.FigBranchState;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
 import org.argouml.uml.diagram.state.ui.FigDeepHistoryState;
@@ -153,7 +152,7 @@ public class TestItemUID extends TestCase {
         UMLClassDiagram classdiag = new UMLClassDiagram(namespace);
         UMLCollaborationDiagram colldiag = new UMLCollaborationDiagram();
         UMLDeploymentDiagram depdiag = new UMLDeploymentDiagram();
-        UMLSequenceDiagram seqdiag = new UMLSequenceDiagram();
+//        UMLSequenceDiagram seqdiag = new UMLSequenceDiagram();
         UMLStateDiagram statediag = new UMLStateDiagram();
 
         checkAssignIDToObject(commentedge, false, true);
@@ -161,7 +160,7 @@ public class TestItemUID extends TestCase {
         checkAssignIDToObject(classdiag, true, true);
         checkAssignIDToObject(colldiag, true, true);
         checkAssignIDToObject(depdiag, true, true);
-        checkAssignIDToObject(seqdiag, true, true);
+//        checkAssignIDToObject(seqdiag, true, true);
         checkAssignIDToObject(statediag, true, true);
         
         Model.getUmlFactory().delete(namespace);

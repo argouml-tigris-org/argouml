@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,11 +33,10 @@ import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLDecision;
+import org.argouml.uml.diagram.SequenceDiagram;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -79,7 +78,7 @@ public class CrNodesOverlap extends CrUML {
 
 	// fixes bug #669. Sequencediagrams always overlap, so they shall
 	// never report a problem
-	if (dm instanceof UMLSequenceDiagram) {
+	if (dm instanceof SequenceDiagram) {
             return NO_PROBLEM;
         }
 

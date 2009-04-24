@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.SequenceDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.RadioAction;
@@ -54,7 +55,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author penyaskito
  */
-public class UMLSequenceDiagram extends UMLDiagram {
+public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
     
     private Object[] actions;
 
@@ -294,5 +295,9 @@ public class UMLSequenceDiagram extends UMLDiagram {
     @Override
     public ModePlace getModePlace(GraphFactory gf, String instructions) {
         return new ModePlaceClassifierRole(gf, instructions);
+    }
+
+    public Object getCollaboration() {
+        return ((SequenceDiagramGraphModel) getGraphModel()).getCollaboration();
     }
 }
