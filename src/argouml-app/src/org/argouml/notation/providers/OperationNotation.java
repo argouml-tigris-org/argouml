@@ -72,10 +72,12 @@ public abstract class OperationNotation extends NotationProvider {
                     addElementListener(listener, type);
                 }
             }
-            // We also show tagged values
-            for (Object uml : Model.getFacade()
-                    .getTaggedValuesCollection(modelElement)) {
-                addElementListener(listener, uml);
+            // We also show tagged values for UML 1
+            // TODO: what to do for UML2 here?
+            if( Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                for (Object uml : Model.getFacade() .getTaggedValuesCollection(modelElement)) {
+                    addElementListener(listener, uml);     
+                }   
             }
         }
     }
