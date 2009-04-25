@@ -2993,7 +2993,11 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getRaisedExceptions(java.lang.Object)
      */
     public Collection getRaisedExceptions(Object handle) {
-        throw new NotImplementedException("There are no exceptions in UML 1.x operations");
+        if (handle instanceof Operation) {
+            throw new NotImplementedException(
+                    "There are no exceptions in UML 1.x operations"); 
+        }
+        return illegalArgumentCollection(handle);
     }
 
 
