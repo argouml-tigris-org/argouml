@@ -163,6 +163,10 @@ public class TestModelFacade3 extends TestCase {
             fail("Test failed for " + methodToTest.toString()
                     + " because of: "
                     + e.getTargetException());
+        } catch (NotImplementedException e) {
+            // This exception is used to make clear that there should be no
+            // implementation (e.g. due to the UML version), so it's ok.
+            return;
         } catch (Exception e) {
             fail("Test failed for " + methodToTest.toString()
                     + " because of: " + e.toString());
