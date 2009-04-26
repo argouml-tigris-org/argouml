@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2007 The Regents of the University of California. All
+// Copyright (c) 2003-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -164,9 +164,11 @@ public class TestModelFacade3 extends TestCase {
                     + " because of: "
                     + e.getTargetException());
         } catch (NotImplementedException e) {
-            // This exception is used to make clear that there should be no
-            // implementation (e.g. due to the UML version), so it's ok.
-            return;
+            // OK for UML 2.x, error for anything else
+            String version = Model.getFacade().getUmlVersion();
+            if (!version.startsWith("2.")) {
+                fail("Unexpected NotImplementedException");
+            }
         } catch (Exception e) {
             fail("Test failed for " + methodToTest.toString()
                     + " because of: " + e.toString());
