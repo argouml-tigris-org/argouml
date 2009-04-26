@@ -37,6 +37,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -50,11 +51,7 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public abstract class ActionNewDiagram extends UndoableAction {
 
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(ActionNewDiagram.class);
+    private static final Logger LOG = Logger.getLogger(ActionNewDiagram.class);
 
     /**
      * The constructor.
@@ -76,6 +73,9 @@ public abstract class ActionNewDiagram extends UndoableAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
 
+        // TODO: Get Project or other necessary context from source??
+        // e.getSource();
+        
         // TODO: Since there may be multiple top level elements in
         // a project, this should be using the default Namespace (currently
         // undefined) or something similar 
@@ -83,7 +83,8 @@ public abstract class ActionNewDiagram extends UndoableAction {
         Object ns = findNamespace();
         
         if (ns != null && isValidNamespace(ns)) {
-            ArgoDiagram diagram = createDiagram(ns);
+            ArgoDiagram diagram = createDiagram(ns, 
+                    p.getProjectSettings().getDefaultDiagramSettings());
             assert (diagram != null)
             : "No diagram was returned by the concrete class";
 
@@ -112,8 +113,26 @@ public abstract class ActionNewDiagram extends UndoableAction {
     /**
      * @param namespace the namespace in which to create the diagram
      * @return the new diagram
+     * @deprecated for 0.29.1 by tfmorris. Use
+     *             {@link #createDiagram(Object, DiagramSettings)}/
      */
-    protected abstract ArgoDiagram createDiagram(Object namespace);
+    @SuppressWarnings("deprecation")
+    @Deprecated
+    protected ArgoDiagram createDiagram(Object namespace) {
+        DiagramSettings settings = ProjectManager.getManager()
+                .getCurrentProject().getProjectSettings()
+                .getDefaultDiagramSettings();
+
+        return createDiagram(namespace, settings);
+    }
+
+    /**
+     * @param namespace the namespace in which to create the diagram
+     * @param settings the render settings for the diagram
+     * @return the new diagram
+     */
+    protected abstract ArgoDiagram createDiagram(Object namespace, 
+            DiagramSettings settings);
 
     /**
      * Test if the given namespace is a valid namespace to add the diagram to.

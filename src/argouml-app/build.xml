@@ -252,7 +252,7 @@ Building this requires:
     	   deprecation="${deprecation}"
     	   destdir="${build.classes}"
     	   includes="org/argouml/**/*.java"
-           excludes="org/argouml/model/uml/**"
+           excludes="org/argouml/model/uml/**,org/argouml/uml/diagram/sequence/**,**/ActionSetAddMessageMode.java"
     	   optimize="${optimize}"
            includeAntRuntime="no" 
            bootclasspath="${bundleBootClasspath}" 
@@ -349,7 +349,6 @@ Building this requires:
            destdir="${tests.classes}"
            srcdir="tests"
 	   includes="org/argouml/uml/reveng/TestJavaImportUnicode.java"
-           excludes="org/argouml/model/uml/**"
 	   encoding="iso8859-1"
     	   source="1.5"
            target="1.5">
@@ -365,7 +364,7 @@ Building this requires:
            optimize="false" 
            destdir="${tests.classes}"
            srcdir="tests"
-           excludes="org/argouml/model/uml/**"
+           excludes="org/argouml/model/uml/**,org/argouml/uml/diagram/sequence/**,**/ActionSetAddMessageMode.java"
     	   source="1.5"
            target="1.5">
       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
@@ -386,7 +385,6 @@ Building this requires:
       <cobertura-instrument todir="${build.dir}/instrumented" datafile="${cobertura.datafile}">
         <fileset dir="${build.classes}">
             <include name="**/*.class" />
-            <exclude name="**/JavaLexer.class **/JavaRecognizer.class **/JavaTokenTypes.class" />
         </fileset>
       </cobertura-instrument>
     </target>

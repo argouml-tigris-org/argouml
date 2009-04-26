@@ -30,6 +30,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 /**
@@ -44,15 +45,26 @@ public class ActionStateDiagram extends ActionNewDiagram {
         super("action.state-diagram");
     }
 
-    /*
-     * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
-     */
-    protected ArgoDiagram createDiagram(Object namespace) {
+    protected ArgoDiagram createDiagram(Object namespace, 
+            DiagramSettings settings) {
+        Object machine = buildMachine(namespace, getTarget(namespace));
+        
+        return DiagramFactory.getInstance().create(
+                DiagramFactory.DiagramType.State,
+                machine, settings);
+    }
+    
+
+    private Object getTarget(Object namespace) {
         Object target = TargetManager.getInstance().getModelTarget();
         if (Model.getFacade().isAUMLElement(target) 
                 && Model.getModelManagementHelper().isReadOnly(target)) {
             target = namespace;
         }
+        return target;
+    }
+
+    private Object buildMachine(Object namespace, Object target) {
         Object machine = null;
         if (Model.getStateMachinesHelper().isAddingStatemachineAllowed(
               target)) {
@@ -75,11 +87,7 @@ public class ActionStateDiagram extends ActionNewDiagram {
             Model.getStateMachinesFactory()
                     .buildCompositeStateOnStateMachine(machine);
         }
-        
-        return DiagramFactory.getInstance().createDiagram(
-                DiagramFactory.DiagramType.State,
-                Model.getFacade().getNamespace(machine),
-                machine);
+        return machine;
     }
     
     private boolean hasNoDiagramYet(Object machine) {

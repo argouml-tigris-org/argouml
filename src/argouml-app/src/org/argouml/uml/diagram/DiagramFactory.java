@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.argouml.kernel.ProjectManager;
@@ -35,18 +34,14 @@ import org.argouml.model.CollaborationDiagram;
 import org.argouml.model.DeploymentDiagram;
 import org.argouml.model.DiDiagram;
 import org.argouml.model.Model;
-import org.argouml.model.SequenceDiagram;
 import org.argouml.model.StateDiagram;
 import org.argouml.model.UseCaseDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.graph.GraphNodeRenderer;
 
 /**
 * Provide a factory method to create different UML diagrams.
@@ -54,8 +49,6 @@ import org.tigris.gef.graph.GraphNodeRenderer;
 * @author Bob Tarling
 */
 public final class DiagramFactory {
-
-    private final Map noStyleProperties = new HashMap();
 
     /**
      * Map from our public enum to our internal implementation classes.
@@ -79,11 +72,8 @@ public final class DiagramFactory {
         Class, UseCase, State, Deployment, Collaboration, Activity, Sequence
     }
 
-    private Map<DiagramType, Object> factories =
-        new EnumMap<DiagramType, Object>(DiagramType.class);
-    // TODO: This can be typed again when the deprecation period has expired
-//    private Map<DiagramType, DiagramFactoryInterface2> factories =
-//        new EnumMap<DiagramType, DiagramFactoryInterface2>(DiagramType.class);
+    private Map<DiagramType, DiagramFactoryInterface2> factories =
+        new EnumMap<DiagramType, DiagramFactoryInterface2>(DiagramType.class);
 
     private DiagramFactory() {
         super();
@@ -96,7 +86,6 @@ public final class DiagramFactory {
         diagramClasses.put(DiagramType.Collaboration, 
                 UMLCollaborationDiagram.class);
         diagramClasses.put(DiagramType.Activity, UMLActivityDiagram.class);
-        diagramClasses.put(DiagramType.Sequence, UMLSequenceDiagram.class);
     }
 
     /**
@@ -228,7 +217,7 @@ public final class DiagramFactory {
      * 'namespace' for all others.
      */
     @Deprecated
-    public ArgoDiagram createDiagram(Class type, Object namespace,
+    private ArgoDiagram createDiagram(Class type, Object namespace,
             Object machine) {
 
         ArgoDiagram diagram = null;
@@ -253,9 +242,6 @@ public final class DiagramFactory {
         } else if (type == UMLActivityDiagram.class) {
             diagram = new UMLActivityDiagram(namespace, machine);
             diType = ActivityDiagram.class;
-        } else if (type == UMLSequenceDiagram.class) {
-            diagram = new UMLSequenceDiagram(namespace);
-            diType = SequenceDiagram.class;
         }
 
         if (diagram == null) {
@@ -295,42 +281,19 @@ public final class DiagramFactory {
         return diagram;
     }
 
-    /**
-     * @deprecated for 0.27.2 by tfmorris.  Undocumented and unused internally.
-     */
-    @Deprecated
-    public Object createRenderingElement(Object diagram, Object model) {
-        GraphNodeRenderer rend =
-            ((Diagram) diagram).getLayer().getGraphNodeRenderer();
-        Object renderingElement =
-                rend.getFigNodeFor(model, 0, 0, noStyleProperties);
-        return renderingElement;
-    }
     
     /**
      * Register a specific factory class to create diagram instances for a
      * specific diagram type
-     * @param type the diagram type
-     * @param factory the factory instance
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #registerDiagramFactory(DiagramType, DiagramFactoryInterface2)}.
-     */
-    @Deprecated
-    public void registerDiagramFactory(
-            final DiagramType type,
-            final DiagramFactoryInterface factory) {
-        factories.put(type, factory);
-    }
-    
-    /**
-     * Register a specific factory class to create diagram instances for a
-     * specific diagram type
+     * 
      * @param type the diagram type
      * @param factory the factory instance
      */
     public void registerDiagramFactory(
             final DiagramType type,
             final DiagramFactoryInterface2 factory) {
+        // TODO: This uses a "last one wins" algorithm for registration
+        // We should warn if a factory is being overwritten.
         factories.put(type, factory);
     }
 }
