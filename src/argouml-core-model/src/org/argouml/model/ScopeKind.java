@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,13 +32,16 @@ package org.argouml.model;
  */
 @Deprecated
 public interface ScopeKind {
+    
     /**
      * @return Returns the Classifier ScopeKind.
      */
+    @Deprecated
     Object getClassifier();
 
     /**
      * @return Returns the Instance ScopeKind.
      */
+    @Deprecated
     Object getInstance();
 }

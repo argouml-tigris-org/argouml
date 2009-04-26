@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2007 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,15 +35,18 @@ public interface ChangeableKind {
     /**
      * @return Returns the AddOnly ChangeableKind.
      */
+    @Deprecated
     Object getAddOnly();
 
     /**
      * @return Returns the Changeable ChangeableKind.
      */
+    @Deprecated
     Object getChangeable();
 
     /**
      * @return Returns the Frozen ChangeableKind.
      */
+    @Deprecated
     Object getFrozen();
 }
