@@ -332,7 +332,7 @@ Building this requires:
            optimize="false"
            destdir="${tests.classes}" 
            includes="**/GUITestProjectBrowser.java,**/MockUMLUserInterfaceContainer,**/*Deprecated.java"
-           excludes="org/argouml/model/uml/**"
+           excludes="org/argouml/model/uml/**,org/argouml/uml/diagram/sequence/**"
            srcdir="tests"
     	   source="1.5"
            target="1.5">
