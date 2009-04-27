@@ -517,8 +517,9 @@ Building this requires:
       <classpath refid="tests.all.classpath"/>
       <formatter type="xml"/>
       <batchtest todir="${tests.reports}">
-        <fileset dir="tests">
-          <include name="org/argouml/**/Test*.java"/>
+        <fileset dir="${tests.classes}">
+          <include name="org/argouml/**/Test*.class"/>
+          <exclude name="**/*$*" />
         </fileset>
       </batchtest>
     </junit>
@@ -552,8 +553,9 @@ Building this requires:
       <classpath refid="tests.all.classpath"/>
       <formatter type="xml"/>
       <batchtest todir="${tests.reports}">
-        <fileset dir="tests">
-          <include name="org/argouml/**/GUITest*.java"/>
+        <fileset dir="${tests.classes}">
+          <include name="org/argouml/**/GUITest*.class"/>
+          <exclude name="**/*$*" />
         </fileset>
       </batchtest>
     </junit>
