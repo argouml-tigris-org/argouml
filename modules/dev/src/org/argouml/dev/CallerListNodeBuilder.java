@@ -29,7 +29,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.argouml.uml.diagram.sequence.MessageNode;
+//import org.argouml.uml.diagram.sequence.MessageNode;
 
 /**
  * TODO: Add Javadoc
@@ -38,17 +38,19 @@ import org.argouml.uml.diagram.sequence.MessageNode;
  */
 public class CallerListNodeBuilder {
 
-    public static void addNodeTree(
-            DefaultMutableTreeNode treeNode,
-            MessageNode mn) {
-    	List callers = mn.getCallers();
-    	if (callers != null) {
-            for (Iterator it = callers.iterator(); it.hasNext(); ) {
-            	Object o = it.next();
-                DefaultMutableTreeNode tn =
-                	new DefaultMutableTreeNode(o.getClass().getName());
-                treeNode.add(tn);
-            }
-    	}
-    }
+    // TODO: Refers to old sequence diagram implementation - needs to be updated
+
+//    public static void addNodeTree(
+//            DefaultMutableTreeNode treeNode,
+//            MessageNode mn) {
+//    	List callers = mn.getCallers();
+//    	if (callers != null) {
+//            for (Iterator it = callers.iterator(); it.hasNext(); ) {
+//            	Object o = it.next();
+//                DefaultMutableTreeNode tn =
+//                	new DefaultMutableTreeNode(o.getClass().getName());
+//                treeNode.add(tn);
+//            }
+//    	}
+//    }
 }

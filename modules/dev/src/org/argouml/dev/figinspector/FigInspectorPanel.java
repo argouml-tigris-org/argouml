@@ -32,7 +32,7 @@ import javax.swing.JScrollPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.argouml.dev.MessageNodeBuilder;
-import org.argouml.uml.diagram.sequence.ui.FigClassifierRole;
+import org.argouml.sequence2.diagram.FigClassifierRole;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.event.GraphSelectionEvent;
