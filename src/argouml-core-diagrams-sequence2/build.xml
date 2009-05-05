@@ -179,7 +179,6 @@ Building this requires:
     <!-- create directories -->
     <mkdir dir="build/tests/classes"/>
 
-
     <javac debug="true" 
            deprecation="on"
            optimize="false" 
@@ -193,6 +192,10 @@ Building this requires:
       </classpath>
     </javac>
 
+    <!-- copy test files -->
+    <copy todir="build/tests/classes/testmodels">
+      <fileset dir="tests/testmodels" includes="**/**"/>
+    </copy>
   </target>
 
   <!-- =================================================================== -->
@@ -202,14 +205,14 @@ Building this requires:
           description="Run all tests that don't require any GUI components in headleass mode.">
 
     <mkdir dir="build/tests/reports"/>
-    <mkdir dir="build/tests/reports/html"/>
       
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
-           fork="yes"  dir="${basedir}" forkmode="perTest"
+           fork="yes" dir="${basedir}" forkmode="perTest"
            haltonfailure="false"
            maxmemory="48M" printsummary="true">
       <sysproperty key="log4j.configuration" value="org/argouml/resource/default.lcf"/>
       <sysproperty key="java.awt.headless" value="true"/>
+      <sysproperty key="argouml.tests.dir" value="tests"/>
       <assertions>
         <enable/>
       </assertions>
