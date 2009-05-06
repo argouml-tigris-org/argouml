@@ -26,31 +26,29 @@ package org.argouml.persistence;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Collection;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.argouml.kernel.Project;
-import org.argouml.model.Facade;
 import org.argouml.model.InitializeModel;
-import org.argouml.model.Model;
+import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
 import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.sequence2.SequenceDiagramModule;
 import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.InitCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.InitDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.InitSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.InitStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.InitClassDiagram;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram;
 
 /**
- * Testcase to load projects without exception.
+ * Test case to load projects without exception.
  */
 public class TestDiagramUpdateAtLoad extends TestCase {
 
@@ -69,6 +67,8 @@ public class TestDiagramUpdateAtLoad extends TestCase {
         (new InitClassDiagram()).init();
         (new InitUseCaseDiagram()).init();
         (new InitProfileSubsystem()).init();
+        ModuleLoader2.addClass(SequenceDiagramModule.class.getName());
+        ModuleLoader2.doLoad(false);
     }
 
     /**
@@ -105,6 +105,7 @@ public class TestDiagramUpdateAtLoad extends TestCase {
      */
     private Project doLoad(String filename) 
         throws OpenException, InterruptedException {
+        assertTrue(ModuleLoader2.isEnabled("ArgoUML-Sequence"));
         URL url = getClass().getResource(filename);
         assertNotNull("Resource to be tested is not found: " + filename, url);
 
