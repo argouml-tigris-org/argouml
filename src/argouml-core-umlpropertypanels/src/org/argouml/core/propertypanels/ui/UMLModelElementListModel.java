@@ -29,10 +29,13 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.MenuElement;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
@@ -578,6 +581,19 @@ public abstract class UMLModelElementListModel
      */
     public boolean buildPopup(JPopupMenu popup, int index) {
         return false;
+    }
+    
+    public List<Action> getActions() {
+        final List<Action> actions = new ArrayList<Action>();
+        final JPopupMenu popup = new JPopupMenu();
+        buildPopup(popup, 0);
+        final MenuElement[] elements = popup.getSubElements();
+        for (MenuElement element : elements) {
+            if (element instanceof JMenuItem) {
+                actions.add(((JMenuItem) element).getAction());
+            }
+        }
+        return actions;
     }
     
     /**
