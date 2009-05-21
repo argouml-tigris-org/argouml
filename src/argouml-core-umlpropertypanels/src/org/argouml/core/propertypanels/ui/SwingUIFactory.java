@@ -24,13 +24,20 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.Color;
+import java.util.List;
+
+import javax.swing.Action;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
+import javax.swing.ListModel;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.core.propertypanels.panel.UIFactory;
@@ -91,6 +98,8 @@ import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionSetTagDefinitionType;
 import org.argouml.uml.ui.foundation.extension_mechanisms.UMLMetaClassComboBoxModel;
 import org.tigris.swidgets.GridLayout2;
+import org.tigris.toolbar.ToolBar;
+import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * Creates the XML Property panels
@@ -254,6 +263,15 @@ public class SwingUIFactory implements UIFactory {
             label.setLabelFor(list);
             panel.add(label);
             panel.add(list);
+            if (list instanceof ScrollList) {
+                final ListModel m = ((ScrollList) list).getListModel();
+                if (m instanceof UMLModelElementListModel) {
+                    final List<Action> actions = ((UMLModelElementListModel) m).getActions();
+                    final ToolBarFactory tbf = new ToolBarFactory(actions);
+                    final JToolBar tb = tbf.createToolBar();
+                    panel.add(tb);
+                }
+            }
         }
     }
 
