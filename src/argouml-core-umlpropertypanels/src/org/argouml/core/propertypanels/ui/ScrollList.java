@@ -104,6 +104,10 @@ class ScrollList extends JScrollPane implements KeyListener {
         setViewportView(list);
     }
     
+    public ListModel getListModel() {
+        return list.getModel();
+    }
+    
     /**
      * Examine key event to scroll left or right depending on key press
      * @param e the key event to examine
