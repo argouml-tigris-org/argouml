@@ -596,12 +596,11 @@ class FacadeEUMLImpl implements Facade {
         return ((Transition) handle).getEffect();
     }
 
-    public Collection getElementImports(Object handle) {
-        if (!(handle instanceof org.eclipse.uml2.uml.Package)) {
+    public Collection<ElementImport> getElementImports(Object handle) {
+        if (!(handle instanceof Namespace)) {
             throw new IllegalArgumentException();
         }
-        return Collections.EMPTY_LIST;
-//      throw new NotYetImplementedException();
+        return ((Namespace) handle).getElementImports();
     }
 
     public Collection getElementImports2(Object handle) {
