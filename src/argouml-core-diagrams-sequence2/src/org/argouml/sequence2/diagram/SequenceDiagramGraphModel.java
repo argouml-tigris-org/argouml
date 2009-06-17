@@ -149,6 +149,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public Object getCollaboration() {
         if (collaboration == null) {
+            LOG.debug("The collaboration is null so creating a new collaboration");
             collaboration =
                 Model.getCollaborationsFactory().buildCollaboration(
                         ProjectManager.getManager().getCurrentProject()
@@ -163,6 +164,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
      * @param c the collaboration
      */
     public void setCollaboration(Object c) {
+        LOG.debug("Setting the collaboration of sequence diagram to " + c);
         collaboration = c;
         Collection interactions = Model.getFacade().getInteractions(c);
         if (!interactions.isEmpty()) {
