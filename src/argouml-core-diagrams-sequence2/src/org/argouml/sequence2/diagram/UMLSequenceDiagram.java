@@ -28,12 +28,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.SequenceDiagram;
@@ -351,15 +350,14 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
             }
         }
         if (correctInteraction != null) {
-            final Set deadInteractions = new HashSet();
             for (final Fig f : getLayer().getContents()) {
                 if (f instanceof FigMessage) {
+                    Facade facade = Model.getFacade();                   
+                    
                     final Object message = f.getOwner();
-                    final Object interaction =
-                        Model.getFacade().getInteraction(message);
-                    final Object context =
-                        Model.getFacade().getContext(interaction);
-                    final Object action = Model.getFacade().getAction(message);
+                    final Object interaction = facade.getInteraction(message);
+                    final Object context = facade.getContext(interaction);
+                    final Object action = facade.getAction(message);
                     if (context != collaboration) {
                         LOG.warn("namespace of interaction does not match "
                                 + "collaboration - moving "
@@ -368,16 +366,21 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
                                 correctInteraction, message);
                         Model.getCoreHelper().setNamespace(
                                 action, collaboration);
-                        deadInteractions.add(interaction);
+                        // If this leaves the interaction empty then
+                        // delete it.
+                        if (facade.getMessages(interaction).isEmpty()) {
+                            LOG.warn("Deleting empty interaction "
+                                    + interaction);
+                            Model.getUmlFactory().delete(interaction);
+                            // If that in turn leaves the collaboration empty
+                            // then delete that also.
+                            if (facade.getOwnedElements(context).isEmpty()) {
+                                LOG.warn("Deleting empty collaboration "
+                                        + context);
+                                Model.getUmlFactory().delete(context);
+                            }
+                        }
                     }
-                }
-            }
-            for (Object interaction : deadInteractions) {
-                if (Model.getFacade().getMessages(interaction).isEmpty()) {
-                    final Object context =
-                        Model.getFacade().getContext(interaction);
-                    Model.getUmlFactory().delete(interaction);
-                    Model.getUmlFactory().delete(context);
                 }
             }
         }
