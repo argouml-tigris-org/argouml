@@ -28,7 +28,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
@@ -95,6 +97,10 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
      */
     public UMLSequenceDiagram(Object collaboration) {
         this();
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Constructing Sequence Diagram for collaboration "
+                    + collaboration);
+        }
         try {
             this.setName(getNewDiagramName());
         } catch (PropertyVetoException e) {
@@ -317,5 +323,63 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
 
     public Object getCollaboration() {
         return ((SequenceDiagramGraphModel) getGraphModel()).getCollaboration();
+    }
+
+    /**
+     * Ensure that all elements represented in this diagram are part of this
+     * diagrams collaboration
+     */
+    public void postLoad() {
+        super.postLoad();
+        
+        // See issue 5811. We have messages saved to the incorrect
+        // interaction and actions of those messages belonging to the
+        // wrong collaboration. If we detect this circumstance of load then
+        // move the model elements and delete the empty collaborations
+        // and interactions.
+        Object collaboration = getCollaboration();
+        Object correctInteraction = null;
+        for (final Fig f : getLayer().getContents()) {
+            Object modelElement = f.getOwner();
+            if (f instanceof FigMessage) {
+                Object interaction =
+                    Model.getFacade().getInteraction(modelElement);
+                Object context = Model.getFacade().getContext(interaction);
+                if (context == collaboration) {
+                    correctInteraction = interaction;
+                }
+            }
+        }
+        if (correctInteraction != null) {
+            final Set deadInteractions = new HashSet();
+            for (final Fig f : getLayer().getContents()) {
+                if (f instanceof FigMessage) {
+                    final Object message = f.getOwner();
+                    final Object interaction =
+                        Model.getFacade().getInteraction(message);
+                    final Object context =
+                        Model.getFacade().getContext(interaction);
+                    final Object action = Model.getFacade().getAction(message);
+                    if (context != collaboration) {
+                        LOG.warn("namespace of interaction does not match "
+                                + "collaboration - moving "
+                                + message + " to " + correctInteraction);
+                        Model.getCollaborationsHelper().addMessage(
+                                correctInteraction, message);
+                        Model.getCoreHelper().setNamespace(
+                                action, collaboration);
+                        deadInteractions.add(interaction);
+                    }
+                }
+            }
+            for (Object interaction : deadInteractions) {
+                if (Model.getFacade().getMessages(interaction).isEmpty()) {
+                    final Object context =
+                        Model.getFacade().getContext(interaction);
+                    Model.getUmlFactory().delete(interaction);
+                    Model.getUmlFactory().delete(context);
+                }
+            }
+        }
     }
 }
