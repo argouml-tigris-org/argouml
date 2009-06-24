@@ -32,6 +32,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.model.CollaborationsHelper;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -331,29 +332,30 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
     public void postLoad() {
         super.postLoad();
         
-        // See issue 5811. We have messages saved to the incorrect
-        // interaction and actions of those messages belonging to the
-        // wrong collaboration. If we detect this circumstance of load then
+        final Facade facade = Model.getFacade();                   
+        
+        // See issue 5811. We have collaborationroles, associationroles
+        // and messages and actions saved to the incorrect interaction and
+        // and collaboration. If we detect this circumstance at load then
         // move the model elements and delete the empty collaborations
         // and interactions.
-        Object collaboration = getCollaboration();
+        final Object collaboration = getCollaboration();
         Object correctInteraction = null;
         for (final Fig f : getLayer().getContents()) {
-            Object modelElement = f.getOwner();
+            final Object modelElement = f.getOwner();
             if (f instanceof FigMessage) {
-                Object interaction =
-                    Model.getFacade().getInteraction(modelElement);
-                Object context = Model.getFacade().getContext(interaction);
+                final Object interaction = facade.getInteraction(modelElement);
+                final Object context = facade.getContext(interaction);
                 if (context == collaboration) {
                     correctInteraction = interaction;
                 }
             }
         }
         if (correctInteraction != null) {
+            final CollaborationsHelper collabHelper =
+                Model.getCollaborationsHelper();
             for (final Fig f : getLayer().getContents()) {
                 if (f instanceof FigMessage) {
-                    Facade facade = Model.getFacade();                   
-                    
                     final Object message = f.getOwner();
                     final Object interaction = facade.getInteraction(message);
                     final Object context = facade.getContext(interaction);
@@ -362,8 +364,7 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
                         LOG.warn("namespace of interaction does not match "
                                 + "collaboration - moving "
                                 + message + " to " + correctInteraction);
-                        Model.getCollaborationsHelper().addMessage(
-                                correctInteraction, message);
+                        collabHelper.addMessage(correctInteraction, message);
                         Model.getCoreHelper().setNamespace(
                                 action, collaboration);
                         // If this leaves the interaction empty then
@@ -379,6 +380,33 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
                                         + context);
                                 Model.getUmlFactory().delete(context);
                             }
+                        }
+                    }
+                } else if (f instanceof FigClassifierRole) {
+                    final Object cr = f.getOwner();
+                    final Object namespace = facade.getNamespace(cr);
+                    if (namespace != collaboration) {
+                        LOG.warn("namespace of classifierrole does not match "
+                                + "collaboration - moving "
+                                + cr + " to " + collaboration);
+                        
+                        Model.getCoreHelper().setNamespace(
+                                cr, collaboration);
+                        
+                        Collection associationEndRoles =
+                            facade.getAssociationEnds(cr);
+                        for (Object assEndRole : associationEndRoles) {
+                            Object assRole = facade.getAssociation(assEndRole);
+                            if (facade.getNamespace(assRole) != collaboration) {
+                                Model.getCoreHelper().setNamespace(
+                                        assRole, collaboration);
+                            }
+                        }
+                        
+                        if (facade.getOwnedElements(namespace).isEmpty()) {
+                            LOG.warn("Deleting empty collaboration "
+                                    + collaboration);
+                            Model.getUmlFactory().delete(collaboration);
                         }
                     }
                 }
