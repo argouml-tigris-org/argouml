@@ -112,19 +112,18 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
         destFig = 
             (FigNodeModelElement) ((FigEdge) getContent()).getDestFigNode();
 
-        Rectangle mousePosition =
+        final Rectangle mousePosition =
 	    new Rectangle(me.getX() - 5, me.getY() - 5, 10, 10);
         //reset the pointIndex
         pointIndex = -1;
-        int npoints = getContent().getNumPoints();
-        int[] xs = getContent().getXs();
-        int[] ys = getContent().getYs();
-        for (int i = 0; i < npoints; ++i) {
-            if (mousePosition.contains(xs[i], ys[i])) {
-                pointIndex = i;
-                super.mousePressed(me);
-                return;
-            }
+        final int npoints = getContent().getNumPoints();
+        final int[] xs = getContent().getXs();
+        final int[] ys = getContent().getYs();
+        if (mousePosition.contains(xs[0], ys[0])) {
+            pointIndex = 0;
+        } else if (mousePosition.contains(
+                xs[npoints - 1], ys[npoints - 1])) {
+            pointIndex = npoints - 1;
         }
 
         super.mousePressed(me);
