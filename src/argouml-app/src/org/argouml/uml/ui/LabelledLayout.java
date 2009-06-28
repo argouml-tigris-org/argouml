@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.swing.UIManager;
 
 /**
@@ -320,10 +321,13 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
 
         // Build up an array list of the heights of each label/component pair.
         // Heights of zero indicate a proportional height.
+        Component previousComp = null;
         for (int i = 0; i < componentCount; ++i) {
             final Component childComp = (Component) components.get(i);
             final int childHeight;
-            if (childComp instanceof JLabel) {
+            if (childComp instanceof JToolBar && previousComp instanceof ScrollList) {
+                // Ignore toolbars belonging to ScrollList
+            } else if (childComp instanceof JLabel) {
                 final JLabel jlabel = (JLabel) childComp;
                 final Component labelledComp = jlabel.getLabelFor();
                 
@@ -338,6 +342,9 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                 } else {
                     childHeight = getPreferredHeight(jlabel);
                 }
+                
+                totalHeight += childHeight + this.vgap;
+                rowHeights.add(new Integer(childHeight));
             } else {
                 // to manage the case there are no label/component
                 // pairs but just one component
@@ -345,10 +352,12 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                 if (childHeight == 0) {
                     ++unknownHeightCount;
                 }
+                
+                totalHeight += childHeight + this.vgap;
+                rowHeights.add(new Integer(childHeight));
             }
             
-            totalHeight += childHeight + this.vgap;
-            rowHeights.add(new Integer(childHeight));
+            previousComp = childComp;
         }
         totalHeight -= this.vgap;
         
@@ -362,56 +371,62 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
         // consecutively.
         int y = insets.top;
         int row = 0;
+        previousComp = null;
         for (int i = 0; i < componentCount; ++i) {
             Component childComp = (Component) components.get(i);
             if (childComp.isVisible()) {
-                int rowHeight;
-                int componentWidth = sectionWidth;
-                int componentX = sectionX;
-                // If the component is a JLabel which has another
-                // component assigned then position/size the label and
-                // calculate the size of the registered component
-                if (childComp instanceof JLabel
-                        && ((JLabel) childComp).getLabelFor() != null) {
-                    i++; // Assumes the next child is the labelled component
-                    final JLabel jlabel = (JLabel) childComp;
-                    childComp = jlabel.getLabelFor();
-                    jlabel.setBounds(sectionX, y, labelWidth,
-				     getPreferredHeight(jlabel));
-                    componentWidth = sectionWidth - (labelWidth);
-                    componentX = sectionX + labelWidth;
-                }
-                rowHeight = rowHeights.get(row).intValue();
-                if (rowHeight == 0) {
-                    try {
-                        rowHeight = calculateHeight(
-                                parentHeight, 
-                                totalHeight, 
-                                unknownHeightCount--, 
-                                childComp);
-                    } catch (ArithmeticException e) {
-                        String lookAndFeel = 
-                            UIManager.getLookAndFeel().getClass().getName();
-                        throw new IllegalStateException(
-                                "Division by zero laying out "
-                                + childComp.getClass().getName()
-                                + " on " + parent.getClass().getName()
-                                + " in section " + sectionNo
-                                + " using "
-                                + lookAndFeel,
-                                e);
+                if (childComp instanceof JToolBar && previousComp instanceof ScrollList) {
+                    childComp.setLocation(previousComp.getY(), previousComp.getX() - childComp.getWidth());
+                } else {
+                    int rowHeight;
+                    int componentWidth = sectionWidth;
+                    int componentX = sectionX;
+                    // If the component is a JLabel which has another
+                    // component assigned then position/size the label and
+                    // calculate the size of the registered component
+                    if (childComp instanceof JLabel
+                            && ((JLabel) childComp).getLabelFor() != null) {
+                        i++; // Assumes the next child is the labelled component
+                        final JLabel jlabel = (JLabel) childComp;
+                        childComp = jlabel.getLabelFor();
+                        jlabel.setBounds(sectionX, y, labelWidth,
+                                         getPreferredHeight(jlabel));
+                        componentWidth = sectionWidth - (labelWidth);
+                        componentX = sectionX + labelWidth;
                     }
-                    totalHeight += rowHeight;
+                    rowHeight = rowHeights.get(row).intValue();
+                    if (rowHeight == 0) {
+                        try {
+                            rowHeight = calculateHeight(
+                                    parentHeight, 
+                                    totalHeight, 
+                                    unknownHeightCount--, 
+                                    childComp);
+                        } catch (ArithmeticException e) {
+                            String lookAndFeel = 
+                                UIManager.getLookAndFeel().getClass().getName();
+                            throw new IllegalStateException(
+                                    "Division by zero laying out "
+                                    + childComp.getClass().getName()
+                                    + " on " + parent.getClass().getName()
+                                    + " in section " + sectionNo
+                                    + " using "
+                                    + lookAndFeel,
+                                    e);
+                        }
+                        totalHeight += rowHeight;
+                    }
+                    // Make sure the component width isn't any greater
+                    // than its maximum allowed width
+                    if (childComp.getMaximumSize() != null
+                            && getMaximumWidth(childComp) < componentWidth) {
+                        componentWidth = getMaximumWidth(childComp);
+                    }
+                    childComp.setBounds(componentX, y, componentWidth, rowHeight);
+                    y += rowHeight + this.vgap;
+                    ++row;
+                    previousComp = childComp;
                 }
-                // Make sure the component width isn't any greater
-                // than its maximum allowed width
-                if (childComp.getMaximumSize() != null
-                        && getMaximumWidth(childComp) < componentWidth) {
-		    componentWidth = getMaximumWidth(childComp);
-                }
-                childComp.setBounds(componentX, y, componentWidth, rowHeight);
-                y += rowHeight + this.vgap;
-                ++row;
             }
         }
     }
