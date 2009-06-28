@@ -104,6 +104,24 @@ public class UMLSequenceDiagram extends UMLDiagram {
         setNamespace(collaboration);
     }
     
+    
+    /**
+     * Method called by PGML parser during diagram load to initialize a diagram.
+     * We are passed the owner of that diagram which is the collaboration.
+     * @param owner UML model element representing the collaboration
+     * @see org.tigris.gef.base.Diagram#initialize(java.lang.Object)
+     */
+    @Override
+    public void initialize(Object owner) {
+        super.initialize(owner);
+        SequenceDiagramGraphModel gm =
+            (SequenceDiagramGraphModel) getGraphModel();
+        gm.setCollaboration(owner);
+    }
+
+    
+    
+    
     /**
      * Get the Uml actions that can be performed in the diagram 
      * @return An array with the Uml actions 
