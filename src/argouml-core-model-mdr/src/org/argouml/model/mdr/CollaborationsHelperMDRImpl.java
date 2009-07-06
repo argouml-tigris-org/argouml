@@ -845,7 +845,14 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
 
     public void addMessage(Object handle, Object elem) {
         if (handle instanceof Interaction && elem instanceof Message) {
-            ((Interaction) handle).getMessage().add((Message) elem);
+            final Message message = (Message) elem;
+            final Interaction interaction = (Interaction) handle;
+            final Interaction oldInteraction = message.getInteraction();
+            
+            if (oldInteraction != null) {
+                oldInteraction.getMessage().remove(message);
+            }
+            interaction.getMessage().add(message);
             return;
         }
         if (handle instanceof AssociationRole && elem instanceof Message) {
