@@ -169,12 +169,17 @@ public abstract class UMLExpressionModel2
     private void setExpression(String lang, String body) {
         // Expressions are DataTypes, not independent model elements
         // be careful not to reuse them
+        Object oldExpression = null;
         if (mustRefresh || expression == null) {
+            oldExpression = expression;
             expression = newExpression();
         }
         expression = Model.getDataTypesHelper().setLanguage(expression, lang);
         expression = Model.getDataTypesHelper().setBody(expression, body);
         setExpression(expression);
+        if (oldExpression != null) {
+            Model.getUmlFactory().delete(oldExpression);
+        }
     }
 
     /**
