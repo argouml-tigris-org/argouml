@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
@@ -153,9 +154,11 @@ class MoveUpAction extends UndoableAction {
     /**
      * The constructor.
      */
-    public MoveUpAction(UMLModelElementOrderedListModel theModel, 
-            int theIndex) {
-        super(Translator.localize("menu.popup.moveup"));
+    public MoveUpAction(
+            final UMLModelElementOrderedListModel theModel, 
+            final int theIndex) {
+        super(Translator.localize("menu.popup.moveup"),
+                ResourceLoaderWrapper.lookupIconResource("MoveUp"));
         model = theModel;
         index = theIndex;
     }
@@ -191,9 +194,11 @@ class MoveDownAction extends UndoableAction {
     /**
      * The constructor.
      */
-    public MoveDownAction(UMLModelElementOrderedListModel theModel,
-            int theIndex) {
-        super(Translator.localize("menu.popup.movedown"));
+    public MoveDownAction(
+            final UMLModelElementOrderedListModel theModel,
+            final int theIndex) {
+        super(Translator.localize("menu.popup.movedown"),
+                ResourceLoaderWrapper.lookupIconResource("MoveDown"));
         model = theModel;
         index = theIndex;
     }
@@ -235,9 +240,11 @@ class MoveToTopAction extends UndoableAction {
      * @param theIndex
      *            starting position of element to move
      */
-    public MoveToTopAction(UMLModelElementOrderedListModel theModel,
-            int theIndex) {
-        super(Translator.localize("menu.popup.movetotop"));
+    public MoveToTopAction(
+            final UMLModelElementOrderedListModel theModel,
+            final int theIndex) {
+        super(Translator.localize("menu.popup.movetotop"),
+                ResourceLoaderWrapper.lookupIconResource("MoveTop"));
         model = theModel;
         index = theIndex;
     }
@@ -279,9 +286,11 @@ class MoveToBottomAction extends UndoableAction {
      * @param theIndex
      *            starting position of element to move
      */
-    public MoveToBottomAction(UMLModelElementOrderedListModel theModel,
-            int theIndex) {
-        super(Translator.localize("menu.popup.movetobottom"));
+    public MoveToBottomAction(
+            final UMLModelElementOrderedListModel theModel,
+            final int theIndex) {
+        super(Translator.localize("menu.popup.movetobottom"),
+                ResourceLoaderWrapper.lookupIconResource("MoveBottom"));
         model = theModel;
         index = theIndex;
     }
