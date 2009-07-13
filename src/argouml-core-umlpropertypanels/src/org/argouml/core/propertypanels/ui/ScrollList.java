@@ -24,23 +24,36 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.Container;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 
+import org.apache.log4j.Logger;
+
 /**
- * A scrollable list of items. This makes sure that there is no horizontal
+ * A scrollable list of items.<p>
+ * This makes sure that there is no horizontal
  * scrollbar (which takes up too much screen real estate) and that sideways
  * scrolling can be achieved instead with arrow keys.
+ * The component will automatically expand downward on mouse enter to
+ * give the user a view of as many items as possible.
+ * 
  * @author Bob Tarling
  */
-class ScrollList extends JScrollPane implements KeyListener {
+class ScrollList extends JScrollPane implements KeyListener, MouseListener {
 
+    private static final Logger LOG = Logger.getLogger(ScrollList.class);
+    
     /**
      * The UID.
      */
@@ -50,6 +63,11 @@ class ScrollList extends JScrollPane implements KeyListener {
      * The Component that this scroll is wrapping.
      */
     private UMLLinkedList list;
+    
+    /**
+     * The height of the component when the mouse moved into it
+     */
+    int originalHeight;
     
     /**
      * Builds a JList from a given list model and wraps
@@ -72,7 +90,7 @@ class ScrollList extends JScrollPane implements KeyListener {
                     listModel.getRemoveAction());
         }
         setViewportView(list);
-        
+        addListeners();
     }
 
     /**
@@ -88,6 +106,7 @@ class ScrollList extends JScrollPane implements KeyListener {
         list = new UMLLinkedList(listModel, true, true);
         list.setVisibleRowCount(visibleRowCount);
         setViewportView(list);
+        addListeners();
     }
 
     /**
@@ -102,11 +121,19 @@ class ScrollList extends JScrollPane implements KeyListener {
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         this.list = (UMLLinkedList) alist;
         setViewportView(list);
+        addListeners();
+    }
+    
+    private void addListeners() {
+        this.addMouseListener(this);
+        list.addMouseListener(this);
+        getVerticalScrollBar().addMouseListener(this);
     }
     
     public ListModel getListModel() {
         return list.getModel();
     }
+    
     
     /**
      * Examine key event to scroll left or right depending on key press
@@ -140,5 +167,43 @@ class ScrollList extends JScrollPane implements KeyListener {
     public void removeNotify() {
         super.removeNotify();
         list.removeKeyListener(this);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent evt) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent evt) {
+        if (originalHeight == 0) {
+            originalHeight = getHeight();
+            final int parentHeight = getParent().getHeight();
+            setSize(getWidth(), parentHeight - getY());
+            list.setSize(this.getSize());
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent evt) {
+        Rectangle rect = new Rectangle(getLocationOnScreen(), getSize());
+        if (!rect.contains(evt.getLocationOnScreen())) {
+            setSize(getWidth(), originalHeight);
+            list.setSize(getWidth(), originalHeight);
+            originalHeight = 0;
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0) {
+        // TODO Auto-generated method stub
+        
     }
 }
