@@ -241,7 +241,7 @@ public class FigStereotypesGroup extends ArgoFigGroup {
      * Get all the child figs that represent the individual stereotypes
      * @return a List of the stereotype Figs
      */
-    private List<FigStereotype> getStereotypeFigs() {
+    List<FigStereotype> getStereotypeFigs() {
         final List<FigStereotype> stereotypeFigs =
             new ArrayList<FigStereotype>();
         for (Object f : getFigs()) {
@@ -333,6 +333,14 @@ public class FigStereotypesGroup extends ArgoFigGroup {
         // remove all stereotypes that have a graphical icon
         updateHiddenStereotypes();
 
+    }
+    
+    /**
+     * Get the number of stereotypes contained in this group
+     * @return the number of stereotypes in this group
+     */
+    public int getStereotypeCount() {
+        return stereotypeCount;
     }
     
     private Rectangle getBoundsForNextStereotype() {

@@ -2242,23 +2242,33 @@ public abstract class FigNodeModelElement
         Object modelElement = getOwner();
 
         if (modelElement != null) {
-            Collection stereos = Model.getFacade().getStereotypes(modelElement);
+            int stereotypeCount = getStereotypeCount();
 
             if (getStereotypeView() 
                     == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON
-                    && (stereos == null 
-                            || stereos.size() != 1 
-                            ||  (stereos.size() == 1 
+                    && (stereotypeCount != 1 
+                            ||  (stereotypeCount == 1 
                                     // TODO: Find a way to replace 
                                     // this dependency on Project
                                     && getProject().getProfileConfiguration()
                                     .getFigNodeStrategy().getIconForStereotype(
-                                            stereos.iterator().next()) 
+                                            getStereotypeFig().getStereotypeFigs().iterator().next().getOwner()) 
                                             == null))) {
                 practicalView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;
             }
         }
         return practicalView;
+    }
+    
+    /**
+     * Get the number of stereotypes contained in this FigNode
+     * @return the number of stereotypes contained in the FigNode
+     */
+    public int getStereotypeCount() {
+        if (getStereotypeFig() == null) {
+            return 0;
+        }
+        return getStereotypeFig().getStereotypeCount();
     }
     
     /**
