@@ -377,6 +377,7 @@ public abstract class FigNodeModelElement
         bigPort = new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
         nameFig = new FigNameWithAbstractAndBold(element, 
                 new Rectangle(X0, Y0, WIDTH, NAME_FIG_HEIGHT), getSettings(), true);
+        stereotypeFig = createStereotypeFig();
         constructFigs();
         
         // TODO: For a FigPool the element will be null.
@@ -423,6 +424,13 @@ public abstract class FigNodeModelElement
         
         readyToEdit = true;
     }
+    
+    protected FigStereotypesGroup createStereotypeFig() {
+        return new FigStereotypesGroup(getOwner(), 
+                new Rectangle(X0, Y0, WIDTH, STEREOHEIGHT), settings);
+    }
+
+    
     
     /**
      * This is the final call at creation time of the Fig, i.e. here
@@ -1901,10 +1909,6 @@ public abstract class FigNodeModelElement
      * @return the stereotype FigGroup
      */
     protected FigStereotypesGroup getStereotypeFig() {
-        if (stereotypeFig == null) {
-            stereotypeFig = new FigStereotypesGroup(getOwner(), 
-                    new Rectangle(X0, Y0, WIDTH, STEREOHEIGHT), settings);
-        }
         return stereotypeFig;
     }
 
