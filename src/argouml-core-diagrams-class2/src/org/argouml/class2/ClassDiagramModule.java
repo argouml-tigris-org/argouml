@@ -31,7 +31,7 @@ import org.argouml.moduleloader.ModuleInterface;
  *
  * @see org.argouml.moduleloader.ModuleInterface
  */
-public class SequenceDiagramModule implements ModuleInterface {
+public class ClassDiagramModule implements ModuleInterface {
 
     public boolean enable() {
         return true;
