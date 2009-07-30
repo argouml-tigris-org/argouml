@@ -1,0 +1,12 @@
+Manifest-Version: 2.0
+Class-Path: argouml.jar
+Created-By: 1.2 (Sun Microsystems Inc.) 
+
+Name: org/argouml/activity2/ActivityDiagramModule.class
+Extension-name: org.argouml.activity2.ActivityDiagramModule
+Specification-Title: Activity Diagram Module
+Specification-Version: 0.1
+Specification-Vendor: ArgoUML Team
+Implementation-Title: Activity Diagram Module
+Implementation-Version: 0.1
+Implementation-Vendor: ArgoUML Team

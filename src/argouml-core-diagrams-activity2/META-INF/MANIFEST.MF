@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: org.argouml.activity2
+Bundle-Version: 0.28.0.qualifier
+Bundle-ClassPath: .
+Export-Package: org.argouml.activity2,
+ org.argouml.activity2.diagram
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Vendor: %pluginProvider
+Require-Bundle: org.argouml.app,
+ org.argouml.core.infra
+Bundle-Localization: plugin
+Eclipse-RegisterBuddy: org.argouml.core.infra
+
