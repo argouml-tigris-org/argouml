@@ -29,7 +29,7 @@
 </head>
 <body bgcolor="white">
 
-<p>Provides a Sequence diagram capability.</P>
+<p>Provides a Sequence diagram capability.</p>
 
 <h2>Summary</h2>
 
@@ -40,80 +40,80 @@ inspired an implementation by the
 current author, which was introduced in the 0.19 timeframe.
 There is
 also some code implemented by Peter Nabbefeld, this is described in the section: 
-'work_sdnested_epdv Branch Implementation'.</P>
+'work_sdnested_epdv Branch Implementation'.</p>
 
-    <p>Sequence diagrams are different from the other diagrams in that:</P>
+    <p>Sequence diagrams are different from the other diagrams in that:</p>
 
-<UL>
- <li>there is a lot of automatic layout to perform.</LI>
- <LI>The source and destination connection
-points of edges are not centred on the node they are connecting to.</LI>
- <LI>If one edge is removed it is possible that other edges must be
-repositioned or even deleted due to the sequence of messages.</LI>
-</UL>
+<ul>
+ <li>there is a lot of automatic layout to perform.</li>
+ <li>The source and destination connection
+points of edges are not centred on the node they are connecting to.</li>
+ <li>If one edge is removed it is possible that other edges must be
+repositioned or even deleted due to the sequence of messages.</li>
+</ul>
 
 <H2>PRE-0.14 Implementation</H2>
 
-<ul><li>Persistent Structure (PGML / UML model)</LI></UL>
+<ul><li>Persistent Structure (PGML / UML model)</li></ul>
 
-    <p>To Do</P>
+    <p>To Do</p>
 
-<ul><li>Save / Load procedure</LI></UL>
+<ul><li>Save / Load procedure</li></ul>
 
-    <p>To Do</P>
+    <p>To Do</p>
 
-<ul><li>Diagram rendering / editing implementation</LI></UL>
+<ul><li>Diagram rendering / editing implementation</li></ul>
 
-    <p>To Do</P>
+    <p>To Do</p>
 
 <H2>work_sdnested_epdv BRANCH Implementation</H2>
 
-<ul><li>Persistent Structure (PGML / UML model)</LI></UL>
+<ul><li>Persistent Structure (PGML / UML model)</li></ul>
 
-    <p>To Do</P>
+    <p>To Do</p>
 
-<ul><li>Save / Load procedure</LI></UL>
+<ul><li>Save / Load procedure</li></ul>
 
-    <p>To Do</P>
+    <p>To Do</p>
 
-<ul><li>Diagram rendering / editing implementation</LI></UL>
+<ul><li>Diagram rendering / editing implementation</li></ul>
 
-    <p>To Do</P>
+    <p>To Do</p>
 
 <H2>0.14 Implementation</H2>
 
-<ul><li>Persistent Structure (PGML / UML model)</LI></UL>
+<ul><li>Persistent Structure (PGML / UML model)</li></ul>
 
-    <p>To Do</P>
+    <p>To Do</p>
 
-<ul><li>Save / Load procedure</LI></UL>
+<ul><li>Save / Load procedure</li></ul>
 
-    <p>To Do</P>
+    <p>To Do</p>
 
-<ul><li>Diagram rendering / editing implmenentation</LI></UL>
+<ul><li>Diagram rendering / editing implmenentation</li></ul>
 
-    <p>To Do</P>
+    <p>To Do</p>
 
 <H2>0.19 Implementation</H2>
 
-<ul><li>Persistent Structure (PGML / UML model)</LI></UL>
+<ul><li>Persistent Structure (PGML / UML model)</li></ul>
 
     <p>The model is updated at the specification level; the object lifetimes
 in the sequence diagram are associated with ClassifierRoles; the edges are Messages.
 Each message is associated with an action, which may be Call, Create, Destroy, or
 return.  For the model to serialize correctly, the actions have to be associated
-with a state; a state in a state diagram for the model is created for each message.</P>
+with a state; a state in a state diagram for the model is created for each message.</p>
 
-<ul><li>Save / Load procedure</LI></UL>
+<ul><li>Save / Load procedure</li></ul>
 
     <p>Each FigClassifierRole create a FigMessagePort fig at every point that
 it sends and receives a message.  The FigMessagePort objects are associated with
 the FigEdge objects by their Y position; this is how the diagram is re-connected
 and the messages positioned when the diagram is loaded.  The PGMLStackParser
 pgml implementation lets FigClassifierRole control loading itself; otherwise,
-the FigMessagePort object positions would be ignored.</P>
+the FigMessagePort object positions would be ignored.</p>
 
-<ul><li>Diagram rendering / editing implmenentation</LI></UL>
+<ul><li>Diagram rendering / editing implmenentation</li></ul>
 
     <p>Each FigClassifierRole contains an array of MessageNode objects
 that designate a port--a point where a message can be sent or received.  The
@@ -123,11 +123,11 @@ a MessageNode in each FigClassifierRole.  When drawing the activation boxes,
 the array of MessageNode objects is traversed by a state machine; sending
 or receiving a message triggers a change of state that may start or end an
 activation box.  The state that is associated with each node also determines
-the messages that may be sent or received there.</P>
+the messages that may be sent or received there.</p>
 
 <h2>Related Documentation:</h2>
 
-    <A href='http://argouml.tigris.org/issues/buglist.cgi?subcomponent=InteractionDiagrams&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&email1=&emailtype1=substring&emailassigned_to1=1&email2=&emailtype2=substring&emailreporter2=1&issueidtype=include&issue_id=&changedin=&votes=&chfieldfrom=&chfieldto=Now&chfieldvalue=&short_desc=&short_desc_type=substring&long_desc=&long_desc_type=substring&issue_file_loc=&issue_file_loc_type=substring&status_whiteboard=&status_whiteboard_type=substring&field0-0-0=noop&type0-0-0=noop&value0-0-0=&cmdtype=doit&order=Reuse+same+sort+as+last+time'>Issues</a>
+    <a href='http://argouml.tigris.org/issues/buglist.cgi?subcomponent=InteractionDiagrams&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED&email1=&emailtype1=substring&emailassigned_to1=1&email2=&emailtype2=substring&emailreporter2=1&issueidtype=include&issue_id=&changedin=&votes=&chfieldfrom=&chfieldto=Now&chfieldvalue=&short_desc=&short_desc_type=substring&long_desc=&long_desc_type=substring&issue_file_loc=&issue_file_loc_type=substring&status_whiteboard=&status_whiteboard_type=substring&field0-0-0=noop&type0-0-0=noop&value0-0-0=&cmdtype=doit&order=Reuse+same+sort+as+last+time'>Issues</a>
 
 </body>
 </html>
