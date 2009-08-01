@@ -24,6 +24,9 @@
 
 package org.argouml.class2.diagram;
 
+import java.beans.PropertyVetoException;
+
+import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactoryInterface2;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -34,6 +37,12 @@ import org.argouml.uml.diagram.DiagramSettings;
  */
 public class ClassDiagramFactory implements DiagramFactoryInterface2 {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(ClassDiagramFactory.class);
+    
     /**
      * Factory method to create a new instance of an ArgoDiagram.
      * 
@@ -47,6 +56,15 @@ public class ClassDiagramFactory implements DiagramFactoryInterface2 {
      */
     public ArgoDiagram createDiagram(Object owner, String name,
             DiagramSettings settings) {
-        return null;
+        final ArgoDiagram diagram = new UMLClassDiagram(owner);
+        if (name != null) {
+            try {
+                diagram.setName(name);
+            } catch (PropertyVetoException e) {            
+                LOG.error("Cannot set the name " + name + 
+                        " to the diagram just created: "+ diagram.getName(), e);
+            }
+        }
+        return diagram;  
     }
 }
