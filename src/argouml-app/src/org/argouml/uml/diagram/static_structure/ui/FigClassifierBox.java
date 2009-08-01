@@ -244,6 +244,8 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         Editor ce = Globals.curEditor();
         if (ce != null) {
             Selection sel = ce.getSelectionManager().findSelectionFor(this);
+            // TODO" What is the purpose of this? Why do we hide buttons here?
+            // Presumably if so we should not assume SelectionClass
             if (sel instanceof SelectionClass) {
                 ((SelectionClass) sel).hideButtons();
             }
