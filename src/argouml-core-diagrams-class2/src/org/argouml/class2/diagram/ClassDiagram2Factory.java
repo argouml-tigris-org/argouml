@@ -35,13 +35,13 @@ import org.argouml.uml.diagram.DiagramSettings;
  * This factory creates a sequence2 Sequence Diagram.
  * @see org.argouml.uml.diagram.DiagramFactory
  */
-public class ClassDiagramFactory implements DiagramFactoryInterface2 {
+public class ClassDiagram2Factory implements DiagramFactoryInterface2 {
 
     /**
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ClassDiagramFactory.class);
+        Logger.getLogger(ClassDiagram2Factory.class);
     
     /**
      * Factory method to create a new instance of an ArgoDiagram.
@@ -56,7 +56,7 @@ public class ClassDiagramFactory implements DiagramFactoryInterface2 {
      */
     public ArgoDiagram createDiagram(Object owner, String name,
             DiagramSettings settings) {
-        final ArgoDiagram diagram = new UMLClassDiagram(owner);
+        final ArgoDiagram diagram = new UMLClassDiagram2(owner);
         if (name != null) {
             try {
                 diagram.setName(name);

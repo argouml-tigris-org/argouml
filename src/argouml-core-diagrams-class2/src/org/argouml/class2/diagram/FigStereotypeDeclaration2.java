@@ -53,7 +53,7 @@ import org.tigris.gef.base.Selection;
  *
  * TODO: This is just a placeholder right now! - tfm
  */
-public class FigStereotypeDeclaration extends FigCompartmentBox {
+public class FigStereotypeDeclaration2 extends FigCompartmentBox {
 
     private static final long serialVersionUID = -2702539988691983863L;
 
@@ -86,7 +86,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
      * @param bounds position and size
      * @param settings render settings
      */
-    public FigStereotypeDeclaration(Object owner, Rectangle bounds,
+    public FigStereotypeDeclaration2(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
         constructFigs();

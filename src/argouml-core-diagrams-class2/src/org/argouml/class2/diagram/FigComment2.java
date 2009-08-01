@@ -67,7 +67,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author Andreas Rueckert
  */
-public class FigComment
+public class FigComment2
     extends FigNodeModelElement
     implements VetoableChangeListener,
 	       DelayedVChangeListener,
@@ -77,7 +77,7 @@ public class FigComment
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger(FigComment.class);
+    private static final Logger LOG = Logger.getLogger(FigComment2.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -172,7 +172,7 @@ public class FigComment
      * @param bounds position and size
      * @param settings rendering settings
      */
-    public FigComment(Object owner, Rectangle bounds, 
+    public FigComment2(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
         
@@ -209,7 +209,7 @@ public class FigComment
      */
     @Override
     public Object clone() {
-        FigComment figClone = (FigComment) super.clone();
+        FigComment2 figClone = (FigComment2) super.clone();
         Iterator thisIter = this.getFigs().iterator();
         while (thisIter.hasNext()) {
             Object thisFig = thisIter.next();
@@ -634,10 +634,10 @@ public class FigComment
             /* Remove the commentedge.
              * If there are more then one comment-edges between 
              * the 2 objects, then delete them all. */
-            Collection<FigEdgeNote> toRemove = new ArrayList<FigEdgeNote>();
+            Collection<FigEdgeNote2> toRemove = new ArrayList<FigEdgeNote2>();
             Collection c = getFigEdges(); // all connected edges
             for (Iterator i = c.iterator(); i.hasNext(); ) {
-                FigEdgeNote fen = (FigEdgeNote) i.next();
+                FigEdgeNote2 fen = (FigEdgeNote2) i.next();
                 Object otherEnd = fen.getDestination(); // the UML object
                 if (otherEnd == getOwner()) { // wrong end of the edge
                     otherEnd = fen.getSource();
@@ -647,7 +647,7 @@ public class FigComment
                 }
             }
             
-            for (FigEdgeNote fen : toRemove) {
+            for (FigEdgeNote2 fen : toRemove) {
                 fen.removeFromDiagram();
             }
         }

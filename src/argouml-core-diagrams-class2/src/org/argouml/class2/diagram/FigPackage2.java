@@ -95,10 +95,10 @@ import org.tigris.gef.undo.UndoableAction;
  * 
  * In front of the name, ArgoUML may optionally show the visibility.
  */
-public class FigPackage extends FigNodeModelElement
+public class FigPackage2 extends FigNodeModelElement
     implements StereotypeContainer, VisibilityContainer {
 
-    private static final Logger LOG = Logger.getLogger(FigPackage.class);
+    private static final Logger LOG = Logger.getLogger(FigPackage2.class);
 
     /** The minimal height of the name. */
     private static final int MIN_HEIGHT = 21;
@@ -173,7 +173,7 @@ public class FigPackage extends FigNodeModelElement
      * @param bounds position and size or null if fig hasn't been placed
      * @param settings rendering settings
      */
-    public FigPackage(Object owner, Rectangle bounds, 
+    public FigPackage2(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
 
@@ -194,7 +194,7 @@ public class FigPackage extends FigNodeModelElement
      */
     @Override
     public Object clone() {
-        FigPackage figClone = (FigPackage) super.clone();
+        FigPackage2 figClone = (FigPackage2) super.clone();
         for (Fig thisFig : (List<Fig>) getFigs()) {
             if (thisFig == body) {
                 figClone.body = (FigText) thisFig;
@@ -601,7 +601,7 @@ public class FigPackage extends FigNodeModelElement
 	    // TODO: But in any case, it should be delegating this work to 
 	    // to something that knows about the diagrams and they contents -tfm
 	    if (me.getClickCount() >= 2) {
-		Object lPkg = FigPackage.this.getOwner();
+		Object lPkg = FigPackage2.this.getOwner();
 		if (lPkg != null) {
 		    Object lNS = lPkg;
 

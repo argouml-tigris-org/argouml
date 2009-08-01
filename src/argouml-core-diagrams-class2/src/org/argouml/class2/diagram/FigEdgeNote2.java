@@ -53,10 +53,10 @@ import org.tigris.gef.presentation.FigNode;
  * @author Andreas Rueckert a_rueckert@gmx.net
  * @author jaap.branderhorst@xs4all.nl
  */
-public class FigEdgeNote extends FigEdgePoly implements ArgoFig, IItemUID,
+public class FigEdgeNote2 extends FigEdgePoly implements ArgoFig, IItemUID,
         PropertyChangeListener {
 
-    private static final Logger LOG = Logger.getLogger(FigEdgeNote.class);
+    private static final Logger LOG = Logger.getLogger(FigEdgeNote2.class);
 
     private Object comment;
     private Object annotatedElement;
@@ -70,7 +70,7 @@ public class FigEdgeNote extends FigEdgePoly implements ArgoFig, IItemUID,
      *            is not a UML element.
      * @param theSettings render settings
      */
-    public FigEdgeNote(Object element, DiagramSettings theSettings) {
+    public FigEdgeNote2(Object element, DiagramSettings theSettings) {
         // element will normally be null when called from PGML parser
         // It will get it's source & destination set later in attachEdges
         super();

@@ -1,4 +1,4 @@
-// $Id: FigInterface.java 17045 2009-04-05 16:52:52Z mvw $
+// $Id: FigDataType.java 17045 2009-04-05 16:52:52Z mvw $
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,77 +33,96 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * Class to display graphics for a UML Interface in a diagram.
+ * Class to display graphics for a UML DataType in a diagram.
+ * (cloned from FigInterface - perhaps they should both specialize
+ * a common supertype).
  * <p>
- * An Interface may show compartments for stereotypes
- * and operations. Attributes are not supported in ArgoUML.
+ * A DataType may show compartments for stereotypes
+ * and operations. Attributes are not supported in ArgoUML. <p>
+ * 
+ * Every DataType shows a keyword, but it is not 
+ * always <<datatype>>, e.g. for an Enumeration.
  */
-public class FigInterface extends FigClassifierBox {
+public class FigDataType2 extends FigClassifierBox {
 
-    private static final Logger LOG = Logger.getLogger(FigInterface.class);
+    private static final Logger LOG = Logger.getLogger(FigDataType2.class);
+    
+    private static final int MIN_WIDTH = 40;
 
-    /**
-     * Initialization common to multiple constructors.  This can be merged back
-     * into the last constructor when the deprecated ones have been removed.
-     */
-    private void initialize() {
-        getStereotypeFig().setKeyword("interface");
+    private void constructFigs() {
+        getStereotypeFig().setKeyword(getKeyword());
 
-        // Put all the bits together, suppressing bounds calculations until
-        // we're all done for efficiency.
-        enableSizeChecking(false);
         setSuppressCalcBounds(true);
-        
-        Dimension size = new Dimension(0, 0);
-        
         addFig(getBigPort());
         addFig(getStereotypeFig());
-        addChildDimensions(size, getStereotypeFig());
         addFig(getNameFig());
-        addChildDimensions(size, getNameFig());
         addFig(getOperationsFig());
-        addChildDimensions(size, getOperationsFig());
         addFig(borderFig);
 
         setSuppressCalcBounds(false);
 
         // Set the bounds of the figure to the total of the above 
         enableSizeChecking(true);
-        setBounds(X0, Y0, size.width, size.height);
+        super.setStandardBounds(X0, Y0, WIDTH, NAME_FIG_HEIGHT + ROWHEIGHT);
     }
 
     /**
-     * Construct an Interface fig
+     * Primary constructor for a {@link FigDataType2}.
+     *
+     * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
+     * will have created the main box {@link #getBigPort()} and
+     * its name {@link #getNameFig()} and stereotype
+     * (@link #getStereotypeFig()}. This constructor
+     * creates a box for the operations.<p>
+     *
+     * The properties of all these graphic elements are adjusted
+     * appropriately. The main boxes are all filled and have outlines.<p>
+     * 
+     * <em>Warning</em>. Much of the graphics positioning is hard coded. The
+     * overall figure is placed at location (10,10).
+     * The stereotype compartment is created 15 pixels high
+     * in the parent, but we change it to 19 pixels, 1 more than
+     * ({@link #STEREOHEIGHT} here. The operations box is created at 19 pixels,
+     * 2 more than {@link #ROWHEIGHT}.
      * 
      * @param owner owning UML element
      * @param bounds position and size
-     * @param settings rendering settings
+     * @param settings render settings
      */
-    public FigInterface(Object owner, Rectangle bounds, 
+    public FigDataType2(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        initialize();
+        constructFigs();
     }
-    
+
+    /**
+     * This function shall return the keyword to be used by the constructor. <p>
+     * 
+     * Subclasses of DataType shall 
+     * override this method to set their own keyword.
+     * 
+     * @return the string to be used as the keyword
+     */
+    protected String getKeyword() {
+        return "datatype";
+    }
+
     /*
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     @Override
     public Selection makeSelection() {
-        return new SelectionInterface(this);
+        return new SelectionDataType(this);
     }
 
-
     /**
-     * Gets the minimum size permitted for an interface on the diagram.<p>
+     * Gets the minimum size permitted for a datatype on the diagram.<p>
      *
-     * Parts of this are hardcoded.<p>
+     * Parts of this are hardcoded with magic numbers.<p>
      *
      * @return  the size of the minimum bounding box.
      */
@@ -122,12 +141,19 @@ public class FigInterface extends FigClassifierBox {
         aSize = addChildDimensions(aSize, getStereotypeFig());
         aSize = addChildDimensions(aSize, getOperationsFig());
 
-        // we want to maintain a minimum width for Interfaces
-        aSize.width = Math.max(WIDTH, aSize.width);
+        // we want to maintain a minimum width for datatypes
+        aSize.width = Math.max(MIN_WIDTH, aSize.width);
 
         return aSize;
     }
 
+    /*
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    @Override
+    public int getLineWidth() {
+        return borderFig.getLineWidth();
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
@@ -141,7 +167,7 @@ public class FigInterface extends FigClassifierBox {
                 && !Model.getFacade().isAInstance(encloser.getOwner()))) {
             super.setEnclosingFig(encloser);
         }
-        if (!(Model.getFacade().isAModelElement(getOwner()))) {
+        if (!(Model.getFacade().isAUMLElement(getOwner()))) {
             return;
         }
         /* If this fig is not visible, do not adapt the UML model!
@@ -175,14 +201,6 @@ public class FigInterface extends FigClassifierBox {
                     + "' at " + encloser, e);
         }
 
-        // The next if-clause is important for the Deployment-diagram
-        // it detects if the enclosing fig is a component, in this case
-        // the container will be set for the owning Interface
-        if (encloser != null
-                && (Model.getFacade().isAComponent(encloser.getOwner()))) {
-            moveIntoComponent(encloser);
-            super.setEnclosingFig(encloser);
-        }
     }
 
     /**
@@ -196,31 +214,31 @@ public class FigInterface extends FigClassifierBox {
                 + "operationsVisible=" + isOperationsVisible();
     }
 
+
     /**
      * Sets the bounds, but the size will be at least the one returned by
      * {@link #getMinimumSize()}, unless checking of size is disabled.<p>
      *
      * If the required height is bigger, then the additional height is
      * equally distributed among all figs (i.e. compartments), such that the
-     * cumulated height of all visible figs equals the demanded height<p>.
-     *
-     * Some of this has "magic numbers" hardcoded in.<p>
+     * accumulated height of all visible figs equals the demanded height<p>.
      *
      * @param x  Desired X coordinate of upper left corner
      *
      * @param y  Desired Y coordinate of upper left corner
      *
-     * @param w  Desired width of the FigInterface
+     * @param w  Desired width of the figure
      *
-     * @param h  Desired height of the FigInterface
+     * @param h  Desired height of the figure
+     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     @Override
     protected void setStandardBounds(final int x, final int y, final int w,
             final int h) {
 
-        // Save our old boundaries (needed later), and get minimum size
-        // info. 
+        // Save our old boundaries to use in our property message later
         Rectangle oldBounds = getBounds();
+        // and get minimum size info.
 
         // set bounds of big box
         getBigPort().setBounds(x, y, w, h);
@@ -244,7 +262,7 @@ public class FigInterface extends FigClassifierBox {
 
         if (getOperationsFig().isVisible()) {
             int operationsY = y + currentHeight;
-            int operationsHeight = (h + y) - operationsY - 1;
+            int operationsHeight = (h + y) - operationsY - LINE_WIDTH;
             getOperationsFig().setBounds(
                     x,
                     operationsY,

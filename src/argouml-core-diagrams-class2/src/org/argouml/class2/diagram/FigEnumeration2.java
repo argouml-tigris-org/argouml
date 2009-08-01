@@ -47,7 +47,7 @@ import org.tigris.gef.base.Selection;
  * It depends on FigDataType for most of its behavior.<p>
  * 
  */
-public class FigEnumeration extends FigDataType 
+public class FigEnumeration2 extends FigDataType2 
     implements EnumLiteralsCompartmentContainer {
 
     /**
@@ -67,7 +67,7 @@ public class FigEnumeration extends FigDataType
      * @param bounds position and size
      * @param settings render settings
      */
-    public FigEnumeration(Object owner, Rectangle bounds,
+    public FigEnumeration2(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
 
@@ -96,7 +96,7 @@ public class FigEnumeration extends FigDataType
 
     @Override
     public Object clone() {
-        FigEnumeration clone = (FigEnumeration) super.clone();
+        FigEnumeration2 clone = (FigEnumeration2) super.clone();
         clone.literalsCompartment = 
             (FigEnumLiteralsCompartment) literalsCompartment.clone();
         return clone;

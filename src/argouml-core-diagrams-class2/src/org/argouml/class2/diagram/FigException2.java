@@ -1,5 +1,5 @@
-// $Id: DiagramPropPanelFactory.java 14530 2008-04-30 12:26:50Z mvw $
-// Copyright (c) 2008 The Regents of the University of California. All
+// $Id: FigException.java 17045 2009-04-05 16:52:52Z mvw $
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,40 +22,34 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.class2;
+package org.argouml.class2.diagram;
 
-import org.argouml.i18n.Translator;
-import org.argouml.class2.diagram.UMLClassDiagram;
-import org.argouml.uml.diagram.ui.PropPanelDiagram;
-import org.argouml.uml.ui.PropPanel;
-import org.argouml.uml.ui.PropPanelFactory;
+import java.awt.Rectangle;
+
+import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.base.Selection;
 
 /**
- * Factory implementation for create a sequence diagram prop panel.
- *
- * @author Bob Tarling
+ * Fig representing an Exception.
+ * 
+ * @author Tom Morris
  */
-class ClassDiagramPropPanelFactory implements PropPanelFactory {
-
-    public PropPanel createPropPanel(Object object) {
-        if (object instanceof UMLClassDiagram) {
-            return new PropPanelUMLClassDiagram();
-        }
-        return null;
-    }
+public class FigException2 extends FigSignal2 {
 
     /**
-     * The properties panel for a class diagram.
+     * Construct an Exception fig.
+     * 
+     * @param owner owning Exception
+     * @param bounds position and size
+     * @param settings render settings
      */
-    class PropPanelUMLClassDiagram extends PropPanelDiagram {
-
-        /**
-         * Constructor for PropPanelUMLClassDiagram.
-         */
-        public PropPanelUMLClassDiagram() {
-            super(Translator.localize("label.class-diagram"),
-                    lookupIcon("ClassDiagram"));
-        }
-
+    public FigException2(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
+        super(owner, bounds, settings);
+    }
+    
+    @Override
+    public Selection makeSelection() {
+        return new SelectionException(this);
     }
 }

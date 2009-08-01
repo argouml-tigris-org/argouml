@@ -1,5 +1,5 @@
-// $Id: FigException.java 17045 2009-04-05 16:52:52Z mvw $
-// Copyright (c) 2007-2009 The Regents of the University of California. All
+// $Id: FigSubsystem.java 17045 2009-04-05 16:52:52Z mvw $
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,32 +24,57 @@
 
 package org.argouml.class2.diagram;
 
+import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.FigPoly;
 
-/**
- * Fig representing an Exception.
- * 
- * @author Tom Morris
- */
-public class FigException extends FigSignal {
+/** Class to display graphics for a UML subsystem in a class diagram. */
+
+public class FigSubsystem2 extends FigPackage2 {
+
+    private FigPoly figPoly = new FigPoly(LINE_COLOR, SOLID_FILL_COLOR);
+
+    private void constructFigs() {
+        int[] xpoints = {125, 125, 130, 130, 130, 135, 135};
+        int[] ypoints = {45, 40, 40, 35, 40, 40, 45};
+        Polygon polygon = new Polygon(xpoints, ypoints, 7);
+        figPoly.setPolygon(polygon);
+        figPoly.setFilled(false);
+        addFig(figPoly);
+        Rectangle r = getBounds();
+        setBounds(r.x, r.y, r.width, r.height);
+        updateEdges();
+    }
 
     /**
-     * Construct an Exception fig.
+     * Construct a Subsystem fig.
      * 
-     * @param owner owning Exception
+     * @param owner owning UML element
      * @param bounds position and size
      * @param settings render settings
      */
-    public FigException(Object owner, Rectangle bounds, 
+    public FigSubsystem2(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
+        constructFigs();
     }
     
+    /*
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
     @Override
-    public Selection makeSelection() {
-        return new SelectionException(this);
+    protected void setStandardBounds(int x, int y, int w, int h) {
+
+        if (figPoly != null) {
+            Rectangle oldBounds = getBounds();
+            figPoly.translate((x - oldBounds.x) + (w - oldBounds.width), y
+                    - oldBounds.y);
+
+        }
+        super.setStandardBounds(x, y, w, h);
     }
+
+
 }

@@ -85,7 +85,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author jrobbins
  */
-public class ClassDiagramRenderer extends UmlDiagramRenderer {
+public class ClassDiagram2Renderer extends UmlDiagramRenderer {
     
     /**
      * The UID.
@@ -96,7 +96,7 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
      * Logger.
      */
     private static final Logger LOG =
-        Logger.getLogger(ClassDiagramRenderer.class);
+        Logger.getLogger(ClassDiagram2Renderer.class);
 
     /*
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(

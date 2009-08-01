@@ -45,7 +45,7 @@ import org.tigris.gef.base.Selection;
  * 
  * @author Tom Morris
  */
-public class FigSignal extends FigClassifierBoxWithAttributes {
+public class FigSignal2 extends FigClassifierBoxWithAttributes {
 
     private void constructFigs() {
         getStereotypeFig().setKeyword("signal");
@@ -69,7 +69,7 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
      * @param bounds position and size
      * @param settings render settings
      */
-    public FigSignal(Object owner, Rectangle bounds, DiagramSettings settings) {
+    public FigSignal2(Object owner, Rectangle bounds, DiagramSettings settings) {
         super(owner, bounds, settings);
         constructFigs();
     }

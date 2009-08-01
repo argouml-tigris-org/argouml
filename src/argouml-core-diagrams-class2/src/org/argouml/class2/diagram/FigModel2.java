@@ -33,7 +33,7 @@ import org.tigris.gef.presentation.FigPoly;
 /** 
  * Class to display graphics for a UML model in a class diagram. 
  */
-public class FigModel extends FigPackage {
+public class FigModel2 extends FigPackage2 {
 
     private FigPoly figPoly = new FigPoly(LINE_COLOR, SOLID_FILL_COLOR);
 
@@ -57,7 +57,7 @@ public class FigModel extends FigPackage {
      * @param bounds position and size
      * @param settings rendering settings
      */
-    public FigModel(Object owner, Rectangle bounds, DiagramSettings settings) {
+    public FigModel2(Object owner, Rectangle bounds, DiagramSettings settings) {
         super(owner, bounds, settings);
         constructFigs();
     }

@@ -59,11 +59,11 @@ import org.tigris.gef.presentation.FigNode;
  * 
  * @author jrobbins@ics.uci.edy
  */
-public class UMLClassDiagram extends UMLDiagram {
+public class UMLClassDiagram2 extends UMLDiagram {
 
     private static final long serialVersionUID = -9192325790126361563L;
 
-    private static final Logger LOG = Logger.getLogger(UMLClassDiagram.class);
+    private static final Logger LOG = Logger.getLogger(UMLClassDiagram2.class);
 
     ////////////////
     // actions for toolbar
@@ -98,7 +98,7 @@ public class UMLClassDiagram extends UMLDiagram {
      * @deprecated only for use by PGML parser
      */
     @Deprecated
-    public UMLClassDiagram() {
+    public UMLClassDiagram2() {
         super(new ClassDiagramGraphModel());
     }
 
@@ -110,7 +110,7 @@ public class UMLClassDiagram extends UMLDiagram {
      * @param name the name for the new diagram
      * @param namespace the namespace for the new diagram
      */
-    public UMLClassDiagram(String name, Object namespace) {
+    public UMLClassDiagram2(String name, Object namespace) {
         super(name, namespace, new ClassDiagramGraphModel());
     }
 
@@ -120,7 +120,7 @@ public class UMLClassDiagram extends UMLDiagram {
      * 
      * @param m the namespace
      */
-    public UMLClassDiagram(Object m) {
+    public UMLClassDiagram2(Object m) {
         // We're going to change the name immediately, so just use ""
         super("", m, new ClassDiagramGraphModel());
         String name = getNewDiagramName();
@@ -150,7 +150,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (init) {
             LayerPerspective lay =
                 new LayerPerspectiveMutable(Model.getFacade().getName(ns), gm);
-            ClassDiagramRenderer rend = new ClassDiagramRenderer(); // singleton
+            ClassDiagram2Renderer rend = new ClassDiagram2Renderer(); // singleton
             lay.setGraphNodeRenderer(rend);
             lay.setGraphEdgeRenderer(rend);
             setLayer(lay);
@@ -666,28 +666,28 @@ public class UMLClassDiagram extends UMLDiagram {
             figNode =
                 createNaryAssociationNode(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAClass(droppedObject)) {
-            figNode = new FigClass(droppedObject, bounds, settings);
+            figNode = new FigClass2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAInterface(droppedObject)) {
-            figNode = new FigInterface(droppedObject, bounds, settings);
+            figNode = new FigInterface2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAModel(droppedObject)) {
-            figNode = new FigModel(droppedObject, bounds, settings);
+            figNode = new FigModel2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isASubsystem(droppedObject)) {
-            figNode = new FigSubsystem(droppedObject, bounds, settings);
+            figNode = new FigSubsystem2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAPackage(droppedObject)) {
-            figNode = new FigPackage(droppedObject, bounds, settings);
+            figNode = new FigPackage2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(droppedObject, bounds, settings);
+            figNode = new FigComment2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAEnumeration(droppedObject)) {
-            figNode = new FigEnumeration(droppedObject, bounds, settings);
+            figNode = new FigEnumeration2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isADataType(droppedObject)) {
-            figNode = new FigDataType(droppedObject, bounds, settings);
+            figNode = new FigDataType2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAStereotype(droppedObject)) {
-            figNode = new FigStereotypeDeclaration(droppedObject, bounds, 
+            figNode = new FigStereotypeDeclaration2(droppedObject, bounds, 
                     settings);
         } else if (Model.getFacade().isAException(droppedObject)) {
-            figNode = new FigException(droppedObject, bounds, settings);
+            figNode = new FigException2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isASignal(droppedObject)) {
-            figNode = new FigSignal(droppedObject, bounds, settings);
+            figNode = new FigSignal2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAActor(droppedObject)) {
             figNode = new FigActor(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAUseCase(droppedObject)) {

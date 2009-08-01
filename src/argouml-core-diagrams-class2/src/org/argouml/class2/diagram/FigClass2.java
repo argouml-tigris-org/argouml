@@ -43,7 +43,7 @@ import org.tigris.gef.presentation.FigText;
  * A Class may show compartments for stereotypes,
  * attributes and operations.
  */
-public class FigClass extends FigClassifierBoxWithAttributes {
+public class FigClass2 extends FigClassifierBoxWithAttributes {
 
     private void constructFigs() {
         addFig(getBigPort());
@@ -55,7 +55,7 @@ public class FigClass extends FigClassifierBoxWithAttributes {
     }
     
     /**
-     * Constructor for a {@link FigClass} during file load.<p>
+     * Constructor for a {@link FigClass2} during file load.<p>
      *
      * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
      * will have created the main box {@link #getBigPort()} and its
@@ -78,7 +78,7 @@ public class FigClass extends FigClassifierBoxWithAttributes {
      * @param bounds rectangle describing bounds
      * @param settings rendering settings
      */
-    public FigClass(Object element, Rectangle bounds, 
+    public FigClass2(Object element, Rectangle bounds, 
             DiagramSettings settings) {
         super(element, bounds, settings);
         constructFigs();
@@ -91,7 +91,7 @@ public class FigClass extends FigClassifierBoxWithAttributes {
      */
     @Override
     public Object clone() {
-        FigClass figClone = (FigClass) super.clone();
+        FigClass2 figClone = (FigClass2) super.clone();
         Iterator thisIter = this.getFigs().iterator();
         Iterator cloneIter = figClone.getFigs().iterator();
         while (thisIter.hasNext()) {
