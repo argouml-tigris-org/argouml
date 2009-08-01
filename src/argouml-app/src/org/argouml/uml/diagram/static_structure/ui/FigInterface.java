@@ -129,21 +129,6 @@ public class FigInterface extends FigClassifierBox {
 
 
     /*
-     * @see org.tigris.gef.presentation.Fig#translate(int, int)
-     */
-    @Override
-    public void translate(int dx, int dy) {
-        super.translate(dx, dy);
-        Editor ce = Globals.curEditor();
-        if (ce != null) {
-            Selection sel = ce.getSelectionManager().findSelectionFor(this);
-            if (sel instanceof SelectionClass) {
-                ((SelectionClass) sel).hideButtons();
-            }
-        }
-    }
-
-    /*
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     @Override
