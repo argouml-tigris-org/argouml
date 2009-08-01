@@ -35,18 +35,11 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.deployment.ui.FigComponent;
-import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
-import org.argouml.uml.diagram.deployment.ui.FigMNode;
-import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
-import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ModeCreateDependency;
 import org.argouml.uml.diagram.ui.ModeCreatePermission;
 import org.argouml.uml.diagram.ui.ModeCreateUsage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.diagram.use_case.ui.FigActor;
-import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.argouml.util.ToolBarUtility;
@@ -689,19 +682,19 @@ public class UMLClassDiagram2 extends UMLDiagram {
         } else if (Model.getFacade().isASignal(droppedObject)) {
             figNode = new FigSignal2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAActor(droppedObject)) {
-            figNode = new FigActor(droppedObject, bounds, settings);
+            figNode = new FigActor2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAUseCase(droppedObject)) {
-            figNode = new FigUseCase(droppedObject, bounds, settings);
+            figNode = new FigUseCase2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAObject(droppedObject)) {
-            figNode = new FigObject(droppedObject, bounds, settings);
+            figNode = new FigObject2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isANodeInstance(droppedObject)) {
-            figNode = new FigNodeInstance(droppedObject, bounds, settings);
+            figNode = new FigNodeInstance2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComponentInstance(droppedObject)) {
-            figNode = new FigComponentInstance(droppedObject, bounds, settings);
+            figNode = new FigComponentInstance2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isANode(droppedObject)) {
-            figNode = new FigMNode(droppedObject, bounds, settings);
+            figNode = new FigMNode2(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComponent(droppedObject)) {
-            figNode = new FigComponent(droppedObject, bounds, settings);
+            figNode = new FigComponent2(droppedObject, bounds, settings);
         }
         
         if (figNode != null) {
