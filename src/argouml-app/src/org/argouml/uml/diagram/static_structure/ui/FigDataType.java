@@ -165,6 +165,7 @@ public class FigDataType extends FigClassifierBox {
         Editor ce = Globals.curEditor();
         if (ce != null) {
             Selection sel = ce.getSelectionManager().findSelectionFor(this);
+            // TODO: This looks like it should be SelectionDataType
             if (sel instanceof SelectionClass) {
                 ((SelectionClass) sel).hideButtons();
             }
