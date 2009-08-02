@@ -45,7 +45,7 @@ import org.tigris.gef.base.Selection;
  * 
  * @author Tom Morris
  */
-public class FigSignal2 extends FigClassifierBoxWithAttributes {
+class FigSignal2 extends FigClassifierBoxWithAttributes {
 
     private void constructFigs() {
         getStereotypeFig().setKeyword("signal");

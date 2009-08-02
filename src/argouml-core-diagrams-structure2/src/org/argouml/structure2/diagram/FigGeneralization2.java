@@ -45,7 +45,7 @@ import org.tigris.gef.presentation.FigText;
  * 
  * @author abonner@ics.uci.edu, jaap.branderhorst@xs4all.nl
  */
-public class FigGeneralization2 extends FigEdgeModelElement {
+class FigGeneralization2 extends FigEdgeModelElement {
 
     private static final int TEXT_HEIGHT = 20;
 

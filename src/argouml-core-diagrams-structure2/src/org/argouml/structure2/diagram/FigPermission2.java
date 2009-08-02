@@ -37,7 +37,7 @@ import org.argouml.uml.diagram.DiagramSettings;
  * 
  * @author Markus Klink
  */
-public class FigPermission2 extends FigDependency2 {
+class FigPermission2 extends FigDependency2 {
     
     /**
      * Construct a Fig.

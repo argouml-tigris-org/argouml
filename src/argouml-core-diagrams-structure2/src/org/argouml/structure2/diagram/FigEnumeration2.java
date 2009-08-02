@@ -47,7 +47,7 @@ import org.tigris.gef.base.Selection;
  * It depends on FigDataType for most of its behavior.<p>
  * 
  */
-public class FigEnumeration2 extends FigDataType2 
+class FigEnumeration2 extends FigDataType2 
     implements EnumLiteralsCompartmentContainer {
 
     /**

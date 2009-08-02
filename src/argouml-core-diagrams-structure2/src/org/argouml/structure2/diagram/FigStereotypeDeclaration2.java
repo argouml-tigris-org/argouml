@@ -53,7 +53,7 @@ import org.tigris.gef.base.Selection;
  *
  * TODO: This is just a placeholder right now! - tfm
  */
-public class FigStereotypeDeclaration2 extends FigCompartmentBox {
+class FigStereotypeDeclaration2 extends FigCompartmentBox {
 
     private static final long serialVersionUID = -2702539988691983863L;
 

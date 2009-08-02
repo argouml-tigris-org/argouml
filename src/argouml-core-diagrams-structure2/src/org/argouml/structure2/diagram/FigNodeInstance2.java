@@ -41,7 +41,7 @@ import org.tigris.gef.presentation.Fig;
  *
  * @author 5eichler@informatik.uni-hamburg.de
  */
-public class FigNodeInstance2 extends AbstractFigNode {
+class FigNodeInstance2 extends AbstractFigNode {
     
     /**
      * Construct a new FigNodeInstance.

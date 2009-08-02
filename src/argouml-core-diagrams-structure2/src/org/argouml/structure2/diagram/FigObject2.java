@@ -43,7 +43,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author 5eichler
  */
-public class FigObject2 extends FigNodeModelElement {
+class FigObject2 extends FigNodeModelElement {
 
     private FigRect cover;
 

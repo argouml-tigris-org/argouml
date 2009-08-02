@@ -24,32 +24,15 @@
 
 package org.argouml.structure2.diagram;
 
-import java.awt.Polygon;
 import java.awt.Rectangle;
-
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.presentation.FigPoly;
+import org.argouml.uml.diagram.static_structure.ui.FigModel;
 
 /** 
  * Class to display graphics for a UML model in a class diagram. 
  */
-public class FigModel2 extends FigPackage2 {
+class FigModel2 extends FigModel {
 
-    private FigPoly figPoly = new FigPoly(LINE_COLOR, SOLID_FILL_COLOR);
-
-    private void constructFigs() {
-        int[] xpoints = {125, 130, 135, 125};
-        int[] ypoints = {45, 40, 45, 45};
-        Polygon polygon = new Polygon(xpoints, ypoints, 4);
-        figPoly.setPolygon(polygon);
-        figPoly.setFilled(false);
-        addFig(figPoly);
-
-        setBounds(getBounds());
-        
-        updateEdges();
-    }
-    
     /**
      * Construct a Model fig
      * 
@@ -59,23 +42,5 @@ public class FigModel2 extends FigPackage2 {
      */
     public FigModel2(Object owner, Rectangle bounds, DiagramSettings settings) {
         super(owner, bounds, settings);
-        constructFigs();
     }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
-     */
-    @Override
-    protected void setStandardBounds(int x, int y, int w, int h) {
-
-        if (figPoly != null) {
-            Rectangle oldBounds = getBounds();
-            figPoly.translate((x - oldBounds.x) + (w - oldBounds.width), y
-                    - oldBounds.y);
-
-        }
-        super.setStandardBounds(x, y, w, h);
-    }
-
-
 }

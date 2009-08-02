@@ -47,7 +47,7 @@ import org.tigris.gef.presentation.Fig;
  * Every DataType shows a keyword, but it is not 
  * always <<datatype>>, e.g. for an Enumeration.
  */
-public class FigDataType2 extends FigClassifierBox {
+class FigDataType2 extends FigClassifierBox {
 
     private static final Logger LOG = Logger.getLogger(FigDataType2.class);
     

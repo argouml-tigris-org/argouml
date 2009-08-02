@@ -35,7 +35,7 @@ import org.tigris.gef.presentation.Fig;
  *
  * @author pepargouml
  */
-public class FigClassAssociationClass2 extends FigClass2 {
+class FigClassAssociationClass2 extends FigClass2 {
 
     private static final long serialVersionUID = -4101337246957593739L;
     

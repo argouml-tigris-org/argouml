@@ -47,7 +47,7 @@ import org.tigris.gef.presentation.FigRect;
 /**
  * Class to display graphics for an Actor in a diagram.
  */
-public class FigActor2 extends FigNodeModelElement {
+class FigActor2 extends FigNodeModelElement {
 
     /**
      * The serialization version - Eclipse generated for rev. 1.40

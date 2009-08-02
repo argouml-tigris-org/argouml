@@ -34,7 +34,7 @@ import org.tigris.gef.base.Selection;
  * 
  * @author Tom Morris
  */
-public class FigException2 extends FigSignal2 {
+class FigException2 extends FigSignal2 {
 
     /**
      * Construct an Exception fig.

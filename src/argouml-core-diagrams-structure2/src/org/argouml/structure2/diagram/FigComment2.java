@@ -67,7 +67,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author Andreas Rueckert
  */
-public class FigComment2
+class FigComment2
     extends FigNodeModelElement
     implements VetoableChangeListener,
 	       DelayedVChangeListener,

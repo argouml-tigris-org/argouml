@@ -45,7 +45,7 @@ import org.tigris.gef.presentation.Fig;
  * Other association adornments (aggregation, composition, 
  * navigation) may be shown on the link ends."
  */
-public class FigLink2 extends FigEdgeModelElement {
+class FigLink2 extends FigEdgeModelElement {
 
     /*
      * Text group to contain name & stereotype

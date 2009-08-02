@@ -44,7 +44,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author 5eichler
  */
-public class FigComponent2 extends AbstractFigComponent {
+class FigComponent2 extends AbstractFigComponent {
 
     /**
      * Construct a new FigComponent.

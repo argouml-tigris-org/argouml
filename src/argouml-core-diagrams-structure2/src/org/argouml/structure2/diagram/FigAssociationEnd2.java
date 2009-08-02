@@ -44,7 +44,7 @@ import org.argouml.uml.diagram.ui.FigAssociationEnd;
  *
  * @author Bob Tarling
  */
-public class FigAssociationEnd2 extends FigAssociationEnd {
+class FigAssociationEnd2 extends FigAssociationEnd {
 
     public FigAssociationEnd2(Object owner, DiagramSettings settings) {
         super(owner, settings);

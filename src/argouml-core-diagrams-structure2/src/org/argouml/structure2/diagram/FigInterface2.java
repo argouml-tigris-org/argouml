@@ -33,8 +33,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 
@@ -44,7 +42,7 @@ import org.tigris.gef.presentation.Fig;
  * An Interface may show compartments for stereotypes
  * and operations. Attributes are not supported in ArgoUML.
  */
-public class FigInterface2 extends FigClassifierBox {
+class FigInterface2 extends FigClassifierBox {
 
     private static final Logger LOG = Logger.getLogger(FigInterface2.class);
 

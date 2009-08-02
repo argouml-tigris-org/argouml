@@ -61,7 +61,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author bob.tarling@gmail.com
  */
-public class FigAssociationClass2 extends FigAssociation2 implements
+class FigAssociationClass2 extends FigAssociation2 implements
         AttributesCompartmentContainer, PathContainer,
         OperationsCompartmentContainer {
 

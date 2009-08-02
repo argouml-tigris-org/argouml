@@ -53,7 +53,7 @@ import org.tigris.gef.presentation.FigNode;
  * @author Andreas Rueckert a_rueckert@gmx.net
  * @author jaap.branderhorst@xs4all.nl
  */
-public class FigEdgeNote2 extends FigEdgePoly implements ArgoFig, IItemUID,
+class FigEdgeNote2 extends FigEdgePoly implements ArgoFig, IItemUID,
         PropertyChangeListener {
 
     private static final Logger LOG = Logger.getLogger(FigEdgeNote2.class);

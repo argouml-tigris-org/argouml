@@ -36,7 +36,7 @@ import org.tigris.gef.presentation.ArrowHeadTriangle;
  * 
  * @author agauthie
  */
-public class FigAbstraction2 extends FigDependency2 {
+class FigAbstraction2 extends FigDependency2 {
 
     /**
      * Create the arrow head for the abstraction. This overrides the

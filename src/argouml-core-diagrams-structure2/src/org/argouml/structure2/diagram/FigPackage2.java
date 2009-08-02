@@ -95,7 +95,7 @@ import org.tigris.gef.undo.UndoableAction;
  * 
  * In front of the name, ArgoUML may optionally show the visibility.
  */
-public class FigPackage2 extends FigNodeModelElement
+class FigPackage2 extends FigNodeModelElement
     implements StereotypeContainer, VisibilityContainer {
 
     private static final Logger LOG = Logger.getLogger(FigPackage2.class);

@@ -52,7 +52,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author pepargouml@yahoo.es
  */
-public class FigNodeAssociation2 extends FigNodeModelElement {
+class FigNodeAssociation2 extends FigNodeModelElement {
     
     private static final int X = 0;
     private static final int Y = 0;

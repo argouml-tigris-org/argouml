@@ -37,7 +37,7 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author 5eichler@informatik.uni-hamburg.de
  */
-public class FigMNode2 extends AbstractFigNode {
+class FigMNode2 extends AbstractFigNode {
     
     /**
      * Construct a new FigMNode.

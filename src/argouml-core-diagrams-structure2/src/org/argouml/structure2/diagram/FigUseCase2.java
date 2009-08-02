@@ -108,7 +108,7 @@ import org.tigris.gef.presentation.FigText;
  * origin is at our top left corner, and the Y coordinates are
  * reversed.<p>
  */
-public class FigUseCase2 extends FigNodeModelElement
+class FigUseCase2 extends FigNodeModelElement
     implements ExtensionsCompartmentContainer {
 
     /**

@@ -32,7 +32,7 @@ import org.argouml.uml.diagram.ui.FigAssociation;
  * This class represents the Fig of a binary association on a diagram.
  *
  */
-public class FigAssociation2 extends FigAssociation {
+class FigAssociation2 extends FigAssociation {
 
     /**
      * Constructor used by PGML parser.

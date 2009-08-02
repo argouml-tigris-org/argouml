@@ -43,7 +43,7 @@ import org.tigris.gef.presentation.FigText;
  * A Class may show compartments for stereotypes,
  * attributes and operations.
  */
-public class FigClass2 extends FigClassifierBoxWithAttributes {
+class FigClass2 extends FigClassifierBoxWithAttributes {
 
     private void constructFigs() {
         addFig(getBigPort());

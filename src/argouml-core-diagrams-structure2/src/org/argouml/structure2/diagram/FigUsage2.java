@@ -25,13 +25,14 @@
 package org.argouml.structure2.diagram;
 
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigUsage;
 
 /**
  * This class represents a Fig for a Usage.
  *
- * @author Markus Klink
+ * @author Bob Tarling
  */
-public class FigUsage2 extends FigDependency2 {
+public class FigUsage2 extends FigUsage {
 
     /**
      * Construct a Fig.

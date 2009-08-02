@@ -48,7 +48,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author pepargouml
  */
-public class FigEdgeAssociationClass2
+class FigEdgeAssociationClass2
         extends FigEdgeModelElement
         implements VetoableChangeListener,
         DelayedVChangeListener,

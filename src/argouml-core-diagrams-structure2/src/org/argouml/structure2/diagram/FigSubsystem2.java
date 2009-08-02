@@ -24,57 +24,18 @@
 
 package org.argouml.structure2.diagram;
 
-import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.presentation.FigPoly;
+import org.argouml.uml.diagram.static_structure.ui.FigSubsystem;
 
-/** Class to display graphics for a UML subsystem in a class diagram. */
+/**
+ * Class to display graphics for a UML subsystem in a class diagram.
+ */
+class FigSubsystem2 extends FigSubsystem {
 
-public class FigSubsystem2 extends FigPackage2 {
-
-    private FigPoly figPoly = new FigPoly(LINE_COLOR, SOLID_FILL_COLOR);
-
-    private void constructFigs() {
-        int[] xpoints = {125, 125, 130, 130, 130, 135, 135};
-        int[] ypoints = {45, 40, 40, 35, 40, 40, 45};
-        Polygon polygon = new Polygon(xpoints, ypoints, 7);
-        figPoly.setPolygon(polygon);
-        figPoly.setFilled(false);
-        addFig(figPoly);
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
-        updateEdges();
-    }
-
-    /**
-     * Construct a Subsystem fig.
-     * 
-     * @param owner owning UML element
-     * @param bounds position and size
-     * @param settings render settings
-     */
     public FigSubsystem2(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        constructFigs();
     }
-    
-    /*
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
-     */
-    @Override
-    protected void setStandardBounds(int x, int y, int w, int h) {
-
-        if (figPoly != null) {
-            Rectangle oldBounds = getBounds();
-            figPoly.translate((x - oldBounds.x) + (w - oldBounds.width), y
-                    - oldBounds.y);
-
-        }
-        super.setStandardBounds(x, y, w, h);
-    }
-
-
 }
