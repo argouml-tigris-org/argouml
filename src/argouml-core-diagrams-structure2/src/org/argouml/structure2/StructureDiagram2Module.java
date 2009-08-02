@@ -27,11 +27,11 @@ package org.argouml.structure2;
 import org.argouml.moduleloader.ModuleInterface;
 
 /**
- * The Class Diagram Module description.
+ * The Structure Diagram module.
  *
  * @see org.argouml.moduleloader.ModuleInterface
  */
-public class StructureDiagramModule implements ModuleInterface {
+public class StructureDiagram2Module implements ModuleInterface {
 
     public boolean enable() {
         return true;
@@ -42,17 +42,17 @@ public class StructureDiagramModule implements ModuleInterface {
     }
 
     public String getName() {
-        return "ArgoUML-Class";
+        return "ArgoUML-Structure";
     }
 
     public String getInfo(int type) {
         switch (type) {
         case DESCRIPTION:
-            return "The new activity diagram implementation";
+            return "The structure diagram implementation";
         case AUTHOR:
             return "ArgoUML Core Development Team";
         case VERSION:
-            return "0.28";
+            return "0.30";
         case DOWNLOADSITE:
             return "http://argouml.tigris.org";
         default:
