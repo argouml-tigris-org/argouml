@@ -35,17 +35,7 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
-import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-import org.argouml.uml.diagram.static_structure.ui.FigLink;
-import org.argouml.uml.diagram.ui.FigAbstraction;
-import org.argouml.uml.diagram.ui.FigAssociation;
-import org.argouml.uml.diagram.ui.FigAssociationClass;
-import org.argouml.uml.diagram.ui.FigAssociationEnd;
-import org.argouml.uml.diagram.ui.FigDependency;
-import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.FigPermission;
-import org.argouml.uml.diagram.ui.FigUsage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Layer;
@@ -85,7 +75,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author jrobbins
  */
-public class ClassDiagram2Renderer extends UmlDiagramRenderer {
+class ClassDiagram2Renderer extends UmlDiagramRenderer {
     
     /**
      * The UID.
@@ -156,9 +146,9 @@ public class ClassDiagram2Renderer extends UmlDiagramRenderer {
         
         FigEdge newEdge = null;
         if (Model.getFacade().isAAssociationClass(edge)) {
-            newEdge = new FigAssociationClass(edge, settings);
+            newEdge = new FigAssociationClass2(edge, settings);
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
-            FigAssociationEnd asend = new FigAssociationEnd(edge, settings);
+            FigAssociationEnd2 asend = new FigAssociationEnd2(edge, settings);
             Model.getFacade().getAssociation(edge);
             FigNode associationFN =
                 (FigNode) lay.presentationFor(
@@ -172,9 +162,9 @@ public class ClassDiagram2Renderer extends UmlDiagramRenderer {
             asend.setDestFigNode(classifierFN);
             newEdge = asend;
         } else if (Model.getFacade().isAAssociation(edge)) {
-            newEdge = new FigAssociation(edge, settings);
+            newEdge = new FigAssociation2(edge, settings);
         } else if (Model.getFacade().isALink(edge)) {
-            FigLink lnkFig = new FigLink(edge, settings);
+            FigLink2 lnkFig = new FigLink2(edge, settings);
             Collection linkEndsColn = Model.getFacade().getConnections(edge);
 
             Object[] linkEnds = linkEndsColn.toArray();
@@ -190,13 +180,13 @@ public class ClassDiagram2Renderer extends UmlDiagramRenderer {
             lnkFig.getFig().setLayer(lay);
             newEdge = lnkFig;
         } else if (Model.getFacade().isAGeneralization(edge)) {
-            newEdge = new FigGeneralization(edge, settings);
+            newEdge = new FigGeneralization2(edge, settings);
         } else if (Model.getFacade().isAPackageImport(edge)) {
-            newEdge = new FigPermission(edge, settings);
+            newEdge = new FigPermission2(edge, settings);
         } else if (Model.getFacade().isAUsage(edge)) {
-            newEdge = new FigUsage(edge, settings);
+            newEdge = new FigUsage2(edge, settings);
         } else if (Model.getFacade().isAAbstraction(edge)) {
-            newEdge = new FigAbstraction(edge, settings);
+            newEdge = new FigAbstraction2(edge, settings);
         } else if (Model.getFacade().isADependency(edge)) {
 
             String name = "";
@@ -211,7 +201,7 @@ public class ClassDiagram2Renderer extends UmlDiagramRenderer {
                 // any abstraction/realization is going to take the 
                 // isAAbstraction leg of the if before it gets to this more
                 // general case. - tfm 20080508
-                FigAbstraction realFig = new FigAbstraction(edge, settings);
+                FigAbstraction2 realFig = new FigAbstraction2(edge, settings);
 
                 Object supplier =
                     ((Model.getFacade().getSuppliers(edge).toArray())[0]);
@@ -228,11 +218,11 @@ public class ClassDiagram2Renderer extends UmlDiagramRenderer {
                 realFig.getFig().setLayer(lay);
                 newEdge = realFig;
             } else {
-                FigDependency depFig = new FigDependency(edge, settings);
+                FigDependency2 depFig = new FigDependency2(edge, settings);
                 newEdge = depFig;
             }
         } else if (edge instanceof CommentEdge) {
-            newEdge = new FigEdgeNote(edge, settings);
+            newEdge = new FigEdgeNote2(edge, settings);
         }
 
         if (newEdge == null) {
