@@ -320,6 +320,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      * @param project the project to create the diagrams in.
      */
     private void createDefaultDiagrams(Project project) {
+        LOG.debug("Creating default diagrams");
         Object model = project.getRoots().iterator().next();
         DiagramFactory df = DiagramFactory.getInstance();
         ArgoDiagram d = df.create(DiagramFactory.DiagramType.Class,
