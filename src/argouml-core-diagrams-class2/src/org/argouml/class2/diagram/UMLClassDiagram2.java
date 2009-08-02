@@ -34,24 +34,7 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.structure2.diagram.FigActor2;
-import org.argouml.structure2.diagram.FigClass2;
-import org.argouml.structure2.diagram.FigComment2;
-import org.argouml.structure2.diagram.FigComponent2;
-import org.argouml.structure2.diagram.FigComponentInstance2;
-import org.argouml.structure2.diagram.FigDataType2;
-import org.argouml.structure2.diagram.FigEnumeration2;
-import org.argouml.structure2.diagram.FigException2;
-import org.argouml.structure2.diagram.FigInterface2;
-import org.argouml.structure2.diagram.FigMNode2;
-import org.argouml.structure2.diagram.FigModel2;
-import org.argouml.structure2.diagram.FigNodeInstance2;
-import org.argouml.structure2.diagram.FigObject2;
-import org.argouml.structure2.diagram.FigPackage2;
-import org.argouml.structure2.diagram.FigSignal2;
-import org.argouml.structure2.diagram.FigStereotypeDeclaration2;
-import org.argouml.structure2.diagram.FigSubsystem2;
-import org.argouml.structure2.diagram.FigUseCase2;
+import org.argouml.structure2.diagram.UMLStructureDiagram2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ModeCreateDependency;
@@ -70,7 +53,7 @@ import org.tigris.gef.presentation.FigNode;
  * 
  * @author jrobbins@ics.uci.edy
  */
-public class UMLClassDiagram2 extends UMLDiagram {
+public class UMLClassDiagram2 extends UMLStructureDiagram2 {
 
     private static final long serialVersionUID = -9192325790126361563L;
 
@@ -133,7 +116,7 @@ public class UMLClassDiagram2 extends UMLDiagram {
      */
     public UMLClassDiagram2(Object m) {
         // We're going to change the name immediately, so just use ""
-        super("", m, new ClassDiagramGraphModel());
+        super(m, new ClassDiagramGraphModel());
         String name = getNewDiagramName();
         try {
             setName(name);
@@ -661,71 +644,4 @@ public class UMLClassDiagram2 extends UMLDiagram {
 
     }
     
-    @Override
-    public FigNode drop(Object droppedObject, Point location) {        
-        FigNode figNode = null;
-
-        // If location is non-null, convert to a rectangle that we can use
-        Rectangle bounds = null;
-        if (location != null) {
-            bounds = new Rectangle(location.x, location.y, 0, 0);
-        }
-
-        DiagramSettings settings = getDiagramSettings();
-        
-        if (Model.getFacade().isAAssociation(droppedObject)) {
-            figNode =
-                createNaryAssociationNode(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAClass(droppedObject)) {
-            figNode = new FigClass2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAInterface(droppedObject)) {
-            figNode = new FigInterface2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAModel(droppedObject)) {
-            figNode = new FigModel2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isASubsystem(droppedObject)) {
-            figNode = new FigSubsystem2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAPackage(droppedObject)) {
-            figNode = new FigPackage2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAEnumeration(droppedObject)) {
-            figNode = new FigEnumeration2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isADataType(droppedObject)) {
-            figNode = new FigDataType2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAStereotype(droppedObject)) {
-            figNode = new FigStereotypeDeclaration2(droppedObject, bounds, 
-                    settings);
-        } else if (Model.getFacade().isAException(droppedObject)) {
-            figNode = new FigException2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isASignal(droppedObject)) {
-            figNode = new FigSignal2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAActor(droppedObject)) {
-            figNode = new FigActor2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAUseCase(droppedObject)) {
-            figNode = new FigUseCase2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAObject(droppedObject)) {
-            figNode = new FigObject2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isANodeInstance(droppedObject)) {
-            figNode = new FigNodeInstance2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAComponentInstance(droppedObject)) {
-            figNode = new FigComponentInstance2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isANode(droppedObject)) {
-            figNode = new FigMNode2(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAComponent(droppedObject)) {
-            figNode = new FigComponent2(droppedObject, bounds, settings);
-        }
-        
-        if (figNode != null) {
-            // if location is null here the position of the new figNode is set
-            // after in org.tigris.gef.base.ModePlace.mousePressed(MouseEvent e)
-            if (location != null) {
-                figNode.setLocation(location.x, location.y);
-            }
-            LOG.debug("Dropped object " + droppedObject + " converted to " 
-                    + figNode);
-        } else {
-            LOG.debug("Dropped object NOT added " + droppedObject);
-        }
-        return figNode;
-    }
 }
