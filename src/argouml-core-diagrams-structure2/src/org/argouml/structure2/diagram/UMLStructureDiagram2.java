@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.presentation.FigNode;
 
