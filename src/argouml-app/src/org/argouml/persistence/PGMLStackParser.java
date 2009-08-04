@@ -625,7 +625,8 @@ class PGMLStackParser
                     parameters[1] = bounds;
                     parameters[2] = 
                         ((ArgoDiagram) getDiagram()).getDiagramSettings();
-
+                    
+                    constructor.setAccessible(true);
                     f =  (Fig) constructor.newInstance(parameters);
                 }
                 // FigEdgeModelElements should match here (they have no bounds)
@@ -642,6 +643,7 @@ class PGMLStackParser
                     parameters[1] = 
                         ((ArgoDiagram) getDiagram()).getDiagramSettings();
 
+                    constructor.setAccessible(true);
                     f =  (Fig) constructor.newInstance(parameters);
                 }
             }
