@@ -25,6 +25,7 @@
 package org.argouml.structure2.diagram;
 
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigAbstraction;
 import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 
@@ -36,18 +37,7 @@ import org.tigris.gef.presentation.ArrowHeadTriangle;
  * 
  * @author agauthie
  */
-class FigAbstraction2 extends FigDependency2 {
-
-    /**
-     * Create the arrow head for the abstraction. This overrides the
-     * superclass to create a filled arrow head.
-     * @return the arrow head.
-     */
-    protected ArrowHead createEndArrow() {
-        final ArrowHead arrow = new ArrowHeadTriangle();
-        arrow.setFillColor(FILL_COLOR);
-        return arrow;
-    }
+class FigAbstraction2 extends FigAbstraction {
 
     /**
      * Construct a Fig.

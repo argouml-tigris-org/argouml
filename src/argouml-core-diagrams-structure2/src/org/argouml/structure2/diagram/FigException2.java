@@ -27,12 +27,9 @@ package org.argouml.structure2.diagram;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.base.Selection;
 
 /**
  * Fig representing an Exception.
- * 
- * @author Tom Morris
  */
 class FigException2 extends FigSignal2 {
 
@@ -46,10 +43,5 @@ class FigException2 extends FigSignal2 {
     public FigException2(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-    }
-    
-    @Override
-    public Selection makeSelection() {
-        return new SelectionException(this);
     }
 }

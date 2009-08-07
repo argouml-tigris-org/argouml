@@ -27,17 +27,13 @@ package org.argouml.structure2.diagram;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.presentation.Fig;
+import org.argouml.uml.diagram.ui.FigClassAssociationClass;
 
 /**
  * Class to display the Class box fig piece of an Association Class.
  * <em>NOTE:</em> It must be used only from a FigAssociationClass
- *
- * @author pepargouml
  */
-class FigClassAssociationClass2 extends FigClass2 {
-
-    private static final long serialVersionUID = -4101337246957593739L;
+class FigClassAssociationClass2 extends FigClassAssociationClass {
     
     /**
      * Construct the Class box piece of a complex association class fig.
@@ -49,24 +45,5 @@ class FigClassAssociationClass2 extends FigClass2 {
     public FigClassAssociationClass2(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        enableSizeChecking(true);
-    }
-    
-    protected Fig getRemoveDelegate() {
-        // Look for the dashed edge
-        for (Object fig : getFigEdges()) {
-            if (fig instanceof FigEdgeAssociationClass2) {
-                // We have the dashed edge now find the opposite FigNode
-                FigEdgeAssociationClass2 dashedEdge =
-                    (FigEdgeAssociationClass2) fig;
-                return dashedEdge.getRemoveDelegate();
-            }
-        }
-        return null;
-    }
-
-    @Override
-    protected void removeFromDiagramImpl() {
-        super.removeFromDiagramImpl();
     }
 }

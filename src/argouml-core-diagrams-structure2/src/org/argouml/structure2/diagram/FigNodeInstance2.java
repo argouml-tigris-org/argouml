@@ -25,23 +25,13 @@
 package org.argouml.structure2.diagram;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.argouml.model.Model;
-import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.deployment.ui.AbstractFigNode;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-import org.tigris.gef.base.Selection;
-import org.tigris.gef.presentation.Fig;
+import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 
 /**
  * Class to display graphics for a UML NodeInstance in a diagram.<p>
- *
- * @author 5eichler@informatik.uni-hamburg.de
  */
-class FigNodeInstance2 extends AbstractFigNode {
+class FigNodeInstance2 extends FigNodeInstance {
     
     /**
      * Construct a new FigNodeInstance.
@@ -53,86 +43,5 @@ class FigNodeInstance2 extends AbstractFigNode {
     public FigNodeInstance2(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        getNameFig().setUnderline(true);
     }
-    
-    @Override
-    protected int getNotationProviderType() {
-        return NotationProviderFactory2.TYPE_NODEINSTANCE;
-    }
-
-    @Override
-    public Object clone() {
-        Object clone = super.clone();
-        return clone;
-    }
-
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#makeSelection()
-     */
-    @Override
-    public Selection makeSelection() {
-        return new SelectionNodeInstance(this);
-    }
-    
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
-     */
-    @Override
-    public void setEnclosingFig(Fig encloser) {
-        if (getOwner() != null) {
-            Object nod = getOwner();
-            if (encloser != null) {
-                Object comp = encloser.getOwner();
-                if (Model.getFacade().isAComponentInstance(comp)) {
-                    if (Model.getFacade().getComponentInstance(nod) != comp) {
-                        Model.getCommonBehaviorHelper()
-                                .setComponentInstance(nod, comp);
-                        super.setEnclosingFig(encloser);
-                    }
-                } else if (Model.getFacade().isANode(comp)) {
-                    super.setEnclosingFig(encloser);
-                }
-            } else if (encloser == null) {
-                if (isVisible()
-                        // If we are not visible most likely
-                        // we're being deleted.
-                        // TODO: This indicates a more fundamental problem that
-                        // should be investigated - tfm - 20061230
-                        && Model.getFacade().getComponentInstance(nod) != null) {
-                    Model.getCommonBehaviorHelper()
-                            .setComponentInstance(nod, null);
-                    super.setEnclosingFig(encloser);
-                }
-            }
-        }
-
-        if (getLayer() != null) {
-            // elementOrdering(figures);
-            Collection contents = new ArrayList(getLayer().getContents());
-            for (Object o : contents) {
-                if (o instanceof FigEdgeModelElement) {
-                    FigEdgeModelElement figedge = (FigEdgeModelElement) o;
-                    figedge.getLayer().bringToFront(figedge);
-                }
-            }
-        }
-    }
-
-     /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
-     */
-    @Override
-    protected void updateListeners(Object oldOwner, Object newOwner) {
-        super.updateListeners(oldOwner, newOwner);
-        if (newOwner != null) {
-            for (Object classifier 
-                    : Model.getFacade().getClassifiers(newOwner)) {
-                addElementListener(classifier, "name");
-            }
-        }
-    }
-
 }

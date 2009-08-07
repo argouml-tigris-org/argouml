@@ -25,17 +25,9 @@
 package org.argouml.structure2.diagram;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
-import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.static_structure.ui.FigClassifierBoxWithAttributes;
-import org.tigris.gef.base.Selection;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
-import org.tigris.gef.presentation.FigText;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
 
 /**
  * Class to display graphics for a UML Class in a diagram.<p>
@@ -43,19 +35,10 @@ import org.tigris.gef.presentation.FigText;
  * A Class may show compartments for stereotypes,
  * attributes and operations.
  */
-class FigClass2 extends FigClassifierBoxWithAttributes {
+class FigClass2 extends FigClass {
 
-    private void constructFigs() {
-        addFig(getBigPort());
-        addFig(getStereotypeFig());
-        addFig(getNameFig());
-        addFig(getOperationsFig());
-        addFig(getAttributesFig());
-        addFig(borderFig);
-    }
-    
     /**
-     * Constructor for a {@link FigClass2} during file load.<p>
+     * Constructor for a {@link FigClass2}.<p>
      *
      * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
      * will have created the main box {@link #getBigPort()} and its
@@ -81,144 +64,5 @@ class FigClass2 extends FigClassifierBoxWithAttributes {
     public FigClass2(Object element, Rectangle bounds, 
             DiagramSettings settings) {
         super(element, bounds, settings);
-        constructFigs();
-        Rectangle r = getBounds();
-        setStandardBounds(r.x, r.y, r.width, r.height);
     }
-
-    /*
-     * @see java.lang.Object#clone()
-     */
-    @Override
-    public Object clone() {
-        FigClass2 figClone = (FigClass2) super.clone();
-        Iterator thisIter = this.getFigs().iterator();
-        Iterator cloneIter = figClone.getFigs().iterator();
-        while (thisIter.hasNext()) {
-            Fig thisFig = (Fig) thisIter.next();
-            Fig cloneFig = (Fig) cloneIter.next();
-            if (thisFig == borderFig) {
-                figClone.borderFig = thisFig;
-            }
-        }
-        return figClone;
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#makeSelection()
-     */
-    public Selection makeSelection() {
-        return new SelectionClass(this);
-    }
-
-    protected Object buildModifierPopUp() {
-        return buildModifierPopUp(ABSTRACT | LEAF | ROOT | ACTIVE);
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#getLineWidth()
-     */
-    public int getLineWidth() {
-        return borderFig.getLineWidth();
-    }
-
-    /**
-     * @param fgVec the FigGroup
-     * @param ft    the Figtext
-     * @param i     get the fig before fig i
-     * @return the FigText
-     */
-    protected FigText getPreviousVisibleFeature(FigGroup fgVec,
-						FigText ft, int i) {
-        if (fgVec == null || i < 1) {
-            return null;
-        }
-        FigText ft2 = null;
-        List figs = fgVec.getFigs();
-        if (i >= figs.size() || !((FigText) figs.get(i)).isVisible()) {
-            return null;
-        }
-        do {
-            i--;
-            while (i < 1) {
-                if (fgVec == getAttributesFig()) {
-                    fgVec = getOperationsFig();
-                } else {
-                    fgVec = getAttributesFig();
-                }
-                figs = fgVec.getFigs();
-                i = figs.size() - 1;
-            }
-            ft2 = (FigText) figs.get(i);
-            if (!ft2.isVisible()) {
-                ft2 = null;
-            }
-        } while (ft2 == null);
-        return ft2;
-    }
-
-    /**
-     * @param fgVec the FigGroup
-     * @param ft    the Figtext
-     * @param i     get the fig after fig i
-     * @return the FigText
-     */
-    protected FigText getNextVisibleFeature(FigGroup fgVec, FigText ft, int i) {
-        if (fgVec == null || i < 1) {
-            return null;
-        }
-        FigText ft2 = null;
-        List v = fgVec.getFigs();
-        if (i >= v.size() || !((FigText) v.get(i)).isVisible()) {
-            return null;
-        }
-        do {
-            i++;
-            while (i >= v.size()) {
-                if (fgVec == getAttributesFig()) {
-                    fgVec = getOperationsFig();
-                } else {
-                    fgVec = getAttributesFig();
-                }
-                v = new ArrayList(fgVec.getFigs());
-                i = 1;
-            }
-            ft2 = (FigText) v.get(i);
-            if (!ft2.isVisible()) {
-                ft2 = null;
-            }
-        } while (ft2 == null);
-        return ft2;
-    }
-
-    public void setEnclosingFig(Fig encloser) {
-        if (encloser == getEncloser()) {
-            return;
-        }
-        if (encloser == null
-                || (encloser != null
-                && !Model.getFacade().isAInstance(encloser.getOwner()))) {
-            super.setEnclosingFig(encloser);
-        }
-        if (!(Model.getFacade().isAUMLElement(getOwner()))) {
-            return;
-        }
-        if (encloser != null
-                && (Model.getFacade().isAComponent(encloser.getOwner()))) {
-            moveIntoComponent(encloser);
-            super.setEnclosingFig(encloser);
-        }
-
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-     */
-    @Override
-    protected void updateNameText() {
-        super.updateNameText();
-        calcBounds();
-        setBounds(getBounds());
-    }
-    
 }

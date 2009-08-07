@@ -25,24 +25,11 @@
 package org.argouml.structure2.diagram;
 
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-
-import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.deployment.ui.AbstractFigComponent;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-import org.tigris.gef.base.Selection;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML Component in a diagram.
- *
- * @author 5eichler
  */
 class FigComponent2 extends AbstractFigComponent {
 
@@ -57,71 +44,4 @@ class FigComponent2 extends AbstractFigComponent {
             DiagramSettings settings) {
         super(owner, bounds, settings);
     }
-    
-    @Override
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-component");
-        }
-    }
-
-    @Override
-    public Selection makeSelection() {
-        return new SelectionComponent(this);
-    }
-
-    @Override
-    public void setEnclosingFig(Fig encloser) {
-
-        Object comp = getOwner();
-        if (encloser != null
-                && (Model.getFacade().isANode(encloser.getOwner()) 
-                        || Model.getFacade().isAComponent(encloser.getOwner()))
-                && getOwner() != null) {
-            if (Model.getFacade().isANode(encloser.getOwner())) {
-                Object node = encloser.getOwner();
-                if (!Model.getFacade().getDeploymentLocations(comp).contains(
-                        node)) {
-                    Model.getCoreHelper().addDeploymentLocation(comp, node);
-                }
-            }
-            super.setEnclosingFig(encloser);
-
-            if (getLayer() != null) {
-                // elementOrdering(figures);
-                List contents = new ArrayList(getLayer().getContents());
-                Iterator it = contents.iterator();
-                while (it.hasNext()) {
-                    Object o = it.next();
-                    if (o instanceof FigEdgeModelElement) {
-                        FigEdgeModelElement figedge = (FigEdgeModelElement) o;
-                        figedge.getLayer().bringToFront(figedge);
-                    }
-                }
-            }
-        } else if (encloser == null && getEnclosingFig() != null) {
-            Object encloserOwner = getEnclosingFig().getOwner();
-            if (Model.getFacade().isANode(encloserOwner)
-                    && (Model.getFacade().getDeploymentLocations(comp)
-                            .contains(encloserOwner))) {
-                Model.getCoreHelper().removeDeploymentLocation(comp,
-                        encloserOwner);
-            }
-            super.setEnclosingFig(encloser);
-        }
-    }
-
-    /*
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
-     */
-    @Override
-    public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = super.getPopUpActions(me);
-        // Modifiers ...
-        popUpActions.add(
-                popUpActions.size() - getPopupAddOffset(),
-                buildModifierPopUp(ABSTRACT | LEAF | ROOT));
-        return popUpActions;
-    }
-
 }

@@ -24,17 +24,9 @@
 
 package org.argouml.structure2.diagram;
 
-import java.awt.Dimension;
 import java.awt.Rectangle;
-
-import org.apache.log4j.Logger;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
-import org.tigris.gef.base.Selection;
-import org.tigris.gef.presentation.Fig;
+import org.argouml.uml.diagram.static_structure.ui.FigDataType;
 
 /**
  * Class to display graphics for a UML DataType in a diagram.
@@ -47,28 +39,7 @@ import org.tigris.gef.presentation.Fig;
  * Every DataType shows a keyword, but it is not 
  * always <<datatype>>, e.g. for an Enumeration.
  */
-class FigDataType2 extends FigClassifierBox {
-
-    private static final Logger LOG = Logger.getLogger(FigDataType2.class);
-    
-    private static final int MIN_WIDTH = 40;
-
-    private void constructFigs() {
-        getStereotypeFig().setKeyword(getKeyword());
-
-        setSuppressCalcBounds(true);
-        addFig(getBigPort());
-        addFig(getStereotypeFig());
-        addFig(getNameFig());
-        addFig(getOperationsFig());
-        addFig(borderFig);
-
-        setSuppressCalcBounds(false);
-
-        // Set the bounds of the figure to the total of the above 
-        enableSizeChecking(true);
-        super.setStandardBounds(X0, Y0, WIDTH, NAME_FIG_HEIGHT + ROWHEIGHT);
-    }
+class FigDataType2 extends FigDataType {
 
     /**
      * Primary constructor for a {@link FigDataType2}.
@@ -96,187 +67,5 @@ class FigDataType2 extends FigClassifierBox {
     public FigDataType2(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        constructFigs();
     }
-
-    /**
-     * This function shall return the keyword to be used by the constructor. <p>
-     * 
-     * Subclasses of DataType shall 
-     * override this method to set their own keyword.
-     * 
-     * @return the string to be used as the keyword
-     */
-    protected String getKeyword() {
-        return "datatype";
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#makeSelection()
-     */
-    @Override
-    public Selection makeSelection() {
-        return new SelectionDataType(this);
-    }
-
-    /**
-     * Gets the minimum size permitted for a datatype on the diagram.<p>
-     *
-     * Parts of this are hardcoded with magic numbers.<p>
-     *
-     * @return  the size of the minimum bounding box.
-     */
-    @Override
-    public Dimension getMinimumSize() {
-        // Use "aSize" to build up the minimum size. Start with the size of the
-        // name compartment and build up.
-
-        Dimension aSize = getNameFig().getMinimumSize();
-
-        aSize.height += NAME_V_PADDING * 2;
-        aSize.height = Math.max(NAME_FIG_HEIGHT, aSize.height);
-
-        // If we have a stereotype displayed, then allow some space for that
-        // (width and height)
-        aSize = addChildDimensions(aSize, getStereotypeFig());
-        aSize = addChildDimensions(aSize, getOperationsFig());
-
-        // we want to maintain a minimum width for datatypes
-        aSize.width = Math.max(MIN_WIDTH, aSize.width);
-
-        return aSize;
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#getLineWidth()
-     */
-    @Override
-    public int getLineWidth() {
-        return borderFig.getLineWidth();
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
-     */
-    @Override
-    public void setEnclosingFig(Fig encloser) {
-        Fig oldEncloser = getEnclosingFig();
-
-        if (encloser == null
-                || (encloser != null
-                && !Model.getFacade().isAInstance(encloser.getOwner()))) {
-            super.setEnclosingFig(encloser);
-        }
-        if (!(Model.getFacade().isAUMLElement(getOwner()))) {
-            return;
-        }
-        /* If this fig is not visible, do not adapt the UML model!
-         * This is used for deleting. See issue 3042.
-         */
-        if  (!isVisible()) {
-            return;
-        }
-        Object me = getOwner();
-        Object m = null;
-
-        try {
-            // If moved into an Package
-            if (encloser != null
-                    && oldEncloser != encloser
-                    && Model.getFacade().isAPackage(encloser.getOwner())) {
-                Model.getCoreHelper().setNamespace(me, encloser.getOwner());
-            }
-
-            // If default Namespace is not already set
-            if (Model.getFacade().getNamespace(me) == null
-                    && (TargetManager.getInstance().getTarget()
-                    instanceof ArgoDiagram)) {
-                m =
-                    ((ArgoDiagram) TargetManager.getInstance().getTarget())
-                        .getNamespace();
-                Model.getCoreHelper().setNamespace(me, m);
-            }
-        } catch (Exception e) {
-            LOG.error("could not set package due to:" + e
-                    + "' at " + encloser, e);
-        }
-
-    }
-
-    /**
-     * USED BY PGML.tee.
-     * @return the class name and bounds together with compartment
-     * visibility.
-     */
-    @Override
-    public String classNameAndBounds() {
-        return super.classNameAndBounds()
-                + "operationsVisible=" + isOperationsVisible();
-    }
-
-
-    /**
-     * Sets the bounds, but the size will be at least the one returned by
-     * {@link #getMinimumSize()}, unless checking of size is disabled.<p>
-     *
-     * If the required height is bigger, then the additional height is
-     * equally distributed among all figs (i.e. compartments), such that the
-     * accumulated height of all visible figs equals the demanded height<p>.
-     *
-     * @param x  Desired X coordinate of upper left corner
-     *
-     * @param y  Desired Y coordinate of upper left corner
-     *
-     * @param w  Desired width of the figure
-     *
-     * @param h  Desired height of the figure
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
-     */
-    @Override
-    protected void setStandardBounds(final int x, final int y, final int w,
-            final int h) {
-
-        // Save our old boundaries to use in our property message later
-        Rectangle oldBounds = getBounds();
-        // and get minimum size info.
-
-        // set bounds of big box
-        getBigPort().setBounds(x, y, w, h);
-        borderFig.setBounds(x, y, w, h);
-
-        int currentHeight = 0;
-
-        if (getStereotypeFig().isVisible()) {
-            int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
-            getStereotypeFig().setBounds(
-                    x,
-                    y,
-                    w,
-                    stereotypeHeight);
-            currentHeight = stereotypeHeight;
-        }
-
-        int nameHeight = getNameFig().getMinimumSize().height;
-        getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
-        currentHeight += nameHeight;
-
-        if (getOperationsFig().isVisible()) {
-            int operationsY = y + currentHeight;
-            int operationsHeight = (h + y) - operationsY - LINE_WIDTH;
-            getOperationsFig().setBounds(
-                    x,
-                    operationsY,
-                    w,
-                    operationsHeight);
-        }
-
-        // Now force calculation of the bounds of the figure, update the edges
-        // and trigger anyone who's listening to see if the "bounds" property
-        // has changed.
-
-        calcBounds();
-        updateEdges();
-        firePropChange("bounds", oldBounds, getBounds());
-    }
-
 }

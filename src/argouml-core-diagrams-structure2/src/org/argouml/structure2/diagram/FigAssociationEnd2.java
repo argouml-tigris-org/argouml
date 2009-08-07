@@ -49,5 +49,4 @@ class FigAssociationEnd2 extends FigAssociationEnd {
     public FigAssociationEnd2(Object owner, DiagramSettings settings) {
         super(owner, settings);
     }
-
 }

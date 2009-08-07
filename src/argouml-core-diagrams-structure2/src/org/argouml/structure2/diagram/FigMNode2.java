@@ -25,19 +25,13 @@
 package org.argouml.structure2.diagram;
 
 import java.awt.Rectangle;
-import java.awt.event.MouseEvent;
-import java.util.Vector;
-
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.deployment.ui.AbstractFigNode;
-import org.tigris.gef.presentation.FigText;
+import org.argouml.uml.diagram.deployment.ui.FigMNode;
 
 /**
  * Class to display graphics for a UML Node in a diagram.
- *
- * @author 5eichler@informatik.uni-hamburg.de
  */
-class FigMNode2 extends AbstractFigNode {
+class FigMNode2 extends FigMNode {
     
     /**
      * Construct a new FigMNode.
@@ -50,25 +44,4 @@ class FigMNode2 extends AbstractFigNode {
             DiagramSettings settings) {
         super(owner, bounds, settings);
     }
-    
-    @Override
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp("parsing.help.fig-node");
-        }
-    }
-
-    /*
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
-     */
-    @Override
-    public Vector getPopUpActions(MouseEvent me) {
-        Vector popUpActions = super.getPopUpActions(me);
-        // Modifiers ...
-        popUpActions.add(
-                popUpActions.size() - getPopupAddOffset(),
-                buildModifierPopUp(ABSTRACT | LEAF | ROOT));
-        return popUpActions;
-    }
-
 }

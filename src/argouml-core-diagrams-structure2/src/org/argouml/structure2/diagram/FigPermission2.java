@@ -25,6 +25,7 @@
 package org.argouml.structure2.diagram;
 
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigPermission;
 
 /**
  * The Fig for a permission, which is a form of dependency.
@@ -37,7 +38,7 @@ import org.argouml.uml.diagram.DiagramSettings;
  * 
  * @author Markus Klink
  */
-class FigPermission2 extends FigDependency2 {
+class FigPermission2 extends FigPermission {
     
     /**
      * Construct a Fig.
@@ -48,6 +49,5 @@ class FigPermission2 extends FigDependency2 {
     public FigPermission2(Object owner, DiagramSettings settings) {
         super(owner, settings);
     }
-
 }
 
