@@ -164,7 +164,8 @@ public class FigNodeAssociation extends FigNodeModelElement {
         // Create the new FigAssociation edge to replace the node
         final GraphEdgeRenderer renderer =
             lay.getGraphEdgeRenderer();
-        final FigAssociation figEdge = (FigAssociation) renderer.getFigEdgeFor(
+        final FigEdgeModelElement figEdge =
+            (FigEdgeModelElement) renderer.getFigEdgeFor(
                 gm, lay, association, null);
         lay.add(figEdge);
         gm.addEdge(association);
