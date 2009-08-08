@@ -416,6 +416,7 @@ public abstract class FigNodeModelElement
         bigPort = new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
         nameFig = new FigNameWithAbstractAndBold(element, 
                 new Rectangle(X0, Y0, WIDTH, NAME_FIG_HEIGHT), getSettings(), true);
+        stereotypeFig = createStereotypeFig();
         constructFigs();
         
         // TODO: For a FigPool the element will be null.
@@ -461,6 +462,13 @@ public abstract class FigNodeModelElement
         
         readyToEdit = true;
     }
+    
+    protected FigStereotypesGroup createStereotypeFig() {
+        return new FigStereotypesGroup(getOwner(), 
+                new Rectangle(X0, Y0, WIDTH, STEREOHEIGHT), settings);
+    }
+
+    
     
     /**
      * This is the final call at creation time of the Fig, i.e. here
@@ -1982,10 +1990,6 @@ public abstract class FigNodeModelElement
      * @return the stereotype FigGroup
      */
     protected FigStereotypesGroup getStereotypeFig() {
-        if (stereotypeFig == null) {
-            stereotypeFig = new FigStereotypesGroup(getOwner(), 
-                    new Rectangle(X0, Y0, WIDTH, STEREOHEIGHT), settings);
-        }
         return stereotypeFig;
     }
 
@@ -2344,23 +2348,33 @@ public abstract class FigNodeModelElement
         Object modelElement = getOwner();
 
         if (modelElement != null) {
-            Collection stereos = Model.getFacade().getStereotypes(modelElement);
+            int stereotypeCount = getStereotypeCount();
 
             if (getStereotypeView() 
                     == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON
-                    && (stereos == null 
-                            || stereos.size() != 1 
-                            ||  (stereos.size() == 1 
+                    && (stereotypeCount != 1 
+                            ||  (stereotypeCount == 1 
                                     // TODO: Find a way to replace 
                                     // this dependency on Project
                                     && getProject().getProfileConfiguration()
                                     .getFigNodeStrategy().getIconForStereotype(
-                                            stereos.iterator().next()) 
+                                            getStereotypeFig().getStereotypeFigs().iterator().next().getOwner()) 
                                             == null))) {
                 practicalView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;
             }
         }
         return practicalView;
+    }
+    
+    /**
+     * Get the number of stereotypes contained in this FigNode
+     * @return the number of stereotypes contained in the FigNode
+     */
+    public int getStereotypeCount() {
+        if (getStereotypeFig() == null) {
+            return 0;
+        }
+        return getStereotypeFig().getStereotypeCount();
     }
     
     /**

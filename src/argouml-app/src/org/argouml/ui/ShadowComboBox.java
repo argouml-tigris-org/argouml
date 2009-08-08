@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,6 +35,7 @@ import javax.swing.ListCellRenderer;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigStereotypesGroup;
 
 /**
  * A ComboBox that contains the set of possible Shadow Width values.
@@ -43,6 +44,11 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
  */
 public class ShadowComboBox extends JComboBox {
 
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3440806802523267746L;
+    
     private static ShadowFig[]  shadowFigs;
 
     /**
@@ -69,10 +75,14 @@ public class ShadowComboBox extends JComboBox {
      * Renders each combo box entry as a shadowed diagram figure with the
      * associated level of shadow.
      */
-    private class ShadowRenderer
-	extends JComponent
-	implements ListCellRenderer {
-
+    private class ShadowRenderer extends JComponent
+            implements ListCellRenderer {
+        
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 5939340501470674464L;
+        
         private ShadowFig  currentFig;
 
         /**
@@ -142,18 +152,23 @@ public class ShadowComboBox extends JComboBox {
                 currentFig.paint(g);
             }
         }
-
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = 5939340501470674464L;
     }
 
     /**
      * This Fig is never placed on a diagram. It is only used by the call
      * renderer so that pick list items look like diagram Figs.
+     * TODO: This Fig does not represent a model element and so it
+     * should not extend FigNodeModelElement. We should split
+     * FigNodeModelElement in two, one for base functionality for all nodes
+     * and one that is truly for model elements.
      */
     private static class ShadowFig extends FigNodeModelElement {
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 4999132551417131227L;
+
         /**
          * Constructor.
          */
@@ -180,17 +195,13 @@ public class ShadowComboBox extends JComboBox {
             super.setShadowSizeFriend(size);
         }
         
-
         /**
-         * The UID.
+         * This isn't really a Fig representing a model element so
+         * there is always no stereotype.
+         * @return null
          */
-        private static final long serialVersionUID = 4999132551417131227L;
-
-
+        protected FigStereotypesGroup createStereotypeFig() {
+            return null;
+        }
     }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 3440806802523267746L;
 }

@@ -88,12 +88,12 @@ public class FigPool extends FigNodeModelElement {
 
 
     /**
-     * Get the Fig containing the stereotype(s). As there is no stereotype
+     * Create the Fig containing the stereotype(s). As there is no stereotype
      * display for this Fig we return null
      *
      * @return the stereotype FigGroup
      */
-    protected FigStereotypesGroup getStereotypeFig() {
+    protected FigStereotypesGroup createStereotypeFig() {
         return null;
     }
 
