@@ -1,0 +1,12 @@
+Manifest-Version: 2.0
+Class-Path: argouml.jar
+Created-By: 1.2 (Sun Microsystems Inc.) 
+
+Name: org/argouml/diagram/uml2/Uml2DiagramModule.class
+Extension-name: org.argouml.diagram..uml2.Uml2DiagramModule
+Specification-Title: UML2 Diagram Module
+Specification-Version: 0.1
+Specification-Vendor: ArgoUML Team
+Implementation-Title: UML2 Diagram Module
+Implementation-Version: 0.1
+Implementation-Vendor: ArgoUML Team
