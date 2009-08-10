@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram;
 
+import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
@@ -268,6 +269,17 @@ public interface ArgoDiagram extends ArgoNotationEventListener,
      * @return an iterator which iterates over all Figs in Diagram
      */
     public Iterator<Fig> getFigIterator();
+    
+    /**
+     * Create a diagram element suitable for the base diagram type
+     * @param modelElement the model element the diagram element
+     * will represent
+     * @param bounds the bounds of the newly created diagram element
+     * @return the newly created diagram element.
+     */
+    public DiagramElement createDiagramElement(
+            final Object modelElement,
+            final Rectangle bounds);
     
     ///////////////// GEF Methods ////////////////////////////
     // TODO: These should really be picked up automatically from

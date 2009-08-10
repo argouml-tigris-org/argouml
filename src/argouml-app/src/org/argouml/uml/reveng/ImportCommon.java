@@ -199,9 +199,13 @@ public abstract class ImportCommon implements ImportSettingsInternal {
                 File f = files.get(i);
                 String fn = f.getAbsolutePath();
                 String lm = String.valueOf(f.lastModified());
-                if (lm.equals(
-                        Model.getFacade().getTaggedValueValue(model, fn))) {
-                    files.remove(i);
+                
+                if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                    // TODO: Not yet working for UML2
+                    if (lm.equals(
+                            Model.getFacade().getTaggedValueValue(model, fn))) {
+                        files.remove(i);
+                    }
                 }
             }
         }

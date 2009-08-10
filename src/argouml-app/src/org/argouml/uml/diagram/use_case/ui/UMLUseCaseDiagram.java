@@ -36,12 +36,14 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.ActionSetMode;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.UseCaseDiagramGraphModel;
@@ -481,19 +483,29 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             bounds = new Rectangle(location.x, location.y, 0, 0);
         }
 
+        figNode = (FigNode) createDiagramElement(droppedObject, bounds);
+        return figNode;
+    }
+
+    public DiagramElement createDiagramElement(
+            final Object modelElement,
+            final Rectangle bounds) {
+        
+        FigNodeModelElement figNode = null;
+        
         DiagramSettings settings = getDiagramSettings();
         
-        if (Model.getFacade().isAActor(droppedObject)) {
-            figNode = new FigActor(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAUseCase(droppedObject)) {
-            figNode = new FigUseCase(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAPackage(droppedObject)) {
-            figNode = new FigPackage(droppedObject, bounds, settings);
+        if (Model.getFacade().isAActor(modelElement)) {
+            figNode = new FigActor(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAUseCase(modelElement)) {
+            figNode = new FigUseCase(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAComment(modelElement)) {
+            figNode = new FigComment(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAPackage(modelElement)) {
+            figNode = new FigPackage(modelElement, bounds, settings);
         }
         if (figNode != null) {
-            LOG.debug("Dropped object " + droppedObject + " converted to " 
+            LOG.debug("Model element " + modelElement + " converted to " 
                     + figNode);
         } else {
             LOG.debug("Dropped object NOT added " + figNode);

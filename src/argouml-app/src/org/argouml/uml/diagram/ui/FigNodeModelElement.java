@@ -88,6 +88,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramAppearance;
+import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.PathContainer;
 import org.argouml.uml.diagram.DiagramSettings.StereotypeStyle;
@@ -133,7 +134,8 @@ public abstract class FigNodeModelElement
         IItemUID,
         Clarifiable,
         ArgoFig,
-        StereotypeStyled {
+        StereotypeStyled,
+        DiagramElement {
 
 
     private static final Logger LOG =

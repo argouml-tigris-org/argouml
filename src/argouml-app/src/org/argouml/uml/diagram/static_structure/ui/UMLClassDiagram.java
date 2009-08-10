@@ -34,6 +34,7 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
@@ -44,6 +45,7 @@ import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.FigClassAssociationClass;
 import org.argouml.uml.diagram.ui.FigEdgeAssociationClass;
 import org.argouml.uml.diagram.ui.FigNodeAssociation;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.ModeCreateDependency;
 import org.argouml.uml.diagram.ui.ModeCreatePermission;
 import org.argouml.uml.diagram.ui.ModeCreateUsage;
@@ -653,70 +655,60 @@ public class UMLClassDiagram extends UMLDiagram {
 
     }
     
-    @Override
-    public FigNode drop(Object droppedObject, Point location) {        
-        FigNode figNode = null;
-
-        // If location is non-null, convert to a rectangle that we can use
-        Rectangle bounds = null;
-        if (location != null) {
-            bounds = new Rectangle(location.x, location.y, 0, 0);
-        }
-
+    public DiagramElement createDiagramElement(
+            final Object modelElement,
+            final Rectangle bounds) {
+        
+        FigNodeModelElement figNode = null;
+        
         DiagramSettings settings = getDiagramSettings();
         
-        if (Model.getFacade().isAAssociation(droppedObject)) {
+        if (Model.getFacade().isAAssociation(modelElement)) {
             figNode =
-                createNaryAssociationNode(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAClass(droppedObject)) {
-            figNode = new FigClass(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAInterface(droppedObject)) {
-            figNode = new FigInterface(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAModel(droppedObject)) {
-            figNode = new FigModel(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isASubsystem(droppedObject)) {
-            figNode = new FigSubsystem(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAPackage(droppedObject)) {
-            figNode = new FigPackage(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAEnumeration(droppedObject)) {
-            figNode = new FigEnumeration(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isADataType(droppedObject)) {
-            figNode = new FigDataType(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAStereotype(droppedObject)) {
-            figNode = new FigStereotypeDeclaration(droppedObject, bounds, 
+                createNaryAssociationNode(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAClass(modelElement)) {
+            figNode = new FigClass(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAInterface(modelElement)) {
+            figNode = new FigInterface(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAModel(modelElement)) {
+            figNode = new FigModel(modelElement, bounds, settings);
+        } else if (Model.getFacade().isASubsystem(modelElement)) {
+            figNode = new FigSubsystem(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAPackage(modelElement)) {
+            figNode = new FigPackage(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAComment(modelElement)) {
+            figNode = new FigComment(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAEnumeration(modelElement)) {
+            figNode = new FigEnumeration(modelElement, bounds, settings);
+        } else if (Model.getFacade().isADataType(modelElement)) {
+            figNode = new FigDataType(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAStereotype(modelElement)) {
+            figNode = new FigStereotypeDeclaration(modelElement, bounds, 
                     settings);
-        } else if (Model.getFacade().isAException(droppedObject)) {
-            figNode = new FigException(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isASignal(droppedObject)) {
-            figNode = new FigSignal(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAActor(droppedObject)) {
-            figNode = new FigActor(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAUseCase(droppedObject)) {
-            figNode = new FigUseCase(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAObject(droppedObject)) {
-            figNode = new FigObject(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isANodeInstance(droppedObject)) {
-            figNode = new FigNodeInstance(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAComponentInstance(droppedObject)) {
-            figNode = new FigComponentInstance(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isANode(droppedObject)) {
-            figNode = new FigMNode(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAComponent(droppedObject)) {
-            figNode = new FigComponent(droppedObject, bounds, settings);
+        } else if (Model.getFacade().isAException(modelElement)) {
+            figNode = new FigException(modelElement, bounds, settings);
+        } else if (Model.getFacade().isASignal(modelElement)) {
+            figNode = new FigSignal(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAActor(modelElement)) {
+            figNode = new FigActor(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAUseCase(modelElement)) {
+            figNode = new FigUseCase(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAObject(modelElement)) {
+            figNode = new FigObject(modelElement, bounds, settings);
+        } else if (Model.getFacade().isANodeInstance(modelElement)) {
+            figNode = new FigNodeInstance(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAComponentInstance(modelElement)) {
+            figNode = new FigComponentInstance(modelElement, bounds, settings);
+        } else if (Model.getFacade().isANode(modelElement)) {
+            figNode = new FigMNode(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAComponent(modelElement)) {
+            figNode = new FigComponent(modelElement, bounds, settings);
         }
-        
         if (figNode != null) {
-            // if location is null here the position of the new figNode is set
-            // after in org.tigris.gef.base.ModePlace.mousePressed(MouseEvent e)
-            if (location != null) {
-                figNode.setLocation(location.x, location.y);
-            }
-            LOG.debug("Dropped object " + droppedObject + " converted to " 
+            LOG.debug("Model element " + modelElement + " converted to " 
                     + figNode);
         } else {
-            LOG.debug("Dropped object NOT added " + droppedObject);
+            LOG.debug("Dropped object NOT added " + figNode);
         }
         return figNode;
     }

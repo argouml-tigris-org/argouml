@@ -24,6 +24,7 @@
 
 package org.argouml.ui.targetmanager;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -40,6 +41,7 @@ import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.ArgoDiagramImpl;
+import org.argouml.uml.diagram.DiagramElement;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
@@ -461,6 +463,12 @@ public class TestTargetManager extends TestCase {
 	    public void encloserChanged(FigNode enclosed, 
 	            FigNode oldEncloser, FigNode newEncloser) {
 	    }
+	    public DiagramElement createDiagramElement(
+	            final Object modelElement,
+	            final Rectangle bounds) {
+	        return null;
+	    }
+	    
 	};
 	Project p = ProjectManager.getManager().getCurrentProject();
 	p.addDiagram(diag);

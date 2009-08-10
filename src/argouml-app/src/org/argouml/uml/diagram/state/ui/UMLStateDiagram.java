@@ -38,15 +38,20 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.ui.ActionSetMode;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.use_case.ui.FigActor;
+import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCallAction;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewCreateAction;
@@ -855,4 +860,72 @@ public class UMLStateDiagram extends UMLDiagram {
         
         return figNode;
     }
+    
+
+    public DiagramElement createDiagramElement(
+            final Object modelElement,
+            final Rectangle bounds) {
+        
+        FigNodeModelElement figNode = null;
+        
+        DiagramSettings settings = getDiagramSettings();
+        
+        if (Model.getFacade().isAActionState(modelElement)) {
+            figNode = new FigActionState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAFinalState(modelElement)) {
+            figNode = new FigFinalState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAStubState(modelElement)) {
+            figNode = new FigStubState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isASubmachineState(modelElement)) {
+            figNode = new FigSubmachineState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isACompositeState(modelElement)) {
+            figNode = new FigCompositeState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isASynchState(modelElement)) {
+            figNode = new FigSynchState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAState(modelElement)) {
+            figNode = new FigSimpleState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAComment(modelElement)) {
+            figNode = new FigComment(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAPseudostate(modelElement)) {
+            Object kind = Model.getFacade().getKind(modelElement);
+            if (kind == null) {
+                LOG.warn("found a null type pseudostate");
+                return null;
+            }
+            if (kind.equals(Model.getPseudostateKind().getInitial())) {
+                figNode = new FigInitialState(modelElement, bounds, settings);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getChoice())) {
+                figNode = new FigBranchState(modelElement, bounds, settings);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getJunction())) {
+                figNode = new FigJunctionState(modelElement, bounds, settings);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getFork())) {
+                figNode = new FigForkState(modelElement, bounds, settings);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getJoin())) {
+                figNode = new FigJoinState(modelElement, bounds, settings);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getShallowHistory())) {
+                figNode = new FigShallowHistoryState(modelElement, bounds, 
+                        settings);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getDeepHistory())) {
+                figNode = new FigDeepHistoryState(modelElement, bounds, 
+                        settings);
+            } else {
+                LOG.warn("found a type not known");
+            }
+        }
+        
+        if (figNode != null) {
+            LOG.debug("Model element " + modelElement + " converted to " 
+                    + figNode);
+        } else {
+            LOG.debug("Dropped object NOT added " + figNode);
+        }
+        return figNode;
+    }
+    
 }

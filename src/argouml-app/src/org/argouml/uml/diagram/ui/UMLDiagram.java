@@ -623,9 +623,17 @@ public abstract class UMLDiagram
      * @param location The location in the diagram where the object is dropped.
      * @return The object that has been added to the diagram.
      */
-    @SuppressWarnings("unused")
     public FigNode drop(Object droppedObject, Point location) {
-        return null;
+        FigNode figNode = null;
+       
+        // If location is non-null, convert to a rectangle that we can use
+        Rectangle bounds = null;
+        if (location != null) {
+            bounds = new Rectangle(location.x, location.y, 0, 0);
+        }
+
+        figNode = (FigNode) createDiagramElement(droppedObject, bounds);
+        return figNode;
     }
     
     /**
@@ -662,7 +670,7 @@ public abstract class UMLDiagram
      * @param settings the diagram setting for presentation.
      * @return The FigNode of the diamond representing the model element
      */
-    protected FigNode createNaryAssociationNode(
+    protected FigNodeModelElement createNaryAssociationNode(
             final Object modelElement,
             final Rectangle bounds,
             final DiagramSettings settings) {

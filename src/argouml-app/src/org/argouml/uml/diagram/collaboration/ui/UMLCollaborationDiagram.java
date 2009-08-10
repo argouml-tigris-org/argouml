@@ -36,6 +36,7 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
@@ -43,6 +44,7 @@ import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.FigMessage;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.ToolBarUtility;
@@ -530,6 +532,38 @@ public class UMLCollaborationDiagram extends UMLDiagram {
                     + figNode);
         } else {
             LOG.debug("Dropped object NOT added " + droppedObject);
+        }
+        return figNode;
+    }
+    
+
+    public DiagramElement createDiagramElement(
+            final Object modelElement,
+            final Rectangle bounds) {
+        
+        FigNodeModelElement figNode = null;
+        
+        DiagramSettings settings = getDiagramSettings();
+        
+        if (Model.getFacade().isAClassifierRole(modelElement)) {
+            figNode = new FigClassifierRole(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAMessage(modelElement)) {
+            figNode = new FigMessage(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAComment(modelElement)) {
+            figNode = new FigComment(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAClassifierRole(modelElement)) {
+            figNode =
+                makeNewFigCR(modelElement, bounds.getLocation());           
+        } else if (Model.getFacade().isAClassifier(modelElement)) {
+            figNode =
+                makeNewFigCR(makeNewCR(modelElement), bounds.getLocation());
+        }
+        
+        if (figNode != null) {
+            LOG.debug("Model element " + modelElement + " converted to " 
+                    + figNode);
+        } else {
+            LOG.debug("Dropped object NOT added " + figNode);
         }
         return figNode;
     }

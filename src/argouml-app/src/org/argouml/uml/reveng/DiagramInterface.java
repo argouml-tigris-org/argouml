@@ -33,12 +33,13 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
-import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
-import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.Fig;
@@ -158,12 +159,13 @@ public class DiagramInterface {
     public void addPackage(Object newPackage) {
         if (!isInDiagram(newPackage)) {
             if (currentGM.canAddNode(newPackage)) {
-                FigPackage newPackageFig = new FigPackage(newPackage,
-                        new Rectangle(0, 0, 0, 0), currentDiagram
-                                .getDiagramSettings());
-                currentLayer.add(newPackageFig);
+                DiagramElement newPackageFig =
+                    currentDiagram.createDiagramElement(
+                        newPackage,
+                        new Rectangle(0, 0, 0, 0));
+                currentLayer.add((FigNodeModelElement) newPackageFig);
                 currentGM.addNode(newPackage);
-                currentLayer.putInPosition(newPackageFig);
+                currentLayer.putInPosition((FigNodeModelElement) newPackageFig);
             }
         }
     }
@@ -286,17 +288,10 @@ public class DiagramInterface {
     private void addClassifier(Object classifier, boolean minimise) {
         // if the classifier is not in the current diagram, add it:
         if (currentGM.canAddNode(classifier)) {
-            FigClassifierBox newFig;
-            if (Model.getFacade().isAClass(classifier)) {
-                newFig = new FigClass(classifier, new Rectangle(0, 0, 0, 0),
-                        currentDiagram.getDiagramSettings());
-            } else if (Model.getFacade().isAInterface(classifier)) {
-                newFig = new FigInterface(classifier,
-                        new Rectangle(0, 0, 0, 0), currentDiagram
-                                .getDiagramSettings());
-            } else {
-                return;
-            }
+            FigClassifierBox newFig =
+                (FigClassifierBox) currentDiagram.createDiagramElement(
+                        classifier,
+                        new Rectangle(0, 0, 0, 0));
             
             /*
              * The following calls are ORDER DEPENDENT. Not sure why, but the
@@ -309,7 +304,8 @@ public class DiagramInterface {
 
             newFig.setOperationsVisible(!minimise);
             if (Model.getFacade().isAClass(classifier)) {            
-                ((FigClass) newFig).setAttributesVisible(!minimise);
+                ((AttributesCompartmentContainer) newFig).setAttributesVisible(
+                        !minimise);
             }
 
             newFig.renderingChanged();

@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.activity.ui;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
@@ -44,6 +43,7 @@ import org.argouml.model.ActivityGraphsHelper;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
@@ -62,6 +62,7 @@ import org.argouml.uml.diagram.state.ui.FigJunctionState;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionSetMode;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewActionSequence;
@@ -800,70 +801,61 @@ public class UMLActivityDiagram extends UMLDiagram {
         return false;
     }
     
-    @Override
-    public FigNode drop(Object droppedObject, Point location) {
-        FigNode figNode = null;
-
-        // If location is non-null, convert to a rectangle that we can use
-        Rectangle bounds = null;
-        if (location != null) {
-            bounds = new Rectangle(location.x, location.y, 0, 0);
-        }
+    public DiagramElement createDiagramElement(
+            final Object modelElement,
+            final Rectangle bounds) {
+        
+        FigNodeModelElement figNode = null;
+        
         DiagramSettings settings = getDiagramSettings();
-
-        if (Model.getFacade().isAPartition(droppedObject)) {
-            figNode = new FigPartition(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAActionState(droppedObject)) {
-            figNode = new FigActionState(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isACallState(droppedObject)) {
-            figNode = new FigCallState(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAObjectFlowState(droppedObject)) {
-            figNode = new FigObjectFlowState(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isASubactivityState(droppedObject)) {
-            figNode = new FigSubactivityState(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAFinalState(droppedObject)) {
-            figNode = new FigFinalState(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAPseudostate(droppedObject)) {
-            Object kind = Model.getFacade().getKind(droppedObject);
+        
+        if (Model.getFacade().isAPartition(modelElement)) {
+            figNode = new FigPartition(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAActionState(modelElement)) {
+            figNode = new FigActionState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isACallState(modelElement)) {
+            figNode = new FigCallState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAObjectFlowState(modelElement)) {
+            figNode = new FigObjectFlowState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isASubactivityState(modelElement)) {
+            figNode = new FigSubactivityState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAFinalState(modelElement)) {
+            figNode = new FigFinalState(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAPseudostate(modelElement)) {
+            Object kind = Model.getFacade().getKind(modelElement);
             if (kind == null) {
                 LOG.warn("found a null type pseudostate");
                 return null;
             }
             if (kind.equals(Model.getPseudostateKind().getInitial())) {
-                figNode = new FigInitialState(droppedObject, bounds, settings);
+                figNode = new FigInitialState(modelElement, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getChoice())) {
-                figNode = new FigBranchState(droppedObject, bounds, settings);
+                figNode = new FigBranchState(modelElement, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getJunction())) {
-                figNode = new FigJunctionState(droppedObject, bounds, settings);
+                figNode = new FigJunctionState(modelElement, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getFork())) {
-                figNode = new FigForkState(droppedObject, bounds, settings);
+                figNode = new FigForkState(modelElement, bounds, settings);
             } else if (kind.equals(
                     Model.getPseudostateKind().getJoin())) {
-                figNode = new FigJoinState(droppedObject, bounds, settings);
+                figNode = new FigJoinState(modelElement, bounds, settings);
             } else {
                 LOG.warn("found a type not known");
             }
-        } else if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(droppedObject, bounds, settings);
+        } else if (Model.getFacade().isAComment(modelElement)) {
+            figNode = new FigComment(modelElement, bounds, settings);
         }
         
         if (figNode != null) {
-            // if location is null here the position of the new figNode is set
-            // after in org.tigris.gef.base.ModePlace.mousePressed(MouseEvent e)
-            if (location != null) {
-                figNode.setLocation(location.x, location.y);
-            }
-            LOG.debug("Dropped object " + droppedObject + " converted to " 
+            LOG.debug("Model element " + modelElement + " converted to " 
                     + figNode);
         } else {
-            LOG.debug("Dropped object NOT added. This usualy means that this " 
-                    + "type of object is not accepted!");
+            LOG.debug("Dropped object NOT added " + figNode);
         }
-        
         return figNode;
     }
+    
 
 }
