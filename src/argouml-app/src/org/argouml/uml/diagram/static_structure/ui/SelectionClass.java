@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.event.MouseEvent;
+import java.util.Collection;
 
 import javax.swing.Icon;
 
@@ -32,7 +33,9 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
+import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.ModeCreateEdgeAndNode;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -153,6 +156,24 @@ public class SelectionClass extends SelectionNodeClarifiers2 {
     }
 
     @Override
+    protected ModeCreateEdgeAndNode getNewModeCreateEdgeAndNode(Editor ce,
+            Object theEdgeType, boolean postProcess,
+            SelectionNodeClarifiers2 nodeCreator) {
+        return  new ModeCreateEdgeAndNodeWithComposition(ce,
+                theEdgeType, postProcess, nodeCreator);
+    }
+
+    @Override
+    protected void postProcessEdge2(Object newEdge) {
+        if (Model.getFacade().isAAssociation(newEdge)) {
+            Collection assocEnds = Model.getFacade().getConnections(newEdge);
+            Object firstAE = assocEnds.iterator().next();
+            Object aggregationKind = Model.getAggregationKind().getComposite();
+            Model.getCoreHelper().setAggregation(firstAE, aggregationKind);
+        }
+    }
+
+    @Override
     public void mouseEntered(MouseEvent me) {
         super.mouseEntered(me);
         useComposite = me.isShiftDown();
@@ -161,6 +182,24 @@ public class SelectionClass extends SelectionNodeClarifiers2 {
     @Override
     protected Object getNewNode(int index) {
         return Model.getCoreFactory().buildClass();
+    }
+
+    /**
+     * My derived version that handles the creation of composition associations.
+     *
+     * @author Michiel
+     */
+    class ModeCreateEdgeAndNodeWithComposition extends ModeCreateEdgeAndNode {
+
+        public ModeCreateEdgeAndNodeWithComposition(Editor ce, Object edgeType,
+                boolean postProcess, SelectionNodeClarifiers2 nodeCreator) {
+            super(ce, edgeType, postProcess, nodeCreator);
+        }
+
+        @Override
+        protected void postProcessEdge(Object newEdge) {
+            postProcessEdge2(newEdge);
+        }
     }
 
 }

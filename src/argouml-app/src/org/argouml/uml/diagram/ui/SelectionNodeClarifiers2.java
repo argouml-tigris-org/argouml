@@ -79,6 +79,8 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     
     private static final int OFFSET = 2; 
     
+    private Object newEdge = null;
+
     private int button;
     
     /**
@@ -299,17 +301,36 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
         if (edgeType != null && nodeType != null) {
             Editor ce = Globals.curEditor();
             ModeCreateEdgeAndNode m =
-                new ModeCreateEdgeAndNode(ce,
-                      edgeType, isEdgePostProcessRequested(), this);
+                getNewModeCreateEdgeAndNode(ce,
+                        edgeType, isEdgePostProcessRequested(), this);
             m.setup((FigNode) getContent(), getContent().getOwner(),
                     bx, by, reverse);
             ce.pushMode(m);
         }
     }
     
+    /**
+     * Override this to implement post-processing.
+     * 
+     * @param ce the current Editor
+     * @param edgeType the new edge type
+     * @param postProcess true if post-processing is wanted
+     * @param nodeCreator this class will create the node
+     * @return the ModeCreate
+     */
+    protected ModeCreateEdgeAndNode getNewModeCreateEdgeAndNode(
+            Editor ce, Object edgeType, boolean postProcess, 
+            SelectionNodeClarifiers2 nodeCreator) {
+        return  new ModeCreateEdgeAndNode(ce,
+              edgeType, postProcess, nodeCreator);
+    }
+    
     @Override
     public void buttonClicked(int buttonCode) {
         super.buttonClicked(buttonCode);
+        if (isEdgePostProcessRequested()) {
+            postProcessEdge2(newEdge);
+        }
     }
 
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
@@ -329,15 +350,14 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     }
 
     private Object createEdge(MutableGraphModel gm, Object newNode, int index) {
-        Object edge;
         if (isReverseEdge(index)) {
-            edge = gm.connect(
+            newEdge = gm.connect(
                     newNode, getContent().getOwner(), getNewEdgeType(index));
         } else {
-            edge = gm.connect(
+            newEdge = gm.connect(
                     getContent().getOwner(), newNode, getNewEdgeType(index));
         }
-        return edge;
+        return newEdge;
     }
     
     protected Object createEdgeToSelf(MutableGraphModel gm) {
@@ -415,7 +435,14 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     protected boolean isEdgePostProcessRequested() {
         return false;
     }
-    
+
+    /**
+     * @param newEdge the new edge to post-process
+     */
+    protected void postProcessEdge2(Object newEdge) {
+        // do nothing by default
+    }
+
     /**
      * @return index of last button/handle that was clicked
      */
