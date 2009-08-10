@@ -199,8 +199,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getAddition(Object handle) {
-        throw new NotYetImplementedException();
-
+        return ((Include) handle).getAddition();
     }
 
     public Object getAggregation(Object handle) {
@@ -496,7 +495,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getCondition(Object handle) {
-        throw new NotYetImplementedException();
+        return ((Extend) handle).getCondition();
     }
 
     public Collection getConnections(Object handle) {
