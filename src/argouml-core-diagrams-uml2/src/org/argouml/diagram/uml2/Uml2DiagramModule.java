@@ -53,6 +53,9 @@ public class Uml2DiagramModule implements ModuleInterface {
         DiagramFactory.getInstance().registerDiagramFactory(
                 DiagramType.Class, 
                 (DiagramFactoryInterface2) new ClassDiagram2Factory());
+        DiagramFactory.getInstance().registerDiagramFactory(
+                DiagramType.UseCase, 
+                (DiagramFactoryInterface2) new UseCaseDiagram2Factory());
 
         LOG.info("ClassDiagram Module enabled.");
         return true;
