@@ -35,10 +35,12 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.CollaborationsHelper;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.SequenceDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionSetMode;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Editor;
@@ -273,36 +275,35 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
         return null;
     }
     
-    @Override
-    public FigNode drop(Object droppedObject, Point location) {
-        FigNode figNode = null;
+    public DiagramElement createDiagramElement(
+            final Object modelElement,
+            final Rectangle bounds) {
         
-
-        // If location is non-null, convert to a rectangle that we can use
-        Rectangle bounds = null;
-        if (location != null) {
-            bounds = new Rectangle(location.x, location.y, 0, 0);
-        }
+        FigNodeModelElement figNode = null;
+        
         DiagramSettings settings = getDiagramSettings();
         
-        if (Model.getFacade().isAComment(droppedObject)) {
-            figNode = new FigComment(droppedObject, bounds, settings);
-        } else if (Model.getFacade().isAClassifierRole(droppedObject)) {
-            if (!getGraphModel().getNodes().contains(droppedObject)) {
-                figNode = makeNewFigCR(droppedObject, location);  
+        if (Model.getFacade().isAComment(modelElement)) {
+            figNode = new FigComment(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAClassifierRole(modelElement)) {
+            if (!getGraphModel().getNodes().contains(modelElement)) {
+                figNode = makeNewFigCR(modelElement, bounds.getLocation());  
             }
-        } else if (Model.getFacade().isAClassifier(droppedObject)) {
-            figNode = makeNewFigCR(makeNewCR(droppedObject), location);
+        } else if (Model.getFacade().isAClassifier(modelElement)) {
+            figNode = makeNewFigCR(
+                    makeNewCR(modelElement),
+                    bounds.getLocation());
         }
         
         if (figNode != null) {
-            LOG.debug("Dropped object " + droppedObject + " converted to " 
+            LOG.debug("Model element " + modelElement + " converted to " 
                     + figNode);
         } else {
-            LOG.debug("Dropped object NOT added " + droppedObject);
+            LOG.debug("Dropped object NOT added " + figNode);
         }
         return figNode;
     }
+    
     
     @Override
     public String getInstructions(Object droppedObject) {
