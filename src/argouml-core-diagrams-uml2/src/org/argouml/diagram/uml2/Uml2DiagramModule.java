@@ -78,7 +78,7 @@ public class Uml2DiagramModule implements ModuleInterface {
     public String getInfo(int type) {
         switch (type) {
         case DESCRIPTION:
-            return "The new class diagram implementation";
+            return "The UML2 diagrams implementation";
         case AUTHOR:
             return "ArgoUML Core Development Team";
         case VERSION:

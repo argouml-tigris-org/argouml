@@ -24,8 +24,6 @@
 
 package org.argouml.diagram.uml2;
 
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 
@@ -34,12 +32,10 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ModeCreateDependency;
 import org.argouml.uml.diagram.ui.ModeCreatePermission;
 import org.argouml.uml.diagram.ui.ModeCreateUsage;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.argouml.util.ToolBarUtility;
@@ -143,7 +139,7 @@ public class UMLClassDiagram2 extends UMLStructureDiagram2 {
         if (init) {
             LayerPerspective lay =
                 new LayerPerspectiveMutable(Model.getFacade().getName(ns), gm);
-            ClassDiagram2Renderer rend = new ClassDiagram2Renderer(); // singleton
+            ClassDiagram2Renderer rend = new ClassDiagram2Renderer();
             lay.setGraphNodeRenderer(rend);
             lay.setGraphEdgeRenderer(rend);
             setLayer(lay);
