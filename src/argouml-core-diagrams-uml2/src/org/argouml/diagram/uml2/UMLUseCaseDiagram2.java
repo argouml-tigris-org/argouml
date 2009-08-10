@@ -43,7 +43,6 @@ import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.RadioAction;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.UseCaseDiagramGraphModel;
 import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
@@ -60,7 +59,7 @@ import org.tigris.gef.presentation.FigNode;
  * 
  * A use case diagram has as owner either a package or a classifier.
  */
-public class UMLUseCaseDiagram2 extends UMLDiagram {
+class UMLUseCaseDiagram2 extends UMLStructureDiagram2 {
 
     private static final Logger LOG = Logger.getLogger(UMLUseCaseDiagram2.class);
 

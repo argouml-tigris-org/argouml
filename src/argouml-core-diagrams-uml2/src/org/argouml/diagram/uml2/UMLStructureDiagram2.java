@@ -38,7 +38,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  * 
  * @author jrobbins@ics.uci.edy
  */
-public abstract class UMLStructureDiagram2 extends UMLDiagram {
+abstract class UMLStructureDiagram2 extends UMLDiagram {
 
     private static final long serialVersionUID = -9192325790126361563L;
 

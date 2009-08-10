@@ -66,7 +66,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author abonner
  */
-public class UseCaseDiagramRenderer2 extends UmlDiagramRenderer {
+class UseCaseDiagramRenderer2 extends UmlDiagramRenderer {
     
     static final long serialVersionUID = 2217410137377934879L;
 
@@ -240,5 +240,4 @@ public class UseCaseDiagramRenderer2 extends UmlDiagramRenderer {
 
         return newEdge;
     }
-
 }

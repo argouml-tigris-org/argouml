@@ -48,7 +48,7 @@ import org.tigris.gef.presentation.FigNode;
  * 
  * @author jrobbins@ics.uci.edy
  */
-public class UMLClassDiagram2 extends UMLStructureDiagram2 {
+class UMLClassDiagram2 extends UMLStructureDiagram2 {
 
     private static final long serialVersionUID = -9192325790126361563L;
 
