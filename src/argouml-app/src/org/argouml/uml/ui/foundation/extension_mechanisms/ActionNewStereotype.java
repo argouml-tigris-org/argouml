@@ -29,6 +29,7 @@ import java.util.Collection;
 
 import javax.swing.Action;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -44,6 +45,8 @@ import org.tigris.gef.presentation.Fig;
  * @author mvw@tigris.org
  */
 public class ActionNewStereotype extends AbstractActionNewModelElement {
+    
+    final static Logger LOG = Logger.getLogger(ActionNewStereotype.class);
 
     /**
      * The constructor.
@@ -69,6 +72,9 @@ public class ActionNewStereotype extends AbstractActionNewModelElement {
                     model,
                     models
             );
+        if (newStereo == null) {
+            LOG.error("We failed to create a stereotype");
+        }
         if (Model.getFacade().isAModelElement(t)) {
             Object ns = Model.getFacade().getNamespace(t);
             if (Model.getFacade().isANamespace(ns)) {
