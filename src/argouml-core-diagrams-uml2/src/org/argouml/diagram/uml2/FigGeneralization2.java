@@ -25,12 +25,12 @@
 package org.argouml.diagram.uml2;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigGeneralization;
 
 /**
  * The Fig for a Generalization.
  */
-class FigGeneralization2 extends FigEdgeModelElement {
+class FigGeneralization2 extends FigGeneralization {
 
     /**
      * Construct a new generalization edge with the given model element as the
