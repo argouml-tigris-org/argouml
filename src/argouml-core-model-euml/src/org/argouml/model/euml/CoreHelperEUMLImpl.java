@@ -45,6 +45,7 @@ import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.BehavioralFeature;
+import org.eclipse.uml2.uml.CallConcurrencyKind;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Constraint;
@@ -1334,7 +1335,14 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setConcurrency(Object handle, Object concurrencyKind) {
-        throw new NotYetImplementedException();
+        if (handle instanceof Operation
+                && concurrencyKind instanceof CallConcurrencyKind) {
+            ((Operation) handle).
+                    setConcurrency((CallConcurrencyKind) concurrencyKind);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle //$NON-NLS-1$
+                + " or concurrencyKind: " + concurrencyKind); //$NON-NLS-1$
     }
 
     public void setConnections(Object handle, Collection ends) {

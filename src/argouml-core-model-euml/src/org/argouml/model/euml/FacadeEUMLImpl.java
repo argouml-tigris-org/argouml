@@ -2043,7 +2043,18 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isConstructor(Object handle) {
-        throw new NotYetImplementedException();
+        if (handle instanceof Operation) {
+            final Operation operation = (Operation) handle;
+        
+            for (Object stereo : getStereotypes(operation)) {
+                if (modelImpl.getExtensionMechanismsHelper()
+                        .isStereotypeInh(stereo, "create",  //$NON-NLS-1$
+                                "BehavioralFeature")) { //$NON-NLS-1$
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean isFrozen(Object handle) {
@@ -2240,5 +2251,4 @@ class FacadeEUMLImpl implements Facade {
     public boolean isA(String metatypeName, Object element) {
         return getUMLClassName(element).equals(metatypeName);
     }
-
 }
