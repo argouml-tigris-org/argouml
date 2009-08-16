@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,15 +26,16 @@ package org.argouml.profile.internal;
 
 import java.util.Iterator;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.profile.FormatingStrategy;
 
 /**
- * The Formating Strategy based on Java naming conventions.
+ * The Formating Strategy based on UML naming conventions.
  *
- * @author Marcos Aurélio
+ * @author Marcos Aurï¿½lio
  */
-public class JavaFormatingStrategy implements FormatingStrategy {
+public class FormatingStrategyUML implements FormatingStrategy {
     
     public String formatElement(Object element, Object namespace) {
         String value = null;
@@ -68,6 +69,10 @@ public class JavaFormatingStrategy implements FormatingStrategy {
     }
 
     /**
+     * Create a default association end name from the type of assocEnd. 
+     * Follows the conventions in UML 2.2 Infrastructure, 
+     * 6.2.1. "Diagram format".
+     * 
      * @param assocEnd the given association end name
      * @param namespace the namespace
      * @return the default name for the given associationend
@@ -78,40 +83,55 @@ public class JavaFormatingStrategy implements FormatingStrategy {
         Object type = Model.getFacade().getType(assocEnd);
         if (type != null) {
             name = formatElement(type, namespace);
+            name = ensureFirstCharLowerCase(name);
         } else {
-            name = "unknown type";
+            name = Translator.localize("profile.unknown-type");
         }
         Object mult = Model.getFacade().getMultiplicity(assocEnd);
         if (mult != null) {
-            StringBuffer buf = new StringBuffer(name);
-            buf.append("[");
-            buf.append(Integer.toString(Model.getFacade().getLower(mult)));
-            buf.append("..");
+            int lower = Model.getFacade().getLower(mult);
             int upper = Model.getFacade().getUpper(mult);
-            if (upper >= 0) {
-                buf.append(Integer.toString(upper));
-            } else {
-                buf.append("*");
+            if (lower == upper && lower == 1) {
+                // simply use name as it is
             }
-            buf.append("]");
-            name = buf.toString();
+            else {
+                StringBuffer buf = new StringBuffer(name);
+                buf.append("[");
+                buf.append(Integer.toString(lower));
+                buf.append("..");
+                if (upper >= 0) {
+                    buf.append(Integer.toString(upper));
+                } else {
+                    buf.append("*");
+                }
+                buf.append("]");
+                name = buf.toString();
+            }
         }
         return name;
     }
 
+    String ensureFirstCharLowerCase(String s) {
+        if (s.length() > 0) {
+            return s.substring(0, 1).toLowerCase() + s.substring(1);
+        }
+        return s;
+    }
+
     /**
-     * Create a default association name from its ends.
+     * Create a default association name from its ends. Follows the conventions
+     * in UML 2.2 Infrastructure, 6.2.1. "Diagram format".
      *
      * @param assoc the given association
      * @param ns the namespace
      * @return the default association name
      */
     protected String defaultAssocName(Object assoc, Object ns) {
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer("A_");
         Iterator iter = Model.getFacade().getConnections(assoc).iterator();
         for (int i = 0; iter.hasNext(); i++) {
             if (i != 0) {
-                buf.append("-");
+                buf.append("_");
             }
             buf.append(defaultAssocEndName(iter.next(), ns));
         }
@@ -119,6 +139,9 @@ public class JavaFormatingStrategy implements FormatingStrategy {
     }
 
     /**
+     * Use the term specializes, which is referred some times in the
+     * UML 2.2 Infrastructure specification.
+     * 
      * @param gen the given Generalization
      * @param namespace the namespace
      * @return the default generalization name
@@ -126,11 +149,10 @@ public class JavaFormatingStrategy implements FormatingStrategy {
     protected String defaultGeneralizationName(Object gen, Object namespace) {
         Object child = Model.getFacade().getSpecific(gen);
         Object parent = Model.getFacade().getGeneral(gen);
-        StringBuffer buf = new StringBuffer();
-        buf.append(formatElement(child, namespace));
-        buf.append(" extends ");
-        buf.append(formatElement(parent, namespace));
-        return buf.toString();
+        return Translator.messageFormat(
+            "profile.default.specializes.expression",
+            new Object[] {formatElement(child, namespace),
+                formatElement(parent, namespace), });
     }
 
     /**
@@ -151,21 +173,21 @@ public class JavaFormatingStrategy implements FormatingStrategy {
             }
         }
         if (name == null) {
-            name = "anon";
+            name = Translator.localize("profile.anonymous");
         }
         return name;
     }
 
     /**
-     * @return the path separator (currently ".")
+     * @return the path separator (currently "::")
      */
     protected String getPathSeparator() {
-        return ".";
+        return "::";
     }
 
     /**
      * @param buffer (out) the buffer that will contain the path build
-     * @param element the given modelelement
+     * @param element the given model element
      * @param pathSep the path separator character(s)
      */
     private void buildPath(StringBuffer buffer, Object element, 
@@ -195,7 +217,7 @@ public class JavaFormatingStrategy implements FormatingStrategy {
      * @return the string that represents an empty collection
      */
     protected String getEmptyCollection() {
-        return "[empty]";
+        return Translator.localize("profile.empty.collection");
     }
 
 

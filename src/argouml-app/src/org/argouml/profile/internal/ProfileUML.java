@@ -99,7 +99,7 @@ public class ProfileUML extends Profile {
      */
     @SuppressWarnings("unchecked")
     ProfileUML() throws ProfileException {
-        formatingStrategy = new JavaFormatingStrategy();
+        formatingStrategy = new FormatingStrategyUML();
         profileModelLoader = new ResourceModelLoader();
         ProfileReference profileReference = null;
         try {
