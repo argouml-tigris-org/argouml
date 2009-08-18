@@ -175,14 +175,20 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     }
 
     public void addModelEventListener(PropertyChangeListener listener,
-            Object modelelement, String[] propertyNames) {
-        if (!(modelelement instanceof EObject)) {
+            Object modelElement, String[] propertyNames) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Adding a listener to " //$NON-NLS-1$
+                    + modelElement
+                    + " for " //$NON-NLS-1$
+                    + propertyNames);
+        }
+        if (!(modelElement instanceof EObject)) {
             throw new IllegalArgumentException(
                     "The modelelement must be instance " //$NON-NLS-1$
                             + "of EObject."); //$NON-NLS-1$
         }
         registerListener(
-                modelelement, listener, propertyNames, registerForElements);
+                modelElement, listener, propertyNames, registerForElements);
     }
 
     public void addModelEventListener(PropertyChangeListener listener,
@@ -295,6 +301,10 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                 + " Old: " + oldValue //$NON-NLS-1$
                 + " New: " + newValue //$NON-NLS-1$
                 + " From: " + notification.getNotifier()); //$NON-NLS-1$
+        
+        if (featureName.equals("navigableOwnedEnd")) { //$NON-NLS-1$
+            featureName = "navigableOwnedEnd"; //$NON-NLS-1$
+        }
         
         class EventAndListeners {
             public EventAndListeners(PropertyChangeEvent e,
