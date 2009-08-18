@@ -286,14 +286,15 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         }
 
         ENamedElement feature = (ENamedElement) notification.getFeature();
-        String featureName = feature == null ? "" : feature.getName();
+        String featureName = feature == null ? "" : feature.getName(); //$NON-NLS-1$
         String oldValue = notification.getOldValue() != null ? notification.getOldValue().toString() : "Null";
         String newValue = notification.getNewValue() != null ? notification.getNewValue().toString() : "Null";
 //        LOG.debug(notification.toString());
-        LOG.debug("event  - Property: "
+        LOG.debug("event  - Property: " //$NON-NLS-1$
                 + featureName 
-                + " Old: " + oldValue
-                + " New: " + newValue);
+                + " Old: " + oldValue //$NON-NLS-1$
+                + " New: " + newValue //$NON-NLS-1$
+                + " From: " + notification.getNotifier()); //$NON-NLS-1$
         
         class EventAndListeners {
             public EventAndListeners(PropertyChangeEvent e,
