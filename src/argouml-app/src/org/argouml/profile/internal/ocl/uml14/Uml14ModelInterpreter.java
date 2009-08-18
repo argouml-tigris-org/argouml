@@ -25,9 +25,7 @@
 package org.argouml.profile.internal.ocl.uml14;
 
 import java.util.Collection;
-import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.profile.internal.ocl.CompositeModelInterpreter;
 
@@ -37,12 +35,6 @@ import org.argouml.profile.internal.ocl.CompositeModelInterpreter;
  * @author maurelio1234
  */
 public class Uml14ModelInterpreter extends CompositeModelInterpreter {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger
-            .getLogger(Uml14ModelInterpreter.class);
 
     /**
      * Default Constructor

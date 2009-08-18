@@ -133,8 +133,8 @@ public class ProfileManagerImpl implements ProfileManager {
                     .getString(KEY_DEFAULT_PROFILES);
             if (defaultProfilesList.equals("")) {
                 // if the list does not exist
-                // add the Java profile and the code generation and good practices
-                // profiles as default
+                // add the Java profile and the code generation and good
+                // practices profiles as default
 
                 addToDefaultProfiles(profileGoodPractices);
                 addToDefaultProfiles(profileCodeGeneration);
@@ -437,14 +437,14 @@ public class ProfileManagerImpl implements ProfileManager {
         for (Profile p : this.profiles) {
             for (Critic c : p.getCritics()) {
                 c.setEnabled(false);
-                Configuration.setBoolean(c.getCriticKey(), false);                
+                Configuration.setBoolean(c.getCriticKey(), false);
             }
         }
         
         for (Profile p : pc.getProfiles()) {
             for (Critic c : p.getCritics()) {
                 c.setEnabled(true);
-                Configuration.setBoolean(c.getCriticKey(), true);                
+                Configuration.setBoolean(c.getCriticKey(), true);
             }
         }        
     }

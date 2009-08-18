@@ -242,17 +242,16 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }
                 
                 if (feature.equals("oppositeAssociationEnds")) {
-                    return internalOcl(
-                            subject,
-                            vt,
-                  "self.associations->select ( a | a.connection->select ( ae |"
-                + "ae.participant = self ).size = 1 )->collect ( a |"
-                + "a.connection->"
-                + "select ( ae | ae.participant <> self ) )->union ("
-                + "self.associations->select ( a | a.connection->select ( ae |"
-                + "ae.participant = self ).size > 1 )->collect ( a |"
-                + "a.connection) )");
-                }                 
+                    return internalOcl(subject, vt,
+                        "self.associations->select ( a | a.connection->select "
+                            + "( ae | ae.participant = self ).size = 1 )->"
+                            + "collect ( a | a.connection->"
+                            + "select ( ae | ae.participant <> self ) )->"
+                            + "union ( self.associations->"
+                            + "select ( a | a.connection->select ( ae |"
+                            + "ae.participant = self ).size > 1 )->"
+                            + "collect ( a | a.connection) )");
+                }
 
                 if (feature.equals("allOppositeAssociationEnds")) {
                     return internalOcl(
@@ -275,24 +274,21 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 }                 
 
                 if (feature.equals("allContents")) {
-                    return internalOcl(
-                            subject,
-                            vt,
-                            "self.contents->union("
-                            + "self.parent.allContents->select(e |"
-                            + "e.elementOwnership.visibility = #public or true or "
-                            + " e.elementOwnership.visibility = #protected))");
+                    return internalOcl(subject, vt,
+                        "self.contents->union("
+                        + "self.parent.allContents->select(e |"
+                        + "e.elementOwnership.visibility = #public or true or "
+                        + " e.elementOwnership.visibility = #protected))");
                 }                 
 
                 if (feature.equals("allDiscriminators")) {
-                    return internalOcl(
-                            subject,
-                            vt,
-                  "self.generalization.discriminator->"
-                + "union(self.parent.oclAsType(Classifier).allDiscriminators)");
-                }                                 
+                    return internalOcl(subject, vt,
+                        "self.generalization.discriminator->"
+                        + "union(self.parent.oclAsType(Classifier)."
+                        + "allDiscriminators)");
+                }
             }
-        }        
+        }
 
         /* 4.5.2.11 Comment */  
         
@@ -326,16 +322,15 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 
                 // Additional Operation in 4.5.3.9                
                 if (feature.equals("allResidentElements")) {
-                    return internalOcl(
-                            subject,
-                            vt,
-                            "self.resident->union("
-                                    + "self.parent.oclAsType(Component).allResidentElements->select( re |"
-                                    + "re.elementResidence.visibility = #public or "
-                                    + "re.elementResidence.visibility = #protected))");
-                }                
+                    return internalOcl(subject, vt,
+                        "self.resident->union("
+                        + "self.parent.oclAsType(Component)."
+                        + "allResidentElements->select( re |"
+                        + "re.elementResidence.visibility = #public or "
+                        + "re.elementResidence.visibility = #protected))");
+                }
             }
-        }        
+        }
 
         /* 4.5.2.13 Constraint */  
         

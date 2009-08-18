@@ -124,7 +124,7 @@ public class ProfileUML extends Profile {
         }
         
         loadWellFormednessRules();
-    }    
+    }
 
     private void loadWellFormednessRules() {
         Set<Critic> critics = new HashSet<Critic>();
@@ -225,10 +225,10 @@ public class ProfileUML extends Profile {
                     + "forAll( o | not self.allAttributes->" 
                     + "union (self.allContents)->" 
                     + "collect ( q | q.name )->includes (o.name) )",
-            "The name of an opposite AssociationEnd may not be the same "
-          + "as the name of an Attribute or a ModelElement contained "
-          + "in the Classifier.", null,
-                    ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
+                "The name of an opposite AssociationEnd may not be the same "
+                    + "as the name of an Attribute or a ModelElement contained "
+                    + "in the Classifier.", null,
+                ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
         }
@@ -274,7 +274,8 @@ public class ProfileUML extends Profile {
         // 4.5.3.26 [2]
         try {
             critics.add(new CrOCL("context Namespace inv:"
-                    + "self.allContents -> select(x|x.oclIsKindOf(Association))->"
+                    + "self.allContents -> "
+                    + "select(x|x.oclIsKindOf(Association))->"
                     + "forAll(a1, a2 |a1.name = a2.name and "
                     + "a1.connection.participant = a2.connection.participant"
                     + " implies a1 = a2)",

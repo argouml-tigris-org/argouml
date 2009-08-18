@@ -84,7 +84,7 @@ import tudresden.ocl.parser.node.PExpressionListTail;
 
 /**
  * Evaluates OCL expressions, this class should not depend on the model
- * subsystem. This adapter assumes the ocl expression is syntacally and
+ * subsystem. This adapter assumes the ocl expression is syntatically and
  * semantically correct.
  * 
  * @author maurelio1234
@@ -236,9 +236,11 @@ public class EvaluateExpression extends DepthFirstAdapter {
 
         if (op != null) {
             if (op instanceof AAndLogicalOperator) {
-                if (left != null && left instanceof Boolean && ((Boolean)left).booleanValue() == false) {
+                if (left != null && left instanceof Boolean
+                        && !((Boolean) left)) {
                     val = false;
-                } else if (right != null && right instanceof Boolean && ((Boolean)right).booleanValue() == false) {
+                } else if (right != null && right instanceof Boolean
+                        && !((Boolean) right)) {
                     val = false;
                 } else {
                     val = asBoolean(left, node) && asBoolean(right, node);
@@ -246,9 +248,11 @@ public class EvaluateExpression extends DepthFirstAdapter {
             } else if (op instanceof AImpliesLogicalOperator) {
                 val = !asBoolean(left, node) || asBoolean(right, node);
             } else if (op instanceof AOrLogicalOperator) {
-                if (left != null && left instanceof Boolean && ((Boolean)left).booleanValue() == true) {
+                if (left != null && left instanceof Boolean
+                        && ((Boolean) left)) {
                     val = true;
-                } else if (right != null && right instanceof Boolean && ((Boolean)right).booleanValue() == true) {
+                } else if (right != null && right instanceof Boolean
+                        && ((Boolean) right)) {
                     val = true;
                 } else {
                     val = asBoolean(left, node) || asBoolean(right, node);
@@ -743,7 +747,6 @@ public class EvaluateExpression extends DepthFirstAdapter {
             AListExpressionListOrRangeTail node)
     {
         // TODO support other kinds of tail
-        
         inAListExpressionListOrRangeTail(node);
         {
             List ret = new ArrayList();
@@ -758,7 +761,6 @@ public class EvaluateExpression extends DepthFirstAdapter {
         outAListExpressionListOrRangeTail(node);
     }
     
-
     /*
      * @see tudresden.ocl.parser.analysis.DepthFirstAdapter#caseAFeatureCall(tudresden.ocl.parser.node.AFeatureCall)
      */
@@ -806,8 +808,8 @@ public class EvaluateExpression extends DepthFirstAdapter {
             node.getExpression().apply(this);
             list.add(val);
         }
-        {
-
+        { // TODO: why is this inside a block? Forgotten else branch?!?
+            // Question by euluis @ 2009-08-16.
             Object temp[] = node.getActualParameterListTail().toArray();
             for (int i = 0; i < temp.length; i++) {
                 val = null;
