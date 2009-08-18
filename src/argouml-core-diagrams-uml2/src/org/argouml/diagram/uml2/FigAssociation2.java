@@ -24,6 +24,9 @@
 
 package org.argouml.diagram.uml2;
 
+import java.beans.PropertyChangeEvent;
+
+import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigAssociation;
 
@@ -33,6 +36,8 @@ import org.argouml.uml.diagram.ui.FigAssociation;
  *
  */
 class FigAssociation2 extends FigAssociation {
+    
+    private static final Logger LOG = Logger.getLogger(FigAssociation2.class);
 
     /**
      * Constructor used by PGML parser.
@@ -42,5 +47,28 @@ class FigAssociation2 extends FigAssociation {
      */
     public FigAssociation2(Object owner, DiagramSettings settings) {
         super(owner, settings);
+        addListener(owner);
+    }
+    
+    @Override
+    public void propertyChange(final PropertyChangeEvent pve) {
+        if ("navigableOwnedEnd".equals(pve.getPropertyName())) {
+            // TODO: We need to amend the arrow heads here
+            LOG.debug("Navigation has changed");
+        }
+        super.propertyChange(pve);
+    }
+    
+    /*
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateListeners(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    public void updateListeners(Object oldOwner, Object newOwner) {
+        super.updateListeners(oldOwner, newOwner);
+        addListener(newOwner);
+    }
+    
+    private void addListener(Object owner) {
+        addElementListener(owner, new String[] {"remove", "navigableOwnedEnd"});
     }
 }
