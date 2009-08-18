@@ -360,7 +360,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         if (!(me instanceof Element)) {
             throw new IllegalArgumentException(
-                    "'me' must be instance of Element"); //$NON-NLS-1$
+                    "'me' must be instance of Element, we got a " + me); //$NON-NLS-1$
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(modelImpl, getRunnableClassForAddCommand(
