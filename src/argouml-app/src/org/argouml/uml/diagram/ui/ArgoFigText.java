@@ -79,6 +79,11 @@ public class ArgoFigText extends FigText
         super.setFillColor(FILL_COLOR);
         super.setTextFillColor(FILL_COLOR);
         super.setTextColor(TEXT_COLOR);
+        /* This makes the text not touch the text-border line: */
+        super.setTopMargin(1);
+        super.setBotMargin(1);
+        super.setLeftMargin(1);
+        super.setRightMargin(1);
         // Certain types of fixed text (e.g. a FigStereotype with a keyword)
         // may not have an owner
         if (owner != null) {
