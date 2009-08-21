@@ -59,7 +59,6 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
