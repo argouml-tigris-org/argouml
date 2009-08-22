@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2008 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -2623,7 +2623,7 @@ public interface Facade {
     Collection getSentStimuli(Object handle);
 
     /**
-     * Return all subvertices belonging to the given
+     * Return all direct subvertices belonging to the given
      * CompositeState.
      *
      * @param handle the composite state
