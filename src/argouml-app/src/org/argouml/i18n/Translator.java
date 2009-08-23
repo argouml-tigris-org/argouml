@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,6 +42,7 @@ import org.tigris.gef.util.Localizer;
  * this class.
  *
  * @author Jean-Hugues de Raigniac
+ * @author Linus Tolke
  */
 public final class Translator {
     /**
@@ -66,7 +67,7 @@ public final class Translator {
         new ArrayList<ClassLoader>();
 
     /**
-     * Used to make this class self-initialising when needed.
+     * Used to make this class self-initializing when needed.
      */
     private static boolean initialized;
 
@@ -99,7 +100,7 @@ public final class Translator {
 
 
     /**
-     * Initialise the locale.
+     * Initialize the locale.
      * 
      * @param locale a string with the locale
      */
@@ -230,7 +231,7 @@ public final class Translator {
      * Add another class loader that the resource bundle could be located
      * through.
      *
-     * @param cl The classloader to add.
+     * @param cl The ClassLoader to add.
      */
     public static void addClassLoader(ClassLoader cl) {
 	classLoaders.add(cl);
@@ -296,7 +297,7 @@ public final class Translator {
 
     /**
      * Synonym for messageFormat to encourage developers to convert
-     * existing uses of localize() + string concatentation to use
+     * existing uses of localize() + string concatenation to use
      * this method instead.
      * @see org.argouml.i18n.Translator#messageFormat(String, Object[])
      *
@@ -354,7 +355,7 @@ public final class Translator {
      * {@link MessageFormat}.
      *
      * @param key the key to localize
-     * @param args the args as Objects, inserted in the localized String
+     * @param args the arguments as Objects, inserted in the localized String
      * @return the localized String with inserted arguments
      */
     public static String messageFormat(String key, Object[] args) {
