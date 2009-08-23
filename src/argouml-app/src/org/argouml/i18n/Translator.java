@@ -172,7 +172,8 @@ public final class Translator {
             new Locale("nb", ""),
             new Locale("pt", ""),
             new Locale("ru", ""),
-            Locale.CHINESE,
+            Locale.SIMPLIFIED_CHINESE,
+            Locale.TRADITIONAL_CHINESE,
             Locale.UK,
         };
     }
