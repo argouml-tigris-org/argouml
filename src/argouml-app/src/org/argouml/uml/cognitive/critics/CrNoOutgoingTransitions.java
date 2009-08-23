@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,6 +34,9 @@ import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect when a state has no outgoing transitions.
+ * <p>
+ * Also a transition from a state contained in the dm going out of the dm
+ * counts as an "outgoing" transition thanks to issue 689.
  *
  * @author jrobbins
  */
@@ -52,34 +55,76 @@ public class CrNoOutgoingTransitions extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAStateVertex(dm))) {
-	    return NO_PROBLEM;
-	}
-	Object sv = /*(MStateVertex)*/ dm;
-	if (Model.getFacade().isAState(sv)) {
-	    Object sm = Model.getFacade().getStateMachine(sv);
-	    if (sm != null && Model.getFacade().getTop(sm) == sv) {
-	        return NO_PROBLEM;
-	    }
-	}
-	if (Model.getFacade().isAPseudostate(sv)) {
-	    Object k = Model.getFacade().getKind(sv);
-	    if (k.equals(Model.getPseudostateKind().getChoice())) {
-	        return NO_PROBLEM;
-	    }
-	    if (k.equals(Model.getPseudostateKind().getJunction())) {
-	        return NO_PROBLEM;
-	    }
-	}
-	Collection outgoing = Model.getFacade().getOutgoings(sv);
-	boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
-	if (Model.getFacade().isAFinalState(sv)) {
-	    needsOutgoing = false;
-	}
-	if (needsOutgoing) {
-	    return PROBLEM_FOUND;
-	}
-	return NO_PROBLEM;
+        if (!(Model.getFacade().isAStateVertex(dm))) {
+            return NO_PROBLEM;
+        }
+        /* Now we are sure dm is a StateVertex. */
+
+        if (Model.getFacade().isAPseudostate(dm)) {
+            Object k = Model.getFacade().getKind(dm);
+            if (k.equals(Model.getPseudostateKind().getChoice())) {
+                return NO_PROBLEM;
+            }
+            if (k.equals(Model.getPseudostateKind().getJunction())) {
+                return NO_PROBLEM;
+            }
+        }
+        if (!Model.getFacade().isAState(dm)) {
+            return NO_PROBLEM;
+        }
+        if (Model.getFacade().isAFinalState(dm)) {
+            return NO_PROBLEM;
+        }
+        /* Now we are sure dm is a State. */
+        Object sm = Model.getFacade().getStateMachine(dm);
+        if (sm != null && Model.getFacade().getTop(sm) == dm) {
+            /* If dm is the top state of the statemachine, then it is 
+             * not supposed to have outgoing transitions. */
+            return NO_PROBLEM;
+        }
+
+        Collection outgoing = Model.getFacade().getOutgoings(dm);
+        if (outgoing == null || outgoing.size() > 0) {
+            return NO_PROBLEM;
+        }
+
+        if (!Model.getFacade().isACompositeState(dm)) {
+            return PROBLEM_FOUND;
+        }
+        /* Now we are sure dm is a Composite State. */
+
+        /* Issue 689: Look for a transition that starts 
+         * at a sub-state and goes out of the composite state: */
+        Collection transitions = Model.getFacade().getTransitions(sm);
+        for (Object t : transitions) {
+            Object sourceState = Model.getFacade().getSource(t);
+            Object targetState = Model.getFacade().getTarget(t);
+            if (isSomeSubvertexOf(sourceState, dm) && !isSomeSubvertexOf(targetState, dm)) {
+                return NO_PROBLEM;
+            }
+        }
+
+        return PROBLEM_FOUND;
+    }
+
+    /**
+     * Test if a state is contained within a composite state recursively. 
+     * This is done by checking if the parent of the subject 
+     * equals the composite, or the parent of the parent, etc.
+     * 
+     * @param subject the StateVertex that is investigated
+     * @param composite the Composite state that may or may not contain the subject
+     * @return true if and only if the given composite contains recursively the given subject
+     */
+    private boolean isSomeSubvertexOf(Object subject, Object composite) {
+        Object c = subject;
+        while (c != null) {
+            if (c == composite) {
+                return true;
+            }
+            c = Model.getFacade().getContainer(c);
+        }
+        return false;
     }
 
     /*
