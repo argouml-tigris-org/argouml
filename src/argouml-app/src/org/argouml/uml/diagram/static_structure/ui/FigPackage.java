@@ -359,7 +359,7 @@ public class FigPackage extends FigNodeModelElement
         aSize.width += indentX + 1; 
 
         // we want at least some of the package body to be displayed
-        aSize.height += 30;
+        aSize.height += 28 + 2 * getLineWidth();
 
         // And now aSize has the answer
         return aSize;

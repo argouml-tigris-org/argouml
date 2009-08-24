@@ -136,6 +136,11 @@ public class FigSingleLineText extends ArgoFigText  {
         addModelListener();
     }
     
+    /**
+     * TODO: This function attempts to optimize the more generic 
+     * code in the parent, which also works correctly in this case. 
+     * Is this a good idea?
+     */
     @Override
     public Dimension getMinimumSize() {
         Dimension d = new Dimension();
@@ -153,8 +158,15 @@ public class FigSingleLineText extends ArgoFigText  {
             maxH = getFontMetrics().getHeight();
             maxW = getFontMetrics().stringWidth(getText());
         }
-        int overallH = (maxH + getTopMargin() + getBotMargin());
-        int overallW = maxW + getLeftMargin() + getRightMargin();
+
+        /* Now force minimum dimensions for the text: */
+        maxW = Math.max(maxW, MIN_TEXT_WIDTH);
+
+        /* Now add the areas around the text to return the complete size: */
+        int overallH = maxH + getTopMargin() + getBotMargin()
+            + 2 * getLineWidth();
+        int overallW = maxW + getLeftMargin() + getRightMargin()
+            + 2 * getLineWidth();
         d.width = overallW;
         d.height = overallH;
         return d;
