@@ -64,12 +64,16 @@ public class FigAssociation extends FigEdgeModelElement {
     /**
      * Group for the FigTexts concerning the source association end.
      */
+    // TODO: Create a seperate innerclass containing these two Figs
     private FigAssociationEndAnnotation srcGroup;
+    private FigMultiplicity srcMult;
 
     /**
      * Group for the FigTexts concerning the dest association end.
      */
+    // TODO: Create a seperate innerclass containing these two Figs
     private FigAssociationEndAnnotation destGroup;
+    private FigMultiplicity destMult;
 
     /**
      * Group for the FigTexts concerning the name and stereotype of the
@@ -77,8 +81,6 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     private FigTextGroup middleGroup;
 
-    private FigMultiplicity srcMult;
-    private FigMultiplicity destMult;
 
     /**
      * Constructor used by PGML parser.
@@ -91,33 +93,84 @@ public class FigAssociation extends FigEdgeModelElement {
         
         createNameLabel(owner, settings);
         
-        Object[] ends = // UML objects of AssociationEnd type
-            Model.getFacade().getConnections(owner).toArray();
+        createEndFigs(owner, settings);
         
-        srcMult = new FigMultiplicity(ends[0], settings);
-        addPathItem(srcMult, 
-                new PathItemPlacement(this, srcMult, 0, 5, 135, 5));
-        ArgoFigUtil.markPosition(this, 0, 5, 135, 5, Color.green);
-        
-        srcGroup = new FigAssociationEndAnnotation(this, ends[0], settings);
-        addPathItem(srcGroup, 
-                new PathItemPlacement(this, srcGroup, 0, 5, -135, 5));
-        ArgoFigUtil.markPosition(this, 0, 5, -135, 5, Color.blue);
-
-        destMult = new FigMultiplicity(ends[1], settings);
-        addPathItem(destMult,
-                new PathItemPlacement(this, destMult, 100, -5, 45, 5));
-        ArgoFigUtil.markPosition(this, 100, -5, 45, 5, Color.red);
-        
-        destGroup = new FigAssociationEndAnnotation(this, ends[1], settings);
-        addPathItem(destGroup,
-                new PathItemPlacement(this, destGroup, 100, -5, -45, 5));
-        ArgoFigUtil.markPosition(this, 100, -5, -45, 5, Color.orange);
-
         setBetweenNearestPoints(true);
         
         initializeNotationProvidersInternal(owner);
     }
+    
+    
+    private void createEndFigs(
+            final Object owner,
+            final DiagramSettings settings) {
+        final Object[] ends = // UML objects of AssociationEnd type
+            Model.getFacade().getConnections(owner).toArray();
+        
+        createSourceEnd(ends[0], settings, 0, 5, 135, 5);
+        createDestEnd(ends[1], settings, 100, -5, 45, 5);
+    }
+    
+
+    // TODO createSourceEnd and createDestEnd are almost identical.
+    // They could be replaced with a single method that returns some
+    // composite object made up of the group and multiplicty Figs
+    private void createSourceEnd(
+            final Object endOwner,
+            final DiagramSettings settings,
+            final int percentPostionOnLine,
+            final int pathDelta,
+            final int displacementAngle,
+            final int displacementDistance) {
+        srcMult = new FigMultiplicity(endOwner, settings);
+        addPathItem(srcMult, 
+                new PathItemPlacement(this, srcMult, 
+                        percentPostionOnLine, pathDelta, 
+                        displacementAngle, displacementDistance));
+        ArgoFigUtil.markPosition(
+                this, percentPostionOnLine, pathDelta, 
+                displacementAngle, displacementDistance, Color.green);
+        
+        srcGroup = new FigAssociationEndAnnotation(this, endOwner, settings);
+        addPathItem(srcGroup, 
+                new PathItemPlacement(this, srcGroup, 
+                        percentPostionOnLine, pathDelta, 
+                        -displacementAngle, displacementDistance));
+        ArgoFigUtil.markPosition(
+                this, percentPostionOnLine, pathDelta, 
+                -displacementAngle, displacementDistance, Color.blue);
+    }
+
+    // TODO createSourceEnd and createDestEnd are almost identical.
+    // They could be replaced with a single method that returns some
+    // composite object made up of the group and multiplicty Figs
+    private void createDestEnd(
+            final Object endOwner,
+            final DiagramSettings settings,
+            final int percentPostionOnLine,
+            final int pathDelta,
+            final int displacementAngle,
+            final int displacementDistance) {
+        destMult = new FigMultiplicity(endOwner, settings);
+        addPathItem(destMult,
+                new PathItemPlacement(
+                        this, destMult, 
+                        percentPostionOnLine, pathDelta, 
+                        displacementAngle, displacementDistance));
+        ArgoFigUtil.markPosition(
+                this, percentPostionOnLine, pathDelta, 
+                displacementAngle, displacementDistance, Color.red);
+        
+        destGroup = new FigAssociationEndAnnotation(this, endOwner, settings);
+        addPathItem(destGroup,
+                new PathItemPlacement(
+                        this, destGroup, percentPostionOnLine, pathDelta, 
+                        -displacementAngle, displacementDistance));
+        ArgoFigUtil.markPosition(
+                this, percentPostionOnLine, pathDelta, 
+                -displacementAngle, displacementDistance, Color.orange);
+    }
+
 
     /**
      * Create the main draggable label for the association.
