@@ -60,6 +60,7 @@ import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.undo.UndoableAction;
@@ -121,6 +122,8 @@ public class FigPackage extends FigNodeModelElement
     private int tabHeight = 20;
 
     private FigText body;
+    
+    private FigPoly figPoly;
 
     /**
      * Flag that indicates if the user wants any stereotype to be shown. 
@@ -203,6 +206,19 @@ public class FigPackage extends FigNodeModelElement
         return figClone;
     }
 
+    /**
+     * @return Returns the fig for the symbol.
+     */
+    protected FigPoly getFigPoly() {
+        return figPoly;
+    }
+
+    /**
+     * @param figPoly The fig for the symbol to set.
+     */
+    protected void setFigPoly(FigPoly figPoly) {
+        this.figPoly = figPoly;
+    }
 
     /*
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
@@ -213,6 +229,9 @@ public class FigPackage extends FigNodeModelElement
         getStereotypeFig().setLineColor(null);
         getNameFig().setLineColor(col);
         body.setLineColor(col);
+        if (figPoly != null) {
+            figPoly.setLineColor(col);
+        }
     }
 
     /*
@@ -344,6 +363,17 @@ public class FigPackage extends FigNodeModelElement
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name fig and build up.
         Dimension aSize = new Dimension(getNameFig().getMinimumSize());
+
+        if (figPoly != null) {
+            /* The figPoly is located at the right of the name text. 
+             * The nameFig size is increased, so that it fits its text, 
+             * and the figPoly next to the text, all within the boundaries 
+             * of the nameFig. */
+            Dimension symbol = figPoly.getSize();
+            aSize.width += symbol.width;
+            aSize.height = Math.max(aSize.height, symbol.height);
+        }
+        
         aSize.height = Math.max(aSize.height, MIN_HEIGHT);
         aSize.width = Math.max(aSize.width, MIN_WIDTH);
 
@@ -444,6 +474,21 @@ public class FigPackage extends FigNodeModelElement
         // set bounds of big box
 
         getBigPort().setBounds(xa, ya, newW, newH);
+
+        if (figPoly != null) {
+            /* The figPoly is located at the right edge of the nameFig. 
+             * The nameFig size is such that it at least fits its text, 
+             * and the figPoly next to the text. 
+             * Making the package bigger, causes the figPoly to stick to 
+             * the right edge.*/
+            Rectangle previousBounds = figPoly.getBounds();
+            Rectangle name = getNameFig().getBounds();
+            int nx = name.x + name.width - figPoly.getWidth()
+                - getLineWidth() - getNameFig().getRightMargin();
+            int ny = name.y + getLineWidth() + getNameFig().getTopMargin();
+            figPoly.translate((nx - previousBounds.x),
+                    ny - previousBounds.y);
+        }
 
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
