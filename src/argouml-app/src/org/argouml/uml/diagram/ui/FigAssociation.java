@@ -64,16 +64,12 @@ public class FigAssociation extends FigEdgeModelElement {
     /**
      * Group for the FigTexts concerning the source association end.
      */
-    // TODO: Create a seperate innerclass containing these two Figs
-    private FigAssociationEndAnnotation srcGroup;
-    private FigMultiplicity srcMult;
+    private EndDecoration srcEnd;
 
     /**
      * Group for the FigTexts concerning the dest association end.
      */
-    // TODO: Create a seperate innerclass containing these two Figs
-    private FigAssociationEndAnnotation destGroup;
-    private FigMultiplicity destMult;
+    private EndDecoration destEnd;
 
     /**
      * Group for the FigTexts concerning the name and stereotype of the
@@ -100,77 +96,40 @@ public class FigAssociation extends FigEdgeModelElement {
         initializeNotationProvidersInternal(owner);
     }
     
-    
+    /**
+     * Called by the constructor to create the Figs at each end
+     * of the association.
+     * TODO: This is temporary during refactoring process. We should
+     * override setDestFigNode and setSourceFigNode and create the ends there.
+     * That will allow the same pattern to work for UML2 where we cannot assume
+     * the connection order.
+     * 
+     * @param owner
+     * @param settings
+     */
     private void createEndFigs(
             final Object owner,
             final DiagramSettings settings) {
         final Object[] ends = // UML objects of AssociationEnd type
             Model.getFacade().getConnections(owner).toArray();
         
-        createSourceEnd(ends[0], settings, 0, 5, 135, 5);
-        createDestEnd(ends[1], settings, 100, -5, 45, 5);
+        srcEnd = createEnd(ends[0], settings, 0, 5, 135, 5);
+        destEnd = createEnd(ends[1], settings, 100, -5, 45, 5);
     }
     
-
-    // TODO createSourceEnd and createDestEnd are almost identical.
-    // They could be replaced with a single method that returns some
-    // composite object made up of the group and multiplicty Figs
-    private void createSourceEnd(
+    private EndDecoration createEnd(
             final Object endOwner,
             final DiagramSettings settings,
             final int percentPostionOnLine,
             final int pathDelta,
             final int displacementAngle,
             final int displacementDistance) {
-        srcMult = new FigMultiplicity(endOwner, settings);
-        addPathItem(srcMult, 
-                new PathItemPlacement(this, srcMult, 
-                        percentPostionOnLine, pathDelta, 
-                        displacementAngle, displacementDistance));
-        ArgoFigUtil.markPosition(
-                this, percentPostionOnLine, pathDelta, 
-                displacementAngle, displacementDistance, Color.green);
-        
-        srcGroup = new FigAssociationEndAnnotation(this, endOwner, settings);
-        addPathItem(srcGroup, 
-                new PathItemPlacement(this, srcGroup, 
-                        percentPostionOnLine, pathDelta, 
-                        -displacementAngle, displacementDistance));
-        ArgoFigUtil.markPosition(
-                this, percentPostionOnLine, pathDelta, 
-                -displacementAngle, displacementDistance, Color.blue);
+        return new EndDecoration(endOwner, settings,
+                percentPostionOnLine,
+                pathDelta,
+                displacementAngle,
+                displacementDistance);
     }
-
-    // TODO createSourceEnd and createDestEnd are almost identical.
-    // They could be replaced with a single method that returns some
-    // composite object made up of the group and multiplicty Figs
-    private void createDestEnd(
-            final Object endOwner,
-            final DiagramSettings settings,
-            final int percentPostionOnLine,
-            final int pathDelta,
-            final int displacementAngle,
-            final int displacementDistance) {
-        destMult = new FigMultiplicity(endOwner, settings);
-        addPathItem(destMult,
-                new PathItemPlacement(
-                        this, destMult, 
-                        percentPostionOnLine, pathDelta, 
-                        displacementAngle, displacementDistance));
-        ArgoFigUtil.markPosition(
-                this, percentPostionOnLine, pathDelta, 
-                displacementAngle, displacementDistance, Color.red);
-        
-        destGroup = new FigAssociationEndAnnotation(this, endOwner, settings);
-        addPathItem(destGroup,
-                new PathItemPlacement(
-                        this, destGroup, percentPostionOnLine, pathDelta, 
-                        -displacementAngle, displacementDistance));
-        ArgoFigUtil.markPosition(
-                this, percentPostionOnLine, pathDelta, 
-                -displacementAngle, displacementDistance, Color.orange);
-    }
-
 
     /**
      * Create the main draggable label for the association.
@@ -199,10 +158,8 @@ public class FigAssociation extends FigEdgeModelElement {
     public void renderingChanged() {
         super.renderingChanged();
         /* This fixes issue 4987: */
-        srcMult.renderingChanged();
-        destMult.renderingChanged();
-        srcGroup.renderingChanged();
-        destGroup.renderingChanged();
+        srcEnd.renderingChanged();
+        destEnd.renderingChanged();
         middleGroup.renderingChanged();
     }
 
@@ -214,8 +171,8 @@ public class FigAssociation extends FigEdgeModelElement {
 
     private void initializeNotationProvidersInternal(Object own) {
         super.initNotationProviders(own);
-        srcMult.initNotationProviders();
-        destMult.initNotationProviders();
+        srcEnd.initNotationProviders();
+        destEnd.initNotationProviders();
     }
 
     /*
@@ -259,14 +216,14 @@ public class FigAssociation extends FigEdgeModelElement {
             return;
         }
 
-	if (ft == srcGroup.getRole()) {
-	    srcGroup.getRole().textEdited();
-	} else if (ft == destGroup.getRole()) {
-	    destGroup.getRole().textEdited();
-	} else if (ft == srcMult) {
-            srcMult.textEdited();
-	} else if (ft == destMult) {
-            destMult.textEdited();
+	if (ft == srcEnd.getRole()) {
+	    srcEnd.getRole().textEdited();
+	} else if (ft == destEnd.getRole()) {
+	    destEnd.getRole().textEdited();
+	} else if (ft == srcEnd.getMult()) {
+            srcEnd.getMult().textEdited();
+	} else if (ft == destEnd.getMult()) {
+            destEnd.getMult().textEdited();
 	}
     }
 
@@ -275,14 +232,14 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     @Override
     protected void textEditStarted(FigText ft) {
-        if (ft == srcGroup.getRole()) {
-            srcGroup.getRole().textEditStarted();
-        } else if (ft == destGroup.getRole()) {
-            destGroup.getRole().textEditStarted();
-        } else if (ft == srcMult) {
-            srcMult.textEditStarted();
-        } else if (ft == destMult) {
-            destMult.textEditStarted();
+        if (ft == srcEnd.getRole()) {
+            srcEnd.getRole().textEditStarted();
+        } else if (ft == destEnd.getRole()) {
+            destEnd.getRole().textEditStarted();
+        } else if (ft == srcEnd.getMult()) {
+            srcEnd.getMult().textEditStarted();
+        } else if (ft == destEnd.getMult()) {
+            destEnd.getMult().textEditStarted();
         } else {
             super.textEditStarted(ft);
         }
@@ -295,13 +252,13 @@ public class FigAssociation extends FigEdgeModelElement {
      * be called from renderingChanged()?
      */
     protected void applyArrowHeads() {
-        if (srcGroup == null || destGroup == null) {
+        if (srcEnd == null || destEnd == null) {
             /* This only happens if model-change events arrive 
              * before we are completely constructed. */
             return;
         }
-        int sourceArrowType = srcGroup.getArrowType();
-        int destArrowType = destGroup.getArrowType();
+        int sourceArrowType = srcEnd.getArrowType();
+        int destArrowType = destEnd.getArrowType();
 
         if (!getSettings().isShowBidirectionalArrows()
                 && sourceArrowType > 2
@@ -432,10 +389,10 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     protected void updateMultiplicity() {
         if (getOwner() != null 
-                && srcMult.getOwner() != null 
-                && destMult.getOwner() != null) {
-            srcMult.setText();
-            destMult.setText();
+                && srcEnd.getOwner() != null 
+                && destEnd.getOwner() != null) {
+            srcEnd.getMult().setText();
+            destEnd.getMult().setText();
         }
     }
 
@@ -462,10 +419,10 @@ public class FigAssociation extends FigEdgeModelElement {
     @Override
     public void paintClarifiers(Graphics g) {
         indicateBounds(getNameFig(), g);
-        indicateBounds(srcMult, g);
-        indicateBounds(srcGroup.getRole(), g);
-        indicateBounds(destMult, g);
-        indicateBounds(destGroup.getRole(), g);
+        indicateBounds(srcEnd.getMult(), g);
+        indicateBounds(srcEnd.getRole(), g);
+        indicateBounds(destEnd.getMult(), g);
+        indicateBounds(destEnd.getRole(), g);
         super.paintClarifiers(g);
     }
 
@@ -525,6 +482,70 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
     
+
+    /**
+     * 
+     */
+    class EndDecoration {
+        private FigAssociationEndAnnotation group;
+        private FigMultiplicity mult;
+        
+        EndDecoration(
+            final Object endOwner,
+            final DiagramSettings settings,
+            final int percentPostionOnLine,
+            final int pathDelta,
+            final int displacementAngle,
+            final int displacementDistance) {
+            mult = new FigMultiplicity(endOwner, settings);
+            addPathItem(mult, 
+                    new PathItemPlacement(FigAssociation.this, mult, 
+                            percentPostionOnLine, pathDelta, 
+                            displacementAngle, displacementDistance));
+            ArgoFigUtil.markPosition(
+                    FigAssociation.this, percentPostionOnLine, pathDelta, 
+                    displacementAngle, displacementDistance, Color.green);
+            
+            group = new FigAssociationEndAnnotation(
+                    FigAssociation.this, endOwner, settings);
+            addPathItem(group, 
+                    new PathItemPlacement(FigAssociation.this, group, 
+                            percentPostionOnLine, pathDelta, 
+                            -displacementAngle, displacementDistance));
+            ArgoFigUtil.markPosition(
+                    FigAssociation.this, percentPostionOnLine, pathDelta, 
+                    -displacementAngle, displacementDistance, Color.blue);
+        }
+
+        public FigAssociationEndAnnotation getGroup() {
+            return group;
+        }
+
+        public FigMultiplicity getMult() {
+            return mult;
+        }
+        
+        public FigRole getRole() {
+            return group.getRole();
+        }
+        
+        public int getArrowType() {
+            return group.getArrowType();
+        }
+        
+        public void renderingChanged() {
+            mult.renderingChanged();
+            group.renderingChanged();
+        }
+        
+        public void initNotationProviders() {
+            mult.initNotationProviders();
+        }
+        
+        public Object getOwner() {
+            return mult.getOwner();
+        }
+    }
     
 } /* end class FigAssociation */
 
