@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -467,6 +467,12 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         } else if (Model.getFacade().isAComment(objectToAccept)) {
             return true;
         } else if (Model.getFacade().isAPackage(objectToAccept)) {
+            /* We accept a Package, but not a Model or a Subsystem. */
+            if (Model.getFacade().isAModel(objectToAccept)) {
+                return false;
+            } else if (Model.getFacade().isASubsystem(objectToAccept)) {
+                return false;
+            }
             return true;
         }
         return false;
@@ -502,7 +508,13 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         } else if (Model.getFacade().isAComment(modelElement)) {
             figNode = new FigComment(modelElement, bounds, settings);
         } else if (Model.getFacade().isAPackage(modelElement)) {
-            figNode = new FigPackage(modelElement, bounds, settings);
+            if (!Model.getFacade().isAModel(modelElement)
+                    && !Model.getFacade().isASubsystem(modelElement)) {
+                /* If we do not exclude a Model here, then dropping the 
+                 * Model on a UseCase diagram causes a package 
+                 * to be drawn. */
+                figNode = new FigPackage(modelElement, bounds, settings);
+            }
         }
         if (figNode != null) {
             LOG.debug("Model element " + modelElement + " converted to " 
