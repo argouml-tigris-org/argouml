@@ -32,6 +32,7 @@ import java.util.Set;
 
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.Translator;
 import org.argouml.model.Model;
 import org.argouml.profile.CoreProfileReference;
 import org.argouml.profile.DefaultTypeStrategy;
@@ -178,8 +179,8 @@ public class ProfileUML extends Profile {
                     + "forAll( ar | self.allFeatures->"
                     + "forAll( f | f.oclIsKindOf(StructuralFeature) "
                     + "implies ar.name <> f.name ))",
-                    "The names of the AssociationEnds and "
-                            + "the StructuralFeatures do not overlap.", null,
+                    Translator.localize("wfr.UML142.AssociationClass.1-head"),
+                    null,
                     ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
@@ -191,9 +192,8 @@ public class ProfileUML extends Profile {
             critics.add(new CrOCL("context AssociationClass inv:"
                     + "self.allConnections->"
                     + "forAll(ar | ar.participant <> self)",
-
-                    "An AssociationClass cannot be defined "
-                    + "between itself and something else.", null,
+                    Translator.localize("wfr.UML142.AssociationClass.2-head"),
+                    null,
                     ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
@@ -225,9 +225,8 @@ public class ProfileUML extends Profile {
                     + "forAll( o | not self.allAttributes->" 
                     + "union (self.allContents)->" 
                     + "collect ( q | q.name )->includes (o.name) )",
-                "The name of an opposite AssociationEnd may not be the same "
-                    + "as the name of an Attribute or a ModelElement contained "
-                    + "in the Classifier.", null,
+                Translator.localize("critics.UML142.WFR.Classifier.5-head"), 
+                null,
                 ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
@@ -239,8 +238,8 @@ public class ProfileUML extends Profile {
             critics.add(new CrOCL("context DataType inv:"
                     + "self.allFeatures->forAll(f | f.oclIsKindOf(Operation)"
                     + " and f.oclAsType(Operation).isQuery)",
-                    "A DataType can only contain Operations, "
-                            + "which all must be queries.", null,
+                    Translator.localize("wfr.UML142.DataType.1-head"),
+                    null,
                     ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
@@ -251,7 +250,8 @@ public class ProfileUML extends Profile {
         try {
             critics.add(new CrOCL("context GeneralizableElement inv:"
                     + "self.isRoot implies self.generalization->isEmpty",
-                    "A root cannot have any Generalizations.", null,
+                    Translator.localize("wfr.UML142.GeneralizableElement.1-head"),
+                    null,
                     ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
@@ -263,8 +263,8 @@ public class ProfileUML extends Profile {
                     + "self.generalization->"
                     + "forAll(g |self.namespace.allContents->"
                     + "includes(g.parent) )",
-                    "The parent must be included in the Namespace of"
-                            + " the GeneralizableElement.", null,
+                    Translator.localize("wfr.UML142.GeneralizableElement.4-head"),
+                    null,
                     ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
@@ -279,8 +279,7 @@ public class ProfileUML extends Profile {
                     + "forAll(a1, a2 |a1.name = a2.name and "
                     + "a1.connection.participant = a2.connection.participant"
                     + " implies a1 = a2)",
-                    "All Associations must have a unique combination of name "
-                            + "and associated Classifiers in the Namespace.",
+                    Translator.localize("wfr.UML142.Namespace.2-head"),
                     null, ToDoItem.HIGH_PRIORITY, null, null,
                     "http://www.uml.org/"));
         } catch (InvalidOclException e) {
@@ -293,14 +292,8 @@ public class ProfileUML extends Profile {
         try {
             critics.add(new CrOCL("context ActionState inv:"
                     + "self.outgoing->forAll(t | t.trigger->size = 0)",
-                    "Transitions originating from an action state have no trigger event.",
-                    "As soon as the incoming transition of an ActionState is triggered, " +
-                    "its entry action starts executing. Once the entry action has " +
-                    "finished executing, the action is considered complete. " +
-                    "When the action is complete, then the outgoing transition " +
-                    "is enabled. \n\n" +
-                    "Hence the outgoing transition shall not have a trigger event.\n\n" +
-                    "To address this, remove the trigger event.", 
+                    Translator.localize("critics.UML142.WFR.ActionState.3-head"),
+                    Translator.localize("critics.UML142.WFR.ActionState.3-desc"), 
                     ToDoItem.HIGH_PRIORITY, null, null,
                     "http://www.uml.org/"));
         } catch (InvalidOclException e) {
