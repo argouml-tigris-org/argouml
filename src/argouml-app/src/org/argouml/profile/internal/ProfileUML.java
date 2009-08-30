@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -285,8 +285,28 @@ public class ProfileUML extends Profile {
                     "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
-        }        
-        
+        }
+
+        // ActionState
+        // 4.13.3.2 [3]
+        // Issue 715
+        try {
+            critics.add(new CrOCL("context ActionState inv:"
+                    + "self.outgoing->forAll(t | t.trigger->size = 0)",
+                    "Transitions originating from an action state have no trigger event.",
+                    "As soon as the incoming transition of an ActionState is triggered, " +
+                    "its entry action starts executing. Once the entry action has " +
+                    "finished executing, the action is considered complete. " +
+                    "When the action is complete, then the outgoing transition " +
+                    "is enabled. \n\n" +
+                    "Hence the outgoing transition shall not have a trigger event.\n\n" +
+                    "To address this, remove the trigger event.", 
+                    ToDoItem.HIGH_PRIORITY, null, null,
+                    "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+
         setCritics(critics);
     }
 
