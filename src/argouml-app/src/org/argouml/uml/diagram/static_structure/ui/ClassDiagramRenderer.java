@@ -32,6 +32,7 @@ import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramAssociationSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
@@ -154,7 +155,22 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         
         FigEdge newEdge = null;
         if (Model.getFacade().isAAssociationClass(edge)) {
-            newEdge = new FigAssociationClass(edge, settings);
+            Object[] associationEnds = 
+                Model.getFacade().getConnections(edge).toArray();
+            newEdge = new FigAssociationClass(
+                    new DiagramAssociationSettings(
+                            edge, 
+                            associationEnds[0], 
+                            associationEnds[1]), 
+                            settings);
+            FigNode sourceFig =
+                getFigNodeForAssociationEnd(diag, associationEnds[0]);
+            FigNode destFig =
+                getFigNodeForAssociationEnd(diag, associationEnds[1]);
+            newEdge.setSourceFigNode(sourceFig);
+            newEdge.setSourcePortFig(sourceFig);
+            newEdge.setDestFigNode(destFig);
+            newEdge.setDestPortFig(destFig);
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
             FigAssociationEnd asend = new FigAssociationEnd(edge, settings);
             Model.getFacade().getAssociation(edge);
@@ -170,7 +186,22 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             asend.setDestFigNode(classifierFN);
             newEdge = asend;
         } else if (Model.getFacade().isAAssociation(edge)) {
-            newEdge = new FigAssociation(edge, settings);
+            Object[] associationEnds = 
+                Model.getFacade().getConnections(edge).toArray();
+            newEdge = new FigAssociation(
+                    new DiagramAssociationSettings(
+                            edge, 
+                            associationEnds[0], 
+                            associationEnds[1]), 
+                            settings);
+            FigNode sourceFig =
+                getFigNodeForAssociationEnd(diag, associationEnds[0]);
+            FigNode destFig =
+                getFigNodeForAssociationEnd(diag, associationEnds[1]);
+            newEdge.setSourceFigNode(sourceFig);
+            newEdge.setSourcePortFig(sourceFig);
+            newEdge.setDestFigNode(destFig);
+            newEdge.setDestPortFig(destFig);
         } else if (Model.getFacade().isALink(edge)) {
             FigLink lnkFig = new FigLink(edge, settings);
             Collection linkEndsColn = Model.getFacade().getConnections(edge);
@@ -259,5 +290,4 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         lay.add(newEdge);
         return newEdge;
     }
-
 }

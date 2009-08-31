@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramAssociationSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.GraphChangeAdapter;
@@ -158,13 +159,29 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
             throw new IllegalArgumentException("A model edge must be supplied");
         }
 
-        DiagramSettings settings = ((ArgoDiagram) ((LayerPerspective) lay)
-                .getDiagram()).getDiagramSettings();
+        assert lay instanceof LayerPerspective;
+        ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
+        DiagramSettings settings = diag.getDiagramSettings();
         
         FigEdge newEdge = null;
 
         if (Model.getFacade().isAAssociation(edge)) {
-            newEdge = new FigAssociation(edge, settings);
+            final Object[] associationEnds = 
+                Model.getFacade().getConnections(edge).toArray();
+            newEdge = new FigAssociation(
+                    new DiagramAssociationSettings(
+                            edge, 
+                            associationEnds[0], 
+                            associationEnds[1]), 
+                            settings);
+            final FigNode sourceFig =
+                getFigNodeForAssociationEnd(diag, associationEnds[0]);
+            final FigNode destFig =
+                getFigNodeForAssociationEnd(diag, associationEnds[1]);
+            newEdge.setSourceFigNode(sourceFig);
+            newEdge.setSourcePortFig(sourceFig);
+            newEdge.setDestFigNode(destFig);
+            newEdge.setDestPortFig(destFig);
         } else if (Model.getFacade().isAGeneralization(edge)) {
             newEdge = new FigGeneralization(edge, settings);
         } else if (Model.getFacade().isAExtend(edge)) {

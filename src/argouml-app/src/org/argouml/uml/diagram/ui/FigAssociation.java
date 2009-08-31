@@ -43,6 +43,8 @@ import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.DiagramAssociationSettings;
+import org.argouml.uml.diagram.DiagramElementSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadComposite;
@@ -77,23 +79,56 @@ public class FigAssociation extends FigEdgeModelElement {
      */
     private FigTextGroup middleGroup;
 
-
     /**
-     * Constructor used by PGML parser.
-     * 
-     * @param owner owning uml element
-     * @param settings rendering settings
+     * @deprecated Use
+     * FigAssociation(Object, Object, Object, DiagramSettings)
+     * @param association The association model element
+     * @param settings The diagram settings
      */
-    public FigAssociation(Object owner, DiagramSettings settings) {
-        super(owner, settings);
+    @Deprecated
+    public FigAssociation(
+            final Object association, 
+            final DiagramSettings settings) {
+        super(association, settings);
         
-        createNameLabel(owner, settings);
+        createNameLabel(association, settings);
         
-        createEndFigs(owner, settings);
+        Iterator it = Model.getFacade().getAssociationEnds(association).iterator();
+        
+        final Object sourceAssociationEnd = it.next();
+        final Object destAssociationEnd = it.next();
+        
+        createEndFigs(sourceAssociationEnd, destAssociationEnd, settings, 45);
         
         setBetweenNearestPoints(true);
         
-        initializeNotationProvidersInternal(owner);
+        initializeNotationProvidersInternal(association);
+    }
+    
+    /**
+     * Constructor used by PGML parser.
+     * 
+     * @param diagramElementSettings the destination uml association-end element
+     * @param settings rendering settings
+     */
+    public FigAssociation(
+            final DiagramElementSettings diagramElementSettings, 
+            final DiagramSettings settings) {
+        super(diagramElementSettings.getOwner(), settings);
+        
+        createNameLabel(getOwner(), settings);
+        
+        final DiagramAssociationSettings set =
+            (DiagramAssociationSettings) diagramElementSettings;
+        
+        createEndFigs(
+                set.getAssociationEnd1(),
+                set.getAssociationEnd2(),
+                settings, 45);
+        
+        setBetweenNearestPoints(true);
+        
+        initializeNotationProvidersInternal(getOwner());
     }
     
     /**
@@ -104,17 +139,21 @@ public class FigAssociation extends FigEdgeModelElement {
      * That will allow the same pattern to work for UML2 where we cannot assume
      * the connection order.
      * 
-     * @param owner
+     * @param sourceAssociationEnd
+     * @param destAssociationEnd
      * @param settings
      */
     private void createEndFigs(
-            final Object owner,
-            final DiagramSettings settings) {
-        final Object[] ends = // UML objects of AssociationEnd type
-            Model.getFacade().getConnections(owner).toArray();
-        
-        srcEnd = createEnd(ends[0], settings, 0, 5, 135, 5);
-        destEnd = createEnd(ends[1], settings, 100, -5, 45, 5);
+            final Object sourceAssociationEnd,
+            final Object destAssociationEnd,
+            final DiagramSettings settings,
+            final int displacementAngle) {
+        srcEnd = createEnd(
+                sourceAssociationEnd, 
+                settings, 0, 5, 180 - displacementAngle, 5);
+        destEnd = createEnd(
+                destAssociationEnd, 
+                settings, 100, -5, displacementAngle, 5);
     }
     
     private EndDecoration createEnd(

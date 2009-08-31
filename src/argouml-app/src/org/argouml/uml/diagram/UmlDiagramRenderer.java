@@ -317,5 +317,12 @@ public abstract class UmlDiagramRenderer
         return null;
     }
     
-
+    
+    protected FigNode getFigNodeForAssociationEnd(
+            final ArgoDiagram diagram,
+            final Object associationEnd) {
+        Object classifier = 
+            Model.getFacade().getClassifier(associationEnd);
+        return (FigNode) diagram.presentationFor(classifier);
+    }
 }

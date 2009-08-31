@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramAssociationSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
@@ -125,7 +126,22 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
 
         FigEdge newEdge = null;
         if (Model.getFacade().isAAssociationRole(edge)) {
-            newEdge = new FigAssociationRole(edge, settings);
+            Object[] associationEnds = 
+                Model.getFacade().getConnections(edge).toArray();
+            newEdge = new FigAssociationRole(
+                    new DiagramAssociationSettings(
+                            edge, 
+                            associationEnds[0], 
+                            associationEnds[1]), 
+                            settings);
+            FigNode sourceFig =
+                getFigNodeForAssociationEnd(diag, associationEnds[0]);
+            FigNode destFig =
+                getFigNodeForAssociationEnd(diag, associationEnds[1]);
+            newEdge.setSourceFigNode(sourceFig);
+            newEdge.setSourcePortFig(sourceFig);
+            newEdge.setDestFigNode(destFig);
+            newEdge.setDestPortFig(destFig);
         } else if (Model.getFacade().isAGeneralization(edge)) {
             newEdge = new FigGeneralization(edge, settings);
         } else if (Model.getFacade().isADependency(edge)) {

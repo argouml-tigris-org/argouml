@@ -57,8 +57,10 @@ public class ActionSetAddAssociationMode extends ActionSetMode {
     public ActionSetAddAssociationMode(Object aggregationKind,
             boolean unidirectional,
             String name) {
-        super(ModeCreatePolyEdge.class, "edgeClass",
-	      Model.getMetaTypes().getAssociation(), name);
+//        super(ModeCreatePolyEdge.class, "edgeClass",
+//	      Model.getMetaTypes().getAssociation(), name);
+        super(ModeCreateAssociation.class, "edgeClass",
+                Model.getMetaTypes().getAssociation(), name);
         modeArgs.put("aggregation", aggregationKind);
         modeArgs.put("unidirectional", Boolean.valueOf(unidirectional));
     }

@@ -29,7 +29,9 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.DiagramElementSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.PathContainer;
@@ -68,14 +70,36 @@ public class FigAssociationClass extends FigAssociation implements
     private static final long serialVersionUID = 3643715304027095083L;
 
     /**
+     * @deprecated Use
+     * FigAssociationClass(Object, Object, Object, DiagramSettings)
+     * @param associationClass The association model element
+     * @param settings The diagram settings
+     */
+    @Deprecated
+    public FigAssociationClass(
+            final Object associationClass, 
+            final DiagramSettings settings) {
+        super(associationClass, settings);
+        
+        setBetweenNearestPoints(true);
+        ((FigPoly) getFig()).setRectilinear(false);
+        setDashed(false);
+    }
+    
+    
+    
+    
+    /**
      * Construct an association class figure for the given AssociationClass
      * model element using the rendering settings.
      * 
      * @param element model element
      * @param settings rendering settings
      */
-    public FigAssociationClass(Object element, DiagramSettings settings) {
-        super(element, settings);
+    public FigAssociationClass(
+            final DiagramElementSettings diagramElementSettings, 
+            final DiagramSettings settings) {
+        super(diagramElementSettings, settings);
         setBetweenNearestPoints(true);
         ((FigPoly) getFig()).setRectilinear(false);
         setDashed(false);

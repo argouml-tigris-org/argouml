@@ -33,7 +33,6 @@ import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.FigEdge;
 
@@ -45,7 +44,7 @@ import org.tigris.gef.presentation.FigEdge;
  * 
  * @author Bob Tarling
  */
-public class ModeCreateAssociationClass extends ModeCreatePolyEdge {
+public class ModeCreateAssociationClass extends ModeCreateAssociation {
 
     private static final long serialVersionUID = -8656139458297932182L;
     
