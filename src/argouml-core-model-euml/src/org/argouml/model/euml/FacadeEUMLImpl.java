@@ -411,7 +411,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getClassifier(Object handle) {
-        throw new NotYetImplementedException();
+        Property prop = (Property) handle;
+        return prop.getType();
     }
 
     public Collection getClassifierRoles(Object handle) {
