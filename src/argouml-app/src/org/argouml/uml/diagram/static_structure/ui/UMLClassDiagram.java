@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
@@ -42,9 +41,6 @@ import org.argouml.uml.diagram.deployment.ui.FigMNode;
 import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
-import org.argouml.uml.diagram.ui.FigClassAssociationClass;
-import org.argouml.uml.diagram.ui.FigEdgeAssociationClass;
-import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.ModeCreateDependency;
 import org.argouml.uml.diagram.ui.ModeCreatePermission;
