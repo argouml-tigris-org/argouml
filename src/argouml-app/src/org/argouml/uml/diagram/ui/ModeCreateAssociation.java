@@ -25,8 +25,13 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
@@ -85,37 +90,20 @@ public class ModeCreateAssociation extends ModeCreateGraphEdge {
             Layer lay = editor.getLayerManager().getActiveLayer();
             FigAssociation fe = (FigAssociation) lay.presentationFor(getNewEdge());
             _newItem.setLineColor(Color.black);
-            fe.setFig(_newItem);
             
-//            boolean flip = false;
-//            
-//            final Iterator iter = 
-//                Model.getFacade().getConnections(association).iterator();
-//            
-//            Object sourceAssociationEnd = iter.next();
-//            Object destAssociationEnd = iter.next();
-//            
-//            if (getArg("unidirectional").equals(Boolean.TRUE)) {
-//                if (!Model.getFacade().isNavigable(destAssociationEnd)) {
-//                    flip = true;
-//                }
-//            } else if (!getArg("aggregation").equals(Model.getAggregationKind().getNone())) {
-//                if (Model.getFacade().getAggregation(destAssociationEnd).equals(
-//                        getArg("aggregation"))) {
-//                    flip = true;
-//                }
-//            }
-//            if (flip) {
-//                fe.setDestPortFig(getStartPortFig());
-//                fe.setDestFigNode(getSourceFigNode());
-//                fe.setSourcePortFig(destFigNode);
-//                fe.setSourceFigNode((FigNode) destFigNode);
-//            } else {
-//                fe.setSourcePortFig(getStartPortFig());
-//                fe.setSourceFigNode(getSourceFigNode());
-//                fe.setDestPortFig(destFigNode);
-//                fe.setDestFigNode((FigNode) destFigNode);
-//            }
+            // With MDR (UML1.4) we know that when creating an association the
+            // first association end returned by that association is the source
+            // from which we are drawing. In eUML (UML2.x) the opposite seems to
+            // be true so we need to reverse the way the edge has been drawn.
+            if (Model.getFacade().getUmlVersion().startsWith("2")) {
+                List<Point> pointList = Arrays.asList(_newItem.getPoints());
+                Collections.reverse(pointList);
+                Point[] points = new Point[pointList.size()];
+                pointList.toArray(points);
+                _newItem.setPoints(points);
+            }
+            
+            fe.setFig(_newItem);
             return fe;
 
         } else {
