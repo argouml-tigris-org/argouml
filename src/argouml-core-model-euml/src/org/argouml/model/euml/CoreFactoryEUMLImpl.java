@@ -197,8 +197,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             Object aggregationKind2, Boolean unidirectional) {
         if (unidirectional != null) {
             return buildAssociation(
-                    fromClassifier, true, aggregationKind1, toClassifier,
-                    !unidirectional, aggregationKind2, null);
+                    fromClassifier, !unidirectional, aggregationKind1, toClassifier,
+                    true, aggregationKind2, null);
         } else {
             return buildAssociation(
                     fromClassifier, null, aggregationKind1, toClassifier, null,
