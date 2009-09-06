@@ -217,7 +217,7 @@ public class ProfileUML extends Profile {
 //            e.printStackTrace();
 //        }
         
-        // Classfier
+        // Classifier
         // 4.5.3.8 [5]
         try {
             critics.add(new CrOCL("context Classifier inv:"
@@ -225,7 +225,7 @@ public class ProfileUML extends Profile {
                     + "forAll( o | not self.allAttributes->" 
                     + "union (self.allContents)->" 
                     + "collect ( q | q.name )->includes (o.name) )",
-                Translator.localize("critics.UML142.WFR.Classifier.5-head"), 
+                Translator.localize("wfr.UML142.Classifier.5-head"), 
                 null,
                 ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
@@ -292,8 +292,8 @@ public class ProfileUML extends Profile {
         try {
             critics.add(new CrOCL("context ActionState inv:"
                     + "self.outgoing->forAll(t | t.trigger->size = 0)",
-                    Translator.localize("critics.UML142.WFR.ActionState.3-head"),
-                    Translator.localize("critics.UML142.WFR.ActionState.3-desc"), 
+                    Translator.localize("wfr.UML142.ActionState.3-head"),
+                    Translator.localize("wfr.UML142.ActionState.3-desc"), 
                     ToDoItem.HIGH_PRIORITY, null, null,
                     "http://www.uml.org/"));
         } catch (InvalidOclException e) {
