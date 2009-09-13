@@ -376,7 +376,7 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
                             Model.getUmlFactory().delete(interaction);
                             // If that in turn leaves the collaboration empty
                             // then delete that also.
-                            if (facade.getOwnedElements(context).isEmpty()) {
+                            if (context != null && facade.getOwnedElements(context).isEmpty()) {
                                 LOG.warn("Deleting empty collaboration "
                                         + context);
                                 Model.getUmlFactory().delete(context);
