@@ -1182,6 +1182,10 @@ public abstract class FigEdgeModelElement
      * <p>e.g. if the participant of an association end is changed.
      * <p>Calls a helper method (layoutThisToSelf) to avoid this edge
      * disappearing if the new source and dest are the same node.
+     * 
+     * TODO: This method is called far too frequently. It should only be called
+     * when a specific event is received. It seems to be currently called whenever
+     * any event is received from the owner.
      *
      * @return boolean whether or not the update was sucessful
      */
