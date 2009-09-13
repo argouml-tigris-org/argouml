@@ -172,7 +172,7 @@ public class ProfileUML extends Profile {
         
         // Association Class
         // 4.5.3.2 [1]
-        
+        /* Testing: does not fire. */
         try {
             critics.add(new CrOCL("context AssociationClass inv:"
                     + "self.allConnections->"
@@ -180,20 +180,20 @@ public class ProfileUML extends Profile {
                     + "forAll( f | f.oclIsKindOf(StructuralFeature) "
                     + "implies ar.name <> f.name ))",
                     Translator.localize("wfr.UML142.AssociationClass.1-head"),
-                    null,
+                    Translator.localize("wfr.UML142.AssociationClass.1-desc"),
                     ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
         }
         
         // 4.5.3.2 [2]
-        
+        /* Testing: Works Ok. */
         try {
             critics.add(new CrOCL("context AssociationClass inv:"
                     + "self.allConnections->"
                     + "forAll(ar | ar.participant <> self)",
                     Translator.localize("wfr.UML142.AssociationClass.2-head"),
-                    null,
+                    Translator.localize("wfr.UML142.AssociationClass.2-desc"),
                     ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
@@ -219,6 +219,8 @@ public class ProfileUML extends Profile {
         
         // Classifier
         // 4.5.3.8 [5]
+        /* TODO: Partly overlaps CrOppEndVsAttr. */
+        /* Testing: does not fire. */
         try {
             critics.add(new CrOCL("context Classifier inv:"
                     + "self.oppositeAssociationEnds->" 
@@ -226,7 +228,7 @@ public class ProfileUML extends Profile {
                     + "union (self.allContents)->" 
                     + "collect ( q | q.name )->includes (o.name) )",
                 Translator.localize("wfr.UML142.Classifier.5-head"), 
-                null,
+                Translator.localize("wfr.UML142.Classifier.5-desc"), 
                 ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
@@ -234,12 +236,13 @@ public class ProfileUML extends Profile {
 
         // DataType
         // 4.5.3.12 [1]
+        /* Tested with fabricated XMI - OK. */
         try {
             critics.add(new CrOCL("context DataType inv:"
                     + "self.allFeatures->forAll(f | f.oclIsKindOf(Operation)"
                     + " and f.oclAsType(Operation).isQuery)",
                     Translator.localize("wfr.UML142.DataType.1-head"),
-                    null,
+                    Translator.localize("wfr.UML142.DataType.1-desc"),
                     ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
@@ -247,24 +250,26 @@ public class ProfileUML extends Profile {
 
         // GeneralizableElement
         // 4.5.3.20 [1]
+        /* Testing: does not fire. */
         try {
             critics.add(new CrOCL("context GeneralizableElement inv:"
                     + "self.isRoot implies self.generalization->isEmpty",
                     Translator.localize("wfr.UML142.GeneralizableElement.1-head"),
-                    null,
+                    Translator.localize("wfr.UML142.GeneralizableElement.1-desc"),
                     ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
         }
 
         // 4.5.3.20 [4]
+        /* Testing: does not fire. */
         try {
             critics.add(new CrOCL("context GeneralizableElement inv:"
                     + "self.generalization->"
                     + "forAll(g |self.namespace.allContents->"
                     + "includes(g.parent) )",
                     Translator.localize("wfr.UML142.GeneralizableElement.4-head"),
-                    null,
+                    Translator.localize("wfr.UML142.GeneralizableElement.4-desc"),
                     ToDoItem.HIGH_PRIORITY, null, null, "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
@@ -272,6 +277,7 @@ public class ProfileUML extends Profile {
  
         // Namespace
         // 4.5.3.26 [2]
+        /* Testing: Does not fire. Conflict with CrNameConflict. */
         try {
             critics.add(new CrOCL("context Namespace inv:"
                     + "self.allContents -> "
@@ -280,7 +286,121 @@ public class ProfileUML extends Profile {
                     + "a1.connection.participant = a2.connection.participant"
                     + " implies a1 = a2)",
                     Translator.localize("wfr.UML142.Namespace.2-head"),
-                    null, ToDoItem.HIGH_PRIORITY, null, null,
+                    Translator.localize("wfr.UML142.Namespace.2-desc"),
+                    ToDoItem.HIGH_PRIORITY, null, null,
+                    "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+
+        // Actor
+        // 4.11.3.1 [1]
+        /* Testing: does not fire. */
+        try {
+            critics.add(new CrOCL("context Actor inv: "
+                    + "self.associations->forAll(a | "
+                    + "a.connection->size = 2)",
+                    Translator.localize("wfr.UML142.Actor.1a-head"),
+                    Translator.localize("wfr.UML142.Actor.1a-desc"), 
+                    ToDoItem.HIGH_PRIORITY, null, null,
+                    "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+        /* Testing: does not fire. */
+        try {
+            critics.add(new CrOCL("context Actor inv: "
+                    + "self.associations->forAll(a | "
+//                    + "a.allConnections->exists(r | r.type.oclIsKindOf(Actor)) and "
+                    + "a.allConnections->exists(r | "
+                    + "r.type.oclIsKindOf(UseCase) or "
+                    + "r.type.oclIsKindOf(Subsystem) or "
+                    + "r.type.oclIsKindOf(Class)))",
+                    Translator.localize("wfr.UML142.Actor.1b-head"),
+                    Translator.localize("wfr.UML142.Actor.1b-desc"), 
+                    ToDoItem.HIGH_PRIORITY, null, null,
+                    "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+
+        // Actor
+        // 4.11.3.1 [2]
+        /* Tested with fabricated XMI - OK. */
+        try {
+            critics.add(new CrOCL("context Actor inv:"
+                    + "self.contents->isEmpty",
+                    Translator.localize("wfr.UML142.Actor.2-head"),
+                    Translator.localize("wfr.UML142.Actor.2-desc"), 
+                    ToDoItem.HIGH_PRIORITY, null, null,
+                    "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+
+        // UseCase
+        // 4.11.3.5 [1]
+        /* Testing: does not fire. */
+        try {
+            critics.add(new CrOCL("context UseCase inv:"
+                    + "self.associations->forAll(a | a.connection->size = 2)",
+                    Translator.localize("wfr.UML142.UseCase.1-head"),
+                    Translator.localize("wfr.UML142.UseCase.1-desc"), 
+                    ToDoItem.HIGH_PRIORITY, null, null,
+                    "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+
+        // UseCase
+        // 4.11.3.5 [2]
+        /* Testing: does not fire. */
+        try {
+            critics.add(new CrOCL("context UseCase inv:"
+                    + "self.associations->forAll(a | "
+                    + "a.allConnections->forAll(s, o| "
+                    + "(s.type.specificationPath->isEmpty and "
+                    + "o.type.specificationPath->isEmpty ) "
+                    + "or "
+                    + "(not s.type.specificationPath->includesAll( "
+                    + "o.type.specificationPath) and "
+                    + "not o.type.specificationPath->includesAll( "
+                    + "s.type.specificationPath)) "
+                    + "))",
+                    Translator.localize("wfr.UML142.UseCase.2-head"),
+                    Translator.localize("wfr.UML142.UseCase.2-desc"), 
+                    ToDoItem.HIGH_PRIORITY, null, null,
+                    "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+
+        // UseCase
+        // 4.11.3.5 [3]
+        /* Tested with fabricated XMI - OK. */
+        try {
+            critics.add(new CrOCL("context UseCase inv:"
+                    + "self.contents->isEmpty",
+                    Translator.localize("wfr.UML142.UseCase.3-head"),
+                    Translator.localize("wfr.UML142.UseCase.3-desc"), 
+                    ToDoItem.HIGH_PRIORITY, null, null,
+                    "http://www.uml.org/"));
+        } catch (InvalidOclException e) {
+            e.printStackTrace();
+        }
+
+        // UseCase
+        // 4.11.3.5 [4]
+        /* Tested OK, except in some cases, depending on the 
+         * sequence of the EPs. Probably the implementation of
+         * "forAll (x, y | ..." does not cover all combinations. */
+        try {
+            critics.add(new CrOCL("context UseCase inv:"
+                    + "self.allExtensionPoints -> forAll (x, y | "
+                    + "x.name = y.name implies x = y )",
+                    Translator.localize("wfr.UML142.UseCase.4-head"),
+                    Translator.localize("wfr.UML142.UseCase.4-desc"), 
+                    ToDoItem.HIGH_PRIORITY, null, null,
                     "http://www.uml.org/"));
         } catch (InvalidOclException e) {
             e.printStackTrace();
