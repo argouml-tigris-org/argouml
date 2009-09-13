@@ -25,17 +25,11 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
-import java.util.Collection;
-import java.util.Iterator;
-
-import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
-import org.tigris.gef.presentation.FigNode;
 
 /**
  * A Mode to interpret user input while drawing a binary association.
@@ -62,10 +56,10 @@ public class ModeCreateAssociation extends ModeCreateGraphEdge {
      */
     @Override
     protected FigEdge buildConnection(
-            MutableGraphModel graphModel,
-            Object edgeType,
-            Fig sourceFigNode,
-            Fig destFigNode) {
+            final MutableGraphModel graphModel,
+            final Object edgeType,
+            final Fig sourceFigNode,
+            final Fig destFigNode) {
         Object association = graphModel.connect(
                 sourceFigNode.getOwner(), 
                 destFigNode.getOwner(), 
@@ -79,48 +73,17 @@ public class ModeCreateAssociation extends ModeCreateGraphEdge {
         // (determined by the GraphEdgeRenderer).
 
         if (getNewEdge() != null) {
-            
             getSourceFigNode().damage();
             destFigNode.damage();
-            Layer lay = editor.getLayerManager().getActiveLayer();
-            FigAssociation fe = (FigAssociation) lay.presentationFor(getNewEdge());
+            final Layer lay = editor.getLayerManager().getActiveLayer();
+            final FigEdge fe = (FigEdge) lay.presentationFor(getNewEdge());
             _newItem.setLineColor(Color.black);
             fe.setFig(_newItem);
-            
-//            boolean flip = false;
-//            
-//            final Iterator iter = 
-//                Model.getFacade().getConnections(association).iterator();
-//            
-//            Object sourceAssociationEnd = iter.next();
-//            Object destAssociationEnd = iter.next();
-//            
-//            if (getArg("unidirectional").equals(Boolean.TRUE)) {
-//                if (!Model.getFacade().isNavigable(destAssociationEnd)) {
-//                    flip = true;
-//                }
-//            } else if (!getArg("aggregation").equals(Model.getAggregationKind().getNone())) {
-//                if (Model.getFacade().getAggregation(destAssociationEnd).equals(
-//                        getArg("aggregation"))) {
-//                    flip = true;
-//                }
-//            }
-//            if (flip) {
-//                fe.setDestPortFig(getStartPortFig());
-//                fe.setDestFigNode(getSourceFigNode());
-//                fe.setSourcePortFig(destFigNode);
-//                fe.setSourceFigNode((FigNode) destFigNode);
-//            } else {
-//                fe.setSourcePortFig(getStartPortFig());
-//                fe.setSourceFigNode(getSourceFigNode());
-//                fe.setDestPortFig(destFigNode);
-//                fe.setDestFigNode((FigNode) destFigNode);
-//            }
+            fe.computeRoute();
             return fe;
 
         } else {
             return null;
         }
     }
-    
 }
