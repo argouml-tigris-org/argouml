@@ -80,8 +80,8 @@ public class FigAssociation extends FigEdgeModelElement {
     private FigTextGroup middleGroup;
 
     /**
-     * @deprecated Use
-     * FigAssociation(Object, Object, Object, DiagramSettings)
+     * @deprecated in 0.29.1 by Bob Tarling. Use
+     * FigAssociation(DiagramElementSettings, DiagramSettings)
      * @param association The association model element
      * @param settings The diagram settings
      */
@@ -93,7 +93,8 @@ public class FigAssociation extends FigEdgeModelElement {
         
         createNameLabel(association, settings);
         
-        Iterator it = Model.getFacade().getAssociationEnds(association).iterator();
+        final Iterator it =
+            Model.getFacade().getAssociationEnds(association).iterator();
         
         final Object sourceAssociationEnd = it.next();
         final Object destAssociationEnd = it.next();
@@ -238,6 +239,42 @@ public class FigAssociation extends FigEdgeModelElement {
     protected int getNotationProviderType() {
         return NotationProviderFactory2.TYPE_ASSOCIATION_NAME;
     }
+    
+    /**
+     * Get the source classifier that the association was drawn from.
+     * Note that source and destination are not necessarily meaningful
+     * regarding associations. Although the edge may originally have been
+     * drawn by the user in a certain direction it in no way indicates the
+     * direction of the association.
+     * @return the classifier at the source end of the association or null
+     * if the association is not yet attached (TODO can we ensure that this is
+     * never null?).
+     */
+    protected Object getSource() {
+        if (srcEnd == null) {
+            return null;
+        }
+        return Model.getFacade().getClassifier(srcEnd.getOwner());
+    }
+    
+    /**
+     * Get the destination classifier that the association was drawn from.
+     * Note that source and destination are not necessarily meaningful
+     * regarding associations. Although the edge may originally have been
+     * drawn by the user in a certain direction it in no way indicates the
+     * direction of the association.
+     * @return the classifier at the destination end of the association or null
+     * if the association is not yet attached (TODO can we ensure that this is
+     * never null?).
+     */
+    protected Object getDestination() {
+        if (destEnd == null) {
+            return null;
+        }
+        return Model.getFacade().getClassifier(destEnd.getOwner());
+    }
+    
+    
 
     /*
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
