@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.profile.internal.ocl.uml14;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -65,7 +66,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         }
         
         /* 4.5.2.1 Abstraction */  
-        // TODO investigate: Abstraction.mapping is not in the Model Sybsystem
+        // TODO investigate: Abstraction.mapping is not in the Model Subsystem
 
         /* 4.5.2.3 Association */  
         
@@ -122,7 +123,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                 
                 // TODO investigate the "unnamed opposite end"
                 
-                // Aditional Operation 4.5.3.3 [1]
+                // Additional Operation 4.5.3.3 [1]
                 if (feature.equals("upperbound")) {
                     return Model.getFacade().getUpper(subject);
                 }
@@ -193,9 +194,8 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             .getFeatures(subject));
                 }
                 if (feature.equals("association")) {
-                    // TODO verify if this is the corrected semantics
                     return new ArrayList<Object>(Model.getFacade()
-                            .getAssociatedClasses(subject));
+                          .getAssociationEnds(subject));
                 }                
                 if (feature.equals("powertypeRange")) {
                     return new HashSet<Object>(Model.getFacade()
@@ -710,11 +710,39 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
             }
         }                
         
+        /* 4.11.3.5 UseCase */
+        if (Model.getFacade().isAUseCase(subject)) {
+            if (type.equals(".")) {
+                if (feature.equals("specificationPath")) {
+                    /*  The operation specificationPath results in a set containing 
+                     * all surrounding Namespaces that are not instances of
+                     *  Package.
+                     *  specificationPath : Set(Namespace) 
+                     * specificationPath = self.allSurroundingNamespaces->select(n |
+                     *    n.oclIsKindOf(Subsystem) or n.oclIsKindOf(Class))
+                     **/
+                    return Model.getUseCasesHelper().getSpecificationPath(subject);
+                }
+                if (feature.equals("allExtensionPoints")) {
+                    Collection c = Model.getCoreHelper().getAllSupertypes(subject);
+                    Collection result = new ArrayList(Model.getFacade().getExtensionPoints(subject));
+                    for (Object uc : c) {
+                        result.addAll(Model.getFacade().getExtensionPoints(uc));
+                    }
+                    return result;
+                }
+            }
+        }
+        
         /* 4.5.3.2 AssociationClass */
 
         if (Model.getFacade().isAAssociationClass(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("allConnections")) {
+                    /* The operation allConnections results in the set of all 
+                     * AssociationEnds of the AssociationClass, including all
+                     * connections defined by its parent (transitive closure).
+                     */
                     return internalOcl(
                             subject,
                             vt,
