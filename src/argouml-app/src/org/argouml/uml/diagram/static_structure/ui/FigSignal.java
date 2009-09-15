@@ -33,34 +33,18 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Selection;
-import org.tigris.gef.graph.GraphModel;
 
 /**
  * Class to display graphics for a UML Signal in a diagram.
  * <p>
- * A Signal may have attributes - the UML standard document 
+ * A Signal has a keyword "signal", possibly some stereotypes, and a name. 
+ * It may also have attributes - the UML standard document 
  * contains an example diagram showing this.
- * <p>
  * A Signal may have operations.
  * 
  * @author Tom Morris
  */
 public class FigSignal extends FigClassifierBoxWithAttributes {
-
-    private void constructFigs() {
-        getStereotypeFig().setKeyword("signal");
-
-        addFig(getBigPort());
-        addFig(getStereotypeFig());
-        addFig(getNameFig());
-        addFig(getOperationsFig());
-        addFig(getAttributesFig());
-        addFig(borderFig);
-
-        // by default, do not show operations nor attributes:
-        setOperationsVisible(false);
-        setAttributesVisible(false);
-    }
 
     /**
      * Construct a Fig representing a Signal.
@@ -71,7 +55,41 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
      */
     public FigSignal(Object owner, Rectangle bounds, DiagramSettings settings) {
         super(owner, bounds, settings);
-        constructFigs();
+        constructFigs(bounds);
+    }
+
+    private void constructFigs(Rectangle bounds) {
+        enableSizeChecking(false);
+        setSuppressCalcBounds(true);
+
+        getStereotypeFig().setKeyword("signal");
+        getStereotypeFig().setVisible(true);
+        /* The next line is needed so that we have the right dimension 
+         * when drawing this Fig on the diagram by pressing down 
+         * the mouse button, even before releasing the mouse button: */
+        getNameFig().setTopMargin(
+                getStereotypeFig().getMinimumSize().height);
+
+        addFig(getBigPort());
+        addFig(getNameFig());
+        /* Stereotype covers NameFig: */
+        addFig(getStereotypeFig());
+        addFig(getOperationsFig());
+        addFig(getAttributesCompartment());
+        addFig(getBorderFig());
+
+        // by default, do not show operations nor attributes:
+        setOperationsVisible(false);
+        setAttributesVisible(false);
+
+        /* Set the drop location in the case of D&D: */
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
+
+        setSuppressCalcBounds(false);
+        setBounds(getBounds());
+        enableSizeChecking(true);
     }
     
     /*

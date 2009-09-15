@@ -46,14 +46,11 @@ import org.tigris.gef.base.Selection;
  * Class to display graphics for a UML Enumeration in a diagram.
  * It depends on FigDataType for most of its behavior.<p>
  * 
+ * The Fig for an Enumeration has a compartment for Literals 
+ * above the Operations compartment.
  */
 public class FigEnumeration extends FigDataType 
     implements EnumLiteralsCompartmentContainer {
-
-    /**
-     * Serial version (generated)
-     */
-    private static final long serialVersionUID = 3333154292883077250L;
 
     /**
      * The Fig that represents the literals compartment.
@@ -61,7 +58,7 @@ public class FigEnumeration extends FigDataType
     private FigEnumLiteralsCompartment literalsCompartment;
 
     /**
-     * Construct a new AbstractFigComponent.
+     * Constructor.
      * 
      * @param owner owning UML element
      * @param bounds position and size
@@ -184,80 +181,122 @@ public class FigEnumeration extends FigDataType
         setBounds(getBounds());
     }
 
-    /*
-     * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#getMinimumSize()
-     */
     @Override
     public Dimension getMinimumSize() {
-        // Start with the minimum for our parent
-        Dimension aSize = super.getMinimumSize();
+        // Use "aSize" to build up the minimum size. Start with the size of the
+        // name compartment and build up.
 
-        if (literalsCompartment != null) {
-            aSize = addChildDimensions(aSize, literalsCompartment);
-        }
+        Dimension aSize = getNameFig().getMinimumSize();
+
+        /* Only take into account the stereotype width, not the height, 
+         * since the height is included in the name fig: */
+        addChildWidth(aSize, getStereotypeFig());
+        aSize = addChildDimensions(aSize, literalsCompartment);
+        aSize = addChildDimensions(aSize, getOperationsFig());
+
+        /* We want to maintain a minimum width for the 
+         * interface fig. Also, add the border dimensions 
+         * to the minimum space required for its contents: */
+        aSize.width = Math.max(WIDTH, aSize.width);
+        aSize.width += 2 * getLineWidth();
+        aSize.height += 2 * getLineWidth();
         
         return aSize;
     }
     
-    /*
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
-     */
     @Override
-    protected void setStandardBounds(final int x, final int y, final int width,
-            final int height) {
-
+    protected void setStandardBounds(final int x, final int y, final int w,
+            final int h) {
         // Save our old boundaries so it can be used in property message later
         Rectangle oldBounds = getBounds();
-
-        int w = Math.max(width, getMinimumSize().width);
-        int h = Math.max(height, getMinimumSize().height);
         
-        // set bounds of big box
-        getBigPort().setBounds(x, y, w, h);
-        borderFig.setBounds(x, y, w, h);
+        /* The new size can not be smaller than the minimum. */
+        Dimension minimumSize = getMinimumSize();
+        int newW = Math.max(w, minimumSize.width);
+        int newH = Math.max(h, minimumSize.height);
         
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {
             int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
+            getNameFig().setTopMargin(stereotypeHeight);
             getStereotypeFig().setBounds(
-                    x,
-                    y,
-                    w,
+                    x + getLineWidth(),
+                    y + getLineWidth(),
+                    newW - 2 * getLineWidth(),
                     stereotypeHeight);
-            currentHeight += stereotypeHeight;
+        } else {
+            getNameFig().setTopMargin(0);
         }
+        
+        /* Now the new nameFig height will include the stereotype height: */
+        Dimension nameMin = getNameFig().getMinimumSize();
+        int minNameHeight = Math.max(nameMin.height, NAME_FIG_HEIGHT);
+        
+        getNameFig().setBounds(
+                x + getLineWidth(), 
+                y + getLineWidth(), 
+                newW - 2 * getLineWidth(), 
+                minNameHeight);
+        
+        /* The new height can not be less than the name height: */
+        /* TODO: Is this needed/correct? 
+         * For when all compartments are hidden? */
+        newH = Math.max(minNameHeight + 2 * getLineWidth(), newH);
+        
+        currentHeight += minNameHeight;
 
-        int nameHeight = getNameFig().getMinimumSize().height;
-        getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
-        currentHeight += nameHeight;
+        int literalsHeight = 0;
+        int operationsHeight = 0;
+        int visibleCompartments = 0;
 
-        int visibleCompartments = getOperationsFig().isVisible() ? 1 : 0;
         if (getLiteralsCompartment().isVisible()) {
             visibleCompartments++;
-            int literalsHeight = 
+            literalsHeight = 
                 getLiteralsCompartment().getMinimumSize().height;
-            literalsHeight = Math.max(literalsHeight, 
-                    (h - currentHeight) / visibleCompartments);
+        }
+        if (getOperationsFig().isVisible()) {
+            visibleCompartments++;
+            operationsHeight = getOperationsFig().getMinimumSize().height;
+        }
+        
+        int requestedHeight = newH - currentHeight - 2 * getLineWidth();
+        int neededHeight = literalsHeight + operationsHeight;
+        
+        if (requestedHeight > neededHeight) {
+            /* Distribute the extra height over the visible compartments: */
+            if (getLiteralsCompartment().isVisible()) {
+                literalsHeight += (requestedHeight - neededHeight) / visibleCompartments;
+            }
+            if (getOperationsFig().isVisible()) {
+                operationsHeight += (requestedHeight - neededHeight) / visibleCompartments;
+            }
+        } else if (requestedHeight < neededHeight) {
+            /* Increase the height of the fig: */
+            newH += neededHeight - requestedHeight;
+        }
+
+        if (getLiteralsCompartment().isVisible()) {
             getLiteralsCompartment().setBounds(
-                    x + LINE_WIDTH,
-                    y + currentHeight,
-                    w - LINE_WIDTH,
+                    x + getLineWidth(),
+                    y + currentHeight + getLineWidth(),
+                    newW - 2 * getLineWidth(),
                     literalsHeight);
             currentHeight += literalsHeight;
         }
         
         if (getOperationsFig().isVisible()) {
-            int operationsHeight = getOperationsFig().getMinimumSize().height;
-            operationsHeight = Math.max(operationsHeight, h - currentHeight);
             getOperationsFig().setBounds(
-                    x,
-                    y + currentHeight,
-                    w,
+                    x + getLineWidth(),
+                    y + currentHeight + getLineWidth(),
+                    newW - 2 * getLineWidth(),
                     operationsHeight);
-            currentHeight += operationsHeight;
         }
-
+        
+        // set bounds of big box
+        getBigPort().setBounds(x, y, newW, newH);
+        getBorderFig().setBounds(x, y, newW, newH);
+        
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
         // has changed.

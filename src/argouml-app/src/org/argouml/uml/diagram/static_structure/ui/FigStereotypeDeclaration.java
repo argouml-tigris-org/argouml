@@ -52,21 +52,28 @@ import org.tigris.gef.base.Selection;
  * Classifier box notation.<p>
  *
  * TODO: This is just a placeholder right now! - tfm
+ * This needs to show tags and constraints.
  */
 public class FigStereotypeDeclaration extends FigCompartmentBox {
 
-    private static final long serialVersionUID = -2702539988691983863L;
-
-    private void constructFigs() {
-        getStereotypeFig().setKeyword("stereotype");
-
+    private void constructFigs(Rectangle bounds) {
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
         enableSizeChecking(false);
         setSuppressCalcBounds(true);
+
+        getStereotypeFig().setKeyword("stereotype");
+        getStereotypeFig().setVisible(true);
+        /* The next line is needed so that we have the right dimension 
+         * when drawing this Fig on the diagram by pressing down 
+         * the mouse button, even before releasing the mouse button: */
+        getNameFig().setTopMargin(
+                getStereotypeFig().getMinimumSize().height);
+
         addFig(getBigPort());
-        addFig(getStereotypeFig());
         addFig(getNameFig());
+        // stereotype fig covers the name fig:
+        addFig(getStereotypeFig());
 
         // TODO: Need named Tags and Constraints compartments here
 //        addFig(tagsFig);
@@ -74,9 +81,13 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
 
         addFig(getBorderFig());
 
+        /* Set the drop location in the case of D&D: */
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
+
         setSuppressCalcBounds(false);
-        // Set the bounds of the figure to the total of the above (hardcoded)
-        setBounds(X0, Y0, WIDTH, STEREOHEIGHT + NAME_FIG_HEIGHT);
+        setBounds(getBounds());
     }
 
     /**
@@ -89,7 +100,7 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
     public FigStereotypeDeclaration(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        constructFigs();
+        constructFigs(bounds);
         enableSizeChecking(true);
     }
     
@@ -143,22 +154,29 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
     }
 
     /**
-     * Gets the minimum size permitted for a class on the diagram.<p>
+     * Gets the minimum size permitted for a class on the diagram.
      *
      * @return  the size of the minimum bounding box.
      */
     @Override
     public Dimension getMinimumSize() {
+        /* Use "aSize" to build up the minimum size. Start with the size of the
+         * name compartment and build up. */
         Dimension aSize = getNameFig().getMinimumSize();
-        
-        //TODO: Why does this differ from the other Figs?
-        aSize = addChildDimensions(aSize, getStereotypeFig());
+
+        /* Only take into account the stereotype width, not the height, 
+         * since the height is included in the name fig: */
+        addChildWidth(aSize, getStereotypeFig());
 
         // TODO: Allow space for each of the Tags & Constraints we have
 
-        // we want to maintain a minimum width for the class
+        /* We want to maintain a minimum width for the 
+         * stereotypeDeclaration. Also, add the border dimensions 
+         * to the minimum space required for its contents: */
         aSize.width = Math.max(WIDTH, aSize.width);
-
+        aSize.width += 2 * getLineWidth();
+        aSize.height += 2 * getLineWidth();
+        
         return aSize;
     }
 
@@ -179,31 +197,45 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
     @Override
     protected void setStandardBounds(final int x, final int y,
             final int w, final int h) {
+        /* Save our old boundaries (needed later): */
         Rectangle oldBounds = getBounds();
 
-        // set bounds of big box
-        getBigPort().setBounds(x, y, w, h);
-        getBorderFig().setBounds(x, y, w, h);
-
-        int currentHeight = 0;
+        /* The new size can not be smaller than the minimum. */
+        Dimension minimumSize = getMinimumSize();
+        int newW = Math.max(w, minimumSize.width);
+        int newH = Math.max(h, minimumSize.height);
 
         if (getStereotypeFig().isVisible()) {
             int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
+            getNameFig().setTopMargin(stereotypeHeight);
             getStereotypeFig().setBounds(
-                    x,
-                    y,
-                    w,
+                    x + getLineWidth(),
+                    y + getLineWidth(),
+                    newW - 2 * getLineWidth(),
                     stereotypeHeight);
-            currentHeight = stereotypeHeight;
+        } else {
+            getNameFig().setTopMargin(0);
         }
+        
+        /* Now the new nameFig height will include the stereotype height: */
+        Dimension nameMin = getNameFig().getMinimumSize();
+        int minNameHeight = Math.max(nameMin.height, NAME_FIG_HEIGHT);
+        
+        getNameFig().setBounds(
+                x + getLineWidth(), 
+                y + getLineWidth(), 
+                newW - 2 * getLineWidth(), 
+                minNameHeight);
 
-        int nameHeight = getNameFig().getMinimumSize().height;
-        getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
-        currentHeight += nameHeight;
+        /* The new height can not be less than the name height: */
+        newH = Math.max(minNameHeight, newH);
 
         // TODO: Compute size of Tags and Constraints
 
-
+        // set bounds of big box
+        getBigPort().setBounds(x, y, newW, newH);
+        getBorderFig().setBounds(x, y, newW, newH);
+        
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
         // has changed.

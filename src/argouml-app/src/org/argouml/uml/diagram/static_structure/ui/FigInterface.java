@@ -32,49 +32,53 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 
 /**
  * Class to display graphics for a UML Interface in a diagram.
  * <p>
- * An Interface may show compartments for stereotypes
- * and operations. Attributes are not supported in ArgoUML.
+ * An Interface may show stereotypes and a compartment for
+ * operations. Attributes are not supported in ArgoUML.
  */
 public class FigInterface extends FigClassifierBox {
 
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
 
     /**
-     * Initialization common to multiple constructors.  This can be merged back
-     * into the last constructor when the deprecated ones have been removed.
+     * Initialization common to multiple constructors.
      */
-    private void initialize() {
-        getStereotypeFig().setKeyword("interface");
-
+    private void initialize(Rectangle bounds) {
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
         enableSizeChecking(false);
         setSuppressCalcBounds(true);
-        
-        Dimension size = new Dimension(0, 0);
+
+        getStereotypeFig().setKeyword("interface");
+        getStereotypeFig().setVisible(true);
+        /* The next line is needed so that we have the right dimension 
+         * when drawing this Fig on the diagram by pressing down 
+         * the mouse button, even before releasing the mouse button: */
+        getNameFig().setTopMargin(
+                getStereotypeFig().getMinimumSize().height);
         
         addFig(getBigPort());
-        addFig(getStereotypeFig());
-        addChildDimensions(size, getStereotypeFig());
         addFig(getNameFig());
-        addChildDimensions(size, getNameFig());
+        // stereotype fig covers the name fig:
+        addFig(getStereotypeFig());
         addFig(getOperationsFig());
-        addChildDimensions(size, getOperationsFig());
-        addFig(borderFig);
+        addFig(getBorderFig());
+
+        /* Set the drop location in the case of D&D: */
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
 
         setSuppressCalcBounds(false);
 
         // Set the bounds of the figure to the total of the above 
+        setBounds(getBounds());
         enableSizeChecking(true);
-        setBounds(X0, Y0, size.width, size.height);
     }
 
     /**
@@ -87,7 +91,7 @@ public class FigInterface extends FigClassifierBox {
     public FigInterface(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        initialize();
+        initialize(bounds);
     }
     
     /*
@@ -110,19 +114,20 @@ public class FigInterface extends FigClassifierBox {
     public Dimension getMinimumSize() {
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
-
         Dimension aSize = getNameFig().getMinimumSize();
 
-        aSize.height += NAME_V_PADDING * 2;
-        aSize.height = Math.max(NAME_FIG_HEIGHT, aSize.height);
+        /* Only take into account the stereotype width, not the height, 
+         * since the height is included in the name fig: */
+        addChildWidth(aSize, getStereotypeFig());
 
-        // If we have a stereotype displayed, then allow some space for that
-        // (width and height)
-        aSize = addChildDimensions(aSize, getStereotypeFig());
-        aSize = addChildDimensions(aSize, getOperationsFig());
+        addChildDimensions(aSize, getOperationsFig());
 
-        // we want to maintain a minimum width for Interfaces
+        /* We want to maintain a minimum width for the 
+         * interface fig. Also, add the border dimensions 
+         * to the minimum space required for its contents: */
         aSize.width = Math.max(WIDTH, aSize.width);
+        aSize.width += 2 * getLineWidth();
+        aSize.height += 2 * getLineWidth();
 
         return aSize;
     }
@@ -188,6 +193,7 @@ public class FigInterface extends FigClassifierBox {
      * USED BY PGML.tee.
      * @return the class name and bounds together with compartment
      * visibility.
+     * TODO: Is this not duplicate with the parent?
      */
     @Override
     public String classNameAndBounds() {
@@ -201,9 +207,7 @@ public class FigInterface extends FigClassifierBox {
      *
      * If the required height is bigger, then the additional height is
      * equally distributed among all figs (i.e. compartments), such that the
-     * cumulated height of all visible figs equals the demanded height<p>.
-     *
-     * Some of this has "magic numbers" hardcoded in.<p>
+     * accumulated height of all visible figs equals the demanded height.
      *
      * @param x  Desired X coordinate of upper left corner
      *
@@ -216,40 +220,66 @@ public class FigInterface extends FigClassifierBox {
     @Override
     protected void setStandardBounds(final int x, final int y, final int w,
             final int h) {
-
-        // Save our old boundaries (needed later), and get minimum size
-        // info. 
+        /* Save our old boundaries (needed later), and get minimum size
+         * info.*/ 
         Rectangle oldBounds = getBounds();
 
-        // set bounds of big box
-        getBigPort().setBounds(x, y, w, h);
-        borderFig.setBounds(x, y, w, h);
+        /* The new size can not be smaller than the minimum. */
+        Dimension minimumSize = getMinimumSize();
+        int newW = Math.max(w, minimumSize.width);
+        int newH = Math.max(h, minimumSize.height);
 
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {
             int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
+            getNameFig().setTopMargin(stereotypeHeight);
             getStereotypeFig().setBounds(
-                    x,
-                    y,
-                    w,
+                    x + getLineWidth(),
+                    y + getLineWidth(),
+                    newW - 2 * getLineWidth(),
                     stereotypeHeight);
-            currentHeight = stereotypeHeight;
+        } else {
+            getNameFig().setTopMargin(0);
         }
+        
+        /* Now the new nameFig height will include the stereotype height: */
+        Dimension nameMin = getNameFig().getMinimumSize();
+        int minNameHeight = Math.max(nameMin.height, NAME_FIG_HEIGHT);
+        
+        getNameFig().setBounds(
+                x + getLineWidth(), 
+                y + getLineWidth(), 
+                newW - 2 * getLineWidth(), 
+                minNameHeight);
+        
+        /* The new height can not be less than the name height: */
+        /* TODO: Is this needed/correct? */
+        newH = Math.max(minNameHeight, newH);
+        
+        currentHeight += minNameHeight;
 
-        int nameHeight = getNameFig().getMinimumSize().height;
-        getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
-        currentHeight += nameHeight;
-
+        /* And the operations compartment takes the remainder 
+         * of the requested height: */
         if (getOperationsFig().isVisible()) {
-            int operationsY = y + currentHeight;
-            int operationsHeight = (h + y) - operationsY - 1;
+            int operationsHeight = newH - currentHeight - 2 * getLineWidth();
+            /* If the requested height is smaller than the minimum required, ... */
+            if ( operationsHeight < getOperationsFig().getMinimumSize().height) {
+                /* ... then we use the minimum ... */
+                operationsHeight = getOperationsFig().getMinimumSize().height;
+                /* ... and make the Fig bigger: */
+                newH += getOperationsFig().getMinimumSize().height - operationsHeight;
+            }
             getOperationsFig().setBounds(
-                    x,
-                    operationsY,
-                    w,
+                    x + getLineWidth(),
+                    y + currentHeight + getLineWidth(),
+                    newW - 2 * getLineWidth(),
                     operationsHeight);
         }
+        
+        // set bounds of big box
+        getBigPort().setBounds(x, y, newW, newH);
+        getBorderFig().setBounds(x, y, newW, newH);
 
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property

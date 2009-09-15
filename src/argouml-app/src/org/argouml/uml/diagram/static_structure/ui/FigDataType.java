@@ -32,43 +32,55 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 
 /**
  * Class to display graphics for a UML DataType in a diagram.
- * (cloned from FigInterface - perhaps they should both specialize
- * a common supertype).
+ * (much of this code is cloned from FigInterface - perhaps we need
+ * a more generic class provide this common code).
  * <p>
- * A DataType may show compartments for stereotypes
- * and operations. Attributes are not supported in ArgoUML. <p>
+ * A DataType shows a keyword, a name, stereotypes and 
+ * an operations compartment. Attributes are not supported 
+ * in ArgoUML. <p>
  * 
  * Every DataType shows a keyword, but it is not 
- * always <<datatype>>, e.g. for an Enumeration.
+ * always <<datatype>>, e.g. for an Enumeration. <p>
+ * 
+ * There is no need for a specific minimal width for this Fig, 
+ * since its width will most of the time be determined by the keyword.
  */
 public class FigDataType extends FigClassifierBox {
 
     private static final Logger LOG = Logger.getLogger(FigDataType.class);
-    
-    private static final int MIN_WIDTH = 40;
 
-    private void constructFigs() {
-        getStereotypeFig().setKeyword(getKeyword());
-
+    private void constructFigs(Rectangle bounds) {
+        enableSizeChecking(false);
         setSuppressCalcBounds(true);
+        
+        getStereotypeFig().setKeyword(getKeyword());
+        getStereotypeFig().setVisible(true);
+        /* The next line is needed so that we have the right dimension 
+         * when drawing this Fig on the diagram by pressing down 
+         * the mouse button, even before releasing the mouse button: */
+        getNameFig().setTopMargin(
+                getStereotypeFig().getMinimumSize().height);
+
         addFig(getBigPort());
-        addFig(getStereotypeFig());
         addFig(getNameFig());
+        addFig(getStereotypeFig());
         addFig(getOperationsFig());
-        addFig(borderFig);
+        addFig(getBorderFig());
+
+        /* Set the drop location in the case of D&D: */
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
 
         setSuppressCalcBounds(false);
 
-        // Set the bounds of the figure to the total of the above 
+        setBounds(getBounds());
         enableSizeChecking(true);
-        super.setStandardBounds(X0, Y0, WIDTH, NAME_FIG_HEIGHT + ROWHEIGHT);
     }
 
     /**
@@ -77,18 +89,11 @@ public class FigDataType extends FigClassifierBox {
      * Parent {@link org.argouml.uml.diagram.ui.FigNodeModelElement}
      * will have created the main box {@link #getBigPort()} and
      * its name {@link #getNameFig()} and stereotype
-     * (@link #getStereotypeFig()}. This constructor
-     * creates a box for the operations.<p>
+     * (@link #getStereotypeFig()}. The FigClassifierBox
+     * created a box for the operations.<p>
      *
      * The properties of all these graphic elements are adjusted
-     * appropriately. The main boxes are all filled and have outlines.<p>
-     * 
-     * <em>Warning</em>. Much of the graphics positioning is hard coded. The
-     * overall figure is placed at location (10,10).
-     * The stereotype compartment is created 15 pixels high
-     * in the parent, but we change it to 19 pixels, 1 more than
-     * ({@link #STEREOHEIGHT} here. The operations box is created at 19 pixels,
-     * 2 more than {@link #ROWHEIGHT}.
+     * appropriately.
      * 
      * @param owner owning UML element
      * @param bounds position and size
@@ -97,7 +102,7 @@ public class FigDataType extends FigClassifierBox {
     public FigDataType(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        constructFigs();
+        constructFigs(bounds);
     }
 
     /**
@@ -121,9 +126,7 @@ public class FigDataType extends FigClassifierBox {
     }
 
     /**
-     * Gets the minimum size permitted for a datatype on the diagram.<p>
-     *
-     * Parts of this are hardcoded with magic numbers.<p>
+     * Gets the minimum size permitted for a datatype on the diagram.
      *
      * @return  the size of the minimum bounding box.
      */
@@ -134,31 +137,22 @@ public class FigDataType extends FigClassifierBox {
 
         Dimension aSize = getNameFig().getMinimumSize();
 
-        aSize.height += NAME_V_PADDING * 2;
-        aSize.height = Math.max(NAME_FIG_HEIGHT, aSize.height);
-
-        // If we have a stereotype displayed, then allow some space for that
-        // (width and height)
-        aSize = addChildDimensions(aSize, getStereotypeFig());
+        /* Only take into account the stereotype width, not the height, 
+         * since the height is included in the name fig: */
+        addChildWidth(aSize, getStereotypeFig());
+        
         aSize = addChildDimensions(aSize, getOperationsFig());
 
-        // we want to maintain a minimum width for datatypes
-        aSize.width = Math.max(MIN_WIDTH, aSize.width);
+        /* We want to maintain a minimum width for the 
+         * interface fig. Also, add the border dimensions 
+         * to the minimum space required for its contents: */
+        aSize.width = Math.max(WIDTH, aSize.width);
+        aSize.width += 2 * getLineWidth();
+        aSize.height += 2 * getLineWidth();
 
         return aSize;
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getLineWidth()
-     */
-    @Override
-    public int getLineWidth() {
-        return borderFig.getLineWidth();
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
-     */
     @Override
     public void setEnclosingFig(Fig encloser) {
         Fig oldEncloser = getEnclosingFig();
@@ -205,18 +199,6 @@ public class FigDataType extends FigClassifierBox {
     }
 
     /**
-     * USED BY PGML.tee.
-     * @return the class name and bounds together with compartment
-     * visibility.
-     */
-    @Override
-    public String classNameAndBounds() {
-        return super.classNameAndBounds()
-                + "operationsVisible=" + isOperationsVisible();
-    }
-
-
-    /**
      * Sets the bounds, but the size will be at least the one returned by
      * {@link #getMinimumSize()}, unless checking of size is disabled.<p>
      *
@@ -236,40 +218,66 @@ public class FigDataType extends FigClassifierBox {
     @Override
     protected void setStandardBounds(final int x, final int y, final int w,
             final int h) {
-
-        // Save our old boundaries to use in our property message later
+        /* Save our old boundaries (needed later), and get minimum size
+         * info.*/ 
         Rectangle oldBounds = getBounds();
-        // and get minimum size info.
 
-        // set bounds of big box
-        getBigPort().setBounds(x, y, w, h);
-        borderFig.setBounds(x, y, w, h);
-
+        /* The new size can not be smaller than the minimum. */
+        Dimension minimumSize = getMinimumSize();
+        int newW = Math.max(w, minimumSize.width);
+        int newH = Math.max(h, minimumSize.height);
+        
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {
             int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
+            getNameFig().setTopMargin(stereotypeHeight);
             getStereotypeFig().setBounds(
-                    x,
-                    y,
-                    w,
+                    x + getLineWidth(),
+                    y + getLineWidth(),
+                    newW - 2 * getLineWidth(),
                     stereotypeHeight);
-            currentHeight = stereotypeHeight;
+        } else {
+            getNameFig().setTopMargin(0);
         }
+        
+        /* Now the new nameFig height will include the stereotype height: */
+        Dimension nameMin = getNameFig().getMinimumSize();
+        int minNameHeight = Math.max(nameMin.height, NAME_FIG_HEIGHT);
+        
+        getNameFig().setBounds(
+                x + getLineWidth(), 
+                y + getLineWidth(), 
+                newW - 2 * getLineWidth(), 
+                minNameHeight);
+        
+        /* The new height can not be less than the name height: */
+        /* TODO: Is this needed/correct? */
+        newH = Math.max(minNameHeight, newH);
+        
+        currentHeight += minNameHeight;
 
-        int nameHeight = getNameFig().getMinimumSize().height;
-        getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
-        currentHeight += nameHeight;
-
+        /* And the operations compartment takes the remainder 
+         * of the requested height: */
         if (getOperationsFig().isVisible()) {
-            int operationsY = y + currentHeight;
-            int operationsHeight = (h + y) - operationsY - LINE_WIDTH;
+            int operationsHeight = newH - currentHeight - 2 * getLineWidth();
+            /* If the requested height is smaller than the minimum required, ... */
+            if ( operationsHeight < getOperationsFig().getMinimumSize().height) {
+                /* ... then we use the minimum ... */
+                operationsHeight = getOperationsFig().getMinimumSize().height;
+                /* ... and make the Fig bigger: */
+                newH += getOperationsFig().getMinimumSize().height - operationsHeight;
+            }
             getOperationsFig().setBounds(
-                    x,
-                    operationsY,
-                    w,
+                    x + getLineWidth(),
+                    y + currentHeight + getLineWidth(),
+                    newW - 2 * getLineWidth(),
                     operationsHeight);
         }
+        
+        // set bounds of big box
+        getBigPort().setBounds(x, y, newW, newH);
+        getBorderFig().setBounds(x, y, newW, newH);
 
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property

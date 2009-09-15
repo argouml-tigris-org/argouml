@@ -39,20 +39,11 @@ import org.tigris.gef.presentation.FigText;
 /**
  * Class to display graphics for a UML Class in a diagram.<p>
  * 
- * A Class may show compartments for stereotypes,
+ * A Class may show stereotypes, a name and compartments for
  * attributes and operations.
  */
 public class FigClass extends FigClassifierBoxWithAttributes {
 
-    private void constructFigs() {
-        addFig(getBigPort());
-        addFig(getStereotypeFig());
-        addFig(getNameFig());
-        addFig(getOperationsFig());
-        addFig(getAttributesFig());
-        addFig(borderFig);
-    }
-    
     /**
      * Constructor for a {@link FigClass} during file load.<p>
      *
@@ -64,14 +55,7 @@ public class FigClass extends FigClassifierBoxWithAttributes {
      *
      * The properties of all these graphic elements are adjusted
      * appropriately. The main boxes are all filled and have
-     * outlines.<p>
-     *
-     * <em>Warning</em>. Much of the graphics positioning is hard
-     * coded. The overall figure is placed at location (10,10). 
-     * The stereotype compartment is created 15 pixels
-     * high in the parent, but we change it to 19 pixels, 1 more than
-     * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
-     * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
+     * outlines. TODO: which is wrong, since the bigPort is filled, too.
      * 
      * @param element model element to be represented by this fig.
      * @param bounds rectangle describing bounds
@@ -80,9 +64,30 @@ public class FigClass extends FigClassifierBoxWithAttributes {
     public FigClass(Object element, Rectangle bounds, 
             DiagramSettings settings) {
         super(element, bounds, settings);
-        constructFigs();
-        Rectangle r = getBounds();
-        setStandardBounds(r.x, r.y, r.width, r.height);
+        constructFigs(bounds);
+    }
+
+    private void constructFigs(Rectangle bounds) {
+        enableSizeChecking(false);
+        setSuppressCalcBounds(true);
+        
+        addFig(getBigPort());
+        addFig(getNameFig());
+        /* Stereotype covers NameFig: */
+        addFig(getStereotypeFig());
+        addFig(getOperationsFig());
+        addFig(getAttributesCompartment());
+        addFig(getBorderFig());
+        
+
+        /* Set the drop location in the case of D&D: */
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
+        
+        setSuppressCalcBounds(false);
+        setBounds(getBounds());
+        enableSizeChecking(true);
     }
 
     /*
@@ -96,8 +101,9 @@ public class FigClass extends FigClassifierBoxWithAttributes {
         while (thisIter.hasNext()) {
             Fig thisFig = (Fig) thisIter.next();
             Fig cloneFig = (Fig) cloneIter.next();
-            if (thisFig == borderFig) {
-                figClone.borderFig = thisFig;
+            if (thisFig == getBorderFig()) {
+                /* TODO: complete this */
+//                figClone.setBorderFig(thisFig);
             }
         }
         return figClone;
@@ -118,7 +124,7 @@ public class FigClass extends FigClassifierBoxWithAttributes {
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
-        return borderFig.getLineWidth();
+        return getBorderFig().getLineWidth();
     }
 
     /**

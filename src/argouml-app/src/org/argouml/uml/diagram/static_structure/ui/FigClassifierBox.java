@@ -44,7 +44,6 @@ import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
-import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
 import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.tigris.gef.base.Editor;
@@ -55,10 +54,7 @@ import org.tigris.gef.presentation.Fig;
 /**
  * Class to display graphics for any UML Classifier in a diagram.<p>
  * 
- * This Fig has an Operations compartment. <p>
- *
- * Note that the upper line of the name box will be blanked out
- * if there is eventually a stereotype above.
+ * This abstract Fig adds an Operations compartment.
  */
 public abstract class FigClassifierBox extends FigCompartmentBox
         implements OperationsCompartmentContainer {
@@ -66,30 +62,12 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     /**
      * The Fig for the operations compartment (if any).
      */
-    private FigOperationsCompartment operationsFig;
-
-    // TODO: This is already defined in the superclass, can we use that?
-    protected Fig borderFig;
+    private FigOperationsCompartment operationsFigCompartment;
     
     /**
      * Initialization shared by all constructors.
      */
     private void constructFigs() {
-        // Set properties of the stereotype box. Make it 1 pixel higher than
-        // before, so it overlaps the name box, and the blanking takes out both
-        // lines. Initially not set to be displayed, but this will be changed
-        // when we try to render it, if we find we have a stereotype.
-        getStereotypeFig().setFilled(true);
-        getStereotypeFig().setLineWidth(LINE_WIDTH);
-        // +1 to have 1 pixel overlap with getNameFig()
-        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
-
-        borderFig = new FigEmptyRect(X0, Y0, 0, 0);
-        borderFig.setLineWidth(LINE_WIDTH);
-        borderFig.setLineColor(LINE_COLOR);
-
-        getBigPort().setLineWidth(0);
-        getBigPort().setFillColor(FILL_COLOR);
     }
 
     private Rectangle getDefaultBounds() {
@@ -111,7 +89,9 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     public FigClassifierBox(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        operationsFig = new FigOperationsCompartment(owner, getDefaultBounds(),
+        operationsFigCompartment = new FigOperationsCompartment(
+                owner, 
+                getDefaultBounds(),
                 getSettings());
         constructFigs();
     }
@@ -124,8 +104,8 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         Iterator thisIter = this.getFigs().iterator();
         while (thisIter.hasNext()) {
             Fig thisFig = (Fig) thisIter.next();
-            if (thisFig == operationsFig) {
-                figClone.operationsFig = (FigOperationsCompartment) thisFig;
+            if (thisFig == operationsFigCompartment) {
+                figClone.operationsFigCompartment = (FigOperationsCompartment) thisFig;
                 return figClone;
             }
         }
@@ -142,13 +122,13 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * have FigOperationsCompartment itself listen for add and remove events
      * and make minimum change rather than entirely rebuild. 
      * Remark MVW: This is a bit exaggerated, since the populate() 
-     * method is already heavily optimised.
+     * method is already heavily optimized.
      */
     protected void updateOperations() {
         if (!isOperationsVisible()) {
             return;
         }
-        operationsFig.populate();
+        operationsFigCompartment.populate();
 
         setBounds(getBounds());
         damage();
@@ -209,7 +189,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * @return The Fig for the operations compartment
      */
     protected FigOperationsCompartment getOperationsFig() {
-        return operationsFig;
+        return operationsFigCompartment;
     }
 
     /**
@@ -218,7 +198,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * @return the bounds of the operations compartment
      */
     public Rectangle getOperationsBounds() {
-        return operationsFig.getBounds();
+        return operationsFigCompartment.getBounds();
     }
 
 
@@ -226,14 +206,14 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#isOperationsVisible()
      */
     public boolean isOperationsVisible() {
-        return operationsFig != null && operationsFig.isVisible();
+        return operationsFigCompartment != null && operationsFigCompartment.isVisible();
     }
 
     /*
      * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#setOperationsVisible(boolean)
      */
     public void setOperationsVisible(boolean isVisible) {
-        setCompartmentVisible(operationsFig, isVisible);
+        setCompartmentVisible(operationsFigCompartment, isVisible);
     }
     
     /*

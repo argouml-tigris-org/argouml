@@ -67,20 +67,19 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
     public FigClassifierBoxWithAttributes(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        attributesFigCompartment = new FigAttributesCompartment(owner,
-                DEFAULT_COMPARTMENT_BOUNDS, settings);
+        getAttributesCompartment(); // this creates the compartment fig
     }
 
     /**
-     * @return The vector of graphics for the uml attributes (if any).
-     * First one is the rectangle for the entire operations box.
+     * @return The graphics for the UML attributes (if any).
+     * @deprecated use getAttributesCompartment
      */
     protected FigAttributesCompartment getAttributesFig() {
-        return attributesFigCompartment;
+        return getAttributesCompartment();
     }
     
     public Rectangle getAttributesBounds() {
-        return attributesFigCompartment.getBounds();
+        return getAttributesCompartment().getBounds();
     }
 
     public boolean isAttributesVisible() {
@@ -231,17 +230,21 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
     public Dimension getMinimumSize() {
         // Use "aSize" to build up the minimum size. Start with the size of the
         // name compartment and build up.
-
         Dimension aSize = getNameFig().getMinimumSize();
-        aSize.height += NAME_V_PADDING * 2;
-        aSize.height = Math.max(NAME_FIG_HEIGHT, aSize.height);
 
-        aSize = addChildDimensions(aSize, getStereotypeFig());
-        aSize = addChildDimensions(aSize, getAttributesFig());
+        /* Only take into account the stereotype width, not the height, 
+         * since the height is included in the name fig: */
+        aSize = addChildWidth(aSize, getStereotypeFig());
+        aSize = addChildDimensions(aSize, getAttributesCompartment());
         aSize = addChildDimensions(aSize, getOperationsFig());
 
+        /* We want to maintain a minimum width for the 
+         * fig. Also, add the border dimensions 
+         * to the minimum space required for its contents: */
         aSize.width = Math.max(WIDTH, aSize.width);
-
+        aSize.width += 2 * getLineWidth();
+        aSize.height += 2 * getLineWidth();
+    
         return aSize;
     }
 
@@ -250,84 +253,112 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
      * {@link #getMinimumSize()}, unless checking of size is disabled.<p>
      *
      * If the required height is bigger, then the additional height is
-     * equally distributed among all figs (i.e. compartments), such that the
-     * cumulated height of all visible figs equals the demanded height<p>.
-     *
-     * Some of this has "magic numbers" hardcoded in.<p>
+     * equally distributed among all compartments, such that the
+     * accumulated height of all visible figs equals the demanded height.
      *
      * @param x  Desired X coordinate of upper left corner
      *
      * @param y  Desired Y coordinate of upper left corner
      *
-     * @param width  Desired width of the FigClass
+     * @param width  Desired width of the Fig
      *
-     * @param height  Desired height of the FigClass
+     * @param height  Desired height of the Fig
      * 
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     @Override
-    protected void setStandardBounds(final int x, final int y, final int width,
-            final int height) {
+    protected void setStandardBounds(final int x, final int y, final int w,
+            final int h) {
 
         // Save our old boundaries so it can be used in property message later
         Rectangle oldBounds = getBounds();
 
         // Make sure we don't try to set things smaller than the minimum
-        int w = Math.max(width, getMinimumSize().width);
-        int h = Math.max(height, getMinimumSize().height);
-        
-        // set bounds of big box
-        getBigPort().setBounds(x, y, w, h);
-        if (borderFig != null) {
-            borderFig.setBounds(x, y, w, h);
-        }
-        
-        // Extra space to be distributed among compartments is the difference
-        // between the actual size and the min. size
-        final int whitespace = h - getMinimumSize().height;
+        Dimension minimumSize = getMinimumSize();
+        int newW = Math.max(w, minimumSize.width);
+        int newH = Math.max(h, minimumSize.height);
         
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {
             int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
+            getNameFig().setTopMargin(stereotypeHeight);
             getStereotypeFig().setBounds(
-                    x,
-                    y,
-                    w,
+                    x + getLineWidth(),
+                    y + getLineWidth(),
+                    newW - 2 * getLineWidth(),
                     stereotypeHeight);
-            currentHeight += stereotypeHeight;
+        } else {
+            getNameFig().setTopMargin(0);
         }
 
-        int nameHeight = getNameFig().getMinimumSize().height;
-        getNameFig().setBounds(x, y + currentHeight, w, nameHeight);
-        currentHeight += nameHeight;
+        /* Now the new nameFig height will include the stereotype height: */
+        Dimension nameMin = getNameFig().getMinimumSize();
+        int minNameHeight = Math.max(nameMin.height, NAME_FIG_HEIGHT);
+        
+        getNameFig().setBounds(
+                x + getLineWidth(), 
+                y + getLineWidth(), 
+                newW - 2 * getLineWidth(), 
+                minNameHeight);
+        
+        /* The new height can not be less than the name height: */
+        /* TODO: Is this needed/correct? 
+         * For when all compartments are hidden? */
+        newH = Math.max(minNameHeight + 2 * getLineWidth(), newH);
+        
+        currentHeight += minNameHeight;
 
-        if (isAttributesVisible()) {
-            int attributesHeight = 
-                attributesFigCompartment.getMinimumSize().height;
-            if (isOperationsVisible()) {
-                attributesHeight += whitespace / 2;
+        int attributesHeight = 0;
+        int operationsHeight = 0;
+        int visibleCompartments = 0;
+
+        if (getAttributesCompartment().isVisible()) {
+            visibleCompartments++;
+            attributesHeight = 
+                getAttributesCompartment().getMinimumSize().height;
+        }
+        if (getOperationsFig().isVisible()) {
+            visibleCompartments++;
+            operationsHeight = getOperationsFig().getMinimumSize().height;
+        }
+        
+        int requestedHeight = newH - currentHeight - 2 * getLineWidth();
+        int neededHeight = attributesHeight + operationsHeight;
+        
+        if (requestedHeight > neededHeight) {
+            /* Distribute the extra height over the visible compartments: */
+            if (getAttributesCompartment().isVisible()) {
+                attributesHeight += (requestedHeight - neededHeight) / visibleCompartments;
             }
-            attributesFigCompartment.setBounds(
-                    x,
-                    y + currentHeight,
-                    w,
+            if (getOperationsFig().isVisible()) {
+                operationsHeight += (requestedHeight - neededHeight) / visibleCompartments;
+            }
+        } else if (requestedHeight < neededHeight) {
+            /* Increase the height of the fig: */
+            newH += neededHeight - requestedHeight;
+        }
+
+        if (getAttributesCompartment().isVisible()) {
+            getAttributesCompartment().setBounds(
+                    x + getLineWidth(),
+                    y + currentHeight + getLineWidth(),
+                    newW - 2 * getLineWidth(),
                     attributesHeight);
             currentHeight += attributesHeight;
         }
-
-        if (isOperationsVisible()) {
-            int operationsY = y + currentHeight;
-            int operationsHeight = (h + y) - operationsY - LINE_WIDTH;
-            if (operationsHeight < getOperationsFig().getMinimumSize().height) {
-                operationsHeight = getOperationsFig().getMinimumSize().height;
-            }
+        
+        if (getOperationsFig().isVisible()) {
             getOperationsFig().setBounds(
-                    x,
-                    operationsY,
-                    w,
+                    x + getLineWidth(),
+                    y + currentHeight + getLineWidth(),
+                    newW - 2 * getLineWidth(),
                     operationsHeight);
         }
+        
+        // set bounds of big box
+        getBigPort().setBounds(x, y, newW, newH);
+        getBorderFig().setBounds(x, y, newW, newH);
 
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
@@ -340,5 +371,19 @@ public class FigClassifierBoxWithAttributes extends FigClassifierBox
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-
+    /**
+     * @return the Fig for the EnumerationLiterals compartment
+     */
+    public FigAttributesCompartment getAttributesCompartment() {
+        // Set bounds will be called from our superclass constructor before
+        // our constructor has run, so make sure this gets set up if needed.
+        if (attributesFigCompartment == null) {
+            attributesFigCompartment = new FigAttributesCompartment(
+                    getOwner(),
+                    DEFAULT_COMPARTMENT_BOUNDS, 
+                    getSettings());
+        }
+        return attributesFigCompartment;
+    }
+    
 }

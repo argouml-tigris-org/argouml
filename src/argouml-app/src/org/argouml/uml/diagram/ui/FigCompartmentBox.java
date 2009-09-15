@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
@@ -43,17 +44,38 @@ import org.tigris.gef.presentation.FigGroup;
  * Class to display graphics for a node with compartments in a diagram.<p>
  * 
  * It adds a border around the box, 
- * and deals with highlighting editable compartments. <p>
- *
- * Note that the upper line of the name box will be blanked out
- * if there is eventually a stereotype above.
+ * and deals with highlighting editable compartments.<p>
+ * 
+ * All descendants of this class have the bigPort filled with the main fig 
+ * fill color, without border. The borderFig has a transparent fill, 
+ * and a visible border. <p>
+ * 
+ * Why do we need a separate border fig: I (MVW) think because 
+ * some figs may have parts protruding outside the box like a UML Package 
+ * or like a  UML Component. 
+ * 
+ * TODO: Why is the fill not drawn by the borderFig? 
+ * In the current situation, the border is drawn OVER 
+ * the background fill (which won't work if colors have alpha 
+ * channels). But the fill should only be drawn WITHIN 
+ * the border. 
+ * MVW: I propose to have the borderFig show the fill color 
+ * and have the bigPort be transparent and without border.
+ * Then we would need a drawing sequence change, too.
+ * Or maybe the compartments should draw the fill color instead?
+ * <p>
+ * 
+ * The name, keyword and stereotype are shown in 
+ * transparent figs without border, but their size is reduced so that they 
+ * fit within the border of the borderFig.
  */
 public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     /**
      * Default bounds for a compartment.
      */
-    protected static final Rectangle DEFAULT_COMPARTMENT_BOUNDS = new Rectangle(
+    protected static final Rectangle DEFAULT_COMPARTMENT_BOUNDS 
+        = new Rectangle(
             X0, Y0 + 20 /* 20 = height of name fig ?*/, 
             WIDTH, ROWHEIGHT + 2 /* 2*LINE_WIDTH?  or extra padding? */ );
     
@@ -68,24 +90,33 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      * Initialization shared by all constructors.
      */
     private void initialize() {
-        // Set properties of the stereotype box. Make it LINE_WIDTH higher than
-        // before, so it overlaps the name box, and the blanking takes out both
-        // lines. Initially not set to be displayed, but this will be changed
+        // Set properties of the stereotype box.
+        // Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
-        // TODO: Overlapping figs won't work with when the colors have alpha
-        // channels
-        getStereotypeFig().setFilled(true);
-        getStereotypeFig().setLineWidth(LINE_WIDTH);
-        // +1 to have 1 pixel overlap with getNameFig()
-        getStereotypeFig().setHeight(STEREOHEIGHT + LINE_WIDTH);
+        getStereotypeFig().setVisible(false);
 
-        // The outside border of the box around all compartments.
+        /* The nameFig is transparent, since this is a box and
+         * the fill color is drawn by the bigPort. */
+        getNameFig().setFillColor(null);
+        
+        /* The borderFig shows the outside border of the box 
+         * around all compartments. Its size always equals the bigPort.
+         * Its body is transparent. */
         borderFig = new FigEmptyRect(X0, Y0, 0, 0);
         borderFig.setLineColor(LINE_COLOR);
         borderFig.setLineWidth(LINE_WIDTH);
 
         getBigPort().setLineWidth(0);
+        /* The bigPort draws the background color: */
         getBigPort().setFillColor(FILL_COLOR);
+        
+        /* TODO: The above means that the border is drawn OVER 
+         * the background fill (which won't work if colors have alpha 
+         * channels). But the fill should only be drawn WITHIN 
+         * the border. 
+         * MVW: I propose to have the borderFig show the fill color 
+         * and have the bigPort be transparent and without border. 
+         * */
     }
 
     /**
@@ -254,23 +285,43 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     }
 
     /**
-     * Add size of a child component to overall size.  Width is maximized
-     * with child's width and child's height is added to the overall height.
-     * If the child figure is not visible, it's size is not added.
+     * This utility adds the size of a child component to an overall size. 
+     * The width is maximized with child's width and the
+     * child's height is added to the overall height.
+     * If the child figure is not visible or not yet created, it's size is not added.
      * 
-     * @param size current dimensions
+     * @param size current dimensions - modified with the result
      * @param child child figure
      * @return new Dimension with child size added
      */
-    protected Dimension addChildDimensions(Dimension size, Fig child) {
-        if (child.isVisible()) {
+    protected static Dimension addChildDimensions(Dimension size, 
+            Fig child) {
+        if (child != null && child.isVisible()) {
             Dimension childSize = child.getMinimumSize();
             size.width = Math.max(size.width, childSize.width);
             size.height += childSize.height;
         }
         return size;
     }
-    
+
+    /**
+     * This utility adds the width of a child component to an overall size. 
+     * The width is maximized with child's width and the
+     * child's height is ignored.
+     * If the child figure is not visible, it's size is not added.
+     * 
+     * @param size current dimensions - modified with the result
+     * @param child child figure
+     * @return new Dimension with child width added
+     */
+    protected static Dimension addChildWidth(Dimension size, Fig child) {
+        if (child.isVisible()) {
+            Dimension childSize = child.getMinimumSize();
+            size.width = Math.max(size.width, childSize.width);
+        }
+        return size;
+    }
+
     /**
      * @param compartment the compartment to be changed
      * @param isVisible true if the attribute compartment is visible
@@ -305,11 +356,61 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         }
     }
     
-    /*
-     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
-     */
+    @Override
     public void setLineWidth(int w) {
         borderFig.setLineWidth(w);
+    }
+
+    @Override
+    public int getLineWidth() {
+        return borderFig.getLineWidth();
+    }
+
+    @Override
+    public void setLineColor(Color col) {
+        getStereotypeFig().setLineColor(null);
+        borderFig.setLineColor(col);
+    }
+
+    @Override
+    public void setFillColor(Color col) {
+        getBigPort().setFillColor(col);
+        getStereotypeFig().setFillColor(null);
+        getNameFig().setFillColor(null);
+    }
+
+    @Override
+    public Color getFillColor() {
+        return getBigPort().getFillColor();
+    }
+    
+    @Override
+    public void setFilled(boolean f) {
+        getBigPort().setFilled(f);
+        getStereotypeFig().setFilled(false);
+    }
+    
+    @Override
+    protected void updateStereotypeText() {
+
+        if (getOwner() == null) {
+            return;
+        }
+        
+        getStereotypeFig().setVisible(
+                getStereotypeFig().getStereotypeCount() > 0);
+        
+        super.updateStereotypeText();
+
+        if (getStereotypeFig().isVisible()) {
+            getNameFig().setTopMargin(
+                    getStereotypeFig().getMinimumSize().height);
+        } else {
+            getNameFig().setTopMargin(0);
+        }
+
+        /* TODO: Is this needed? */
+//        forceRepaintShadow();
     }
 
 }
