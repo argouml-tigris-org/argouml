@@ -708,7 +708,7 @@ Building this requires:
          -->
         <include name="lib/commons-logging-1.0.2.jar"/>
         <include name="lib/commons-logging.LICENSE.txt"/>
-        <include name="lib/gef-0.13.1M2.jar"/>
+        <include name="lib/gef-0.13.1M3.jar"/>
         <include name="lib/gef.LICENSE.txt"/>
         <include name="lib/ocl-argo-1.1.jar"/>
         <include name="lib/ocl-argo.LICENSE.txt"/>
