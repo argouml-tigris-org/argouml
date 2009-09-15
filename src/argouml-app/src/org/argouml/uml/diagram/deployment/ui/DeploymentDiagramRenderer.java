@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.DiagramAssociationSettings;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
@@ -110,7 +110,7 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             Object[] associationEnds = 
                 Model.getFacade().getConnections(edge).toArray();
             newEdge = new FigAssociationClass(
-                    new DiagramAssociationSettings(
+                    new DiagramEdgeSettings(
                             edge, 
                             associationEnds[0], 
                             associationEnds[1]), 
@@ -127,7 +127,7 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             Object[] associationEnds = 
                 Model.getFacade().getConnections(edge).toArray();
             newEdge = new FigAssociation(
-                    new DiagramAssociationSettings(
+                    new DiagramEdgeSettings(
                         edge, 
                         associationEnds[0], 
                         associationEnds[1]), 

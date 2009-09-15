@@ -43,7 +43,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.DiagramAssociationSettings;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramElementSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.ArrowHead;
@@ -108,22 +108,19 @@ public class FigAssociation extends FigEdgeModelElement {
     /**
      * Constructor used by PGML parser.
      * 
-     * @param diagramElementSettings the destination uml association-end element
+     * @param diagramEdgeSettings the destination uml association-end element
      * @param settings rendering settings
      */
     public FigAssociation(
-            final DiagramElementSettings diagramElementSettings, 
+            final DiagramEdgeSettings diagramEdgeSettings, 
             final DiagramSettings settings) {
-        super(diagramElementSettings.getOwner(), settings);
+        super(diagramEdgeSettings.getOwner(), settings);
         
         createNameLabel(getOwner(), settings);
         
-        final DiagramAssociationSettings set =
-            (DiagramAssociationSettings) diagramElementSettings;
-        
         createEndFigs(
-                set.getAssociationEnd1(),
-                set.getAssociationEnd2(),
+                diagramEdgeSettings.getSourceConnector(),
+                diagramEdgeSettings.getDestinationConnector(),
                 settings, 45);
         
         setBetweenNearestPoints(true);

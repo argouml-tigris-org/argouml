@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.DiagramAssociationSettings;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.DiagramUtils;
 import org.argouml.uml.diagram.GraphChangeAdapter;
@@ -169,7 +169,7 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
             final Object[] associationEnds = 
                 Model.getFacade().getConnections(edge).toArray();
             newEdge = new FigAssociation(
-                    new DiagramAssociationSettings(
+                    new DiagramEdgeSettings(
                             edge, 
                             associationEnds[0], 
                             associationEnds[1]), 

@@ -1,4 +1,4 @@
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id: DiagramEdgeSettings.java 11347 2006-10-26 22:37:44Z linus $
 // Copyright (c) 2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,24 +24,24 @@
 
 package org.argouml.uml.diagram;
 
-public class DiagramAssociationSettings extends DiagramElementSettings {
+public class DiagramEdgeSettings extends DiagramElementSettings {
     
-    private final Object associationEnd1;
-    private final Object associationEnd2;
+    private final Object sourceConnector;
+    private final Object destinationConnector;
     
-    public DiagramAssociationSettings(
-            final Object association,
-            final Object associationEnd1,
-            final Object associationEnd2) {
-        super(association);
-        this.associationEnd1 = associationEnd1;
-        this.associationEnd2 = associationEnd2;
+    public DiagramEdgeSettings(
+            final Object modelElement,
+            final Object sourceConnector,
+            final Object destinationConnector) {
+        super(modelElement);
+        this.sourceConnector = sourceConnector;
+        this.destinationConnector = destinationConnector;
     }
 
-    public Object getAssociationEnd1() {
-        return associationEnd1;
+    public Object getSourceConnector() {
+        return sourceConnector;
     }
-    public Object getAssociationEnd2() {
-        return associationEnd2;
+    public Object getDestinationConnector() {
+        return destinationConnector;
     }
 }
