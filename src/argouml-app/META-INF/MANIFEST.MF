@@ -142,7 +142,7 @@ Require-Bundle: org.argouml.core.infra,
  org.argouml.core.model
 Eclipse-RegisterBuddy: org.argouml.core.infra
 Bundle-ClassPath: lib/commons-logging-1.0.2.jar,
- lib/gef-0.13.1M2.jar,
+ lib/gef-0.13.1M3.jar,
  lib/ocl-argo-1.1.jar,
  lib/swidgets-0.1.4.jar,
  lib/toolbar-1.4.1-20071227.jar,
