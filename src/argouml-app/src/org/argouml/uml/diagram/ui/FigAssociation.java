@@ -93,8 +93,7 @@ public class FigAssociation extends FigEdgeModelElement {
         
         createNameLabel(association, settings);
         
-        final Iterator it =
-            Model.getFacade().getAssociationEnds(association).iterator();
+        Iterator it = Model.getFacade().getConnections(association).iterator();
         
         final Object sourceAssociationEnd = it.next();
         final Object destAssociationEnd = it.next();
