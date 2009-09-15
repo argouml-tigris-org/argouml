@@ -273,6 +273,42 @@ public class FigAssociation extends FigEdgeModelElement {
         return Model.getFacade().getClassifier(destEnd.getOwner());
     }
     
+    /**
+     * Get the model element at the source end of the edge. This is not the
+     * same as the owner of the node at the source end, rather it is the
+     * element that connects the element of the edge to the element of the
+     * node.
+     * Mostly this returns null as the edge connects directly to the node but
+     * implementations such as the Fig for association will return an
+     * association end that connects the association to the classifier.
+     * @return the model element that connects the edge to the node (or null
+     * if the edge requires no such connector.
+     */
+    public Object getSourceConnector() {
+        if (srcEnd == null) {
+            return null;
+        }
+        return srcEnd.getOwner();
+    }
+    
+    /**
+     * Get the model element at the destination end of the edge. This is not
+     * the same as the owner of the node at the source end, rather it is the
+     * element that connects the element of the edge to the element of the
+     * node.
+     * Mostly this returns null as the edge connects directly to the node but
+     * implementations such as the Fig for association will return an
+     * association end that connects the association to the classifier.
+     * @return the model element that connects the edge to the node (or null
+     * if the edge requires no such connector.
+     */
+    public Object getDestinationConnector() {
+        if (destEnd == null) {
+            return null;
+        }
+        return destEnd.getOwner();
+    }
+    
     
 
     /*

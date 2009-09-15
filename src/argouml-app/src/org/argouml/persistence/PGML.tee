@@ -536,35 +536,22 @@ height="<ocl>self.height.intValue</ocl>"
 <![CDATA[
 
 <group name="<ocl>org.argouml.persistence.PgmlUtility.getId(self)</ocl>"
-
      description="<ocl>self.class.name</ocl>"
-
      href="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self)</ocl>"
-
+     sourceConnector="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self.sourceConnector)</ocl>"
+     destConnector="<ocl ignoreNull>org.argouml.uml.UUIDHelper.getUUID(self.destinationConnector)</ocl>"
      stroke="<ocl>self.lineWidth</ocl>"
-
      strokecolor="<ocl>self.lineColor</ocl>"
-
 >
-
   <private>
-
     ItemUID="<ocl ignoreNull>self.ItemUID</ocl>"
     sourcePortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourcePortFig)</ocl>"
-
     destPortFig="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destPortFig)</ocl>"
-
     sourceFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.sourceFigNode)</ocl>"
-
     destFigNode="<ocl>org.argouml.persistence.PgmlUtility.getId(self.destFigNode)</ocl>"
-    
     <ocl>self.pathItemStrategies</ocl>
   </private>
-
-
-
   <ocl>self.fig</ocl>
-
 </group>
 
 ]]>
