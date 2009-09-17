@@ -38,6 +38,7 @@ import java.util.StringTokenizer;
 import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ExtensionsCompartmentContainer;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
@@ -50,11 +51,23 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.persistence.pgml.Container;
 import org.tigris.gef.persistence.pgml.FigEdgeHandler;
 import org.tigris.gef.persistence.pgml.FigGroupHandler;
+import org.tigris.gef.persistence.pgml.FigLineHandler;
+import org.tigris.gef.persistence.pgml.FigPolyHandler;
+import org.tigris.gef.persistence.pgml.FigTextHandler;
+import org.tigris.gef.persistence.pgml.HandlerFactory;
 import org.tigris.gef.persistence.pgml.HandlerStack;
+import org.tigris.gef.persistence.pgml.PrivateHandler;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.FigRRect;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.util.ColorFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -168,7 +181,7 @@ class PGMLStackParser
         }
         
         DefaultHandler handler =
-            super.getHandler(stack, container, uri, localname, qname,
+            getHandlerSuper(stack, container, uri, localname, qname,
                     attributes);
 
         if (handler instanceof FigEdgeHandler) {
@@ -583,6 +596,227 @@ class PGMLStackParser
     }
 
     /**
+     * Returns ContentHandler objects appropriate for the standard set of
+     * elements that can appear within a PGML file.
+     * <p>
+     * 
+     * First, the <em>description</em> attribute is checked for a PGML-style
+     * class name specifier; if one is found, it is passed through the
+     * {@link #translateType translateClassName} method and the resulting class
+     * name is instantiated. If the resulting object is itself an instance of
+     * {@link HandlerFactory}, the method returns the result of calling
+     * {@link HandlerFactory#getHandler getHandler} on that object with the same
+     * arguments. This allows a Fig object to take complete control of its own
+     * parsing without imposing any change on the global parsing framework.
+     * <p>
+     * 
+     * If the element doesn't incorporate a class name, or if the instanced
+     * object does not implement {@link HandlerFactory}, the element name is
+     * compared with one of PGML's special element names. If a known element
+     * name is found, either the element is processed immediately and null
+     * returned, or the appropriate handler for that element is returned. If the
+     * element name is unknown, null is returned.
+     * <p>
+     * 
+     * @param stack
+     *                Implementation of the stack of content handlers
+     * @param container
+     *                An object that provides context for the element (most
+     *                often by providing an implementation of the
+     *                {@link Container} interface.
+     * @param uri
+     *                SAX uri argument
+     * @param localname
+     *                SAX local element name
+     * @param qname
+     *                SAX qualified element name
+     * @param attributes
+     *                The attributes that the SAX parser have identified for the
+     *                element.
+     * @return ContentHandler object appropriate for the element, or null if the
+     *         element can be skipped
+     * 
+     * @see org.tigris.gef.persistence.pgml.HandlerFactory#getHandler(
+     *      org.argouml.gef.HandlerStack, java.lang.Object, java.lang.String,
+     *      java.lang.String, java.lang.String, org.xml.sax.Attributes)
+     */
+    public DefaultHandler getHandlerSuper(HandlerStack stack, Object container,
+            String uri, String localname, String qname, Attributes attributes)
+            throws SAXException {
+
+        String href = attributes.getValue("href");
+
+        String clsNameBounds = attributes.getValue("description");
+        Object elementInstance = null;
+        if (clsNameBounds != null) {
+
+            StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
+            String clsName = translateType(st.nextToken());
+            elementInstance = constructFig(clsName, href,
+                    getBounds(clsNameBounds), attributes);
+            if (elementInstance instanceof HandlerFactory) {
+                return ((HandlerFactory) elementInstance).getHandler(stack,
+                        container, uri, localname, qname, attributes);
+            }
+        }
+
+        // If we got here, one of the built-in handlers will apply
+        if (qname.equals("group")) {
+            if (elementInstance instanceof FigGroup) {
+                return getGroupHandler(container, (FigGroup) elementInstance,
+                        attributes);
+            }
+            if (elementInstance instanceof FigEdge) {
+                setAttrs((FigEdge) elementInstance, attributes);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(elementInstance);
+                }
+                return new FigEdgeHandler(this, (FigEdge) elementInstance);
+            }
+        }
+
+        if (qname.equals("text")) {
+            if (elementInstance == null) {
+                elementInstance = new FigText(0, 0, 100, 100);
+            }
+            if (elementInstance instanceof FigText) {
+                FigText text = (FigText) elementInstance;
+                setAttrs(text, attributes);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(text);
+                }
+                String font = attributes.getValue("font");
+                if (font != null && !font.equals("")) {
+                    text.setFontFamily(font);
+                }
+
+                String textsize = attributes.getValue("textsize");
+                if (textsize != null && !textsize.equals("")) {
+                    int textsizeInt = Integer.parseInt(textsize);
+                    text.setFontSize(textsizeInt);
+                }
+
+                String justification = attributes.getValue("justification");
+                if (justification != null && !justification.equals("")) {
+                    text.setJustificationByName(justification);
+                }
+                String italic = attributes.getValue("italic");
+                if (italic != null && !italic.equals("")) {
+                    text.setItalic(Boolean.valueOf(italic).booleanValue());
+                }
+                String bold = attributes.getValue("bold");
+                if (bold != null && !bold.equals("")) {
+                    text.setBold(Boolean.valueOf(bold).booleanValue());
+                }
+
+                String textColor = attributes.getValue("textcolor");
+                if (textColor != null && !textColor.equals("")) {
+                    text.setTextColor(ColorFactory.getColor(textColor));
+                }
+
+                return new FigTextHandler(this, text);
+            }
+        }
+
+        if (qname.equals("path") || qname.equals("line")) {
+            if (elementInstance == null) {
+                elementInstance = new FigPoly();
+            }
+            if (elementInstance instanceof FigLine) {
+                setAttrs((Fig) elementInstance, attributes);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(elementInstance);
+                }
+                return new FigLineHandler(this, (FigLine) elementInstance);
+            }
+            if (elementInstance instanceof FigPoly) {
+                setAttrs((Fig) elementInstance, attributes);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(elementInstance);
+                }
+                return new FigPolyHandler(this, (FigPoly) elementInstance);
+            }
+        }
+
+        if (qname.equals("private")) {
+            if (elementInstance != null) {
+                LOG.warn("private element unexpectedly generated instance: "
+                        + elementInstance.toString());
+            }
+            if (container instanceof Container) {
+                return new PrivateHandler(this, (Container) container);
+            } else {
+                LOG.warn("private element with inappropriate container: "
+                        + container.toString());
+            }
+        }
+
+        if (qname.equals("rectangle")) {
+            String cornerRadius = attributes.getValue("rounding");
+            int rInt = -1;
+            if (cornerRadius != null && cornerRadius.length() > 0) {
+                rInt = Integer.parseInt(cornerRadius);
+            }
+            if (elementInstance == null) {
+                if (rInt >= 0) {
+                    elementInstance = new FigRRect(0, 0, 80, 80);
+                } else {
+                    elementInstance = new FigRect(0, 0, 80, 80);
+                }
+            }
+            if (elementInstance instanceof FigRRect && rInt >= 0) {
+                ((FigRRect) elementInstance).setCornerRadius(rInt);
+            }
+            if (elementInstance instanceof Fig) {
+                setAttrs((Fig) elementInstance, attributes);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(elementInstance);
+                }
+                return null;
+            }
+        }
+
+        if (qname.equals("ellipse")) {
+            System.out.println("Found an ellipse");
+            if (elementInstance == null) {
+                System.out.println("Created a FigCircle");
+                elementInstance = new FigCircle(0, 0, 50, 50);
+            }
+            if (elementInstance instanceof FigCircle) {
+                FigCircle f = (FigCircle) elementInstance;
+                setAttrs(f, attributes);
+                String rx = attributes.getValue("rx");
+                String ry = attributes.getValue("ry");
+                int rxInt = (rx == null || rx.equals("")) ? 10 : Integer
+                        .parseInt(rx);
+                int ryInt = (ry == null || ry.equals("")) ? 10 : Integer
+                        .parseInt(ry);
+                f.setBounds(f.getX() - rxInt, f.getY() - ryInt, rxInt * 2,
+                        ryInt * 2);
+                if (container instanceof Container) {
+                    ((Container) container).addObject(elementInstance);
+                }
+
+                return null;
+            }
+        }
+
+        // Don't know what to do; throw up our hands--usually this
+        // will mean that sub-elements are ignored
+        LOG.info("Unrecognized element " + qname);
+        if (elementInstance != null) {
+            // Implement reasonable default behavior
+            if (elementInstance instanceof Fig) {
+                setAttrs((Fig) elementInstance, attributes);
+            }
+            if (container instanceof Container) {
+                ((Container) container).addObject(elementInstance);
+            }
+        }
+        return null;
+    }
+    
+    /**
      * Construct a new instance of the named Fig with the owner represented
      * by the given href and the bounds parsed from the PGML file.  We look
      * for constructors of the form Fig(Object owner, Rectangle
@@ -596,12 +830,12 @@ class PGMLStackParser
      * @param className fully qualified name of class to instantiate
      * @param href string representing UUID of owning element
      * @param bounds position and size of figure
+     * @param attributes the XML attributes that made up the top level element
+     * in PGML
      * @return
      * @throws SAXException
-     * @see org.tigris.gef.persistence.pgml.PGMLStackParser#constructFig(java.lang.String, java.lang.String, java.awt.Rectangle)
      */
-    @Override
-    protected Fig constructFig(String className, String href, Rectangle bounds)
+    private Fig constructFig(String className, String href, Rectangle bounds, Attributes attributes)
         throws SAXException {
 	
 	Fig f = null;
@@ -631,7 +865,7 @@ class PGMLStackParser
                 }
                 // FigEdgeModelElements should match here (they have no bounds)
                 if (parameterTypes.length == 2
-                        && parameterTypes[0].equals(Object.class)
+                        && parameterTypes[0].equals(DiagramEdgeSettings.class)
                         && parameterTypes[1].equals(DiagramSettings.class)
                 ) {
                     Object parameters[] = new Object[2];
@@ -639,12 +873,58 @@ class PGMLStackParser
                     if (href != null) {
                         owner = findOwner(href);
                     }
-                    parameters[0] = owner;
+                    
+                    String sourceUuid =
+                        attributes.getValue("sourceConnector");
+                    String destinationUuid =
+                        attributes.getValue("destConnector");
+                    
+                    LOG.info("The source connector uuid is "
+                            + sourceUuid);
+                    LOG.info("The destination connector uuid is "
+                            + destinationUuid);
+                    
+                    final Object source;
+                    final Object destination;
+                    if (sourceUuid != null && destinationUuid != null) {
+                        source = findOwner(sourceUuid);
+                        destination = findOwner(destinationUuid);
+                    } else {
+                        source = null;
+                        destination = null;
+                    }
+                    
+                    DiagramEdgeSettings settings =
+                        new DiagramEdgeSettings(owner, source, destination);
+                    parameters[0] = settings;
                     parameters[1] = 
                         ((ArgoDiagram) getDiagram()).getDiagramSettings();
 
                     constructor.setAccessible(true);
                     f =  (Fig) constructor.newInstance(parameters);
+                }
+            }
+            if (f == null) {
+                // FigEdgeModelElements with the old style constructor should
+                // match here (they have no bounds)
+                for (Constructor constructor : figClass.getConstructors()) {
+                    Class[] parameterTypes = constructor.getParameterTypes();
+                    if (parameterTypes.length == 2
+                            && parameterTypes[0].equals(Object.class)
+                            && parameterTypes[1].equals(DiagramSettings.class)
+                    ) {
+                        Object parameters[] = new Object[2];
+                        Object owner = null;
+                        if (href != null) {
+                            owner = findOwner(href);
+                        }
+                        parameters[0] = owner;
+                        parameters[1] = 
+                            ((ArgoDiagram) getDiagram()).getDiagramSettings();
+
+                        constructor.setAccessible(true);
+                        f =  (Fig) constructor.newInstance(parameters);
+                    }
                 }
             }
         } catch (ClassNotFoundException e) {
@@ -664,11 +944,87 @@ class PGMLStackParser
             // have been upgraded.
             LOG.debug("No ArgoUML constructor found for " + className
                     + " falling back to GEF's default constructors");
-            f = super.constructFig(className, href, bounds);
+            f = constructFig(className, href, bounds);
         }
         
 	return f;
     }
+    
+    /**
+     * @param container
+     * @param group
+     * @param attributes
+     * @return
+     * @throws SAXException
+     */
+    private DefaultHandler getGroupHandler(Object container, FigGroup group,
+            Attributes attributes) throws SAXException {
+        if (container instanceof Container) {
+            ((Container) container).addObject(group);
+        }
+        StringTokenizer st = new StringTokenizer(attributes
+                .getValue("description"), ",;[] ");
+        setAttrs(group, attributes);
+        if (st.hasMoreElements()) {
+            st.nextToken();
+        }
+        String xStr = null;
+        String yStr = null;
+        String wStr = null;
+        String hStr = null;
+        if (st.hasMoreElements()) {
+            xStr = st.nextToken();
+            yStr = st.nextToken();
+            wStr = st.nextToken();
+            hStr = st.nextToken();
+        }
+        if (xStr != null && !xStr.equals("")) {
+            int x = Integer.parseInt(xStr);
+            int y = Integer.parseInt(yStr);
+            int w = Integer.parseInt(wStr);
+            int h = Integer.parseInt(hStr);
+            group.setBounds(x, y, w, h);
+        }
+        return new FigGroupHandler(this, group);
+    }
+
+    /**
+     * Retrieve a bounds Rectangle from its description where the description is
+     * in the form "anything[x,y,w,h]anything"
+     * 
+     * @param boundsDescription
+     * @return a bounds Rectangle or null is invalid
+     */
+    Rectangle getBounds(String boundsDescription) {
+        try {
+            int bracketPosn = boundsDescription.indexOf('[');
+            if (bracketPosn < 0)
+                return null;
+            boundsDescription = boundsDescription.substring(bracketPosn + 1);
+            StringTokenizer st = new StringTokenizer(boundsDescription, ", ]");
+            String xStr = null;
+            String yStr = null;
+            String wStr = null;
+            String hStr = null;
+            if (st.hasMoreElements()) {
+                xStr = st.nextToken();
+                yStr = st.nextToken();
+                wStr = st.nextToken();
+                hStr = st.nextToken();
+            }
+            if (xStr != null && !xStr.equals("")) {
+                int x = Integer.parseInt(xStr);
+                int y = Integer.parseInt(yStr);
+                int w = Integer.parseInt(wStr);
+                int h = Integer.parseInt(hStr);
+                return new Rectangle(x, y, w, h);
+            }
+        } catch (Exception e) {
+            LOG.warn("Exception extracting bounds from description", e);
+        }
+        return null;
+    }
+    
     
     /**
      * Save the newly created Diagram for use by the parser.  We take the 
