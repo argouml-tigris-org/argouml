@@ -29,13 +29,11 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.model.Model;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
-import org.argouml.uml.diagram.DiagramElementSettings;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.PathContainer;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
@@ -86,18 +84,15 @@ public class FigAssociationClass extends FigAssociation implements
         setDashed(false);
     }
     
-    
-    
-    
     /**
      * Construct an association class figure for the given AssociationClass
      * model element using the rendering settings.
      * 
-     * @param element model element
+     * @param diagramElementSettings the settings for this new diagram element
      * @param settings rendering settings
      */
     public FigAssociationClass(
-            final DiagramElementSettings diagramElementSettings, 
+            final DiagramEdgeSettings diagramElementSettings, 
             final DiagramSettings settings) {
         super(diagramElementSettings, settings);
         setBetweenNearestPoints(true);
