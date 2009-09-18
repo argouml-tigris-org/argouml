@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Rectangle;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -52,6 +53,10 @@ public class ModeCreateAssociationClass extends ModeCreateAssociation {
         Logger.getLogger(ModeCreateAssociationClass.class);
 
     private static final int DISTANCE = 80;
+    
+    public Object getMetaType() {
+        return Model.getMetaTypes().getAssociationClass();
+    }
     
     @Override
     protected void endAttached(FigEdge fe) {
