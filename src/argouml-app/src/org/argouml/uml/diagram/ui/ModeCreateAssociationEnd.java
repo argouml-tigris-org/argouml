@@ -104,7 +104,7 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
             graphModel.addEdge(associationEnd);
             
             setNewEdge(associationEnd);
-
+            
             // Calling connect() will add the edge to the GraphModel and
             // any LayerPersectives on that GraphModel will get a
             // edgeAdded event and will add an appropriate FigEdge
@@ -121,6 +121,9 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
                 fe.setSourceFigNode(sourceFigNode);
                 fe.setDestPortFig(destFigNode);
                 fe.setDestFigNode(destFigNode);
+                
+                fe.computeRoute();
+
                 return fe;
             } else {
                 return null;
@@ -235,5 +238,15 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
 
         return figNode;
     }
+    
+    /*
+     * If we're drawing to an edge then only allow if the start is a comment
+     * @see org.argouml.uml.diagram.ui.ModeCreateGraphEdge#isConnectionValid(org.tigris.gef.presentation.Fig, org.tigris.gef.presentation.Fig)
+     */
+    @Override
+    protected final boolean isConnectionValid(Fig source, Fig dest) {
+        return super.isConnectionValid(source, dest);
+    }
+    
     
 } /* end class ModeCreateAssociation */
