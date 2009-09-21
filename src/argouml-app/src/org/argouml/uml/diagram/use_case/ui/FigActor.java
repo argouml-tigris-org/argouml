@@ -70,7 +70,7 @@ public class FigActor extends FigNodeModelElement {
     private static final int LEFT_LEG_POSN = 5;
     private static final int RIGHT_LEG_POSN = 6;
 
-    private void constructFigs() {
+    private void constructFigs(Rectangle bounds) {
         Color fg = getLineColor();
         Color fill = getFillColor();
         
@@ -107,7 +107,14 @@ public class FigActor extends FigNodeModelElement {
         addFig(rightLeg);
         addFig(getStereotypeFig());
         setBigPort(bigPort);
+
+        /* Set the drop location in the case of D&D: */
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
+
         setSuppressCalcBounds(false);
+        setBounds(getBounds());
     }
     
     /**
@@ -120,10 +127,7 @@ public class FigActor extends FigNodeModelElement {
      */
     public FigActor(Object owner, Rectangle bounds, DiagramSettings settings) {
         super(owner, bounds, settings);
-        constructFigs();
-        if (bounds != null) {
-            setLocation(bounds.x, bounds.y);
-        }
+        constructFigs(bounds);
     }
 
     /*
