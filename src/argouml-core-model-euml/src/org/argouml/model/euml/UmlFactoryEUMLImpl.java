@@ -54,6 +54,7 @@ import org.eclipse.uml2.uml.Include;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.PackageImport;
+import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Type;
@@ -135,7 +136,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
 //        {Transition.class,       StateVertex.class, },
         {Transition.class,       State.class, },
         {AssociationClass.class, Type.class, }, 
-//        {AssociationEnd.class, Classifier.class, Association.class, },
+        {Property.class, Classifier.class, Association.class, },
 //        {Message.class, ClassifierRole.class },
     };
 
