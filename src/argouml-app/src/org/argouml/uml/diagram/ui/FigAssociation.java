@@ -117,10 +117,27 @@ public class FigAssociation extends FigEdgeModelElement {
         super(diagramEdgeSettings.getOwner(), settings);
         
         createNameLabel(getOwner(), settings);
-        
+
+        Object sourceAssociationEnd =
+            diagramEdgeSettings.getSourceConnector();
+        Object destAssociationEnd =
+            diagramEdgeSettings.getDestinationConnector();
+        if (sourceAssociationEnd == null || destAssociationEnd == null) {
+            // If we have no source and dest connector then we assume this is
+            // load of an old UML1.4 diagram from before this data was saved
+            // in PGML. For UML1.4 we can assume the source is first connection
+            // and destination is last connection stored in repository for this
+            // association.
+            Iterator it =
+                Model.getFacade().getConnections(getOwner()).iterator();
+            
+            sourceAssociationEnd = it.next();
+            destAssociationEnd = it.next();
+        }
+
         createEndFigs(
-                diagramEdgeSettings.getSourceConnector(),
-                diagramEdgeSettings.getDestinationConnector(),
+                sourceAssociationEnd,
+                destAssociationEnd,
                 settings, 45);
         
         setBetweenNearestPoints(true);
