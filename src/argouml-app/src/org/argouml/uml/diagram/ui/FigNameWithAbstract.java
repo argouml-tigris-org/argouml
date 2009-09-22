@@ -63,8 +63,5 @@ class FigNameWithAbstract extends FigSingleLineText {
         }
         return super.getFigFontStyle() | style;
     }
-    
-    public void setLineWidth(int w) {
-        super.setLineWidth(w);
-    }
+
 }
