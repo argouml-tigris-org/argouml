@@ -43,6 +43,7 @@ import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.Notification;
@@ -51,12 +52,20 @@ import org.eclipse.emf.common.notify.impl.NotificationImpl;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.uml2.uml.Property;
 
 /**
  * The implementation of the ModelEventPump for eUML.
  */
 class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
+    /**
+     * A list of model elements that when removed should not create delete
+     * events. See issue 
+     */
+    final private List<Property> deleteEventIgnoreList =
+        new ArrayList<Property>();
+    
     /**
      * A listener attached to a UML element
      */
@@ -292,10 +301,10 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         }
 
         ENamedElement feature = (ENamedElement) notification.getFeature();
-        String featureName = feature == null ? "" : feature.getName(); //$NON-NLS-1$
-        String oldValue = notification.getOldValue() != null ? notification.getOldValue().toString() : "Null";
-        String newValue = notification.getNewValue() != null ? notification.getNewValue().toString() : "Null";
-//        LOG.debug(notification.toString());
+        String featureName =
+            feature == null ? "" : feature.getName(); //$NON-NLS-1$
+        Object oldValue = notification.getOldValue();
+        Object newValue = notification.getNewValue();
         LOG.debug("event  - Property: " //$NON-NLS-1$
                 + featureName 
                 + " Old: " + oldValue //$NON-NLS-1$
@@ -347,11 +356,19 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                             notification.getNewValue(), null), getListeners(
                                     notification.getNotifier(), propName)));
                 } else {
-                    events.add(new EventAndListeners(
-                            new DeleteInstanceEvent(
-                                    notification.getOldValue(),
-                                    "remove", null, null, null),  //$NON-NLS-1$
-                                    getListeners(notification.getOldValue())));
+                    if (isDeleteEventRequired(oldValue)) {
+                        // Changing of a property can result in the property
+                        // being removed and added again (eclipse behaviour)
+                        // we don't want to mistake this for deletion of the
+                        // property. See issue 5853
+                        events.add(new EventAndListeners(
+                                new DeleteInstanceEvent(
+                                        notification.getOldValue(),
+                                        "remove",  //$NON-NLS-1$
+                                        null, null, null),
+                                        getListeners(
+                                            notification.getOldValue())));
+                    }
                     events.add(new EventAndListeners(
                             new RemoveAssociationEvent(
                                     notification.getNotifier(), propName,
@@ -417,6 +434,32 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                     l.propertyChange(e.event);
                 }
             }
+        }
+    }
+    
+    /**
+     * Determine of we should create a delete event for the given property
+     * when EMF tells us it has been removed. This is currently used to
+     * work around the problem discussed in issue 5853.
+     * @param element
+     * @return
+     */
+    private boolean isDeleteEventRequired(
+            final Object element) {
+        if (element instanceof Property) {
+            synchronized (deleteEventIgnoreList) {
+                if (deleteEventIgnoreList.contains(element)) {
+                    deleteEventIgnoreList.remove(element);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    
+    void addElementForDeleteEventIgnore(Property property) {
+        synchronized (deleteEventIgnoreList) {
+            deleteEventIgnoreList.add(property);
         }
     }
 

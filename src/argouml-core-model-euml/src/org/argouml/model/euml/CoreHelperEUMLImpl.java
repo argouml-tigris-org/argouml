@@ -34,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.argouml.model.CoreHelper;
+import org.argouml.model.Model;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.ecore.EClass;
@@ -1495,6 +1496,14 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 // WARNING - This has containment side effects!
                 // Eclipse UML2 will move the Property from the Classifier to
                 // the Association when the navigability is changed.
+                if (!flag) {
+                    // Because of this side effect we add the element to
+                    // a special list of elements that we do not create
+                    // a delete event for. See issue 5853.
+                    ModelEventPumpEUMLImpl pump =
+                        (ModelEventPumpEUMLImpl) Model.getPump();
+                    pump.addElementForDeleteEventIgnore(prop);
+                }
                 prop.setIsNavigable(flag);
             }
         };
@@ -1504,7 +1513,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         "Set isNavigable to # for the association end #", flag,
                         handle));
     }
-
+    
     public void setOperations(Object classifier, List operations) {
         throw new NotYetImplementedException();
     }
