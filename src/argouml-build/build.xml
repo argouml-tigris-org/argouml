@@ -241,9 +241,7 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-core-infra" inheritAll="false"           target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"           target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"       target="jar"/>
-<!--
-    <ant dir="argouml-core-model-euml" inheritAll="false"      target="jar"/>
--->
+    <ant dir="../argouml-core-model-euml" inheritAll="false"      target="install"/>
     <ant dir="../argouml-app" inheritAll="false"               target="jar"/>
 
     <ant dir="../argouml-core-diagrams-sequence2" inheritAll="false" target="jar"/>
@@ -261,7 +259,9 @@ Property files to be searched (in argouml-build):
       <fileset dir="../argouml-core-model-mdr/build">
         <include name="*"/>
       </fileset>
-      <!-- model-euml Not currently included -->
+      <fileset dir="../argouml-core-model-euml/build">
+        <include name="*"/>
+      </fileset>
       <fileset dir="../argouml-app/build">
         <include name="*"/>
       </fileset>
@@ -324,11 +324,8 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"
          target="${tests-to-do}"/>
-
-    <!-- model-euml is not included in this run.
       <ant dir="model-euml" inheritAll="false"
            target="${tests-to-do}"/>
-     -->
 
     <!-- Tests for argouml-app -->
     <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
