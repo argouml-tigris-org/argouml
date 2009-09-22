@@ -316,16 +316,24 @@ Property files to be searched (in argouml-build):
 
     <!-- Build the subdirs in order. -->
 
-    <!-- infra doesn't have tests. -->
-    <!-- model doesn't have tests. -->
+    <!-- argouml-core-infra doesn't have tests. -->
+    <!-- argouml-core-model doesn't have tests. -->
 
-    <!-- Tests for model-mdr -->
+    <!-- Tests for argouml-core-model-mdr -->
     <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"
          target="${tests-to-do}"/>
+
+    <!-- Tests for argouml-core-model-euml -->
+    <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
+    <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
+    <ant dir="../argouml-core-model-euml" inheritAll="false"   target="jar"/>
+    <!-- There are currently no tests for argouml-core-model-euml so we
+         just build it (above) and don't run the tests (below).
     <ant dir="../argouml-core-model-euml" inheritAll="false"
          target="${tests-to-do}"/>
+    -->
 
     <!-- Tests for argouml-app -->
     <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
