@@ -324,8 +324,8 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"
          target="${tests-to-do}"/>
-      <ant dir="model-euml" inheritAll="false"
-           target="${tests-to-do}"/>
+    <ant dir="../argouml-core-model-euml" inheritAll="false"
+         target="${tests-to-do}"/>
 
     <!-- Tests for argouml-app -->
     <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
