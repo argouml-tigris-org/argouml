@@ -74,10 +74,17 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
         addFig(getNameFig());
         /* Stereotype covers NameFig: */
         addFig(getStereotypeFig());
-        addFig(getOperationsFig());
+        /* Compartments from top to bottom: */
         addFig(getAttributesCompartment());
+        addFig(getOperationsFig());
         addFig(getBorderFig());
 
+        // Make all the parts match the main fig
+        setFilled(true);
+        setFillColor(FILL_COLOR);
+        setLineColor(LINE_COLOR);
+        setLineWidth(LINE_WIDTH);
+        
         // by default, do not show operations nor attributes:
         setOperationsVisible(false);
         setAttributesVisible(false);
@@ -92,17 +99,11 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
         enableSizeChecking(true);
     }
     
-    /*
-     * @see org.argouml.uml.diagram.static_structure.ui.FigDataType#makeSelection()
-     */
     @Override
     public Selection makeSelection() {
         return new SelectionSignal(this);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.static_structure.ui.FigClassifierBox#getPopUpActions(java.awt.event.MouseEvent)
-     */
     @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
@@ -112,9 +113,6 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
         return popUpActions;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
     @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);

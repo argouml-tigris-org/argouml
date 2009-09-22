@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import org.apache.log4j.Logger;
@@ -48,7 +47,11 @@ import org.tigris.gef.presentation.Fig;
  * always <<datatype>>, e.g. for an Enumeration. <p>
  * 
  * There is no need for a specific minimal width for this Fig, 
- * since its width will most of the time be determined by the keyword.
+ * since its width will most of the time be determined by the keyword.<p>
+ * 
+ * This Fig supports a compartment for operations at the bottom. 
+ * Other compartments may be added above it by specializations 
+ * of the DataType Fig by overriding the addExtraCompartments() method.
  */
 public class FigDataType extends FigClassifierBox {
 
@@ -69,9 +72,16 @@ public class FigDataType extends FigClassifierBox {
         addFig(getBigPort());
         addFig(getNameFig());
         addFig(getStereotypeFig());
+        addExtraCompartments();
         addFig(getOperationsFig());
         addFig(getBorderFig());
-
+        
+        // Make all the parts match the main fig
+        setFilled(true);
+        setFillColor(FILL_COLOR);
+        setLineColor(LINE_COLOR);
+        setLineWidth(LINE_WIDTH);
+        
         /* Set the drop location in the case of D&D: */
         if (bounds != null) {
             setLocation(bounds.x, bounds.y);
@@ -81,6 +91,10 @@ public class FigDataType extends FigClassifierBox {
 
         setBounds(getBounds());
         enableSizeChecking(true);
+    }
+
+    protected  void addExtraCompartments() {
+        /* Do nothing by default. */
     }
 
     /**
@@ -117,40 +131,9 @@ public class FigDataType extends FigClassifierBox {
         return "datatype";
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#makeSelection()
-     */
     @Override
     public Selection makeSelection() {
         return new SelectionDataType(this);
-    }
-
-    /**
-     * Gets the minimum size permitted for a datatype on the diagram.
-     *
-     * @return  the size of the minimum bounding box.
-     */
-    @Override
-    public Dimension getMinimumSize() {
-        // Use "aSize" to build up the minimum size. Start with the size of the
-        // name compartment and build up.
-
-        Dimension aSize = getNameFig().getMinimumSize();
-
-        /* Only take into account the stereotype width, not the height, 
-         * since the height is included in the name fig: */
-        addChildWidth(aSize, getStereotypeFig());
-        
-        aSize = addChildDimensions(aSize, getOperationsFig());
-
-        /* We want to maintain a minimum width for the 
-         * interface fig. Also, add the border dimensions 
-         * to the minimum space required for its contents: */
-        aSize.width = Math.max(WIDTH, aSize.width);
-        aSize.width += 2 * getLineWidth();
-        aSize.height += 2 * getLineWidth();
-
-        return aSize;
     }
 
     @Override
@@ -196,96 +179,6 @@ public class FigDataType extends FigClassifierBox {
                     + "' at " + encloser, e);
         }
 
-    }
-
-    /**
-     * Sets the bounds, but the size will be at least the one returned by
-     * {@link #getMinimumSize()}, unless checking of size is disabled.<p>
-     *
-     * If the required height is bigger, then the additional height is
-     * equally distributed among all figs (i.e. compartments), such that the
-     * accumulated height of all visible figs equals the demanded height<p>.
-     *
-     * @param x  Desired X coordinate of upper left corner
-     *
-     * @param y  Desired Y coordinate of upper left corner
-     *
-     * @param w  Desired width of the figure
-     *
-     * @param h  Desired height of the figure
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
-     */
-    @Override
-    protected void setStandardBounds(final int x, final int y, final int w,
-            final int h) {
-        /* Save our old boundaries (needed later), and get minimum size
-         * info.*/ 
-        Rectangle oldBounds = getBounds();
-
-        /* The new size can not be smaller than the minimum. */
-        Dimension minimumSize = getMinimumSize();
-        int newW = Math.max(w, minimumSize.width);
-        int newH = Math.max(h, minimumSize.height);
-        
-        int currentHeight = 0;
-
-        if (getStereotypeFig().isVisible()) {
-            int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
-            getNameFig().setTopMargin(stereotypeHeight);
-            getStereotypeFig().setBounds(
-                    x + getLineWidth(),
-                    y + getLineWidth(),
-                    newW - 2 * getLineWidth(),
-                    stereotypeHeight);
-        } else {
-            getNameFig().setTopMargin(0);
-        }
-        
-        /* Now the new nameFig height will include the stereotype height: */
-        Dimension nameMin = getNameFig().getMinimumSize();
-        int minNameHeight = Math.max(nameMin.height, NAME_FIG_HEIGHT);
-        
-        getNameFig().setBounds(
-                x + getLineWidth(), 
-                y + getLineWidth(), 
-                newW - 2 * getLineWidth(), 
-                minNameHeight);
-        
-        /* The new height can not be less than the name height: */
-        /* TODO: Is this needed/correct? */
-        newH = Math.max(minNameHeight, newH);
-        
-        currentHeight += minNameHeight;
-
-        /* And the operations compartment takes the remainder 
-         * of the requested height: */
-        if (getOperationsFig().isVisible()) {
-            int operationsHeight = newH - currentHeight - 2 * getLineWidth();
-            /* If the requested height is smaller than the minimum required, ... */
-            if ( operationsHeight < getOperationsFig().getMinimumSize().height) {
-                /* ... then we use the minimum ... */
-                operationsHeight = getOperationsFig().getMinimumSize().height;
-                /* ... and make the Fig bigger: */
-                newH += getOperationsFig().getMinimumSize().height - operationsHeight;
-            }
-            getOperationsFig().setBounds(
-                    x + getLineWidth(),
-                    y + currentHeight + getLineWidth(),
-                    newW - 2 * getLineWidth(),
-                    operationsHeight);
-        }
-        
-        // set bounds of big box
-        getBigPort().setBounds(x, y, newW, newH);
-        getBorderFig().setBounds(x, y, newW, newH);
-
-        // Now force calculation of the bounds of the figure, update the edges
-        // and trigger anyone who's listening to see if the "bounds" property
-        // has changed.
-
-        calcBounds();
-        updateEdges();
-        firePropChange("bounds", oldBounds, getBounds());
     }
 
 }

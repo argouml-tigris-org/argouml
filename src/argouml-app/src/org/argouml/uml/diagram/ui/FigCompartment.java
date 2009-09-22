@@ -27,12 +27,25 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Collection;
+import java.util.List;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 
 /**
+ * Presentation logic for a boxed compartment,
+ * containing vertically stacked figs,
+ * which is common to e.g. an operations
+ * compartment and an attributes compartment.<p>
+ * 
+ * The bigPort is filled, but has no border. All other figs contained 
+ * in this group may not be filled, but can have a border. <p>
+ * 
+ * The size calculation done here supports vertically 
+ * stacked sub-figs of this group and supports all 
+ * compartment specializations.
+ * 
  * @author Bob Tarling
  */
 public abstract class FigCompartment extends ArgoFigGroup {
@@ -58,10 +71,8 @@ public abstract class FigCompartment extends ArgoFigGroup {
     private void constructFigs(int x, int y, int w, int h) {
         bigPort = new FigRect(x, y, w, h, LINE_COLOR, FILL_COLOR);
         bigPort.setFilled(true);
-        setFilled(true);
-
         bigPort.setLineWidth(0);
-        setLineWidth(0);
+
         addFig(bigPort);
     }
     
@@ -79,7 +90,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
     }
 
     /**
-     * @return the bigport
+     * @return the bigPort
      */
     public Fig getBigPort() {
         return bigPort;
@@ -87,7 +98,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
 
     /**
      * The minimum width is the minimum width of the child with the widest
-     * miniumum width.
+     * minimum width.
      * The minimum height is the total minimum height of all child figs plus a
      * 2 pixel padding.
      * @return the minimum width
@@ -110,34 +121,56 @@ public abstract class FigCompartment extends ArgoFigGroup {
         return new Dimension(minWidth, minHeight);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
-     */
     @Override
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        int newW = w;
-        int newH = h;
+        Rectangle oldBounds = getBounds();
 
-        int fw;
-        int yy = y;
-        for  (Fig fig : (Collection<Fig>) getFigs()) {
+        Dimension minimumSize = getMinimumSize();
+        int newW = Math.max(w, minimumSize.width);
+        int newH = Math.max(h, minimumSize.height);
+
+        int currentHeight = 0;
+
+        for  (Fig fig : (List<Fig>) getFigs()) {
             if (fig.isVisible() && fig != getBigPort()) {
-                fw = fig.getMinimumSize().width;
-                //set new bounds for all included figs
-                fig.setBounds(x + 1, yy + 1, fw, fig.getMinimumSize().height);
-                if (newW < fw + 2) {
-                    newW = fw + 2;
-                }
-                yy += fig.getMinimumSize().height;
+                int fh = fig.getMinimumSize().height;
+
+                fig.setBounds(x, y + currentHeight, newW, fh);
+                currentHeight += fh;
             }
         }
         getBigPort().setBounds(x, y, newW, newH);
         calcBounds();
+        firePropChange("bounds", oldBounds, getBounds());
     }
     
     /**
      * Create a new model element for the compartment.
      */
     protected abstract void createModelElement();
-    
+
+    @Override
+    public void setLineWidth(int w) {
+        super.setLineWidth(w);
+        bigPort.setLineWidth(0);
+    }
+
+    @Override
+    public void setFilled(boolean f) {
+        // Only the bigPort may be filled
+        super.setFilled(false);
+        bigPort.setFilled(f);
+    }
+
+    @Deprecated //see parent
+    @Override
+    public boolean getFilled() {
+        return isFilled();
+    }
+
+    @Override
+    public boolean isFilled() {
+        return bigPort.isFilled();
+    }
+
 }

@@ -55,7 +55,8 @@ public class FigClass extends FigClassifierBoxWithAttributes {
      *
      * The properties of all these graphic elements are adjusted
      * appropriately. The main boxes are all filled and have
-     * outlines. TODO: which is wrong, since the bigPort is filled, too.
+     * outlines. 
+     * TODO: which is wrong, since the bigPort is filled, too.
      * 
      * @param element model element to be represented by this fig.
      * @param bounds rectangle describing bounds
@@ -75,11 +76,17 @@ public class FigClass extends FigClassifierBoxWithAttributes {
         addFig(getNameFig());
         /* Stereotype covers NameFig: */
         addFig(getStereotypeFig());
-        addFig(getOperationsFig());
+        /* Compartments from top to bottom: */
         addFig(getAttributesCompartment());
+        addFig(getOperationsFig());
         addFig(getBorderFig());
         
-
+        // Make all the parts match the main fig
+        setFilled(true);
+        setFillColor(FILL_COLOR);
+        setLineColor(LINE_COLOR);
+        setLineWidth(LINE_WIDTH);
+        
         /* Set the drop location in the case of D&D: */
         if (bounds != null) {
             setLocation(bounds.x, bounds.y);
@@ -90,9 +97,6 @@ public class FigClass extends FigClassifierBoxWithAttributes {
         enableSizeChecking(true);
     }
 
-    /*
-     * @see java.lang.Object#clone()
-     */
     @Override
     public Object clone() {
         FigClass figClone = (FigClass) super.clone();
@@ -109,22 +113,12 @@ public class FigClass extends FigClassifierBoxWithAttributes {
         return figClone;
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#makeSelection()
-     */
     public Selection makeSelection() {
         return new SelectionClass(this);
     }
 
     protected Object buildModifierPopUp() {
         return buildModifierPopUp(ABSTRACT | LEAF | ROOT | ACTIVE);
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#getLineWidth()
-     */
-    public int getLineWidth() {
-        return getBorderFig().getLineWidth();
     }
 
     /**
@@ -146,10 +140,10 @@ public class FigClass extends FigClassifierBoxWithAttributes {
         do {
             i--;
             while (i < 1) {
-                if (fgVec == getAttributesFig()) {
+                if (fgVec == getAttributesCompartment()) {
                     fgVec = getOperationsFig();
                 } else {
-                    fgVec = getAttributesFig();
+                    fgVec = getAttributesCompartment();
                 }
                 figs = fgVec.getFigs();
                 i = figs.size() - 1;
@@ -164,7 +158,7 @@ public class FigClass extends FigClassifierBoxWithAttributes {
 
     /**
      * @param fgVec the FigGroup
-     * @param ft    the Figtext
+     * @param ft    the FigText
      * @param i     get the fig after fig i
      * @return the FigText
      */
@@ -180,10 +174,10 @@ public class FigClass extends FigClassifierBoxWithAttributes {
         do {
             i++;
             while (i >= v.size()) {
-                if (fgVec == getAttributesFig()) {
+                if (fgVec == getAttributesCompartment()) {
                     fgVec = getOperationsFig();
                 } else {
-                    fgVec = getAttributesFig();
+                    fgVec = getAttributesCompartment();
                 }
                 v = new ArrayList(fgVec.getFigs());
                 i = 1;
@@ -216,9 +210,6 @@ public class FigClass extends FigClassifierBoxWithAttributes {
 
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-     */
     @Override
     protected void updateNameText() {
         super.updateNameText();

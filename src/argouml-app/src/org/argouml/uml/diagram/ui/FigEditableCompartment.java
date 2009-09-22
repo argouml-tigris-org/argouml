@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -35,14 +36,17 @@ import org.argouml.model.InvalidElementException;
 import org.argouml.notation.NotationProvider;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigRect;
 
 /**
  * Presentation logic for a boxed compartment,
  * which is common to e.g. an operations
  * compartment and an attributes compartment.<p>
  * 
- * This class is adds the possibility to 
+ * It adds a separator line at the top of the compartment, 
+ * which follows the line width and color of the parent. <p>
+ * 
+ * This class adds the possibility to 
  * make the whole compartment invisible, and
  * a NotationProvider is used to handle (generate and parse) 
  * the texts shown in the compartment, i.e. 
@@ -57,7 +61,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
 
     private static final int MIN_HEIGHT = FigNodeModelElement.NAME_FIG_HEIGHT;
 
-    private FigSeperator compartmentSeperator;
+    private FigSeparator compartmentSeperator;
 
     /**
      * The constructor. <p>
@@ -81,7 +85,8 @@ public abstract class FigEditableCompartment extends FigCompartment {
     }
 
     private void constructFigs() {
-        compartmentSeperator = new FigSeperator(X0, Y0, 11);
+        compartmentSeperator = 
+            new FigSeparator(X0, Y0, 11, LINE_WIDTH);
         addFig(compartmentSeperator); // number 2
     }
     
@@ -90,7 +95,8 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * encloses the entire group for use in attaching edges, etc and a
      * separator.
      * <p>
-     * NOTE: Subclasses should call populate() when they are fully constructed.
+     * NOTE: Subclasses should call populate() when 
+     * they are fully constructed.
      * 
      * @param owner owning UML element
      * @param bounds bounding rectangle of fig
@@ -107,7 +113,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
     /**
      * @return separator figure
      */
-    protected FigSeperator getSeperatorFig() {
+    protected FigSeparator getSeperatorFig() {
         return compartmentSeperator;
     }
 
@@ -138,14 +144,11 @@ public abstract class FigEditableCompartment extends FigCompartment {
         }
     }
 
-    /*
-     * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
-     */
     @Override
     public void addFig(Fig fig) {
         if (fig != getBigPort()
                 && !(fig instanceof CompartmentFigText)
-                && !(fig instanceof FigSeperator)) {
+                && !(fig instanceof FigSeparator)) {
             LOG.error("Illegal Fig added to a FigEditableCompartment");
             throw new IllegalArgumentException(
                     "A FigEditableCompartment can only "
@@ -330,7 +333,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
             DiagramSettings settings);
     
     /**
-     * Returns the new size of the FigGroup (either attributes or
+     * Returns the new size of the FigGroup (e.g. attributes or
      * operations) after calculation new bounds for all sub-figs,
      * considering their minimal sizes; FigGroup need not be
      * displayed; no update event is fired.<p>
@@ -362,94 +365,63 @@ public abstract class FigEditableCompartment extends FigCompartment {
     @Override
     public Dimension getMinimumSize() {
         Dimension d = super.getMinimumSize();
-        if (d.height < MIN_HEIGHT) {
-            d.height = MIN_HEIGHT;
-        }
+        d.height = Math.max(d.height, 
+                MIN_HEIGHT + compartmentSeperator.getHeight());
         return d;
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
-     */
     @Override
-    protected void setBoundsImpl(int x, int y, int w, int h) {
-        int newW = w;
-        int newH = h;
-
-        int fw;
-        int yy = y;
-        int lineWidth = getLineWidth();
-        for (Fig fig : (List<Fig>) getFigs()) {
-            if (fig.isVisible() && fig != getBigPort()) {
-                if (fig instanceof FigSeperator) {
-                    fw = w;
-                } else {
-                    fw = fig.getMinimumSize().width;
-                }
-
-                fig.setBounds(x + lineWidth, yy + lineWidth, fw, 
-                        fig.getMinimumSize().height);
-                if (newW < fw + 2 * lineWidth) {
-                    newW = fw + 2 * lineWidth;
-                }
-                yy += fig.getMinimumSize().height;
-            }
+    public void setLineColor(Color col) {
+        super.setLineColor(col);
+        if (col != null) {
+            compartmentSeperator.setFillColor(col);
+            compartmentSeperator.setFilled(true);
         }
-        getBigPort().setBounds(x + lineWidth, y + lineWidth, 
-                newW - 2 * lineWidth, newH - 2 * lineWidth);
-        calcBounds();
+    }
+
+    @Override
+    public void setLineWidth(int w) {
+        super.setLineWidth(0);
+    }
+
+    @Override
+    public void setFillColor(Color col) {
+        super.setFillColor(col);
+        compartmentSeperator.setFillColor(getLineColor());
+        compartmentSeperator.setFilled(true);
+    }
+
+    @Override
+    public void setFilled(boolean f) {
+        super.setFilled(f);
+        compartmentSeperator.setFilled(true);
     }
 
     /**
-     * Fig representing separator for compartment.
-     * This is a horizontal line.
+     * Fig representing a horizontal line separator for compartment. <p>
+     * 
+     * This is a horizontal line, but implemented as a rectangle 
+     * filled with the line color, since using a FigLine would draw the line 
+     * around the start and end coordinates with a line width > 1.
      */
-    protected static class FigSeperator extends FigLine {
+    protected static class FigSeparator extends FigRect {
         /**
          * Constructor.
-         * TODO: The line-width is set by the containing group - so
-         * no need to do that here also.
          *
          * @param x coordinate
          * @param y coordinate
          * @param len length of the line
          */
-        FigSeperator(int x, int y, int len) {
-            super(x, y, (x + len) - 1, y, LINE_COLOR);
-            setLineWidth(LINE_WIDTH);
+        FigSeparator(int x, int y, int len, int lineWidth) {
+            super(x, y, len, lineWidth);
+            setLineWidth(0);
+            setFilled(true);
         }
 
-        /*
-         * @see org.tigris.gef.presentation.Fig#getSize()
-         */
-        @Override
-        public Dimension getSize() {
-            return new Dimension((_x2 - _x1) + 1, getLineWidth());
-        }
-
-        /*
-         * @see org.tigris.gef.presentation.Fig#getMinimumSize()
-         */
         @Override
         public Dimension getMinimumSize() {
-            return new Dimension(0, getLineWidth());
-        }
-
-        /*
-         * @see org.tigris.gef.presentation.Fig#setBoundsImpl(
-         *         int, int, int, int)
-         */
-        @Override
-        public void setBoundsImpl(int x, int y, int w, int h) {
-            setX1(x);
-            setY1(y);
-            setX2((x + w) - 1);
-            setY2(y);
-        }
-
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = -2222511596507221760L;
+            return new Dimension(MIN_SIZE, getHeight());
+        }        
+        
     }
 }

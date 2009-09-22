@@ -389,15 +389,19 @@ public class FigStereotypesGroup extends ArgoFigGroup {
     protected void setBoundsImpl(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
 
+        Dimension minimumSize = getMinimumSize();
+        int newW = Math.max(w, minimumSize.width);
+        int newH = Math.max(h, minimumSize.height);
+        
         int yy = y;
         for  (Fig fig : (Collection<Fig>) getFigs()) {
             if (fig != bigPort) {
-                fig.setBounds(x + 1, yy + 1, w - 2,
+                fig.setBounds(x, yy, newW,
                               fig.getMinimumSize().height);
                 yy += fig.getMinimumSize().height;
             }
         }
-        bigPort.setBounds(x, y, w, h);
+        bigPort.setBounds(x, y, newW, newH);
         calcBounds();
         firePropChange("bounds", oldBounds, getBounds());
     }

@@ -24,8 +24,9 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
@@ -66,8 +67,15 @@ public class FigInterface extends FigClassifierBox {
         addFig(getNameFig());
         // stereotype fig covers the name fig:
         addFig(getStereotypeFig());
+        /* Only one compartment: */
         addFig(getOperationsFig());
         addFig(getBorderFig());
+
+        // Make all the parts match the main fig
+        setFilled(true);
+        setFillColor(FILL_COLOR);
+        setLineColor(LINE_COLOR);
+        setLineWidth(LINE_WIDTH);
 
         /* Set the drop location in the case of D&D: */
         if (bounds != null) {
@@ -94,48 +102,11 @@ public class FigInterface extends FigClassifierBox {
         initialize(bounds);
     }
     
-    /*
-     * @see org.tigris.gef.presentation.Fig#makeSelection()
-     */
     @Override
     public Selection makeSelection() {
         return new SelectionInterface(this);
     }
 
-
-    /**
-     * Gets the minimum size permitted for an interface on the diagram.<p>
-     *
-     * Parts of this are hardcoded.<p>
-     *
-     * @return  the size of the minimum bounding box.
-     */
-    @Override
-    public Dimension getMinimumSize() {
-        // Use "aSize" to build up the minimum size. Start with the size of the
-        // name compartment and build up.
-        Dimension aSize = getNameFig().getMinimumSize();
-
-        /* Only take into account the stereotype width, not the height, 
-         * since the height is included in the name fig: */
-        addChildWidth(aSize, getStereotypeFig());
-
-        addChildDimensions(aSize, getOperationsFig());
-
-        /* We want to maintain a minimum width for the 
-         * interface fig. Also, add the border dimensions 
-         * to the minimum space required for its contents: */
-        aSize.width = Math.max(WIDTH, aSize.width);
-        aSize.width += 2 * getLineWidth();
-        aSize.height += 2 * getLineWidth();
-
-        return aSize;
-    }
-
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
-     */
     @Override
     public void setEnclosingFig(Fig encloser) {
         Fig oldEncloser = getEnclosingFig();
@@ -201,93 +172,51 @@ public class FigInterface extends FigClassifierBox {
                 + "operationsVisible=" + isOperationsVisible();
     }
 
-    /**
-     * Sets the bounds, but the size will be at least the one returned by
-     * {@link #getMinimumSize()}, unless checking of size is disabled.<p>
-     *
-     * If the required height is bigger, then the additional height is
-     * equally distributed among all figs (i.e. compartments), such that the
-     * accumulated height of all visible figs equals the demanded height.
-     *
-     * @param x  Desired X coordinate of upper left corner
-     *
-     * @param y  Desired Y coordinate of upper left corner
-     *
-     * @param w  Desired width of the FigInterface
-     *
-     * @param h  Desired height of the FigInterface
-     */
     @Override
-    protected void setStandardBounds(final int x, final int y, final int w,
-            final int h) {
-        /* Save our old boundaries (needed later), and get minimum size
-         * info.*/ 
-        Rectangle oldBounds = getBounds();
+    protected void updateListeners(Object oldOwner, Object newOwner) {
+        Set<Object[]> listeners = new HashSet<Object[]>();
 
-        /* The new size can not be smaller than the minimum. */
-        Dimension minimumSize = getMinimumSize();
-        int newW = Math.max(w, minimumSize.width);
-        int newH = Math.max(h, minimumSize.height);
-
-        int currentHeight = 0;
-
-        if (getStereotypeFig().isVisible()) {
-            int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
-            getNameFig().setTopMargin(stereotypeHeight);
-            getStereotypeFig().setBounds(
-                    x + getLineWidth(),
-                    y + getLineWidth(),
-                    newW - 2 * getLineWidth(),
-                    stereotypeHeight);
-        } else {
-            getNameFig().setTopMargin(0);
-        }
-        
-        /* Now the new nameFig height will include the stereotype height: */
-        Dimension nameMin = getNameFig().getMinimumSize();
-        int minNameHeight = Math.max(nameMin.height, NAME_FIG_HEIGHT);
-        
-        getNameFig().setBounds(
-                x + getLineWidth(), 
-                y + getLineWidth(), 
-                newW - 2 * getLineWidth(), 
-                minNameHeight);
-        
-        /* The new height can not be less than the name height: */
-        /* TODO: Is this needed/correct? */
-        newH = Math.max(minNameHeight, newH);
-        
-        currentHeight += minNameHeight;
-
-        /* And the operations compartment takes the remainder 
-         * of the requested height: */
-        if (getOperationsFig().isVisible()) {
-            int operationsHeight = newH - currentHeight - 2 * getLineWidth();
-            /* If the requested height is smaller than the minimum required, ... */
-            if ( operationsHeight < getOperationsFig().getMinimumSize().height) {
-                /* ... then we use the minimum ... */
-                operationsHeight = getOperationsFig().getMinimumSize().height;
-                /* ... and make the Fig bigger: */
-                newH += getOperationsFig().getMinimumSize().height - operationsHeight;
+        // Collect the set of model elements that we want to listen to
+        if (newOwner != null) {
+            // TODO: Because we get called on each and every change event, when
+            // the model is in a state of flux, we'll often get an
+            // InvalidElementException before we finish this collection. The
+            // only saving grace is that we're called SO many times that on the
+            // last time, things should be stable again and we'll get a good set
+            // of elements for the final update.  We need a better mechanism.
+            
+            // add the listeners to the newOwner
+            listeners.add(new Object[] {newOwner, null});
+            
+            // and its stereotypes
+            // TODO: Aren't stereotypes handled elsewhere?
+            for (Object stereotype 
+                    : Model.getFacade().getStereotypes(newOwner)) {
+                listeners.add(new Object[] {stereotype, null});
             }
-            getOperationsFig().setBounds(
-                    x + getLineWidth(),
-                    y + currentHeight + getLineWidth(),
-                    newW - 2 * getLineWidth(),
-                    operationsHeight);
+
+            // and its features
+            for (Object feat : Model.getFacade().getFeatures(newOwner)) {
+                listeners.add(new Object[] {feat, null});
+                // and the stereotypes of its features
+                for (Object stereotype 
+                        : Model.getFacade().getStereotypes(feat)) {
+                    listeners.add(new Object[] {stereotype, null});
+                }
+                // and the parameter of its operations
+                if (Model.getFacade().isAOperation(feat)) {
+                    for (Object param : Model.getFacade().getParameters(feat)) {
+                        listeners.add(new Object[] {param, null});
+                        /* Testing: Add a parameter to an operation on an Interface.
+                         * Does the Interface Fig adapt its width? */
+                    }
+                }
+            }
         }
         
-        // set bounds of big box
-        getBigPort().setBounds(x, y, newW, newH);
-        getBorderFig().setBounds(x, y, newW, newH);
-
-        // Now force calculation of the bounds of the figure, update the edges
-        // and trigger anyone who's listening to see if the "bounds" property
-        // has changed.
-
-        calcBounds();
-        updateEdges();
-        firePropChange("bounds", oldBounds, getBounds());
+        // Update the listeners to match the desired set using the minimal
+        // update facility
+        updateElementListeners(listeners);
     }
 
 }
