@@ -838,11 +838,16 @@ class PGMLStackParser
     private Fig constructFig(String className, String href, Rectangle bounds, Attributes attributes)
         throws SAXException {
 	
-	Fig f = null;
+        final DiagramSettings diagramSettings =
+            ((ArgoDiagram) getDiagram()).getDiagramSettings();
 
+        Fig f = null;
         try {
             Class figClass = Class.forName(className);
-            for (Constructor constructor : figClass.getConstructors()) {
+            
+            final Constructor[] constructors = figClass.getConstructors();
+            
+            for (Constructor constructor : constructors) {
                 Class[] parameterTypes = constructor.getParameterTypes();
                 // FigNodeModelElements should match here
                 if (parameterTypes.length == 3
@@ -903,11 +908,26 @@ class PGMLStackParser
                     constructor.setAccessible(true);
                     f =  (Fig) constructor.newInstance(parameters);
                 }
+                // A FigNodeModelElement with no owner should match here
+                // TODO: This is a temporary solution due to FigPool extending
+                // FigNodeModelElement when in fact it should not do so.
+                if (parameterTypes.length == 2
+                        && parameterTypes[0].equals(Rectangle.class)
+                        && parameterTypes[1].equals(DiagramSettings.class)
+                ) {
+                    Object parameters[] = new Object[2];
+                    parameters[0] = bounds;
+                    parameters[1] = 
+                        ((ArgoDiagram) getDiagram()).getDiagramSettings();
+                    
+                    constructor.setAccessible(true);
+                    f =  (Fig) constructor.newInstance(parameters);
+                }
             }
             if (f == null) {
                 // FigEdgeModelElements with the old style constructor should
                 // match here (they have no bounds)
-                for (Constructor constructor : figClass.getConstructors()) {
+                for (Constructor constructor : constructors) {
                     Class[] parameterTypes = constructor.getParameterTypes();
                     if (parameterTypes.length == 2
                             && parameterTypes[0].equals(Object.class)

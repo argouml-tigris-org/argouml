@@ -64,11 +64,10 @@ public class FigPool extends FigNodeModelElement {
     /**
      * Constructor used by PGML parser when loading.
      * 
-     * @param owner owning UML element
      * @param bounds bounding box rectangle
      * @param settings (ignored since this is just an empty rectangle)
      */
-    public FigPool(Object owner, Rectangle bounds, DiagramSettings settings) {
+    public FigPool(Rectangle bounds, DiagramSettings settings) {
         super(null, bounds, settings);
         initialize(bounds);
     }
