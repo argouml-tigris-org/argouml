@@ -90,6 +90,8 @@ class PGMLStackParser
     private LinkedHashMap<FigEdge, Object> modelElementsByFigEdge =
         new LinkedHashMap<FigEdge, Object>(50);
 
+    // TODO: Do we need this? Its not being used everywhere. If we keep is it
+    // safe to use in all other places?
     private DiagramSettings diagramSettings;
 
     // TODO: Use stylesheet to convert or wait till we use Fig
@@ -835,7 +837,11 @@ class PGMLStackParser
      * @return
      * @throws SAXException
      */
-    private Fig constructFig(String className, String href, Rectangle bounds, Attributes attributes)
+    private Fig constructFig(
+            final String className,
+            final String href,
+            final Rectangle bounds,
+            final Attributes attributes)
         throws SAXException {
 	
         final DiagramSettings diagramSettings =
@@ -855,15 +861,14 @@ class PGMLStackParser
                         && parameterTypes[1].equals(Rectangle.class)
                         && parameterTypes[2].equals(DiagramSettings.class)
                 ) {
-                    Object parameters[] = new Object[3];
-                    Object owner = null;
-                    if (href != null) {
-                        owner = findOwner(href);
+                    final Object parameters[] = new Object[3];
+                    final Object owner = getOwner(className, href);
+                    if (owner == null) {
+                        return null;
                     }
                     parameters[0] = owner;
                     parameters[1] = bounds;
-                    parameters[2] = 
-                        ((ArgoDiagram) getDiagram()).getDiagramSettings();
+                    parameters[2] = diagramSettings;
                     
                     constructor.setAccessible(true);
                     f =  (Fig) constructor.newInstance(parameters);
@@ -873,21 +878,16 @@ class PGMLStackParser
                         && parameterTypes[0].equals(DiagramEdgeSettings.class)
                         && parameterTypes[1].equals(DiagramSettings.class)
                 ) {
-                    Object parameters[] = new Object[2];
-                    Object owner = null;
-                    if (href != null) {
-                        owner = findOwner(href);
+                    final Object parameters[] = new Object[2];
+                    final Object owner = getOwner(className, href);
+                    if (owner == null) {
+                        return null;
                     }
                     
                     String sourceUuid =
                         attributes.getValue("sourceConnector");
                     String destinationUuid =
                         attributes.getValue("destConnector");
-                    
-                    LOG.info("The source connector uuid is "
-                            + sourceUuid);
-                    LOG.info("The destination connector uuid is "
-                            + destinationUuid);
                     
                     final Object source;
                     final Object destination;
@@ -902,8 +902,7 @@ class PGMLStackParser
                     DiagramEdgeSettings settings =
                         new DiagramEdgeSettings(owner, source, destination);
                     parameters[0] = settings;
-                    parameters[1] = 
-                        ((ArgoDiagram) getDiagram()).getDiagramSettings();
+                    parameters[1] = diagramSettings;
 
                     constructor.setAccessible(true);
                     f =  (Fig) constructor.newInstance(parameters);
@@ -917,8 +916,7 @@ class PGMLStackParser
                 ) {
                     Object parameters[] = new Object[2];
                     parameters[0] = bounds;
-                    parameters[1] = 
-                        ((ArgoDiagram) getDiagram()).getDiagramSettings();
+                    parameters[1] = diagramSettings;
                     
                     constructor.setAccessible(true);
                     f =  (Fig) constructor.newInstance(parameters);
@@ -934,13 +932,13 @@ class PGMLStackParser
                             && parameterTypes[1].equals(DiagramSettings.class)
                     ) {
                         Object parameters[] = new Object[2];
-                        Object owner = null;
-                        if (href != null) {
-                            owner = findOwner(href);
+                        
+                        final Object owner = getOwner(className, href);
+                        if (owner == null) {
+                            return null;
                         }
                         parameters[0] = owner;
-                        parameters[1] = 
-                            ((ArgoDiagram) getDiagram()).getDiagramSettings();
+                        parameters[1] = diagramSettings;
 
                         constructor.setAccessible(true);
                         f =  (Fig) constructor.newInstance(parameters);
@@ -968,6 +966,30 @@ class PGMLStackParser
         }
         
 	return f;
+    }
+    
+    /**
+     * Given the href extracted from the PGML return the model element with
+     * that uuid.
+     * @param className Used only for logging should the href not be found
+     * @param href The href 
+     * @return
+     */
+    private Object getOwner(String className, String id) {
+        if (id == null) {
+            LOG.warn("There is no href attribute provided for a "
+                    + className
+                    + " so the diagram element is ignored on load");
+            return null;
+        }
+        final Object owner = findOwner(id);
+        if (owner == null) {
+            LOG.warn("The href " + id + " is not found for a "
+                    + className
+                    + " so the diagram element is ignored on load");
+            return null;
+        }
+        return owner;
     }
     
     /**
