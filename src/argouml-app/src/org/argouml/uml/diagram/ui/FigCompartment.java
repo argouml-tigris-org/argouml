@@ -34,7 +34,12 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 
 /**
- * Presentation logic for a boxed compartment,
+ * Presentation logic for a UML List Compartment. <p>
+ * 
+ * The UML defines a Name Compartment, and a List Compartment. 
+ * This class implements the latter.<p>
+ * 
+ * A List Compartment is a boxed compartment,
  * containing vertically stacked figs,
  * which is common to e.g. an operations
  * compartment and an attributes compartment.<p>
@@ -173,4 +178,15 @@ public abstract class FigCompartment extends ArgoFigGroup {
         return bigPort.isFilled();
     }
 
+    /**
+     * This operation shall return a name unique for this type of 
+     * compartment. Potential use: show at the top in the compartment 
+     * as described in the UML, of as an identification string for 
+     * the compartment type. <p>
+     * See UML 1.4.2 OMG: chapter 5.24.1.2 Compartment name.
+     * 
+     * @return the name of the compartment 
+     */
+    public abstract String getName();
+    
 }

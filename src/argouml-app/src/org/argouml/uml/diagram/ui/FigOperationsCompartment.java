@@ -98,4 +98,9 @@ public class FigOperationsCompartment extends FigEditableCompartment {
         TargetManager.getInstance().setTarget(oper);
     }
 
+    @Override
+    public String getName() {
+        return "operations";
+    }
+
 }

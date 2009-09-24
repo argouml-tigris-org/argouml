@@ -94,5 +94,11 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
     protected FigSingleLineTextWithNotation createFigText(Object owner,
             Rectangle bounds, DiagramSettings settings) {
         return new FigEnumerationLiteral(owner, bounds, settings);
-    }  
+    }
+
+    @Override
+    public String getName() {
+        /* TODO: The UML does not seem to define this name. Or is it? */
+        return "enumeration literals";
+    }
 }

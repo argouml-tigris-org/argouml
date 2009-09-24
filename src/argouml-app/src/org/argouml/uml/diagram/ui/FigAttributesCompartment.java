@@ -89,4 +89,9 @@ public class FigAttributesCompartment extends FigEditableCompartment {
             Rectangle bounds, DiagramSettings settings) {
         return new FigAttribute(owner, bounds, settings);
     }
+
+    @Override
+    public String getName() {
+        return "attributes";
+    }
 }
