@@ -181,9 +181,9 @@ public abstract class FigCompartment extends ArgoFigGroup {
     /**
      * This operation shall return a name unique for this type of 
      * compartment. Potential use: show at the top in the compartment 
-     * as described in the UML, of as an identification string for 
+     * as described in the UML, or as an identification string for 
      * the compartment type. <p>
-     * See UML 1.4.2 OMG: chapter 5.24.1.2 Compartment name.
+     * See UML 1.4.2 OMG, chapter 5.24.1.2: Compartment name.
      * 
      * @return the name of the compartment 
      */
