@@ -89,7 +89,9 @@ public class FigMessage extends FigEdgeModelElement {
         initialize();
         action = Model.getFacade().getAction(getOwner());
         updateArrow();
-        addElementListener(action, "isAsynchronous");
+        if (action != null) {
+            addElementListener(action, "isAsynchronous");
+        }
     }
     
     private void initialize() {
@@ -172,6 +174,10 @@ public class FigMessage extends FigEdgeModelElement {
     /**
      * Gets the action attached to the message.
      * @return the action
+     * @deprecated This method is only called internally. If its needed at all
+     * it will become private. External callers can test for action type using
+     * isCallAction etc. If absolutely required the actions can be accessed
+     * via the model.
      */
     public Object getAction() {
         return action;
