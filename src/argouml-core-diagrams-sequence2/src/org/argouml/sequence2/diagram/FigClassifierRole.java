@@ -33,7 +33,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
@@ -49,8 +48,6 @@ import org.tigris.gef.presentation.FigRect;
  * @author penyaskito
  */
 public class FigClassifierRole extends FigNodeModelElement {
-
-    private static final Logger LOG = Logger.getLogger(FigClassifierRole.class);
 
     /**
      * This is an empty rectangle placed above HeadFig. It creates a space
@@ -207,7 +204,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         FigMessage createMessage = null;
         for (FigMessage message : messages) {
             if (message.getDestFigNode().equals(this)
-                    && Model.getFacade().isACreateAction(message.getAction())) {
+                    && message.isCreateAction()) {
                 
                 createMessage = message;
                 break;
