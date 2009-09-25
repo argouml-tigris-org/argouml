@@ -66,14 +66,18 @@ import org.tigris.gef.presentation.FigText;
 /**
  * A fig to display use cases on use case diagrams.<p>
  *
- * Realised as a solid oval containing the name of the use
+ * Realized as a solid oval containing the name of the use
  * case. Optionally may be split into two compartments, with the lower
  * compartment displaying the extension points for the use case.<p>
  *
  * Implements all interfaces through its superclasses.<p>
  *
  * There is some coordinate geometry to be done to fit rectangular
- * text boxes inside an ellipse. The rectangular text box contains the
+ * text boxes inside an ellipse, and to draw a horizontal line 
+ * at any height within the ellipse, touching the ellipse. 
+ * In the following, we start from a coordinate 
+ * system with the center at the center of the ellipse.
+ * The rectangular text box contains the
  * name and any extension points if shown, and is deemed to be of
  * height <em>2h</em> and width <em>2w</em>. We allow a margin of
  * <em>p</em> above the top and below the bottom of the box, so we
@@ -81,9 +85,11 @@ import org.tigris.gef.presentation.FigText;
  * <em>2p</em>.<p>
  *
  * The formula for an ellipse of width <em>2a</em> and height
- * <em>2b</em>, centred on the origin, is<p>
+ * <em>2b</em>, centered on the origin, is<p>
  *
  * <em>x</em>^2/<em>a</em>^2 + <em>y</em>^2/<em>b</em>^2 = 1.<p>
+ * or:<p>
+ * x²/a² + y²/b² = 1<p>
  *
  * We know that a corner of the rectangle is at coordinate
  * (<em>w</em>,<em>h</em>), since the rectangle must also be centered
@@ -104,7 +110,7 @@ import org.tigris.gef.presentation.FigText;
  * coordinates of any partition line required between use case name
  * and extension points.<p>
  *
- * Finally we need to transform our coordinates, to recognise that the
+ * Finally we need to transform our coordinates, to recognize that the
  * origin is at our top left corner, and the Y coordinates are
  * reversed.<p>
  */
@@ -136,7 +142,7 @@ public class FigUseCase extends FigNodeModelElement
     private FigMyCircle bigPort;
 
     /**
-     * We don't use _bigPort for the actual graphics of the oval. We
+     * We don't use bigPort for the actual graphics of the oval. We
      * define an identical oval that sits on top of it.<p>
      */
     private FigMyCircle cover;
@@ -178,9 +184,9 @@ public class FigUseCase extends FigNodeModelElement
         bigPort = new FigMyCircle(0, 0, 100, 60);
         cover = new FigMyCircle(0, 0, 100, 60);
 
-        // Mark the text, but not the box as filled, mark that the name may
-        // use multi-line text (a bit odd - how do we enter a multi-line
-        // name?).
+        // Mark the text as NOT filled.
+        // The use of multi-line text is not supported 
+        // (how do we enter a multi-line name?).
         
         /* TODO: The above comment hints that the ReturnAction 
          * should be INSERT, not END_EDITING. */
@@ -259,12 +265,11 @@ public class FigUseCase extends FigNodeModelElement
 
     /**
      * The text string to be used as the default name of the new use
-     * case fig. However this seems in general to be immediately
+     * case fig. This name is only shown on the diagram when drawing 
+     * with the mouse as long as the mouse button is down - once 
+     * the mouse button is released, this is  immediately
      * overwritten - presumably somewhere in the creation code for the
-     * object, which choses to define a name.<p>
-     *
-     * <em>Note</em>. Good UML would probably prefer a name starting
-     * with a capital and no spaces!<p>
+     * object, which chooses to define a name.
      *
      * @return  The desired text of the default name.
      */
@@ -360,9 +365,6 @@ public class FigUseCase extends FigNodeModelElement
                 + "extensionPointVisible=" + isExtensionPointVisible();
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ExtensionsCompartmentContainer#isExtensionPointVisible()
-     */
     public boolean isExtensionPointVisible() {
         return epVec.isVisible();
     }
@@ -496,7 +498,7 @@ public class FigUseCase extends FigNodeModelElement
     private Dimension calcEllipse(Dimension rectSize, int vertPadding) {
 
         // Work out the radii of the ellipse, a and b. The top right corner of
-        // the ellipse (Cartesian coordinates, centred on the origin) will be
+        // the ellipse (Cartesian coordinates, centered on the origin) will be
         // at (x,y)
 
         double a;
@@ -610,7 +612,7 @@ public class FigUseCase extends FigNodeModelElement
     }
 
     /**
-     * Calculates the new size of the FigGroup (based on its extensionpoints)
+     * Calculates the new size of the FigGroup (based on its extensionPoints)
      * after calculation new bounds for all sub-figs, considering their minimal
      * sizes; FigGroup need not be displayed; no update event is fired.
      * This used to be a duplicate method from FigEditableCompartment. <p>
@@ -791,6 +793,9 @@ public class FigUseCase extends FigNodeModelElement
     /**
      * FigMyCircle is a FigCircle with corrected connectionPoint method:
      *   this methods calculates where a connected edge ends.<p>
+     *   
+     *   TODO: Once we are at GEF version 0.13.1M4, this whole class can be 
+     *   removed, since it was taken over by GEF.
      */
     public static class FigMyCircle extends FigCircle {
         /**
@@ -836,6 +841,10 @@ public class FigUseCase extends FigNodeModelElement
         /**
          * Compute the border point of the ellipse that is on the edge
          *   between the stored upper left corner and the given parameter.<p>
+         *   
+         *   TODO: Once we are at GEF version 0.13.1M4, this method 
+         *   and in fact the whole class can be 
+         *   removed, since it was taken over by GEF in revision 1279.
          *
          * @param anotherPt  The remote point to which an edge is drawn.
          *
@@ -857,10 +866,14 @@ public class FigUseCase extends FigNodeModelElement
             return res;
         }
 
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = 2616728355472635182L;
+    }
+
+    /*
+     * Use the code from the FigCircle, not the one from Fig.
+     */
+    @Override
+    public Point connectionPoint(Point anotherPt) {
+        return bigPort.connectionPoint(anotherPt);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -1012,9 +1025,6 @@ public class FigUseCase extends FigNodeModelElement
         return null;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
     @Override
     protected void modelChanged(PropertyChangeEvent mee) {
 
@@ -1027,9 +1037,6 @@ public class FigUseCase extends FigNodeModelElement
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
-     */
     @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         Set<Object[]> l = new HashSet<Object[]>();
@@ -1056,9 +1063,6 @@ public class FigUseCase extends FigNodeModelElement
         updateElementListeners(l);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
-     */
     @Override
     public void renderingChanged() {
         super.renderingChanged();
@@ -1068,12 +1072,12 @@ public class FigUseCase extends FigNodeModelElement
     }
 
     /**
-     * Updates the extensionpoints in the fig. <p>
+     * Updates the extensionPoints in the fig. <p>
      * 
      * A difference in behaviour of this function
      * compared to the similar 
      * FigEditableCompartment.populate()
-     * is that the extensionpoints 
+     * is that the extensionPoints 
      * are not ordered, while features are.
      */
     protected void updateExtensionPoint() {
@@ -1106,30 +1110,23 @@ public class FigUseCase extends FigNodeModelElement
                 CompartmentFigText epFig = null;
                 Object ep = iter.next();
 
-                /* Find the fig for this ep: */
+                /* Find the fig for this extensionPoint: */
                 for (CompartmentFigText candidate : figs) {
                     if (candidate.getOwner() == ep) {
                         epFig = candidate;
                         break;
                     }
                 }
-                
+
                 // If we don't have a fig for this EP, we'll need to add
                 // one. We set the bounds, but they will be reset later.
                 if (epFig == null) {
-                     epFig = new CompartmentFigText(ep, new Rectangle(
+                     epFig = new FigExtensionPoint(ep, new Rectangle(
                             xpos,
 			    ypos + (epCount - 1) * ROWHEIGHT,
 			    0,
 			    ROWHEIGHT),
 			    getSettings());
-                    
-                    epFig.setFilled(false);
-                    epFig.setLineWidth(0);
-                    epFig.setTextColor(getTextColor());
-                    epFig.setJustification(FigText.JUSTIFY_LEFT);
-                    epFig.setReturnAction(FigText.END_EDITING);
-
                     epVec.addFig(epFig);
                 } else {
                     /* This one is still usable, so let's not remove it: */
@@ -1159,9 +1156,6 @@ public class FigUseCase extends FigNodeModelElement
         setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-     */
     @Override
     protected void updateNameText() {
         Object useCase = getOwner();
@@ -1176,42 +1170,6 @@ public class FigUseCase extends FigNodeModelElement
         setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
     }
 
-    /*
-     * Makes sure that the edges stick to the ellipse fig of the usecase. <p>
-     * 
-     * TODO: This function is called way too many times - I count 6x when
-     * simply clicking on this usecase, and 20x when clicking on the button
-     * on selection at the right hand side of a usecase.
-     * Once this problem is solved, try increasing the "maxPoint" 4-fold,
-     * to make edge attachment when dragging much smoother.
-     *
-     * @see org.tigris.gef.presentation.Fig#getGravityPoints()
-     */
-    @Override
-    public List<Point> getGravityPoints() {
-        final int maxPoints = 30;
-        List<Point> ret = new ArrayList<Point>(maxPoints);
-        int cx = bigPort.getCenter().x;
-        int cy = bigPort.getCenter().y;
-        int radiusx = Math.round(bigPort.getWidth() / 2) + 1;
-        int radiusy = Math.round(bigPort.getHeight() / 2) + 1;
-        Point point = null;
-        for (int i = 0; i < maxPoints; i++) {
-            point =
-                new Point((int) (cx
-				 + (Math.cos(2 * Math.PI / maxPoints * i)
-				    * radiusx)),
-                    (int) (cy
-				 + (Math.sin(2 * Math.PI / maxPoints * i)
-				    * radiusy)));
-            ret.add(point);
-        }
-        return ret;
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
-     */
     @Override
     protected void updateStereotypeText() {
         super.updateStereotypeText();
@@ -1237,7 +1195,7 @@ public class FigUseCase extends FigNodeModelElement
 
     /**
      * Get a list of the extension point Figs <em>without</em> the first fig
-     * which is the bigport fig.
+     * which is the bigPort fig.
      * 
      * @return a list of the extension point Figs
      */

@@ -29,7 +29,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Arrays;
 
-import org.apache.log4j.Logger;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -46,22 +45,14 @@ import org.tigris.gef.presentation.FigText;
  * When selected, this compartment is highlighted.<p>
  *
  * This implementation now supports the extension point compartment in
- * a use case.<p>
+ * a use case.
  *
  * @author thn
  */
-public class CompartmentFigText extends FigSingleLineTextWithNotation
+public abstract class CompartmentFigText extends FigSingleLineTextWithNotation
         implements TargetListener {
     
     private static final int MARGIN = 3;
-    
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 3830572062785308980L;
-
-    private static final Logger LOG =
-	Logger.getLogger(CompartmentFigText.class);
 
     /**
      * The bounding figure of the compartment containing this fig text.
