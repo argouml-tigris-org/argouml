@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -68,13 +68,16 @@ public class PriorityNode {
      */
     public static List<PriorityNode> getPriorityList() {
         if (priorities == null) {
-            priorities = new ArrayList<PriorityNode>();
-            priorities.add(new PriorityNode(HIGH,
+            List<PriorityNode> p =  new ArrayList<PriorityNode>();
+            p.add(new PriorityNode(HIGH,
                     ToDoItem.HIGH_PRIORITY));
-            priorities.add(new PriorityNode(MEDIUM,
+            p.add(new PriorityNode(MEDIUM,
                     ToDoItem.MED_PRIORITY));
-            priorities.add(new PriorityNode(LOW,
+            p.add(new PriorityNode(LOW,
                     ToDoItem.LOW_PRIORITY));
+            /* Correct lazy initialization of static field 
+             * without further updates: */
+            priorities = p;
         }
         return priorities;
     }
