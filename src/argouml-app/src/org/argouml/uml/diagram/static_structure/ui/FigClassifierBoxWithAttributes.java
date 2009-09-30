@@ -223,7 +223,7 @@ public abstract class FigClassifierBoxWithAttributes extends FigClassifierBox
     }
 
     /**
-     * @return the Fig for the EnumerationLiterals compartment
+     * @return the Fig for the Attribute compartment
      */
     public FigAttributesCompartment getAttributesCompartment() {
         // Set bounds will be called from our superclass constructor before
