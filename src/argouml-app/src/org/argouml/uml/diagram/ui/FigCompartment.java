@@ -104,8 +104,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
     /**
      * The minimum width is the minimum width of the child with the widest
      * minimum width.
-     * The minimum height is the total minimum height of all child figs plus a
-     * 2 pixel padding.
+     * The minimum height is the total minimum height of all child figs.
      * @return the minimum width
      */
     @Override
