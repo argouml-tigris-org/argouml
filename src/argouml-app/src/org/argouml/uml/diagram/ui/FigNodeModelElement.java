@@ -1029,7 +1029,7 @@ public abstract class FigNodeModelElement
             try {
                 //parse the text that was edited
                 textEdited((FigText) src);
-                // resize the FigNode to accomodate the new text
+                // resize the FigNode to accommodate the new text
                 final Rectangle bbox = getBounds();
                 final Dimension minSize = getMinimumSize();
                 bbox.width = Math.max(bbox.width, minSize.width);
