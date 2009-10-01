@@ -61,7 +61,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
 
     private static final int MIN_HEIGHT = FigNodeModelElement.NAME_FIG_HEIGHT;
 
-    private FigSeparator compartmentSeperator;
+    private FigSeparator compartmentSeparator;
 
     /**
      * The constructor. <p>
@@ -85,9 +85,9 @@ public abstract class FigEditableCompartment extends FigCompartment {
     }
 
     private void constructFigs() {
-        compartmentSeperator = 
+        compartmentSeparator = 
             new FigSeparator(X0, Y0, 11, LINE_WIDTH);
-        addFig(compartmentSeperator); // number 2
+        addFig(compartmentSeparator); // number 2
     }
     
     /**
@@ -114,7 +114,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * @return separator figure
      */
     protected FigSeparator getSeperatorFig() {
-        return compartmentSeperator;
+        return compartmentSeparator;
     }
 
     /**
@@ -346,6 +346,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
      * @param h h
      * @return the new dimension
      */
+    @SuppressWarnings("unused")
     public Dimension updateFigGroupSize(
                        int x,
                        int y,
@@ -366,7 +367,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
     public Dimension getMinimumSize() {
         Dimension d = super.getMinimumSize();
         d.height = Math.max(d.height, 
-                MIN_HEIGHT + compartmentSeperator.getHeight());
+                MIN_HEIGHT + compartmentSeparator.getHeight());
         return d;
     }
 
@@ -374,27 +375,28 @@ public abstract class FigEditableCompartment extends FigCompartment {
     public void setLineColor(Color col) {
         super.setLineColor(col);
         if (col != null) {
-            compartmentSeperator.setFillColor(col);
-            compartmentSeperator.setFilled(true);
+            compartmentSeparator.setFillColor(col);
+            compartmentSeparator.setFilled(true);
         }
     }
 
     @Override
     public void setLineWidth(int w) {
         super.setLineWidth(0);
+        compartmentSeparator.setHeight(w);
     }
 
     @Override
     public void setFillColor(Color col) {
         super.setFillColor(col);
-        compartmentSeperator.setFillColor(getLineColor());
-        compartmentSeperator.setFilled(true);
+        compartmentSeparator.setFillColor(getLineColor());
+        compartmentSeparator.setFilled(true);
     }
 
     @Override
     public void setFilled(boolean f) {
         super.setFilled(f);
-        compartmentSeperator.setFilled(true);
+        compartmentSeparator.setFilled(true);
     }
 
     /**
@@ -421,7 +423,7 @@ public abstract class FigEditableCompartment extends FigCompartment {
         @Override
         public Dimension getMinimumSize() {
             return new Dimension(MIN_SIZE, getHeight());
-        }        
-        
+        }
+
     }
 }

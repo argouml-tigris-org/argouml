@@ -40,7 +40,7 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ExtensionsCompartmentContainer;
+import org.argouml.uml.diagram.ExtensionPointsCompartmentContainer;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.PathContainer;
 import org.argouml.uml.diagram.StereotypeContainer;
@@ -324,8 +324,8 @@ class PGMLStackParser
                 ((PathContainer) fig)
                     .setPathVisible(value.equalsIgnoreCase("true"));
             } else if ("extensionPointVisible".equals(name)) {
-                ((ExtensionsCompartmentContainer) fig)
-                    .setExtensionPointVisible(value.equalsIgnoreCase("true"));
+                ((ExtensionPointsCompartmentContainer) fig)
+                    .setExtensionPointsVisible(value.equalsIgnoreCase("true"));
             }
         }
     }

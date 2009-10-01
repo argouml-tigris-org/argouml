@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2005-2006 The Regents of the University of California. All
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,18 +30,18 @@ package org.argouml.uml.diagram;
  *
  * @author mvw@tigris.org
  */
-public interface ExtensionsCompartmentContainer {
+public interface ExtensionPointsCompartmentContainer {
 
     /**
      * Determine if the operations compartment is visible.
      * @return true if the operations compartment is visible.
      */
-    boolean isExtensionPointVisible();
+    boolean isExtensionPointsVisible();
 
     /**
      * Set the visibility of the operations compartment.
      * @param visible the new visibility status.
      */
-    void setExtensionPointVisible(boolean visible);
+    void setExtensionPointsVisible(boolean visible);
 
 }

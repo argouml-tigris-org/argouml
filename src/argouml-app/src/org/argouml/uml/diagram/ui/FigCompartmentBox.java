@@ -29,10 +29,13 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.SelectionClass;
@@ -100,6 +103,11 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         new ArrayList<FigCompartment>();
 
     /**
+     * Buffer the calculated dimensions of the compartments for later use.
+     */
+    protected Dimension containerBox;
+
+    /**
      * Initialization shared by all constructors.
      */
     private void initialize() {
@@ -119,22 +127,18 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
          * compartments. Its size always equals the bigPort. Its body is
          * transparent.
          */
-        borderFig = new FigEmptyRect(X0, Y0, 0, 0);
-        borderFig.setLineColor(LINE_COLOR);
-        borderFig.setLineWidth(LINE_WIDTH);
+        borderFig = createBorderFig();
 
         getBigPort().setLineWidth(0);
         /* The bigPort draws the background color: */
         getBigPort().setFillColor(FILL_COLOR);
+    }
 
-        /*
-         * TODO: The above means that the border is drawn OVER 
-         * the background fill (which won't work if colors have 
-         * alpha channels). But the fill should only be drawn WITHIN 
-         * the border. MVW: I propose to have the borderFig show 
-         * the fill color and have the bigPort be transparent and
-         * without border.
-         */
+    protected Fig createBorderFig() {
+        Fig b = new FigEmptyRect(X0, Y0, 0, 0);
+        b.setLineColor(LINE_COLOR);
+        b.setLineWidth(LINE_WIDTH);
+        return b;
     }
 
     /**
@@ -193,10 +197,48 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
          * dimensions to the minimum space required for its contents:
          */
         aSize.width = Math.max(WIDTH, aSize.width);
-        aSize.width += 2 * getLineWidth();
-        aSize.height += 2 * getLineWidth();
+        
+        aSize = addCompartmentBoxSurroundings(aSize);
 
         return aSize;
+    }
+    
+    /**
+     * Increase the size of the given box with the area around the 
+     * compartments.
+     * 
+     * @param box the minimum box size needed for the compartments
+     * @return the dimensions of the complete fig
+     */
+    protected Dimension addCompartmentBoxSurroundings(Dimension box) {
+        containerBox = new Dimension(box);
+        box.width += 2 * getLineWidth();
+        box.height += 2 * getLineWidth();
+        return box;
+    }
+    
+    /**
+     * Given the outside dimensions and location of the Fig, calculate 
+     * the position and size of the box for the compartments.
+     * The compartments are located inside the complete fig. For a
+     * rectangle (i.e. the default implementation), only the line-width 
+     * of the outside box needs to be added.
+     * Other Figs may have other shapes, e.g. a Use Case has the 
+     * box located inside an ellipse. So, they need to overrule this method.
+     * 
+     * @param x outside top left
+     * @param y outside top left
+     * @param w outside dimension, including line-width
+     * @param h outside dimension, including line-width
+     * @return the location and area to be used by the compartments
+     */
+    protected Rectangle calculateCompartmentBoxDimensions(
+            final int x, final int y, final int w, final int h) {
+        return new Rectangle(
+                x + getLineWidth(), 
+                y + getLineWidth(), 
+                w - 2 * getLineWidth(),
+                h - 2 * getLineWidth());
     }
 
     /**
@@ -229,14 +271,21 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         Dimension minimumSize = getMinimumSize();
         int newW = Math.max(w, minimumSize.width);
         int newH = Math.max(h, minimumSize.height);
+        
+        /* The box for the compartments is somewhere 
+         * inside the outside bounds: */
+        Rectangle box = calculateCompartmentBoxDimensions(
+                x, y, newW, newH);
 
         int currentHeight = 0;
 
         if (getStereotypeFig().isVisible()) {
             int stereotypeHeight = getStereotypeFig().getMinimumSize().height;
             getNameFig().setTopMargin(stereotypeHeight);
-            getStereotypeFig().setBounds(x + getLineWidth(),
-                    y + getLineWidth(), newW - 2 * getLineWidth(),
+            getStereotypeFig().setBounds(
+                    box.x,
+                    box.y, 
+                    box.width,
                     stereotypeHeight);
         } else {
             getNameFig().setTopMargin(0);
@@ -246,8 +295,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         Dimension nameMin = getNameFig().getMinimumSize();
         int minNameHeight = Math.max(nameMin.height, NAME_FIG_HEIGHT);
 
-        getNameFig().setBounds(x + getLineWidth(), y + getLineWidth(),
-                newW - 2 * getLineWidth(), minNameHeight);
+        getNameFig().setBounds(box.x, box.y,
+                box.width, minNameHeight);
 
         /* The new height can not be less than the name height: */
         /*
@@ -258,7 +307,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
         currentHeight += minNameHeight;
 
-        int requestedHeight = newH - currentHeight - 2 * getLineWidth();
+        int requestedHeight = box.height - currentHeight;
         int neededHeight = 0;
         /* Calculate the minimum needed height for all the compartments:*/
         for (FigCompartment c : compartments) {
@@ -278,9 +327,10 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
                     compartmentHeight += (requestedHeight - neededHeight)
                             / getVisibleCompartmentCount();
                 }
-                c.setBounds(x + getLineWidth(), 
-                        y + currentHeight + getLineWidth(), 
-                        newW - 2 * getLineWidth(),
+                c.setBounds( 
+                        box.x, 
+                        box.y + currentHeight, 
+                        box.width,
                         compartmentHeight);
                 currentHeight += compartmentHeight;
             }
@@ -324,6 +374,17 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         }
     }
 
+    @Override
+    protected void modelChanged(PropertyChangeEvent mee) {
+        // Let our superclass sort itself out first
+        super.modelChanged(mee);
+        if (mee instanceof AssociationChangeEvent 
+                || mee instanceof AttributeChangeEvent) {
+            renderingChanged();
+            updateListeners(getOwner(), getOwner());
+        }
+    }
+    
     /*
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */

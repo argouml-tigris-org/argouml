@@ -24,44 +24,32 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ExtensionsCompartmentContainer;
+import org.argouml.uml.diagram.ExtensionPointsCompartmentContainer;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
-import org.argouml.uml.diagram.ui.CompartmentFigText;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
+import org.argouml.uml.diagram.ui.FigCompartmentBox;
+import org.argouml.uml.diagram.ui.FigExtensionPointsCompartment;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
-import org.tigris.gef.presentation.FigGroup;
-import org.tigris.gef.presentation.FigLine;
-import org.tigris.gef.presentation.FigRect;
-import org.tigris.gef.presentation.FigText;
 
 /**
  * A fig to display use cases on use case diagrams.<p>
@@ -114,60 +102,20 @@ import org.tigris.gef.presentation.FigText;
  * origin is at our top left corner, and the Y coordinates are
  * reversed.<p>
  */
-public class FigUseCase extends FigNodeModelElement
-    implements ExtensionsCompartmentContainer {
+public class FigUseCase extends FigCompartmentBox
+    implements ExtensionPointsCompartmentContainer {
 
     /**
-     * The minimum padding allowed above and below the rectangle for
+     * The minimum padding allowed above the rectangle for
      * the use case name and extension points to the top of the use
-     * case oval itself.<p>
+     * case oval itself.
      */
     private static final int MIN_VERT_PADDING = 4;
-    
-    // Space between ellipse and stereotype underneath
-    private static final int STEREOTYPE_PADDING = 0;
-    
 
     /**
-     * Space above and below the line separating name from extension
-     * points. The line takes a further 1 pixel.<p>
+     * The Fig for the extensionPoints compartment (if any).
      */
-    private static final int SPACER = 2;
-
-    /**
-     * UML use cases do not really have ports, so just define one big
-     * one so that users can drag edges to or from any point in the
-     * icon.<p>
-     */
-    private FigMyCircle bigPort;
-
-    /**
-     * We don't use bigPort for the actual graphics of the oval. We
-     * define an identical oval that sits on top of it.<p>
-     */
-    private FigMyCircle cover;
-
-    /**
-     * The line separating name and extension points.<p>
-     */
-    private FigLine epSep;
-
-    /**
-     * The vector of graphics for extension points (if any). First one
-     * is the rectangle for the entire extension points box.<p>
-     */
-    private FigGroup epVec;
-
-    /**
-     * The rectangle for the entire extension point box.<p>
-     */
-    private FigRect epBigPort;
-
-    /**
-     * Text highlighted by mouse actions on the diagram. Assumed to
-     * belong to the extension point compartment.<p>
-     */
-    private CompartmentFigText highlightedFigText;
+    private FigExtensionPointsCompartment extensionPointsFigCompartment;
 
     /**
      * Initialization which is common to multiple constructors.<p>
@@ -175,77 +123,65 @@ public class FigUseCase extends FigNodeModelElement
      * There should be no size calculations here, nor color setting,
      * since not all attributes are set yet (like e.g. fill color).
      */
-    private void initialize() {        
+    private void initialize(Rectangle bounds) {       
+        enableSizeChecking(false);
+        setSuppressCalcBounds(true); 
         // Create all the things we need
 
         // First the main port ellipse and the cover of identical size that
-        // will realize it. Use arbitrary dimensions for now.
-
-        bigPort = new FigMyCircle(0, 0, 100, 60);
-        cover = new FigMyCircle(0, 0, 100, 60);
-
-        // Mark the text as NOT filled.
-        // The use of multi-line text is not supported 
-        // (how do we enter a multi-line name?).
+        // will realize it. 
+//        setBigPort(new FigMyCircle(0, 0, 100, 60));
+        // repeat this from the parent, since we now have a different bigPort:
+//        getBigPort().setLineWidth(0);
+        /* The bigPort draws the background color: */
+//        getBigPort().setFillColor(FILL_COLOR);
         
-        /* TODO: The above comment hints that the ReturnAction 
-         * should be INSERT, not END_EDITING. */
-
-        getNameFig().setTextFilled(false);
-        getNameFig().setFilled(false);
-        getNameFig().setLineWidth(0);
-        getNameFig().setReturnAction(FigText.END_EDITING);
-
-        // The separator, again with arbitrary bounds for now.
-
-        epSep = new FigLine(0, 30, 100, 100);
-        epSep.setLineWidth(LINE_WIDTH);
-
-        epSep.setVisible(false);
-
-        // The surrounding box for the extension points, again with arbitrary
-        // bounds for now (but made the same width as the name field, so the
-        // name field width will dominate size calculations, but there is a
-        // space to double click in for a new EP. It is not filled, nor has it
-        // a surrounding line. Its bounds, which allow for one line (which is
-        // empty) are the same as for the name box at this stage.
-
-        epBigPort =
-	    new FigRect(0, 30, getNameFig().getBounds().width, 20);
-
-        epBigPort.setFilled(false);
-        epBigPort.setLineWidth(0);
-        epBigPort.setVisible(false);
-
-        // The group for the extension points. The first entry in the group
-        // is the overall surrounding box itself. The group is not filled, nor
-        // has any line. The first entry we add is the epBigPort
-
-        epVec = new FigGroup();
-
-        epVec.setFilled(false);
-        epVec.setLineWidth(0);
-        epVec.setVisible(false);
-
-        epVec.addFig(epBigPort);
-
-        setBigPort(bigPort);
-
+        /* TODO: This next line prevent loading a UseCase 
+         * with a stereotype to grow. Why? */
+        getStereotypeFig().setVisible(true);
+        
         // add Figs to the FigNode in back-to-front order
-        addFig(bigPort);
-        addFig(cover);
+        addFig(getBigPort());
         addFig(getNameFig());
+        // stereotype fig covers the name fig:
         addFig(getStereotypeFig());
-        addFig(epSep);
-        addFig(epVec);
+        // Side effect: This creates the fig:
+        addFig(getExtensionPointsCompartment());
+        addFig(getBorderFig());
 
-        updateExtensionPoint();
+        // Make all the parts match the main fig
+        setFilled(true);
+        setFillColor(FILL_COLOR);
+        setLineColor(LINE_COLOR);
+        setLineWidth(LINE_WIDTH);
         
-        // Having built the figure, getBounds finds the enclosing rectangle,
-        // which we set as our bounds.
+        // by default, do not show extension points:
+        setExtensionPointsVisible(false);
+
+        /* Set the drop location in the case of D&D: */
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
+
+        setSuppressCalcBounds(false);
         setBounds(getBounds());
+        enableSizeChecking(true);
     }
     
+    @Override
+    protected Fig createBigPortFig() {
+        /* Use arbitrary dimensions for now. */
+        return new FigMyCircle(0, 0, 100, 60);
+    }
+
+    @Override
+    protected Fig createBorderFig() {
+        Fig b = new FigMyCircle(0, 0, 100, 60);
+        b.setLineColor(LINE_COLOR);
+        b.setLineWidth(LINE_WIDTH);
+        return b;
+    }
+
     /**
      * Construct a use case figure with the given owner, bounds, and rendering 
      * settings.  This constructor is used by the PGML parser.
@@ -257,49 +193,7 @@ public class FigUseCase extends FigNodeModelElement
     public FigUseCase(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        initialize();
-        if (bounds != null) {
-            setLocation(bounds.x, bounds.y);
-        }
-    }
-
-    /**
-     * The text string to be used as the default name of the new use
-     * case fig. This name is only shown on the diagram when drawing 
-     * with the mouse as long as the mouse button is down - once 
-     * the mouse button is released, this is  immediately
-     * overwritten - presumably somewhere in the creation code for the
-     * object, which chooses to define a name.
-     *
-     * @return  The desired text of the default name.
-     */
-    @Override
-    public String placeString() {
-        return "new Use Case";
-    }
-
-    /**
-     * Make a copy of the current fig.<p>
-     *
-     * Uses the generic superclass clone which gives a list of all
-     * the figs. Then initialize our instance variables from this
-     * list.<p>
-     *
-     * @return  A new copy of the the current fig.
-     */
-    @Override
-    public Object clone() {
-        FigUseCase figClone = (FigUseCase) super.clone();
-        Iterator it = figClone.getFigs().iterator();
-
-        figClone.bigPort = (FigMyCircle) it.next();
-        figClone.cover = (FigMyCircle) it.next();
-        figClone.setNameFig((FigText) it.next());
-        it.next();
-        figClone.epSep = (FigLine) it.next();
-        figClone.epVec = (FigGroup) it.next();
-
-        return figClone;
+        initialize(bounds);
     }
 
     /**
@@ -362,11 +256,12 @@ public class FigUseCase extends FigNodeModelElement
     @Override
     public String classNameAndBounds() {
         return super.classNameAndBounds()
-                + "extensionPointVisible=" + isExtensionPointVisible();
+                + "extensionPointVisible=" + isExtensionPointsVisible();
     }
 
-    public boolean isExtensionPointVisible() {
-        return epVec.isVisible();
+    public boolean isExtensionPointsVisible() {
+        return extensionPointsFigCompartment != null 
+            && extensionPointsFigCompartment.isVisible();
     }
 
     /**
@@ -383,37 +278,10 @@ public class FigUseCase extends FigNodeModelElement
      * @param isVisible  <code>true</code> if the compartment should be shown,
      *                   <code>false</code> otherwise.
      *
-     * @see org.argouml.uml.diagram.ExtensionsCompartmentContainer#setExtensionPointVisible(boolean)
+     * @see org.argouml.uml.diagram.ExtensionPointsCompartmentContainer#setExtensionPointsVisible(boolean)
      */
-    public void setExtensionPointVisible(boolean isVisible) {
-        if (epVec.isVisible() && (!isVisible)) {
-            setExtensionPointVisibleInternal(false);
-        } else if ((!epVec.isVisible()) && isVisible) {
-            setExtensionPointVisibleInternal(true);
-        }
-        /* Move the stereotype out of the way: */
-        updateStereotypeText();
-    }
-
-    private void setExtensionPointVisibleInternal(boolean visible) {
-        // Record our current bounds for later use
-        Rectangle oldBounds = getBounds();
-
-        // Tell GEF that we are starting to make a change. Loop through the
-        // epVec marking each element as not visible.
-        for (Fig fig : (List<Fig>) epVec.getFigs()) {
-            fig.setVisible(visible);
-        }
-
-        // Mark the vector itself and the separator as not displayed
-        epVec.setVisible(visible);
-        epSep.setVisible(visible);
-
-        // Redo the bounds and then tell GEF the change has finished
-        setBounds(oldBounds.x, oldBounds.y,
-                oldBounds.width,
-                oldBounds.height);
-        endTrans();
+    public void setExtensionPointsVisible(boolean isVisible) {
+        setCompartmentVisible(extensionPointsFigCompartment, isVisible);
     }
 
     /**
@@ -428,53 +296,21 @@ public class FigUseCase extends FigNodeModelElement
     }
 
     /**
-     * Compute the minimum acceptable size of the use case.<p>
-     *
-     * We work out the minimum size of the text box, and from that the radii
-     *   of the enclosing ellipse.<p>
-     *
-     * @return  The dimensions of the smallest size bounding box of the use
-     *          case.
+     * Compute the dimensions of an ellipse that intersects the 4 corners 
+     * of the given box.
+     * 
+     * @param box the width and height of the box
+     * @return the dimension of the ellipse
      */
-    @Override
-    public Dimension getMinimumSize() {
+    public Dimension addCompartmentBoxSurroundings(Dimension box) {
+        containerBox = box;
+        
+        @SuppressWarnings("unused")
+        double h = box.height;
+        double w = box.width;
 
-        Dimension textSize = getTextSize();
-
-        Dimension size = calcEllipse(textSize, MIN_VERT_PADDING);
-
-        return new Dimension(Math.max(size.width, 100),
-			     Math.max(size.height, 60));
-    }
-
-    /**
-     * A private utility routine to calculate the minimum size of the
-     *   rectangle to hold the name and extension points (if displayed).<p>
-     *
-     * @return  The dimensions of the rectangle
-     */
-    private Dimension getTextSize() {
-        Dimension minSize = getNameFig().getMinimumSize();
-
-        // Now allow for the extension points, if they are displayed
-        if (epVec.isVisible()) {
-
-            // Allow for a separator (spacer each side + 1 pixel width line)
-            minSize.height += 2 * SPACER + 1;
-
-            // Loop through all the extension points, to find the widest
-            List<CompartmentFigText> figs = getEPFigs();
-            for (CompartmentFigText f : figs) {
-                int elemWidth = f.getMinimumSize().width;
-                minSize.width = Math.max(minSize.width, elemWidth);
-            }
-
-            // Height allows one row for each extension point
-            int rowHeight = Math.max(ROWHEIGHT, minSize.height);
-            minSize.height += rowHeight * Math.max(1, figs.size());
-        }
-
-        return minSize;
+        int padding = Math.max((int) (w / 10.0), MIN_VERT_PADDING);
+        return calcEllipse(box, padding);
     }
 
     /**
@@ -514,156 +350,25 @@ public class FigUseCase extends FigNodeModelElement
         // Result as integers, rounded up. We ensure that the radii are
         // integers for convenience.
 
-        return new Dimension(((int) (Math.ceil(a)) * 2),
-			     ((int) (Math.ceil(b)) * 2));
+        return new Dimension(((int) (Math.ceil(a) + getLineWidth()) * 2),
+			     ((int) (Math.ceil(b) + getLineWidth()) * 2));
     }
 
-    /**
-     * Change the boundary of the use case.<p>
-     *
-     * If we are called with less than the minimum size, we impose the
-     *   minimum size.<p>
-     *
-     * We place the name and extension points at the centre of the
-     *   rectangle.<p>
-     *
-     * Set the bounds of all components of the Fig.<p>
-     *
-     * @param x  X coordinate of upper left corner
-     *
-     * @param y  Y coordinate of upper left corner
-     *
-     * @param w  width of bounding box
-     *
-     * @param h  height of bounding box
-     */
     @Override
-    protected void setBoundsImpl(int x, int y, int w, int h) {
-
-        // Remember where we are at present, so we can tell GEF later. Then
-        // check we are as big as the minimum size
-        Rectangle oldBounds = getBounds();
-        Dimension minSize = getMinimumSize();
-
-        int newW = (minSize.width > w) ? minSize.width : w;
-        int newH = (minSize.height > h) ? minSize.height : h;
-        
-        newH = newH - (getStereotypeFig().getHeight() + STEREOTYPE_PADDING);
-
-        // Work out the size of the name and extension point rectangle, and
-        // hence the vertical padding
-        Dimension textSize = getTextSize();
-        int vPadding = (newH - textSize.height) / 2;
-
-        // Adjust the alignment of the name.
-        Dimension nameSize = getNameFig().getMinimumSize();
-
-        getNameFig().setBounds(x + ((newW - nameSize.width) / 2),
-			       y + vPadding,
-			       nameSize.width,
-			       nameSize.height);
-
-        // Place extension points if they are showing
-        if (epVec.isVisible()) {
-
-            // currY tracks the current vertical position of each element. The
-            // separator is _SPACER pixels below the name. Its length is
-            // calculated from the formula for an ellipse.
-            int currY = y + vPadding + nameSize.height + SPACER;
-            int sepLen =
-		2 * (int) (calcX(newW / 2.0,
-				  newH / 2.0,
-				  newH / 2.0 - (currY - y)));
-
-            epSep.setShape(x + (newW - sepLen) / 2,
-			    currY,
-			    x + (newW + sepLen) / 2,
-			    currY);
-
-            // Extension points are 1 pixel for the line and _SPACER gap below
-            // the separator
-            currY += 1 + SPACER;
-
-            // Move the extension point figures. For
-            // now we assume that extension points are the width of the overall
-            // text rectangle (true unless the name is wider than any EP).
-            updateFigGroupSize(
-               	   x + ((newW - textSize.width) / 2),
-               	   currY,
-               	   textSize.width,
-               	   (textSize.height - nameSize.height - SPACER * 2 - 1));
-        }
-
-        // Set the bounds of the bigPort and cover
-        bigPort.setBounds(x, y, newW, newH);
-        cover.setBounds(x, y, newW, newH);
-
-        // Record the changes in the instance variables of our parent, tell GEF
-        // and trigger the edges to reconsider themselves.
-        _x = x;
-        _y = y;
-        _w = newW;
-        _h = newH + getStereotypeFig().getHeight() + STEREOTYPE_PADDING;
-        
-        positionStereotypes();
-
-        firePropChange("bounds", oldBounds, getBounds());
-        updateEdges();
-    }
-
-    /**
-     * Calculates the new size of the FigGroup (based on its extensionPoints)
-     * after calculation new bounds for all sub-figs, considering their minimal
-     * sizes; FigGroup need not be displayed; no update event is fired.
-     * This used to be a duplicate method from FigEditableCompartment. <p>
-     * 
-     * TODO: Follow the improvements done to 
-     * the similar code in FigEditableCompartment. 
-     *
-     * @param x
-     *            x
-     * @param y
-     *            y
-     * @param w
-     *            w
-     * @param h
-     *            h
-     */
-    protected void updateFigGroupSize(int x, int y, int w,
-            int h) {
-        int newW = w;
-        int n = epVec.getFigs().size() - 1;
-        int newH =
-            isCheckSize() ? Math.max(h, ROWHEIGHT * Math.max(1, n) + 2)
-                : h;
-
-        // set new bounds for all included figs
-        Iterator figs = epVec.getFigs().iterator();
-        figs.next(); // skip epBigPort
-        Fig fi;
-        int fw, fh;
-        int yy = y;
-        while (figs.hasNext()) {
-            fi = (Fig) figs.next();
-            fw = fi.getMinimumSize().width;
-            fh = fi.getMinimumSize().height;
-            if (!isCheckSize() && fw > newW - 2) {
-                fw = newW - 2;
-            }
-            fi.setBounds(x + 1, yy + 1, fw, fh/* - 2*/);
-            if (isCheckSize() && newW < fw + 2) {
-                newW = fw + 2;
-            }
-            yy += fh;
-        }
-        epBigPort.setBounds(x, y, newW, newH);
-        // calculate the rectangle containing all FigText objects:
-        epVec.calcBounds();
+    protected Rectangle calculateCompartmentBoxDimensions(
+            int x, int y, int w, int h) {
+        /* For an ellipse, we can put the box in the middle:  */
+        return new Rectangle(
+                x + (w - containerBox.width) / 2, 
+                y + (h - containerBox.height) / 2, 
+                containerBox.width, 
+                containerBox.height);
     }
 
     /**
      * Private utility routine to work out the (positive) x coordinate of a
      * point on an oval, given the radii and y coordinate.<p>
+     * TODO: Use this to calculate the separator lines!
      *
      * @param a  radius in X direction
      * @param b  radius in Y direction
@@ -671,6 +376,9 @@ public class FigUseCase extends FigNodeModelElement
      * @return   Positive X coordinate for the given Y coordinate
      */
     private double calcX(double a, double b, double y) {
+        assert a > 0;
+        assert b > 0;
+        assert b > y;
         return (a * Math.sqrt(b * b - y * y)) / b;
     }
 
@@ -685,22 +393,8 @@ public class FigUseCase extends FigNodeModelElement
      */
     @Override
     public void setLineColor(Color col) {
-        if (cover != null) {
-            cover.setLineColor(col);
-            epSep.setLineColor(col);
-        }
-    }
-
-    /**
-     * Get the line colour for the use case oval.<p>
-     *
-     * This involves getting the <code>cover</code> oval colour, not the bigPort.
-     * 
-     * @return  The colour in use.
-     */
-    @Override
-    public Color getLineColor() {
-        return cover.getLineColor();
+           super.setLineColor(col);
+           getBigPort().setLineColor(null);
     }
 
     /**
@@ -714,21 +408,8 @@ public class FigUseCase extends FigNodeModelElement
      */
     @Override
     public void setFillColor(Color col) {
-        if (cover != null) {
-            cover.setFillColor(col);
-        }
-    }
-
-    /**
-     * Get the line colour for the use case oval.<p>
-     *
-     * This involves getting the <code>cover</code> oval colour, not the bigPort.
-     *
-     * @return  The colour in use.
-     */
-    @Override
-    public Color getFillColor() {
-        return cover.getFillColor();
+        super.setFillColor(col);
+        getBorderFig().setFillColor(null);
     }
 
     /**
@@ -744,50 +425,8 @@ public class FigUseCase extends FigNodeModelElement
      */
     @Override
     public void setFilled(boolean f) {
-        if (cover != null) {
-            cover.setFilled(f);
-        }
-    }
-
-    /**
-     * Get whether the use case oval is to be filled.<p>
-     *
-     * This involves getting the <code>cover</code> oval, not the bigPort.<p>
-     *
-     * @return  <code>true</code> if the oval is to be filled,
-     *          <code>false</code> if not.
-     */
-    @Override
-    public boolean isFilled() {
-        return cover.isFilled();
-    }
-
-    /**
-     * Set the line width for the use case oval.<p>
-     *
-     * This involves setting the <code>cover</code> oval, not the bigPort.
-     * Calling the super method would cause all FigGroup elements
-     * to be filled, too - which is not wanted for e.g. the stereotype figs.
-     *
-     * @param w  The line width desired.
-     */
-    @Override
-    public void setLineWidth(int w) {
-        if (cover != null) {
-            cover.setLineWidth(w);
-        }
-    }
-
-    /**
-     * Get the line width for the use case oval.<p>
-     *
-     * This involves getting the <code>cover</code> oval colour, not the bigPort.<p>
-     *
-     * @return  The line width set.
-     */
-    @Override
-    public int getLineWidth() {
-        return cover.getLineWidth();
+        super.setFilled(f);
+        getBorderFig().setFilled(false);
     }
 
     /**
@@ -873,336 +512,66 @@ public class FigUseCase extends FigNodeModelElement
      */
     @Override
     public Point connectionPoint(Point anotherPt) {
-        return bigPort.connectionPoint(anotherPt);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Event handlers
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * React to a mouse key being pressed.<p>
-     *
-     * @param me  The mouse action that caused us to be invoked.
-     */
-    @Override
-    public void mousePressed(MouseEvent me) {
-
-        // Deal with anything from the parent first
-        super.mousePressed(me);
-
-        // If we are currently selected, turn off the draggable buttons at each
-        // side, and unhighlight any currently selected extension points.
-        Editor ce = Globals.curEditor();
-        if (ce != null) {
-            Selection sel = ce.getSelectionManager().findSelectionFor(this);
-            if (sel instanceof SelectionUseCase) {
-                ((SelectionUseCase) sel).hideButtons();
-            }
-        }
-
-        unhighlight();
-
-        // Display extension point properties if necessary. Look to see if the
-        // mouse (2x2 pixels) hit the extension point compartment. Use a flag
-        // to track this.
-        Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
-        Fig f = hitFig(r);
-
-
-        if (f == epVec) {
-
-            // Work out which extension point this corresponds to. Each EP
-            // takes ROWHEIGHT pixels, so take the difference between the
-            // centre of the mouse (me.getY() - 1) and the top of the epVec
-            // (f.getY()) and integer divide by ROWHEIGHT.
-            int i = (me.getY() - f.getY() - 1) / ROWHEIGHT;
-
-            List<CompartmentFigText> figs = getEPFigs();
-            
-            // If we are in the range of the EP list size (avoids any nasty
-            // boundary overflows), we can select that EP entry. Make this
-            // entry the target Fig, and note that we do have a
-            // target.             
-            if ((i >= 0) && (i < figs.size())) {
-                highlightedFigText = figs.get(i);
-                highlightedFigText.setHighlighted(true);
-            }
-        }
-    }
-
-    /**
-     * React to a mouse key being clicked.<p>
-     *
-     * @param me  The mouse action that caused us to be invoked.
-     */
-    @Override
-    public void mouseClicked(MouseEvent me) {
-	super.mouseClicked(me);
-
-	if (me.isConsumed()) {
-	    return;
-	}
-
-	if (!isExtensionPointVisible() || me.getY() < epSep.getY1()) {
-	    getNameFig().mouseClicked(me);
-	} else if (me.getClickCount() >= 2
-		   && !(me.isPopupTrigger()
-			|| me.getModifiers() == InputEvent.BUTTON3_MASK)) {
-	    createContainedModelElement(epVec, me);
-	}
-    }
-
-    /**
-     * Deal with the mouse leaving the fig. Unhighlight the fig.<p>
-     *
-     * @param me  The mouse action that caused us to be invoked.
-     */
-    @Override
-    public void mouseExited(MouseEvent me) {
-        super.mouseExited(me);
-        unhighlight();
-    }
-
-    /**
-     * Create a new "feature" (extension point) in the use case fig.<p>
-     *
-     * Extension points are not strictly features, but that is a historical
-     *   accident of naming. This creates a new entry in the extension point
-     *   vector.<p>
-     *
-     * @param fg  The fig group to which this applies (which must be the
-     *            extension point vector).
-     *
-     * @param ie  The input event that triggered us. In the current
-     *            implementation a mouse double click.
-     */
-    protected void createContainedModelElement(FigGroup fg, InputEvent ie) {
-
-        // Give up if we don't have an owner
-        if (getOwner() == null) {
-            return;
-        }
-
-        // Invoke the relevant action method to create an empty extension
-        // point, then start the editor, assuming we successfully created an
-        // extension point.
-        ActionAddExtensionPoint.singleton().actionPerformed(null);
-
-        CompartmentFigText ft =
-            (CompartmentFigText) fg.getFigs().get(fg.getFigs().size() - 1);
-
-        if (ft != null) {
-            ft.startTextEditor(ie);
-            ft.setHighlighted(true);
-
-            highlightedFigText = ft;
-        }
-        ie.consume();
-    }
-
-    /**
-     * Private utility to unhighlight any currently selected extension
-     * point.<p>
-     *
-     * @return  The extension point that was unhighlighted.
-     */
-    private CompartmentFigText unhighlight() {
-
-        // Loop through the list of extension points, until we find a
-        // highlighted one.
-        for (CompartmentFigText ft : getEPFigs()) {
-            if (ft.isHighlighted()) {
-                ft.setHighlighted(false);
-                highlightedFigText = null;
-                return ft;
-            }
-        }
-
-        // None were highlighted
-        return null;
-    }
-
-    @Override
-    protected void modelChanged(PropertyChangeEvent mee) {
-
-        // Let our superclass sort itself out first
-        super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent 
-                || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
-        }
+        return getBigPort().connectionPoint(anotherPt);
     }
 
     @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        Set<Object[]> l = new HashSet<Object[]>();
+        Set<Object[]> listeners = new HashSet<Object[]>();
         /* Let's register for events from all modelelements
          * that change the name or body text: 
          */
         if (newOwner != null) {
-            /* Register for name changes, added extensionpoints
+            /* Register for name changes, added extensionPoints
              * and abstract makes the text italic.
              * All Figs need to listen to "remove", too: */
-            l.add(new Object[] {newOwner, 
+            listeners.add(new Object[] {newOwner, 
                                 new String[] {"remove", "name", "isAbstract", 
                                     "extensionPoint", "stereotype"}});
             
             // register for extension points:
             for (Object ep : Model.getFacade().getExtensionPoints(newOwner)) {
-                l.add(new Object[] {ep, new String[] {"location", "name"}});
+                listeners.add(new Object[] {ep, new String[] {"location", "name"}});
             }
             
             for (Object st : Model.getFacade().getStereotypes(newOwner)) {
-                l.add(new Object[] {st, "name"});
+                listeners.add(new Object[] {st, "name"});
             }
         }
-        updateElementListeners(l);
+        updateElementListeners(listeners);
     }
 
     @Override
     public void renderingChanged() {
         super.renderingChanged();
         if (getOwner() != null) {
-            updateExtensionPoint();
+            updateExtensionPoints();
         }
     }
-
-    /**
-     * Updates the extensionPoints in the fig. <p>
-     * 
-     * A difference in behaviour of this function
-     * compared to the similar 
-     * FigEditableCompartment.populate()
-     * is that the extensionPoints 
-     * are not ordered, while features are.
-     */
-    protected void updateExtensionPoint() {
-        // Give up if we have no owner
-        Object useCase = getOwner();
-        if (useCase == null) {
+    
+    protected void updateExtensionPoints() {
+        if (!isExtensionPointsVisible()) {
             return;
         }
+        extensionPointsFigCompartment.populate();
 
-        // Note our current bounds
-        Rectangle oldBounds = getBounds();
-
-        // Loop through all the extension points. epCount keeps track of the
-        // fig's index as we go through the extension points.
-        Collection eps =
-	    Model.getFacade().getExtensionPoints(useCase);
-        int epCount = 1;
-
-        if ((eps != null) && (eps.size() > 0)) {
-            int xpos = epBigPort.getX();
-            int ypos = epBigPort.getY();
-
-            // Take each EP and its corresponding fig in turn
-            Iterator iter = eps.iterator();
-            List<CompartmentFigText> figs = getEPFigs();
-            List<CompartmentFigText> toBeRemoved = 
-                new ArrayList<CompartmentFigText>(figs);
-
-            while (iter.hasNext()) {
-                CompartmentFigText epFig = null;
-                Object ep = iter.next();
-
-                /* Find the fig for this extensionPoint: */
-                for (CompartmentFigText candidate : figs) {
-                    if (candidate.getOwner() == ep) {
-                        epFig = candidate;
-                        break;
-                    }
-                }
-
-                // If we don't have a fig for this EP, we'll need to add
-                // one. We set the bounds, but they will be reset later.
-                if (epFig == null) {
-                     epFig = new FigExtensionPoint(ep, new Rectangle(
-                            xpos,
-			    ypos + (epCount - 1) * ROWHEIGHT,
-			    0,
-			    ROWHEIGHT),
-			    getSettings());
-                    epVec.addFig(epFig);
-                } else {
-                    /* This one is still usable, so let's not remove it: */
-                    toBeRemoved.remove(epFig);
-                }
-
-                // Now put the text in
-                // We must handle the case where the text is null
-                String epText = epFig.getNotationProvider().toString(ep, 
-                        getNotationSettings());
-                if (epText == null) {
-                    epText = "";
-                }
-                epFig.setText(epText);
-
-                epCount++;
-            }
-
-            // Remove any spare figs we have if there are now fewer extension
-            // points than figs
-            for (Fig f : toBeRemoved) {
-                epVec.removeFig(f);    
-            }
-        }
-
-        // Now recalculate all the bounds, using our old bounds.
-        setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
-    }
-
-    @Override
-    protected void updateNameText() {
-        Object useCase = getOwner();
-        if (useCase == null) {
-            return;
-        }
-        Rectangle oldBounds = getBounds();
-        // Now things to do with the use case itself. Put the use case in
-        // italics if it is abstract, otherwise ordinary font.
-
-        super.updateNameText();
-        setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
-    }
-
-    @Override
-    protected void updateStereotypeText() {
-        super.updateStereotypeText();
-        if (getOwner() == null) {
-            return;
-        }
-        positionStereotypes();
+        setBounds(getBounds());
         damage();
     }
     
-    private void positionStereotypes() {
-        if (((FigGroup) getStereotypeFig()).getFigCount() > 0) {
-            getStereotypeFig().setBounds(
-        	    (getX() + getWidth() / 2
-        		    - getStereotypeFig().getWidth() / 2),
-        	    (getY() + bigPort.getHeight() + STEREOTYPE_PADDING),
-                    getStereotypeFig().getWidth(),
-                    getStereotypeFig().getHeight());
-        } else {
-            getStereotypeFig().setBounds(0, 0, 0, 0);
+    /**
+     * @return the Fig for the extension point compartment
+     */
+    public FigExtensionPointsCompartment getExtensionPointsCompartment() {
+        // Set bounds will be called from our superclass constructor before
+        // our constructor has run, so make sure this gets set up if needed.
+        if (extensionPointsFigCompartment == null) {
+            extensionPointsFigCompartment = new FigExtensionPointsCompartment(
+                    getOwner(),
+                    DEFAULT_COMPARTMENT_BOUNDS, 
+                    getSettings());
         }
+        return extensionPointsFigCompartment;
     }
 
-    /**
-     * Get a list of the extension point Figs <em>without</em> the first fig
-     * which is the bigPort fig.
-     * 
-     * @return a list of the extension point Figs
-     */
-    private List<CompartmentFigText> getEPFigs() {
-        List<CompartmentFigText> l = 
-            new ArrayList<CompartmentFigText>(epVec.getFigs());
-        l.remove(0);
-        return l;
-    }
 }

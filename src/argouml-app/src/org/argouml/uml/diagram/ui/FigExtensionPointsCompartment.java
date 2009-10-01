@@ -1,4 +1,4 @@
-// $Id$
+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
 // Copyright (c) 2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,35 +22,64 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.use_case.ui;
+package org.argouml.uml.diagram.ui;
 
 import java.awt.Rectangle;
+import java.util.Collection;
 
+import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.use_case.ui.FigExtensionPoint;
 
 /**
- * Fig to show one extension point in a compartment.
+ * The compartment that contains extension points.
  *
  * @author michiel
  */
-public class FigExtensionPoint extends CompartmentFigText {
+public class FigExtensionPointsCompartment extends FigEditableCompartment {
 
     /**
+     * The constructor.
+     * 
      * @param owner owning UML element
      * @param bounds position and size
      * @param settings render settings
      */
-    public FigExtensionPoint(Object owner, Rectangle bounds,
+    public FigExtensionPointsCompartment(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
-
+        super.populate();
     }
-    
+
     @Override
-    protected int getNotationProviderType() {
+    FigSingleLineTextWithNotation createFigText(Object owner, Rectangle bounds,
+            DiagramSettings settings) {
+        return new FigExtensionPoint(owner, bounds, settings);
+    }
+
+    @Override
+    protected int getNotationType() {
         return NotationProviderFactory2.TYPE_EXTENSION_POINT;
     }
-    
+
+    @Override
+    protected Collection getUmlCollection() {
+        Object usecase = getOwner(); //TODO: check!
+        return Model.getFacade().getExtensionPoints(usecase);
+    }
+
+    @Override
+    protected void createModelElement() {
+        Object usecase = getGroup().getOwner(); //TODO: check!
+        Object ep = Model.getUseCasesFactory().buildExtensionPoint(usecase);
+        TargetManager.getInstance().setTarget(ep);
+    }
+
+    @Override
+    public String getName() {
+         return "extension points";
+    }
+
 }

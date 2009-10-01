@@ -26,11 +26,8 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
 import java.util.Vector;
 
-import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Selection;
 
@@ -111,16 +108,6 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
         // TODO: Do we have anything to add here?
 
         return popUpActions;
-    }
-
-    @Override
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent 
-                || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
-        }
     }
 
 } 

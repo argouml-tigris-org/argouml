@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,7 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
-import org.argouml.uml.diagram.ExtensionsCompartmentContainer;
+import org.argouml.uml.diagram.ExtensionPointsCompartmentContainer;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -221,12 +221,12 @@ public class ActionCompartmentDisplay extends UndoableAction {
                     visible++;
                 }
             }
-            if (f instanceof ExtensionsCompartmentContainer) {
+            if (f instanceof ExtensionPointsCompartmentContainer) {
                 present++;
                 epPresent = true;
                 epVisible =
-                        ((ExtensionsCompartmentContainer) f)
-                                .isExtensionPointVisible();
+                        ((ExtensionPointsCompartmentContainer) f)
+                                .isExtensionPointsVisible();
                 if (epVisible) {
                     visible++;
                 }
@@ -322,8 +322,8 @@ public class ActionCompartmentDisplay extends UndoableAction {
             }
 
             if ((cType & COMPARTMENT_EXTENSIONPOINT) != 0) {
-                if (f instanceof ExtensionsCompartmentContainer) {
-                    ((ExtensionsCompartmentContainer) f).setExtensionPointVisible(display);
+                if (f instanceof ExtensionPointsCompartmentContainer) {
+                    ((ExtensionPointsCompartmentContainer) f).setExtensionPointsVisible(display);
                 }
             }
             if ((cType & COMPARTMENT_ENUMLITERAL) != 0) {

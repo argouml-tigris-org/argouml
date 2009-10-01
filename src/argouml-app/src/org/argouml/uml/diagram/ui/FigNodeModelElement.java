@@ -376,7 +376,7 @@ public abstract class FigNodeModelElement
 
         // this rectangle marks the whole modelelement figure; everything
         // is inside it:
-        bigPort = new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
+        bigPort = createBigPortFig();
         nameFig = new FigNameWithAbstractAndBold(element, 
                 new Rectangle(X0, Y0, WIDTH, NAME_FIG_HEIGHT), getSettings(), true);
         stereotypeFig = createStereotypeFig();
@@ -425,6 +425,15 @@ public abstract class FigNodeModelElement
 //        damage();
         
         readyToEdit = true;
+    }
+
+    /**
+     * Overrule this if a rectangle is not usable.
+     * 
+     * @return the Fig to be used as bigPort
+     */
+    protected Fig createBigPortFig() {
+        return new FigRect(X0, Y0, 0, 0, DEBUG_COLOR, DEBUG_COLOR);
     }
     
     protected FigStereotypesGroup createStereotypeFig() {
@@ -1916,7 +1925,10 @@ public abstract class FigNodeModelElement
 
 
     /**
-     * @param bp the bigPort, which is the port where edges connect to this node
+     * @param bp the bigPort, which is the port where edges 
+     *          connect to this node
+     * @deprecated by MVW since V0.28.1. Use makeBigPortFig instead, 
+     *          to guarantee correct initialization.
      */
     protected void setBigPort(Fig bp) {
         this.bigPort = bp;

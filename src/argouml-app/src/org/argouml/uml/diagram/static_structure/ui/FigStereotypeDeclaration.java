@@ -26,15 +26,12 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -163,24 +160,6 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
 //            fc = unhighlight(getAttributesFig());
         }
         return fc;
-    }
-
-    /**
-     * Handles changes to the model. Takes into account the event that
-     * occurred. If you need to update the whole fig, consider using
-     * renderingChanged.
-     * {@inheritDoc}
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
-    @Override
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent 
-                || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
-            damage();
-        }
     }
 
     @Override

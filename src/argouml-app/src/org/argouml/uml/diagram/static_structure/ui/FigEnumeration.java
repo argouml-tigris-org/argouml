@@ -25,14 +25,11 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.Action;
 
-import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -103,16 +100,6 @@ public class FigEnumeration extends FigDataType
         addEnumerationLiteral.setEnabled(isSingleTarget());
         addMenu.add(addEnumerationLiteral);
         return addMenu;
-    }
-
-    @Override
-    protected void modelChanged(PropertyChangeEvent mee) {
-        super.modelChanged(mee);
-        if (mee instanceof AssociationChangeEvent 
-                || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
-        }
     }
 
     @Override
