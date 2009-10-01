@@ -77,6 +77,9 @@ public class SequenceDiagramModule implements ModuleInterface {
                 "org.argouml.uml.diagram.sequence.ui.FigCreateActionMessage",
                 "org.argouml.sequence2.diagram.FigMessage");
         persistanceManager.addTranslation(
+                "org.argouml.uml.diagram.sequence.ui.FigDestroyActionMessage",
+                "org.argouml.sequence2.diagram.FigMessage");
+        persistanceManager.addTranslation(
                 "org.argouml.uml.diagram.sequence.ui.FigDeleteActionMessage",
                 "org.argouml.sequence2.diagram.FigMessage");
         persistanceManager.addTranslation(
