@@ -131,6 +131,9 @@ public class Main {
     private static String projectName = null;
     
     private static String theTheme;
+
+    // Andreas: this is just temporary for the uml2 pre-alpha versions.
+    private static boolean showUml2warning = true;
     
     /**
      * The main entry point of ArgoUML.
@@ -237,6 +240,15 @@ public class Main {
             st = null;
             ArgoFrame.getFrame().setCursor(
                     Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+	    // Andreas: just temporary: a warning dialog for uml2...
+	    if( showUml2warning && Model.getFacade().getUmlVersion().startsWith("2")) {
+		JOptionPane.showMessageDialog( ArgoFrame.getFrame()
+					       , "You are running an experimental version not meant for productive work!"
+					       , "UML2 pre-alpha warning"
+					       , JOptionPane.WARNING_MESSAGE);
+	    }
+
 
             //ToolTipManager.sharedInstance().setInitialDelay(500);
             ToolTipManager.sharedInstance().setDismissDelay(50000000);
@@ -366,6 +378,8 @@ public class Main {
                     PrintManager.getInstance().print();
                     // nothing else to do (?)
                     System.exit(0);
+		} else if (args[i].equalsIgnoreCase("-nouml2warning")) {  // Andreas: just temporary for the 
+			showUml2warning = false;                         // uml2 pre-alpha versions!
                 } else {
                     System.err
                             .println("Ignoring unknown/incomplete option '"
