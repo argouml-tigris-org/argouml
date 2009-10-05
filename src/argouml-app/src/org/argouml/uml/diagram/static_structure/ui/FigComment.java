@@ -603,6 +603,7 @@ public class FigComment
     }
 
     /*
+     * TODO: This is the same as in parent - remove?
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
      */
     @Override
