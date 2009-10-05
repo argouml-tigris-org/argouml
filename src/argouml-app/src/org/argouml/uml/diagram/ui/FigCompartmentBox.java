@@ -185,12 +185,12 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
          * Only take into account the stereotype width, not the height, since
          * the height is included in the name fig:
          */
-        aSize = addChildWidth(aSize, getStereotypeFig());
+        aSize = ArgoFigUtil.addChildWidth(aSize, getStereotypeFig());
 
         /* Add the height of all the compartments (if there are any),
          * and check their minimum width: */
         for (FigCompartment c : compartments) {
-            aSize = addChildDimensions(aSize, c);
+            aSize = ArgoFigUtil.addChildDimensions(aSize, c);
         }
 
         /* We want to maintain a minimum width for the fig. Also, add the border
@@ -515,44 +515,6 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     protected Fig getBorderFig() {
         return borderFig;
-    }
-
-    /**
-     * This utility adds the size of a child component to an overall size. The
-     * width is maximized with child's width and the child's height is added to
-     * the overall height. If the child figure is not visible or not yet
-     * created, it's size is not added.
-     * 
-     * @param size current dimensions - modified with the result
-     * @param child child figure
-     * @return new Dimension with child size added
-     */
-    protected static Dimension addChildDimensions(Dimension size, 
-            Fig child) {
-        if (child != null && child.isVisible()) {
-            Dimension childSize = child.getMinimumSize();
-            size.width = Math.max(size.width, childSize.width);
-            size.height += childSize.height;
-        }
-        return size;
-    }
-
-    /**
-     * This utility adds the width of a child component to an overall size. The
-     * width is maximized with child's width and the child's height is ignored.
-     * If the child figure is not visible, it's size is not added.
-     * 
-     * @param size current dimensions - modified with the result
-     * @param child child figure
-     * @return new Dimension with child width added
-     */
-    protected static Dimension addChildWidth(Dimension size, 
-            Fig child) {
-        if (child.isVisible()) {
-            Dimension childSize = child.getMinimumSize();
-            size.width = Math.max(size.width, childSize.width);
-        }
-        return size;
     }
 
     /**

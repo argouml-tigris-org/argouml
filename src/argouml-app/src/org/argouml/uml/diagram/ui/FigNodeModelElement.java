@@ -1000,7 +1000,10 @@ public abstract class FigNodeModelElement
      * This algorithm makes the box grow 
      * (if the calculated minimum size grows), 
      * but then it can never shrink again 
-     * (not even if the calculated minimum size is smaller).
+     * (not even if the calculated minimum size is smaller).<p>
+     * 
+     * If the user can not resize the fig, e.g. like the FigActor, 
+     * then we return the minimum size.
      */
     protected void updateBounds() {
         if (!checkSize) {
@@ -1008,9 +1011,13 @@ public abstract class FigNodeModelElement
         }
         Rectangle bbox = getBounds();
         Dimension minSize = getMinimumSize();
-        bbox.width = Math.max(bbox.width, minSize.width);
-        bbox.height = Math.max(bbox.height, minSize.height);
-        setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
+        if (isResizable()) {
+            bbox.width = Math.max(bbox.width, minSize.width);
+            bbox.height = Math.max(bbox.height, minSize.height);
+            setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
+        } else {
+            setBounds(bbox.x, bbox.y, minSize.width, minSize.height);
+        }
     }
 
     /*
@@ -1927,8 +1934,8 @@ public abstract class FigNodeModelElement
     /**
      * @param bp the bigPort, which is the port where edges 
      *          connect to this node
-     * @deprecated by MVW since V0.28.1. Use makeBigPortFig instead, 
-     *          to guarantee correct initialization.
+     * @deprecated by MVW since V0.28.1. Use {@link #createBigPortFig} 
+     *          instead, to guarantee correct initialization.
      */
     protected void setBigPort(Fig bp) {
         this.bigPort = bp;

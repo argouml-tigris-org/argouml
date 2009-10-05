@@ -37,6 +37,7 @@ import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.ArgoFigUtil;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
@@ -45,14 +46,18 @@ import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 
 /**
- * Class to display graphics for an Actor in a diagram.
+ * Class to display graphics for an Actor in a diagram. <p>
+ * 
+ * The dimensions of the stick-man figure are fixed at 40 wide by 55 high.
+ * It does not support different line-widths.<p>
+ * 
+ * Stereotypes and the name are shown below the stick-man.<p>
+ * 
+ *  This seems to be the only ArgoUML element where the stereotypes 
+ *  are shown below the name. The UML 1.4.2 standard does not forbid nor 
+ *  prescribe this layout detail.
  */
 public class FigActor extends FigNodeModelElement {
-
-    /**
-     * The serialization version - Eclipse generated for rev. 1.40
-     */
-    private static final long serialVersionUID = 7265843766314395713L;
 
     /**
      * The padding between the actor body and name and the top of the
@@ -71,21 +76,13 @@ public class FigActor extends FigNodeModelElement {
     private static final int RIGHT_LEG_POSN = 6;
 
     private void constructFigs(Rectangle bounds) {
-        Color fg = getLineColor();
-        Color fill = getFillColor();
-        
-        // Put this rectangle behind the rest, so it goes first
-        FigRect bigPort = new ActorPortFigRect(X0, Y0, 0, 0, this);
+
         FigCircle head =
-            new FigCircle(X0 + 2, Y0, 16, 15, fg, fill);
-        FigLine body = new FigLine(X0 + 10, Y0 + 15, 20, 40, fg);
-        FigLine arms = new FigLine(X0, Y0 + 20, 30, 30, fg);
-        FigLine leftLeg = new FigLine(X0 + 10, Y0 + 30, 15, 55, fg);
-        FigLine rightLeg = new FigLine(X0 + 10, Y0 + 30, 25, 55, fg);
-        body.setLineWidth(LINE_WIDTH);
-        arms.setLineWidth(LINE_WIDTH);
-        leftLeg.setLineWidth(LINE_WIDTH);
-        rightLeg.setLineWidth(LINE_WIDTH);
+            new FigCircle(X0 + 2, Y0, 16, 15);
+        FigLine body = new FigLine(X0 + 10, Y0 + 15, 20, 40);
+        FigLine arms = new FigLine(X0, Y0 + 20, 30, 30);
+        FigLine leftLeg = new FigLine(X0 + 10, Y0 + 30, 15, 55);
+        FigLine rightLeg = new FigLine(X0 + 10, Y0 + 30, 25, 55);
         
         getNameFig().setBounds(X0, Y0 + 45, 20, 20);
 
@@ -98,7 +95,8 @@ public class FigActor extends FigNodeModelElement {
                                      0, 0);
         setSuppressCalcBounds(true);
         // add Figs to the FigNode in back-to-front order
-        addFig(bigPort);
+        // Put this rectangle behind the rest, so it goes first
+        addFig(getBigPort());
         addFig(getNameFig());
         addFig(head);
         addFig(body);
@@ -106,8 +104,16 @@ public class FigActor extends FigNodeModelElement {
         addFig(leftLeg);
         addFig(rightLeg);
         addFig(getStereotypeFig());
-        setBigPort(bigPort);
-
+        
+        bindPort(getOwner(), getBigPort());
+        setResizable(false);
+        
+        setFilled(true);
+        setFillColor(FILL_COLOR);
+        setLineColor(LINE_COLOR);
+        setLineWidth(LINE_WIDTH);
+        setTextColor(TEXT_COLOR);
+        
         /* Set the drop location in the case of D&D: */
         if (bounds != null) {
             setLocation(bounds.x, bounds.y);
@@ -117,6 +123,11 @@ public class FigActor extends FigNodeModelElement {
         setBounds(getBounds());
     }
     
+    @Override
+    protected Fig createBigPortFig() {
+        return new ActorPortFigRect(X0, Y0, 0, 0, this);
+    }
+
     /**
      * Construct a new Actor with the given owner, bounds, and settings.  This
      * constructor is used by the PGML parser.
@@ -125,52 +136,40 @@ public class FigActor extends FigNodeModelElement {
      * @param bounds position and size
      * @param settings rendering settings
      */
-    public FigActor(Object owner, Rectangle bounds, DiagramSettings settings) {
+    public FigActor(Object owner, Rectangle bounds, 
+            DiagramSettings settings) {
         super(owner, bounds, settings);
         constructFigs(bounds);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
-     */
     @Override
     public void setLineWidth(int width) {
-        // Miss out the text fix, this should have no line
-        for (int i = HEAD_POSN; i < RIGHT_LEG_POSN; i++) {
-            Fig f = getFigAt(i);
-            if (f != null) {
-                f.setLineWidth(width);
-            }
-        }
-        getFigAt(HEAD_POSN).setLineWidth(width);
-        getFigAt(BODY_POSN).setLineWidth(width);
-        getFigAt(ARMS_POSN).setLineWidth(width);
-        getFigAt(LEFT_LEG_POSN).setLineWidth(width);
-        getFigAt(RIGHT_LEG_POSN).setLineWidth(width);
+        /* This sets the lineWidth of all in the group: */
+        super.setLineWidth(width);
+        /* NameFig and StereotypeFig are handled by parent. */
+    }
+    
+    @Override
+    public void setFillColor(Color col) {
+        super.setFillColor(col);
+        getStereotypeFig().setFillColor(null);
+        getNameFig().setFillColor(null);
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
-     */
     @Override
     public void setFilled(boolean filled) {
+        super.setFilled(filled);
+        getBigPort().setFilled(false);
+        getNameFig().setFilled(false);
+        getStereotypeFig().setFilled(false);
         // Only the head should be filled (not the text)
-        getFigAt(HEAD_POSN).setFilled(filled);
     }
 
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#makeSelection()
-     */
     @Override
     public Selection makeSelection() {
         return new SelectionActor(this);
     }
 
-    /*
-     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(
-     *         java.awt.event.MouseEvent)
-     */
     @Override
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
@@ -181,40 +180,31 @@ public class FigActor extends FigNodeModelElement {
         return popUpActions;
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#isResizable()
-     */
     @Override
     public boolean isResizable() {
         return false;
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
-     */
     @Override
     public Dimension getMinimumSize() {
-        Dimension nameDim = getNameFig().getMinimumSize();
-        int w = Math.max(nameDim.width, 40);
-        int h = nameDim.height + 55;
-        if (getStereotypeFig().isVisible()) {
-            Dimension stereoDim = getStereotypeFig().getMinimumSize();
-            w = Math.max(stereoDim.width, w);
-            h = h + stereoDim.height;
-        }
-        return new Dimension(w, h);
+        Dimension aSize = new Dimension(40, 55);
+        aSize = ArgoFigUtil.addChildDimensions(aSize, getNameFig());
+        aSize = ArgoFigUtil.addChildDimensions(aSize, getStereotypeFig());
+        return aSize;
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
-     */
     @Override
-    protected void setBoundsImpl(final int x, final int y, 
+    protected void setStandardBounds(final int x, final int y, 
             final int w, final int h) {
-        int middle = x + w / 2;
 
         Rectangle oldBounds = getBounds();
-        getBigPort().setBounds(x, y, w, h);
+        
+        // Make sure we don't try to set things smaller than the minimum
+        Dimension minimumSize = getMinimumSize();
+        int newW = Math.max(w, minimumSize.width);
+        int newH = Math.max(h, minimumSize.height);
+
+        int middle = x + newW / 2;
 
         getFigAt(HEAD_POSN).setLocation(
                 middle - getFigAt(HEAD_POSN).getWidth() / 2, y + 10);
@@ -233,35 +223,20 @@ public class FigActor extends FigNodeModelElement {
 
         if (getStereotypeFig().isVisible()) {
             Dimension minStereoSize = getStereotypeFig().getMinimumSize();
-            assert minStereoSize.width <= w;
+            assert minStereoSize.width <= newW;
             getStereotypeFig().setBounds(middle - minStereoSize.width / 2,
                     y + 55 + getNameFig().getHeight(),
                     minStereoSize.width, 
                     minStereoSize.height);
         }
+
+        getBigPort().setBounds(x, y, newW, newH);
+
         calcBounds(); //Accumulate a bounding box for all the Figs in the group.
         firePropChange("bounds", oldBounds, getBounds());
         updateEdges();
     }
 
-    /**
-     * Overruled the parent implementation, to always use the minimum size.
-     * 
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
-     */
-    @Override
-    protected void updateBounds() {
-        if (!isCheckSize()) {
-            return;
-        }
-        Rectangle bbox = getBounds();
-        Dimension minSize = getMinimumSize();
-        setBounds(bbox.x, bbox.y, minSize.width, minSize.height);
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
-     */
     @Override
     public Object deepHitPort(int x, int y) {
         Object o = super.deepHitPort(x, y);
@@ -305,9 +280,6 @@ public class FigActor extends FigNodeModelElement {
         return ret;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
     @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         //      name updating
@@ -338,10 +310,10 @@ public class FigActor extends FigNodeModelElement {
     }
 
     /**
-     * The bigport needs to overrule the getGravityPoints,
+     * The bigPort needs to overrule the getGravityPoints,
      * because it is the port of this FigNode.
      *
-     * @author mvw@tigris.org
+     * @author mvw
      */
     static class ActorPortFigRect extends FigRect {
         /**
@@ -372,10 +344,16 @@ public class FigActor extends FigNodeModelElement {
             return parent.getGravityPoints();
         }
 
-        /**
-         * The serial version - Eclipse generated for Rev. 1.40
-         */
-        private static final long serialVersionUID = 5973857118854162659L;
+        @Override
+        public void setFilled(boolean f) {
+            super.setFilled(false);
+        }
+
+        @Override
+        public void setLineWidth(int w) {
+            super.setLineWidth(0);
+        }
+
     }
 
 }

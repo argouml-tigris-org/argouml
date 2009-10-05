@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -113,5 +114,42 @@ public class ArgoFigUtil {
             fe.addPathItem(f, new PathItemPlacement(fe, f, pct, delta, angle,
                     offset));
         }
+    }
+
+    /**
+     * This utility adds the size of a child component to an overall size. The
+     * width is maximized with child's width and the child's height is added to
+     * the overall height. If the child figure is not visible or not yet
+     * created, it's size is not added.
+     * 
+     * @param size current dimensions - modified with the result
+     * @param child child figure
+     * @return new Dimension with child size added
+     */
+    public static Dimension addChildDimensions(Dimension size, Fig child) {
+        if (child != null && child.isVisible()) {
+            Dimension childSize = child.getMinimumSize();
+            size.width = Math.max(size.width, childSize.width);
+            size.height += childSize.height;
+        }
+        return size;
+    }
+
+
+    /**
+     * This utility adds the width of a child component to an overall size. The
+     * width is maximized with child's width and the child's height is ignored.
+     * If the child figure is not visible, it's size is not added.
+     * 
+     * @param size current dimensions - modified with the result
+     * @param child child figure
+     * @return new Dimension with child width added
+     */
+    public static Dimension addChildWidth(Dimension size, Fig child) {
+        if (child.isVisible()) {
+            Dimension childSize = child.getMinimumSize();
+            size.width = Math.max(size.width, childSize.width);
+        }
+        return size;
     }
 }
