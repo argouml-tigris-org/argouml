@@ -43,6 +43,12 @@ import org.argouml.util.ArgoFrame;
  * maintain GUI independence.
  * 
  * @author andrea_nironi@tigris.org
+ * @deprecated in 0.29.1 This is only a helper class for save/load and will
+ * become package scope. It is not designed for reuse outside this package.
+ * 
+ * TODO: Bob says: I don't like the naming of this class. Its confusing that
+ * its called ...Window and yet it is not a window. Lets rename once we have
+ * it hidden.
  */
 public class ProgressMonitorWindow implements
         org.argouml.taskmgmt.ProgressMonitor {
@@ -59,11 +65,27 @@ public class ProgressMonitorWindow implements
         pbar = new ProgressMonitor(parent, 
                 title,
                 null, 0, 100);
-        pbar.setMillisToDecideToPopup(250);       
+        pbar.setMillisToDecideToPopup(250);
         pbar.setMillisToPopup(500);
         parent.repaint();
         updateProgress(5);
         
+    }
+    
+    /**
+     * initializes a ProgressMonitor
+     * 
+     * @param parent    the Component to be set as parent
+     * @param progressMonitor     the ProgressMonitor
+     */
+    public ProgressMonitorWindow(
+            final Frame parent,
+            final ProgressMonitor progressMonitor) {
+        pbar = progressMonitor;
+        pbar.setMillisToDecideToPopup(250);
+        pbar.setMillisToPopup(500);
+        parent.repaint();
+        updateProgress(5);
     }
     
     /*
