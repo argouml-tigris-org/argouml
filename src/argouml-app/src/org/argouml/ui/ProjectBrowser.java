@@ -1213,7 +1213,23 @@ public final class ProjectBrowser
      * TODO: Separate this into a Swing specific class - tfm
      */
     public void trySaveWithProgressMonitor(boolean overwrite, File file) {
-        SaveSwingWorker worker = new SaveSwingWorker(overwrite, file);
+        if (!PersistenceManager.getInstance().confirmOverwrite(
+                ArgoFrame.getFrame(), overwrite, file)) {
+            return;
+        }
+        if (this.isFileReadonly(file)) {
+            JOptionPane.showMessageDialog(this, 
+                    Translator.localize(
+                            "optionpane.save-project-read-only"),
+                    Translator.localize(
+                            "optionpane.save-project-read-only-title"),
+                          JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        SaveSwingWorker worker = new SaveSwingWorker(
+                ProjectManager.getManager().getCurrentProject(),
+                file);
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         worker.start();
     }
@@ -1236,32 +1252,50 @@ public final class ProjectBrowser
      * @return true if successful
      * 
      * TODO: Separate this into a Swing specific class - tfm
+     * @deprecated in 0.29.1 by Bob Tarling use trySaveWithProgressMonitor
      */
+    @Deprecated
     public boolean trySave(boolean overwrite, 
             File file, 
             ProgressMonitor pmw) {
         LOG.info("Saving the project");
+        
+        if (!PersistenceManager.getInstance().confirmOverwrite(
+                ArgoFrame.getFrame(), overwrite, file)) {
+            return false;
+        }
+        
+        if (this.isFileReadonly(file)) {
+            JOptionPane.showMessageDialog(this, 
+                    Translator.localize(
+                            "optionpane.save-project-read-only"),
+                    Translator.localize(
+                            "optionpane.save-project-read-only-title"),
+                          JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
+
         Project project = ProjectManager.getManager().getCurrentProject();
+        return trySave(file, pmw, project);
+    }
+
+    /**
+     * Save the project.
+     * @param file the File to save to
+     * @param pmw       the ProgressMonitor to be updated;  
+     * @return true if successful
+     * 
+     * TODO: Separate this into a Swing specific class - tfm
+     */
+    boolean trySave(
+            final File file, 
+            final ProgressMonitor pmw,
+            final Project project) {
+        LOG.info("Saving the project");
         PersistenceManager pm = PersistenceManager.getInstance();
         ProjectFilePersister persister = null;
 
         try {
-            if (!PersistenceManager.getInstance().confirmOverwrite(
-                    ArgoFrame.getFrame(), overwrite, file)) {
-                return false;
-            }
-
-            if (this.isFileReadonly(file)) {
-                JOptionPane.showMessageDialog(this, 
-                        Translator.localize(
-                                "optionpane.save-project-read-only"),
-                        Translator.localize(
-                                "optionpane.save-project-read-only-title"),
-                              JOptionPane.INFORMATION_MESSAGE);
-                
-                return false;
-            }
-
             String sStatus =
                 MessageFormat.format(Translator.localize(
                     "statusmsg.bar.save-project-status-writing"),

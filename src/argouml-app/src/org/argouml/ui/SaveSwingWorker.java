@@ -29,33 +29,52 @@ import java.io.File;
 import javax.swing.UIManager;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.util.ArgoFrame;
 import org.tigris.gef.undo.UndoManager;
 
 /**
  * The specialized SwingWorker used for saving projects
- * @deprecated in 0.29.1 by Bob Tarling. This will not be deleted but reduce
- * in scope to package to package only. It is currently only used by
+ * @deprecated in 0.29.1 by Bob Tarling. This will not be deleted but reduced
+ * in visibility to package visibility only. It is currently only used by
  * ProjectBrowser and any client calling should use methods there for save.
  */
 class SaveSwingWorker extends SwingWorker {
 @Deprecated
 
-    private boolean overwrite;
-    private File file;
+    private final boolean overwrite;
+    private final File file;
     private boolean result;
+    private Project project;
 
     /**
-     * This is the only constructor for SaveSwingWorker.
+     * Deprecated constructor for SaveSwingWorker.
      *
      * @param aFile        the file that's going to be saved
      * @param aOverwrite   whether to show the UI or not
+     * @deprecated in 0.29.1 Use constructor taking a Project
      */
     public SaveSwingWorker(boolean aOverwrite, File aFile) {
         super("ArgoSaveProjectThread");
         overwrite = aOverwrite;
         file = aFile;
+    }
+
+    /**
+     * This is the only constructor for SaveSwingWorker.
+     *
+     * @param project   the project to save
+     * @param aFile        the file that's going to be saved
+     */
+    public SaveSwingWorker(
+            final Project project,
+            final File aFile) {
+        super("ArgoSaveProjectThread");
+        overwrite = true;
+        file = aFile;
+        this.project = project;
     }
 
     /**
@@ -71,15 +90,20 @@ class SaveSwingWorker extends SwingWorker {
         Thread currentThread = Thread.currentThread();
         currentThread.setPriority(currentThread.getPriority() - 1);
         // saves the project
-        result = ProjectBrowser.getInstance().trySave(overwrite, file, pmw);
+        if (project == null) {
+            // TODO: When the constructor with no Project is removed we can
+            // delete this block and make project final.
+            project = ProjectManager.getManager().getCurrentProject();
+        }
+        result = ProjectBrowser.getInstance().trySave(file, pmw, project);
         return null;
     }
 
     /**
      * Implements org.argouml.swingext.SwingWorker#initProgressMonitorWindow();
-     * it just creates an instance of ProgressMonitorWindow.
+     * it just creates an instance of ProgressMonitor.
      *
-     * @return  an instance of ProgressMonitorWindow
+     * @return  an instance of ProgressMonitor
      */
     public ProgressMonitor initProgressMonitorWindow() {
         Object[] msgArgs = new Object[] {file.getPath()};
