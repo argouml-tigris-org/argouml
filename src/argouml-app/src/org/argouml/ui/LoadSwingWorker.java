@@ -34,9 +34,13 @@ import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.util.ArgoFrame;
 
 /**
- * The specialized SwingWorker used for loading projects 
+ * The specialized SwingWorker used for loading projects
+ * @deprecated in 0.29.1 by Bob Tarling. This will not be deleted but reduce
+ * in scope to package to package only. It is currently only used by
+ * ProjectBrowser and any client calling should use methods there for load.
  */
-public class LoadSwingWorker extends SwingWorker {
+class LoadSwingWorker extends SwingWorker {
+@Deprecated
 
     private static final Logger LOG = Logger.getLogger(LoadSwingWorker.class);
     

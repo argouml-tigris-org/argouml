@@ -35,8 +35,12 @@ import org.tigris.gef.undo.UndoManager;
 
 /**
  * The specialized SwingWorker used for saving projects
+ * @deprecated in 0.29.1 by Bob Tarling. This will not be deleted but reduce
+ * in scope to package to package only. It is currently only used by
+ * ProjectBrowser and any client calling should use methods there for save.
  */
-public class SaveSwingWorker extends SwingWorker {
+class SaveSwingWorker extends SwingWorker {
+@Deprecated
 
     private boolean overwrite;
     private File file;
