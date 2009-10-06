@@ -61,7 +61,15 @@ public abstract class FigEditableCompartment extends FigCompartment {
 
     private static final int MIN_HEIGHT = FigNodeModelElement.NAME_FIG_HEIGHT;
 
+    /**
+     * A separator line that has the same width as the compartment.
+     */
     private FigSeparator compartmentSeparator;
+
+    /**
+     * A separator line that may be wider than the compartment.
+     */
+    private Fig externalSeparatorFig = null;
 
     /**
      * The constructor. <p>
@@ -132,6 +140,9 @@ public abstract class FigEditableCompartment extends FigCompartment {
             return;
         }
         super.setVisible(visible);
+        if (externalSeparatorFig != null) {
+            externalSeparatorFig.setVisible(visible);
+        }
         if (visible) {
             populate();
         } else {
@@ -375,8 +386,15 @@ public abstract class FigEditableCompartment extends FigCompartment {
     public void setLineColor(Color col) {
         super.setLineColor(col);
         if (col != null) {
-            compartmentSeparator.setFillColor(col);
+            
             compartmentSeparator.setFilled(true);
+            if (externalSeparatorFig != null) {
+                externalSeparatorFig.setFillColor(col);
+                externalSeparatorFig.setFilled(true);
+                compartmentSeparator.setFillColor(null);
+            } else {
+                compartmentSeparator.setFillColor(col);
+            }
         }
     }
 
@@ -384,21 +402,56 @@ public abstract class FigEditableCompartment extends FigCompartment {
     public void setLineWidth(int w) {
         super.setLineWidth(0);
         compartmentSeparator.setHeight(w);
+        if (externalSeparatorFig != null) {
+            externalSeparatorFig.setHeight(w);
+        }
     }
 
     @Override
     public void setFillColor(Color col) {
         super.setFillColor(col);
-        compartmentSeparator.setFillColor(getLineColor());
+        
         compartmentSeparator.setFilled(true);
+        if (externalSeparatorFig != null) {
+            externalSeparatorFig.setFillColor(getLineColor());
+            externalSeparatorFig.setFilled(true);
+            compartmentSeparator.setFillColor(null);
+        } else {
+            compartmentSeparator.setFillColor(getLineColor());
+        }
     }
 
     @Override
     public void setFilled(boolean f) {
         super.setFilled(f);
         compartmentSeparator.setFilled(true);
+        if (externalSeparatorFig != null) {
+            externalSeparatorFig.setFilled(true);
+        }
     }
 
+    /**
+     * Set new bounds for the external separator line (if it exists).
+     * 
+     * @param r the new bounds
+     */
+    public void setExternalSeparatorFigBounds(Rectangle r) {
+        if (externalSeparatorFig != null) {
+            externalSeparatorFig.setBounds(r);
+        }
+    }
+
+    /**
+     * Create an external Fig as separator line.
+     * 
+     * @return the separator Fig
+     */
+    public Fig makeExternalSeparatorFig() {
+        assert externalSeparatorFig == null;
+        externalSeparatorFig = new FigSeparator(X0, Y0, 11, LINE_WIDTH);
+        return externalSeparatorFig;
+    }
+    
     /**
      * Fig representing a horizontal line separator for compartment. <p>
      * 

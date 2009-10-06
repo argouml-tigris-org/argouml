@@ -327,11 +327,13 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
                     compartmentHeight += (requestedHeight - neededHeight)
                             / getVisibleCompartmentCount();
                 }
-                c.setBounds( 
-                        box.x, 
-                        box.y + currentHeight, 
-                        box.width,
-                        compartmentHeight);
+                setCompartmentBounds(c, 
+                        new Rectangle(
+                                box.x, 
+                                box.y + currentHeight, 
+                                box.width,
+                                compartmentHeight),
+                        new Rectangle(x, y, newW, newH));
                 currentHeight += compartmentHeight;
             }
         }
@@ -357,6 +359,18 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         LOG.debug("Bounds change : old - " + oldBounds + ", new - "
                 + getBounds());
         firePropChange("bounds", oldBounds, getBounds());
+    }
+
+    /**
+     * Set the bounds of the compartment. 
+     * 
+     * @param c the compartment
+     * @param cb the new compartment bounds
+     * @param ob the new outside fig bounds
+     */
+    protected void setCompartmentBounds(FigCompartment c, 
+            Rectangle cb, Rectangle ob) {
+        c.setBounds(cb.x, cb.y, cb.width, cb.height);
     }
 
     /*

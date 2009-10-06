@@ -45,7 +45,9 @@ import org.argouml.uml.diagram.ExtensionPointsCompartmentContainer;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
+import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
+import org.argouml.uml.diagram.ui.FigEditableCompartment;
 import org.argouml.uml.diagram.ui.FigExtensionPointsCompartment;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
@@ -116,7 +118,7 @@ public class FigUseCase extends FigCompartmentBox
      * The Fig for the extensionPoints compartment (if any).
      */
     private FigExtensionPointsCompartment extensionPointsFigCompartment;
-
+    
     /**
      * Initialization which is common to multiple constructors.<p>
      * 
@@ -126,15 +128,18 @@ public class FigUseCase extends FigCompartmentBox
     private void initialize(Rectangle bounds) {       
         enableSizeChecking(false);
         setSuppressCalcBounds(true); 
-        // Create all the things we need
+        
+        FigExtensionPointsCompartment epc =
+            /* Side effect: This creates the fig: */
+            getExtensionPointsCompartment();
 
-        // First the main port ellipse and the cover of identical size that
-        // will realize it. 
-//        setBigPort(new FigMyCircle(0, 0, 100, 60));
-        // repeat this from the parent, since we now have a different bigPort:
-//        getBigPort().setLineWidth(0);
-        /* The bigPort draws the background color: */
-//        getBigPort().setFillColor(FILL_COLOR);
+        /*
+         * A use case has an external separator.
+         * External means external to the compartment box. 
+         * This horizontal line sticks out of the box, 
+         * and touches the ellipse edge.
+         */
+        Fig separatorFig = epc.makeExternalSeparatorFig();
         
         /* TODO: This next line prevent loading a UseCase 
          * with a stereotype to grow. Why? */
@@ -145,8 +150,8 @@ public class FigUseCase extends FigCompartmentBox
         addFig(getNameFig());
         // stereotype fig covers the name fig:
         addFig(getStereotypeFig());
-        // Side effect: This creates the fig:
-        addFig(getExtensionPointsCompartment());
+        addFig(epc);
+        addFig(separatorFig);
         addFig(getBorderFig());
 
         // Make all the parts match the main fig
@@ -365,6 +370,24 @@ public class FigUseCase extends FigCompartmentBox
                 containerBox.height);
     }
 
+    @Override
+    protected void setCompartmentBounds(FigCompartment c, 
+            Rectangle cb, Rectangle ob) {
+        Rectangle r = new Rectangle();
+        r.y = cb.y;
+        r.height = getLineWidth();
+        r.width = (int) (2.0 * (calcX(
+                ob.width / 2.0,
+                ob.height / 2.0,
+                ob.height / 2.0 - (cb.y - ob.y))));
+        r.x = cb.x + cb.width / 2 - r.width / 2;
+
+        if (c instanceof FigEditableCompartment) {
+            ((FigEditableCompartment) c).setExternalSeparatorFigBounds(r);            
+        }
+        c.setBounds(cb.x, cb.y, cb.width, cb.height);
+    }
+
     /**
      * Private utility routine to work out the (positive) x coordinate of a
      * point on an oval, given the radii and y coordinate.<p>
@@ -385,9 +408,9 @@ public class FigUseCase extends FigCompartmentBox
     /**
      * Set the line colour for the use case oval.<p>
      *
-     * This involves setting the <code>cover</code> oval, not the bigPort.
-     * Calling the super method would cause all FigGroup elements
-     * to follow suit - which is not wanted.
+     * This involves setting the line color of all the figs, but not the bigPort.
+     * Calling the super method causes all FigGroup elements
+     * to follow suit - which is not wanted for the bigPort and the separator.
      *
      * @param col The colour desired.
      */
@@ -396,13 +419,18 @@ public class FigUseCase extends FigCompartmentBox
            super.setLineColor(col);
            getBigPort().setLineColor(null);
     }
+    
+    @Override
+    public void setLineWidth(int w) {
+        super.setLineWidth(w);
+    }
 
     /**
      * Set the fill colour for the use case oval.<p>
      *
-     * This involves setting the <code>cover</code> oval, not the bigPort.
+     * This involves setting the fill color of all figs, but not the bigPort.
      * Calling the super method would cause all FigGroup elements
-     * to follow suit - which is not wanted.
+     * to follow suit - which is not wanted for the bigPort nor the separator.
      *
      * @param col  The colour desired.
      */
@@ -415,7 +443,7 @@ public class FigUseCase extends FigCompartmentBox
     /**
      * Set whether the use case oval is to be filled.<p>
      *
-     * This involves setting the <code>cover</code> oval, not the bigPort.<p>
+     * This involves making all figs filled, but not the bigPort.<p>
      * Calling the super method would cause all FigGroup elements
      * to be filled, too - which is not wanted for e.g. the stereotype figs.
      * See issue 5581.
