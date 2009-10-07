@@ -976,14 +976,18 @@ public final class ProjectBrowser
                 return;
             }
             if (response == JOptionPane.YES_OPTION) {
+                // The trySave method results in the save taking place in another thread.
+                // If that completes without error the ProjectBrowser.exit() method will
+                // be called which will actually exist the system.
                 trySave(ProjectManager.getManager().getCurrentProject() != null
                         && ProjectManager.getManager().getCurrentProject()
-                                .getURI() != null);
-                if (saveAction.isEnabled()) {
-                    return;
-                }
+                                .getURI() != null,
+                                false, true);
             }
         }
+    }
+    
+    public void exit() {
         saveScreenConfiguration();
         Configuration.save();
         System.exit(0);
@@ -1139,6 +1143,21 @@ public final class ProjectBrowser
      *                    the current project already had one  
      */        
     public void trySave(boolean overwrite, boolean saveNewFile) {
+        trySave(overwrite, saveNewFile, false);
+    }
+    
+    /**
+     * Try to save the project.
+     * @param overwrite if true, then we overwrite without asking
+     * @param saveNewFile if true, we'll ask for a new file even if
+     *                    the current project already had one
+     * @param exitAfterSave The application will exit when the save has
+     * completed successfully
+     */        
+    public void trySave(
+            final boolean overwrite,
+            boolean saveNewFile,
+            final boolean exitAfterSave) {
         URI uri = ProjectManager.getManager().getCurrentProject().getURI();
 
         File file = null;
@@ -1185,7 +1204,7 @@ public final class ProjectBrowser
         }
 
         // let's call the real save method
-        trySaveWithProgressMonitor(overwrite, file);
+        trySaveWithProgressMonitor(overwrite, file, exitAfterSave);
     }
     
     /**
@@ -1212,7 +1231,10 @@ public final class ProjectBrowser
      * 
      * TODO: Separate this into a Swing specific class - tfm
      */
-    public void trySaveWithProgressMonitor(boolean overwrite, File file) {
+    public void trySaveWithProgressMonitor(
+            final boolean overwrite,
+            final File file,
+            final boolean exit) {
         if (!PersistenceManager.getInstance().confirmOverwrite(
                 ArgoFrame.getFrame(), overwrite, file)) {
             return;
@@ -1229,8 +1251,9 @@ public final class ProjectBrowser
 
         SaveSwingWorker worker = new SaveSwingWorker(
                 ProjectManager.getManager().getCurrentProject(),
-                file);
-        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+                file,
+                exit);
+        LOG.info("Starting save thread");
         worker.start();
     }
     

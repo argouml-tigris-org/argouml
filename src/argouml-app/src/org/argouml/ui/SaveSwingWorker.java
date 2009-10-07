@@ -48,6 +48,7 @@ class SaveSwingWorker extends SwingWorker {
     private final File file;
     private boolean result;
     private Project project;
+    private boolean exitAfterSave;
 
     /**
      * Deprecated constructor for SaveSwingWorker.
@@ -70,11 +71,13 @@ class SaveSwingWorker extends SwingWorker {
      */
     public SaveSwingWorker(
             final Project project,
-            final File aFile) {
+            final File aFile,
+            final boolean exit) {
         super("ArgoSaveProjectThread");
         overwrite = true;
         file = aFile;
         this.project = project;
+        exitAfterSave = exit;
     }
 
     /**
@@ -119,9 +122,13 @@ class SaveSwingWorker extends SwingWorker {
     public void finished() {
         super.finished();
         if (result) {
-            ProjectBrowser.getInstance().buildTitleWithCurrentProjectName();
-            // TODO: Why isn't this done in save?
-            UndoManager.getInstance().empty();
+            if (exitAfterSave) {
+                ProjectBrowser.getInstance().exit();
+            } else {
+                ProjectBrowser.getInstance().buildTitleWithCurrentProjectName();
+                // TODO: Why isn't this done in save?
+                UndoManager.getInstance().empty();
+            }
         }
     }
 }

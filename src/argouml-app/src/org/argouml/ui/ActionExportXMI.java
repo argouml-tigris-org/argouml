@@ -85,7 +85,7 @@ public final class ActionExportXMI extends AbstractAction {
                 name = pm.fixXmiExtension(name);
                 theFile = new File(theFile.getParent(), name);
                 ProjectBrowser.getInstance().trySaveWithProgressMonitor(
-                        false, theFile);
+                        false, theFile, false);
             }
         }
     }
