@@ -971,10 +971,6 @@ public final class ProjectBrowser
                 JOptionPane.showConfirmDialog(
                     this, t, t, JOptionPane.YES_NO_CANCEL_OPTION);
 
-            if (response == JOptionPane.CANCEL_OPTION
-                    || response == JOptionPane.CLOSED_OPTION) {
-                return;
-            }
             if (response == JOptionPane.YES_OPTION) {
                 // The trySave method results in the save taking place in another thread.
                 // If that completes without error the ProjectBrowser.exit() method will
@@ -983,12 +979,18 @@ public final class ProjectBrowser
                         && ProjectManager.getManager().getCurrentProject()
                                 .getURI() != null,
                                 false, true);
+                return;
+            } else if (response == JOptionPane.CANCEL_OPTION) {
+                return;
             }
-        } else {
-            exit();
         }
+        exit();
     }
     
+    
+    /**
+     * Exit the application saving the current user settings.
+     */
     public void exit() {
         saveScreenConfiguration();
         Configuration.save();
