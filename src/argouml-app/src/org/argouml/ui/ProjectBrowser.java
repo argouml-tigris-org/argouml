@@ -984,6 +984,8 @@ public final class ProjectBrowser
                                 .getURI() != null,
                                 false, true);
             }
+        } else {
+            exit();
         }
     }
     
