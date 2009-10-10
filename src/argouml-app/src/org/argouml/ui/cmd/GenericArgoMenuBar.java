@@ -311,6 +311,10 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(newItem, "New");
         ShortcutMgr.assignAccelerator(newItem, ShortcutMgr.ACTION_NEW_PROJECT);
         toolbarTools.add((new ActionNew()));
+        JMenuItem newProfileItem = file.add(new ActionNewProfile());
+        setMnemonic(newProfileItem, "New Profile");
+        ShortcutMgr.assignAccelerator(newProfileItem, null);
+        toolbarTools.add((new ActionNewProfile()));
         openAction = new ActionOpenProject();
         JMenuItem openProjectItem = file.add(openAction);
         setMnemonic(openProjectItem, "Open");

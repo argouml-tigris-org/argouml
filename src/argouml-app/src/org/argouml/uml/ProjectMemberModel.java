@@ -42,7 +42,7 @@ public class ProjectMemberModel extends AbstractProjectMember {
     /**
      * The constructor.
      *
-     * @param m the model
+     * @param m the model or profile
      * @param p the project
      */
     public ProjectMemberModel(Object m, Project p) {
@@ -50,7 +50,8 @@ public class ProjectMemberModel extends AbstractProjectMember {
         super(PersistenceManager.getInstance().getProjectBaseName(p)
                 + FILE_EXT, p);
 
-        if (!Model.getFacade().isAModel(m))
+        if (!Model.getFacade().isAModel(m)
+             && !Model.getFacade().isAProfile(m))
             throw new IllegalArgumentException();
 
         setModel(m);

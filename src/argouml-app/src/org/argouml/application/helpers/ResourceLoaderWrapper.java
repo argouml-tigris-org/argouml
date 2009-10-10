@@ -337,6 +337,7 @@ public final class ResourceLoaderWrapper {
         images.put("action.navigate-back", "Navigate Back");
         images.put("action.navigate-forward", "Navigate Forward");
         images.put("action.new", "New");
+        images.put("action.new-profile", "NewProfile");
         images.put("action.new-todo-item", "New To Do Item...");
         images.put("action.open-project", "Open Project...");
         images.put("action.page-setup", "Page Setup...");

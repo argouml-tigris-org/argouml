@@ -314,7 +314,55 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     }
 
     /**
-     * Create the default diagrams for the project.  Currently a Class Diagram
+     * Makes an empty profile project.
+     * @return Project the empty profile project
+     */
+    public Project makeEmptyProfileProject() {
+        return makeEmptyProfileProject(true);
+    }
+
+    /**
+     * Make a new empty profile project optionally including default diagrams.
+     * <p>
+     * Historically new projects have been created with two default diagrams
+     * (Class and Use Case). NOTE: ArgoUML currently requires at least one
+     * diagram for proper operation.
+     * 
+     * @param addDefaultDiagrams
+     *            if true the project will be be created with the standard
+     *            default diagram (Class)
+     * @return Project the newly created profile project
+     */
+    public Project makeEmptyProfileProject(final boolean addDefaultDiagrams) {    
+        final Command cmd = new NonUndoableCommand() {
+
+            @Override
+            public Object execute() {
+                Model.getPump().stopPumpingEvents();
+                
+                creatingCurrentProject = true;
+                LOG.info("making empty profile project");
+                Project newProject = new ProjectImpl(Project.PROFILE_PROJECT);
+                createDefaultProfile(newProject);
+                if (addDefaultDiagrams) {
+                    ArgoDiagram d = createClassDiagram(newProject);
+                    createTodoList(newProject);
+                    newProject.setActiveDiagram(d);
+                }
+                creatingCurrentProject = false;
+                setCurrentProject(newProject);
+                Model.getPump().startPumpingEvents();
+                return null;
+            }
+        };
+        cmd.execute();
+        currentProject.getUndoManager().addCommand(cmd);
+        setSaveEnabled(false);
+        return currentProject;
+    }
+
+    /**
+     * Create the default diagrams for the project. Currently a Class Diagram
      * and a UseCase diagram.
      * 
      * @param project the project to create the diagrams in.
@@ -323,16 +371,43 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         LOG.debug("Creating default diagrams");
         Object model = project.getRoots().iterator().next();
         DiagramFactory df = DiagramFactory.getInstance();
-        ArgoDiagram d = df.create(DiagramFactory.DiagramType.Class,
-                model, 
-                project.getProjectSettings().getDefaultDiagramSettings());
-        project.addMember(d);
+        ArgoDiagram d = createClassDiagram(project);
+        LOG.debug("Creating use case diagram");
         project.addMember(df.create(
                 DiagramFactory.DiagramType.UseCase, model, 
                 project.getProjectSettings().getDefaultDiagramSettings()));
         project.addMember(new ProjectMemberTodoList("",
                 project));
+        createTodoList(project);
         project.setActiveDiagram(d);
+    }
+
+    /**
+     * Create a class diagrams for the project.
+     * 
+     * @param project the project to create the diagram in.
+     * @return the created class diagram
+     */
+    private ArgoDiagram createClassDiagram(Project project) {
+        LOG.debug("Creating class diagram");
+        Object model = project.getRoots().iterator().next();
+        DiagramFactory df = DiagramFactory.getInstance();
+        ArgoDiagram d = df.create(DiagramFactory.DiagramType.Class,
+                model, 
+                project.getProjectSettings().getDefaultDiagramSettings());
+        project.addMember(d);
+        return d;
+    }
+
+    /**
+     * Create a todo list for the project.
+     * 
+     * @param project the project to create the todo list in.
+     */
+    private void createTodoList(Project project) {
+        LOG.debug("Creating todo list");
+        project.addMember(new ProjectMemberTodoList("",
+                project));
     }
 
     /**
@@ -345,6 +420,23 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         Object model = Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(model,
                 Translator.localize("misc.untitled-model"));
+        Collection roots = new ArrayList();
+        roots.add(model);
+        project.setRoots(roots);
+        project.setCurrentNamespace(model);
+        project.addMember(model);
+    }
+
+    /**
+     * Create the top level profile for the project and set it as a root and the
+     * current namespace.
+     * 
+     * @param project the project to create the model in.
+     */
+    private void createDefaultProfile(Project project) {
+        Object model = Model.getModelManagementFactory().createProfile();
+        Model.getCoreHelper().setName(model,
+                Translator.localize("misc.untitled-profile"));
         Collection roots = new ArrayList();
         roots.add(model);
         project.setRoots(roots);

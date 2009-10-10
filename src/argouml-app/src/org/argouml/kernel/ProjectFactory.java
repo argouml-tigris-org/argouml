@@ -61,7 +61,7 @@ public class ProjectFactory {
      * @return a newly created project
      */
     public Project createProject(URI uri) {
-        return new ProjectImpl(uri);
+        return new ProjectImpl(Project.UML_PROJECT, uri);
     }
 
     public static ProjectFactory getInstance() {

@@ -76,6 +76,11 @@ public class ProjectImpl implements java.io.Serializable, Project {
 	Translator.localize("label.projectbrowser-title");
 
     /**
+     * The project type
+     */
+    private int projectType = UML_PROJECT;
+
+    /**
      * The UID.
      */
     static final long serialVersionUID = 1399111233978692444L;
@@ -153,8 +158,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
      *
      * @param theProjectUri Uri to read the project from.
      */
-    public ProjectImpl(URI theProjectUri) {
-        this();
+    public ProjectImpl(int type, URI theProjectUri) {
+        this(UML_PROJECT);
         /* TODO: Why was this next line in the code so long? */
 //        uri = PersistenceManager.getInstance().fixUriExtension(theProjectUri);
         uri = theProjectUri;
@@ -164,6 +169,14 @@ public class ProjectImpl implements java.io.Serializable, Project {
      * Constructor.
      */
     public ProjectImpl() {
+        this(UML_PROJECT);
+    }
+
+    /**
+     * Constructor.
+     */
+    public ProjectImpl(int type) {
+        projectType = type;
         setProfileConfiguration(new ProfileConfiguration(this));
 
         projectSettings = new ProjectSettings();
@@ -192,6 +205,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
         return new File(uri).getName();
     }
 
+    public int getProjectType() {
+        return projectType;
+    }
 
     public URI getUri() {
         return uri;
@@ -288,6 +304,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
         } else if (Model.getFacade().isAModel(m)) {
             LOG.info("Adding model member");
             addModelMember(m);
+        } else if (Model.getFacade().isAProfile(m)) {
+            LOG.info("Adding profile model member");
+            addModelMember(m);
         } else {
             throw new IllegalArgumentException(
                     "The member must be a UML model todo member or diagram."
@@ -330,7 +349,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     public void addModel(final Object model) {
 
-        if (!Model.getFacade().isAModel(model)) {
+        if (!Model.getFacade().isAModel(model)
+             && !Model.getFacade().isAProfile(model)) {
             throw new IllegalArgumentException();
 	}
         if (!models.contains(model)) {
@@ -823,6 +843,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
         if (Model.getFacade().isAModel(obj)) {
             return; //Can not delete the model
         }
+        if (Model.getFacade().isAProfile(obj)) {
+            return; //Can not delete the profile
+        }
 
         if (obj != null) {
             trashcan.add(obj);
@@ -832,9 +855,9 @@ public class ProjectImpl implements java.io.Serializable, Project {
             Model.getUmlFactory().delete(obj);
 
             // TODO: Presumably this is only relevant if
-            // obj is actually a Model.
-            // An added test of Model.getFacade.isAModel(obj) would clarify what
-            // is going on here.
+            // obj is actually a Model or Profile.
+            // An added test of isAModel(obj) or isAProfile(obj) would clarify
+            // what is going on here.
             if (models.contains(obj)) {
                 models.remove(obj);
             }
@@ -897,7 +920,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
             throw new IllegalArgumentException(
         	    "A root model element is required");
         }
-        if (!Model.getFacade().isAModel(theRoot)) {
+        if (!Model.getFacade().isAModel(theRoot)
+                && !Model.getFacade().isAProfile(theRoot)) {
             throw new IllegalArgumentException(
         	    "The root model element must be a model - got "
         	    + theRoot.getClass().getName());
@@ -930,7 +954,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 LOG.warn("Top level element other than package found - " 
                         + Model.getFacade().getName(element));
             }
-            if (Model.getFacade().isAModel(element)) {
+            if (Model.getFacade().isAModel(element)
+                 || Model.getFacade().isAProfile(element) ) {
                 addModel(element);
                 if (!modelFound) {
                     setRoot(element);

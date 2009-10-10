@@ -44,11 +44,20 @@ import org.tigris.gef.presentation.Fig;
  * eliminating methods which should be part of the public API and splitting the
  * interface into smaller function specific (e.g. TrashCan) interfaces.
  * 
- * @author Tom Morris <tfmorris@gmail.com>
+ * @author Tom Morris <tfmorris@gmail.com>, Thomas Neustupny
  * @since 0.25.4 when it replaced the concrete class of the same name
  */
 public interface Project {
 
+    /**
+     * Project type: an UML project
+     */
+    public static final int UML_PROJECT = 0;
+
+    /**
+     * Project type: a profile project
+     */
+    public static final int PROFILE_PROJECT = 0;
 
     /**
      * Get the project name. This is just the name part of the full filename.
@@ -56,6 +65,11 @@ public interface Project {
      */
     public String getName();
 
+    /**
+     * Get the project type. (Currently needed for profile project; probably
+     * no longer needed when ArgoUML supports multimodel projects.)
+     */
+    public int getProjectType();
 
     /**
      * Get the URI for this project.
