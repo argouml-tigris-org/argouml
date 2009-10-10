@@ -30,6 +30,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.ModelManagementFactory;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.Stereotype;
 import org.omg.uml.modelmanagement.ElementImport;
 import org.omg.uml.modelmanagement.Model;
 import org.omg.uml.modelmanagement.ModelManagementPackage;
@@ -139,7 +140,6 @@ final class ModelManagementFactoryMDRImpl extends
                 + "Package and a ModelElement.");
     }
 
-
     public UmlPackage createPackage() {
         UmlPackage myUmlPackage =
             getModelManagementPackage().getUmlPackage().createUmlPackage();
@@ -147,6 +147,16 @@ final class ModelManagementFactoryMDRImpl extends
         return myUmlPackage;
     }
 
+    public Model createProfile() {
+        Model profile = createModel();
+        // apply <<profile>> stereotype to make it a "profile" (our convention)
+        // (hack: create that stereotype instead using the UML 1.4 profile)
+        Stereotype stereo =
+            (Stereotype)modelImpl.getExtensionMechanismsFactory()
+                .buildStereotype("profile", profile);
+        profile.getStereotype().add(stereo);
+        return profile;
+    }
 
     public Object buildPackage(String name) {
         UmlPackage pkg = createPackage();
@@ -154,7 +164,6 @@ final class ModelManagementFactoryMDRImpl extends
         return pkg;
     }
     
-
     public Object createSubsystem() {
         Subsystem mySubsystem =
             getModelManagementPackage().getSubsystem().createSubsystem();

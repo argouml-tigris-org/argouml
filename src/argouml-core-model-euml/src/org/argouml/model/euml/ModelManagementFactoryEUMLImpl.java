@@ -35,6 +35,7 @@ import org.eclipse.uml2.common.edit.command.ChangeCommand;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Namespace;
+import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.UMLFactory;
 
@@ -52,7 +53,7 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
     
     private EditingDomain editingDomain;
     
-    private org.eclipse.uml2.uml.Package theRootModel;
+    private Package theRootModel;
 
     /**
      * Constructor.
@@ -92,9 +93,8 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
     }
 
 
-    public org.eclipse.uml2.uml.Package buildPackage(String name) {
-        org.eclipse.uml2.uml.Package pkg =
-                (org.eclipse.uml2.uml.Package) createPackage();
+    public Package buildPackage(String name) {
+        Package pkg = (Package) createPackage();
         if (name != null) {
             pkg.setName(name);
         }
@@ -117,8 +117,12 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
         return UMLFactory.eINSTANCE.createModel();
     }
 
-    public org.eclipse.uml2.uml.Package createPackage() {
+    public Package createPackage() {
         return UMLFactory.eINSTANCE.createPackage();
+    }
+
+    public Package createProfile() {
+        return UMLFactory.eINSTANCE.createProfile();
     }
 
     @Deprecated
@@ -135,7 +139,7 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
         // Better yet add a new method to Model API to create a new top level 
         // project/model/xmi file so we don't depend on side effects
         if (rootModel != null 
-                && !(rootModel instanceof org.eclipse.uml2.uml.Package)) {
+                && !(rootModel instanceof Package)) {
             throw new IllegalArgumentException(
                     "The rootModel supplied must be a Package. Got a " //$NON-NLS-1$
                     + rootModel.getClass().getName());
@@ -143,7 +147,7 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
 	if (theRootModel != null && theRootModel.eResource() != null) {
 	    EcoreUtil.remove(theRootModel);
 	}
-        theRootModel = (org.eclipse.uml2.uml.Package) rootModel;
+        theRootModel = (Package) rootModel;
 	if (rootModel != null) {
             Resource r = UMLUtil.getResource(modelImpl, UMLUtil.DEFAULT_URI, 
                     Boolean.FALSE);
@@ -152,7 +156,7 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
         modelImpl.getModelEventPump().setRootContainer(theRootModel);
     }
 
-    public org.eclipse.uml2.uml.Package getRootModel() {
+    public Package getRootModel() {
         return theRootModel;
     }
 

@@ -85,6 +85,12 @@ public interface ModelManagementFactory extends Factory {
      */
     Object createPackage();
 
+    /**
+     * Create an empty but initialized instance of a Profile.
+     *
+     * @return an initialized Profile instance.
+     */
+    Object createProfile();
 
     /**
      * Build an empty but initialized instance of a UML Package
