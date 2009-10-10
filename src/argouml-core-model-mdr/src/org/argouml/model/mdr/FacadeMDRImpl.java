@@ -569,9 +569,22 @@ class FacadeMDRImpl implements Facade {
     public boolean isAPackage(Object handle) {
         return handle instanceof UmlPackage;
     }
-    
+
     public boolean isAPrimitiveType(Object handle) {
         return handle instanceof Primitive;
+    }
+
+    public boolean isAProfile(Object handle) {
+        if (handle instanceof Model) {
+            for (Object stereo : getStereotypes(handle)) {
+                if (modelImpl.getExtensionMechanismsHelper()
+                        .isStereotypeInh(stereo, "profile", 
+                                "Package")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean isAPseudostate(Object handle) {

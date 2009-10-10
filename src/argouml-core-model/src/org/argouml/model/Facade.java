@@ -787,6 +787,15 @@ public interface Facade {
      */
     boolean isAPrimitiveType(Object handle);
     
+    /**
+     * Recognizer for Profile. In UML 2, this is no longer a model, but a
+     * separate meta package instance. In UML 1.4, ArgoUML assumes it to be a
+     * model instance with a <<profile>> stereotype.
+     *
+     * @param handle candidate
+     * @return true if handle is a Model
+     */
+    boolean isAProfile(Object handle);
 
     /**
      * Recognizer for Pseudostate.
