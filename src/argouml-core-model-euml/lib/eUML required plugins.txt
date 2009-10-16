@@ -1,7 +1,7 @@
 EMF download site: http://www.eclipse.org/modeling/emf/downloads/index.php?project=emf
 UML2 download site: http://www.eclipse.org/modeling/mdt/downloads/?project=uml2
 
-EMF required jars (current 2.4.2, original 2.3.1)
+EMF required jars (current 2.5.0, before 2.4.2, original 2.3.1)
 org.eclipse.emf.common
 org.eclipse.emf.ecore.change.edit
 org.eclipse.emf.ecore.change
@@ -12,7 +12,7 @@ org.eclipse.emf.edit
 org.eclipse.emf.mapping.ecore2xml
 org.eclipse.emf.mapping
 
-UML2 required jars (current 2.2.2, original 2.1.1)
+UML2 required jars (current 3.0.1, before 2.2.2, original 2.1.1)
 org.eclipse.uml2.common.edit
 org.eclipse.uml2.common
 org.eclipse.uml2.uml.edit
