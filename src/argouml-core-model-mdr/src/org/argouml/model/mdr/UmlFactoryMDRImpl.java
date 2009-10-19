@@ -358,6 +358,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     Operation.class, Reception.class
                 });
         
+        // specifies valid elements for a Signal to contain
+        validContainmentMap.put(Signal.class, 
+                new Class<?>[] { 
+                    Operation.class, Attribute.class
+                });
+        
         // specifies valid elements for an Actor to contain
         validContainmentMap.put(Actor.class, 
                 new Class<?>[] { 
