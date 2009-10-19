@@ -42,25 +42,38 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Abstraction;
+import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.AssociationClass;
 import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Component;
+import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.Enumeration;
+import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Extend;
+import org.eclipse.uml2.uml.ExtensionPoint;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Include;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.NamedElement;
+import org.eclipse.uml2.uml.Node;
+import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PackageImport;
+import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.Reception;
+import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.State;
+import org.eclipse.uml2.uml.Stereotype;
+import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.UseCase;
-
 
 /**
  * The implementation of the UmlFactory for EUML2.
@@ -85,6 +98,13 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
      * builds this from the data in the VALID_CONNECTIONS array
      */
     private Map validConnectionMap = new HashMap();
+    
+    /**
+     * A map of the valid model elements that are valid to be contained 
+     * by other model elements.
+     */
+    private HashMap<Class<?>, Class<?>[]> validContainmentMap = 
+        new HashMap<Class<?>, Class<?>[]>();
     
     /**
      * An array of valid connections, the combination of connecting class and
@@ -150,6 +170,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         modelImpl = implementation;
         metaTypes = modelImpl.getMetaTypes();
         buildValidConnectionMap();
+        buildValidContainmentMap();
     }
 
     public Object buildConnection(Object elementType, Object fromElement,
@@ -384,10 +405,27 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         return false;
     }
     
+    // TODO: Can we get this info from UML2 plugin?
     public boolean isContainmentValid(Object metaType, Object container) {
-//      throw new NotImplementedException();
-        // TODO: Can we get this info from UML2 plugin?
-        return true;
+        
+        // find the passed in container in validContainmentMap
+        for (Class<?> containerType : validContainmentMap.keySet()) {
+            
+            if (containerType.isInstance(container)) {
+                // determine if metaType is a valid element for container
+                Class<?>[] validElements = 
+                    validContainmentMap.get(containerType);
+                
+                for (int eIter = 0; eIter < validElements.length; ++eIter) {
+                    
+                    if (metaType == validElements[eIter]) {
+                        return true;
+                    }
+                }
+            }
+        }
+        
+        return false;
     }
     
     /**
@@ -460,6 +498,96 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         }
     }
 
+    
+    /**
+     * Initializes the validContainmentMap based on the rules for 
+     * valid containment of elements.
+     * 
+     * @author Scott Roberts
+     */
+    private void buildValidContainmentMap() {
+       
+        validContainmentMap.clear();
+
+        validContainmentMap.put(Element.class,
+                new Class<?>[] {
+                });
+        
+        // specifies valid elements for a Package to contain
+        validContainmentMap.put(Package.class, 
+            new Class<?>[] { 
+                Package.class, Actor.class,
+                UseCase.class, org.eclipse.uml2.uml.Class.class,
+                Interface.class, Component.class,
+                Node.class, Stereotype.class,
+                Enumeration.class, DataType.class,
+                Signal.class
+            });
+                
+        // specifies valid elements for a class to contain
+        validContainmentMap.put(org.eclipse.uml2.uml.Class.class, 
+            new Class<?>[] { 
+                Property.class, Operation.class,
+                org.eclipse.uml2.uml.Class.class, Reception.class
+            });
+        
+        // specifies valid elements for a classifier to contain
+        validContainmentMap.put(Classifier.class, 
+            new Class<?>[] { 
+                TemplateParameter.class
+            });
+        
+        // specifies valid elements for an Interface to contain
+        validContainmentMap.put(Interface.class, 
+                new Class<?>[] { 
+                    Property.class, Operation.class,
+                    Reception.class
+                });
+        
+        // specifies valid elements for an Actor to contain
+        validContainmentMap.put(Actor.class, 
+                new Class<?>[] { 
+                    Reception.class
+                });
+        
+        // specifies valid elements for a Use Case to contain
+        validContainmentMap.put(UseCase.class, 
+                new Class<?>[] { 
+                    ExtensionPoint.class, Property.class, 
+                    Operation.class, Reception.class
+                });
+        
+        // specifies valid elements for a Component to contain
+        validContainmentMap.put(Component.class, 
+                new Class<?>[] { 
+                    Reception.class
+                });
+        
+        // specifies valid elements for a Node to contain
+        validContainmentMap.put(Node.class, 
+                new Class<?>[] { 
+                    Reception.class
+                });
+        
+        // specifies valid elements for a Enumeration to contain
+        validContainmentMap.put(Enumeration.class, 
+                new Class<?>[] { 
+                    EnumerationLiteral.class, Operation.class 
+                });
+        
+        // specifies valid elements for a DataType to contain
+        validContainmentMap.put(DataType.class, 
+                new Class<?>[] { 
+                    Operation.class 
+                });
+        
+        // specifies valid elements for a Attribute to contain
+        validContainmentMap.put(Operation.class, 
+                new Class<?>[] { 
+                    Parameter.class
+                });
+    }
+        
     public void deleteExtent(Object element) {
         Resource resource = ((EObject) element).eResource();
         if (resource != null) {
