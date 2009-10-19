@@ -268,6 +268,12 @@ class ModelMemberFilePersister extends MemberFilePersister
                         if (curModel == null) {
                             curModel = current;
                         }
+                    } else if (facade.isAProfile(current)) {
+                        LOG.info("Loaded profile '" + facade.getName(current)
+                                 + "'");
+                        if (curModel == null) {
+                            curModel = current;
+                        }
                     }
                 }
             }
