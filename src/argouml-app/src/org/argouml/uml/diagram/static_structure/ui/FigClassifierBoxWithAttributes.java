@@ -50,8 +50,6 @@ import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 public abstract class FigClassifierBoxWithAttributes extends FigClassifierBox 
     implements AttributesCompartmentContainer {
     
-    private FigAttributesCompartment attributesFigCompartment;
-    
     /**
      * Construct a Fig with owner, bounds, and settings.
      * 
@@ -65,23 +63,6 @@ public abstract class FigClassifierBoxWithAttributes extends FigClassifierBox
         getAttributesCompartment(); // this creates the compartment fig
     }
 
-    /**
-     * @return The graphics for the UML attributes (if any).
-     * @deprecated use getAttributesCompartment
-     */
-    protected FigAttributesCompartment getAttributesFig() {
-        return getAttributesCompartment();
-    }
-    
-    public Rectangle getAttributesBounds() {
-        return getAttributesCompartment().getBounds();
-    }
-
-    public boolean isAttributesVisible() {
-        return attributesFigCompartment != null 
-            && attributesFigCompartment.isVisible();
-    }
-    
     /*
      * Insert an Add Attribute entry before the default menu.
      * 
@@ -197,44 +178,4 @@ public abstract class FigClassifierBoxWithAttributes extends FigClassifierBox
         }
     }
 
-    /**
-     * Updates the attributes in the fig. Called from modelchanged if there is
-     * a modelEvent effecting the attributes and from renderingChanged in all
-     * cases.
-     * TODO: Looks like this should be private - Bob.
-     */
-    protected void updateAttributes() {
-        if (!isAttributesVisible()) {
-            return;
-        }
-        attributesFigCompartment.populate();
-
-        // TODO: make setBounds, calcBounds and updateBounds consistent
-        setBounds(getBounds());
-    }
-    
-    /**
-     * @param isVisible true if the attribute compartment is visible
-     *
-     * @see org.argouml.uml.diagram.AttributesCompartmentContainer#setAttributesVisible(boolean)
-     */
-    public void setAttributesVisible(boolean isVisible) {
-        setCompartmentVisible(attributesFigCompartment, isVisible);
-    }
-
-    /**
-     * @return the Fig for the Attribute compartment
-     */
-    public FigAttributesCompartment getAttributesCompartment() {
-        // Set bounds will be called from our superclass constructor before
-        // our constructor has run, so make sure this gets set up if needed.
-        if (attributesFigCompartment == null) {
-            attributesFigCompartment = new FigAttributesCompartment(
-                    getOwner(),
-                    DEFAULT_COMPARTMENT_BOUNDS, 
-                    getSettings());
-        }
-        return attributesFigCompartment;
-    }
-    
 }
