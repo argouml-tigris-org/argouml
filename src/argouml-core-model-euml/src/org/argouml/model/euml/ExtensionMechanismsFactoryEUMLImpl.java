@@ -30,6 +30,9 @@ import java.util.Collection;
 
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.ExtensionMechanismsFactory;
+import org.eclipse.uml2.uml.Namespace;
+import org.eclipse.uml2.uml.Package;
+import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLFactory;
 
 /**
@@ -56,8 +59,35 @@ class ExtensionMechanismsFactoryEUMLImpl implements
 
     public Object buildStereotype(Object theModelElementObject, Object theName,
             Object theNamespaceObject) {
-        // TODO: Auto-generated method stub
-        return null;
+        
+        if (theModelElementObject == null || theName == null
+                || theNamespaceObject == null) {
+            throw new IllegalArgumentException(
+                    "one of the arguments is null: modelElement=" //$NON-NLS-1$
+                    + theModelElementObject
+                    + " name=" + theName //$NON-NLS-1$
+                    + " namespace=" + theNamespaceObject); //$NON-NLS-1$
+        }
+        
+        //ModelElement me = (ModelElement) theModelElementObject;
+        
+        String text = (String) theName;
+        Namespace ns = (Namespace) theNamespaceObject;
+        Stereotype stereo = (Stereotype)buildStereotype(text, ns);
+        /*
+        stereo.getBaseClass().add(modelImpl.getMetaTypes().getName(me));
+        // TODO: this doesn't look right - review - tfm
+        Stereotype stereo2 = (Stereotype) extensionHelper.getStereotype(ns,
+                stereo);
+        if (stereo2 != null) {
+            me.getStereotype().add(stereo2);
+            modelImpl.getUmlFactory().delete(stereo);
+            return stereo2;
+        }
+        stereo.setNamespace(ns);
+        me.getStereotype().add(stereo);
+        */
+        return stereo;
     }
 
     public Object buildStereotype(Object theModelElementObject, String theName,
@@ -67,8 +97,13 @@ class ExtensionMechanismsFactoryEUMLImpl implements
     }
 
     public Object buildStereotype(String text, Object ns) {
-        // TODO: Auto-generated method stub
-        return null;
+        Stereotype stereo = UMLFactory.eINSTANCE.createStereotype();
+        stereo.setName(text);
+        // more checking needed?
+        if (ns instanceof Package) {
+            stereo.setPackage((Package)ns);
+        }
+        return stereo;
     }
 
     public Object buildTagDefinition(String name, Object stereotype, Object ns) {
