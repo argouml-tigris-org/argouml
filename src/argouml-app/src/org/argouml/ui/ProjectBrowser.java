@@ -273,7 +273,7 @@ public final class ProjectBrowser
         createPanels(splash, leftBottomPane);
 
         if (isMainApplication) {
-            menuBar = new GenericArgoMenuBar();
+            menuBar = MenuBarFactory.createApplicationMenuBar();
             getContentPane().setLayout(new BorderLayout());
             this.setJMenuBar(menuBar);
             //getContentPane().add(_menuBar, BorderLayout.NORTH);

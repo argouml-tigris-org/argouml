@@ -113,6 +113,8 @@ import org.tigris.toolbar.ToolBarFactory;
  * </pre>
  * 
  * TODO: Add registration for new menu items.
+ * @deprecated in 0.29.2 by Bob Tarling. This class will be moved and made
+ * private in future. Use MenuBarFactory.createApplicationMenuBar
  */
 public class GenericArgoMenuBar extends JMenuBar implements
         TargetListener {
@@ -589,7 +591,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * 
      * The sequence of these items was determined by issue 1821.
      */
-    private void initMenuCreate() {
+    protected void initMenuCreate() {
         Collection<Action> toolbarTools = new ArrayList<Action>();
         createDiagramMenu = add(new JMenu(menuLocalize("Create Diagram")));
         setMnemonic(createDiagramMenu, "Create Diagram");
@@ -969,7 +971,6 @@ public class GenericArgoMenuBar extends JMenuBar implements
     public JToolBar getCreateDiagramToolbar() {
         return createDiagramToolbar;
     }
-
 
     /**
      * Get the create diagram menu. Provided to allow plugins
