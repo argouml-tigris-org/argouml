@@ -367,6 +367,12 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         // and before the next $ or end of class name.
         int startName = name.lastIndexOf('.') + 1;
 
+        // Eclipse UML2 implementation classes often start with "UML"
+        final String prefix = "UML"; //$NON-NLS-1$
+        if (name.substring(startName).startsWith(prefix)) {
+            startName += prefix.length();
+        }
+
         // Eclipse UML2 implementation classes end with "Impl"
         final String suffix = "Impl"; //$NON-NLS-1$
         int endName = name.length();
