@@ -637,9 +637,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getExtendedElements(Object handle) {
-        ((Stereotype) handle).getExtendedMetaclasses();
-        throw new NotYetImplementedException();
-
+        if (!(handle instanceof Stereotype)) {
+            throw new IllegalArgumentException();
+        }
+        EList<Class> eList = ((Stereotype) handle).getExtendedMetaclasses();
+        ArrayList<Class> list = new ArrayList<Class>();
+        Iterator iter = eList.iterator();
+        while (iter.hasNext()) {
+            list.add((Class) iter.next());
+        }
+        return list;
     }
 
     public Collection getExtenders(Object handle) {
@@ -1315,8 +1322,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getTagDefinitions(Object handle) {
-        throw new NotYetImplementedException();
-
+        if (!(handle instanceof Stereotype)) {
+            throw new IllegalArgumentException();
+        }
+        return getAttributes(handle);
     }
 
     public String getTagOfTag(Object handle) {
