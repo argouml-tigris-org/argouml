@@ -125,8 +125,6 @@ class ElementPropPanelFactory implements PropPanelFactory {
             // the classifier check
             if (Model.getFacade().isASubsystem(element)) {
                 return new PropPanelSubsystem();
-            } else if (Model.getFacade().isAClassifier(element)) {
-                return getClassifierPropPanel(element);
             } else if (Model.getFacade().isARelationship(element)) {
                 return getRelationshipPropPanel(element);
             } else if (Model.getFacade().isAStateVertex(element)) {
@@ -218,6 +216,9 @@ class ElementPropPanelFactory implements PropPanelFactory {
                 return new PropPanelTimeEvent();
             } else if (Model.getFacade().isADependency(element)) {
                 return new PropPanelDependency();
+            } else if (Model.getFacade().isAClassifier(element)) {
+                // in UML2 many things are a classifier, so this is the last:
+                return getClassifierPropPanel(element);
             }
             throw new IllegalArgumentException("Unsupported Element type "
                     + element.getClass().getName());
