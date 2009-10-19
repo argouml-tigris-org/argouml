@@ -29,14 +29,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.uml.diagram.DiagramElementSettings;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.ArgoFigGroup;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.PathItemPlacement;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigPoly;
 
 
 /**
@@ -49,8 +48,8 @@ public class FigAssociationRole extends FigAssociation {
     private FigMessageGroup messages;
 
     /**
-     * @deprecated Use
-     * FigAssociationClass(Object, Object, Object, DiagramSettings)
+     * @deprecated in 0.29.1 Use
+     * FigAssociationRole(DiagramEdgeSettings, DiagramSettings)
      * @param associationRole The association model element
      * @param settings The diagram settings
      */
@@ -65,16 +64,16 @@ public class FigAssociationRole extends FigAssociation {
     }
     
     /**
-     * Construct an AssociationRole fig with the given onwer and render
+     * Construct an AssociationRole fig with the given properties and diagram
      * settings.
      * 
-     * @param owner owning UML element
+     * @param diagramEdgeSettings the properties of the edge
      * @param settings render settings
      */
     public FigAssociationRole(
-            final DiagramElementSettings diagramElementSettings, 
+            final DiagramEdgeSettings diagramEdgeSettings, 
             final DiagramSettings settings) {
-        super(diagramElementSettings, settings);
+        super(diagramEdgeSettings, settings);
         messages = new FigMessageGroup(getOwner(), settings);
         addPathItem(messages, new PathItemPlacement(this, messages, 50, 10));
     }
