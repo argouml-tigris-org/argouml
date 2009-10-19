@@ -219,7 +219,8 @@ class ElementPropPanelFactory implements PropPanelFactory {
             } else if (Model.getFacade().isADependency(element)) {
                 return new PropPanelDependency();
             }
-            throw new IllegalArgumentException("Unsupported Element type");
+            throw new IllegalArgumentException("Unsupported Element type "
+                    + element.getClass().getName());
         }
         return null;
     }
@@ -271,7 +272,8 @@ class ElementPropPanelFactory implements PropPanelFactory {
         // are Classifiers as well as Relationships, but we test for Classifier
         // first.
         
-        throw new IllegalArgumentException("Unsupported Element type");
+        throw new IllegalArgumentException("Unsupported Element type "
+                + element.getClass().getName());
     }
 
     private PropPanelRelationship getRelationshipPropPanel(Object element) {
