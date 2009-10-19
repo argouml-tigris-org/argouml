@@ -544,6 +544,12 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                     Reception.class
                 });
         
+        // specifies valid elements for a Signal to contain
+        validContainmentMap.put(Signal.class, 
+                new Class<?>[] { 
+                    Operation.class, Property.class
+                });
+        
         // specifies valid elements for an Actor to contain
         validContainmentMap.put(Actor.class, 
                 new Class<?>[] { 
