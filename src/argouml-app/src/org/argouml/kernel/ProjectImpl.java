@@ -294,7 +294,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
         if (m == null) {
             throw new IllegalArgumentException(
-                    "A model member must be suppleid");
+                    "A model member must be supplied");
         } else if (m instanceof ArgoDiagram) {
             LOG.info("Adding diagram member");
             addDiagramMember((ArgoDiagram) m);
