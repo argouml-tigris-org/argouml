@@ -72,16 +72,17 @@ public class ActionNewStereotype extends AbstractActionNewModelElement {
                     model,
                     models
             );
-        if (newStereo == null) {
+        if (newStereo != null) {
+            if (Model.getFacade().isAModelElement(t)) {
+                Object ns = Model.getFacade().getNamespace(t);
+                if (Model.getFacade().isANamespace(ns)) {
+                    Model.getCoreHelper().setNamespace(newStereo, ns);
+                }
+            }
+            TargetManager.getInstance().setTarget(newStereo);
+        } else {
             LOG.error("We failed to create a stereotype");
         }
-        if (Model.getFacade().isAModelElement(t)) {
-            Object ns = Model.getFacade().getNamespace(t);
-            if (Model.getFacade().isANamespace(ns)) {
-                Model.getCoreHelper().setNamespace(newStereo, ns);
-            }
-        }
-        TargetManager.getInstance().setTarget(newStereo);
         super.actionPerformed(e);
     }
 }
