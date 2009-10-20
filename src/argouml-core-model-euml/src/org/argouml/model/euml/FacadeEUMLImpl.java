@@ -854,8 +854,15 @@ class FacadeEUMLImpl implements Facade {
         if (!(handle instanceof Element)) {
             throw new IllegalArgumentException();
         }
-        // TODO: Does this do what we need? - tfm
-        return ((Element) handle).getModel();
+        Object root = ((Element) handle).getModel();
+        if (root == null) {
+            // root is not a model, so we climb up the owners
+            root = handle;
+            while (((Element) root).getOwner() != null) {
+                root = ((Element) root).getOwner();
+            }
+        }
+        return root;
     }
 
     public Object getModelElement(Object handle) {
