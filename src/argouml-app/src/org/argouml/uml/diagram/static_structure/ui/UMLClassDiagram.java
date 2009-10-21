@@ -662,6 +662,10 @@ public class UMLClassDiagram extends UMLDiagram {
         if (Model.getFacade().isAAssociation(modelElement)) {
             figNode =
                 createNaryAssociationNode(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAStereotype(modelElement)) {
+            // since UML2, this must appear before the isAClass clause
+            figNode = new FigStereotypeDeclaration(modelElement, bounds, 
+                    settings);
         } else if (Model.getFacade().isAClass(modelElement)) {
             figNode = new FigClass(modelElement, bounds, settings);
         } else if (Model.getFacade().isAInterface(modelElement)) {
@@ -678,9 +682,6 @@ public class UMLClassDiagram extends UMLDiagram {
             figNode = new FigEnumeration(modelElement, bounds, settings);
         } else if (Model.getFacade().isADataType(modelElement)) {
             figNode = new FigDataType(modelElement, bounds, settings);
-        } else if (Model.getFacade().isAStereotype(modelElement)) {
-            figNode = new FigStereotypeDeclaration(modelElement, bounds, 
-                    settings);
         } else if (Model.getFacade().isAException(modelElement)) {
             figNode = new FigException(modelElement, bounds, settings);
         } else if (Model.getFacade().isASignal(modelElement)) {
