@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.Action;
 
@@ -112,12 +113,21 @@ public abstract class ActionAddDiagram extends UndoableAction {
         Object ns = null;
         if (target == null || !Model.getFacade().isAModelElement(target)
                 || Model.getModelManagementHelper().isReadOnly(target)) {
-            // TODO: When read-only projects are supported (instead of just
-            // profiles), this could be a read-only extent as well
-            Collection c = p.getRoots();
-            if ((c != null) && !c.isEmpty()) {
-                target = c.iterator().next();
-            } // else what?
+            // get the first editable extent (which is OK unless there is more
+            // than one editable extent)
+            target = null;
+            Iterator iter = p.getRoots().iterator();
+            while (iter.hasNext()) {
+                Object o = iter.next();
+                if (!Model.getModelManagementHelper().isReadOnly(o)) {
+                    target = o;
+                    break;
+                }
+            }
+            if (target == null) {
+                // no way, we have to give up
+                return null;
+            }
         }
         if (Model.getFacade().isANamespace(target)) {
             ns = target;
