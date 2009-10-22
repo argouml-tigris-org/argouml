@@ -2353,7 +2353,22 @@ public abstract class FigNodeModelElement
         getNameFig().setRightMargin(
                 floatingStereotypes.size() * (ICON_WIDTH + 5));
     }
-    
+
+    /**
+     * Returns the minimum size of the Fig. This is the smallest size that the
+     * user can make this Fig by dragging. <p>
+     *  
+     * Do not call this function if the Fig is not resizable!
+     * In ArgoUML we decided that it is not needed to implement 
+     * suitable getMinimumSize() methods
+     * for Figs that are not resizable.
+     */
+    @Override
+    public Dimension getMinimumSize() {
+        assert isResizable();
+        return super.getMinimumSize();
+    }
+
     /**
      * Replaces {@link #setBoundsImpl(int, int, int, int)}.
      * 
