@@ -57,7 +57,7 @@ public interface Project {
     /**
      * Project type: a profile project
      */
-    public static final int PROFILE_PROJECT = 0;
+    public static final int PROFILE_PROJECT = 1;
 
     /**
      * Get the project name. This is just the name part of the full filename.
