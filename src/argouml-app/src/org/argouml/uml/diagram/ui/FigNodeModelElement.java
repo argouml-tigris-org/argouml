@@ -1002,8 +1002,8 @@ public abstract class FigNodeModelElement
      * but then it can never shrink again 
      * (not even if the calculated minimum size is smaller).<p>
      * 
-     * If the user can not resize the fig, e.g. like the FigActor, 
-     * then we return the minimum size.
+     * If the user can not resize the fig, e.g. like the FigActor or FigFinalState, 
+     * then we return the original size.
      */
     protected void updateBounds() {
         if (!checkSize) {
@@ -1016,7 +1016,7 @@ public abstract class FigNodeModelElement
             bbox.height = Math.max(bbox.height, minSize.height);
             setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
         } else {
-            setBounds(bbox.x, bbox.y, minSize.width, minSize.height);
+            setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
         }
     }
 
