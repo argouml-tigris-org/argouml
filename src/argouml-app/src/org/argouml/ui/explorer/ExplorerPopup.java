@@ -187,18 +187,31 @@ public class ExplorerPopup extends JPopupMenu {
             this.add(createDiagrams);
         }
 
+        // profile section: dealing with profiles in different states
+
+        // 1. a noneditable applied profile
         try {
             if (!multiSelect && selectedItem instanceof Profile
                     && !((Profile) selectedItem).getProfilePackages().isEmpty()) {
                 this.add(new ActionExportProfileXMI((Profile) selectedItem));
             }
         } catch (Exception e) {
-
+            // just no item added in this case
         }
 
+        // 2. the profile configuration, holding noneditable applied profiles
         if (!multiSelect && selectedItem instanceof ProfileConfiguration) {
             this.add(new ActionManageProfiles());
         }
+
+        // 3. UML2 only: the editable unapplied profile
+
+        if (Model.getFacade().getUmlVersion().charAt(0) == '2'
+             && Model.getFacade().isAProfile(selectedItem)) {
+            this.add(new ActionDeployProfile(selectedItem));
+        }
+
+        // end of profile section
 
         if (mutableModelElementsOnly) {
             initMenuCreateModelElements();
