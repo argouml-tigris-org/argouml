@@ -28,12 +28,21 @@ package org.argouml.model.euml;
 
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.ExtensionMechanismsFactory;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.common.util.WrappedException;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLFactory;
+import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.resource.UMLResource;
 
 /**
  * The implementation of the ExtensionMechanismsFactory for EUML2.
@@ -41,11 +50,19 @@ import org.eclipse.uml2.uml.UMLFactory;
 class ExtensionMechanismsFactoryEUMLImpl implements
         ExtensionMechanismsFactory, AbstractModelFactory {
 
+    private static final Logger LOG = Logger
+            .getLogger(ExtensionMechanismsFactoryEUMLImpl.class);
+
     /**
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
 
+    /**
+     * The UML metamodel (lazily loaded singleton).
+     */
+    private static UMLPackage metamodel = null;
+    
     /**
      * Constructor.
      * 
@@ -156,4 +173,28 @@ class ExtensionMechanismsFactoryEUMLImpl implements
         return null;
     }
 
+    public static UMLPackage getUMLMetamodel() {
+        if (metamodel == null) {
+            // load metamodel
+            metamodel = UMLPackage.eINSTANCE;
+        }
+        return metamodel;
+    }
+
+    private static Model loadUMLMetamodel(EUMLModelImplementation model) {
+        Model m = null;
+        try {
+            Resource res = (new ResourceSetImpl()).createResource(URI
+                    .createURI(UMLResource.UML_METAMODEL_URI));
+            //Resource res = UMLUtil.getResource(model, URI
+            //        .createURI(UMLResource.UML_METAMODEL_URI), true);
+            Object o = EcoreUtil.getObjectByType(res.getContents(),
+                    UMLPackage.Literals.PACKAGE);
+            m = (Model) o;
+            LOG.debug("no. of resources: " + res.getContents().size());
+        } catch (WrappedException we) {
+            LOG.warn("Failed getting UML metamodel");
+        }
+        return m;
+    }
 }
