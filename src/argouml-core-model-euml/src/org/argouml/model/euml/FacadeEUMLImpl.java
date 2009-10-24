@@ -110,6 +110,7 @@ import org.eclipse.uml2.uml.Relationship;
 import org.eclipse.uml2.uml.SendObjectAction;
 import org.eclipse.uml2.uml.SendSignalAction;
 import org.eclipse.uml2.uml.Signal;
+import org.eclipse.uml2.uml.SignalEvent;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Stereotype;
@@ -1909,7 +1910,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isASignalEvent(Object handle) {
-        throw new NotYetImplementedException();
+        return handle instanceof SignalEvent;
     }
 
     public boolean isASimpleState(Object handle) {
