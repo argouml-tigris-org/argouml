@@ -30,7 +30,14 @@ import java.util.Collection;
 import java.util.Collections;
 
 import org.argouml.model.ExtensionMechanismsHelper;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.Model;
+import org.eclipse.uml2.uml.Profile;
+import org.eclipse.uml2.uml.Stereotype;
+import org.eclipse.uml2.uml.UMLPackage;
 
 /**
  * The implementation of the ExtensionMechanismsHelper for EUML2.
@@ -44,7 +51,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
 
     /**
      * Constructor.
-     *
+     * 
      * @param implementation The ModelImplementation.
      */
     public ExtensionMechanismsHelperEUMLImpl(
@@ -53,23 +60,48 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public void addBaseClass(Object handle, Object baseClass) {
-        // TODO: Auto-generated method stub
-        
+        if (handle instanceof Stereotype) {
+            Profile profile = (Profile) modelImpl.getFacade().getRoot(handle);
+            org.eclipse.uml2.uml.Class metaclass = null;
+            if (profile != null && baseClass instanceof String) {
+                // metaclass =
+                // (org.eclipse.uml2.uml.Class)
+                // ExtensionMechanismsFactoryEUMLImpl
+                // .getUMLMetamodel(). .getOwnedType((String) baseClass);
+                Resource res = modelImpl.getEditingDomain().getResourceSet()
+                        .getResource(URI.createURI(UMLPackage.eNS_URI), true);
+                Model m = (Model) EcoreUtil.getObjectByType(res.getContents(),
+                        UMLPackage.Literals.PACKAGE);
+                metaclass = (org.eclipse.uml2.uml.Class) m
+                        .getOwnedType((String) baseClass);
+            } else if (profile != null
+                    && baseClass instanceof org.eclipse.uml2.uml.Class) {
+                metaclass = (org.eclipse.uml2.uml.Class) baseClass;
+            }
+            if (metaclass != null) {
+                profile.createMetaclassReference(metaclass);
+                Stereotype st = (Stereotype) handle;
+                st.createExtension(metaclass, false);
+                return;
+            }
+        }
+        throw new IllegalArgumentException(
+                "Not a Stereotype or illegal base class"); //$NON-NLS-1$
     }
 
     public void addCopyStereotype(Object modelElement, Object stereotype) {
         // TODO: Auto-generated method stub
-        
+
     }
 
     public void addExtendedElement(Object handle, Object extendedElement) {
         // TODO: Auto-generated method stub
-        
+
     }
 
     public void addTaggedValue(Object handle, Object taggedValue) {
         // TODO: Auto-generated method stub
-        
+
     }
 
     public Collection getAllPossibleStereotypes(Collection models,
@@ -86,15 +118,13 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     /**
-     * @param clazz
-     *            the UML class
+     * @param clazz the UML class
      * @return the meta name of the UML class
      */
     protected String getMetaModelName(Class clazz) {
         return modelImpl.getMetaTypes().getName(clazz);
     }
-    
-    
+
     public Object getStereotype(Object ns, Object stereo) {
         // TODO: Auto-generated method stub
         return null;
@@ -153,11 +183,11 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public void setTagType(Object handle, String tagType) {
-        // TODO: Auto-generated method stub        
+        // TODO: Auto-generated method stub
     }
-    
+
     public void setType(Object handle, Object type) {
-        // TODO: Auto-generated method stub        
+        // TODO: Auto-generated method stub
     }
 
     public void setValueOfTag(Object handle, String value) {
@@ -167,5 +197,12 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     public void setDataValues(Object handle, String[] value) {
         // TODO: Auto-generated method stub
     }
-
+    
+    public Object makeProfileApplicable(Object handle) {
+        Object result = null;
+        if (handle instanceof Profile) {
+            result = ((Profile) handle).define();
+        }
+        return result;
+    }
 }

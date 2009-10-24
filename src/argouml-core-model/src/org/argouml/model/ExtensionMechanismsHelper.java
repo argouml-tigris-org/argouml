@@ -271,4 +271,15 @@ public interface ExtensionMechanismsHelper {
      * @return true if there is such a stereotype
      */
     boolean hasStereotype(Object element, String name);
+
+    /**
+     * Make a profile applicable. Usually a profile edited in a UML design
+     * environment like ArgoUML is not directly applicable, but needs to be
+     * shifted to the metamodel level, so that it can serve as an extension
+     * to the UML metamodel.
+     * 
+     * @param handle the profile before made applicable to a model
+     * @return the profile made applicable to a model
+     */
+    Object makeProfileApplicable(Object handle);
 }

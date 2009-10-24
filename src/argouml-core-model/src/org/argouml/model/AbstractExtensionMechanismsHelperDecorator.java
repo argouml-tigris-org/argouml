@@ -150,5 +150,8 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
     public boolean hasStereotype(Object handle, String name) {
         return impl.hasStereotype(handle, name);
     }
-
+    
+    public Object makeProfileApplicable(Object handle) {
+        return impl.makeProfileApplicable(handle);
+    }
 }

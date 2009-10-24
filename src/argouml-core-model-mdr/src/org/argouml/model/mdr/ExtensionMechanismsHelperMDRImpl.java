@@ -486,4 +486,9 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         }
         return false;
     }
+    
+    public Object makeProfileApplicable(Object handle) {
+        // this method makes no sense in UML1.4
+        return null;
+    }
 }
