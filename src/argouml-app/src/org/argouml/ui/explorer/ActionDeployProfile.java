@@ -26,27 +26,20 @@ package org.argouml.ui.explorer;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Collection;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.helpers.ApplicationVersion;
-import org.argouml.configuration.Configuration;
-import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.UmlException;
-import org.argouml.model.XmiWriter;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFileView;
-import org.argouml.persistence.UmlFilePersister;
-import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileFacade;
+import org.argouml.profile.ProfileManager;
+import org.argouml.profile.UserDefinedProfile;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.ArgoFrame;
 
 /**
@@ -70,14 +63,71 @@ public class ActionDeployProfile extends AbstractAction {
      */
     public ActionDeployProfile(Object profile) {
         //super(Translator.localize("action.deploy-profile"));
-        super ("Deploy Profile");
+        super ("Deploy Profile...");
         undeployedProfile = profile;
     }
 
     public void actionPerformed(ActionEvent arg0) {
-        Object profile = Model.getExtensionMechanismsHelper()
-            .makeProfileApplicable(undeployedProfile);
-        LOG.debug("REMOVE ME: " + profile.toString());
-        // TODO: save it, maybe put it into the profile configuration
+        // make the profile ready to be applied
+        //Object profile = Model.getExtensionMechanismsHelper()
+        //    .makeProfileApplicable(undeployedProfile);
+        // get one of the default profile dirs, if available
+        // (as a default value for the following save dialog)
+        ProfileManager profileManager = ProfileFacade.getManager();
+        StringBuffer path = new StringBuffer();
+        Collection dirs = profileManager.getSearchPathDirectories();
+        if (dirs != null && !dirs.isEmpty()) {
+            String s = (String) dirs.iterator().next();
+            path.append(s);
+            if (!(s.endsWith("/") || s.endsWith("\\"))) {
+                path.append('/');
+            }
+        }
+        // save profile
+        path.append(Model.getFacade().getName(undeployedProfile));
+        File f = saveProfile(path.toString());
+        if (f == null) {
+            return;
+        }
+        // register it as a user profile
+        try {
+            profileManager.registerProfile(new UserDefinedProfile(f));
+        } catch (ProfileException e) {
+            LOG.warn("failed to load profile from file " + f.getPath(), e);
+        }
+    }
+
+    /**
+     * Offers the saving of the profile by presenting a file dialog.
+     * 
+     * @param fn the suggested default path for the file dialog
+     * @return the File instance where the profile is saved, null on abort
+     */
+    private File saveProfile(String fn) {
+        File theFile = null;
+        PersistenceManager pm = PersistenceManager.getInstance();
+        // show a chooser dialog for the file name, only xmi is allowed
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Save Profile");
+        chooser.setFileView(ProjectFileView.getInstance());
+        chooser.setApproveButtonText("Save");
+        chooser.setAcceptAllFileFilterUsed(true);
+        pm.setXmiFileChooserFilter(chooser);
+        if (fn.length() > 0) {
+            fn = PersistenceManager.getInstance().getBaseName(fn);
+            chooser.setSelectedFile(new File(fn));
+        }
+        int result = chooser.showSaveDialog(ArgoFrame.getFrame());
+        if (result == JFileChooser.APPROVE_OPTION) {
+            theFile = chooser.getSelectedFile();
+            if (theFile != null) {
+                String name = theFile.getName();
+                name = pm.fixXmiExtension(name);
+                theFile = new File(theFile.getParent(), name);
+                ProjectBrowser.getInstance().trySaveWithProgressMonitor(
+                        true, theFile, false);
+            }
+        }
+        return theFile;
     }
 }

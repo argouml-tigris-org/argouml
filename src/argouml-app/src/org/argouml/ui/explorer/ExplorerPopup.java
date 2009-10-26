@@ -182,11 +182,6 @@ public class ExplorerPopup extends JPopupMenu {
         // this.add(action);
         // }
 
-        if (!multiSelect && mutableModelElementsOnly) {
-            initMenuCreateDiagrams();
-            this.add(createDiagrams);
-        }
-
         // profile section: dealing with profiles in different states
 
         // 1. a noneditable applied profile
@@ -204,14 +199,18 @@ public class ExplorerPopup extends JPopupMenu {
             this.add(new ActionManageProfiles());
         }
 
-        // 3. UML2 only: the editable unapplied profile
+        // 3. the editable unapplied profile
 
-        if (Model.getFacade().getUmlVersion().charAt(0) == '2'
-             && Model.getFacade().isAProfile(selectedItem)) {
+        if (Model.getFacade().isAProfile(selectedItem)) {
             this.add(new ActionDeployProfile(selectedItem));
         }
 
         // end of profile section
+
+        if (!multiSelect && mutableModelElementsOnly) {
+            initMenuCreateDiagrams();
+            this.add(createDiagrams);
+        }
 
         if (mutableModelElementsOnly) {
             initMenuCreateModelElements();
