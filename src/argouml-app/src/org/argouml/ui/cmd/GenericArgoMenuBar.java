@@ -1073,6 +1073,15 @@ public class GenericArgoMenuBar extends JMenuBar implements
     }
 
     /**
+     * Getter for the Generation menu.
+     *
+     * @return The Generation menu.
+     */
+    public JMenu getGeneration() {
+	return generate;
+    }
+
+    /**
      * The UID.
      */
     private static final long serialVersionUID = 2904074534530273119L;
