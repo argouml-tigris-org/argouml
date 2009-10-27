@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,11 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import java.util.Collection;
+import java.util.List;
+
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
  * A list model for the parameters belonging to an event.
@@ -33,7 +36,8 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLEventParameterListModel extends UMLModelElementListModel2 {
+public class UMLEventParameterListModel 
+    extends UMLModelElementOrderedListModel2 {
 
 
     /**
@@ -56,6 +60,39 @@ public class UMLEventParameterListModel extends UMLModelElementListModel2 {
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().getParameters(getTarget()).contains(element);
+    }
+
+    @Override
+    protected void moveDown(int index) {
+        Object event = getTarget();
+        Collection c = Model.getFacade().getParameters(event);
+        if (c instanceof List && index < c.size() - 1) {
+            Object mem = ((List) c).get(index);
+            Model.getCoreHelper().removeParameter(event, mem);
+            Model.getCoreHelper().addParameter(event, index + 1, mem);
+        }
+    }
+
+    @Override
+    protected void moveToBottom(int index) {
+        Object event = getTarget();
+        Collection c = Model.getFacade().getParameters(event);
+        if (c instanceof List && index < c.size() - 1) {
+            Object mem = ((List) c).get(index);
+            Model.getCoreHelper().removeParameter(event, mem);
+            Model.getCoreHelper().addParameter(event, c.size() - 1, mem);
+        }
+    }
+
+    @Override
+    protected void moveToTop(int index) {
+        Object event = getTarget();
+        Collection c = Model.getFacade().getParameters(event);
+        if (c instanceof List && index > 0) {
+            Object mem = ((List) c).get(index);
+            Model.getCoreHelper().removeParameter(event, mem);
+            Model.getCoreHelper().addParameter(event, 0, mem);
+        }
     }
 
 }
