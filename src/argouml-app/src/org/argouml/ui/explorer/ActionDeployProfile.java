@@ -32,6 +32,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JFileChooser;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFileView;
@@ -43,10 +44,12 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.ArgoFrame;
 
 /**
- * Explorer action for deploying a user editable profile. This is only needed
- * since UML2. An undeployed editable profile cannot be applied. A deployed
- * profile is no more editable, but can be applied to a model.
- *
+ * Explorer action for deploying a user editable profile. Deploying means: save
+ * it as an XMI file, immediately load it as a user profile, but don't activate
+ * it (pointless, because a profile cannot be applied to itself), and also don't
+ * change the configuration (so it will only be loaded on every startup when it
+ * is deployed into a default profile directory).
+ * 
  * @author Thomas Neustupny
  */
 public class ActionDeployProfile extends AbstractAction {
@@ -62,15 +65,11 @@ public class ActionDeployProfile extends AbstractAction {
      * @param profile the selected profile
      */
     public ActionDeployProfile(Object profile) {
-        //super(Translator.localize("action.deploy-profile"));
-        super ("Deploy Profile...");
+        super(Translator.localize("action.deploy-profile") + "...");
         undeployedProfile = profile;
     }
 
     public void actionPerformed(ActionEvent arg0) {
-        // make the profile ready to be applied
-        //Object profile = Model.getExtensionMechanismsHelper()
-        //    .makeProfileApplicable(undeployedProfile);
         // get one of the default profile dirs, if available
         // (as a default value for the following save dialog)
         ProfileManager profileManager = ProfileFacade.getManager();
@@ -108,9 +107,9 @@ public class ActionDeployProfile extends AbstractAction {
         PersistenceManager pm = PersistenceManager.getInstance();
         // show a chooser dialog for the file name, only xmi is allowed
         JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle("Save Profile");
+        chooser.setDialogTitle(Translator.localize("action.deploy-profile"));
         chooser.setFileView(ProjectFileView.getInstance());
-        chooser.setApproveButtonText("Save");
+        chooser.setApproveButtonText(Translator.localize("filechooser.export"));
         chooser.setAcceptAllFileFilterUsed(true);
         pm.setXmiFileChooserFilter(chooser);
         if (fn.length() > 0) {
@@ -124,8 +123,8 @@ public class ActionDeployProfile extends AbstractAction {
                 String name = theFile.getName();
                 name = pm.fixXmiExtension(name);
                 theFile = new File(theFile.getParent(), name);
-                ProjectBrowser.getInstance().trySaveWithProgressMonitor(
-                        true, theFile, false);
+                ProjectBrowser.getInstance().trySaveWithProgressMonitor(true,
+                        theFile, false);
             }
         }
         return theFile;

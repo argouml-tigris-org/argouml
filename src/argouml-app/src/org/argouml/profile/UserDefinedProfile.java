@@ -188,8 +188,8 @@ public class UserDefinedProfile extends Profile {
             // the profile model, if there is more than one, we take the ones
             // marked as <<profile>>
             if (Model.getFacade().isAModelElement(obj)
-                    && (Model.getExtensionMechanismsHelper().hasStereotype(obj,
-                            "profile") || (packagesInProfile.size() == 1))) {
+                    && (Model.getFacade().isAProfile(obj)
+                            || (packagesInProfile.size() == 1))) {
 
                 // load profile name
                 String name = Model.getFacade().getName(obj);
@@ -203,23 +203,25 @@ public class UserDefinedProfile extends Profile {
                 }
                 LOG.info("profile " + displayName);
 
-                // load profile dependencies
-                String dependencyListStr = Model.getFacade()
-                        .getTaggedValueValue(obj, "Dependency");
-                StringTokenizer st = new StringTokenizer(dependencyListStr,
-                        " ,;:");
+                if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                    // load profile dependencies
+                    String dependencyListStr = Model.getFacade()
+                            .getTaggedValueValue(obj, "Dependency");
+                    StringTokenizer st = new StringTokenizer(dependencyListStr,
+                            " ,;:");
 
-                String profile = null;
+                    String profile = null;
 
-                while (st.hasMoreTokens()) {
-                    profile = st.nextToken();
-                    if (profile != null) {
-                        LOG.debug("AddingDependency " + profile);
-                        this.addProfileDependency(ProfileFacade.getManager()
-                                .lookForRegisteredProfile(profile));
+                    while (st.hasMoreTokens()) {
+                        profile = st.nextToken();
+                        if (profile != null) {
+                            LOG.debug("AddingDependency " + profile);
+                            this.addProfileDependency(ProfileFacade.getManager()
+                                    .lookForRegisteredProfile(profile));
+                        }
                     }
                 }
-
+                // TODO: profile dependencies for UML2
             }
         }
 
