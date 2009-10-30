@@ -26,8 +26,10 @@
 
 package org.argouml.model.euml;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import org.argouml.model.ExtensionMechanismsHelper;
 import org.eclipse.emf.common.util.URI;
@@ -106,8 +108,15 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
 
     public Collection getAllPossibleStereotypes(Collection models,
             Object modelElement) {
-        // TODO: Auto-generated method stub
-        return Collections.emptySet();
+        List<Stereotype> ret = new ArrayList<Stereotype>();
+        if (modelElement instanceof Element) {
+            for (Stereotype stereo : getStereotypes(models)) {
+                if (((Element) modelElement).isStereotypeApplicable(stereo)) {
+                    ret.add(stereo);
+                }
+            }
+        }
+        return ret;
     }
 
     public String getMetaModelName(Object m) {
@@ -136,13 +145,30 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public Collection getStereotypes(Object ns) {
-        // TODO: Auto-generated method stub
-        return Collections.emptySet();
+        List<Stereotype> l = new ArrayList<Stereotype>();
+        if (ns instanceof Profile) {
+            Iterator iter = ((Profile) ns).getOwnedStereotypes().iterator();
+            while (iter.hasNext()) {
+                l.add((Stereotype) iter.next());
+            }
+        }
+        return l;
     }
 
-    public Collection getStereotypes(Collection models) {
-        // TODO: Auto-generated method stub
-        return Collections.emptySet();
+    public Collection<Stereotype> getStereotypes(Collection models) {
+        List<Stereotype> l = new ArrayList<Stereotype>();
+        if (models != null) {
+            for (Object ns : models) {
+                if (ns instanceof Profile) {
+                    Iterator iter =
+                        ((Profile) ns).getOwnedStereotypes().iterator();
+                    while (iter.hasNext()) {
+                        l.add((Stereotype) iter.next());
+                    }
+                }
+            }
+        }
+        return l;
     }
 
     public boolean hasStereotype(Object handle, String name) {
