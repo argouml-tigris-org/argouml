@@ -269,6 +269,10 @@ public class UserDefinedProfile extends Profile {
         Collection ret = new ArrayList();
         for (Object object : profilePackages) {
             if (Model.getFacade().isAPackage(object)) {
+                if (Model.getFacade().isAProfile(object)) {
+                    object = Model.getExtensionMechanismsHelper()
+                        .makeProfileApplicable(object);
+                }
                 ret.add(object);
             }
         }
