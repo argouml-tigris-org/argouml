@@ -172,29 +172,4 @@ class ExtensionMechanismsFactoryEUMLImpl implements
         // TODO: Auto-generated method stub
         return null;
     }
-
-    public static UMLPackage getUMLMetamodel() {
-        if (metamodel == null) {
-            // load metamodel
-            metamodel = UMLPackage.eINSTANCE;
-        }
-        return metamodel;
-    }
-
-    private static Model loadUMLMetamodel(EUMLModelImplementation model) {
-        Model m = null;
-        try {
-            Resource res = (new ResourceSetImpl()).createResource(URI
-                    .createURI(UMLResource.UML_METAMODEL_URI));
-            //Resource res = UMLUtil.getResource(model, URI
-            //        .createURI(UMLResource.UML_METAMODEL_URI), true);
-            Object o = EcoreUtil.getObjectByType(res.getContents(),
-                    UMLPackage.Literals.PACKAGE);
-            m = (Model) o;
-            LOG.debug("no. of resources: " + res.getContents().size());
-        } catch (WrappedException we) {
-            LOG.warn("Failed getting UML metamodel");
-        }
-        return m;
-    }
 }
