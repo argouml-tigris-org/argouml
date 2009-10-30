@@ -68,8 +68,18 @@ public interface Project {
     /**
      * Get the project type. (Currently needed for profile project; probably
      * no longer needed when ArgoUML supports multimodel projects.)
+     *
+     * @return The URI.
      */
     public int getProjectType();
+
+    /**
+     * Set the project type. (Currently needed for profile project; probably
+     * no longer needed when ArgoUML supports multimodel projects.)
+     * 
+     * @param projectType The new project type.
+     */
+    public void setProjectType(int projectType);
 
     /**
      * Get the URI for this project.

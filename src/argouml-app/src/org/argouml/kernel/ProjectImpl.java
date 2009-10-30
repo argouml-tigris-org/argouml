@@ -208,6 +208,10 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public int getProjectType() {
         return projectType;
     }
+    
+    public void setProjectType(int projectType) {
+        this.projectType = projectType;
+    }
 
     public URI getUri() {
         return uri;
