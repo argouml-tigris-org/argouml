@@ -380,13 +380,14 @@ public class UmlFilePersister extends AbstractFilePersister {
                 try {
                     persister.load(p, inputSource);
                 } catch (OpenException e) {
-                    // UML 2.x files don't have XMI as their outer
-                    // tag.  Try again with uml:Model
-                    if ("XMI".equals(persister.getMainTag()) 
+                    // UML 2.x files could also contain a profile model.
+                    // Try again with uml:Profile as main tag.
+                    if ("uml:Model".equals(persister.getMainTag()) 
                             && e.getCause() instanceof UmlException 
                             && e.getCause().getCause() instanceof IOException) {
-                        inputStream.reopen("uml:Model");
+                        inputStream.reopen("uml:Profile");
                         persister.load(p, inputSource);
+                        p.setProjectType(Project.PROFILE_PROJECT);
                     } else {
                         throw e;
                     }
