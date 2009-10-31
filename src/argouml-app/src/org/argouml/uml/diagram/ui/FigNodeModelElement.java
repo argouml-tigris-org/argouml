@@ -80,6 +80,7 @@ import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.NotationSettings;
+import org.argouml.profile.FigNodeStrategy;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectActions;
@@ -1785,8 +1786,8 @@ public abstract class FigNodeModelElement
             }
 
             if (replaceIcon != null) {
-                stereotypeFigProfileIcon = new FigProfileIcon(replaceIcon,
-                        getName());
+                stereotypeFigProfileIcon = new FigProfileIcon(settings,
+                        replaceIcon, getName());
                 stereotypeFigProfileIcon.setOwner(getOwner());
 
                 stereotypeFigProfileIcon.setLocation(getBigPort()
@@ -2265,17 +2266,23 @@ public abstract class FigNodeModelElement
         if (modelElement != null) {
             int stereotypeCount = getStereotypeCount();
 
-            if (getStereotypeView() 
-                    == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON
-                    && (stereotypeCount != 1 
-                            ||  (stereotypeCount == 1 
-                                    // TODO: Find a way to replace 
-                                    // this dependency on Project
-                                    && getProject().getProfileConfiguration()
-                                    .getFigNodeStrategy().getIconForStereotype(
-                                            getStereotypeFig().getStereotypeFigs().iterator().next().getOwner()) 
-                                            == null))) {
+            if (getStereotypeView()
+                    == DiagramAppearance.STEREOTYPE_VIEW_BIG_ICON) {
+                // TODO: Find a way to replace this dependency on Project
+                FigNodeStrategy figNodeStrategy = getProject()
+                    .getProfileConfiguration().getFigNodeStrategy();
+                Iterator<FigStereotype> figsIterator = getStereotypeFig()
+                    .getStereotypeFigs().iterator();
+                Object owner = figsIterator.hasNext() ?
+                        figsIterator.next().getOwner() : null;
+                if (stereotypeCount != 1
+                        || figNodeStrategy == null
+                        || owner == null
+                        ||  (stereotypeCount == 1
+                                && figNodeStrategy.getIconForStereotype(owner) 
+                                    == null)) {
                 practicalView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;
+                }
             }
         }
         return practicalView;

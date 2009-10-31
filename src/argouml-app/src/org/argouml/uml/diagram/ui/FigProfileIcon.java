@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Image;
 import java.awt.Rectangle;
 
+import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigImage;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
@@ -48,14 +49,14 @@ public class FigProfileIcon extends FigNode {
     /**
      * Default constructor.
      * 
+     * @param settings diagram settings
      * @param icon the icon
      * @param str the default name
-     * TODO: Define a constructor that takes diagram settings
      */
-    public FigProfileIcon(Image icon, String str) {
+    public FigProfileIcon(DiagramSettings settings, Image icon, String str) {
 	image = new FigImage(0, 0, icon);
 	Rectangle bounds = new Rectangle(0, image.getHeight() + GAP, 0, 0);
-	label = new FigSingleLineText(bounds, null, true);
+	label = new FigSingleLineText(bounds, settings, true);
 	label.setText(str);
 	label.calcBounds();
 	
