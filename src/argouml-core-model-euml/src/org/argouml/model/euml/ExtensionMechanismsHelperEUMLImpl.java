@@ -65,22 +65,9 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
 
     public void addBaseClass(Object handle, Object baseClass) {
         if (handle instanceof Stereotype) {
-            Profile profile = (Profile) modelImpl.getFacade().getRoot(handle);
-            org.eclipse.uml2.uml.Class metaclass = null;
-            if (profile != null && baseClass instanceof String) {
-                URI uri = URI.createURI(UMLResource.UML_METAMODEL_URI);
-                ResourceSet rs = modelImpl.getEditingDomain().getResourceSet();
-                // this line takes long on first call: (put it elsewhere?)
-                Resource res = rs.getResource(uri, true);
-                Model m = (Model) EcoreUtil.getObjectByType(res.getContents(),
-                        UMLPackage.Literals.PACKAGE);
-                metaclass = (org.eclipse.uml2.uml.Class) m
-                        .getOwnedType((String) baseClass);
-            } else if (profile != null
-                    && baseClass instanceof org.eclipse.uml2.uml.Class) {
-                metaclass = (org.eclipse.uml2.uml.Class) baseClass;
-            }
-            if (metaclass != null) {
+            org.eclipse.uml2.uml.Class metaclass = getMetaclass(baseClass);
+            Profile profile = ((Stereotype) handle).getProfile();
+            if (metaclass != null && profile != null) {
                 profile.createMetaclassReference(metaclass);
                 Stereotype st = (Stereotype) handle;
                 st.createExtension(metaclass, false);
@@ -160,8 +147,8 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         if (models != null) {
             for (Object ns : models) {
                 if (ns instanceof Profile) {
-                    Iterator iter =
-                        ((Profile) ns).getOwnedStereotypes().iterator();
+                    Iterator iter = ((Profile) ns).getOwnedStereotypes()
+                            .iterator();
                     while (iter.hasNext()) {
                         l.add((Stereotype) iter.next());
                     }
@@ -188,12 +175,27 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
 
     public boolean isValidStereotype(Object theModelElement,
             Object theStereotype) {
-        // TODO: Auto-generated method stub
+        if (theModelElement instanceof Element
+                && theStereotype instanceof Stereotype) {
+            return ((Element) theModelElement)
+                    .isStereotypeApplicable((Stereotype) theStereotype);
+        }
         return false;
     }
 
     public void removeBaseClass(Object handle, Object baseClass) {
-        // TODO: Auto-generated method stub
+        if (handle instanceof Stereotype) {
+            org.eclipse.uml2.uml.Class metaclass = getMetaclass(baseClass);
+            Profile profile = ((Stereotype) handle).getProfile();
+            if (metaclass != null && profile != null) {
+                Stereotype st = (Stereotype) handle;
+                st.getExtension(metaclass.getName());
+                // TODO: remove extension
+                return;
+            }
+        }
+        throw new IllegalArgumentException(
+                "Not a Stereotype or illegal base class"); //$NON-NLS-1$
     }
 
     public void removeTaggedValue(Object handle, Object taggedValue) {
@@ -230,5 +232,21 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
             result = ((Profile) handle).define();
         }
         return result;
+    }
+
+    private org.eclipse.uml2.uml.Class getMetaclass(Object baseClass) {
+        org.eclipse.uml2.uml.Class metaclass = null;
+        if (baseClass instanceof String) {
+            URI uri = URI.createURI(UMLResource.UML_METAMODEL_URI);
+            ResourceSet rs = modelImpl.getEditingDomain().getResourceSet();
+            Resource res = rs.getResource(uri, true);
+            Model m = (Model) EcoreUtil.getObjectByType(res.getContents(),
+                    UMLPackage.Literals.PACKAGE);
+            metaclass = (org.eclipse.uml2.uml.Class) m
+                    .getOwnedType((String) baseClass);
+        } else if (baseClass instanceof org.eclipse.uml2.uml.Class) {
+            metaclass = (org.eclipse.uml2.uml.Class) baseClass;
+        }
+        return metaclass;
     }
 }
