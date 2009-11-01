@@ -33,6 +33,7 @@ import java.util.List;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ExtensionPointsCompartmentContainer;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
@@ -203,7 +204,9 @@ public class ActionCompartmentDisplay extends UndoableAction {
         List<Fig> figs = ce.getSelectionManager().getFigs();
         for (Fig f : figs) {
             
-            if (f instanceof AttributesCompartmentContainer) {
+            final Object modelElement = f.getOwner();
+            if (Model.getUmlFactory().isContainmentValid(
+                    Model.getMetaTypes().getAttribute(), modelElement)) {
                 present++;
                 attrPresent = true;
                 attrVisible = 
@@ -304,12 +307,14 @@ public class ActionCompartmentDisplay extends UndoableAction {
 	Iterator i =
             Globals.curEditor().getSelectionManager().selections().iterator();
 	while (i.hasNext()) {
-	    Selection sel = (Selection) i.next();
-	    Fig       f   = sel.getContent();
+	    final Selection sel = (Selection) i.next();
+	    final Fig f = sel.getContent();
+	    final Object modelElement = f.getOwner();
 
             // Perform the action
             if ((cType & COMPARTMENT_ATTRIBUTE) != 0) {
-		if (f instanceof AttributesCompartmentContainer) {
+		if (Model.getUmlFactory().isContainmentValid(
+		        Model.getMetaTypes().getAttribute(), modelElement)) {
 		    ((AttributesCompartmentContainer) f)
                         .setAttributesVisible(display);
 		}
