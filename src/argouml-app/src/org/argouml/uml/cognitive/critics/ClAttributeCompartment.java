@@ -31,6 +31,7 @@ import java.awt.Rectangle;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
 import org.argouml.ui.Clarifier;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.tigris.gef.presentation.Fig;
@@ -70,7 +71,9 @@ public class ClAttributeCompartment implements Clarifier {
      * int, int)
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-	if (fig instanceof AttributesCompartmentContainer) {
+        final Object modelElement = fig.getOwner();
+        if (Model.getUmlFactory().isContainmentValid(
+                Model.getMetaTypes().getAttribute(), modelElement)) {
 	    AttributesCompartmentContainer fc =
 	        (AttributesCompartmentContainer) fig;
 
@@ -122,16 +125,16 @@ public class ClAttributeCompartment implements Clarifier {
      * @see org.argouml.ui.Clarifier#hit(int, int)
      */
     public boolean hit(int x, int y) {
-	if (!(fig instanceof AttributesCompartmentContainer)) {
-	    LOG.debug("not a FigClass");
-	    return false;
-	}
-	AttributesCompartmentContainer fc =
-	    (AttributesCompartmentContainer) fig;
-	Rectangle fr = fc.getAttributesBounds();
-	boolean res = fr.contains(x, y);
-	fig = null;
-	return res;
+	final Object modelElement = fig.getOwner();
+        if (Model.getUmlFactory().isContainmentValid(
+                Model.getMetaTypes().getAttribute(), modelElement)) {
+            AttributesCompartmentContainer fc =
+                (AttributesCompartmentContainer) fig;
+            Rectangle fr = fc.getAttributesBounds();
+            fig = null;
+            return fr.contains(x, y);
+        }
+        return false;
     }
     /**
      * @return Returns the theInstance.
