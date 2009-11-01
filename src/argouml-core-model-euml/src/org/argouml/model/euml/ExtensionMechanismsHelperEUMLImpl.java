@@ -93,6 +93,16 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
 
     }
 
+    public void applyProfile(Object handle, Object profile) {
+        if (profile instanceof Profile) {
+            if (handle instanceof Package) {
+                ((Model) handle).applyProfile((Profile) profile);
+            } else if (handle instanceof Profile) {
+                ((Profile) handle).applyProfile((Profile) profile);
+            }
+        }
+    }
+
     public Collection getAllPossibleStereotypes(Collection models,
             Object modelElement) {
         List<Stereotype> ret = new ArrayList<Stereotype>();
@@ -224,6 +234,16 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
 
     public void setDataValues(Object handle, String[] value) {
         // TODO: Auto-generated method stub
+    }
+
+    public void unapplyProfile(Object handle, Object profile) {
+        if (profile instanceof Profile) {
+            if (handle instanceof Package) {
+                ((Model) handle).unapplyProfile((Profile) profile);
+            } else if (handle instanceof Profile) {
+                ((Profile) handle).unapplyProfile((Profile) profile);
+            }
+        }
     }
 
     public Object makeProfileApplicable(Object handle) {

@@ -154,4 +154,12 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
     public Object makeProfileApplicable(Object handle) {
         return impl.makeProfileApplicable(handle);
     }
+
+    public void applyProfile(Object handle, Object profile) {
+        impl.applyProfile(handle, profile);
+    }
+
+    public void unapplyProfile(Object handle, Object profile) {
+        impl.unapplyProfile(handle, profile);
+    }
 }

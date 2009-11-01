@@ -247,6 +247,14 @@ public interface ExtensionMechanismsHelper {
     void addTaggedValue(Object handle, Object taggedValue);
 
     /**
+     * Apply a profile to a model or another profile.
+     * 
+     * @param handle The model or profile.
+     * @param profile The to be applied profile.
+     */
+    public void applyProfile(Object handle, Object profile);
+
+    /**
      * Remove a tagged value.
      *
      * @param handle The model element to remove from.
@@ -261,6 +269,14 @@ public interface ExtensionMechanismsHelper {
      * @param taggedValues A Collection of tagged values.
      */
     void setTaggedValue(Object handle, Collection taggedValues);
+
+    /**
+     * Unapply a profile to a model or another profile.
+     * 
+     * @param handle The model or profile.
+     * @param profile The to be unapplied profile.
+     */
+    public void unapplyProfile(Object handle, Object profile);
 
     /**
      * Returns <code>true</code> if the given ModelElement has a Stereotype

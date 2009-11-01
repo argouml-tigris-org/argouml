@@ -356,6 +356,9 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or baseClass: " + baseClass);
     }
 
+    public void applyProfile(Object handle, Object profile) {
+        // do nothing
+    }
 
     public void removeBaseClass(Object handle, Object baseClass) {
         try {
@@ -469,6 +472,9 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + type);
     }
 
+    public void unapplyProfile(Object handle, Object profile) {
+        // do nothing
+    }
 
     public boolean hasStereotype(Object handle, String name) {
         if (name == null || !(handle instanceof ModelElement)) {
