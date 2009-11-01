@@ -174,7 +174,7 @@ public class TestProjectWithProfiles extends TestCase {
         Model.getCoreHelper().setName(foo, "foo");
         Model.getCoreHelper().addStereotype(foo, theStereotype);
         // remove the MetaProfile from the project's profile configuration
-        project.getProfileConfiguration().removeProfile(metaProfile);
+        project.getProfileConfiguration().removeProfile(metaProfile, model);
         // assert that the project's model element that had a dependency to 
         // the MetaProfile doesn't get inconsistent
         theStereotype =
@@ -252,12 +252,12 @@ public class TestProjectWithProfiles extends TestCase {
         profileManager.registerProfile(userDefinedProfile);
         profileManager.addSearchPathDirectory(testCaseDir.getAbsolutePath());
         Project project = ProjectManager.getManager().makeEmptyProject();
-        project.getProfileConfiguration().addProfile(userDefinedProfile);
-        // create a dependency between the project's model and the user defined 
-        // profile
         Object model = project.getUserDefinedModelList().get(0);
         Model.getCoreHelper().setName(model, 
                 "testProjectWithUserDefinedProfilePersistency-model");
+        // create a dependency between the project's model and the user defined 
+        // profile
+        project.getProfileConfiguration().addProfile(userDefinedProfile, model);
         Object fooClass = getCoreFactory().buildClass(
                 "testProjectWithUserDefinedProfilePersistency-class", model);
         Collection stereotypes = getExtensionMechanismsHelper().getStereotypes(
@@ -332,10 +332,10 @@ public class TestProjectWithProfiles extends TestCase {
         profileManager.registerProfile(userDefinedProfile);
         profileManager.addSearchPathDirectory(testCaseDir.getAbsolutePath());
         Project project = ProjectManager.getManager().makeEmptyProject();
-        project.getProfileConfiguration().addProfile(userDefinedProfile);
+        Object model = project.getUserDefinedModelList().get(0);
         // create a dependency between the project's model and the user defined 
         // profile
-        Object model = project.getUserDefinedModelList().get(0);
+        project.getProfileConfiguration().addProfile(userDefinedProfile, model);
         final String className = "Foo4" + testName;
         Object fooClass = getCoreFactory().buildClass(className, model);
         Collection stereotypes = getExtensionMechanismsHelper().getStereotypes(

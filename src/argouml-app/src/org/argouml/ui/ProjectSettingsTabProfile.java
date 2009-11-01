@@ -461,6 +461,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
         assert p != null;
         List<Profile> toRemove = new ArrayList<Profile>();
         ProfileConfiguration pc = p.getProfileConfiguration();
+        Object m = p.getUserDefinedModelList().get(0);
 
         List<Profile> usedItens = new ArrayList<Profile>();
 
@@ -478,12 +479,12 @@ public class ProjectSettingsTabProfile extends JPanel implements
         }
 
         for (Profile profile : toRemove) {
-            pc.removeProfile(profile);
+            pc.removeProfile(profile, m);
         }
 
         for (Profile profile : usedItens) {
             if (!pc.getProfiles().contains(profile)) {
-                pc.addProfile(profile);
+                pc.addProfile(profile, m);
             }
         }
 

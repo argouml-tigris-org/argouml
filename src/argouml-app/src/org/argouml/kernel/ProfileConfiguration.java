@@ -91,8 +91,10 @@ public class ProfileConfiguration extends AbstractProjectMember {
      */
     public ProfileConfiguration(Project project) {
         super(EXTENSION, project);
+        List c = project.getUserDefinedModelList();
+        Object m = c.isEmpty() ? null : c.get(0);
         for (Profile p : ProfileFacade.getManager().getDefaultProfiles()) {
-            addProfile(p);
+            addProfile(p, m);
         }
 
         updateStrategies();
@@ -108,8 +110,10 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public ProfileConfiguration(Project project, 
             Collection<Profile> configuredProfiles) {
         super(EXTENSION, project);
+        List c = project.getUserDefinedModelList();
+        Object m = c.isEmpty() ? null : c.get(0);
         for (Profile profile : configuredProfiles) {
-            addProfile(profile);
+            addProfile(profile, m);
         }
         updateStrategies();
     }
@@ -169,15 +173,20 @@ public class ProfileConfiguration extends AbstractProjectMember {
     }
     
     /**
-     * Applies a new profile to this configuration
+     * Applies a new profile to this configuration and to the given model (or
+     * other profile, which could be later a collection).
      * 
      * @param p the profile to be applied
+     * @param m the model (or profile) to which the profile will be applied
      */
     @SuppressWarnings("unchecked")
-    public void addProfile(Profile p) {
+    public void addProfile(Profile p, Object m) {
         if (!profiles.contains(p)) {
             profiles.add(p);
             try {
+                for (Object profile : p.getProfilePackages()) {
+                    Model.getExtensionMechanismsHelper().applyProfile(m, profile);
+                }
                 profileModels.addAll(p.getProfilePackages());
             } catch (ProfileException e) {
                 LOG.warn("Error retrieving profile's " + p + " packages.", e);
@@ -189,7 +198,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
             }
 
             for (Profile dependency : p.getDependencies()) {
-                addProfile(dependency);
+                addProfile(dependency, m);
             }
 
             updateStrategies();
@@ -207,13 +216,18 @@ public class ProfileConfiguration extends AbstractProjectMember {
     }
 
     /**
-     * Removes the passed profile from the configuration. 
+     * Removes the passed profile from the configuration and unapplies it from
+     * the given model (or other profile, which could be later a collection).
      * 
-     * @param p the profile to be removed
+     * @param p the profile to be removed/unapplied
+     * @param m the model (or profile) to which the profile will be unapplied
      */
-    public void removeProfile(Profile p) {
+    public void removeProfile(Profile p, Object m) {
         profiles.remove(p);
         try {
+            for (Object profile : p.getProfilePackages()) {
+                Model.getExtensionMechanismsHelper().unapplyProfile(m, profile);
+            }
             profileModels.removeAll(p.getProfilePackages());
         } catch (ProfileException e) {
             LOG.error("Exception", e);
@@ -236,7 +250,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
         }
 
         for (Profile profile : markForRemoval) {
-            removeProfile(profile);
+            removeProfile(profile, m);
         }
 
         updateStrategies();
