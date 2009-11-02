@@ -33,19 +33,30 @@ import java.util.List;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
+import org.argouml.uml.diagram.use_case.ui.FigUseCase.FigMyCircle;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 
 /**
  * Class to display graphics for a UML FinalState in a diagram.
+ * <p>
+ * This class supports any line width.
  *
  * @author ics125b spring 98
  */
 public class FigFinalState extends FigStateVertex {
 
-    private static final int WIDTH = 24;
-    private static final int HEIGHT = 24;
+    /**
+     * The diameter of the disc when the line width would be 0
+     */
+    private static final int DISC = 22;
+    
+    /**
+     * The fixed outside diameter.
+     */
+    private static final int DIA = DISC + 2 * LINE_WIDTH;
 
     private FigCircle inCircle;
     private FigCircle outCircle;
@@ -61,22 +72,20 @@ public class FigFinalState extends FigStateVertex {
     public FigFinalState(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        initFigs();
+        initFigs(bounds);
     }
 
-    private void initFigs() {
+    private void initFigs(Rectangle bounds) {
         setEditable(false);
         Color handleColor = Globals.getPrefs().getHandleColor();
-        FigCircle bigPort =
-            new FigCircle(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
         outCircle =
-            new FigCircle(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
+            new FigCircle(X0, Y0, DIA, DIA, LINE_COLOR, FILL_COLOR);
         inCircle =
             new FigCircle(
         		  X0 + 5,
         		  Y0 + 5,
-        		  WIDTH - 10,
-        		  HEIGHT - 10,
+        		  DIA - 10,
+        		  DIA - 10,
         		  handleColor,
         		  LINE_COLOR);
 
@@ -84,12 +93,26 @@ public class FigFinalState extends FigStateVertex {
         outCircle.setLineColor(LINE_COLOR);
         inCircle.setLineWidth(0);
 
-        addFig(bigPort);
+        addFig(getBigPort());
         addFig(outCircle);
         addFig(inCircle);
-        setBigPort(bigPort);
 
         setBlinkPorts(false); //make port invisible unless mouse enters
+
+        /* Set the drop location in the case of D&D: */
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
+
+        setSuppressCalcBounds(false);
+        setBounds(getBounds());
+        enableSizeChecking(true);
+    }
+    
+    @Override
+    protected Fig createBigPortFig() {
+        return new FigMyCircle(X0, Y0, DIA, DIA, 
+                LINE_COLOR, FILL_COLOR);
     }
 
     @Override
@@ -213,11 +236,6 @@ public class FigFinalState extends FigStateVertex {
     }
 
     /**
-     * The UID.
-     */
-    static final long serialVersionUID = -3506578343969467480L;
-
-    /**
      * Return a list of gravity points around the outer circle. Used in place of
      * the default bounding box.
      *
@@ -230,6 +248,8 @@ public class FigFinalState extends FigStateVertex {
 
     /**
      * Override setBounds to keep shapes looking right.
+     * Special care is taken to have the inner circle nicely centered 
+     * within the outer circle.
      * {@inheritDoc}
      */
     @Override
@@ -239,9 +259,23 @@ public class FigFinalState extends FigStateVertex {
         }
         Rectangle oldBounds = getBounds();
 
-        getBigPort().setBounds(x, y, w, h);
-        outCircle.setBounds(x, y, w, h);
-        inCircle.setBounds(x + 5, y + 5, w - 10, h - 10);
+        assert w == h;
+        /* Ignore w and h from here on. */
+
+        int out_d = DISC + 2 * getLineWidth();
+        
+        getBigPort().setBounds(x, y, out_d, out_d);
+        outCircle.setBounds(x, y, out_d, out_d);
+
+        int inner_d = (out_d - 2 * getLineWidth()) - 6;
+        assert (inner_d % 2) == (out_d % 2);
+        // keep d even or odd, just like the line width:
+        inner_d = inner_d - (getLineWidth() % 2);
+        inCircle.setBounds(
+                x + (out_d - inner_d) / 2, 
+                y + (out_d - inner_d) / 2, 
+                inner_d, 
+                inner_d);
 
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
         updateEdges();
