@@ -171,7 +171,19 @@ public class ProfileConfiguration extends AbstractProjectMember {
     public List<Profile> getProfiles() {
         return profiles;
     }
-    
+
+    /**
+     * Applies a new profile to this configuration.
+     * 
+     * @param p the profile to be applied
+     * @deprecated for 0.29.2, because since UML2 a profile must be applied to
+     * a model
+     */
+    @Deprecated
+    public void addProfile(Profile p) {
+        addProfile(p, null);
+    }
+
     /**
      * Applies a new profile to this configuration and to the given model (or
      * other profile, which could be later a collection).
@@ -213,6 +225,18 @@ public class ProfileConfiguration extends AbstractProjectMember {
      */
     private List getProfileModels() {
         return profileModels;
+    }
+
+    /**
+     * Removes the passed profile from this configuration.
+     * 
+     * @param p the profile to be applied
+     * @deprecated for 0.29.2, because since UML2 a profile must be unapplied
+     * from a model
+     */
+    @Deprecated
+    public void removeProfile(Profile p) {
+        removeProfile(p, null);
     }
 
     /**
