@@ -40,6 +40,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.model.ModelCommand;
 import org.argouml.model.ModelCommandCreationObserver;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
@@ -362,6 +364,31 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     }
 
     /**
+     * Apply all profiles from the profile configuration to a model (can be a
+     * profile too).
+     * 
+     * @param project The project with the profile configuration.
+     * @param model The model to apply the profiles to.
+     */
+    private void applyProfileConfiguration(Project project, Object model) {
+        Collection<Profile> c =
+            project.getProfileConfiguration().getProfiles();
+        if (c != null) {
+            for (Profile p : c) {
+                try {
+                    for (Object profile : p.getProfilePackages()) {
+                        Model.getExtensionMechanismsHelper()
+                            .applyProfile(model, profile);
+                    }
+                } catch (ProfileException pe) {
+                    LOG.warn("Failed to get profile packages from profile "
+                            + p.getDisplayName());
+                }
+            }
+        }
+    }
+
+    /**
      * Create the default diagrams for the project. Currently a Class Diagram
      * and a UseCase diagram.
      * 
@@ -425,6 +452,8 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         project.setRoots(roots);
         project.setCurrentNamespace(model);
         project.addMember(model);
+        // finally, apply profile configuration to the model
+        applyProfileConfiguration(project, model);
     }
 
     /**
@@ -442,6 +471,8 @@ public final class ProjectManager implements ModelCommandCreationObserver {
         project.setRoots(roots);
         project.setCurrentNamespace(model);
         project.addMember(model);
+        // finally, apply profile configuration to the model
+        applyProfileConfiguration(project, model);
     }
     
     /**
