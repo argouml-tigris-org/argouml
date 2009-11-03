@@ -36,6 +36,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Profile;
@@ -79,8 +80,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public void addCopyStereotype(Object modelElement, Object stereotype) {
-        // TODO: Auto-generated method stub
-
+        modelImpl.getCoreHelper().addStereotype(modelElement, stereotype);
     }
 
     public void addExtendedElement(Object handle, Object extendedElement) {
@@ -116,6 +116,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         return ret;
     }
 
+    @Deprecated
     public String getMetaModelName(Object m) {
         if (m instanceof Element) {
             return getMetaModelName(m.getClass());
@@ -132,16 +133,58 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public Object getStereotype(Object ns, Object stereo) {
-        // TODO: Auto-generated method stub
+        if (!(ns instanceof Profile)) {
+            throw new IllegalArgumentException("profile"); //$NON-NLS-1$
+        }
+        if (!(stereo instanceof Stereotype)) {
+            throw new IllegalArgumentException("stereotype"); //$NON-NLS-1$
+        }
+        String name = ((Stereotype) stereo).getName();
+        Collection<Class> baseClasses = ((Stereotype) stereo)
+                .getAllExtendedMetaclasses();
+        if (name == null || baseClasses.size() != 1) {
+            return null;
+        }
+        Class baseClass = baseClasses.iterator().next();
+
+        for (Stereotype o : getStereotypes(ns)) {
+            if (name.equals(o.getName())
+                    && o.getAllExtendedMetaclasses().contains(baseClass)) {
+                return o;
+            }
+        }
         return null;
     }
 
     public Object getStereotype(Collection models, Object stereo) {
-        // TODO: Auto-generated method stub
+        if (stereo == null) {
+            throw new IllegalArgumentException("null argument"); //$NON-NLS-1$
+        }
+        if (!(stereo instanceof Stereotype)) {
+            throw new IllegalArgumentException("stereotype"); //$NON-NLS-1$
+        }
+        String name = ((Stereotype) stereo).getName();
+        Collection<Class> baseClasses = ((Stereotype) stereo)
+                .getAllExtendedMetaclasses();
+        if (name == null || baseClasses.size() != 1) {
+            return null;
+        }
+        Class baseClass = baseClasses.iterator().next();
+
+        for (Model model : ((Collection<Model>) models)) {
+            // TODO: this should call the single namespace form
+            // getStereotype(it2.next(); stereo);
+            for (Stereotype o : getStereotypes(model)) {
+                if (name.equals(o.getName())
+                        && o.getAllExtendedMetaclasses().contains(baseClass)) {
+                    return o;
+                }
+            }
+        }
         return null;
     }
 
-    public Collection getStereotypes(Object ns) {
+    public Collection<Stereotype> getStereotypes(Object ns) {
         List<Stereotype> l = new ArrayList<Stereotype>();
         if (ns instanceof Profile) {
             Iterator iter = ((Profile) ns).getOwnedStereotypes().iterator();
@@ -169,17 +212,53 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public boolean hasStereotype(Object handle, String name) {
-        // TODO: Auto-generated method stub
+        if (name == null || !(handle instanceof Element)) {
+            throw new IllegalArgumentException();
+        }
+        Element element = (Element) handle;
+        if (element.getAppliedStereotype(name) != null) {
+            return true;
+        }
         return false;
     }
 
     public boolean isStereotype(Object object, String name, String base) {
-        // TODO: Auto-generated method stub
+        if (!(object instanceof Stereotype)) {
+            return false;
+        }
+        Stereotype st = (Stereotype) object;
+        if (name == null && st.getName() != null) {
+            return false;
+        }
+        if (base == null && !(st.getAllExtendedMetaclasses().isEmpty())) {
+            return false;
+        }
+        for (Class c : st.getAllExtendedMetaclasses()) {
+            if (c.getName().equals(name)) {
+                return true;
+            }
+        }
         return false;
     }
 
     public boolean isStereotypeInh(Object object, String name, String base) {
-        // TODO: Auto-generated method stub
+        if (!(object instanceof Stereotype)) {
+            return false;
+        }
+        if (isStereotype(object, name, base)) {
+            return true;
+        }
+        /*
+         * TODO: mvw: do we really look into super-types of the stereotype, or
+         * should we be looking into super-types of the baseclass?
+         */
+        Iterator it = modelImpl.getCoreHelper().getSupertypes(object)
+                .iterator();
+        while (it.hasNext()) {
+            if (isStereotypeInh(it.next(), name, base)) {
+                return true;
+            }
+        }
         return false;
     }
 
