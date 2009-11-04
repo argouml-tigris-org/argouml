@@ -42,6 +42,7 @@ import org.argouml.dev.test.TestPanel;
 import org.argouml.moduleloader.DetailsTabProvider;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.ui.AboutBox;
+import org.argouml.ui.ContextActionFactoryManager;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.undo.UndoManager;
 
@@ -107,6 +108,9 @@ public final class DeveloperModule implements ModuleInterface,
         lbl1.setHorizontalAlignment(SwingConstants.CENTER);
         tab.add(lbl1, BorderLayout.NORTH);
         AboutBox.addAboutTab(aboutName, tab);
+        
+        ContextActionFactoryManager.addContextPopupFactory(
+                new DevActionFactory());
 
         return true;
     }
