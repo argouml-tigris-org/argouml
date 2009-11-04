@@ -1153,7 +1153,15 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void removeStereotype(Object handle, Object stereo) {
-        throw new NotYetImplementedException();
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Element"); //$NON-NLS-1$
+        }
+        if (!(stereo instanceof Stereotype)) {
+            throw new IllegalArgumentException(
+                    "stereo must be instance of Stereotype"); //$NON-NLS-1$
+        }
+        ((Element) handle).unapplyStereotype((Stereotype) stereo);
     }
 
     public void removeSupplierDependency(final Object supplier,

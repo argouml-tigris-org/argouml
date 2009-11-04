@@ -1268,8 +1268,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getStereotypes(Object handle) {
-        // TODO: Changed to Profiles::Class::extension in UML 2.x?
-        return Collections.EMPTY_SET;
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException();
+        }
+        return ((Element) handle).getAppliedStereotypes();
     }
 
     public Collection getStimuli(Object handle) {
