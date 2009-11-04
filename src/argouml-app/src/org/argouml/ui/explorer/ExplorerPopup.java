@@ -48,6 +48,7 @@ import org.argouml.model.Model;
 import org.argouml.profile.Profile;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.ActionCreateEdgeModelElement;
+import org.argouml.ui.ContextActionFactoryManager;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramUtils;
@@ -211,6 +212,8 @@ public class ExplorerPopup extends JPopupMenu {
             initMenuCreateDiagrams();
             this.add(createDiagrams);
         }
+        
+        initMenuCreateModuleActions();
 
         if (mutableModelElementsOnly) {
             initMenuCreateModelElements();
@@ -481,6 +484,14 @@ public class ExplorerPopup extends JPopupMenu {
             for (JMenuItem item : menuItems) {
                 menu.add(item);
             }
+        }
+    }
+    
+    private void initMenuCreateModuleActions() {
+        final List<Action> modelElementMenuItems = 
+            ContextActionFactoryManager.getContextPopupActions();
+        for (Action a : modelElementMenuItems) {
+            add(a);
         }
     }
     

@@ -80,6 +80,7 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.NotationSettings;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
+import org.argouml.ui.ContextActionFactoryManager;
 import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
@@ -308,6 +309,13 @@ public abstract class FigEdgeModelElement
     public Vector getPopUpActions(MouseEvent me) {
         ActionList popUpActions =
             new ActionList(super.getPopUpActions(me), isReadOnly());
+        
+        // Added this part to load the extra menu content
+        final List<Action> modulesActions =
+            ContextActionFactoryManager.getContextPopupActions();
+        if(modulesActions!=null && modulesActions.size()>0){
+            popUpActions.addAll(modulesActions);
+        }
         
         // popupAddOffset should be equal to the number of items added here:
         popUpActions.add(new JSeparator());

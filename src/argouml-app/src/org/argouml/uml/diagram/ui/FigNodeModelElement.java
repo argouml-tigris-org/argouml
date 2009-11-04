@@ -83,6 +83,7 @@ import org.argouml.notation.NotationSettings;
 import org.argouml.profile.FigNodeStrategy;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
+import org.argouml.ui.ContextActionFactoryManager;
 import org.argouml.ui.ProjectActions;
 import org.argouml.ui.UndoableAction;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -586,6 +587,12 @@ public abstract class FigNodeModelElement
         ActionList popUpActions =
             new ActionList(super.getPopUpActions(me), isReadOnly());
 
+        final List<Action> modulesActions =
+            ContextActionFactoryManager.getContextPopupActions();
+        if(modulesActions!=null && modulesActions.size()>0){
+            popUpActions.addAll(modulesActions);
+        }
+        
         // Show ...
         ArgoJMenu show = buildShowPopUp();
         if (show.getMenuComponentCount() > 0) {
