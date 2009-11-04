@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import org.argouml.model.Model;
 import org.argouml.ui.ContextActionFactory;
@@ -45,15 +47,17 @@ public class DevActionFactory implements ContextActionFactory {
         List list = null;
         if (Model.getFacade().isAClass(element)) {
             list = new ArrayList(1);
-            list.add(new TestAction("Test Action"));
+            Icon img = new ImageIcon(
+                    ClassLoader.getSystemResource("org/argouml/dev/test.gif"));
+            list.add(new TestAction("Test Action", img));
         }
         return list;
     }
 
     class TestAction extends AbstractAction {
 
-        public TestAction(String name) {
-            super(name);
+        public TestAction(String name, Icon icon) {
+            super(name, icon);
         }
         
         public void actionPerformed(ActionEvent arg0) {
