@@ -121,7 +121,11 @@ public class ProfileUML extends Profile {
 
         if (model == null) {
             model = new ArrayList();
-            model.add(Model.getModelManagementFactory().createModel());
+            model.add(Model.getModelManagementFactory().createProfile());
+        }
+        
+        for (Object p : model) {
+            Model.getExtensionMechanismsHelper().makeProfileApplicable(p);
         }
         
         loadWellFormednessRules();
