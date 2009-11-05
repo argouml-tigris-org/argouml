@@ -53,6 +53,7 @@ import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.model.Model;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.profile.ProfileFacade;
@@ -338,7 +339,8 @@ public class SettingsTabProfile extends JPanel implements
                 Profile selected = (Profile) modelUsd.getElementAt(defaultList
                         .getSelectedIndex());
                 
-                if (selected == ProfileFacade.getManager().getUMLProfile()) {
+                if (selected == ProfileFacade.getManager().getUMLProfile()
+                        && Model.getFacade().getUmlVersion().charAt(0) != '1') {
                     JOptionPane.showMessageDialog(this, Translator
                             .localize("tab.profiles.cantremoveuml"));
                 } else {

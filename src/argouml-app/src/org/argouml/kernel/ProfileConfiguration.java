@@ -93,8 +93,11 @@ public class ProfileConfiguration extends AbstractProjectMember {
         super(EXTENSION, project);
         List c = project.getUserDefinedModelList();
         Object m = c.isEmpty() ? null : c.get(0);
-        for (Profile p : ProfileFacade.getManager().getDefaultProfiles()) {
-            addProfile(p, m);
+        if (project.getProjectType() != Project.PROFILE_PROJECT) {
+            // a profile initially has no applied profiles, we go bottom-up
+            for (Profile p : ProfileFacade.getManager().getDefaultProfiles()) {
+                addProfile(p, m);
+            }
         }
 
         updateStrategies();
