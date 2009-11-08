@@ -204,13 +204,13 @@ public class ActionCompartmentDisplay extends UndoableAction {
         List<Fig> figs = ce.getSelectionManager().getFigs();
         for (Fig f : figs) {
             
-            final Object modelElement = f.getOwner();
-            if (Model.getUmlFactory().isContainmentValid(
-                    Model.getMetaTypes().getAttribute(), modelElement)) {
+            final FigCompartmentBox fcb = (FigCompartmentBox) f;
+            final FigCompartment attributeCompartment =
+                fcb.getCompartment(Model.getMetaTypes().getAttribute());
+            if (attributeCompartment != null) {
                 present++;
                 attrPresent = true;
-                attrVisible = 
-                    ((AttributesCompartmentContainer) f).isAttributesVisible();
+                attrVisible = attributeCompartment.isVisible();
                 if (attrVisible) {
                     visible++;
                 }
@@ -309,14 +309,14 @@ public class ActionCompartmentDisplay extends UndoableAction {
 	while (i.hasNext()) {
 	    final Selection sel = (Selection) i.next();
 	    final Fig f = sel.getContent();
-	    final Object modelElement = f.getOwner();
 
             // Perform the action
             if ((cType & COMPARTMENT_ATTRIBUTE) != 0) {
-		if (Model.getUmlFactory().isContainmentValid(
-		        Model.getMetaTypes().getAttribute(), modelElement)) {
-		    ((AttributesCompartmentContainer) f)
-                        .setAttributesVisible(display);
+                final FigCompartmentBox fcb = (FigCompartmentBox) f;
+                final FigCompartment attributeCompartment =
+                    fcb.getCompartment(Model.getMetaTypes().getAttribute());
+		if (attributeCompartment != null) {
+		    fcb.setCompartmentVisible(attributeCompartment, display);
 		}
             }
             if ((cType & COMPARTMENT_OPERATION) != 0) {

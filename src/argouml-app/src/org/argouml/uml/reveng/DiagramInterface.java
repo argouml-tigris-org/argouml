@@ -39,6 +39,7 @@ import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
+import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.LayerPerspective;
@@ -304,11 +305,7 @@ public class DiagramInterface {
 
             newFig.setOperationsVisible(!minimise);
             if (Model.getFacade().isAClass(classifier)) {
-                // TODO We should be able to replace method calls on
-                // AttributesCompartmentContainer with the likes of
-                // newFig.getCompartment(Model.getMetaTypes().getAttribute()).setVisible(!minimise);
-                ((AttributesCompartmentContainer) newFig).setAttributesVisible(
-                        !minimise);
+                newFig.setAttributesVisible(!minimise);
             }
 
             newFig.renderingChanged();

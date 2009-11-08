@@ -549,12 +549,17 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     }
 
     /**
+     * TODO: This functionality is in the worn place. We should be able to
+     * call setVisible on the compartment itself and then this class should
+     * react to that event.
+     * Improvements will follow in later releases.
+     * Hence this method should not be considered stable for module developers.
      * @param compartment the compartment to be changed
      * @param isVisible true if the attribute compartment is visible
      *
      * @see org.argouml.uml.diagram.AttributesCompartmentContainer#setAttributesVisible(boolean)
      */
-    protected void setCompartmentVisible(FigCompartment compartment,
+    public void setCompartmentVisible(FigCompartment compartment,
             boolean isVisible) {
         Rectangle rect = getBounds();
         if (compartment.isVisible()) {

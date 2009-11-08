@@ -29,6 +29,11 @@ import java.awt.Rectangle;
 /**
  * An interface to be implemented by any Fig that contains
  * a FigAttributesCompartment.
+ * @deprecated in 0.29.2 by Bob Tarling. We can't assume at compile time what
+ * Figs contain what compartments. This is proved in the UML1.4 to UML2 conversion
+ * where UML1.4 does not want this interface for FigInterface but UML2 does.
+ * Use FigCompartment.getCompartment(Object metaType) to fetch a compartment
+ * and check the existence and methods of the returned object.
  * @author Bob Tarling
  */
 public interface AttributesCompartmentContainer {

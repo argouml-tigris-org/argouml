@@ -30,9 +30,11 @@ import java.beans.PropertyChangeEvent;
 import javax.swing.JCheckBox;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.ui.StylePanelFigNodeModelElement;
-import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
+import org.argouml.uml.diagram.ui.FigCompartment;
+import org.argouml.uml.diagram.ui.FigCompartmentBox;
 
 /**
  * Stylepanel which adds an attributes and operations checkbox and depends on
@@ -94,10 +96,11 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     public void refresh() {
         refreshTransaction = true;
         super.refresh();
-        AttributesCompartmentContainer ac =
-                (AttributesCompartmentContainer) getPanelTarget();
-        attrCheckBox.setSelected(ac.isAttributesVisible());
-        OperationsCompartmentContainer oc =
+        final FigCompartmentBox fcb = (FigCompartmentBox) getPanelTarget();
+        final FigCompartment attributeCompartment =
+            fcb.getCompartment(Model.getMetaTypes().getAttribute());
+        attrCheckBox.setSelected(attributeCompartment.isVisible());
+        final OperationsCompartmentContainer oc =
                 (OperationsCompartmentContainer) getPanelTarget();
         operCheckBox.setSelected(oc.isOperationsVisible());
         refreshTransaction = false;
@@ -114,8 +117,10 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
             Object src = e.getSource();
 
             if (src == attrCheckBox) {
-                ((AttributesCompartmentContainer) getPanelTarget())
-                    .setAttributesVisible(attrCheckBox.isSelected());
+                FigCompartmentBox fcb = (FigCompartmentBox) getPanelTarget();
+                FigCompartment fc =
+                    fcb.getCompartment(Model.getMetaTypes().getAttribute());
+                fcb.setCompartmentVisible(fc, attrCheckBox.isSelected());
             } else if (src == operCheckBox) {
                 ((OperationsCompartmentContainer) getPanelTarget())
                     .setOperationsVisible(operCheckBox.isSelected());

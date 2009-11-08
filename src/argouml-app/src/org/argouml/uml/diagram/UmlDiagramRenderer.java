@@ -28,6 +28,8 @@ import java.util.Map;
 
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ui.FigCompartment;
+import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
@@ -180,8 +182,10 @@ public abstract class UmlDiagramRenderer
                 ((OperationsCompartmentContainer) fig)
                     .setOperationsVisible(value.equalsIgnoreCase("true"));
             } else if ("attributesVisible".equals(name)) {
-                ((AttributesCompartmentContainer) fig)
-                    .setAttributesVisible(value.equalsIgnoreCase("true"));
+                FigCompartmentBox fcb = (FigCompartmentBox) fig;
+                FigCompartment fc =
+                    fcb.getCompartment(Model.getMetaTypes().getAttribute());
+                fcb.setCompartmentVisible(fc, value.equalsIgnoreCase("true"));
             }
         }
     }

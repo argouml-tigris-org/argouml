@@ -29,11 +29,11 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import org.apache.log4j.Logger;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
 import org.argouml.ui.Clarifier;
-import org.argouml.uml.diagram.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.ui.FigCompartment;
+import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -42,9 +42,6 @@ import org.tigris.gef.presentation.Fig;
  *
  */
 public class ClAttributeCompartment implements Clarifier {
-
-    private static final Logger LOG =
-	Logger.getLogger(ClAttributeCompartment.class);
 
     private static ClAttributeCompartment theInstance =
 	new ClAttributeCompartment();
@@ -74,18 +71,19 @@ public class ClAttributeCompartment implements Clarifier {
         final Object modelElement = fig.getOwner();
         if (Model.getUmlFactory().isContainmentValid(
                 Model.getMetaTypes().getAttribute(), modelElement)) {
-	    AttributesCompartmentContainer fc =
-	        (AttributesCompartmentContainer) fig;
+            FigCompartmentBox fcb = (FigCompartmentBox) fig;
+            FigCompartment fc =
+                fcb.getCompartment(Model.getMetaTypes().getAttribute());
 
 	    // added by Eric Lefevre 13 Mar 1999: we must check if the
 	    // FigText for attributes is drawn before drawing things
 	    // over it
-	    if (!fc.isAttributesVisible()) {
+	    if (fc == null || !fc.isVisible()) {
 		fig = null;
 		return;
 	    }
 
-	    Rectangle fr = fc.getAttributesBounds();
+	    Rectangle fr = fc.getBounds();
 	    int left  = fr.x + 6;
 	    int height = fr.y + fr.height - 5;
 	    int right = fr.x + fr.width - 6;
@@ -94,18 +92,26 @@ public class ClAttributeCompartment implements Clarifier {
 	    while (true) {
 		g.drawLine(i, height, i + WAVE_LENGTH, height + WAVE_HEIGHT);
 		i += WAVE_LENGTH;
-		if (i >= right) break;
+		if (i >= right) {
+		    break;
+		}
 		g.drawLine(i, height + WAVE_HEIGHT, i + WAVE_LENGTH, height);
 		i += WAVE_LENGTH;
-		if (i >= right) break;
+		if (i >= right) {
+		    break;
+		}
 		g.drawLine(i, height, i + WAVE_LENGTH,
 			   height + WAVE_HEIGHT / 2);
 		i += WAVE_LENGTH;
-		if (i >= right) break;
+		if (i >= right) {
+		    break;
+		}
 		g.drawLine(i, height + WAVE_HEIGHT / 2, i + WAVE_LENGTH,
 			   height);
 		i += WAVE_LENGTH;
-		if (i >= right) break;
+		if (i >= right) {
+		    break;
+		}
 	    }
 	    fig = null;
 	}
@@ -128,9 +134,10 @@ public class ClAttributeCompartment implements Clarifier {
 	final Object modelElement = fig.getOwner();
         if (Model.getUmlFactory().isContainmentValid(
                 Model.getMetaTypes().getAttribute(), modelElement)) {
-            AttributesCompartmentContainer fc =
-                (AttributesCompartmentContainer) fig;
-            Rectangle fr = fc.getAttributesBounds();
+            FigCompartmentBox fcb = (FigCompartmentBox) fig;
+            FigCompartment fc =
+                fcb.getCompartment(Model.getMetaTypes().getAttribute());
+            Rectangle fr = fc.getBounds();
             fig = null;
             return fr.contains(x, y);
         }

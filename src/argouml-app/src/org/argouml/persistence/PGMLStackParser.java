@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.DiagramEdgeSettings;
@@ -45,6 +46,8 @@ import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.PathContainer;
 import org.argouml.uml.diagram.StereotypeContainer;
 import org.argouml.uml.diagram.VisibilityContainer;
+import org.argouml.uml.diagram.ui.FigCompartment;
+import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigEdgePort;
 import org.tigris.gef.base.Diagram;
@@ -312,8 +315,10 @@ class PGMLStackParser
                 ((OperationsCompartmentContainer) fig)
                     .setOperationsVisible(value.equalsIgnoreCase("true"));
             } else if ("attributesVisible".equals(name)) {
-                ((AttributesCompartmentContainer) fig)
-                    .setAttributesVisible(value.equalsIgnoreCase("true"));
+                FigCompartmentBox fcb = (FigCompartmentBox) fig;
+                FigCompartment fc =
+                    fcb.getCompartment(Model.getMetaTypes().getAttribute());
+                fcb.setCompartmentVisible(fc, value.equalsIgnoreCase("true"));
             } else if ("stereotypeVisible".equals(name)) {
                 ((StereotypeContainer) fig)
                     .setStereotypeVisible(value.equalsIgnoreCase("true"));
