@@ -94,4 +94,14 @@ public class FigAttributesCompartment extends FigEditableCompartment {
     public String getName() {
         return "attributes";
     }
+    
+    
+    /**
+     * Returns the meta type for Attribute to indicate the type of model
+     * element within this compartment.
+     * @return a model element type
+     */
+    public Object getCompartmentType() {
+        return Model.getMetaTypes().getAttribute();
+    }
 }

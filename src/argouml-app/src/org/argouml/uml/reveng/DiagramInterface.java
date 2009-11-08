@@ -303,7 +303,10 @@ public class DiagramInterface {
             currentLayer.putInPosition(newFig);
 
             newFig.setOperationsVisible(!minimise);
-            if (Model.getFacade().isAClass(classifier)) {            
+            if (Model.getFacade().isAClass(classifier)) {
+                // TODO We should be able to replace method calls on
+                // AttributesCompartmentContainer with the likes of
+                // newFig.getCompartment(Model.getMetaTypes().getAttribute()).setVisible(!minimise);
                 ((AttributesCompartmentContainer) newFig).setAttributesVisible(
                         !minimise);
             }

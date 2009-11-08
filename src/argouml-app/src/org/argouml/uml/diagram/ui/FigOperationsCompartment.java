@@ -102,5 +102,13 @@ public class FigOperationsCompartment extends FigEditableCompartment {
     public String getName() {
         return "operations";
     }
-
+    
+    /**
+     * Returns the meta type for Operation to indicate the type of model
+     * element within this compartment.
+     * @return a model element type
+     */
+    public Object getCompartmentType() {
+        return Model.getMetaTypes().getOperation();
+    }
 }

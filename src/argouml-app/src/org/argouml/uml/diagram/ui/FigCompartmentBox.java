@@ -153,6 +153,23 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         super(owner, bounds, settings);
         initialize();
     }
+    
+    /**
+     * Get the compartment that lists model elements of the given type.
+     * This can also be used to test of a Fig contains a particular type
+     * of compartment by checking for a null return.
+     * @param metaType the model element type for which the compartment is
+     * required.
+     * @return a compartment fig or null if the compartment is not contained.
+     */
+    public FigCompartment getCompartment(Object metaType) {
+        for (FigCompartment f : compartments) {
+            if (f.getCompartmentType() == metaType) {
+                return f;
+            }
+        }
+        return null;
+    }
 
     @Override
     public void addFig(Fig fig) {

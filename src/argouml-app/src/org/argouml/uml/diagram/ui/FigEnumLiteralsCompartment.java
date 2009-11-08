@@ -101,4 +101,13 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
         /* TODO: The UML does not seem to define this name. Or is it? */
         return "enumeration literals";
     }
+    
+    /**
+     * Returns the meta type for Enumeration-Literal to indicate the type of
+     * model element within this compartment.
+     * @return a model element type
+     */
+    public Object getCompartmentType() {
+        return Model.getMetaTypes().getEnumerationLiteral();
+    }
 }

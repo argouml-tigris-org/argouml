@@ -81,5 +81,13 @@ public class FigExtensionPointsCompartment extends FigEditableCompartment {
     public String getName() {
          return "extension points";
     }
-
+    
+    /**
+     * Returns the meta type for ExtensionPoint to indicate the type of model
+     * element within this compartment.
+     * @return a model element type
+     */
+    public Object getCompartmentType() {
+        return Model.getMetaTypes().getExtensionPoint();
+    }
 }

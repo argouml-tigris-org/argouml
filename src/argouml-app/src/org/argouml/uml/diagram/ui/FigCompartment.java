@@ -188,4 +188,10 @@ public abstract class FigCompartment extends ArgoFigGroup {
      */
     public abstract String getName();
     
+    /**
+     * Implemented in the subclass to indicate the primary type of model element
+     * the compartment is designed to hold.
+     * @return a model element type
+     */
+    public abstract Object getCompartmentType();
 }
