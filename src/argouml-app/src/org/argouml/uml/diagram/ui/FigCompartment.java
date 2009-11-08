@@ -194,4 +194,9 @@ public abstract class FigCompartment extends ArgoFigGroup {
      * @return a model element type
      */
     public abstract Object getCompartmentType();
+    
+    /**
+     * The concrete Fig implements this to build all the child Figs
+     */
+    public abstract void populate();
 }

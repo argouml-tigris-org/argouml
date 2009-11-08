@@ -29,6 +29,7 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.tigris.gef.base.Selection;
 
 /**
@@ -72,7 +73,10 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
         /* Stereotype covers NameFig: */
         addFig(getStereotypeFig());
         /* Compartments from top to bottom: */
-        addFig(getAttributesCompartment());
+        addFig(new FigAttributesCompartment(
+                getOwner(),
+                DEFAULT_COMPARTMENT_BOUNDS, 
+                getSettings()));
         addFig(getOperationsFig());
         addFig(getBorderFig());
 

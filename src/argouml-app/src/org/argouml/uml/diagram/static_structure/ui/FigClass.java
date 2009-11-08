@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
@@ -77,7 +78,10 @@ public class FigClass extends FigClassifierBoxWithAttributes {
         /* Stereotype covers NameFig: */
         addFig(getStereotypeFig());
         /* Compartments from top to bottom: */
-        addFig(getAttributesCompartment());
+        addFig(new FigAttributesCompartment(
+                getOwner(),
+                DEFAULT_COMPARTMENT_BOUNDS, 
+                getSettings()));
         addFig(getOperationsFig());
         addFig(getBorderFig());
         
@@ -140,10 +144,10 @@ public class FigClass extends FigClassifierBoxWithAttributes {
         do {
             i--;
             while (i < 1) {
-                if (fgVec == getAttributesCompartment()) {
+                if (fgVec == getAttributesFig()) {
                     fgVec = getOperationsFig();
                 } else {
-                    fgVec = getAttributesCompartment();
+                    fgVec = getAttributesFig();
                 }
                 figs = fgVec.getFigs();
                 i = figs.size() - 1;
@@ -174,10 +178,10 @@ public class FigClass extends FigClassifierBoxWithAttributes {
         do {
             i++;
             while (i >= v.size()) {
-                if (fgVec == getAttributesCompartment()) {
+                if (fgVec == getAttributesFig()) {
                     fgVec = getOperationsFig();
                 } else {
-                    fgVec = getAttributesCompartment();
+                    fgVec = getAttributesFig();
                 }
                 v = new ArrayList(fgVec.getFigs());
                 i = 1;

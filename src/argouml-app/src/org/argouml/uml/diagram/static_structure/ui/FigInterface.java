@@ -33,6 +33,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 
@@ -67,7 +68,16 @@ public class FigInterface extends FigClassifierBox {
         addFig(getNameFig());
         // stereotype fig covers the name fig:
         addFig(getStereotypeFig());
-        /* Only one compartment: */
+        // Only add an attribute compartment if its valid for this
+        // container
+        if (Model.getUmlFactory().isContainmentValid(
+                Model.getMetaTypes().getAttribute(),
+                getOwner())) {
+            addFig(new FigAttributesCompartment(
+                    getOwner(),
+                    DEFAULT_COMPARTMENT_BOUNDS, 
+                    getSettings()));
+        }
         addFig(getOperationsFig());
         addFig(getBorderFig());
 

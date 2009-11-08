@@ -44,6 +44,7 @@ import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
+import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
 import org.argouml.uml.ui.foundation.core.ActionAddOperation;
@@ -64,11 +65,6 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      * The Fig for the operations compartment (if any).
      */
     private FigOperationsCompartment operationsFigCompartment;
-    
-    /**
-     * The Fig for the attributes compartment (if any).
-     */
-    private FigAttributesCompartment attributesFigCompartment;
     
     /**
      * Initialization shared by all constructors.
@@ -224,63 +220,48 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     
     /**
      * @return The graphics for the UML attributes (if any).
-     * @deprecated in 0.29.1 use getAttributesCompartment
+     * @deprecated in 0.29.1 use
+     * getCompartment(Model.getUmlFactory(Model.getMetaTypes(),getAttribute()))
+     * to determine if an attribute compartment exists and return it.
+     * The attributesCompartment should be created by the concrete class
      */
     protected FigAttributesCompartment getAttributesFig() {
-        return getAttributesCompartment();
-    }
-    
-    public Rectangle getAttributesBounds() {
-        return getAttributesCompartment().getBounds();
-    }
-
-    public boolean isAttributesVisible() {
-        return attributesFigCompartment != null 
-            && attributesFigCompartment.isVisible();
+        FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());
+        return (FigAttributesCompartment) fc;
     }
     
     /**
-     * Updates the attributes in the fig. Called from modelchanged if there is
-     * a modelEvent effecting the attributes and from renderingChanged in all
-     * cases.
-     * TODO: Looks like this should be private - Bob.
+     * @deprecated by Bob Tarling in 0.29.2 use
+     * getCompartment(Model.getMetaTypes().getAttribute()).getBounds()
+     * @return the bounds
      */
-    protected void updateAttributes() {
-        if (!isAttributesVisible()) {
-            return;
-        }
-        attributesFigCompartment.populate();
+    @Deprecated
+    public Rectangle getAttributesBounds() {
+        return getAttributesFig().getBounds();
+    }
 
-        // TODO: make setBounds, calcBounds and updateBounds consistent
-        setBounds(getBounds());
+    /**
+     * @deprecated by Bob Tarling in 0.29.2 use
+     * getCompartment(Model.getMetaTypes().getAttribute()).isVisible()
+     * @return the visibility
+     */
+    @Deprecated
+    public boolean isAttributesVisible() {
+        FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());
+        return fc != null && fc.isVisible();
     }
     
     /**
+     * TODO: Should not be on this class as we don't know if we'll have
+     * attributes
      * @param isVisible true if the attribute compartment is visible
-     *
-     * @see org.argouml.uml.diagram.AttributesCompartmentContainer#setAttributesVisible(boolean)
+     * @deprecated by Bob Tarling in 0.29.2 use setCompartmentVisible
      */
     public void setAttributesVisible(boolean isVisible) {
-        setCompartmentVisible(attributesFigCompartment, isVisible);
+        final FigCompartment afc =
+            getCompartment(Model.getMetaTypes().getAttribute());
+        setCompartmentVisible(afc, isVisible);
     }
-
-    /**
-     * @return the Fig for the Attribute compartment
-     */
-    public FigAttributesCompartment getAttributesCompartment() {
-        // Set bounds will be called from our superclass constructor before
-        // our constructor has run, so make sure this gets set up if needed.
-        if (attributesFigCompartment == null) {
-            attributesFigCompartment = new FigAttributesCompartment(
-                    getOwner(),
-                    DEFAULT_COMPARTMENT_BOUNDS, 
-                    getSettings());
-        }
-        return attributesFigCompartment;
-    }
-    
-    
-    
     
     /*
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
@@ -350,12 +331,20 @@ public abstract class FigClassifierBox extends FigCompartmentBox
 
     /**
      * USED BY PGML.tee.
+     * TODO We should loop round the compartments to build this string. That
+     * way we have no attribute/operation knowledge at this level.
      * @return the class name and bounds together with compartment
      * visibility.
      */
     public String classNameAndBounds() {
-        return super.classNameAndBounds()
+        String classNameAndBounds =  super.classNameAndBounds()
             + "operationsVisible=" + isOperationsVisible() + ";";
+        FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());
+        if (fc != null) {
+            classNameAndBounds += 
+                "attributesVisible=" + fc.isVisible() + ";";
+        }
+        return classNameAndBounds;
     }
 
     

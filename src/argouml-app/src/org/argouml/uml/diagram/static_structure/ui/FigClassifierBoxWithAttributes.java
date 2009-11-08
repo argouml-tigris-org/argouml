@@ -40,6 +40,7 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
+import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 
 /**
@@ -60,7 +61,6 @@ public abstract class FigClassifierBoxWithAttributes extends FigClassifierBox
     public FigClassifierBoxWithAttributes(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        getAttributesCompartment(); // this creates the compartment fig
     }
 
     /*
@@ -177,5 +177,15 @@ public abstract class FigClassifierBoxWithAttributes extends FigClassifierBox
             }
         }
     }
+    
+    protected void updateAttributes() {
+        FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());
+        if (!fc.isVisible()) {
+            return;
+        }
+        fc.populate();
 
+        // TODO: make setBounds, calcBounds and updateBounds consistent
+        setBounds(getBounds());
+    }
 }
