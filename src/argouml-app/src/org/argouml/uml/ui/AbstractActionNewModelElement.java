@@ -26,6 +26,7 @@
 package org.argouml.uml.ui;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
@@ -60,6 +61,20 @@ public abstract class AbstractActionNewModelElement extends UndoableAction {
     protected AbstractActionNewModelElement(String name) {
         super(Translator.localize(name), 
                 ResourceLoaderWrapper.lookupIcon(name));
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize(name));
+    }
+
+    /**
+     * The constructor. This is provided for module developers to extend
+     * this action for their own purposes with their own icon.
+     *
+     * @param name the to be localized name of the action
+     * @param the icon to represent this action visiually
+     */
+    protected AbstractActionNewModelElement(String name, Icon icon) {
+        super(Translator.localize(name), icon);
         // Set the tooltip string:
         putValue(Action.SHORT_DESCRIPTION, 
                 Translator.localize(name));
