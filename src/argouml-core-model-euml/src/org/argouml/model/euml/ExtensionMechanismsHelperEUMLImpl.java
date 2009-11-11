@@ -67,12 +67,21 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     public void addBaseClass(Object handle, Object baseClass) {
         if (handle instanceof Stereotype) {
             org.eclipse.uml2.uml.Class metaclass = getMetaclass(baseClass);
-            Profile profile = ((Stereotype) handle).getProfile();
+            Profile profile = (Profile) modelImpl.getFacade().getRoot(handle);
             if (metaclass != null && profile != null) {
                 profile.createMetaclassReference(metaclass);
                 Stereotype st = (Stereotype) handle;
-                st.createExtension(metaclass, false);
-                return;
+                if (st.getProfile() != null) {
+                    st.createExtension(metaclass, false);
+                    return;
+                } else if (st.getPackage() != null){
+                    // TODO: check if this hack is ok
+                    org.eclipse.uml2.uml.Package p = st.getPackage();
+                    st.setPackage(profile);
+                    st.createExtension(metaclass, false);
+                    st.setPackage(p);
+                    return;
+                }
             }
         }
         throw new IllegalArgumentException(
@@ -275,7 +284,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     public void removeBaseClass(Object handle, Object baseClass) {
         if (handle instanceof Stereotype) {
             org.eclipse.uml2.uml.Class metaclass = getMetaclass(baseClass);
-            Profile profile = ((Stereotype) handle).getProfile();
+            Profile profile = (Profile) modelImpl.getFacade().getRoot(handle);
             if (metaclass != null && profile != null) {
                 Stereotype st = (Stereotype) handle;
                 st.getExtension(metaclass.getName());
