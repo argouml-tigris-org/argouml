@@ -150,11 +150,6 @@ public class TestZargoFilePersister extends TestCase {
     public void testDoLoadUml14() throws Exception {
         Project p = doLoad("/testmodels/uml14/Alittlebitofeverything.zargo");
         p.remove();
-        // TODO: The test environment isn't set up to do the sequence->sequence2
-        // upgrade, so this test won't work.  Although the test has been passing
-        // it has been testing the old sequence diagram implementation
-//        p = doLoad("/testmodels/uml14/SequenceDiagram.zargo");
-//        p.remove();
     }
 
     /**
@@ -234,6 +229,3 @@ public class TestZargoFilePersister extends TestCase {
         p.remove();
     }
 }
-
-
-
