@@ -99,7 +99,6 @@ import org.argouml.uml.ui.foundation.core.PropPanelOperation;
 import org.argouml.uml.ui.foundation.core.PropPanelParameter;
 import org.argouml.uml.ui.foundation.core.PropPanelPermission;
 import org.argouml.uml.ui.foundation.core.PropPanelRelationship;
-import org.argouml.uml.ui.foundation.core.PropPanelTemplateParameter;
 import org.argouml.uml.ui.foundation.core.PropPanelUsage;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelStereotype;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelTagDefinition;
@@ -200,8 +199,6 @@ class ElementPropPanelFactory implements PropPanelFactory {
                 return new PropPanelStimulus();
             } else if (Model.getFacade().isATaggedValue(element)) {
                 return new PropPanelTaggedValue();
-            } else if (Model.getFacade().isATemplateParameter(element)) {
-                return new PropPanelTemplateParameter();
             } else if (Model.getFacade().isATagDefinition(element)) {
                 return new PropPanelTagDefinition();
             } else if (Model.getFacade().isATransition(element)) {

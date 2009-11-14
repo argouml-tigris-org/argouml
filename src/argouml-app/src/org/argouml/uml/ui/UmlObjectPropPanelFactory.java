@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.foundation.core.PropPanelElementResidence;
-import org.argouml.uml.ui.foundation.core.PropPanelTemplateParameter;
 import org.argouml.uml.ui.model_management.PropPanelElementImport;
 
 /**
@@ -59,9 +58,6 @@ class UmlObjectPropPanelFactory implements PropPanelFactory {
         }
         if (Model.getFacade().isAElementResidence(object)) {
             return new PropPanelElementResidence();
-        }
-        if (Model.getFacade().isATemplateParameter(object)) {
-            return new PropPanelTemplateParameter();
         }
         return null;
     }
