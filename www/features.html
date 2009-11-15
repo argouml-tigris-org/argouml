@@ -19,6 +19,7 @@ briefly below.</P>
   <LI><A HREF="#crossplatform">Platform Independent: Java 5+</A></LI>
   <LI><A HREF="#install">Click and Go! with Java Web Start</A></LI>
   <LI><A HREF="#Standard">Standard UML 1.4 Metamodel</A></LI>
+  <LI><A HREF="#Profiles">UML Profile support with profiles provided</A><LI>
   <LI><A HREF="#XMI">XMI Support</A></LI>
   <LI><A HREF="#Export">Export Diagrams as GIF, PNG, PS, EPS, PGML and SVG</A></LI>
   <LI><A HREF="#i18n">Available in ten languages - EN, EN-GB, DE, ES, IT, RU, FR, NB, PT, ZH</A></LI>
@@ -84,19 +85,51 @@ Standard for UML 1.4.
       specification provided by the OMG.
       </p>
 
+<h3><A NAME="Profiles">UML Profile support with profiles provided</A></h3>
+<p>
+ArgoUML has support for creating profiles,
+and
+distributing models that reference common online available profiles.
+</p>
+<p>
+ArgoUML is delivered with profiles for:
+<UL>
+  <LI>Java</LI>
+  <LI>C++</LI>
+  <LI>UML 1.4</LI>
+</UL>
+</p>
+
 <h3><A NAME="Diagrams">UML Diagram Support</a></h3>
-<p>ArgoUML uses <A HREF="http://gef.tigris.org/">GEF</A>, the
+<p>
+ArgoUML uses <A HREF="http://gef.tigris.org/">GEF</A>, the
       UCI Graph Editing Framework to edit UML diagrams.  The following
       diagram types are supported:</p>
       <UL>
         <LI>Class diagram</LI>
         <LI>Statechart diagram</LI>
-        <LI>Activity diagram</LI>
+        <LI>Activity diagram (including Swimlanes)</LI>
         <LI>Use Case diagram</LI>
         <LI>Collaboration diagram</LI>
         <LI>Deployment diagram (includes Object and Component diagram in one)</LI>
         <LI>Sequence diagram </LI>
       </UL>
+
+<P>
+For all diagrams:
+</P>
+  <UL>
+    <LI>Adjustable font size.</LI>
+  </UL>
+
+<P>
+Features for specific diagrams:
+</P>
+<UL>
+  <LI>Diagram representation of stereotypes and datatypes</LI>
+  <LI>Support for drawing Signals and Exceptions in class diagrams</LI>
+  <LI>Configurable arrows for both-navigable associations.
+</UL>
 
 <h3><A NAME="XMI">XMI Support</A></h3>
 <p>XMI is an XML based exchange format between UML tools. ArgoUML
