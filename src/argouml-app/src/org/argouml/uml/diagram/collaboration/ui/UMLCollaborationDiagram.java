@@ -398,14 +398,6 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     }
 
     /*
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#getDependentElement()
-     */
-    @Override
-    public Object getDependentElement() {
-        return getNamespace(); /* The collaboration. */
-    }
-
-    /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base) {
