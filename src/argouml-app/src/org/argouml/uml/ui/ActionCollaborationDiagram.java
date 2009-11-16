@@ -24,6 +24,13 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.event.ActionEvent;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -32,6 +39,11 @@ import org.argouml.uml.diagram.DiagramSettings;
  * Action to trigger creation of new collaboration diagram.
  */
 public class ActionCollaborationDiagram extends ActionNewDiagram {
+    
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -1089352213298998155L;
 
     /**
      * Constructor.
@@ -39,7 +51,20 @@ public class ActionCollaborationDiagram extends ActionNewDiagram {
     public ActionCollaborationDiagram() {
         super("action.collaboration-diagram");
     }
-
+    
+    /**
+     * Find the right namespace for the diagram.
+     *
+     * @return the namespace or null
+     */
+    protected Object findNamespace() {
+        Object target = TargetManager.getInstance().getModelTarget();
+        if (Model.getFacade().isACollaboration(target)) {
+            return target;
+        }
+        return super.findNamespace();
+    }
+    
     /*
      * @see org.argouml.uml.ui.ActionNewDiagram#createDiagram()
      */
@@ -47,21 +72,21 @@ public class ActionCollaborationDiagram extends ActionNewDiagram {
     @Deprecated
     @Override
     public ArgoDiagram createDiagram(Object namespace) {
-        return DiagramFactory.getInstance().createDiagram(
-                DiagramFactory.DiagramType.Collaboration,
-                createCollaboration(namespace),
+        return createDiagram(
+                namespace,
                 null);
     }
 
     public ArgoDiagram createDiagram(Object namespace, 
             DiagramSettings settings) {
-        return DiagramFactory.getInstance().create(
-                DiagramFactory.DiagramType.Collaboration,
-                createCollaboration(namespace), settings);
+        if (Model.getFacade().isACollaboration(namespace)) {
+            return DiagramFactory.getInstance().create(
+                    DiagramFactory.DiagramType.Collaboration,
+                    namespace, settings);
+        } else {
+            return DiagramFactory.getInstance().create(
+                    DiagramFactory.DiagramType.Collaboration,
+                    createCollaboration(namespace), settings);
+        }
     }
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -1089352213298998155L;
-
 }
