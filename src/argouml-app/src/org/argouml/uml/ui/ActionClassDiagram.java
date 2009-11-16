@@ -50,6 +50,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
      */
     @SuppressWarnings("deprecation")
     @Override
+    @Deprecated
     public ArgoDiagram createDiagram(Object ns) {
         if (isValidNamespace(ns)) {
             return DiagramFactory.getInstance().createDiagram(
