@@ -71,7 +71,7 @@ public abstract class AbstractActionNewModelElement extends UndoableAction {
      * this action for their own purposes with their own icon.
      *
      * @param name the to be localized name of the action
-     * @param the icon to represent this action visiually
+     * @param the icon to represent this action visually
      */
     protected AbstractActionNewModelElement(String name, Icon icon) {
         super(Translator.localize(name), icon);
