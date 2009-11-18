@@ -31,7 +31,6 @@ import javax.swing.Action;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -269,6 +268,7 @@ public class SwingUIFactory implements UIFactory {
                     final List<Action> actions = ((UMLModelElementListModel) m).getActions();
                     final ToolBarFactory tbf = new ToolBarFactory(actions);
                     final JToolBar tb = tbf.createToolBar();
+                    tb.setBackground(Color.green);
                     panel.add(tb);
                 }
             }

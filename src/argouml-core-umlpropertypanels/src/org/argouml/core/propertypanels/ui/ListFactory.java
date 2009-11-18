@@ -43,7 +43,7 @@ class ListFactory implements ComponentFactory {
     public JComponent createComponent(
             final Object modelElement,
             final String propName) {
-        ScrollList list = null;
+        JComponent list = null;
         UMLModelElementListModel model = null;
         
         Object metaType = modelElement.getClass();
@@ -202,7 +202,7 @@ class ListFactory implements ComponentFactory {
             // preferred constructor. Eventually all lists should be built
             // this way.
             model.setTarget(modelElement);
-            list = new ScrollList(model);
+            list = new UMLExpandableRowSelector(model);
         }
         
         return list;
