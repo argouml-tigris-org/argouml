@@ -47,8 +47,6 @@ public class XmlPropertyPanel extends PropPanel
      */
     private static final Logger LOG = Logger.getLogger(XmlPropertyPanel.class);
     
-    private JPanel currentPanel = null;
-    
     public XmlPropertyPanel(String label, ImageIcon icon) {
         super(label, icon);
         /* Since there are no buttons on this panel (YET), 
@@ -89,25 +87,17 @@ public class XmlPropertyPanel extends PropPanel
         // See issue 2552: http://argouml.tigris.org/issues/show_bug.cgi?id=2552        
         removeAll();
         if (target == null){
-            if (currentPanel != null){
-                this.getTitleLabel().setText("");
-                this.remove(currentPanel);
-            }
             return;
         }
         
         LOG.info("[XMLPP] t is type:" + target.getClass());
         
-        if (currentPanel != null) {
-            this.remove(currentPanel);
-        }
         try {
             // TODO: This references the concrete factory
             // We need a factories factory
             UIFactory factory = SwingUIFactory.getInstance();
-            currentPanel = factory.createGUI(target, this);
+            factory.createGUI(target, this);
             this.getTitleLabel().setText(getPanelTitle(target));
-            this.add(currentPanel);
         } catch (Exception e) {
             // TODO: Auto-generated catch block
             LOG.error("Exception", e);
