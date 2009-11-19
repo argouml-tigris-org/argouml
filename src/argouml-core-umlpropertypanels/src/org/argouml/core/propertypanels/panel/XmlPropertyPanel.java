@@ -55,7 +55,6 @@ public class XmlPropertyPanel extends PropPanel
          * we have to set the size of the buttonpanel, 
          * otherwise the layout will give it a lot of space 
          * */
-        setButtonPanelSize(18);
     }
 
     /**
@@ -88,6 +87,7 @@ public class XmlPropertyPanel extends PropPanel
         // we don't do anything
         // TODO: We need to support multiple selection.
         // See issue 2552: http://argouml.tigris.org/issues/show_bug.cgi?id=2552        
+        removeAll();
         if (target == null){
             if (currentPanel != null){
                 this.getTitleLabel().setText("");
@@ -105,7 +105,7 @@ public class XmlPropertyPanel extends PropPanel
             // TODO: This references the concrete factory
             // We need a factories factory
             UIFactory factory = SwingUIFactory.getInstance();
-            currentPanel = factory.createGUI(target);
+            currentPanel = factory.createGUI(target, this);
             this.getTitleLabel().setText(getPanelTitle(target));
             this.add(currentPanel);
         } catch (Exception e) {

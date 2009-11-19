@@ -36,6 +36,6 @@ public interface UIFactory {
      * @return A Panel to be added to the main panel
      * @throws Exception If something goes wrong
      */
-    public abstract JPanel createGUI(Object target) throws Exception;
+    public abstract JPanel createGUI(Object target, JPanel panel) throws Exception;
 
 }
