@@ -175,21 +175,21 @@ class ScrollList extends JScrollPane implements KeyListener, MouseListener {
     }
 
     public void mouseEntered(MouseEvent evt) {
-        if (originalHeight == 0) {
-            originalHeight = getHeight();
-            final int parentHeight = getParent().getHeight();
-            setSize(getWidth(), parentHeight - getY());
-            list.setSize(this.getSize());
-        }
+//        if (originalHeight == 0) {
+//            originalHeight = getHeight();
+//            final int parentHeight = getParent().getHeight();
+//            setSize(getWidth(), parentHeight - getY());
+//            list.setSize(this.getSize());
+//        }
     }
 
     public void mouseExited(MouseEvent evt) {
-        Rectangle rect = new Rectangle(getLocationOnScreen(), getSize());
-        if (!rect.contains(evt.getLocationOnScreen())) {
-            setSize(getWidth(), originalHeight);
-            list.setSize(getWidth(), originalHeight);
-            originalHeight = 0;
-        }
+//        Rectangle rect = new Rectangle(getLocationOnScreen(), getSize());
+//        if (!rect.contains(evt.getLocationOnScreen())) {
+//            setSize(getWidth(), originalHeight);
+//            list.setSize(getWidth(), originalHeight);
+//            originalHeight = 0;
+//        }
     }
 
     public void mousePressed(MouseEvent arg0) {

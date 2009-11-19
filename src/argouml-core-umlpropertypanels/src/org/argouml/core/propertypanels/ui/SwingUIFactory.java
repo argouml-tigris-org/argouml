@@ -121,17 +121,16 @@ public class SwingUIFactory implements UIFactory {
      * @throws Exception If something goes wrong
      * @see org.argouml.core.propertypanels.panel.UIFactory#createGUI(java.lang.Object)
      */
-    public JPanel createGUI (Object target) throws Exception {
+    public JPanel createGUI (Object target, JPanel panel) throws Exception {
         XMLPropertyPanelsData data = 
             XMLPropPanelFactory.getInstance().getPropertyPanelsData(
                     Model.getMetaTypes().getName(target));
-        JPanel p = buildPanel(data, target);
+        JPanel p = buildPanel(data, target, panel);
         return p;       
     }
     
-    private JPanel buildPanel(XMLPropertyPanelsData data, Object target) {
+    private JPanel buildPanel(XMLPropertyPanelsData data, Object target, JPanel panel) {
         
-        JPanel panel = new JPanel(new LabelledLayout());
         for (XMLPropertyPanelsDataRecord prop : data.getProperties()) {
             if ("text".equals(prop.getType())) {
                 buildTextboxPanel(panel, target, prop);

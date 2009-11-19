@@ -26,9 +26,15 @@ package org.argouml.core.propertypanels.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
+
+import org.tigris.toolbar.toolbutton.ToolButton;
 
 /**
  * A control for displaying the contents of a list model elements in a panel
@@ -45,7 +51,13 @@ public class UMLExpandableRowSelector extends JPanel {
      */
     private JScrollPane scroll;
 
-    private Dimension preferredSize = null;
+    private Dimension shrunkPreferredSize = null;
+    private Dimension shrunkMinimumSize = null;
+    private Dimension expandedPreferredSize = null;
+    private Dimension expandedMinimumSize = null;
+    private Dimension expandedMaximumSize = null;
+    
+    private boolean expanded = false;
     
     /**
      * Constructor
@@ -53,18 +65,21 @@ public class UMLExpandableRowSelector extends JPanel {
      */
     public UMLExpandableRowSelector(UMLModelElementListModel model) {
         super(new BorderLayout());
+        add(new ToolButton(new ExpandAction()), BorderLayout.WEST);
         scroll = new ScrollList(model, 1);
         add(scroll);
         
-        preferredSize = scroll.getPreferredSize();
+        shrunkPreferredSize = scroll.getPreferredSize();
+        shrunkMinimumSize = scroll.getMinimumSize();
         
         remove(scroll);
         scroll = new ScrollList(model);
-        add(scroll);
         
-        scroll.setVerticalScrollBarPolicy(
-        	JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-
+        add(scroll);
+        expandedPreferredSize = scroll.getPreferredSize();
+        expandedMinimumSize = scroll.getMinimumSize();
+        expandedMaximumSize = scroll.getMaximumSize();
+        
         scroll.setHorizontalScrollBarPolicy(
         	JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     }
@@ -74,9 +89,7 @@ public class UMLExpandableRowSelector extends JPanel {
      * @return the minimum size as the height of one row in a JList
      */
     public Dimension getMinimumSize() {
-        Dimension size = super.getMinimumSize();
-        size.height = preferredSize.height;
-        return size;
+        return shrunkPreferredSize;
     }
     
     /**
@@ -84,7 +97,12 @@ public class UMLExpandableRowSelector extends JPanel {
      * @return the maximum size as the height of one row in a JList
      */
     public Dimension getMaximumSize() {
-        Dimension size = scroll.getMaximumSize();
+        Dimension size = super.getMaximumSize();
+        if (expanded) {
+            size.height = expandedMaximumSize.height;
+        } else {
+            size.height = shrunkPreferredSize.height;
+        }
         return size;
     }
     
@@ -93,6 +111,31 @@ public class UMLExpandableRowSelector extends JPanel {
      * @return the preferred size as the height of one row in a JList
      */
     public Dimension getPreferredSize() {
-        return preferredSize;
+        if (expanded) {
+            return expandedPreferredSize;
+        } else {
+            return shrunkPreferredSize;
+        }
+    }
+    
+    private class ExpandAction extends AbstractAction {
+        ExpandAction() {
+            super();
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            expanded = !expanded;
+            // TODO: This forces a redraw but what is the minimum we really
+            // need here?
+            getParent().validate();
+            getParent().invalidate();
+            getParent().repaint();
+            getParent().doLayout();
+            getParent().validate();
+            getParent().invalidate();
+            getParent().repaint();
+            getParent().doLayout();
+        }
     }
 }
