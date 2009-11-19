@@ -63,7 +63,7 @@ public class XMLPropPanelFactory implements PropPanelFactory {
     public PropPanel createPropPanel(Object target) {
         if (Model.getFacade().isAModelElement(target)) {
             XmlPropertyPanel panel =
-                new XmlPropertyPanel("XML Property Panel", null);
+                new XmlPropertyPanel();
             panel.build(target);
             return panel;
         } else {

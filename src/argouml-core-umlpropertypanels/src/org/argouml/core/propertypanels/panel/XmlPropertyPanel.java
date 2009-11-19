@@ -47,27 +47,14 @@ public class XmlPropertyPanel extends PropPanel
      */
     private static final Logger LOG = Logger.getLogger(XmlPropertyPanel.class);
     
-    public XmlPropertyPanel(String label, ImageIcon icon) {
-        super(label, icon);
+    public XmlPropertyPanel() {
+        super("XML Properties", null);
         /* Since there are no buttons on this panel (YET), 
          * we have to set the size of the buttonpanel, 
          * otherwise the layout will give it a lot of space 
          * */
     }
 
-    /**
-     * The instance.
-     */
-    private static final XmlPropertyPanel INSTANCE =
-        new XmlPropertyPanel("XML Properties", null);
-
-    /**
-     * @return The instance.
-     */
-    public static XmlPropertyPanel getInstance() {
-        return INSTANCE;
-    }
-    
     @Override
     public void setTarget(Object target) {
         super.setTarget(target);       

@@ -24,13 +24,9 @@
 
 package org.argouml.core.propertypanels.module;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.argouml.application.api.AbstractArgoJPanel;
+import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.panel.XMLPropPanelFactory;
 import org.argouml.core.propertypanels.panel.XmlPropertyPanel;
-import org.argouml.moduleloader.DetailsTabProvider;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.uml.ui.PropPanelFactory;
 import org.argouml.uml.ui.PropPanelFactoryManager;
@@ -41,24 +37,44 @@ import org.argouml.uml.ui.PropPanelFactoryManager;
  * @author penyaskito
  */
 public class XmlPropertyPanelsModule 
-        implements ModuleInterface, DetailsTabProvider {
+    implements ModuleInterface {
+    // TODO: Uncomment this and replace above line to see old and new panel
+    // together
+//  implements ModuleInterface, DetailsTabProvider {
 
+    /**
+     * The logger
+     */
+    private static final Logger LOG =
+        Logger.getLogger(XmlPropertyPanel.class);
+    
+    private XmlPropertyPanel panel;
+    
     public boolean disable() {
         return true;
     }
 
     public boolean enable() { 
         /* Set up the property panels for UML elements: */
-//        PropPanelFactory elementFactory = new XMLPropPanelFactory();
-//        PropPanelFactoryManager.addPropPanelFactory(elementFactory);
-        return true;
+        try {
+            // Comment this out to see both panels together
+            PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
+            PropPanelFactoryManager.addPropPanelFactory(elementFactory);
+            panel = new XmlPropertyPanel();
+            // comment out to here
+            return true;
+        } catch (Exception e) {
+            LOG.error("Exception caught", e);
+            return false;
+        }
     }
 
-    public List<AbstractArgoJPanel> getDetailsTabs() {        
-        List<AbstractArgoJPanel> result = new ArrayList<AbstractArgoJPanel>();
-        result.add(XmlPropertyPanel.getInstance());
-        return result;
-    }
+    // Uncomment this to see both panels together
+//    public List<AbstractArgoJPanel> getDetailsTabs() {        
+//        List<AbstractArgoJPanel> result = new ArrayList<AbstractArgoJPanel>();
+//        result.add(panel);
+//        return result;
+//    }
 
     public String getInfo(int type) {
         switch (type) {
