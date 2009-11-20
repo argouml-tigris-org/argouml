@@ -29,10 +29,13 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
+import javax.swing.plaf.basic.BasicTreeUI;
+import javax.swing.plaf.metal.MetalTreeUI;
 
 import org.tigris.toolbar.toolbutton.ToolButton;
 
@@ -65,7 +68,13 @@ public class UMLExpandableRowSelector extends JPanel {
      */
     public UMLExpandableRowSelector(UMLModelElementListModel model) {
         super(new BorderLayout());
-        add(new ToolButton(new ExpandAction()), BorderLayout.WEST);
+        
+        BasicTreeUI btu = new MetalTreeUI();
+        Icon expandedIcon = btu.getExpandedIcon();
+        Icon collapsedIcon = btu.getCollapsedIcon();
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(new ToolButton(new ExpandAction(expandedIcon)), BorderLayout.NORTH);
+        add(buttonPanel, BorderLayout.WEST);
         scroll = new ScrollList(model, 1);
         add(scroll);
         
@@ -119,8 +128,8 @@ public class UMLExpandableRowSelector extends JPanel {
     }
     
     private class ExpandAction extends AbstractAction {
-        ExpandAction() {
-            super();
+        ExpandAction(Icon icon) {
+            super(null, icon);
         }
 
         @Override
