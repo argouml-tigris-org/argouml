@@ -24,37 +24,22 @@
 
 package org.argouml.dev.test;
 
-import org.argouml.application.api.AbstractArgoJPanel;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * Empty panel for testing.
  * 
  * @author Bob Tarling
  */
-public final class TestPanel
-    extends AbstractArgoJPanel {
-
-    /**
-     * The instance.
-     */
-    private static final TestPanel INSTANCE =
-        new TestPanel();
-
-    /**
-     * @return The instance.
-     */
-    public static TestPanel getInstance() {
-        return INSTANCE;
-    }
+public final class TestPanel extends JPanel {
 
     /**
      * Constructor.
      */
-    private TestPanel() {
-    }
-    
-    @Override
-    public String getTitle() {
-        return "Test panel";
+    public TestPanel() {
+        setName("Test Panel");
+        add(new JLabel("test"));
+        setEnabled(true);
     }
 }

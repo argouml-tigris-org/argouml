@@ -25,8 +25,6 @@
 package org.argouml.dev;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -36,13 +34,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.dev.figinspector.FigInspectorPanel;
 import org.argouml.dev.test.TestPanel;
-import org.argouml.moduleloader.DetailsTabProvider;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.ui.AboutBox;
 import org.argouml.ui.ContextActionFactoryManager;
+import org.argouml.ui.DetailsPane;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.undo.UndoManager;
 
@@ -51,11 +48,13 @@ import org.tigris.gef.undo.UndoManager;
  *
  * @author Bob Tarling
  */
-public final class DeveloperModule implements ModuleInterface,
-        DetailsTabProvider {
+public final class DeveloperModule implements ModuleInterface {
 
     private static final Logger LOG = Logger.getLogger(DeveloperModule.class);
     private static String aboutName = "Dev module";
+    
+    private TestPanel testPanel;
+    private JTabbedPane devPanel;
     
     /**
      * Wrapper.
@@ -83,7 +82,7 @@ public final class DeveloperModule implements ModuleInterface,
         // TODO: Modify to handle per-project undo
         UndoManager.getInstance().setUndoMax(10);
 
-        JTabbedPane devPanel = new JTabbedPane();
+        devPanel = new JTabbedPane();
 
         JComponent undoLogPanel = UndoLogPanel.getInstance();
         devPanel.addTab("Undo Stack", undoLogPanel);
@@ -100,6 +99,10 @@ public final class DeveloperModule implements ModuleInterface,
         ProjectBrowser.getInstance().addPanel(devPanel, 
                 ProjectBrowser.Position.East);
 
+        DetailsPane detailsPane = (DetailsPane) ProjectBrowser.getInstance().getDetailsPane();
+        testPanel = new TestPanel();
+        detailsPane.addTab(testPanel, true);
+
         /* Demonstrate the About Box interface to add a tab: */
         JPanel tab = new JPanel(new BorderLayout());
         JLabel lbl1 = new JLabel(
@@ -107,6 +110,7 @@ public final class DeveloperModule implements ModuleInterface,
                 + "<p>by</p><p>Bob Tarling</p></html>");
         lbl1.setHorizontalAlignment(SwingConstants.CENTER);
         tab.add(lbl1, BorderLayout.NORTH);
+
         AboutBox.addAboutTab(aboutName, tab);
         
         ContextActionFactoryManager.addContextPopupFactory(
@@ -127,10 +131,15 @@ public final class DeveloperModule implements ModuleInterface,
         UndoManager.getInstance().empty();
         UndoManager.getInstance().setUndoMax(0);
 
-        JComponent undoLogPanel = UndoLogPanel.getInstance();
-        ProjectBrowser.getInstance().removePanel(undoLogPanel);
+        ProjectBrowser.getInstance().removePanel(devPanel);
         
         AboutBox.removeAboutTab(aboutName);
+        
+        DetailsPane detailsPane = (DetailsPane) ProjectBrowser.getInstance().getDetailsPane();
+        detailsPane.removeTab(testPanel);
+        
+        testPanel = null;
+        
         return true;
     }
 
@@ -163,14 +172,4 @@ public final class DeveloperModule implements ModuleInterface,
      */
     private static final long serialVersionUID = -2570516012301142091L;
 
-    /**
-     * Return our details tab(s).  Proof of concept only.
-     * @return a list of details tabs
-     * @see org.argouml.moduleloader.DetailsTabProvider#getDetailsTabs()
-     */
-    public List<AbstractArgoJPanel> getDetailsTabs() {        
-        List<AbstractArgoJPanel> result = new ArrayList<AbstractArgoJPanel>();
-        result.add(TestPanel.getInstance());
-        return result;
-    }
 }
