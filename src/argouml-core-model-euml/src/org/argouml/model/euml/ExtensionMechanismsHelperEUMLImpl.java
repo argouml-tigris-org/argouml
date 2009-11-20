@@ -39,6 +39,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Model;
+import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -67,21 +68,11 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     public void addBaseClass(Object handle, Object baseClass) {
         if (handle instanceof Stereotype) {
             org.eclipse.uml2.uml.Class metaclass = getMetaclass(baseClass);
-            Profile profile = (Profile) modelImpl.getFacade().getRoot(handle);
+            Profile profile = ((Stereotype) handle).getProfile();
             if (metaclass != null && profile != null) {
                 profile.createMetaclassReference(metaclass);
-                Stereotype st = (Stereotype) handle;
-                if (st.getProfile() != null) {
-                    st.createExtension(metaclass, false);
-                    return;
-                } else if (st.getPackage() != null){
-                    // TODO: check if this hack is ok
-                    org.eclipse.uml2.uml.Package p = st.getPackage();
-                    st.setPackage(profile);
-                    st.createExtension(metaclass, false);
-                    st.setPackage(p);
-                    return;
-                }
+                ((Stereotype) handle).createExtension(metaclass, false);
+                return;
             }
         }
         throw new IllegalArgumentException(
@@ -108,6 +99,15 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
                 ((Model) handle).applyProfile((Profile) profile);
             } else if (handle instanceof Profile) {
                 ((Profile) handle).applyProfile((Profile) profile);
+            }
+            // also apply subprofiles:
+            Iterator<Package> iter =
+                ((Profile) profile).getNestedPackages().iterator();
+            while (iter.hasNext()) {
+                Package p = iter.next();
+                if (p instanceof Profile) {
+                    applyProfile(handle, p);
+                }
             }
         }
     }
@@ -209,10 +209,14 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         if (models != null) {
             for (Object ns : models) {
                 if (ns instanceof Profile) {
-                    Iterator iter = ((Profile) ns).getOwnedStereotypes()
-                            .iterator();
+                    l.addAll(((Profile) ns).getOwnedStereotypes());
+                    Iterator<Package> iter =
+                        ((Profile) ns).getNestedPackages().iterator();
                     while (iter.hasNext()) {
-                        l.add((Stereotype) iter.next());
+                        Package p = iter.next();
+                        if (p instanceof Profile) {
+                            l.addAll(getAllStereotypesIn((Profile) p));
+                        }
                     }
                 }
             }
@@ -331,6 +335,15 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
             } else if (handle instanceof Profile) {
                 ((Profile) handle).unapplyProfile((Profile) profile);
             }
+            // also unapply subprofiles:
+            Iterator<Package> iter =
+                ((Profile) profile).getNestedPackages().iterator();
+            while (iter.hasNext()) {
+                Package p = iter.next();
+                if (p instanceof Profile) {
+                    unapplyProfile(handle, p);
+                }
+            }
         }
     }
 
@@ -338,8 +351,31 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         Object result = null;
         if (handle instanceof Profile) {
             result = ((Profile) handle).define();
+            // also define subprofiles:
+            Iterator<Package> iter =
+                ((Profile) handle).getNestedPackages().iterator();
+            while (iter.hasNext()) {
+                Package p = iter.next();
+                if (p instanceof Profile) {
+                    makeProfileApplicable(p);
+                }
+            }
         }
         return result;
+    }
+
+    private Collection<Stereotype> getAllStereotypesIn(Profile p) {
+        List<Stereotype> l = new ArrayList<Stereotype>();
+        Iterator<Element> iter = p.getOwnedElements().iterator();
+        while (iter.hasNext()) {
+            Element elem = iter.next();
+            if (elem instanceof Stereotype) {
+                l.add((Stereotype) elem);
+            } else if (elem instanceof Profile) {
+                l.addAll(getAllStereotypesIn((Profile) elem));
+            }
+        }
+        return l;
     }
 
     private org.eclipse.uml2.uml.Class getMetaclass(Object baseClass) {
