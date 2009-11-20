@@ -187,7 +187,9 @@ public class DetailsPane
      * @param p the panel to be added 
      * @param atEnd true = add the panel at the end, 
      *                  false = at the beginning
+     * @deprecated by Bob Tarling in 0.29.3 use addTab(JPanel, boolean)
      */
+    @Deprecated
     public void addTab(AbstractArgoJPanel p, boolean atEnd) {
         Icon icon = p.getIcon();
         String title = Translator.localize(p.getTitle());
@@ -199,6 +201,39 @@ public class DetailsPane
             tabPanelList.add(0, p);
         }
 
+    }
+
+    /**
+     * @param p the panel to be added 
+     * @param atEnd true = add the panel at the end, 
+     *                  false = at the beginning
+     */
+    public void addTab(JPanel p, boolean atEnd) {
+        final Icon icon;
+        final String title;
+        if (p instanceof AbstractArgoJPanel) {
+            icon = ((AbstractArgoJPanel) p).getIcon();
+            title =
+                Translator.localize(((AbstractArgoJPanel) p).getTitle());
+        } else {
+            icon = null;
+            title = p.getName();
+        }
+        if (atEnd) {
+            topLevelTabbedPane.addTab(title, icon, p); 
+            tabPanelList.add(p);
+        } else { 
+            topLevelTabbedPane.insertTab(title, icon, p, null, 0);
+            tabPanelList.add(0, p);
+        }
+    }
+
+    /**
+     * @param p the panel to be removed
+     */
+    public void removeTab(JPanel p) {
+        topLevelTabbedPane.remove(p); 
+        tabPanelList.remove(p);
     }
 
     /**
@@ -638,9 +673,9 @@ public class DetailsPane
                 if (shouldEnable) {
                     addTargetListener((TargetListener) tab);
                 }
-            }
 
-            topLevelTabbedPane.setEnabledAt(i, shouldEnable);
+                topLevelTabbedPane.setEnabledAt(i, shouldEnable);
+            }
         }
     }
 
