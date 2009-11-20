@@ -24,23 +24,17 @@
 
 package org.argouml.core.propertypanels.panel;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.argouml.core.propertypanels.ui.SwingUIFactory;
-import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.ui.TabFigTarget;
-import org.argouml.uml.ui.PropPanel;
+import org.argouml.uml.ui.LabelledLayout;
 
 /**
  * This class is the main property panel, based on XML
  *
  * @author penyaskito
  */
-public class XmlPropertyPanel extends PropPanel 
-    implements TabFigTarget {
+public class XmlPropertyPanel extends JPanel {
     
     /**
      * Logger.
@@ -48,102 +42,6 @@ public class XmlPropertyPanel extends PropPanel
     private static final Logger LOG = Logger.getLogger(XmlPropertyPanel.class);
     
     public XmlPropertyPanel() {
-        super("XML Properties", null);
-        /* Since there are no buttons on this panel (YET), 
-         * we have to set the size of the buttonpanel, 
-         * otherwise the layout will give it a lot of space 
-         * */
+        super(new LabelledLayout());
     }
-
-    @Override
-    public void setTarget(Object target) {
-        super.setTarget(target);       
-        // TODO: Here will have to do something based on the 
-        // type of the target received. For
-        // commodity, we could use just the name:
-        // p.e.: org.omg.uml.foundation.core.UmlClass$Impl
-        // Our XML can be called Class.xml or if we split the
-        // UI and the model info, Class.ui.xml and Class.model.xml
-        build(target);
-    }
-    
-    public void build(Object target) {
-        // if we have anything or multiple elements selected,
-        // we don't do anything
-        // TODO: We need to support multiple selection.
-        // See issue 2552: http://argouml.tigris.org/issues/show_bug.cgi?id=2552        
-        removeAll();
-        if (target == null){
-            return;
-        }
-        
-        LOG.info("[XMLPP] t is type:" + target.getClass());
-        
-        try {
-            // TODO: This references the concrete factory
-            // We need a factories factory
-            UIFactory factory = SwingUIFactory.getInstance();
-            factory.createGUI(target, this);
-            this.getTitleLabel().setText(getPanelTitle(target));
-        } catch (Exception e) {
-            // TODO: Auto-generated catch block
-            LOG.error("Exception", e);
-        }        
-    }
-    
-    /**
-     * @return the title of the panel, according to the target 
-     */
-    private String getPanelTitle(Object target) {
-        String title = null;
-        // if is a pseudostate, we have to look for the pseudostate kind.
-        if (Model.getFacade().isAPseudostate(target)) {
-            Object kind = Model.getFacade().getKind(target);
-            if (Model.getFacade().equalsPseudostateKind(kind,
-                    Model.getPseudostateKind().getFork())) {
-                title = Translator.localize("label.pseudostate.fork");
-            }
-            if (Model.getFacade().equalsPseudostateKind(kind,
-                    Model.getPseudostateKind().getJoin())) {
-                title = Translator.localize("label.pseudostate.join");
-            }
-            if (Model.getFacade().equalsPseudostateKind(kind,
-                    Model.getPseudostateKind().getChoice())) {
-                title = Translator.localize("label.pseudostate.choice");
-            }
-            if (Model.getFacade().equalsPseudostateKind(kind,
-                    Model.getPseudostateKind().getDeepHistory())) {
-                title = Translator.localize("label.pseudostate.deephistory");
-            }
-            if (Model.getFacade().equalsPseudostateKind(kind,
-                    Model.getPseudostateKind().getShallowHistory())) {
-                title = Translator.localize("label.pseudostate.shallowhistory");
-            }
-            if (Model.getFacade().equalsPseudostateKind(kind,
-                    Model.getPseudostateKind().getInitial())) {
-                title = Translator.localize("label.pseudostate.initial");
-            }
-            if (Model.getFacade().equalsPseudostateKind(kind,
-                    Model.getPseudostateKind().getJunction())) {
-                title = Translator.localize("label.pseudostate.junction");
-            }
-        }
-        // there are other cases that need special treatment, 
-        // like concurrent regions
-        if (Model.getFacade().isACompositeState(target)) {
-            if (Model.getFacade().isAConcurrentRegion(target)) {
-                title = Translator.localize("label.concurrent.region");
-            } else if (Model.getFacade().isConcurrent(target)) {
-                title = Translator.localize("label.concurrent.composite.state");
-            } else if (!Model.getFacade().isASubmachineState(target)) {
-                // PropPanelSubmachine is a subclass that handles its own title
-                title = Translator.localize("label.composite-state");
-            }
-        }
-        else {
-            title = Model.getMetaTypes().getName(target); 
-        }            
-        return title; 
-    }
-   
 }

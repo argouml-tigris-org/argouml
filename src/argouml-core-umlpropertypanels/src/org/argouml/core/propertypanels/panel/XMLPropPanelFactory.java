@@ -28,10 +28,14 @@ import java.io.InputStream;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
+import org.argouml.core.propertypanels.ui.SwingUIFactory;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XmlSinglePanelHandler;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.PropPanelFactory;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
@@ -43,6 +47,9 @@ import org.xml.sax.helpers.XMLReaderFactory;
  */
 public class XMLPropPanelFactory implements PropPanelFactory {
 
+    private static final Logger LOG =
+        Logger.getLogger(XMLPropPanelFactory.class);
+    
     private final Dictionary<String, XMLPropertyPanelsData> cache;
     
     private static XMLPropPanelFactory instance;
@@ -60,15 +67,39 @@ public class XMLPropPanelFactory implements PropPanelFactory {
         parseXML();
     }
     
-    public PropPanel createPropPanel(Object target) {
+    /**
+     * Create the XML driven property panel for the given target
+     */
+    public JPanel createPropPanel(Object target) {
         if (Model.getFacade().isAModelElement(target)) {
-            XmlPropertyPanel panel =
+            JPanel panel =
                 new XmlPropertyPanel();
-            panel.build(target);
+            build(panel, target);
             return panel;
         } else {
             return null;
         }
+    }
+    
+    private void build(JPanel panel, Object target) {
+        // if we have anything or multiple elements selected,
+        // we don't do anything
+        // TODO: We need to support multiple selection.
+        // See issue 2552: http://argouml.tigris.org/issues/show_bug.cgi?id=2552        
+        panel.removeAll();
+        if (target == null){
+            return;
+        }
+        
+        try {
+            // TODO: This references the concrete factory
+            // We need a factories factory
+            SwingUIFactory builder = new SwingUIFactory();
+            builder.createGUI(target, panel);
+        } catch (Exception e) {
+            // TODO: Auto-generated catch block
+            LOG.error("Exception", e);
+        }        
     }
     
     private void parseXML() throws Exception {
@@ -87,5 +118,58 @@ public class XMLPropPanelFactory implements PropPanelFactory {
         return cache.get(forType);
     }
     
-    
+    /**
+     * @return the title of the panel, according to the target 
+     */
+    private String getPanelTitle(Object target) {
+        String title = null;
+        // if is a pseudostate, we have to look for the pseudostate kind.
+        if (Model.getFacade().isAPseudostate(target)) {
+            Object kind = Model.getFacade().getKind(target);
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getFork())) {
+                title = Translator.localize("label.pseudostate.fork");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getJoin())) {
+                title = Translator.localize("label.pseudostate.join");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getChoice())) {
+                title = Translator.localize("label.pseudostate.choice");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getDeepHistory())) {
+                title = Translator.localize("label.pseudostate.deephistory");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getShallowHistory())) {
+                title = Translator.localize("label.pseudostate.shallowhistory");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getInitial())) {
+                title = Translator.localize("label.pseudostate.initial");
+            }
+            if (Model.getFacade().equalsPseudostateKind(kind,
+                    Model.getPseudostateKind().getJunction())) {
+                title = Translator.localize("label.pseudostate.junction");
+            }
+        }
+        // there are other cases that need special treatment, 
+        // like concurrent regions
+        if (Model.getFacade().isACompositeState(target)) {
+            if (Model.getFacade().isAConcurrentRegion(target)) {
+                title = Translator.localize("label.concurrent.region");
+            } else if (Model.getFacade().isConcurrent(target)) {
+                title = Translator.localize("label.concurrent.composite.state");
+            } else if (!Model.getFacade().isASubmachineState(target)) {
+                // PropPanelSubmachine is a subclass that handles its own title
+                title = Translator.localize("label.composite-state");
+            }
+        }
+        else {
+            title = Model.getMetaTypes().getName(target); 
+        }            
+        return title; 
+    }
 }

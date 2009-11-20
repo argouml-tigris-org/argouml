@@ -39,7 +39,6 @@ import javax.swing.JToolBar;
 import javax.swing.ListModel;
 import javax.swing.border.TitledBorder;
 
-import org.argouml.core.propertypanels.panel.UIFactory;
 import org.argouml.core.propertypanels.panel.XMLPropPanelFactory;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
@@ -97,22 +96,15 @@ import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionSetTagDefinitionType;
 import org.argouml.uml.ui.foundation.extension_mechanisms.UMLMetaClassComboBoxModel;
 import org.tigris.swidgets.GridLayout2;
-import org.tigris.toolbar.ToolBar;
 import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * Creates the XML Property panels
  */
-public class SwingUIFactory implements UIFactory {
-    
-    private static UIFactory instance = new SwingUIFactory();
+public class SwingUIFactory {
     
     public SwingUIFactory() {
         
-    }
-    
-    public static UIFactory getInstance() {        
-        return instance;
     }
     
     /**
