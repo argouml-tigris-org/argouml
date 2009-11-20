@@ -33,7 +33,9 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.ListModel;
+import javax.swing.plaf.TreeUI;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.plaf.metal.MetalTreeUI;
 
@@ -69,9 +71,21 @@ public class UMLExpandableRowSelector extends JPanel {
     public UMLExpandableRowSelector(UMLModelElementListModel model) {
         super(new BorderLayout());
         
-        BasicTreeUI btu = new MetalTreeUI();
-        Icon expandedIcon = btu.getExpandedIcon();
-        Icon collapsedIcon = btu.getCollapsedIcon();
+        final JTree dummyTree = new JTree();
+        
+        final TreeUI tu = dummyTree.getUI();
+        final Icon expandedIcon;
+        final Icon collapsedIcon;
+        
+        if (tu instanceof BasicTreeUI) {
+            BasicTreeUI btu = (BasicTreeUI) tu;
+            expandedIcon = btu.getExpandedIcon();
+            collapsedIcon = btu.getCollapsedIcon();
+        } else {
+            // TODO: We want some default icons of our own here
+            expandedIcon = null;
+            collapsedIcon = null;
+        }
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(new ToolButton(new ExpandAction(expandedIcon)), BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.WEST);
