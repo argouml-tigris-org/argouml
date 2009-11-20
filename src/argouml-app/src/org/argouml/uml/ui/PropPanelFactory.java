@@ -24,6 +24,8 @@
 
 package org.argouml.uml.ui;
 
+import javax.swing.JPanel;
+
 /**
  * Interface for a factory of proppanels, 
  * which are created based on a given object.
@@ -49,5 +51,5 @@ public interface PropPanelFactory {
      * @param object the object to create a new PropPanel for
      * @return the new proppanel or null
      */
-    PropPanel createPropPanel(Object object);
+    JPanel createPropPanel(Object object);
 }

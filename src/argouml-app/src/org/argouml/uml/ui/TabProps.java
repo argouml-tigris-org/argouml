@@ -70,8 +70,8 @@ public class TabProps
     private static final Logger LOG = Logger.getLogger(TabProps.class);
 
     private JPanel blankPanel = new JPanel();
-    private Hashtable<Class, TabModelTarget> panels = 
-        new Hashtable<Class, TabModelTarget>();
+    private Hashtable<Class, JPanel> panels = 
+        new Hashtable<Class, JPanel>();
     private JPanel lastPanel;
     private String panelClassBaseName = "";
 
@@ -197,10 +197,10 @@ public class TabProps
             repaint();
             lastPanel = blankPanel;
         } else {
-            TabModelTarget newPanel = null;
+            JPanel newPanel = null;
             newPanel = findPanelFor(target);
-            if (newPanel != null) {
-                addTargetListener(newPanel);
+            if (newPanel != null && newPanel instanceof TabModelTarget) {
+                addTargetListener((TabModelTarget) newPanel);
             }
             if (newPanel instanceof JPanel) {
                 add((JPanel) newPanel, BorderLayout.CENTER);
@@ -227,11 +227,11 @@ public class TabProps
      * @param trgt the target class
      * @return the tab panel
      */
-    private TabModelTarget findPanelFor(Object trgt) {
+    private JPanel findPanelFor(Object trgt) {
         // TODO: No test coverage for this or createPropPanel? - tfm
         
         /* 1st attempt: get a panel that we created before: */
-        TabModelTarget panel = panels.get(trgt.getClass());
+        JPanel panel = panels.get(trgt.getClass());
         if (panel != null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Getting prop panel for: " + trgt.getClass().getName()
@@ -262,8 +262,8 @@ public class TabProps
      * @param targetObject the target object
      * @return A new prop panel to display any model element of the given type
      */
-    private TabModelTarget createPropPanel(Object targetObject) {
-	TabModelTarget propPanel = null;
+    private JPanel createPropPanel(Object targetObject) {
+	JPanel propPanel = null;
 
 	for (PropPanelFactory factory
 	        : PropPanelFactoryManager.getFactories()) {
