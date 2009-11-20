@@ -24,10 +24,15 @@
 
 package org.argouml.core.propertypanels.module;
 
+import javax.swing.JPanel;
+
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.panel.XMLPropPanelFactory;
 import org.argouml.core.propertypanels.panel.XmlPropertyPanel;
 import org.argouml.moduleloader.ModuleInterface;
+import org.argouml.ui.DetailsPane;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelFactory;
 import org.argouml.uml.ui.PropPanelFactoryManager;
 
@@ -48,33 +53,57 @@ public class XmlPropertyPanelsModule
     private static final Logger LOG =
         Logger.getLogger(XmlPropertyPanel.class);
     
-    private XmlPropertyPanel panel;
+    private TempTabPage tempPanel;
     
-    public boolean disable() {
-        return true;
-    }
-
+    /**
+     * It is useful during testing to view the current and new property panels
+     * side by side. This can be switched by changing this flag to replace
+     * the existing panels instead. Once XML Property Panels goes live all the
+     * code dependent on this being false can be removed and the flag itself
+     * removed.
+     */
+    private final static boolean REPLACE = false;
+    
     public boolean enable() { 
-        /* Set up the property panels for UML elements: */
-        try {
-            // Comment this out to see both panels together
-            PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
-            PropPanelFactoryManager.addPropPanelFactory(elementFactory);
-            panel = new XmlPropertyPanel();
-            // comment out to here
+        
+        if (REPLACE) {
+            /* Set up the property panels for UML elements: */
+            try {
+                PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
+                PropPanelFactoryManager.addPropPanelFactory(elementFactory);
+                return true;
+            } catch (Exception e) {
+                LOG.error("Exception caught", e);
+                return false;
+            }
+        } else {
+            DetailsPane detailsPane = (DetailsPane) ProjectBrowser.getInstance().getDetailsPane();
+            tempPanel = new TempTabPage();
+            detailsPane.addTab(tempPanel, true);
+            
+            TempListener listener = new TempListener(tempPanel);
+            TargetManager.getInstance().addTargetListener(listener);
             return true;
-        } catch (Exception e) {
-            LOG.error("Exception caught", e);
-            return false;
         }
     }
 
-    // Uncomment this to see both panels together
-//    public List<AbstractArgoJPanel> getDetailsTabs() {        
-//        List<AbstractArgoJPanel> result = new ArrayList<AbstractArgoJPanel>();
-//        result.add(panel);
-//        return result;
-//    }
+    public boolean disable() {
+        if (REPLACE) {
+            /* Set up the property panels for UML elements: */
+            try {
+                PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
+                PropPanelFactoryManager.removePropPanelFactory(elementFactory);
+                return true;
+            } catch (Exception e) {
+                LOG.error("Exception caught", e);
+                return false;
+            }
+        } else {
+            DetailsPane detailsPane = (DetailsPane) ProjectBrowser.getInstance().getDetailsPane();
+            detailsPane.removeTab(tempPanel);
+            return true;
+        }
+    }
 
     public String getInfo(int type) {
         switch (type) {

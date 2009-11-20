@@ -43,5 +43,6 @@ public class XmlPropertyPanel extends JPanel {
     
     public XmlPropertyPanel() {
         super(new LabelledLayout());
+        setName("UML Properties");
     }
 }
