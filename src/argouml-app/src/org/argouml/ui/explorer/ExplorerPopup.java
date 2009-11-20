@@ -98,8 +98,10 @@ public class ExplorerPopup extends JPopupMenu {
      */
     private static final Object[] MODEL_ELEMENT_MENUITEMS = 
         new Object[] {
-    		Model.getMetaTypes().getTemplateParameter(),
-    		"button.new-template-parameter",
+            Model.getMetaTypes().getProfile(), // needs to be the first entry
+            "button.new-profile-package", // because of UML1/UML2 differences
+            Model.getMetaTypes().getTemplateParameter(),
+            "button.new-template-parameter",
             Model.getMetaTypes().getPackage(), 
             "button.new-package",
             Model.getMetaTypes().getActor(), 
@@ -457,20 +459,24 @@ public class ExplorerPopup extends JPopupMenu {
 
             // iterate through all possible model elements to determine which  
             // are valid to be contained by the selected target
-            for (int iter = 0; iter < MODEL_ELEMENT_MENUITEMS.length; 
+            int start = 0;
+            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                // skip profile item for UML1
+                start = 2;
+            }
+            for (int iter = start; iter < MODEL_ELEMENT_MENUITEMS.length; 
                 iter += 2) {
                 
+                Object me = MODEL_ELEMENT_MENUITEMS[iter];
+                String md = (String) MODEL_ELEMENT_MENUITEMS[iter + 1];
+                
                 // test if this element can be contained by the target
-                if (Model.getUmlFactory().isContainmentValid(
-                        MODEL_ELEMENT_MENUITEMS[iter], target)) {
+                if (Model.getUmlFactory().isContainmentValid(me, target)) {
                     // this element can be contained add a menu item 
                     // that allows the user to take that action
                     menuItems.add(new OrderedMenuItem(
                             new ActionCreateContainedModelElement(
-                                    MODEL_ELEMENT_MENUITEMS[iter],
-                                    target, 
-                                    (String) 
-                                    MODEL_ELEMENT_MENUITEMS[iter + 1])));
+                                    me, target, md)));
                 }
             }    
         }
