@@ -74,6 +74,7 @@ import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
+import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
@@ -429,6 +430,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 
     public Object getPackageImport() {
         return PackageImport.class;
+    }
+
+    public Object getProfile() {
+        return Profile.class;
     }
     
     public Object getPseudostate() {

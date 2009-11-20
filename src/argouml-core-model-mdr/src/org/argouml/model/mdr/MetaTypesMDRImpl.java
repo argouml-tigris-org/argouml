@@ -435,6 +435,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
     public Object getPackageImport() {
         return Permission.class;
     }
+
+    public Object getProfile() {
+        return Package.class;
+    }
     
     public Object getPseudostate() {
         return Pseudostate.class;

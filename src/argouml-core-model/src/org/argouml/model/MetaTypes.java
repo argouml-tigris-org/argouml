@@ -368,6 +368,12 @@ public interface MetaTypes {
      * @since UML 2.0
      */
     Object getPackageImport();
+
+    /**
+     * @return Return the Profile type.
+     * @since UML 2.0
+     */
+    Object getProfile();
     
     /**
      * @return Returns the Pseudostate.
