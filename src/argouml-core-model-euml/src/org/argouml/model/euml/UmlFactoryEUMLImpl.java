@@ -64,6 +64,7 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
+import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Reception;
 import org.eclipse.uml2.uml.Signal;
@@ -267,6 +268,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = modelImpl.getCoreFactory().createDataType();
         } else if (elementType == metaTypes.getPackage()) {
             o = modelImpl.getModelManagementFactory().createPackage();
+        } else if (elementType == metaTypes.getProfile()) {
+            o = modelImpl.getModelManagementFactory().createProfile();
         } else if (elementType == metaTypes.getModel()) {
             o = modelImpl.getModelManagementFactory().createModel();
         } else if (elementType == metaTypes.getInstance()) {
@@ -519,6 +522,16 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                 Package.class, Actor.class,
                 UseCase.class, org.eclipse.uml2.uml.Class.class,
                 Interface.class, Component.class,
+                Node.class, Enumeration.class, DataType.class,
+                Signal.class
+            });
+                
+        // specifies valid elements for a Profile to contain
+        validContainmentMap.put(Profile.class, 
+            new Class<?>[] {
+                Profile.class, Package.class, Actor.class,
+                UseCase.class, org.eclipse.uml2.uml.Class.class,
+                Interface.class, Component.class,
                 Node.class, Stereotype.class,
                 Enumeration.class, DataType.class,
                 Signal.class
@@ -586,11 +599,17 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                 new Class<?>[] { 
                     Operation.class 
                 });
-        
-        // specifies valid elements for a Attribute to contain
-        validContainmentMap.put(Operation.class, 
-                new Class<?>[] { 
+
+        // specifies valid elements for an Operation to contain
+        validContainmentMap.put(Operation.class,
+                new Class<?>[] {
                     Parameter.class
+                });
+
+        // specifies valid elements for a Attribute to contain
+        validContainmentMap.put(Stereotype.class,
+                new Class<?>[] {
+                    Property.class
                 });
     }
         
