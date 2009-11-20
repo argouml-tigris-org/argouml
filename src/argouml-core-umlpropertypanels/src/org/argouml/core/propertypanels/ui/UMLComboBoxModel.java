@@ -44,8 +44,6 @@ import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.diagram.ArgoDiagram;
 
 /**
@@ -55,8 +53,9 @@ import org.argouml.uml.diagram.ArgoDiagram;
  * at construction time of this class. I.e. it is "clearable".
  */
 abstract class UMLComboBoxModel extends AbstractListModel
-        implements PropertyChangeListener, 
-        ComboBoxModel, TargetListener, PopupMenuListener {
+        implements PropertyChangeListener,
+        ComboBoxModel,
+        PopupMenuListener {
     /**
      * Logger.
      */
@@ -351,7 +350,9 @@ abstract class UMLComboBoxModel extends AbstractListModel
      * 
      * @param theNewTarget the target
      */
-    public void setTarget(Object theNewTarget) {
+    protected void setTarget(Object theNewTarget) {
+        assert (getTarget() == null);
+        
         if (theNewTarget != null && theNewTarget.equals(comboBoxTarget)) {
             LOG.debug("Ignoring duplicate setTarget request " + theNewTarget);
             return;
@@ -636,42 +637,6 @@ abstract class UMLComboBoxModel extends AbstractListModel
         if (fireListEvents && !buildingModel) {
             super.fireIntervalRemoved(source, index0, index1);
 	}
-    }
-
-    /*
-     * @see TargetListener#targetAdded(TargetEvent)
-     */
-    public void targetAdded(TargetEvent e) {
-        LOG.debug("targetAdded targetevent :  " + e);
-        setTarget(e.getNewTarget());
-    }
-
-    /*
-     * @see TargetListener#targetRemoved(TargetEvent)
-     */
-    public void targetRemoved(TargetEvent e) {
-        LOG.info("targetRemoved targetevent :  " + e);
-        Object currentTarget = comboBoxTarget;
-        Object oldTarget =
-	    e.getOldTargets().length > 0
-            ? e.getOldTargets()[0] : null;
-        if (oldTarget == currentTarget) {
-            if (Model.getFacade().isAModelElement(currentTarget)) {
-                Model.getPump().removeModelEventListener(this,
-                        currentTarget, propertySetName);
-            }
-            comboBoxTarget = e.getNewTarget();
-        }
-        setTarget(e.getNewTarget());
-    }
-
-    /*
-     * @see TargetListener#targetSet(TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        LOG.debug("targetSet targetevent :  " + e);
-        setTarget(e.getNewTarget());
-
     }
 
     /**

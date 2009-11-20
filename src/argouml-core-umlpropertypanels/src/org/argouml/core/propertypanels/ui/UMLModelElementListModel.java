@@ -44,8 +44,6 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
@@ -76,12 +74,12 @@ public abstract class UMLModelElementListModel
     
     
     /**
-     * Flag to indicate wether list events should be fired
+     * Flag to indicate whether list events should be fired
      */
     private boolean fireListEvents = true;
 
     /**
-     * Flag to indicate wether the model is being build
+     * Flag to indicate whether the model is being build
      */
     private boolean buildingModel = false;
 
@@ -414,7 +412,10 @@ public abstract class UMLModelElementListModel
      * 
      * @param theNewTarget the new target
      */
-    public void setTarget(Object theNewTarget) {
+    protected void setTarget(Object theNewTarget) {
+        assert (getTarget() == null);
+        assert (!(getTarget() instanceof Fig));
+        
         theNewTarget = theNewTarget instanceof Fig
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
         if (Model.getFacade().isAUMLElement(theNewTarget)

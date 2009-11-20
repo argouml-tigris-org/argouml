@@ -24,13 +24,7 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetListener;
-import org.argouml.uml.ui.UMLExpressionModel2;
 
 /**
  * @author jrobbins

@@ -102,21 +102,9 @@ class UMLClassifierRoleAvailableFeaturesListModel
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
-    public void setTarget(Object target) {
-        if (getTarget() != null) {
-            Enumeration enumeration = elements();
-            while (enumeration.hasMoreElements()) {
-                Object base = enumeration.nextElement();
-                Model.getPump().removeModelEventListener(
-                    this,
-                    base,
-                    "feature");
-            }
-            Model.getPump().removeModelEventListener(
-                this,
-                getTarget(),
-                "base");
-        }
+    protected void setTarget(Object target) {
+        assert (getTarget() == null);
+        assert (!(getTarget() instanceof Fig));
         
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (!Model.getFacade().isAModelElement(target))

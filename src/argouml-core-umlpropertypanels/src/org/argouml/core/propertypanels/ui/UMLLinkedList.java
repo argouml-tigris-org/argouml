@@ -40,8 +40,6 @@ import javax.swing.ListSelectionModel;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.ui.targetmanager.TargetListener;
-import org.argouml.ui.targetmanager.TargettableModelView;
 import org.argouml.uml.ui.UMLLinkMouseListener;
 import org.argouml.uml.ui.UMLLinkedListCellRenderer;
 
@@ -57,8 +55,7 @@ import org.argouml.uml.ui.UMLLinkedListCellRenderer;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-class UMLLinkedList extends JList
-        implements TargettableModelView, MouseListener {
+class UMLLinkedList extends JList implements MouseListener {
 
     private static final Logger LOG =
         Logger.getLogger(UMLLinkedList.class);
@@ -126,13 +123,6 @@ class UMLLinkedList extends JList
      */
     public Object getTarget() {
         return ((UMLModelElementListModel) getModel()).getTarget();
-    }
-
-    /*
-     * @see TargettableModelView#getTargettableModel()
-     */
-    public TargetListener getTargettableModel() {
-        return (TargetListener) getModel();
     }
 
     /*

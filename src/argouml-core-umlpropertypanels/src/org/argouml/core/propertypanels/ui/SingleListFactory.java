@@ -54,8 +54,7 @@ class SingleListFactory implements ComponentFactory {
         } else if ("feature".equals(propName)) {
             model = new UMLParameterBehavioralFeatListModel();
         } else if ("enumeration".equals(propName)) {
-            EnumerationListModel m = new EnumerationListModel();
-            m.setTarget(modelElement);   
+            EnumerationListModel m = new EnumerationListModel(modelElement);
             pane = new UMLSingleRowSelector(m);
         } else if ("association".equals(propName)) {
             model = new UMLAssociationEndAssociationListModel();

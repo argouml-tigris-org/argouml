@@ -100,25 +100,14 @@ class UMLClassifierRoleAvailableContentsListModel
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
-    public void setTarget(Object theNewTarget) {
+    protected void setTarget(Object theNewTarget) {
+        assert (getTarget() == null);
+        assert (!(getTarget() instanceof Fig));
+        
         theNewTarget = theNewTarget instanceof Fig
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
         if (Model.getFacade().isAModelElement(theNewTarget)
                 || theNewTarget instanceof Diagram) {
-            if (getTarget() != null) {
-                Enumeration enumeration = elements();
-                while (enumeration.hasMoreElements()) {
-                    Object base = enumeration.nextElement();
-                    Model.getPump().removeModelEventListener(
-                        this,
-                        base,
-                        "ownedElement");
-                }
-                Model.getPump().removeModelEventListener(
-                    this,
-                    getTarget(),
-                    "base");
-            }
             setListTarget(theNewTarget);
             if (getTarget() != null) {
                 Collection bases = Model.getFacade().getBases(getTarget());

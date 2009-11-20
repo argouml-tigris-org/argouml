@@ -27,51 +27,21 @@ package org.argouml.core.propertypanels.ui;
 import javax.swing.DefaultListModel;
 
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetListener;
-import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * The list model for the enumeration of a literal.
  *
  * @author mvw@tigris.org
  */
-class EnumerationListModel extends DefaultListModel implements TargetListener {
+class EnumerationListModel extends DefaultListModel {
 
     /**
      * Constructor for EnumerationListModel.
      */
-    public EnumerationListModel() {
+    public EnumerationListModel(Object target) {
         super();
-        setTarget(TargetManager.getInstance().getModelTarget());
-        TargetManager.getInstance().addTargetListener(this);
-    }
-
-    /*
-     * @see TargetListener#targetAdded(TargetEvent)
-     */
-    public void targetAdded(TargetEvent e) {
-        setTarget(e.getNewTarget());
-    }
-
-    /*
-     * @see TargetListener#targetRemoved(TargetEvent)
-     */
-    public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());
-    }
-
-    /*
-     * @see TargetListener#targetSet(TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());
-    }
-
-    public void setTarget(Object t) {
-        removeAllElements();
-        if (Model.getFacade().isAEnumerationLiteral(t)) {
-            addElement(Model.getFacade().getEnumeration(t));
+        if (Model.getFacade().isAEnumerationLiteral(target)) {
+            addElement(Model.getFacade().getEnumeration(target));
         }
     }
 }

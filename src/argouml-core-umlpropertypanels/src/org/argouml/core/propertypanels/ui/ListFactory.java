@@ -197,11 +197,15 @@ class ListFactory implements ComponentFactory {
             model = new UMLTagDefinitionTypedValuesListModel(); 
         }
         
+        // If we have a model but no list then build the list with
+        // preferred constructor. Eventually all lists should be built
+        // this way.
         if (model != null && list == null) {
-            // If we have a model but no list then build the list with
-            // preferred constructor. Eventually all lists should be built
-            // this way.
-            model.setTarget(modelElement);
+            if (model.getTarget() == null) {
+                // This should only be temporary - we need to pass the target
+                // in the constructors of the models above
+                model.setTarget(modelElement);
+            }
             list = new UMLExpandableRowSelector(model);
         }
         
