@@ -36,6 +36,8 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -351,19 +353,20 @@ public abstract class FigEdgeModelElement
                 popUpActions.add(0, new JSeparator());
                 popUpActions.add(0, critiques);
             }
-
-            // Add stereotypes submenu
-            Action[] stereoActions = getApplyStereotypeActions();
-            if (stereoActions != null && stereoActions.length > 0) {
-                popUpActions.add(0, new JSeparator());
-                ArgoJMenu stereotypes = new ArgoJMenu(
-                        "menu.popup.apply-stereotypes");
-                for (int i = 0; i < stereoActions.length; ++i) {
-                    stereotypes.addCheckItem(stereoActions[i]);
-                }
-                popUpActions.add(0, stereotypes);
-            }
         }
+
+        // Add stereotypes submenu
+        Action[] stereoActions = getApplyStereotypeActions();
+        if (stereoActions != null && stereoActions.length > 0) {
+            popUpActions.add(0, new JSeparator());
+            ArgoJMenu stereotypes = new ArgoJMenu(
+                    "menu.popup.apply-stereotypes");
+            for (int i = 0; i < stereoActions.length; ++i) {
+                stereotypes.addCheckItem(stereoActions[i]);
+            }
+            popUpActions.add(0, stereotypes);
+        }
+
         return popUpActions;
     }
     
@@ -374,7 +377,23 @@ public abstract class FigEdgeModelElement
      * @return array of Actions 
      */
     protected Action[] getApplyStereotypeActions() {
-        return StereotypeUtility.getApplyStereotypeActions(getOwner());
+        Collection<Object> elements = new ArrayList<Object>();
+        Object owner = getOwner();
+        if (owner != null) {
+            elements.add(owner);
+        }
+        for (Object o : TargetManager.getInstance().getTargets()) {
+            Object element = null;
+            if (Model.getFacade().isAUMLElement(o)) {
+                element = o;
+            } else if (o instanceof Fig) {
+                element = ((Fig) o).getOwner();
+            }
+            if (element != null && element != owner) {
+                elements.add(element);
+            }
+        }
+        return StereotypeUtility.getApplyStereotypeActions(elements);
     }
 
     /**

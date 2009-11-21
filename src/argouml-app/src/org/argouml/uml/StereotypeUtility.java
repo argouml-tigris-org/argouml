@@ -55,6 +55,13 @@ public class StereotypeUtility {
         super();
     }
 
+    /**
+     * Returns an array of all applicable actions for adding stereotypes
+     * for a given model element.
+     * 
+     * @param modelElement the given model element
+     * @return the array with actions for adding stereotype UML objects
+     */
     public static Action[] getApplyStereotypeActions(Object modelElement) {
         Set availableStereotypes = getAvailableStereotypes(modelElement);
         
@@ -64,6 +71,29 @@ public class StereotypeUtility {
             Iterator it = availableStereotypes.iterator();
             for (int i = 0; it.hasNext(); ++i) {
                 menuActions[i] = new ActionAddStereotype(modelElement, 
+                        it.next());
+            }
+            return menuActions;
+        }
+        return new Action[0];
+    }
+
+    /**
+     * Returns an array of all applicable actions for adding stereotypes
+     * for a given collection of model elements.
+     * 
+     * @param elements the given collection of model elements
+     * @return the array with actions for adding stereotype UML objects
+     */
+    public static Action[] getApplyStereotypeActions(Collection elements) {
+        Set availableStereotypes = getAvailableStereotypes(elements);
+        
+        if (!availableStereotypes.isEmpty()) {
+            Action[] menuActions = new Action[availableStereotypes.size()];
+
+            Iterator it = availableStereotypes.iterator();
+            for (int i = 0; it.hasNext(); ++i) {
+                menuActions[i] = new ActionAddStereotype(elements, 
                         it.next());
             }
             return menuActions;
@@ -130,6 +160,25 @@ public class StereotypeUtility {
                         .getProfileConfiguration()
                         .findAllStereotypesForModelElement(modelElement));
         
+        return availableStereotypes;
+    }
+
+    /**
+     * Returns a set (union) of all unique applicable stereotypes 
+     * for a given collection of model elements.
+     * TODO: This is not optimized for performance.
+     * 
+     * @param elements the given collection of model elements
+     * @return the set with stereotype UML objects
+     */
+    public static Set<Object> getAvailableStereotypes(Collection elements) {
+        Set<Object> availableStereotypes = 
+            new TreeSet<Object>(new PathComparator());
+        if (elements != null) {
+            for (Object element : elements) {
+                availableStereotypes.addAll(getAvailableStereotypes(element));
+            }
+        }
         return availableStereotypes;
     }
 

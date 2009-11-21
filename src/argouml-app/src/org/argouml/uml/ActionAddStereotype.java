@@ -25,6 +25,8 @@
 package org.argouml.uml;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.Action;
 
@@ -37,51 +39,82 @@ import org.argouml.model.Model;
 import org.argouml.notation.providers.uml.NotationUtilityUml;
 import org.tigris.gef.undo.UndoableAction;
 
-
 /**
- * Action to add a sterotype to a model element.
+ * Action to add a sterotype to a collection of model elements.
+ * 
  * @author Bob Tarling
  */
 @UmlModelMutator
 public class ActionAddStereotype extends UndoableAction {
-    
-    private Object modelElement;
+
+    private Collection<Object> modelElements;
+
     private Object stereotype;
 
     /**
      * Constructor.
-     *
+     * 
      * @param me The model element.
      * @param st The stereotype.
      */
     public ActionAddStereotype(Object me, Object st) {
-        super(Translator.localize(buildString(st)),
-                null);
+        super(Translator.localize(buildString(st)), null);
         // Set the tooltip string:
-        putValue(Action.SHORT_DESCRIPTION, 
-                Translator.localize(buildString(st)));
-        modelElement = me;
+        putValue(Action.SHORT_DESCRIPTION, Translator.localize(buildString(st)));
+        modelElements = new ArrayList<Object>();
+        if (me != null) {
+            modelElements.add(me);
+        }
         stereotype = st;
     }
-    
+
+    /**
+     * Constructor.
+     * 
+     * @param coll The collection of model elements.
+     * @param st The stereotype.
+     */
+    public ActionAddStereotype(Collection<Object> coll, Object st) {
+        super(Translator.localize(buildString(st)), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, Translator.localize(buildString(st)));
+        modelElements = new ArrayList<Object>();
+        if (coll != null) {
+            modelElements.addAll(coll);
+        }
+        stereotype = st;
+    }
+
     private static String buildString(Object st) {
         Project p = ProjectManager.getManager().getCurrentProject();
         ProjectSettings ps = p.getProjectSettings();
-        return NotationUtilityUml.generateStereotype(st, 
-                ps.getNotationSettings().isUseGuillemets());
+        return NotationUtilityUml.generateStereotype(st, ps
+                .getNotationSettings().isUseGuillemets());
     }
 
     /*
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see
+     * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-    	super.actionPerformed(ae);
-        if (Model.getFacade().getStereotypes(modelElement)
-                .contains(stereotype)) {
-            Model.getCoreHelper().removeStereotype(modelElement, stereotype);
-        } else {
-            Model.getCoreHelper().addStereotype(modelElement, stereotype);
+        super.actionPerformed(ae);
+        boolean isContained = false;
+        if (!modelElements.isEmpty()) {
+            isContained = Model.getFacade().getStereotypes(
+                    modelElements.iterator().next()).contains(stereotype);
+        }
+        for (Object modelElement : modelElements) {
+            if (isContained
+                    && Model.getFacade().getStereotypes(modelElement).contains(
+                            stereotype)) {
+                Model.getCoreHelper()
+                        .removeStereotype(modelElement, stereotype);
+            } else if (!isContained
+                    && !Model.getFacade().getStereotypes(modelElement)
+                            .contains(stereotype)) {
+                Model.getCoreHelper().addStereotype(modelElement, stereotype);
+            }
         }
     }
 
@@ -91,6 +124,10 @@ public class ActionAddStereotype extends UndoableAction {
     @Override
     public Object getValue(String key) {
         if ("SELECTED".equals(key)) {
+            if (modelElements.isEmpty()) {
+                return Boolean.FALSE;
+            }
+            Object modelElement = modelElements.iterator().next();
             if (Model.getFacade().getStereotypes(modelElement).contains(
                     stereotype)) {
                 return Boolean.TRUE;

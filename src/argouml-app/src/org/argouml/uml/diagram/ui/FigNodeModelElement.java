@@ -640,20 +640,38 @@ public abstract class FigNodeModelElement
                 popUpActions.add(0, new JSeparator());
                 popUpActions.add(0, critiques);
             }
+        }
 
-            // Add stereotypes submenu
-            final Action[] stereoActions =
-                StereotypeUtility.getApplyStereotypeActions(getOwner());
-            if (stereoActions != null) {
-                popUpActions.add(0, new JSeparator());
-                final ArgoJMenu stereotypes =
-                    new ArgoJMenu("menu.popup.apply-stereotypes");
-                for (Action action : stereoActions) {
-                    stereotypes.addCheckItem(action);
-                }
-                popUpActions.add(0, stereotypes);
+        // Add stereotypes submenu
+        Collection<Object> elements = new ArrayList<Object>();
+        Object owner = getOwner();
+        if (owner != null) {
+            elements.add(owner);
+        }
+        for (Object o : TargetManager.getInstance().getTargets()) {
+            Object element = null;
+            if (Model.getFacade().isAUMLElement(o)) {
+                element = o;
+            } else if (o instanceof Fig) {
+                element = ((Fig) o).getOwner();
             }
+            if (element != null && element != owner) {
+                elements.add(element);
+            }
+        }
+        final Action[] stereoActions =
+            StereotypeUtility.getApplyStereotypeActions(elements);
+        if (stereoActions != null) {
+            popUpActions.add(0, new JSeparator());
+            final ArgoJMenu stereotypes =
+                new ArgoJMenu("menu.popup.apply-stereotypes");
+            for (Action action : stereoActions) {
+                stereotypes.addCheckItem(action);
+            }
+            popUpActions.add(0, stereotypes);
+        }
             
+        if (TargetManager.getInstance().getTargets().size() == 1) {
             // add stereotype view submenu
             ArgoJMenu stereotypesView =
                 new ArgoJMenu("menu.popup.stereotype-view");
