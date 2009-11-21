@@ -438,6 +438,11 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof Extend;
     }
 
+    public boolean isAExtension(Object handle) {
+        throw new NotImplementedException(
+        "There are no extensions in UML 1.x");
+    }
+
     public boolean isAExtensionPoint(Object handle) {
         return handle instanceof ExtensionPoint;
     }
@@ -585,6 +590,11 @@ class FacadeMDRImpl implements Facade {
             }
         }
         return false;
+    }
+
+    public boolean isAProperty(Object handle) {
+        throw new NotImplementedException(
+        "There are no UML Property objects in UML 1.x");
     }
 
     public boolean isAPseudostate(Object handle) {

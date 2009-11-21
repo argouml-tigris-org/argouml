@@ -509,6 +509,14 @@ public interface Facade {
     boolean isAExtend(Object handle);
 
     /**
+     * Recognizer for Extension. For UML2 only.
+     *
+     * @param handle candidate
+     * @return true if handle is an ExtensionPoint
+     */
+    boolean isAExtension(Object handle);
+
+    /**
      * Recognizer for ExtensionPoint.
      *
      * @param handle candidate
@@ -793,9 +801,17 @@ public interface Facade {
      * model instance with a <<profile>> stereotype.
      *
      * @param handle candidate
-     * @return true if handle is a Model
+     * @return true if handle is a Profile
      */
     boolean isAProfile(Object handle);
+    
+    /**
+     * Recognizer for Property. UML 2 only.
+     *
+     * @param handle candidate
+     * @return true if handle is a Property
+     */
+    boolean isAProperty(Object handle);
 
     /**
      * Recognizer for Pseudostate.

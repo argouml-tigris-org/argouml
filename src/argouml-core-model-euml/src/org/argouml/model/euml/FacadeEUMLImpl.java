@@ -71,6 +71,7 @@ import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Event;
 import org.eclipse.uml2.uml.Expression;
 import org.eclipse.uml2.uml.Extend;
+import org.eclipse.uml2.uml.Extension;
 import org.eclipse.uml2.uml.ExtensionPoint;
 import org.eclipse.uml2.uml.Feature;
 import org.eclipse.uml2.uml.FinalState;
@@ -157,7 +158,7 @@ class FacadeEUMLImpl implements Facade {
 
     public String getUmlVersion() {
         // TODO: Can we get this from the metamodel?
-        return "2.1.1"; //$NON-NLS-1$
+        return "2.2"; //$NON-NLS-1$
     }
     
     public boolean equalsPseudostateKind(Object ps1, Object ps2) {
@@ -1719,6 +1720,10 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof Extend;
     }
 
+    public boolean isAExtension(Object handle) {
+        return handle instanceof Extension;
+    }
+
     public boolean isAExtensionPoint(Object handle) {
         return handle instanceof ExtensionPoint;
     }
@@ -1878,7 +1883,11 @@ class FacadeEUMLImpl implements Facade {
     public boolean isAProfile(Object handle) {
         return handle instanceof Profile;
     }
-    
+
+    public boolean isAProperty(Object handle) {
+        return handle instanceof Property;
+    }
+
     public boolean isAPseudostate(Object handle) {
         return handle instanceof Pseudostate;
     }
