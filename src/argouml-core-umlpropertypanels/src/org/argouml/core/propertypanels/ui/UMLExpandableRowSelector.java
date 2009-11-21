@@ -64,6 +64,8 @@ public class UMLExpandableRowSelector extends JPanel
     private static Icon collapsedIcon;
     
     static {
+        // Extract the icon that is used by the tree control
+        // for the current look and feel
         final JTree dummyTree = new JTree();
         
         final TreeUI tu = dummyTree.getUI();
@@ -104,6 +106,10 @@ public class UMLExpandableRowSelector extends JPanel
      */
     private boolean expanded = false;
 
+    /**
+     * The label that contains the +/- symbol to indicate
+     * expansion feature to user.
+     */
     private JLabel expander;
     
     /**
@@ -115,7 +121,7 @@ public class UMLExpandableRowSelector extends JPanel
         
         JPanel buttonPanel = new JPanel();
         expander = new JLabel();
-        expander.addMouseListener(this);
+        this.addMouseListener(this);
         setIcon();
         buttonPanel.add(expander, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.WEST);
@@ -171,20 +177,7 @@ public class UMLExpandableRowSelector extends JPanel
     
     @Override
     public void mouseClicked(MouseEvent e) {
-        expanded = !expanded;
-        
-        setIcon();
-        
-        // TODO: This forces a redraw but what is the minimum we really
-        // need here?
-        getParent().validate();
-        getParent().invalidate();
-        getParent().repaint();
-        getParent().doLayout();
-        getParent().validate();
-        getParent().invalidate();
-        getParent().repaint();
-        getParent().doLayout();
+        toggleExpansion();
     }
     
     @Override
@@ -211,23 +204,22 @@ public class UMLExpandableRowSelector extends JPanel
         
     }
     
+    /**
+     * Toggle between expansion and contraction of the control
+     */
     private void toggleExpansion() {
         expanded = !expanded;
         
         setIcon();
         
-        // TODO: This forces a redraw but what is the minimum we really
-        // need here?
-        getParent().validate();
+        // Froce the parent to redraw
         getParent().invalidate();
-        getParent().repaint();
-        getParent().doLayout();
         getParent().validate();
-        getParent().invalidate();
-        getParent().repaint();
-        getParent().doLayout();
     }
 
+    /**
+     * Set the icon according to the current expansion setting
+     */
     private void setIcon() {
         if (expanded) {
             expander.setIcon(expandedIcon);
