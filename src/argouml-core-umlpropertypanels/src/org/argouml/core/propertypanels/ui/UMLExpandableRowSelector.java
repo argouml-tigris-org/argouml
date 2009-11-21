@@ -26,20 +26,16 @@ package org.argouml.core.propertypanels.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-import javax.swing.AbstractAction;
 import javax.swing.Icon;
-import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
-import javax.swing.ListModel;
 import javax.swing.plaf.TreeUI;
 import javax.swing.plaf.basic.BasicTreeUI;
-import javax.swing.plaf.metal.MetalTreeUI;
-
-import org.tigris.toolbar.toolbutton.ToolButton;
 
 /**
  * A control for displaying the contents of a list model elements in a panel
@@ -49,20 +45,66 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  * @author Bob Tarling
  * @since 0.29.2
  */
-public class UMLExpandableRowSelector extends JPanel {
+public class UMLExpandableRowSelector extends JPanel
+        implements MouseListener {
+    
+    /**
+     * class uid
+     */
+    private static final long serialVersionUID = 3937183621483536749L;
+    
+    /**
+     * The icon to use when the control is expanded
+     */
+    private static Icon expandedIcon;
+    
+    /**
+     * The icon to use when the control is collapsed
+     */
+    private static Icon collapsedIcon;
+    
+    static {
+        final JTree dummyTree = new JTree();
+        
+        final TreeUI tu = dummyTree.getUI();
+        
+        if (tu instanceof BasicTreeUI) {
+            final BasicTreeUI btu = (BasicTreeUI) tu;
+            expandedIcon = btu.getExpandedIcon();
+            collapsedIcon = btu.getCollapsedIcon();
+        } else {
+            // TODO: We want some default icons of our own here
+            expandedIcon = null;
+            collapsedIcon = null;
+        }
+    }
     
     /**
      * The scrollpane that will contain the list
      */
     private JScrollPane scroll;
 
+    /**
+     * The preferred size of the component when shrunk
+     */
     private Dimension shrunkPreferredSize = null;
-    private Dimension shrunkMinimumSize = null;
+
+    /**
+     * The preferred size of the component when expanded
+     */
     private Dimension expandedPreferredSize = null;
-    private Dimension expandedMinimumSize = null;
+
+    /**
+     * The maximum size of the component when expanded
+     */
     private Dimension expandedMaximumSize = null;
     
+    /**
+     * The current expanded state
+     */
     private boolean expanded = false;
+
+    private JLabel expander;
     
     /**
      * Constructor
@@ -71,36 +113,22 @@ public class UMLExpandableRowSelector extends JPanel {
     public UMLExpandableRowSelector(UMLModelElementListModel model) {
         super(new BorderLayout());
         
-        final JTree dummyTree = new JTree();
-        
-        final TreeUI tu = dummyTree.getUI();
-        final Icon expandedIcon;
-        final Icon collapsedIcon;
-        
-        if (tu instanceof BasicTreeUI) {
-            BasicTreeUI btu = (BasicTreeUI) tu;
-            expandedIcon = btu.getExpandedIcon();
-            collapsedIcon = btu.getCollapsedIcon();
-        } else {
-            // TODO: We want some default icons of our own here
-            expandedIcon = null;
-            collapsedIcon = null;
-        }
         JPanel buttonPanel = new JPanel();
-        buttonPanel.add(new ToolButton(new ExpandAction(expandedIcon)), BorderLayout.NORTH);
+        expander = new JLabel();
+        expander.addMouseListener(this);
+        setIcon();
+        buttonPanel.add(expander, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.WEST);
         scroll = new ScrollList(model, 1);
         add(scroll);
         
         shrunkPreferredSize = scroll.getPreferredSize();
-        shrunkMinimumSize = scroll.getMinimumSize();
         
         remove(scroll);
         scroll = new ScrollList(model);
         
         add(scroll);
         expandedPreferredSize = scroll.getPreferredSize();
-        expandedMinimumSize = scroll.getMinimumSize();
         expandedMaximumSize = scroll.getMaximumSize();
         
         scroll.setHorizontalScrollBarPolicy(
@@ -141,24 +169,70 @@ public class UMLExpandableRowSelector extends JPanel {
         }
     }
     
-    private class ExpandAction extends AbstractAction {
-        ExpandAction(Icon icon) {
-            super(null, icon);
-        }
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        expanded = !expanded;
+        
+        setIcon();
+        
+        // TODO: This forces a redraw but what is the minimum we really
+        // need here?
+        getParent().validate();
+        getParent().invalidate();
+        getParent().repaint();
+        getParent().doLayout();
+        getParent().validate();
+        getParent().invalidate();
+        getParent().repaint();
+        getParent().doLayout();
+    }
+    
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
 
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-            expanded = !expanded;
-            // TODO: This forces a redraw but what is the minimum we really
-            // need here?
-            getParent().validate();
-            getParent().invalidate();
-            getParent().repaint();
-            getParent().doLayout();
-            getParent().validate();
-            getParent().invalidate();
-            getParent().repaint();
-            getParent().doLayout();
+    @Override
+    public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    private void toggleExpansion() {
+        expanded = !expanded;
+        
+        setIcon();
+        
+        // TODO: This forces a redraw but what is the minimum we really
+        // need here?
+        getParent().validate();
+        getParent().invalidate();
+        getParent().repaint();
+        getParent().doLayout();
+        getParent().validate();
+        getParent().invalidate();
+        getParent().repaint();
+        getParent().doLayout();
+    }
+
+    private void setIcon() {
+        if (expanded) {
+            expander.setIcon(expandedIcon);
+        } else {
+            expander.setIcon(collapsedIcon);
         }
     }
 }
