@@ -78,6 +78,24 @@ public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
                     continue;
                 }
             }
+            if (Model.getFacade().getUmlVersion().charAt(0) == '2') {
+                if (Model.getFacade().isAProfile(parent)) {
+                    if (Model.getFacade().isAElementImport(o)) {
+                        // in UML2, don't show element imports in profiles
+                        continue;
+                    } else if (Model.getFacade().isAExtension(o)) {
+                        // in UML2, don't show extensions in profiles
+                        continue;
+                    }
+                }
+                if (Model.getFacade().isAStereotype(parent)
+                        //&& Model.getFacade().isAProperty(o)
+                        && Model.getFacade().getName(o) != null
+                        && Model.getFacade().getName(o).startsWith("base_")) {
+                    // in UML2, don't show base_... properties in stereotypes
+                    continue;
+                }
+            }
 	    ret.add(o);
         }
         return ret;

@@ -42,6 +42,11 @@ public class GoPackageToElementImport extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.AbstractPerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
+        if (Model.getFacade().getUmlVersion().charAt(0) == '2'
+                && Model.getFacade().isAProfile(parent)) {
+            // in UML2, we don't want to see element imports in profiles
+            return Collections.EMPTY_SET;
+        }
         if (Model.getFacade().isAPackage(parent)) {
             return Model.getFacade().getElementImports(parent);
         }
