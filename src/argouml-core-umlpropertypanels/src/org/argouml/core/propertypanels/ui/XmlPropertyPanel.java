@@ -46,6 +46,8 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
      */
     private static final Logger LOG = Logger.getLogger(XmlPropertyPanel.class);
     
+    private JList selectedList;
+    
     public XmlPropertyPanel() {
         super(new LabelledLayout());
         setName("UML Properties");
@@ -82,38 +84,15 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
     public void valueChanged(ListSelectionEvent e) {
         final JList list = (JList) e.getSource();
         
-        /**
-         * Remove all the listeners first as we will get events from them
-         * while their selctions are being cleared
-         */
-        for (Component c : getComponents()) {
-            if (c instanceof RowSelector) {
-                RowSelector rs = (RowSelector) c;
-                rs.removeListSelectionListener(this);
-            }
-        }
-        
-        /**
-         * If a row has been selected then clear the selections in all other
-         * RowSelectors.
-         */
-        if (list.getSelectedValues().length > 0) {
+        if (selectedList == null && list.getSelectedValues().length > 0) {
+            selectedList = list;
             for (Component c : getComponents()) {
                 if (c instanceof RowSelector && ((RowSelector) c).getList() != list) {
                     ((RowSelector) c).getList().clearSelection();
                 }
             }
+            selectedList = null;
         }
         
-        /**
-         * Remove all the listeners first as we will get events from them
-         * while their selctions are being cleared
-         */
-        for (Component c : getComponents()) {
-            if (c instanceof RowSelector) {
-                RowSelector rs = (RowSelector) c;
-                rs.addListSelectionListener(this);
-            }
-        }
     }
 }
