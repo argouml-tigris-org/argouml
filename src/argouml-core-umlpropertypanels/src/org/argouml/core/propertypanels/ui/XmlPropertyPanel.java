@@ -24,7 +24,12 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.Component;
+
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.uml.ui.LabelledLayout;
@@ -34,7 +39,7 @@ import org.argouml.uml.ui.LabelledLayout;
  *
  * @author penyaskito
  */
-public class XmlPropertyPanel extends JPanel {
+public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
     
     /**
      * Logger.
@@ -44,5 +49,49 @@ public class XmlPropertyPanel extends JPanel {
     public XmlPropertyPanel() {
         super(new LabelledLayout());
         setName("UML Properties");
+    }
+    
+    public Component add(Component comp) {
+        super.add(comp);
+        if (comp instanceof RowSelector) {
+            RowSelector rs = (RowSelector) comp;
+            rs.addListSelectionListener(this);
+        }
+        return comp;
+    }
+
+    public void remove(Component comp) {
+        super.add(comp);
+        if (comp instanceof RowSelector) {
+            RowSelector rs = (RowSelector) comp;
+            rs.removeListSelectionListener(this);
+        }
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        final JList list = (JList) e.getSource();
+        
+        for (Component c : getComponents()) {
+            if (c instanceof RowSelector) {
+                RowSelector rs = (RowSelector) c;
+                rs.removeListSelectionListener(this);
+            }
+        }
+        
+        if (list.getSelectedValues().length > 0) {
+            for (Component c : getComponents()) {
+                if (c instanceof RowSelector && ((RowSelector) c).getList() != list) {
+                    ((RowSelector) c).getList().clearSelection();
+                }
+            }
+        }
+        
+        for (Component c : getComponents()) {
+            if (c instanceof RowSelector) {
+                RowSelector rs = (RowSelector) c;
+                rs.addListSelectionListener(this);
+            }
+        }
     }
 }

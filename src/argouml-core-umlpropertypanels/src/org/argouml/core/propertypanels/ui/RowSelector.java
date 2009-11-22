@@ -39,6 +39,7 @@ import java.util.Arrays;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -361,6 +362,10 @@ class RowSelector extends JPanel
      */
     public void removeListSelectionListener(ListSelectionListener listener) {
         scroll.getList().removeListSelectionListener(listener);
+    }
+    
+    public JList getList() {
+        return scroll.getList();
     }
     
     /**

@@ -116,11 +116,6 @@ public class SwingUIFactory {
         XMLPropertyPanelsData data = 
             XMLPropPanelFactory.getInstance().getPropertyPanelsData(
                     Model.getMetaTypes().getName(target));
-        JPanel p = buildPanel(data, target, panel);
-        return p;       
-    }
-    
-    private JPanel buildPanel(XMLPropertyPanelsData data, Object target, JPanel panel) {
         
         for (XMLPropertyPanelsDataRecord prop : data.getProperties()) {
             if ("text".equals(prop.getType())) {
