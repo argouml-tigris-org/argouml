@@ -70,7 +70,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * @author Bob Tarling
  * @since 0.29.2
  */
-public class RowSelector extends JPanel
+class RowSelector extends JPanel
         implements MouseListener, ContainerListener {
     
     /**
