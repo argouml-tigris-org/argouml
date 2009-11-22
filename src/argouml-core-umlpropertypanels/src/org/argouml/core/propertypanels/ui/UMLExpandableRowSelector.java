@@ -25,17 +25,42 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JToolBar;
 import javax.swing.JTree;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.TreeUI;
 import javax.swing.plaf.basic.BasicTreeUI;
+import javax.swing.table.TableCellEditor;
+
+import org.apache.log4j.Logger;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
+import org.argouml.ui.ActionCreateContainedModelElement;
+import org.argouml.ui.UndoableAction;
+import org.tigris.gef.presentation.FigTextEditor;
+import org.tigris.swidgets.FlexiGridLayout;
+import org.tigris.toolbar.ToolBar;
+import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * A control for displaying the contents of a list model elements in a panel
@@ -46,7 +71,12 @@ import javax.swing.plaf.basic.BasicTreeUI;
  * @since 0.29.2
  */
 public class UMLExpandableRowSelector extends JPanel
-        implements MouseListener {
+        implements MouseListener, ContainerListener {
+    
+    /**
+     * The logger
+     */
+    private static final Logger LOG = Logger.getLogger(UMLExpandableRowSelector.class);
     
     /**
      * class uid
@@ -84,23 +114,28 @@ public class UMLExpandableRowSelector extends JPanel
     /**
      * The scrollpane that will contain the list
      */
-    private JScrollPane scroll;
+    private ScrollList scroll;
 
     /**
      * The preferred size of the component when shrunk
      */
-    private Dimension shrunkPreferredSize = null;
+    private final Dimension shrunkPreferredSize;
 
     /**
      * The preferred size of the component when expanded
      */
-    private Dimension expandedPreferredSize = null;
+    private final Dimension expandedPreferredSize;
 
     /**
      * The maximum size of the component when expanded
      */
-    private Dimension expandedMaximumSize = null;
+    private final Dimension expandedMaximumSize;
     
+    /**
+     * True if the component is expandable
+     */
+    private final boolean expandable;
+
     /**
      * The current expanded state
      */
@@ -110,21 +145,43 @@ public class UMLExpandableRowSelector extends JPanel
      * The label that contains the +/- symbol to indicate
      * expansion feature to user.
      */
-    private JLabel expander;
+    private final JLabel expander;
+    
+    /**
+     * The toolbar of controls for manipulating items in the list
+     */
+    private final JToolBar tb;
+    
+    /**
+     * The delete action that we must enable/disable
+     */
+    private final DeleteAction deleteAction;
     
     /**
      * Constructor
      * @param model The single item list model
      */
     public UMLExpandableRowSelector(UMLModelElementListModel model) {
+        this(model, false, true);
+        
+    }
+    /**
+     * Constructor
+     * @param model The single item list model
+     * @param singleRow true if we only ever want a single row
+     */
+    public UMLExpandableRowSelector(UMLModelElementListModel model, boolean expanded, boolean expandable) {
         super(new BorderLayout());
         
-        JPanel buttonPanel = new JPanel();
-        expander = new JLabel();
-        this.addMouseListener(this);
-        setIcon();
-        buttonPanel.add(expander, BorderLayout.NORTH);
-        add(buttonPanel, BorderLayout.WEST);
+        this.expandable = expandable;
+        
+        Object target = model.getTarget();
+        Object metaType = model.getMetaType();
+        
+        LOG.info("model = " + model.getClass().getName());
+        LOG.info("metatype = " + metaType);
+        LOG.info("target = " + target);
+        
         scroll = new ScrollList(model, 1);
         add(scroll);
         
@@ -138,7 +195,49 @@ public class UMLExpandableRowSelector extends JPanel
         expandedMaximumSize = scroll.getMaximumSize();
         
         scroll.setHorizontalScrollBarPolicy(
-        	JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        if (!expandable && !expanded) {
+            scroll.setVerticalScrollBarPolicy(
+                    JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+            expander = null;
+            tb = null;
+            deleteAction = null;
+        } else {
+            // Create actions and expander if we have multiple rows
+            final ArrayList<Action> actions = new ArrayList<Action>(2);
+            
+            if (Model.getUmlFactory().isContainmentValid(metaType, target)) {
+                final Action createAction = new ActionCreateContainedModelElement(
+                        metaType,
+                        target,
+                        "button.new-" + Model.getMetaTypes().getName(metaType).toLowerCase());
+                actions.add(createAction);
+            }
+            deleteAction = new DeleteAction();
+            actions.add(deleteAction);
+            
+            final ToolBarFactory tbf = new ToolBarFactory(actions);
+            tb = tbf.createToolBar();
+            tb.setRollover(true);
+            tb.setOrientation(ToolBar.VERTICAL);
+            
+            JPanel buttonPanel =
+                new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
+            expander = new JLabel();
+            this.addMouseListener(this);
+            setIcon();
+            buttonPanel.add(expander);
+            if (tb != null) {
+                tb.setVisible(false);
+                buttonPanel.add(tb);
+            }
+            add(buttonPanel, BorderLayout.WEST);
+
+            scroll.getList().addListSelectionListener(deleteAction);
+            
+            addContainerListener(this);
+        }
     }
     
     /**
@@ -211,6 +310,9 @@ public class UMLExpandableRowSelector extends JPanel
         expanded = !expanded;
         
         setIcon();
+        if (tb != null) {
+            tb.setVisible(expanded);
+        }
         
         // Froce the parent to redraw
         getParent().invalidate();
@@ -225,6 +327,85 @@ public class UMLExpandableRowSelector extends JPanel
             expander.setIcon(expandedIcon);
         } else {
             expander.setIcon(collapsedIcon);
+        }
+    }
+    
+    @Override
+    public void componentAdded(ContainerEvent arg0) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /**
+     * Remove all the listeners that were added in the constructor
+     */
+    @Override
+    public void componentRemoved(ContainerEvent event) {
+        scroll.getList().removeListSelectionListener(deleteAction);
+        this.removeMouseListener(this);
+        this.removeContainerListener(this);
+    }
+    
+
+    /**
+     * Add a listener for selection changes to the list
+     * @param listener the listener
+     */
+    public void addListSelectionListener(ListSelectionListener listener) {
+        scroll.getList().addListSelectionListener(listener);
+    }
+
+    /**
+     * Add a listener for selection changes to the list
+     * @param listener the listener
+     */
+    public void removeListSelectionListener(ListSelectionListener listener) {
+        scroll.getList().removeListSelectionListener(listener);
+    }
+    
+    /**
+     * This action deletes the model elements that are selected in the JList
+     */
+    private class DeleteAction extends UndoableAction implements ListSelectionListener {
+        
+        DeleteAction() {
+            super("button.delete",
+                    ResourceLoaderWrapper.getInstance().lookupIconResource("DeleteFromModel"));
+            setEnabled(false);
+        }
+
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            setEnabled(scroll.getList().getSelectedIndex() > -1);
+        }
+        
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent ae) {
+            super.actionPerformed(ae);
+            // TODO Part of this is copied from ActionDeleteModelElement. We
+            // maybe need some subclass for common code.
+            KeyboardFocusManager focusManager =
+                KeyboardFocusManager.getCurrentKeyboardFocusManager();
+            Component focusOwner = focusManager.getFocusOwner();
+            if (focusOwner instanceof FigTextEditor) {
+                // TODO: Probably really want to cancel editing
+                //((FigTextEditor) focusOwner).cancelEditing();
+                ((FigTextEditor) focusOwner).endEditing();
+            } else if (focusOwner instanceof JTable) {
+                JTable table = (JTable) focusOwner;
+                if (table.isEditing()) {
+                    TableCellEditor ce = table.getCellEditor();
+                    if (ce != null) {
+                        ce.cancelCellEditing();
+                    }
+                }
+            }
+
+            Project p = ProjectManager.getManager().getCurrentProject();
+            Object[] targets = scroll.getList().getSelectedValues();
+            p.moveToTrash(Arrays.asList(targets));
         }
     }
 }

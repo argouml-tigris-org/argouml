@@ -40,7 +40,7 @@ class UMLClassOperationListModel
      * Constructor for UMLClassifierFeatureListModel.
      */
     public UMLClassOperationListModel() {
-        super("feature", true, false);
+        super("feature", true, false, Model.getMetaTypes().getOperation());
     }
 
     /*

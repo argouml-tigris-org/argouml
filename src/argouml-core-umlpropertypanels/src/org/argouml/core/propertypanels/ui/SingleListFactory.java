@@ -33,15 +33,12 @@ import org.argouml.model.Model;
  */
 class SingleListFactory implements ComponentFactory {
     
-    public SingleListFactory() {
-    }
-    
     public JComponent createComponent(
             final Object modelElement,
             final String propName) {
         
         UMLModelElementListModel model = null;
-        UMLSingleRowSelector pane = null;
+        JComponent pane = null;
         
         if ("owner".equals(propName)) {
             model = new UMLFeatureOwnerListModel();
@@ -55,7 +52,6 @@ class SingleListFactory implements ComponentFactory {
             model = new UMLParameterBehavioralFeatListModel();
         } else if ("enumeration".equals(propName)) {
             EnumerationListModel m = new EnumerationListModel(modelElement);
-            pane = new UMLSingleRowSelector(m);
         } else if ("association".equals(propName)) {
             model = new UMLAssociationEndAssociationListModel();
         } else if ("base".equals(propName)) {
@@ -116,7 +112,7 @@ class SingleListFactory implements ComponentFactory {
         
         if (model != null && pane == null) {
             model.setTarget(modelElement);
-            pane = new UMLSingleRowSelector(model);
+            pane = new UMLExpandableRowSelector(model, false, false);
         }
         
         return pane;

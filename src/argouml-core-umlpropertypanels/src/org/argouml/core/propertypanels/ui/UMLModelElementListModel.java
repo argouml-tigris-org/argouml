@@ -141,6 +141,18 @@ public abstract class UMLModelElementListModel
         this.showPath = showPath;
     }
     
+    public UMLModelElementListModel(
+            final String name,
+            final boolean showIcon,
+            final boolean showPath,
+            final Object metaType) {
+        super();
+        eventName = name;
+        this.showIcon = showIcon;
+        this.showPath = showPath;
+        this.metaType = metaType;
+    }
+    
     /**
      * Constructor for UMLModelElementListModel2.
      *

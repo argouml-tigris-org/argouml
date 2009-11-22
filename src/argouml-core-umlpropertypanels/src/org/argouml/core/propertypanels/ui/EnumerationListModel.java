@@ -24,8 +24,6 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import javax.swing.DefaultListModel;
-
 import org.argouml.model.Model;
 
 /**
@@ -33,15 +31,22 @@ import org.argouml.model.Model;
  *
  * @author mvw@tigris.org
  */
-class EnumerationListModel extends DefaultListModel {
+class EnumerationListModel extends UMLModelElementListModel {
 
     /**
      * Constructor for EnumerationListModel.
      */
     public EnumerationListModel(Object target) {
         super();
-        if (Model.getFacade().isAEnumerationLiteral(target)) {
-            addElement(Model.getFacade().getEnumeration(target));
-        }
+    }
+
+    @Override
+    protected void buildModelList() {
+        addElement(Model.getFacade().getEnumeration(getTarget()));
+    }
+
+    @Override
+    protected boolean isValidElement(Object element) {
+        return Model.getFacade().isAEnumeration(element);
     }
 }

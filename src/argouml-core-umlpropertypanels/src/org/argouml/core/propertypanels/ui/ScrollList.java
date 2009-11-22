@@ -50,7 +50,7 @@ import org.apache.log4j.Logger;
  * 
  * @author Bob Tarling
  */
-class ScrollList extends JScrollPane implements KeyListener, MouseListener {
+class ScrollList extends JScrollPane implements KeyListener {
 
     private static final Logger LOG = Logger.getLogger(ScrollList.class);
     
@@ -90,7 +90,6 @@ class ScrollList extends JScrollPane implements KeyListener, MouseListener {
                     listModel.getRemoveAction());
         }
         setViewportView(list);
-        addListeners();
     }
 
     /**
@@ -106,7 +105,6 @@ class ScrollList extends JScrollPane implements KeyListener, MouseListener {
         list = new UMLLinkedList(listModel, true, true);
         list.setVisibleRowCount(visibleRowCount);
         setViewportView(list);
-        addListeners();
     }
 
     /**
@@ -121,13 +119,6 @@ class ScrollList extends JScrollPane implements KeyListener, MouseListener {
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         this.list = (UMLLinkedList) alist;
         setViewportView(list);
-        addListeners();
-    }
-    
-    private void addListeners() {
-        this.addMouseListener(this);
-        list.addMouseListener(this);
-        getVerticalScrollBar().addMouseListener(this);
     }
     
     public ListModel getListModel() {
@@ -168,37 +159,8 @@ class ScrollList extends JScrollPane implements KeyListener, MouseListener {
         super.removeNotify();
         list.removeKeyListener(this);
     }
-
-    public void mouseClicked(MouseEvent evt) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void mouseEntered(MouseEvent evt) {
-//        if (originalHeight == 0) {
-//            originalHeight = getHeight();
-//            final int parentHeight = getParent().getHeight();
-//            setSize(getWidth(), parentHeight - getY());
-//            list.setSize(this.getSize());
-//        }
-    }
-
-    public void mouseExited(MouseEvent evt) {
-//        Rectangle rect = new Rectangle(getLocationOnScreen(), getSize());
-//        if (!rect.contains(evt.getLocationOnScreen())) {
-//            setSize(getWidth(), originalHeight);
-//            list.setSize(getWidth(), originalHeight);
-//            originalHeight = 0;
-//        }
-    }
-
-    public void mousePressed(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void mouseReleased(MouseEvent arg0) {
-        // TODO Auto-generated method stub
-        
+    
+    JList getList() {
+        return list;
     }
 }
