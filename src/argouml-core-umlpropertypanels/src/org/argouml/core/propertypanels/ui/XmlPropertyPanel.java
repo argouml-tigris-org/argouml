@@ -51,6 +51,9 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
         setName("UML Properties");
     }
     
+    /**
+     * If a RowSelector is added then add a selection listener
+     */
     public Component add(Component comp) {
         super.add(comp);
         if (comp instanceof RowSelector) {
@@ -60,6 +63,9 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
         return comp;
     }
 
+    /**
+     * If a RowSelector is removed then its selection listener
+     */
     public void remove(Component comp) {
         super.add(comp);
         if (comp instanceof RowSelector) {
@@ -68,10 +74,18 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
         }
     }
 
+    /**
+     * If a row is selected in a RowSelector then clear the selection in any
+     * other Row Selector.
+     */
     @Override
     public void valueChanged(ListSelectionEvent e) {
         final JList list = (JList) e.getSource();
         
+        /**
+         * Remove all the listeners first as we will get events from them
+         * while their selctions are being cleared
+         */
         for (Component c : getComponents()) {
             if (c instanceof RowSelector) {
                 RowSelector rs = (RowSelector) c;
@@ -79,6 +93,10 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
             }
         }
         
+        /**
+         * If a row has been selected then clear the selections in all other
+         * RowSelectors.
+         */
         if (list.getSelectedValues().length > 0) {
             for (Component c : getComponents()) {
                 if (c instanceof RowSelector && ((RowSelector) c).getList() != list) {
@@ -87,6 +105,10 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
             }
         }
         
+        /**
+         * Remove all the listeners first as we will get events from them
+         * while their selctions are being cleared
+         */
         for (Component c : getComponents()) {
             if (c instanceof RowSelector) {
                 RowSelector rs = (RowSelector) c;
