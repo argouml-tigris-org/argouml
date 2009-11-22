@@ -206,7 +206,7 @@ class ListFactory implements ComponentFactory {
                 // in the constructors of the models above
                 model.setTarget(modelElement);
             }
-            list = new UMLExpandableRowSelector(model);
+            list = new RowSelector(model);
         }
         
         return list;

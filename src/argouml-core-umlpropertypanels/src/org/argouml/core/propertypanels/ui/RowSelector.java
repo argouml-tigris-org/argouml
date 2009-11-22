@@ -70,13 +70,13 @@ import org.tigris.toolbar.ToolBarFactory;
  * @author Bob Tarling
  * @since 0.29.2
  */
-public class UMLExpandableRowSelector extends JPanel
+public class RowSelector extends JPanel
         implements MouseListener, ContainerListener {
     
     /**
      * The logger
      */
-    private static final Logger LOG = Logger.getLogger(UMLExpandableRowSelector.class);
+    private static final Logger LOG = Logger.getLogger(RowSelector.class);
     
     /**
      * class uid
@@ -161,7 +161,7 @@ public class UMLExpandableRowSelector extends JPanel
      * Constructor
      * @param model The single item list model
      */
-    public UMLExpandableRowSelector(UMLModelElementListModel model) {
+    public RowSelector(UMLModelElementListModel model) {
         this(model, false, true);
         
     }
@@ -170,7 +170,7 @@ public class UMLExpandableRowSelector extends JPanel
      * @param model The single item list model
      * @param singleRow true if we only ever want a single row
      */
-    public UMLExpandableRowSelector(UMLModelElementListModel model, boolean expanded, boolean expandable) {
+    public RowSelector(UMLModelElementListModel model, boolean expanded, boolean expandable) {
         super(new BorderLayout());
         
         this.expandable = expandable;

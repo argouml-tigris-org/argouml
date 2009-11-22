@@ -112,7 +112,7 @@ class SingleListFactory implements ComponentFactory {
         
         if (model != null && pane == null) {
             model.setTarget(modelElement);
-            pane = new UMLExpandableRowSelector(model, false, false);
+            pane = new RowSelector(model, false, false);
         }
         
         return pane;
