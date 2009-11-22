@@ -22,27 +22,43 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.core.propertypanels.panel;
+package org.argouml.core.propertypanels.ui;
 
-import javax.swing.JPanel;
-
-import org.apache.log4j.Logger;
-import org.argouml.uml.ui.LabelledLayout;
+import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLPlainTextDocument;
 
 /**
- * This class is the main property panel, based on XML
+ * Generic document for the plain text properties of the
+ * UML elements.
  *
  * @author penyaskito
  */
-public class XmlPropertyPanel extends JPanel {
+public class GenericUMLPlainTextDocument extends UMLPlainTextDocument {
+
+    private String fieldName = null;
     
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(XmlPropertyPanel.class);
-    
-    public XmlPropertyPanel() {
-        super(new LabelledLayout());
-        setName("UML Properties");
+    public GenericUMLPlainTextDocument(String theFieldName) {
+        super(theFieldName);
+        this.fieldName = theFieldName;
     }
+    
+    @Override
+    protected String getProperty() {
+        Object target = getTarget();
+        // TODO: This can be a mess... There are any better solution?
+        if ("name".equals(fieldName)) {
+            return Model.getFacade().getName(target);
+        }
+        return null;
+    }
+
+    @Override
+    protected void setProperty(String text) {
+        Object target = getTarget();
+        // TODO: This can be a mess... There are any better solution?        
+        if ("name".equals(fieldName)) {
+            Model.getCoreHelper().setName(target, text);
+        }
+    }
+
 }

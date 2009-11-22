@@ -39,7 +39,6 @@ import javax.swing.JToolBar;
 import javax.swing.ListModel;
 import javax.swing.border.TitledBorder;
 
-import org.argouml.core.propertypanels.panel.XMLPropPanelFactory;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.i18n.Translator;

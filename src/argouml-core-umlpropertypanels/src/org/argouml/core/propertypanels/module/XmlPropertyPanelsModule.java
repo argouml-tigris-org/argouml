@@ -27,8 +27,8 @@ package org.argouml.core.propertypanels.module;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.argouml.core.propertypanels.panel.XMLPropPanelFactory;
-import org.argouml.core.propertypanels.panel.XmlPropertyPanel;
+import org.argouml.core.propertypanels.ui.XMLPropPanelFactory;
+import org.argouml.core.propertypanels.ui.XmlPropertyPanel;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.ui.DetailsPane;
 import org.argouml.ui.ProjectBrowser;

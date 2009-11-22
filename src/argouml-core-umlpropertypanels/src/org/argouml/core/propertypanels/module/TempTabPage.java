@@ -28,7 +28,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
-import org.argouml.core.propertypanels.panel.XMLPropPanelFactory;
+import org.argouml.core.propertypanels.ui.XMLPropPanelFactory;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 

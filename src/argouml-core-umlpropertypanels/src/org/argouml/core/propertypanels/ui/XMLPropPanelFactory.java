@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.core.propertypanels.panel;
+package org.argouml.core.propertypanels.ui;
 
 import java.io.InputStream;
 import java.util.Dictionary;
@@ -31,7 +31,6 @@ import java.util.Hashtable;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.argouml.core.propertypanels.ui.SwingUIFactory;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XmlSinglePanelHandler;
 import org.argouml.i18n.Translator;
