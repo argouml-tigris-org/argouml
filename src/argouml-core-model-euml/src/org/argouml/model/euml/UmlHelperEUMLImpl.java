@@ -102,4 +102,11 @@ class UmlHelperEUMLImpl implements UmlHelper {
         throw new IllegalArgumentException();
     }
 
+    /*
+     * @see org.argouml.model.UmlHelper#move(java.lang.Object, org.argouml.model.UmlHelper.Direction)
+     */
+    public void move(Object element, Direction direction) {
+        throw new NotYetImplementedException();
+    }
+
 }
