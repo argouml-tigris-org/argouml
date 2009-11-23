@@ -58,6 +58,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.UmlHelper;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.UndoableAction;
 import org.tigris.gef.presentation.FigTextEditor;
@@ -495,7 +496,7 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            //
+            Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.UP);
         }
     }
     
@@ -519,7 +520,7 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            //
+            Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.DOWN);
         }
     }
     
@@ -543,7 +544,7 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            //
+            Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.TOP);
         }
     }
     
@@ -567,7 +568,7 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            //
+            Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.BOTTOM);
         }
     }
     
