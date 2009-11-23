@@ -592,6 +592,11 @@ class FacadeMDRImpl implements Facade {
         return false;
     }
 
+    public boolean isAProfileApplication(Object handle) {
+        throw new NotImplementedException(
+        "There are no profile application objects in UML 1.x");
+    }
+
     public boolean isAProperty(Object handle) {
         throw new NotImplementedException(
         "There are no UML Property objects in UML 1.x");

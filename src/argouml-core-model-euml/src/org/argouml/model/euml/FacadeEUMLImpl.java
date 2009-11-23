@@ -101,6 +101,7 @@ import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Profile;
+import org.eclipse.uml2.uml.ProfileApplication;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
@@ -1882,6 +1883,10 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAProfile(Object handle) {
         return handle instanceof Profile;
+    }
+
+    public boolean isAProfileApplication(Object handle) {
+        return handle instanceof ProfileApplication;
     }
 
     public boolean isAProperty(Object handle) {

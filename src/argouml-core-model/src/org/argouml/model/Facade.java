@@ -804,7 +804,15 @@ public interface Facade {
      * @return true if handle is a Profile
      */
     boolean isAProfile(Object handle);
-    
+
+    /**
+     * Recognizer for ProfileApplication. In UML 2 only.
+     *
+     * @param handle candidate
+     * @return true if handle is a ProfileApplication
+     */
+    boolean isAProfileApplication(Object handle);
+
     /**
      * Recognizer for Property. UML 2 only.
      *
