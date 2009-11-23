@@ -26,12 +26,19 @@ package org.argouml.model.mdr;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
+import org.argouml.model.Model;
 import org.argouml.model.UmlHelper;
+import org.argouml.model.UmlHelper.Direction;
 import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.foundation.core.AssociationEnd;
+import org.omg.uml.foundation.core.Attribute;
+import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Feature;
 import org.omg.uml.foundation.core.Relationship;
+import org.omg.uml.foundation.core.UmlClass;
 
 /**
  * Helper class for UML metamodel.
@@ -114,5 +121,35 @@ class UmlHelperMDRImpl implements UmlHelper {
         }
         throw new IllegalArgumentException();
     }
+    
 
+    /*
+     * @see org.argouml.model.UmlHelper#move(java.lang.Object, org.argouml.model.UmlHelper.Direction)
+     */
+    public void move(Object element, Direction direction) {
+        if (element instanceof Feature) {
+            Feature att = (Feature) element;
+            Classifier cls = att.getOwner();
+            
+            if (direction == Direction.DOWN) {
+                List f = Model.getFacade().getFeatures(cls);
+                int index1 = f.indexOf(att);
+                Model.getCoreHelper().removeFeature(cls, att);
+                Model.getCoreHelper().addFeature(cls, index1 + 1, att);
+            } else if (direction == Direction.UP) {
+                List f = Model.getFacade().getFeatures(cls);
+                int index1 = f.indexOf(att);
+                Model.getCoreHelper().removeFeature(cls, att);
+                Model.getCoreHelper().addFeature(cls, index1 - 1, att);
+            } else if (direction == Direction.TOP) {
+                List f = Model.getFacade().getFeatures(cls);
+                Model.getCoreHelper().removeFeature(cls, att);
+                Model.getCoreHelper().addFeature(cls, 0, att);
+            } else if (direction == Direction.BOTTOM) {
+                List f = Model.getFacade().getFeatures(cls);
+                Model.getCoreHelper().removeFeature(cls, att);
+                Model.getCoreHelper().addFeature(cls, f.size() - 1, att);
+            }
+        }
+    }
 }
