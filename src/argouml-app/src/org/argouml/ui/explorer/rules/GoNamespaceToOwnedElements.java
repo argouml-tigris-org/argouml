@@ -79,12 +79,17 @@ public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
                 }
             }
             if (Model.getFacade().getUmlVersion().charAt(0) == '2') {
+                // in UML2, some elements are not to be shown
+                if (Model.getFacade().isAProfileApplication(o)) {
+                    // don't show a profile application
+                    continue;
+                }
                 if (Model.getFacade().isAProfile(parent)) {
                     if (Model.getFacade().isAElementImport(o)) {
-                        // in UML2, don't show element imports in profiles
+                        // don't show element imports in profiles
                         continue;
                     } else if (Model.getFacade().isAExtension(o)) {
-                        // in UML2, don't show extensions in profiles
+                        // don't show extensions in profiles
                         continue;
                     }
                 }
@@ -92,7 +97,7 @@ public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
                         //&& Model.getFacade().isAProperty(o)
                         && Model.getFacade().getName(o) != null
                         && Model.getFacade().getName(o).startsWith("base_")) {
-                    // in UML2, don't show base_... properties in stereotypes
+                    // don't show base_... properties in stereotypes
                     continue;
                 }
             }
