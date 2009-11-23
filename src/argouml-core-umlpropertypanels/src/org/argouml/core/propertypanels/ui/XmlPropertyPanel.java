@@ -55,6 +55,8 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
     
     /**
      * If a RowSelector is added then add a selection listener
+     * @param comp the component being added
+     * @return the component that was added
      */
     public Component add(Component comp) {
         super.add(comp);
@@ -67,9 +69,10 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
 
     /**
      * If a RowSelector is removed then its selection listener
+     * @param comp the component being removed
      */
     public void remove(Component comp) {
-        super.add(comp);
+        super.remove(comp);
         if (comp instanceof RowSelector) {
             RowSelector rs = (RowSelector) comp;
             rs.removeListSelectionListener(this);
