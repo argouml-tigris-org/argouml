@@ -118,12 +118,12 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
 
             if (src == attrCheckBox) {
                 FigCompartmentBox fcb = (FigCompartmentBox) getPanelTarget();
-                FigCompartment fc =
-                    fcb.getCompartment(Model.getMetaTypes().getAttribute());
-                fcb.setCompartmentVisible(fc, attrCheckBox.isSelected());
+                fcb.showCompartment(Model.getMetaTypes().getAttribute(), 
+                        attrCheckBox.isSelected());
             } else if (src == operCheckBox) {
-                ((OperationsCompartmentContainer) getPanelTarget())
-                    .setOperationsVisible(operCheckBox.isSelected());
+                FigCompartmentBox fcb = (FigCompartmentBox) getPanelTarget();
+                fcb.showCompartment(Model.getMetaTypes().getOperation(),
+                        operCheckBox.isSelected());
             } else {
                 super.itemStateChanged(e);
             }

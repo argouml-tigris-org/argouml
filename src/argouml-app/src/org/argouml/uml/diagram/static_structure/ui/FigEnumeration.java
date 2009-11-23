@@ -185,5 +185,15 @@ public class FigEnumeration extends FigDataType
     public Rectangle getEnumLiteralsBounds() {
         return literalsCompartment.getBounds();
     }
-    
+
+    /**
+     * USED BY PGML.tee.
+     * @return the class name and bounds together with compartment
+     * visibility.
+     */
+    @Override
+    public String classNameAndBounds() {
+        return super.classNameAndBounds()
+                + "enumerationLiteralsVisible=" + isEnumLiteralsVisible();
+    }
 } 

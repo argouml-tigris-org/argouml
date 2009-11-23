@@ -166,7 +166,9 @@ public abstract class UmlDiagramRenderer
     }
 
     /**
-     * Set the fig style according to attributes.
+     * Set the fig style according to attributes. <p>
+     * 
+     * TODO: This is never used! Can we remove?
      *
      * @param fig the fig to style.
      * @param attributeMap a map of name value pairs
@@ -178,14 +180,25 @@ public abstract class UmlDiagramRenderer
             name = entry.getKey();
             value = entry.getValue();
 
-            if ("operationsVisible".equals(name)) {
-                ((OperationsCompartmentContainer) fig)
-                    .setOperationsVisible(value.equalsIgnoreCase("true"));
-            } else if ("attributesVisible".equals(name)) {
+            if(fig instanceof FigCompartmentBox) {
                 FigCompartmentBox fcb = (FigCompartmentBox) fig;
-                FigCompartment fc =
-                    fcb.getCompartment(Model.getMetaTypes().getAttribute());
-                fcb.setCompartmentVisible(fc, value.equalsIgnoreCase("true"));
+                if ("operationsVisible".equals(name)) {
+                    fcb.showCompartment(
+                            Model.getMetaTypes().getOperation(), 
+                            value.equalsIgnoreCase("true"));
+                } else if ("attributesVisible".equals(name)) {
+                    fcb.showCompartment(
+                            Model.getMetaTypes().getAttribute(), 
+                            value.equalsIgnoreCase("true"));
+                } else if ("enumerationLiteralsVisible".equals(name)) {
+                    fcb.showCompartment(
+                            Model.getMetaTypes().getEnumerationLiteral(), 
+                            value.equalsIgnoreCase("true"));
+                } else if ("extensionPointVisible".equals(name)) {
+                    fcb.showCompartment(
+                            Model.getMetaTypes().getExtensionPoint(), 
+                            value.equalsIgnoreCase("true"));
+                }
             }
         }
     }

@@ -201,7 +201,7 @@ public class ActionCompartmentDisplay extends UndoableAction {
         boolean enumPresent = false;
         boolean enumVisible = false;
 
-        List<Fig> figs = ce.getSelectionManager().getFigs();
+        List<Fig> figs = ce.getSelectionManager().getSelectedFigs();
         for (Fig f : figs) {
             
             final FigCompartmentBox fcb = (FigCompartmentBox) f;
@@ -310,29 +310,29 @@ public class ActionCompartmentDisplay extends UndoableAction {
             // Perform the action
             if ((cType & COMPARTMENT_ATTRIBUTE) != 0) {
                 final FigCompartmentBox fcb = (FigCompartmentBox) f;
-                final FigCompartment attributeCompartment =
-                    fcb.getCompartment(Model.getMetaTypes().getAttribute());
-		if (attributeCompartment != null) {
-		    fcb.setCompartmentVisible(attributeCompartment, display);
-		}
+                fcb.showCompartment(
+                        Model.getMetaTypes().getAttribute(),
+                        display);
+		
             }
             if ((cType & COMPARTMENT_OPERATION) != 0) {
-		if (f instanceof OperationsCompartmentContainer) {
-		    ((OperationsCompartmentContainer) f)
-                        .setOperationsVisible(display);
-		}
+                final FigCompartmentBox fcb = (FigCompartmentBox) f;
+                fcb.showCompartment(
+                        Model.getMetaTypes().getOperation(),
+                        display);
             }
 
             if ((cType & COMPARTMENT_EXTENSIONPOINT) != 0) {
-                if (f instanceof ExtensionPointsCompartmentContainer) {
-                    ((ExtensionPointsCompartmentContainer) f).setExtensionPointsVisible(display);
-                }
+                final FigCompartmentBox fcb = (FigCompartmentBox) f;
+                fcb.showCompartment(
+                        Model.getMetaTypes().getExtensionPoint(),
+                        display);
             }
             if ((cType & COMPARTMENT_ENUMLITERAL) != 0) {
-                if (f instanceof EnumLiteralsCompartmentContainer) {
-                    ((EnumLiteralsCompartmentContainer) f)
-                            .setEnumLiteralsVisible(display);
-                }
+                final FigCompartmentBox fcb = (FigCompartmentBox) f;
+                fcb.showCompartment(
+                        Model.getMetaTypes().getEnumerationLiteral(),
+                        display);
             }
 	}
     }

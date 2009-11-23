@@ -300,8 +300,11 @@ class PGMLStackParser
     }
 
     /**
-     * Set the fig style attributes. This should move into
+     * Set the fig style attributes. <p>
+     * 
+     * TODO: This should move into
      * the render factories as described in issue 859.
+     * 
      * @param fig the fig to style.
      * @param attributeMap a map of name value pairs
      */
@@ -311,15 +314,27 @@ class PGMLStackParser
             final String name = entry.getKey();
             final String value = entry.getValue();
 
-            if ("operationsVisible".equals(name)) {
-                ((OperationsCompartmentContainer) fig)
-                    .setOperationsVisible(value.equalsIgnoreCase("true"));
-            } else if ("attributesVisible".equals(name)) {
+            if(fig instanceof FigCompartmentBox) {
                 FigCompartmentBox fcb = (FigCompartmentBox) fig;
-                FigCompartment fc =
-                    fcb.getCompartment(Model.getMetaTypes().getAttribute());
-                fcb.setCompartmentVisible(fc, value.equalsIgnoreCase("true"));
-            } else if ("stereotypeVisible".equals(name)) {
+                if ("operationsVisible".equals(name)) {
+                    fcb.showCompartment(
+                            Model.getMetaTypes().getOperation(), 
+                            value.equalsIgnoreCase("true"));
+                } else if ("attributesVisible".equals(name)) {
+                    fcb.showCompartment(
+                            Model.getMetaTypes().getAttribute(), 
+                            value.equalsIgnoreCase("true"));
+                } else if ("enumerationLiteralsVisible".equals(name)) {
+                    fcb.showCompartment(
+                            Model.getMetaTypes().getEnumerationLiteral(), 
+                            value.equalsIgnoreCase("true"));
+                } else if ("extensionPointVisible".equals(name)) {
+                    fcb.showCompartment(
+                            Model.getMetaTypes().getExtensionPoint(), 
+                            value.equalsIgnoreCase("true"));
+                }
+            }
+            if ("stereotypeVisible".equals(name)) {
                 ((StereotypeContainer) fig)
                     .setStereotypeVisible(value.equalsIgnoreCase("true"));
             } else if ("visibilityVisible".equals(name)) {
@@ -328,9 +343,6 @@ class PGMLStackParser
             } else if ("pathVisible".equals(name)) {
                 ((PathContainer) fig)
                     .setPathVisible(value.equalsIgnoreCase("true"));
-            } else if ("extensionPointVisible".equals(name)) {
-                ((ExtensionPointsCompartmentContainer) fig)
-                    .setExtensionPointsVisible(value.equalsIgnoreCase("true"));
             }
         }
     }

@@ -36,6 +36,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.SelectionClass;
@@ -546,6 +547,20 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     protected Fig getBorderFig() {
         return borderFig;
+    }
+
+    /**
+     * Show or hide a compartment based on the meta-type of its contents.
+     * 
+     * @param metaType the compartment type to be shown
+     * @param visible true if the compartment should be visible
+     */
+    public void showCompartment(Object metaType, boolean visible) {
+        FigCompartment fc =
+            getCompartment(metaType);
+        if (fc == null) return;
+        assert fc != null;
+        setCompartmentVisible(fc, visible);
     }
 
     /**
