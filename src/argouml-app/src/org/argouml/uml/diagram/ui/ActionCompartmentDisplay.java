@@ -304,10 +304,7 @@ public class ActionCompartmentDisplay extends UndoableAction {
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-	Iterator i =
-            Globals.curEditor().getSelectionManager().selections().iterator();
-	while (i.hasNext()) {
-	    final Selection sel = (Selection) i.next();
+        for (Selection sel : Globals.curEditor().getSelectionManager().getSelections()) {
 	    final Fig f = sel.getContent();
 
             // Perform the action
