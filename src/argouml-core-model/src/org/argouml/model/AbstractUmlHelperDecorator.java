@@ -65,4 +65,12 @@ public abstract class AbstractUmlHelperDecorator implements UmlHelper {
         return impl.getDestination(relationship);
     }
 
+
+    /*
+     * @see org.argouml.model.UmlHelper#move(java.lang.Object, org.argouml.model.UmlHelper.Direction)
+     */
+    public void move(Object element, Direction direction) {
+        impl.move(element, direction);
+    }
+
 }

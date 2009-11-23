@@ -25,6 +25,7 @@
 package org.argouml.model;
 
 import java.util.Collection;
+import java.util.Enumeration;
 
 /**
  * The interface for the Helper for Uml.<p>
@@ -32,6 +33,11 @@ import java.util.Collection;
  * Created from the old UmlHelper.
  */
 public interface UmlHelper {
+    
+    public enum Direction {
+        UP, DOWN, TOP, BOTTOM;
+    }
+    
     /**
      * Ensures that all of the elements in a model are registered
      * to the UmlModelListener.  This is useful when the MModel is
@@ -68,4 +74,14 @@ public interface UmlHelper {
      * @return the destination of the relationship
      */
     Object getDestination(Object relationShip);
+    
+    /**
+     * This is used to change the ordering of elements that are already
+     * in some container. E.g. attributes within a class. They can be moved
+     * up, down or to top or bottom. 
+     * 
+     * @param element the element to move
+     * @param direction the direction of movement
+     */
+    void move(Object element, Direction direction);
 }
