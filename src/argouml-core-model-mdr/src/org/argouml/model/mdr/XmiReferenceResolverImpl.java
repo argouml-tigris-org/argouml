@@ -41,6 +41,7 @@ import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.XmiReferenceRuntimeException;
 import org.netbeans.api.xmi.XMIInputConfig;
 import org.netbeans.lib.jmi.util.DebugException;
 import org.netbeans.lib.jmi.xmi.XmiContext;
@@ -541,7 +542,7 @@ class XmiReferenceResolverImpl extends XmiContext {
             // exception rather than nesting the exception itself, so
             // we don't have all the information we'd like
             LOG.error("Error reading external document " + arg0);
-            throw new XmiReferenceException(arg0, e);
+            throw new XmiReferenceRuntimeException(arg0, e);
         }
     }
 }

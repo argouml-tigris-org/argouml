@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -81,6 +81,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.XmiReferenceException;
+import org.argouml.model.XmiReferenceRuntimeException;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
@@ -1667,6 +1668,13 @@ public final class ProjectBrowser
                                 "dialog.error.open.error",
                                 new Object[] {file.getName()}),
                         showUI, ex);
+            } catch (XmiReferenceRuntimeException ex) {
+                // an error that can be corrected by the user, so no stack
+                // trace, but instead an explanation and a hint how to fix
+                reportError(pmw,
+                    Translator.localize("dialog.error.xmi.reference.error",
+                        new Object[] {ex.getReference(), ex.getMessage()}),
+                    ex.toString(), showUI);
             } catch (RuntimeException ex) {
                 LOG.error("Exception while loading project", ex);
                 reportError(

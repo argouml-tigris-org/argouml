@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,36 +22,36 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model.mdr;
+package org.argouml.model;
 
 
 /**
- * Exception for external reference problems with XMI files.  This is an
- * internal MDR exception which extends RuntimeException so that it can be
- * thrown from MDR internals.
+ * Exception for external reference problems with XMI files.  This is a
+ * {@link RuntimeException}, so that it can be thrown from specific model
+ * implementation internals.
  * 
  * @author Tom Morris
  */
-public class XmiReferenceException extends RuntimeException {
+public class XmiReferenceRuntimeException extends RuntimeException {
     
     private String reference;
     
     /**
-     * Construct an XmiReferenceException with the given message.
+     * Construct an XmiReferenceRuntimeException with the given message.
      * 
      * @param message the message
      */
-    public XmiReferenceException(String message) {
+    public XmiReferenceRuntimeException(String message) {
         super(message);
     }
 
     /**
-     * Construct an XmiReferenceException for the given reference
+     * Construct an XmiReferenceRuntimeException for the given reference
      * 
      * @param href the reference that caused the error
      * @param cause the nested exception if available
      */
-    public XmiReferenceException(String href, Throwable cause) {
+    public XmiReferenceRuntimeException(String href, Throwable cause) {
         super(href, cause);
         reference = href;
     }
@@ -68,9 +68,8 @@ public class XmiReferenceException extends RuntimeException {
      *
      * @param c the cause of the exception
      */
-    public XmiReferenceException(Throwable c) {
+    public XmiReferenceRuntimeException(Throwable c) {
         super(c);
     }
-
 
 }

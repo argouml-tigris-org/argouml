@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -283,9 +283,9 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 } else if (throwable instanceof SAXException) {
                     SAXException se = (SAXException) throwable;
                     Exception e1 = se.getException();
-                    if (e1 instanceof org.argouml.model.mdr.XmiReferenceException) {
+                    if (e1 instanceof org.argouml.model.XmiReferenceRuntimeException) {
                         String href = 
-                            ((org.argouml.model.mdr.XmiReferenceException) e1)
+                            ((org.argouml.model.XmiReferenceRuntimeException) e1)
                                 .getReference();
                         throw new org.argouml.model.XmiReferenceException(href,
                                 e);
