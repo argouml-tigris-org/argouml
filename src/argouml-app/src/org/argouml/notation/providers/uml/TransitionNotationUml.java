@@ -41,7 +41,7 @@ import org.argouml.notation.providers.TransitionNotation;
 
 /**
  * UML Notation for the text shown next to a Transition.
- *  
+ *
  * @author mvw@tigris.org
  */
 public class TransitionNotationUml extends TransitionNotation {
@@ -116,12 +116,12 @@ public class TransitionNotationUml extends TransitionNotation {
         int c = s.indexOf("/");
         if (((a < 0) && (b >= 0)) || ((b < 0) && (a >= 0)) || (b < a)) {
             String msg = "parsing.error.transition.no-matching-square-brackets";
-            throw new ParseException(Translator.localize(msg), 
+            throw new ParseException(Translator.localize(msg),
                     0);
         }
         if ((c >= 0) && (c < b)) {
             String msg = "parsing.error.transition.found-bracket-instead-slash";
-            throw new ParseException(Translator.localize(msg), 
+            throw new ParseException(Translator.localize(msg),
                     0);
         }
 
@@ -190,8 +190,8 @@ public class TransitionNotationUml extends TransitionNotation {
                     || (trigger.indexOf(")") > 1)) {
                 callEvent = true;
                 if (!trigger.endsWith(")") || !(trigger.indexOf("(") > 0)) {
-                    String msg = 
-                    	"parsing.error.transition.no-matching-brackets"; 
+                    String msg =
+                    	"parsing.error.transition.no-matching-brackets";
                     throw new ParseException(
                             Translator.localize(msg), 0);
                 }
@@ -208,7 +208,7 @@ public class TransitionNotationUml extends TransitionNotation {
         /*
          * We can distinguish between 4 cases:
          * 1. A trigger is given. None exists yet.
-         * 2. The trigger was present, and it is the same type, 
+         * 2. The trigger was present, and it is the same type,
          * or a different type, and its text is changed, or the same.
          * 3. A trigger is not given. None exists yet.
          * 4. The name of the trigger was present, but is removed.
@@ -260,7 +260,7 @@ public class TransitionNotationUml extends TransitionNotation {
                         Object timeExpr = Model.getFacade().getWhen(evt);
                         Model.getDataTypesHelper().setBody(timeExpr, s);
                     } else {
-                        /* It's a time-event now, 
+                        /* It's a time-event now,
                          * but was of another type before! */
                         delete(evt); /* TODO: What if used elsewhere? */
                         evt = sMFactory.buildTimeEvent(s, ns);
@@ -270,13 +270,13 @@ public class TransitionNotationUml extends TransitionNotation {
                 if (changeEvent) {
                     if (Model.getFacade().isAChangeEvent(evt)) {
                         /* Just change the ChangeExpression */
-                        Object changeExpr = 
+                        Object changeExpr =
                             Model.getFacade().getChangeExpression(evt);
                         if (changeExpr == null) {
                             /* Create a new expression: */
                             changeExpr = Model.getDataTypesFactory()
                                 .createBooleanExpression("", s);
-                            Model.getStateMachinesHelper().setExpression(evt, 
+                            Model.getStateMachinesHelper().setExpression(evt,
                                     changeExpr);
                         } else {
                             Model.getDataTypesHelper().setBody(changeExpr, s);
@@ -486,7 +486,7 @@ public class TransitionNotationUml extends TransitionNotation {
     @Override
     public String toString(Object modelElement, NotationSettings settings) {
         return toString(modelElement);
-    }    
+    }
 
     private String toString(Object modelElement) {
         Object trigger = Model.getFacade().getTrigger(modelElement);
@@ -534,6 +534,23 @@ public class TransitionNotationUml extends TransitionNotation {
         return event.toString();
     }
 
+    /**
+     * Generates a string representing the given Guard. <p>
+     *
+     * If there is an expression, then its body text is returned.
+     * Else, a 0 length string is returned. <p>
+     *
+     * Apparently, the AndroMDA people are convinced that the
+     * name of the guard should be shown on the diagram, while this
+     * is not correct according the UML standard.
+     * ArgoUML does not support this feature because of its down-side:
+     * The name would end up in the expression
+     * if you edit the transition text on the diagram,
+     * while the name remains containing the old value.
+     *
+     * @param m the UML Guard object
+     * @return a string
+     */
     private String generateGuard(Object m) {
         if (m != null) {
             if (Model.getFacade().getExpression(m) != null) {
@@ -632,7 +649,7 @@ public class TransitionNotationUml extends TransitionNotation {
 
     /**
      * Generate the type of a parameter, i.e. a reference to a classifier.
-     * 
+     *
      * @param cls the classifier
      * @return the generated text
      */
@@ -646,12 +663,12 @@ public class TransitionNotationUml extends TransitionNotation {
     /*
      * @see org.argouml.uml.notation.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
      */
-    public void initialiseListener(PropertyChangeListener listener, 
+    public void initialiseListener(PropertyChangeListener listener,
             Object modelElement) {
         addListenersForTransition(listener, modelElement);
     }
 
-    private void addListenersForAction(PropertyChangeListener listener, 
+    private void addListenersForAction(PropertyChangeListener listener,
             Object action) {
         if (action != null) {
             addElementListener(listener, action,
@@ -677,21 +694,21 @@ public class TransitionNotationUml extends TransitionNotation {
         }
     }
 
-    private void addListenersForEvent(PropertyChangeListener listener, 
+    private void addListenersForEvent(PropertyChangeListener listener,
             Object event) {
         if (event != null) {
             if (Model.getFacade().isAEvent(event)) {
                 addElementListener(listener, event,
                         new String[] {
-                            "parameter", "name"});                
+                            "parameter", "name"});
             }
             if (Model.getFacade().isATimeEvent(event)) {
                 addElementListener(listener, event, new String[] {"when"});
             }
             if (Model.getFacade().isAChangeEvent(event)) {
                 addElementListener(listener, event,
-                        new String[] {"changeExpression"});                
-            }   
+                        new String[] {"changeExpression"});
+            }
 
             Collection prms = Model.getFacade().getParameters(event);
             Iterator i = prms.iterator();
@@ -701,10 +718,10 @@ public class TransitionNotationUml extends TransitionNotation {
             }
         }
     }
-    
-    private void addListenersForTransition(PropertyChangeListener listener, 
+
+    private void addListenersForTransition(PropertyChangeListener listener,
             Object transition) {
-        addElementListener(listener, transition, 
+        addElementListener(listener, transition,
                 new String[] {"guard", "trigger", "effect"});
 
         Object guard = Model.getFacade().getGuard(transition);
