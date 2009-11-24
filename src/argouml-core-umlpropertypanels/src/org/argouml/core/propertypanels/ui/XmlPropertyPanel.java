@@ -90,7 +90,7 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
             selectedList = list;
             for (Component c : getComponents()) {
                 if (c instanceof RowSelector && ((RowSelector) c).getList() != list) {
-                    ((RowSelector) c).getList().clearSelection();
+                    ((RowSelector) c).clearSelection();
                 }
             }
             selectedList = null;
