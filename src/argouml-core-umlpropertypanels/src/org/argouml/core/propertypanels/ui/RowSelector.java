@@ -70,40 +70,40 @@ import org.tigris.toolbar.ToolBarFactory;
  * A control for displaying the contents of a list model elements in a panel
  * that can be expanded to take maximum possible screen space or shrunk to
  * minimum at the user discretion.
- * 
+ *
  * @author Bob Tarling
  * @since 0.29.2
  */
 class RowSelector extends JPanel
         implements MouseListener, ContainerListener {
-    
+
     /**
      * The logger
      */
     private static final Logger LOG = Logger.getLogger(RowSelector.class);
-    
+
     /**
      * class uid
      */
     private static final long serialVersionUID = 3937183621483536749L;
-    
+
     /**
      * The icon to use when the control is expanded
      */
     private static Icon expandedIcon;
-    
+
     /**
      * The icon to use when the control is collapsed
      */
     private static Icon collapsedIcon;
-    
+
     static {
         // Extract the icon that is used by the tree control
         // for the current look and feel
         final JTree dummyTree = new JTree();
-        
+
         final TreeUI tu = dummyTree.getUI();
-        
+
         if (tu instanceof BasicTreeUI) {
             final BasicTreeUI btu = (BasicTreeUI) tu;
             expandedIcon = btu.getExpandedIcon();
@@ -114,7 +114,7 @@ class RowSelector extends JPanel
             collapsedIcon = null;
         }
     }
-    
+
     /**
      * The scrollpane that will contain the list
      */
@@ -134,7 +134,7 @@ class RowSelector extends JPanel
      * The maximum size of the component when expanded
      */
     private final Dimension expandedMaximumSize;
-    
+
     /**
      * True if the component is expandable
      */
@@ -150,44 +150,44 @@ class RowSelector extends JPanel
      * expansion feature to user.
      */
     private final JLabel expander;
-    
+
     /**
      * The toolbar of controls for manipulating items in the list
      */
     private final JToolBar tb;
-    
+
     /**
      * The delete action that we must enable/disable
      */
     private final DeleteAction deleteAction;
-    
+
     /**
      * The delete action that we must enable/disable
      */
     private final MoveUpAction moveUpAction;
-    
+
     /**
      * The delete action that we must enable/disable
      */
     private final MoveDownAction moveDownAction;
-    
+
     /**
      * The delete action that we must enable/disable
      */
     private final MoveTopAction moveTopAction;
-    
+
     /**
      * The delete action that we must enable/disable
      */
     private final MoveBottomAction moveBottomAction;
-    
+
     /**
      * Constructor
      * @param model The single item list model
      */
     public RowSelector(UMLModelElementListModel model) {
         this(model, false, true);
-        
+
     }
     /**
      * Constructor
@@ -196,31 +196,31 @@ class RowSelector extends JPanel
      */
     public RowSelector(UMLModelElementListModel model, boolean expanded, boolean expandable) {
         super(new BorderLayout());
-        
+
         this.expandable = expandable;
-        
+
         Object target = model.getTarget();
         Object metaType = model.getMetaType();
-        
+
         LOG.info("model = " + model.getClass().getName());
         LOG.info("metatype = " + metaType);
         LOG.info("target = " + target);
-        
+
         scroll = new ScrollList(model, 1);
         add(scroll);
-        
+
         shrunkPreferredSize = scroll.getPreferredSize();
-        
+
         remove(scroll);
         scroll = new ScrollList(model);
-        
+
         add(scroll);
         expandedPreferredSize = scroll.getPreferredSize();
         expandedMaximumSize = scroll.getMaximumSize();
-        
+
         scroll.setHorizontalScrollBarPolicy(
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        
+
         if (!expandable && !expanded) {
             scroll.setVerticalScrollBarPolicy(
                     JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -234,7 +234,7 @@ class RowSelector extends JPanel
         } else {
             // Create actions and expander if we have multiple rows
             final ArrayList<Action> actions = new ArrayList<Action>(2);
-            
+
             if (Model.getUmlFactory().isContainmentValid(metaType, target)) {
                 final Action createAction = new ActionCreateContainedModelElement(
                         metaType,
@@ -244,7 +244,7 @@ class RowSelector extends JPanel
             }
             deleteAction = new DeleteAction();
             actions.add(deleteAction);
-            
+
             if (getModel() instanceof UMLModelElementOrderedListModel) {
                 moveUpAction = new MoveUpAction();
                 moveDownAction = new MoveDownAction();
@@ -260,12 +260,12 @@ class RowSelector extends JPanel
                 moveTopAction = null;
                 moveBottomAction = null;
             }
-            
+
             final ToolBarFactory tbf = new ToolBarFactory(actions);
             tb = tbf.createToolBar();
             tb.setRollover(true);
             tb.setOrientation(ToolBar.VERTICAL);
-            
+
             JPanel buttonPanel =
                 new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
             expander = new JLabel();
@@ -289,11 +289,11 @@ class RowSelector extends JPanel
                 getList().addListSelectionListener(moveTopAction);
                 getList().addListSelectionListener(moveBottomAction);
             }
-            
+
             addContainerListener(this);
         }
     }
-    
+
     /**
      * Make sure the control is always a fixed height
      * @return the minimum size as the height of one row in a JList
@@ -301,7 +301,7 @@ class RowSelector extends JPanel
     public Dimension getMinimumSize() {
         return shrunkPreferredSize;
     }
-    
+
     /**
      * Make sure the control is always a fixed height
      * @return the maximum size as the height of one row in a JList
@@ -315,8 +315,8 @@ class RowSelector extends JPanel
         }
         return size;
     }
-    
-    
+
+
     /**
      * @return the preferred size as the height of one row in a JList
      */
@@ -327,47 +327,42 @@ class RowSelector extends JPanel
             return shrunkPreferredSize;
         }
     }
-    
-    @Override
+
     public void mouseClicked(MouseEvent e) {
         toggleExpansion();
     }
-    
-    @Override
+
     public void mouseEntered(MouseEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
 
-    @Override
     public void mouseExited(MouseEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
 
-    @Override
     public void mousePressed(MouseEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
 
-    @Override
     public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
-    
+
     /**
      * Toggle between expansion and contraction of the control
      */
     private void toggleExpansion() {
         expanded = !expanded;
-        
+
         setIcon();
         if (tb != null) {
             tb.setVisible(expanded);
         }
-        
+
         // Froce the parent to redraw
         getParent().invalidate();
         getParent().validate();
@@ -383,18 +378,16 @@ class RowSelector extends JPanel
             expander.setIcon(collapsedIcon);
         }
     }
-    
-    @Override
+
     public void componentAdded(ContainerEvent arg0) {
         // TODO Auto-generated method stub
-        
+
     }
 
     /**
      * Remove all the listeners that were added in the constructor
      */
-    @Override
-    public void componentRemoved(ContainerEvent event) {
+     public void componentRemoved(ContainerEvent event) {
         getList().removeListSelectionListener(deleteAction);
         if (moveUpAction != null) {
             getList().removeListSelectionListener(moveUpAction);
@@ -405,7 +398,7 @@ class RowSelector extends JPanel
         this.removeMouseListener(this);
         this.removeContainerListener(this);
     }
-    
+
 
     /**
      * Add a listener for selection changes to the list
@@ -422,31 +415,30 @@ class RowSelector extends JPanel
     public void removeListSelectionListener(ListSelectionListener listener) {
         scroll.getList().removeListSelectionListener(listener);
     }
-    
+
     public JList getList() {
         return scroll.getList();
     }
-    
+
     private ListModel getModel() {
         return (ListModel) scroll.getList().getModel();
     }
-    
+
     /**
      * This action deletes the model elements that are selected in the JList
      */
     private class DeleteAction extends UndoableAction implements ListSelectionListener {
-        
+
         DeleteAction() {
             super("button.delete",
                     ResourceLoaderWrapper.getInstance().lookupIconResource("DeleteFromModel"));
             setEnabled(false);
         }
 
-        @Override
         public void valueChanged(ListSelectionEvent e) {
             setEnabled(getList().getSelectedIndex() > -1);
         }
-        
+
         /*
          * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
          */
@@ -476,100 +468,96 @@ class RowSelector extends JPanel
             p.moveToTrash(Arrays.asList(targets));
         }
     }
-    
+
     /**
      * This action deletes the model elements that are selected in the JList
      */
     private class MoveUpAction extends UndoableAction implements ListSelectionListener {
-        
+
         MoveUpAction() {
             super(Translator.localize("menu.popup.moveup"),
                     ResourceLoaderWrapper.lookupIconResource("MoveUp"));
             setEnabled(false);
         }
 
-        @Override
-        public void valueChanged(ListSelectionEvent e) {
+         public void valueChanged(ListSelectionEvent e) {
             setEnabled(getList().getSelectedIndex() > -1);
         }
-        
+
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.UP);
         }
     }
-    
-    
+
+
     /**
      * This action deletes the model elements that are selected in the JList
      */
     private class MoveDownAction extends UndoableAction implements ListSelectionListener {
-        
+
         MoveDownAction() {
             super(Translator.localize("menu.popup.movedown"),
                     ResourceLoaderWrapper.lookupIconResource("MoveDown"));
             setEnabled(false);
         }
 
-        @Override
         public void valueChanged(ListSelectionEvent e) {
             setEnabled(getList().getSelectedIndex() > -1);
         }
-        
+
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.DOWN);
         }
     }
-    
-    
+
+
     /**
      * This action deletes the model elements that are selected in the JList
      */
     private class MoveTopAction extends UndoableAction implements ListSelectionListener {
-        
+
         MoveTopAction() {
             super(Translator.localize("menu.popup.movetop"),
                     ResourceLoaderWrapper.lookupIconResource("MoveTop"));
             setEnabled(false);
         }
 
-        @Override
         public void valueChanged(ListSelectionEvent e) {
             setEnabled(getList().getSelectedIndex() > -1);
         }
-        
+
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.TOP);
         }
     }
-    
-    
+
+
     /**
      * This action deletes the model elements that are selected in the JList
      */
     private class MoveBottomAction extends UndoableAction implements ListSelectionListener {
-        
+
         MoveBottomAction() {
             super(Translator.localize("menu.popup.movebottom"),
                     ResourceLoaderWrapper.lookupIconResource("MoveBottom"));
             setEnabled(false);
         }
 
-        @Override
         public void valueChanged(ListSelectionEvent e) {
             setEnabled(scroll.getList().getSelectedIndex() > -1);
         }
-        
+
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.BOTTOM);
         }
     }
-    
+
 }
