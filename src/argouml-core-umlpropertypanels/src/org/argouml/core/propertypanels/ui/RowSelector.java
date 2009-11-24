@@ -416,10 +416,25 @@ class RowSelector extends JPanel
         scroll.getList().removeListSelectionListener(listener);
     }
 
-    public JList getList() {
+    /**
+     * Get the JList that is wrapped in this component
+     * @return the JList
+     */
+    JList getList() {
         return scroll.getList();
     }
+    
+    /**
+     * Clear all selections in the list
+     */
+    public void clearSelection() {
+        getList().clearSelection();
+    }
 
+    /**
+     * Get the list model
+     * @return the ListModel
+     */
     private ListModel getModel() {
         return (ListModel) scroll.getList().getModel();
     }
@@ -429,18 +444,31 @@ class RowSelector extends JPanel
      */
     private class DeleteAction extends UndoableAction implements ListSelectionListener {
 
-        DeleteAction() {
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = -1466007194555518247L;
+
+        /**
+         * Construct the Action
+         */
+        public DeleteAction() {
             super("button.delete",
-                    ResourceLoaderWrapper.getInstance().lookupIconResource("DeleteFromModel"));
+                    ResourceLoaderWrapper.lookupIconResource("DeleteFromModel"));
             setEnabled(false);
         }
 
+        /**
+         * Set the action as enabled when any row is selected
+         * @param e the event
+         */
         public void valueChanged(ListSelectionEvent e) {
             setEnabled(getList().getSelectedIndex() > -1);
         }
 
-        /*
-         * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
+        /***
+         * Perform the action
+         * @param e the event
          */
         public void actionPerformed(ActionEvent ae) {
             super.actionPerformed(ae);
@@ -474,16 +502,32 @@ class RowSelector extends JPanel
      */
     private class MoveUpAction extends UndoableAction implements ListSelectionListener {
 
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = 92834374054221267L;
+
+        /**
+         * Construct the action
+         */
         MoveUpAction() {
             super(Translator.localize("menu.popup.moveup"),
                     ResourceLoaderWrapper.lookupIconResource("MoveUp"));
             setEnabled(false);
         }
 
+        /**
+         * Set the action as enabled when any row other then the first is selected
+         * @param e the event
+         */
          public void valueChanged(ListSelectionEvent e) {
-            setEnabled(getList().getSelectedIndex() > -1);
+            setEnabled(getList().getSelectedIndex() > 0);
         }
 
+         /***
+          * Perform the action
+          * @param e the event
+          */
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
@@ -497,16 +541,33 @@ class RowSelector extends JPanel
      */
     private class MoveDownAction extends UndoableAction implements ListSelectionListener {
 
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = -4898882853644454510L;
+
+        /**
+         * Construct the action
+         */
         MoveDownAction() {
             super(Translator.localize("menu.popup.movedown"),
                     ResourceLoaderWrapper.lookupIconResource("MoveDown"));
             setEnabled(false);
         }
 
+        /**
+         * Set the action as enabled when any row other then the last is selected
+         * @param e the event
+         */
         public void valueChanged(ListSelectionEvent e) {
-            setEnabled(getList().getSelectedIndex() > -1);
+            final int index = getList().getSelectedIndex();
+            setEnabled(index > -1 && index < getModel().getSize() - 1);
         }
 
+        /***
+         * Perform the action
+         * @param e the event
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
@@ -520,16 +581,32 @@ class RowSelector extends JPanel
      */
     private class MoveTopAction extends UndoableAction implements ListSelectionListener {
 
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = -2767622732024791396L;
+
+        /**
+         * Construct the action
+         */
         MoveTopAction() {
             super(Translator.localize("menu.popup.movetop"),
                     ResourceLoaderWrapper.lookupIconResource("MoveTop"));
             setEnabled(false);
         }
 
+        /**
+         * Set the action as enabled when any row other then the first is selected
+         * @param e the event
+         */
         public void valueChanged(ListSelectionEvent e) {
-            setEnabled(getList().getSelectedIndex() > -1);
+            setEnabled(getList().getSelectedIndex() > 0);
         }
 
+        /***
+         * Perform the action
+         * @param e the event
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
@@ -543,21 +620,37 @@ class RowSelector extends JPanel
      */
     private class MoveBottomAction extends UndoableAction implements ListSelectionListener {
 
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = -3459350012282215204L;
+
+        /**
+         * Construct the action
+         */
         MoveBottomAction() {
             super(Translator.localize("menu.popup.movebottom"),
                     ResourceLoaderWrapper.lookupIconResource("MoveBottom"));
             setEnabled(false);
         }
 
+        /**
+         * Set the action as enabled when any row other then the last is selected
+         * @param e the event
+         */
         public void valueChanged(ListSelectionEvent e) {
-            setEnabled(scroll.getList().getSelectedIndex() > -1);
+            final int index = getList().getSelectedIndex();
+            setEnabled(index > -1 && index < getModel().getSize() - 1);
         }
 
+        /***
+         * Perform the action
+         * @param e the event
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.BOTTOM);
         }
     }
-
 }
