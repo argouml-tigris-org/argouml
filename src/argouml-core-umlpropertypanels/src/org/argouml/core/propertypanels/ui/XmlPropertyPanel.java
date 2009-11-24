@@ -40,19 +40,19 @@ import org.argouml.uml.ui.LabelledLayout;
  * @author penyaskito
  */
 public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
-    
+
     /**
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(XmlPropertyPanel.class);
-    
+
     private JList selectedList;
-    
+
     public XmlPropertyPanel() {
         super(new LabelledLayout());
         setName("UML Properties");
     }
-    
+
     /**
      * If a RowSelector is added then add a selection listener
      * @param comp the component being added
@@ -83,10 +83,9 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
      * If a row is selected in a RowSelector then clear the selection in any
      * other Row Selector.
      */
-    @Override
     public void valueChanged(ListSelectionEvent e) {
         final JList list = (JList) e.getSource();
-        
+
         if (selectedList == null && list.getSelectedValues().length > 0) {
             selectedList = list;
             for (Component c : getComponents()) {
@@ -96,6 +95,6 @@ public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
             }
             selectedList = null;
         }
-        
+
     }
 }
