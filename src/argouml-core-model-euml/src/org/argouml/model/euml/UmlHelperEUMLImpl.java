@@ -105,7 +105,7 @@ class UmlHelperEUMLImpl implements UmlHelper {
     /*
      * @see org.argouml.model.UmlHelper#move(java.lang.Object, org.argouml.model.UmlHelper.Direction)
      */
-    public void move(Object element, Direction direction) {
+    public void move(Object parent, Object element, Direction direction) {
         throw new NotYetImplementedException();
     }
 
