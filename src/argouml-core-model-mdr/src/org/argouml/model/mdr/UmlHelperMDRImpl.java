@@ -32,6 +32,9 @@ import org.argouml.model.Model;
 import org.argouml.model.UmlHelper;
 import org.argouml.model.UmlHelper.Direction;
 import org.omg.uml.behavioralelements.collaborations.Message;
+import org.omg.uml.behavioralelements.commonbehavior.Action;
+import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
+import org.omg.uml.behavioralelements.commonbehavior.Argument;
 import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Attribute;
@@ -127,39 +130,63 @@ class UmlHelperMDRImpl implements UmlHelper {
     /*
      * @see org.argouml.model.UmlHelper#move(java.lang.Object, org.argouml.model.UmlHelper.Direction)
      */
-    public void move(Object element, Direction direction) {
-        if (element instanceof Feature) {
-            Feature att = (Feature) element;
-            Classifier cls = att.getOwner();
-            List f = Model.getFacade().getFeatures(cls);
-            int index = f.indexOf(att);
-            Model.getCoreHelper().removeFeature(cls, att);
-            
-            if (direction == Direction.DOWN) {
-                Model.getCoreHelper().addFeature(cls, index + 1, att);
-            } else if (direction == Direction.UP) {
-                Model.getCoreHelper().addFeature(cls, index - 1, att);
-            } else if (direction == Direction.TOP) {
-                Model.getCoreHelper().addFeature(cls, 0, att);
-            } else if (direction == Direction.BOTTOM) {
-                Model.getCoreHelper().addFeature(cls, f.size() - 1, att);
-            }
+    public void move(Object parent, Object element, Direction direction) {
+        if (element instanceof Argument) {
+            final Argument arg = (Argument) element;
+            final Action action = arg.getAction();
+            final List<Argument> f = action.getActualArgument();
+            final int oldIndex = f.indexOf(arg);
+            final int newIndex = newPosition(oldIndex, f.size(), direction);
+            f.remove(arg);
+            f.add(newIndex, arg);
+        } else if (element instanceof Action) {
+            final Action act = (Action) element;
+            final ActionSequence actionSequence = act.getActionSequence();
+            final List<Action> f = actionSequence.getAction();
+            final int oldIndex = f.indexOf(act);
+            final int newIndex = newPosition(oldIndex, f.size(), direction);
+            f.remove(actionSequence);
+            f.add(newIndex, actionSequence);
         } else if (element instanceof AssociationEnd) {
-            AssociationEnd assEnd = (AssociationEnd) element;
-            UmlAssociation assoc = assEnd.getAssociation();
-            List<AssociationEnd> f =  assoc.getConnection();
-            int index = f.indexOf(assEnd);
+            final AssociationEnd assEnd = (AssociationEnd) element;
+            final UmlAssociation assoc = assEnd.getAssociation();
+            final List<AssociationEnd> f =  assoc.getConnection();
+            final int oldIndex = f.indexOf(assEnd);
+            final int newIndex = newPosition(oldIndex, f.size(), direction);
             f.remove(assEnd);
-            
-            if (direction == Direction.DOWN) {
-                f.add(index + 1, assEnd);
-            } else if (direction == Direction.UP) {
-                f.add(index - 1, assEnd);
-            } else if (direction == Direction.TOP) {
-                f.add(0, assEnd);
-            } else if (direction == Direction.BOTTOM) {
-                f.add(f.size() - 1, assEnd);
-            }
+            f.add(newIndex, assEnd);
+        } else if (element instanceof Attribute && parent instanceof AssociationEnd) {
+            final Attribute attr = (Attribute) element;
+            final AssociationEnd assocEnd = attr.getAssociationEnd();
+            final List<Attribute> f = assocEnd.getQualifier();
+            final int oldIndex = f.indexOf(assocEnd);
+            final int newIndex = newPosition(oldIndex, f.size(), direction);
+            f.remove(attr);
+            f.add(newIndex, attr);
+        } else if (element instanceof Feature) {
+            final Feature att = (Feature) element;
+            final Classifier cls = att.getOwner();
+            final List f = Model.getFacade().getFeatures(cls);
+            final int oldIndex = f.indexOf(att);
+            final int newIndex = newPosition(oldIndex, f.size(), direction);
+            Model.getCoreHelper().removeFeature(cls, att);
+            Model.getCoreHelper().addFeature(cls, newIndex, att);
         }
+    }
+    
+    private int newPosition(int index, int size, Direction direction) {
+        final int posn;
+        if (direction == Direction.DOWN) {
+            posn = index + 1;
+        } else if (direction == Direction.UP) {
+            posn = index - 1;
+        } else if (direction == Direction.TOP) {
+            posn = 0;
+        } else if (direction == Direction.BOTTOM) {
+            posn = size;
+        } else {
+            posn = 0;
+        }
+        return posn;
     }
 }
