@@ -33,7 +33,7 @@ import org.argouml.uml.ui.UMLPlainTextDocument;
  *
  * @author penyaskito
  */
-public class GenericUMLPlainTextDocument extends UMLPlainTextDocument {
+class GenericUMLPlainTextDocument extends UMLPlainTextDocument {
 
     private String fieldName = null;
     

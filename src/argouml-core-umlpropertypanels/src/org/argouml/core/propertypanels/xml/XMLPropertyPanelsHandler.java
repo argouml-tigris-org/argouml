@@ -33,7 +33,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * the property panels.
  * @author penyaskito
  */
-public class XMLPropertyPanelsHandler extends DefaultHandler {
+class XMLPropertyPanelsHandler extends DefaultHandler {
 
     /**
      * The panel that will host the controls. 

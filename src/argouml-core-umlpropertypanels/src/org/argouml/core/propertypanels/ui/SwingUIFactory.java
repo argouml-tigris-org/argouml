@@ -100,7 +100,7 @@ import org.tigris.toolbar.ToolBarFactory;
 /**
  * Creates the XML Property panels
  */
-public class SwingUIFactory {
+class SwingUIFactory {
     
     public SwingUIFactory() {
         

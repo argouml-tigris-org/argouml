@@ -39,7 +39,7 @@ import org.argouml.uml.ui.LabelledLayout;
  *
  * @author penyaskito
  */
-public class XmlPropertyPanel extends JPanel implements ListSelectionListener {
+class XmlPropertyPanel extends JPanel implements ListSelectionListener {
 
     /**
      * Logger.

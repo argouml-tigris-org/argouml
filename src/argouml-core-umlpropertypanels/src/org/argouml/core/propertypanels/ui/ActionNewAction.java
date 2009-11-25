@@ -35,7 +35,7 @@ import org.tigris.toolbar.toolbutton.ModalAction;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class ActionNewAction extends AbstractActionNewModelElement 
+abstract class ActionNewAction extends AbstractActionNewModelElement 
     implements ModalAction {
 
     /**
