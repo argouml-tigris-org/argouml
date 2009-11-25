@@ -34,7 +34,8 @@ import org.argouml.model.Model;
  * @since Mar 22, 2003
  */
 class UMLClassOperationListModel
-    extends UMLModelElementOrderedListModel {
+        extends UMLModelElementListModel 
+        implements UMLModelElementOrderedListModel {
 
     /**
      * Constructor for UMLClassifierFeatureListModel.

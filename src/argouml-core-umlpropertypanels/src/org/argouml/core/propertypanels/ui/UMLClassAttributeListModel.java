@@ -34,8 +34,9 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
  * @author jaap.branderhorst@xs4all.nl, alexb
  * @since Mar 22, 2003
  */
-class UMLClassAttributeListModel extends
-        UMLModelElementOrderedListModel {
+class UMLClassAttributeListModel
+        extends UMLModelElementListModel 
+        implements UMLModelElementOrderedListModel {
 
     /**
      * Constructor for UMLClassifierStructuralFeatureListModel.

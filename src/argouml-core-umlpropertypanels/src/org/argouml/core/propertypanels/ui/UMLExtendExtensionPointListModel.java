@@ -35,7 +35,8 @@ import org.argouml.uml.ui.behavior.use_cases.ActionNewExtendExtensionPoint;
  * @author jaap.branderhorst@xs4all.nl
  */
 class UMLExtendExtensionPointListModel
-    extends UMLModelElementOrderedListModel {
+        extends UMLModelElementListModel 
+        implements UMLModelElementOrderedListModel {
 
     /**
      * Constructor for UMLExtendExtensionPointListModel.

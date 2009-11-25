@@ -33,7 +33,8 @@ import org.argouml.model.Model;
  * Model for ActionSequence's list of Actions.
  */
 class UMLActionSequenceActionListModel
-    extends UMLModelElementOrderedListModel {
+        extends UMLModelElementListModel 
+        implements UMLModelElementOrderedListModel {
 
     /**
      * Constructor.

@@ -34,7 +34,8 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
  * @author pepargouml@yahoo.es
  */
 class UMLAssociationEndQualifiersListModel
-    extends UMLModelElementOrderedListModel {
+        extends UMLModelElementListModel 
+        implements UMLModelElementOrderedListModel {
 
     /**
      * Constructor for UMLAssociationEndQualifiersListModel.

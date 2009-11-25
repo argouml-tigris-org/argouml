@@ -40,7 +40,8 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
  * @since Jan 26, 2003
  */
 class UMLClassifierParameterListModel
-    extends UMLModelElementOrderedListModel {
+        extends UMLModelElementListModel 
+        implements UMLModelElementOrderedListModel {
 
     /**
      * Constructor for UMLClassifierParameterListModel.

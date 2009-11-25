@@ -32,8 +32,9 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 /**
  * Model for action's actual argument list.
  */
-class UMLActionArgumentListModel extends
-        UMLModelElementOrderedListModel {
+class UMLActionArgumentListModel
+        extends UMLModelElementListModel 
+        implements UMLModelElementOrderedListModel {
 
     /**
      * Constructor.

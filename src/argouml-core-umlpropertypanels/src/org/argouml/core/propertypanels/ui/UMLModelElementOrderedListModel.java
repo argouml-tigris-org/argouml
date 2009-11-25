@@ -24,72 +24,9 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import org.argouml.uml.ui.AbstractActionAddModelElement2;
-import org.argouml.uml.ui.AbstractActionNewModelElement;
-import org.argouml.uml.ui.AbstractActionRemoveElement;
-
 /**
- * This class resembles UMLModelElementListModel2, but is for those associations
- * in the metamodel (see UML standard) that have a {ordered} constraint.
- * <p>
- *
- * This adds the functionality of a popup menu with the items "Move Up",
- * "Move Down", "Move to Top", and "Move to Bottom".
- *
- * @author Michiel
+ * A marker interface to be implemented by ordered list models (ie can have
+ * items reordered)
  */
-public abstract class UMLModelElementOrderedListModel extends
-        UMLModelElementListModel {
-
-    /**
-     * The constructor.
-     *
-     * @param name
-     *            the name
-     */
-    public UMLModelElementOrderedListModel(
-            final String name, 
-            final Object theMetaType, 
-            final AbstractActionAddModelElement2 addAction, 
-            final AbstractActionNewModelElement newAction, 
-            final AbstractActionRemoveElement removeAction) {
-        super(name, theMetaType, addAction, newAction, removeAction);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param name
-     *            the name
-     */
-    public UMLModelElementOrderedListModel(String name) {
-        super(name);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param name
-     *            the name
-     */
-    public UMLModelElementOrderedListModel(
-            final String name,
-            final boolean showIcon,
-            final boolean showPath) {
-        super(name, showIcon, showPath);
-    }
-
-    /**
-     * The constructor.
-     *
-     * @param name
-     *            the name
-     */
-    public UMLModelElementOrderedListModel(
-            final String name,
-            final boolean showIcon,
-            final boolean showPath,
-            final Object metaType) {
-        super(name, showIcon, showPath, metaType);
-    }
+public interface UMLModelElementOrderedListModel {
 }
