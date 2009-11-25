@@ -34,7 +34,7 @@ import org.argouml.model.Model;
  */
 class UMLActionSequenceActionListModel
         extends UMLModelElementListModel 
-        implements UMLModelElementOrderedListModel {
+        implements Ordered {
 
     /**
      * Constructor.

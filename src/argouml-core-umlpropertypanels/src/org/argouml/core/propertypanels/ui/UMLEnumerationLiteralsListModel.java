@@ -36,7 +36,7 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
  */
 class UMLEnumerationLiteralsListModel
         extends UMLModelElementListModel 
-        implements UMLModelElementOrderedListModel {
+        implements Ordered {
     
     /**
      * The UID.

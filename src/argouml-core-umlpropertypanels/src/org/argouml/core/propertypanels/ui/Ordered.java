@@ -28,5 +28,5 @@ package org.argouml.core.propertypanels.ui;
  * A marker interface to be implemented by ordered list models (ie can have
  * items reordered)
  */
-public interface UMLModelElementOrderedListModel {
+public interface Ordered {
 }

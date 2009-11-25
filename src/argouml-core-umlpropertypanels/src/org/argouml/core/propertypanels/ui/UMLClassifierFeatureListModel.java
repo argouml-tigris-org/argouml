@@ -36,7 +36,7 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
  */
 class UMLClassifierFeatureListModel
         extends UMLModelElementListModel 
-        implements UMLModelElementOrderedListModel {
+        implements Ordered {
 
     /**
      * Constructor for UMLClassifierFeatureListModel.

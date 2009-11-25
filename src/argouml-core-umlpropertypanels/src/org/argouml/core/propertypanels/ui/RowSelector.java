@@ -247,7 +247,7 @@ class RowSelector extends JPanel
             deleteAction = new DeleteAction();
             actions.add(deleteAction);
 
-            if (getModel() instanceof UMLModelElementOrderedListModel) {
+            if (getModel() instanceof Ordered) {
                 moveUpAction = new MoveUpAction();
                 moveDownAction = new MoveDownAction();
                 moveTopAction = new MoveTopAction();
@@ -285,7 +285,7 @@ class RowSelector extends JPanel
             // but we have no API yet.
             // Can we just check if the collection to build the JList
             // control implements the List interface?
-            if (getModel() instanceof UMLModelElementOrderedListModel) {
+            if (getModel() instanceof Ordered) {
                 getList().addListSelectionListener(moveUpAction);
                 getList().addListSelectionListener(moveDownAction);
                 getList().addListSelectionListener(moveTopAction);
