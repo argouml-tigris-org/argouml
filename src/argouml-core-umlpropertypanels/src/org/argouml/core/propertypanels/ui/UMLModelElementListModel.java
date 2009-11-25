@@ -59,7 +59,7 @@ import org.tigris.toolbar.ToolBar;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class UMLModelElementListModel
+abstract class UMLModelElementListModel
         extends DefaultListModel implements PropertyChangeListener {
 
     private static final Logger LOG = 
@@ -112,7 +112,7 @@ public abstract class UMLModelElementListModel
      * MELementListener methods and setTarget method implemented in this
      * class.
      */
-    public UMLModelElementListModel() {
+    UMLModelElementListModel() {
         super();
         showIcon = true;
         showPath = true;
@@ -124,14 +124,14 @@ public abstract class UMLModelElementListModel
      * @param name the name of the event to listen to, which triggers us
      *             to update the list model from the UML data
      */
-    public UMLModelElementListModel(String name) {
+    UMLModelElementListModel(String name) {
         super();
         eventName = name;
         showIcon = true;
         showPath = true;
     }
     
-    public UMLModelElementListModel(
+    UMLModelElementListModel(
             final String name,
             final boolean showIcon,
             final boolean showPath) {
@@ -141,7 +141,7 @@ public abstract class UMLModelElementListModel
         this.showPath = showPath;
     }
     
-    public UMLModelElementListModel(
+    UMLModelElementListModel(
             final String name,
             final boolean showIcon,
             final boolean showPath,
@@ -161,7 +161,7 @@ public abstract class UMLModelElementListModel
      * @param theMetaType the type of model element that the list model
      *                 is designed to contain.
      */
-    public UMLModelElementListModel(String name, Object theMetaType) {
+    UMLModelElementListModel(String name, Object theMetaType) {
         super();
         this.metaType = theMetaType;
         eventName = name;
@@ -191,6 +191,58 @@ public abstract class UMLModelElementListModel
         this.addAction = addAction;
         this.newAction = newAction;
         this.removeAction = removeAction;
+    }
+    
+    public UMLModelElementListModel(
+            final String name, 
+            final Object theMetaType, 
+            final AbstractActionAddModelElement2 addAction) {
+        super();
+        this.metaType = theMetaType;
+        eventName = name;
+        showIcon = true;
+        showPath = true;
+        this.addAction = addAction;
+    }
+    
+    public UMLModelElementListModel(
+            final String name, 
+            final Object theMetaType, 
+            final AbstractActionNewModelElement newAction) {
+        super();
+        this.metaType = theMetaType;
+        eventName = name;
+        showIcon = true;
+        showPath = true;
+        this.newAction = newAction;
+    }
+    
+    public UMLModelElementListModel(
+            final String name, 
+            final Object theMetaType, 
+            final AbstractActionAddModelElement2 addAction, 
+            final AbstractActionRemoveElement removeAction) {
+        super();
+        this.metaType = theMetaType;
+        eventName = name;
+        showIcon = true;
+        showPath = true;
+        this.addAction = addAction;
+        this.removeAction = removeAction;
+    }
+    
+    public UMLModelElementListModel(
+            final String name, 
+            final Object theMetaType, 
+            final AbstractActionAddModelElement2 addAction, 
+            final AbstractActionNewModelElement newAction) { 
+        super();
+        this.metaType = theMetaType;
+        eventName = name;
+        showIcon = true;
+        showPath = true;
+        this.addAction = addAction;
+        this.newAction = newAction;
     }
     
     /**

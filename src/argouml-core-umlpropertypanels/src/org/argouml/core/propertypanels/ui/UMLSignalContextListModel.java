@@ -40,7 +40,7 @@ class UMLSignalContextListModel extends UMLModelElementListModel {
      */
     public UMLSignalContextListModel(Object metaType) {
         super("context", metaType,
-            new ActionAddContextSignal(), null, 
+            new ActionAddContextSignal(), 
             new ActionRemoveContextSignal());
     }
 

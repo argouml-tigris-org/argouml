@@ -41,7 +41,6 @@ class UMLClassifierRoleBaseListModel extends UMLModelElementListModel {
     public UMLClassifierRoleBaseListModel(Object metaType) {
         super("base", metaType,
             ActionAddClassifierRoleBase.SINGLETON,
-            null,
             ActionRemoveClassifierRoleBase.getInstance());
     }
 

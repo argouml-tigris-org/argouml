@@ -38,7 +38,7 @@ class UMLModelElementSupplierDependencyListModel
      * Constructor for UMLModelElementSupplierDependencyListModel.
      */
     public UMLModelElementSupplierDependencyListModel(Object metaType) {
-        super("supplierDependency", metaType, new ActionAddSupplierDependencyAction(), null, null);
+        super("supplierDependency", metaType, new ActionAddSupplierDependencyAction());
     }
 
     /*

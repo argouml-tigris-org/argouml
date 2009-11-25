@@ -43,7 +43,6 @@ class UMLOFSStateListModel extends UMLModelElementListModel {
          */
         super("type", metaType,
             new ActionAddOFSState(),
-            null,
             new ActionRemoveOFSState());
     }
 

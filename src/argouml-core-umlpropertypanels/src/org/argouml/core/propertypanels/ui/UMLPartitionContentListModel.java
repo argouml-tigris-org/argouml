@@ -33,8 +33,7 @@ class UMLPartitionContentListModel extends  UMLModelElementListModel {
 
     public UMLPartitionContentListModel(Object metaType) {
         super("contents", metaType,
-                new ActionAddPartitionContent(),
-                null, null);
+                new ActionAddPartitionContent());
     }
 
     protected void buildModelList() {

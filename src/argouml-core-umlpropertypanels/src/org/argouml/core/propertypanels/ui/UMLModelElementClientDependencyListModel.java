@@ -43,9 +43,7 @@ class UMLModelElementClientDependencyListModel
     public UMLModelElementClientDependencyListModel(Object metaType) {
         super("clientDependency", 
                 metaType, 
-                new ActionAddClientDependencyAction(), 
-                null, 
-                null);
+                new ActionAddClientDependencyAction());
     }
 
     /*

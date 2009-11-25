@@ -40,8 +40,7 @@ class UMLInstanceClassifierListModel
     public UMLInstanceClassifierListModel(Object metaType) {
         super("classifier", metaType,
             new ActionAddInstanceClassifier(
-                    Model.getMetaTypes().getClassifier()), 
-            null, null);
+                    Model.getMetaTypes().getClassifier()));
     }
 
     /*

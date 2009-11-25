@@ -44,8 +44,7 @@ class UMLExtendExtensionPointListModel
     public UMLExtendExtensionPointListModel(Object modelElement) {
         super("extensionPoint", Model.getMetaTypes().getExtensionPoint(), 
               ActionAddExtendExtensionPoint.getInstance(),
-              ActionNewExtendExtensionPoint.SINGLETON,
-              null);
+              ActionNewExtendExtensionPoint.SINGLETON);
     }
 
     /*

@@ -43,8 +43,7 @@ class UMLMessagePredecessorListModel extends UMLModelElementListModel {
      */
     public UMLMessagePredecessorListModel(Object metaType) {
         super("predecessor", metaType,
-            ActionAddMessagePredecessor.getInstance(),
-            null, null);
+            ActionAddMessagePredecessor.getInstance());
     }
 
     /*

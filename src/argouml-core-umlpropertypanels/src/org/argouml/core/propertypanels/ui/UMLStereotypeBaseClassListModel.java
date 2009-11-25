@@ -43,7 +43,6 @@ class UMLStereotypeBaseClassListModel extends UMLModelElementListModel {
     public UMLStereotypeBaseClassListModel(Object metaType) {
         super("baseClass", metaType,
                 new ActionAddStereotypeBaseClass(),
-                null,
                 new ActionDeleteStereotypeBaseClass());
     }
 

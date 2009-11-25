@@ -38,9 +38,7 @@ class UMLStateInternalTransitionListModel extends UMLModelElementListModel {
      */
     public UMLStateInternalTransitionListModel(Object metaType) {
         super("internalTransition", metaType,
-                null,
-                new ActionNewTransition(),
-                null);
+                new ActionNewTransition());
     }
 
     /*

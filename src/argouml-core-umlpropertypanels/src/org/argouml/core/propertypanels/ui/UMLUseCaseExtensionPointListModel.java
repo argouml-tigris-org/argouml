@@ -50,10 +50,8 @@ class UMLUseCaseExtensionPointListModel
      */
     public UMLUseCaseExtensionPointListModel() {
         super("extensionPoint", 
-                Model.getMetaTypes().getExtensionPoint(), 
-                null, 
-                ActionNewUseCaseExtensionPoint.SINGLETON, 
-                null);
+                Model.getMetaTypes().getExtensionPoint(),
+                ActionNewUseCaseExtensionPoint.SINGLETON);
     }
 
     /*

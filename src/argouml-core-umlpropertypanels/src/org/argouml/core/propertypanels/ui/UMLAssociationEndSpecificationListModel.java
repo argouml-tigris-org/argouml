@@ -41,8 +41,7 @@ class UMLAssociationEndSpecificationListModel
      */
     public UMLAssociationEndSpecificationListModel(Object metaType) {
         super("specification", metaType,
-                ActionAddAssociationSpecification.getInstance(),
-                null, null);
+                ActionAddAssociationSpecification.getInstance());
     }
 
     /*

@@ -38,8 +38,7 @@ class UMLCreateActionClassifierListModel extends
      */
     public UMLCreateActionClassifierListModel(Object metaType) {
         super("instantiation", metaType,
-            new ActionAddCreateActionInstantiation(), 
-            null, null);
+            new ActionAddCreateActionInstantiation());
     }
 
     /*

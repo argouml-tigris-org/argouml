@@ -44,7 +44,7 @@ class UMLSignalReceptionListModel extends UMLModelElementListModel {
          * and see the result displayed in the list.
          */
         super("reception", metaType,
-            new ActionAddReceptionSignal(), null, 
+            new ActionAddReceptionSignal(), 
             new ActionRemoveReceptionSignal());
     }
 
