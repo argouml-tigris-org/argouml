@@ -24,7 +24,9 @@
 
 package org.argouml.model.mdr;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,11 +37,20 @@ import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.commonbehavior.Action;
 import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
 import org.omg.uml.behavioralelements.commonbehavior.Argument;
+import org.omg.uml.behavioralelements.commonbehavior.Link;
+import org.omg.uml.behavioralelements.commonbehavior.LinkEnd;
 import org.omg.uml.behavioralelements.statemachines.Transition;
+import org.omg.uml.behavioralelements.usecases.Extend;
+import org.omg.uml.behavioralelements.usecases.ExtensionPoint;
+import org.omg.uml.behavioralelements.usecases.UseCase;
 import org.omg.uml.foundation.core.AssociationEnd;
 import org.omg.uml.foundation.core.Attribute;
+import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Enumeration;
+import org.omg.uml.foundation.core.EnumerationLiteral;
 import org.omg.uml.foundation.core.Feature;
+import org.omg.uml.foundation.core.Parameter;
 import org.omg.uml.foundation.core.Relationship;
 import org.omg.uml.foundation.core.UmlAssociation;
 import org.omg.uml.foundation.core.UmlClass;
@@ -171,6 +182,48 @@ class UmlHelperMDRImpl implements UmlHelper {
             final int newIndex = newPosition(oldIndex, f.size(), direction);
             Model.getCoreHelper().removeFeature(cls, att);
             Model.getCoreHelper().addFeature(cls, newIndex, att);
+        } else if (element instanceof Parameter) {
+            final Parameter param = (Parameter) element;
+            final BehavioralFeature bf = param.getBehavioralFeature();
+            final List<Parameter> f = bf.getParameter();
+            final int oldIndex = f.indexOf(param);
+            final int newIndex = newPosition(oldIndex, f.size(), direction);
+            f.remove(param);
+            f.add(newIndex, param);
+        } else if (element instanceof EnumerationLiteral) {
+            final EnumerationLiteral lit = (EnumerationLiteral) element;
+            final Enumeration enumeration = lit.getEnumeration();
+            final List<EnumerationLiteral> f = enumeration.getLiteral();
+            final int oldIndex = f.indexOf(lit);
+            final int newIndex = newPosition(oldIndex, f.size(), direction);
+            f.remove(lit);
+            f.add(newIndex, lit);
+        } else if (element instanceof ExtensionPoint && parent instanceof Extend) {
+            final ExtensionPoint ep = (ExtensionPoint) element;
+            final Extend extend = (Extend) parent;
+            final List<ExtensionPoint> f = extend.getExtensionPoint();
+            final int oldIndex = f.indexOf(ep);
+            final int newIndex = newPosition(oldIndex, f.size(), direction);
+            f.remove(ep);
+            f.add(newIndex, ep);
+        } else if (element instanceof LinkEnd) {
+            final LinkEnd le = (LinkEnd) element;
+            final Link link = le.getLink();
+            final List f = new ArrayList(Model.getFacade().getConnections(link));
+            final int oldIndex = f.indexOf(le);
+            final int newIndex = newPosition(oldIndex, f.size(), direction);
+            f.remove(le);
+            f.add(newIndex, le);
+            Model.getCoreHelper().setConnections(link, f);
+        } else if (element instanceof ExtensionPoint && parent instanceof UseCase) {
+            final ExtensionPoint ep = (ExtensionPoint) element;
+            final UseCase extend = ep.getUseCase();
+            final List f = new ArrayList(Model.getFacade().getExtensionPoints(extend));
+            final int oldIndex = f.indexOf(ep);
+            final int newIndex = newPosition(oldIndex, f.size(), direction);
+            f.remove(ep);
+            f.add(newIndex, ep);
+            Model.getUseCasesHelper().setExtensionPoints(ep, f);
         }
     }
     
