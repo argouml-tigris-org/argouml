@@ -24,17 +24,9 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
-import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
-import org.tigris.gef.undo.UndoableAction;
 
 /**
  * This class resembles UMLModelElementListModel2, but is for those associations
@@ -100,14 +92,4 @@ public abstract class UMLModelElementOrderedListModel extends
             final Object metaType) {
         super(name, showIcon, showPath, metaType);
     }
-
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
-     */
-    protected abstract void buildModelList();
-
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(java.lang.Object)
-     */
-    protected abstract boolean isValidElement(Object element);
 }
