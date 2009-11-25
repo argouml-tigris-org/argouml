@@ -79,9 +79,9 @@ public interface UmlHelper {
      * This is used to change the ordering of elements that are already
      * in some container. E.g. attributes within a class. They can be moved
      * up, down or to top or bottom. 
-     * 
+     * @param parent TODO
      * @param element the element to move
      * @param direction the direction of movement
      */
-    void move(Object element, Direction direction);
+    void move(Object parent, Object element, Direction direction);
 }
