@@ -38,6 +38,7 @@ import org.omg.uml.foundation.core.Attribute;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Feature;
 import org.omg.uml.foundation.core.Relationship;
+import org.omg.uml.foundation.core.UmlAssociation;
 import org.omg.uml.foundation.core.UmlClass;
 
 /**
@@ -130,25 +131,34 @@ class UmlHelperMDRImpl implements UmlHelper {
         if (element instanceof Feature) {
             Feature att = (Feature) element;
             Classifier cls = att.getOwner();
+            List f = Model.getFacade().getFeatures(cls);
+            int index = f.indexOf(att);
+            Model.getCoreHelper().removeFeature(cls, att);
             
             if (direction == Direction.DOWN) {
-                List f = Model.getFacade().getFeatures(cls);
-                int index1 = f.indexOf(att);
-                Model.getCoreHelper().removeFeature(cls, att);
-                Model.getCoreHelper().addFeature(cls, index1 + 1, att);
+                Model.getCoreHelper().addFeature(cls, index + 1, att);
             } else if (direction == Direction.UP) {
-                List f = Model.getFacade().getFeatures(cls);
-                int index1 = f.indexOf(att);
-                Model.getCoreHelper().removeFeature(cls, att);
-                Model.getCoreHelper().addFeature(cls, index1 - 1, att);
+                Model.getCoreHelper().addFeature(cls, index - 1, att);
             } else if (direction == Direction.TOP) {
-                List f = Model.getFacade().getFeatures(cls);
-                Model.getCoreHelper().removeFeature(cls, att);
                 Model.getCoreHelper().addFeature(cls, 0, att);
             } else if (direction == Direction.BOTTOM) {
-                List f = Model.getFacade().getFeatures(cls);
-                Model.getCoreHelper().removeFeature(cls, att);
                 Model.getCoreHelper().addFeature(cls, f.size() - 1, att);
+            }
+        } else if (element instanceof AssociationEnd) {
+            AssociationEnd assEnd = (AssociationEnd) element;
+            UmlAssociation assoc = assEnd.getAssociation();
+            List<AssociationEnd> f =  assoc.getConnection();
+            int index = f.indexOf(assEnd);
+            f.remove(assEnd);
+            
+            if (direction == Direction.DOWN) {
+                f.add(index + 1, assEnd);
+            } else if (direction == Direction.UP) {
+                f.add(index - 1, assEnd);
+            } else if (direction == Direction.TOP) {
+                f.add(0, assEnd);
+            } else if (direction == Direction.BOTTOM) {
+                f.add(f.size() - 1, assEnd);
             }
         }
     }
