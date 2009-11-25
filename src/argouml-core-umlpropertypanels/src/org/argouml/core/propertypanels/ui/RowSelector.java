@@ -97,6 +97,8 @@ class RowSelector extends JPanel
      */
     private static Icon collapsedIcon;
 
+    private final Object target;
+    
     static {
         // Extract the icon that is used by the tree control
         // for the current look and feel
@@ -199,7 +201,7 @@ class RowSelector extends JPanel
 
         this.expandable = expandable;
 
-        Object target = model.getTarget();
+        target = model.getTarget();
         Object metaType = model.getMetaType();
 
         LOG.info("model = " + model.getClass().getName());
@@ -531,7 +533,7 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.UP);
+            Model.getUmlHelper().move(target, getList().getSelectedValues()[0], UmlHelper.Direction.UP);
         }
     }
 
@@ -571,7 +573,7 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.DOWN);
+            Model.getUmlHelper().move(target, getList().getSelectedValues()[0], UmlHelper.Direction.DOWN);
         }
     }
 
@@ -610,7 +612,7 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.TOP);
+            Model.getUmlHelper().move(target, getList().getSelectedValues()[0], UmlHelper.Direction.TOP);
         }
     }
 
@@ -650,7 +652,7 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            Model.getUmlHelper().move(getList().getSelectedValues()[0], UmlHelper.Direction.BOTTOM);
+            Model.getUmlHelper().move(target, getList().getSelectedValues()[0], UmlHelper.Direction.BOTTOM);
         }
     }
 }
