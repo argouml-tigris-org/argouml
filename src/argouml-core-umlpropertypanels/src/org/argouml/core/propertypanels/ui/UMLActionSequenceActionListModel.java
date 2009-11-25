@@ -57,45 +57,4 @@ class UMLActionSequenceActionListModel
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAAction(element);
     }
-
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
-     */
-    protected void moveDown(int index) {
-        Object target = getTarget();
-        List c = Model.getFacade().getActions(target);
-        if (index < c.size() - 1) {
-            Object item = c.get(index);
-            Model.getCommonBehaviorHelper().removeAction(target, item);
-            Model.getCommonBehaviorHelper().addAction(target, index + 1, item);
-        }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToBottom(int)
-     */
-    @Override
-    protected void moveToBottom(int index) {
-        Object target = getTarget();
-        List c = Model.getFacade().getActions(target);
-        if (index < c.size() - 1) {
-            Object item = c.get(index);
-            Model.getCommonBehaviorHelper().removeAction(target, item);
-            Model.getCommonBehaviorHelper().addAction(target, c.size(), item);
-        }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToTop(int)
-     */
-    @Override
-    protected void moveToTop(int index) {
-        Object target = getTarget();
-        List c = Model.getFacade().getActions(target);
-        if (index > 0) {
-            Object item = c.get(index);
-            Model.getCommonBehaviorHelper().removeAction(target, item);
-            Model.getCommonBehaviorHelper().addAction(target, 0, item);
-        }
-    }
 }

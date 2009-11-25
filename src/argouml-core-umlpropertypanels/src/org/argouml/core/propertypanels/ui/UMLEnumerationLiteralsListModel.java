@@ -36,6 +36,11 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
  */
 class UMLEnumerationLiteralsListModel
     extends UMLModelElementOrderedListModel {
+    
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 4111214628991094451L;
 
     /**
      * Constructor for UMLClassifierStructuralFeatureListModel.
@@ -65,50 +70,4 @@ class UMLEnumerationLiteralsListModel
         }
         return false;
     }
-
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
-     */
-    protected void moveDown(int index) {
-        Object clss = getTarget();
-        List c = Model.getFacade().getEnumerationLiterals(clss);
-        if (index < c.size() - 1) {
-            Object mem = c.get(index);
-            Model.getCoreHelper().removeLiteral(clss, mem);
-            Model.getCoreHelper().addLiteral(clss, index + 1, mem);
-        }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToBottom(int)
-     */
-    @Override
-    protected void moveToBottom(int index) {
-        Object clss = getTarget();
-        List c = Model.getFacade().getEnumerationLiterals(clss);
-        if (index < c.size() - 1) {
-            Object mem = c.get(index);
-            Model.getCoreHelper().removeLiteral(clss, mem);
-            Model.getCoreHelper().addLiteral(clss, c.size(), mem);
-        }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToTop(int)
-     */
-    @Override
-    protected void moveToTop(int index) {
-        Object clss = getTarget();
-        List c = Model.getFacade().getEnumerationLiterals(clss);
-        if (index > 0) {
-            Object mem = c.get(index);
-            Model.getCoreHelper().removeLiteral(clss, mem);
-            Model.getCoreHelper().addLiteral(clss, 0, mem);
-        }
-    }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 4111214628991094451L;
 }

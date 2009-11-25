@@ -103,48 +103,4 @@ class UMLAssociationConnectionListModel
         return Model.getFacade().isAAssociationEnd(o)
             && Model.getFacade().getConnections(getTarget()).contains(o);
     }
-
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
-     */
-    protected void moveDown(int index) {
-        Object assoc = getTarget();
-        /* Since we are UML 1.4, this is surely a List! */
-        List c = (List) Model.getFacade().getConnections(assoc);
-        if (index < c.size() - 1) {
-            Object mem = c.get(index);
-            Model.getCoreHelper().removeConnection(assoc, mem);
-            Model.getCoreHelper().addConnection(assoc, index + 1, mem);
-        }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToBottom(int)
-     */
-    @Override
-    protected void moveToBottom(int index) {
-        Object assoc = getTarget();
-        /* Since we are UML 1.4, this is surely a List! */
-        List c = (List) Model.getFacade().getConnections(assoc);
-        if (index < c.size() - 1) {
-            Object mem1 = c.get(index);
-            Model.getCoreHelper().removeConnection(assoc, mem1);
-            Model.getCoreHelper().addConnection(assoc, c.size() - 1, mem1);
-        }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToTop(int)
-     */
-    @Override
-    protected void moveToTop(int index) {
-        Object assoc = getTarget();
-        /* Since we are UML 1.4, this is surely a List! */
-        List c = (List) Model.getFacade().getConnections(assoc);
-        if (index > 0) {
-            Object mem1 = c.get(index);
-            Model.getCoreHelper().removeConnection(assoc, mem1);
-            Model.getCoreHelper().addConnection(assoc, 0, mem1);
-        }
-    }
 }

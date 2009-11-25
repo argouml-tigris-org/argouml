@@ -65,47 +65,4 @@ class UMLClassifierParameterListModel
     protected boolean isValidElement(Object element) {
         return Model.getFacade().getParameters(getTarget()).contains(element);
     }
-
-
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveDown(int)
-     */
-    protected void moveDown(int index) {
-        Object clss = getTarget();
-        Collection c = Model.getFacade().getParameters(clss);
-        if (c instanceof List && index < c.size() - 1) {
-            Object mem = ((List) c).get(index);
-            Model.getCoreHelper().removeParameter(clss, mem);
-            Model.getCoreHelper().addParameter(clss, index + 1, mem);
-        }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToBottom(int)
-     */
-    @Override
-    protected void moveToBottom(int index) {
-        Object clss = getTarget();
-        Collection c = Model.getFacade().getParameters(clss);
-        if (c instanceof List && index < c.size() - 1) {
-            Object mem = ((List) c).get(index);
-            Model.getCoreHelper().removeParameter(clss, mem);
-            Model.getCoreHelper().addParameter(clss, c.size() - 1, mem);
-        }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementOrderedListModel2#moveToTop(int)
-     */
-    @Override
-    protected void moveToTop(int index) {
-        Object clss = getTarget();
-        Collection c = Model.getFacade().getParameters(clss);
-        if (c instanceof List && index > 0) {
-            Object mem = ((List) c).get(index);
-            Model.getCoreHelper().removeParameter(clss, mem);
-            Model.getCoreHelper().addParameter(clss, 0, mem);
-        }
-    }
-
 }
