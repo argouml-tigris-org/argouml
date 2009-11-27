@@ -39,6 +39,7 @@ import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
 import org.omg.uml.behavioralelements.commonbehavior.Argument;
 import org.omg.uml.behavioralelements.commonbehavior.Link;
 import org.omg.uml.behavioralelements.commonbehavior.LinkEnd;
+import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.behavioralelements.usecases.Extend;
 import org.omg.uml.behavioralelements.usecases.ExtensionPoint;
@@ -182,6 +183,14 @@ class UmlHelperMDRImpl implements UmlHelper {
             final int newIndex = newPosition(oldIndex, f.size(), direction);
             Model.getCoreHelper().removeFeature(cls, att);
             Model.getCoreHelper().addFeature(cls, newIndex, att);
+        } else if (element instanceof Parameter && parent instanceof Event) {
+            final Parameter param = (Parameter) element;
+            final Event event = (Event) parent;
+            final List<Parameter> f = event.getParameter();
+            final int oldIndex = f.indexOf(param);
+            final int newIndex = newPosition(oldIndex, f.size(), direction);
+            f.remove(param);
+            f.add(newIndex, param);
         } else if (element instanceof Parameter) {
             final Parameter param = (Parameter) element;
             final BehavioralFeature bf = param.getBehavioralFeature();
