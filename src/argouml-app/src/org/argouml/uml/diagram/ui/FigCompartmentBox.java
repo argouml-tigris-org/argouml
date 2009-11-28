@@ -571,8 +571,6 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      * Hence this method should not be considered stable for module developers.
      * @param compartment the compartment to be changed
      * @param isVisible true if the attribute compartment is visible
-     *
-     * @see org.argouml.uml.diagram.AttributesCompartmentContainer#setAttributesVisible(boolean)
      */
     public void setCompartmentVisible(FigCompartment compartment,
             boolean isVisible) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,6 @@ import javax.swing.JCheckBox;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.StylePanelFigNodeModelElement;
-import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
 
@@ -97,12 +96,12 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
         refreshTransaction = true;
         super.refresh();
         final FigCompartmentBox fcb = (FigCompartmentBox) getPanelTarget();
-        final FigCompartment attributeCompartment =
+        FigCompartment compartment =
             fcb.getCompartment(Model.getMetaTypes().getAttribute());
-        attrCheckBox.setSelected(attributeCompartment.isVisible());
-        final OperationsCompartmentContainer oc =
-                (OperationsCompartmentContainer) getPanelTarget();
-        operCheckBox.setSelected(oc.isOperationsVisible());
+        attrCheckBox.setSelected(compartment.isVisible());
+        compartment =
+            fcb.getCompartment(Model.getMetaTypes().getOperation());
+        operCheckBox.setSelected(compartment.isVisible());
         refreshTransaction = false;
     }
 

@@ -282,8 +282,6 @@ public class FigUseCase extends FigCompartmentBox
      *
      * @param isVisible  <code>true</code> if the compartment should be shown,
      *                   <code>false</code> otherwise.
-     *
-     * @see org.argouml.uml.diagram.ExtensionPointsCompartmentContainer#setExtensionPointsVisible(boolean)
      */
     public void setExtensionPointsVisible(boolean isVisible) {
         setCompartmentVisible(extensionPointsFigCompartment, isVisible);

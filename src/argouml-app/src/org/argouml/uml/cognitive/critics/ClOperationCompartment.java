@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,14 +30,16 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
 import org.argouml.ui.Clarifier;
-import org.argouml.uml.diagram.OperationsCompartmentContainer;
+import org.argouml.uml.diagram.ui.FigCompartment;
+import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.tigris.gef.presentation.Fig;
 
 
 
 /**
- * The clarifier (red wavy line) for the operation compartiment.
+ * The clarifier (red wavy line) for the operation compartment.
  *
  */
 public class ClOperationCompartment implements Clarifier {
@@ -72,19 +74,20 @@ public class ClOperationCompartment implements Clarifier {
      *      int, int)
      */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-	if (fig instanceof OperationsCompartmentContainer) {
-	    OperationsCompartmentContainer fc =
-	        (OperationsCompartmentContainer) fig;
+	if (fig instanceof FigCompartmentBox) {
+            final FigCompartment fc = ((FigCompartmentBox)
+	            fig).getCompartment(Model.getMetaTypes().getOperation());
+            if (fc == null) return;
 
 	    // added by Eric Lefevre 13 Mar 1999: we must check if the
 	    // FigText for operations is drawn before drawing things
 	    // over it
-	    if (!fc.isOperationsVisible()) {
+	    if (!fc.isVisible()) {
 		fig = null;
 		return;
 	    }
 
-	    Rectangle fr = fc.getOperationsBounds();
+	    Rectangle fr = fc.getBounds();
 	    int left  = fr.x + 10;
 	    int height = fr.y + fr.height - 7;
 	    int right = fr.x + fr.width - 10;
@@ -124,10 +127,11 @@ public class ClOperationCompartment implements Clarifier {
      * @see org.argouml.ui.Clarifier#hit(int, int)
      */
     public boolean hit(int x, int y) {
-	if (!(fig instanceof OperationsCompartmentContainer)) return false;
-	OperationsCompartmentContainer fc =
-	    (OperationsCompartmentContainer) fig;
-	Rectangle fr = fc.getOperationsBounds();
+	if (!(fig instanceof FigCompartmentBox)) return false;
+	FigCompartment compartment = ((FigCompartmentBox) fig)
+	    .getCompartment(Model.getMetaTypes().getOperation());
+	if (compartment == null) return false;
+	Rectangle fr = compartment.getBounds();
 	boolean res = fr.contains(x, y);
 	fig = null;
 	return res;

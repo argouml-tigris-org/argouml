@@ -171,7 +171,6 @@ public class FigAssociationClass extends FigAssociation implements
     /**
      * @return the bounds of the operations compartment for the associated
      *         FigClassAssociationClass.
-     * @see org.argouml.uml.diagram.AttributesCompartmentContainer#getAttributesBounds()
      */
     public Rectangle getAttributesBounds() {
         if (getAssociationClass() != null) {
@@ -181,9 +180,6 @@ public class FigAssociationClass extends FigAssociation implements
         }
     }
 
-    /*
-     * Overridden in order to implement AttributesCompartmentContainer.
-     */
     public boolean isAttributesVisible() {
         if (getAssociationClass() != null) {
             return getAssociationClass().isAttributesVisible();
@@ -192,9 +188,6 @@ public class FigAssociationClass extends FigAssociation implements
         }
     }
 
-    /*
-     * Overridden in order to implement AttributesCompartmentContainer.
-     */
     public void setAttributesVisible(boolean visible) {
         if (getAssociationClass() != null) {
             getAssociationClass().setAttributesVisible(visible);
@@ -221,9 +214,6 @@ public class FigAssociationClass extends FigAssociation implements
         }
     }
 
-    /*
-     * Overridden in order to implement OperationsCompartmentContainer.
-     */
     public Rectangle getOperationsBounds() {
         if (getAssociationClass() != null) {
             return getAssociationClass().getOperationsBounds();
@@ -232,9 +222,6 @@ public class FigAssociationClass extends FigAssociation implements
         }
     }
 
-    /*
-     * Overridden in order to implement OperationsCompartmentContainer.
-     */
     public boolean isOperationsVisible() {
         if (getAssociationClass() != null) {
             return getAssociationClass().isOperationsVisible();
@@ -243,9 +230,6 @@ public class FigAssociationClass extends FigAssociation implements
         }
     }
 
-    /*
-     * Overridden in order to implement OperationsCompartmentContainer.
-     */
     public void setOperationsVisible(boolean visible) {
         if (getAssociationClass() != null) {
             getAssociationClass().setOperationsVisible(visible);

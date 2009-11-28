@@ -203,17 +203,10 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         return operationsFigCompartment.getBounds();
     }
 
-
-    /*
-     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#isOperationsVisible()
-     */
     public boolean isOperationsVisible() {
         return operationsFigCompartment != null && operationsFigCompartment.isVisible();
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.OperationsCompartmentContainer#setOperationsVisible(boolean)
-     */
     public void setOperationsVisible(boolean isVisible) {
         setCompartmentVisible(operationsFigCompartment, isVisible);
     }

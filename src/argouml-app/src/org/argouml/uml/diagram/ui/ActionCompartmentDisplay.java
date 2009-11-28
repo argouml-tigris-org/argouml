@@ -27,16 +27,12 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.AttributesCompartmentContainer;
-import org.argouml.uml.diagram.ExtensionPointsCompartmentContainer;
-import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;

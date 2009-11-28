@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,13 +33,10 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
-import org.argouml.uml.diagram.static_structure.ui.FigPackage;
-import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.LayerPerspective;
