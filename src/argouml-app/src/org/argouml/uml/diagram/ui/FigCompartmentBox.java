@@ -157,7 +157,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     
     /**
      * Get the compartment that lists model elements of the given type.
-     * This can also be used to test of a Fig contains a particular type
+     * This can also be used to test if a Fig supports a particular type
      * of compartment by checking for a null return.
      * @param metaType the model element type for which the compartment is
      * required.
