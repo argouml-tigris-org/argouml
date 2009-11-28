@@ -35,6 +35,12 @@ import java.awt.Rectangle;
  * needs to be refactored into something more general so that we can easily deal
  * with arbitrary types and numbers of optionally displayed containers. - 
  * tfm - 20060315
+ * 
+ * @deprecated in 0.29.2 by MVW. We can't assume at compile time what
+ * Figs contain what compartments. This is proved in the UML1.4 to UML2 conversion
+ * where UML1.4 does not want this interface for FigInterface but UML2 does.
+ * Use FigCompartment.getCompartment(Object metaType) to fetch a compartment
+ * and check the existence and methods of the returned object.
  */
 public interface EnumLiteralsCompartmentContainer {
     /**

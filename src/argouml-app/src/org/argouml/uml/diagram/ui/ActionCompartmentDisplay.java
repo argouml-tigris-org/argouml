@@ -203,8 +203,8 @@ public class ActionCompartmentDisplay extends UndoableAction {
 
         List<Fig> figs = ce.getSelectionManager().getSelectedFigs();
         for (Fig f : figs) {
-            
             final FigCompartmentBox fcb = (FigCompartmentBox) f;
+
             final FigCompartment attributeCompartment =
                 fcb.getCompartment(Model.getMetaTypes().getAttribute());
             if (attributeCompartment != null) {
@@ -215,31 +215,32 @@ public class ActionCompartmentDisplay extends UndoableAction {
                     visible++;
                 }
             }
-            if (f instanceof OperationsCompartmentContainer) {
+            final FigCompartment operationCompartment =
+                fcb.getCompartment(Model.getMetaTypes().getOperation());
+            if (operationCompartment != null) {
                 present++;
                 operPresent = true;
-                operVisible =
-                    ((OperationsCompartmentContainer) f).isOperationsVisible();
+                operVisible = operationCompartment.isVisible();
                 if (operVisible) {
                     visible++;
                 }
             }
-            if (f instanceof ExtensionPointsCompartmentContainer) {
+            final FigCompartment epCompartment =
+                fcb.getCompartment(Model.getMetaTypes().getExtensionPoint());
+            if (epCompartment != null) {
                 present++;
                 epPresent = true;
-                epVisible =
-                        ((ExtensionPointsCompartmentContainer) f)
-                                .isExtensionPointsVisible();
+                epVisible = epCompartment.isVisible();
                 if (epVisible) {
                     visible++;
                 }
             }
-            if (f instanceof EnumLiteralsCompartmentContainer) {
+            final FigCompartment elCompartment =
+                fcb.getCompartment(Model.getMetaTypes().getEnumerationLiteral());
+            if (elCompartment != null) {
                 present++;
                 enumPresent = true;
-                enumVisible =
-                        ((EnumLiteralsCompartmentContainer) f)
-                                .isEnumLiteralsVisible();
+                enumVisible = elCompartment.isVisible();
                 if (enumVisible) {
                     visible++;
                 }
