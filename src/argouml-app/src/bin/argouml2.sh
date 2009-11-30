@@ -25,5 +25,5 @@ while [ -h "$PRG" ] ; do
   fi
 done
 
-java -Xms64m -Xmx512m -Dargouml.model.implementation=org.argouml.model.euml.EUMLModelImplementation -jar `dirname $PRG`/argouml.jar "$@"
+java -Xms64m -Xmx512m -Dargouml.model.implementation=org.argouml.model.euml.EUMLModelImplementation -DeUML.resources=org.eclipse.uml2.uml.resources_3.0.0.v200906011111.jar -jar `dirname $PRG`/argouml.jar "$@"
 
