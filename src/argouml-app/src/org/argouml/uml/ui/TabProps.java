@@ -68,6 +68,8 @@ public class TabProps
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(TabProps.class);
+    
+    private static boolean cachePanels = true;
 
     private JPanel blankPanel = new JPanel();
     private Hashtable<Class, JPanel> panels = 
@@ -231,13 +233,19 @@ public class TabProps
         // TODO: No test coverage for this or createPropPanel? - tfm
         
         /* 1st attempt: get a panel that we created before: */
-        JPanel panel = panels.get(trgt.getClass());
-        if (panel != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Getting prop panel for: " + trgt.getClass().getName()
-                        + ", " + "found (in cache?) " + panel);
+        JPanel panel;
+        if (cachePanels) {
+            // TODO: Once XML Property panels are live we should no longer be
+            // caching panels, this code and the panels HashTable can go.
+            panel = panels.get(trgt.getClass());
+            if (panel != null) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Getting prop panel for: "
+                            + trgt.getClass().getName()
+                            + ", " + "found (in cache?) " + panel);
+                }
+                return panel;
             }
-            return panel;
         }
 
         /* 2nd attempt: If we didn't find the panel then
@@ -416,6 +424,16 @@ public class TabProps
                 ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
             }
         }
+    }
+    
+    /**
+     * This method is introduced as deprecated it should be removed from the
+     * code before release 0.30. It is currently used by the
+     * XML Property Panel module only and should not be used elsewhere.
+     */
+    @Deprecated
+    public static void disableCache() {
+        cachePanels = false;
     }
 
 } /* end class TabProps */
