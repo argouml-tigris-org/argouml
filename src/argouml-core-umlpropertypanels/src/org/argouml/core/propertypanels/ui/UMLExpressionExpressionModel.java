@@ -25,7 +25,6 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * The model for a UML Expression that is obtained from its "parent"
@@ -47,8 +46,7 @@ class UMLExpressionExpressionModel extends UMLExpressionModel {
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        return Model.getFacade().getExpression(
-                TargetManager.getInstance().getTarget());
+        return Model.getFacade().getExpression(getTarget());
     }
 
     /*
@@ -56,7 +54,7 @@ class UMLExpressionExpressionModel extends UMLExpressionModel {
      */
     public void setExpression(Object expr) {
 	assert (expr == null) || Model.getFacade().isAExpression(expr);
-	Object target = TargetManager.getInstance().getTarget();
+	Object target = getTarget();
 	assert Model.getFacade().isAGuard(target)
 		|| Model.getFacade().isAChangeEvent(target);
 	Model.getStateMachinesHelper().setExpression(target, null);

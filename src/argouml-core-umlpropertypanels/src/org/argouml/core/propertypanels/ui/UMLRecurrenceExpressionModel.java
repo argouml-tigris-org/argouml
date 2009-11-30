@@ -26,7 +26,6 @@ package org.argouml.core.propertypanels.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  *
@@ -52,15 +51,14 @@ class UMLRecurrenceExpressionModel extends UMLExpressionModel {
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        return Model.getFacade().getRecurrence(
-                TargetManager.getInstance().getTarget());
+        return Model.getFacade().getRecurrence(getTarget());
     }
 
     /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expression) {
-        Object target = TargetManager.getInstance().getTarget();
+        Object target = getTarget();
 
         if (target == null) {
             throw new IllegalStateException("There is no target");

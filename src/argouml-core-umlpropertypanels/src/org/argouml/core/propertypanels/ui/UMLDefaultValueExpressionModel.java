@@ -25,7 +25,6 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * The model for the expression for a default value of a Parameter.
@@ -47,7 +46,7 @@ class UMLDefaultValueExpressionModel extends UMLExpressionModel {
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        Object target = TargetManager.getInstance().getTarget();
+        Object target = getTarget();
         if (target == null) {
             return null;
         }
@@ -58,7 +57,7 @@ class UMLDefaultValueExpressionModel extends UMLExpressionModel {
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expression) {
-        Object target = TargetManager.getInstance().getTarget();
+        Object target = getTarget();
 
         if (target != null) {
             Model.getCoreHelper().setDefaultValue(target, null);
