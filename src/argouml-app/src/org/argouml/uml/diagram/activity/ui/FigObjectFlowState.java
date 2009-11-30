@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.activity.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
@@ -40,7 +39,6 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.notation.NotationSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
@@ -54,7 +52,7 @@ import org.tigris.gef.presentation.FigText;
 /**
  * Class to display graphics for a UML ObjectFlowState in a diagram.<p>
  *
- * The Fig of this modelelement may either represent the following UMLelements:
+ * The Fig of this modelElement may either represent the following UMLelements:
  * <p>
  * (1) an ObjectFlowState with a Classifier as type, or <p>
  * (2) an ObjectFlowState with a ClassifierInState as type. <p>
@@ -72,7 +70,7 @@ import org.tigris.gef.presentation.FigText;
  * to indicate that it is an instance (object).<p>
  *
  * The fact that the first line is underlined, and the 2nd not, is the
- * reason to implement them in 2 seperate Figs.<p>
+ * reason to implement them in 2 separate Figs.<p>
  *
  * TODO: Allow stereotypes to be shown.
  *
@@ -81,11 +79,10 @@ import org.tigris.gef.presentation.FigText;
 public class FigObjectFlowState extends FigNodeModelElement {
 
     private static final int PADDING = 8;
-    private static final int WIDTH = 70;
+    private static final int OFS_WIDTH = 70;
     private static final int HEIGHT = 50;
     private static final int STATE_HEIGHT = NAME_FIG_HEIGHT;
 
-    private NotationProvider notationProviderType;
     private NotationProvider notationProviderState;
     
     private FigRect cover;
@@ -102,16 +99,14 @@ public class FigObjectFlowState extends FigNodeModelElement {
     public FigObjectFlowState(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        state = new FigSingleLineText(owner, new Rectangle(X0, Y0, WIDTH,
+        state = new FigSingleLineText(owner, new Rectangle(X0, Y0, OFS_WIDTH,
                 STATE_HEIGHT), settings, true);
-        initFigs();
+        initFigs(bounds);
     }
 
-    private void initFigs() {
-        setBigPort(new FigRect(X0, Y0, WIDTH, HEIGHT,
-                DEBUG_COLOR, DEBUG_COLOR));
+    private void initFigs(Rectangle bounds) {
         cover =
-            new FigRect(X0, Y0, WIDTH, HEIGHT,
+            new FigRect(X0, Y0, OFS_WIDTH, HEIGHT,
                     LINE_COLOR, FILL_COLOR);
 
         getNameFig().setUnderline(true);
@@ -124,9 +119,16 @@ public class FigObjectFlowState extends FigNodeModelElement {
         addFig(state);
 
         enableSizeChecking(false);
-        setReadyToEdit(false);
-        Rectangle r = getBounds();
-        setBounds(r.x, r.y, r.width, r.height);
+
+        /* Set the drop location in the case of D&D: */
+        if (bounds != null) {
+            setLocation(bounds.x, bounds.y);
+        }
+
+        renderingChanged();
+        setSuppressCalcBounds(false);
+        setBounds(getBounds());
+        enableSizeChecking(true);
     }
 
     /*
@@ -138,20 +140,17 @@ public class FigObjectFlowState extends FigNodeModelElement {
         if (Model.getFacade().isAModelElement(own)) {
             NotationName notationName = Notation
                     .findNotation(getNotationSettings().getNotationLanguage());
-            notationProviderType =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                        NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE,
-                        own, notationName);
             notationProviderState =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_STATE,
                         own, notationName);
         }
     }
+    
+    protected int getNotationProviderType() {
+        return NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_TYPE;
+    }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
     @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
@@ -159,9 +158,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
         updateListeners(getOwner(), getOwner());
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object, java.lang.Object)
-     */
     @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         Set<Object[]> l = new HashSet<Object[]>();
@@ -191,10 +187,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
         updateElementListeners(l);
     }
 
-
-    /*
-     * @see java.lang.Object#clone()
-     */
     @Override
     public Object clone() {
         FigObjectFlowState figClone = (FigObjectFlowState) super.clone();
@@ -206,9 +198,6 @@ public class FigObjectFlowState extends FigNodeModelElement {
         return figClone;
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#setEnclosingFig(org.tigris.gef.presentation.Fig)
-     */
     @Override
     public void setEnclosingFig(Fig encloser) {
         LayerPerspective layer = (LayerPerspective) getLayer();
@@ -233,7 +222,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         w = Math.max(w, tempDim.width + PADDING * 2);
         h = h + PADDING + tempDim.height + PADDING;
 
-        return new Dimension(Math.max(w, WIDTH / 2), Math.max(h, HEIGHT / 2));
+        return new Dimension(Math.max(w, OFS_WIDTH / 2), Math.max(h, HEIGHT / 2));
     }
 
     /*
@@ -242,13 +231,12 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * and stretched out over the full width,
      * to allow easy selection with the mouse.
      * The Fig can only be shrunk to half its original size - so that
-     * it is not reduceable to a few pixels only.
+     * it is not reducible to a few pixels only.
      *
      * @see org.tigris.gef.presentation.Fig#setBoundsImpl(int, int, int, int)
      */
     @Override
     protected void setStandardBounds(int x, int y, int w, int h) {
-        //if (getNameFig() == null) return;
         Rectangle oldBounds = getBounds();
 
         Dimension classDim = getNameFig().getMinimumSize();
@@ -278,23 +266,9 @@ public class FigObjectFlowState extends FigNodeModelElement {
     @Override
     public void renderingChanged() {
         super.renderingChanged();
-        updateClassifierText();
         updateStateText();
         updateBounds();
         damage();
-    }
-
-    /**
-     * Updates the text of the classifier FigText.
-     */
-    private void updateClassifierText() {
-        if (isReadyToEdit()) {
-            if (notationProviderType != null) {
-                getNameFig().setText(
-                        notationProviderType.toString(getOwner(), 
-                                getNotationSettings()));
-            }
-        }
     }
 
     /**
@@ -369,36 +343,12 @@ public class FigObjectFlowState extends FigNodeModelElement {
     }
 
     /*
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-     */
-    @Override
-    public void keyTyped(KeyEvent ke) {
-        if (!isReadyToEdit()) {
-            if (Model.getFacade().isAModelElement(getOwner())) {
-                updateClassifierText();
-                updateStateText();
-                setReadyToEdit(true);
-            } else {
-                //LOG.debug("not ready to edit name");
-                return;
-            }
-        }
-        if (ke.isConsumed() || getOwner() == null) {
-            return;
-        }
-        getNameFig().keyTyped(ke);
-    }
-
-    /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     @Override
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        if (ft == getNameFig()) {
-            notationProviderType.parse(getOwner(), ft.getText());
-            ft.setText(notationProviderType.toString(getOwner(),
-                    getNotationSettings()));
-        } else if (ft == state) {
+        super.textEdited(ft);
+        if (ft == state) {
             notationProviderState.parse(getOwner(), ft.getText());
             ft.setText(notationProviderState.toString(getOwner(),
                     getNotationSettings()));
@@ -410,9 +360,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     @Override
     protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp(notationProviderType.getParsingHelp());
-        }
+        super.textEditStarted(ft);
         if (ft == state) {
             showHelp(notationProviderState.getParsingHelp());
         }
