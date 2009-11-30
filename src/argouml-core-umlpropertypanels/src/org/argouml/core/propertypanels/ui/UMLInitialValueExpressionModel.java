@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,13 +31,13 @@ import org.argouml.model.Model;
  * @author jaap.branderhorst
  * @author penyaskito
  */
-class UMLInitialValueExpressionModel 
+class UMLInitialValueExpressionModel
     extends UMLExpressionModel {
 
-    
-    
+
+
     public UMLInitialValueExpressionModel(Object target) {
-        super(target, "initial value");
+        super(target, "initialValue");
     }
 
     /**
@@ -45,21 +45,18 @@ class UMLInitialValueExpressionModel
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     @Override
-    public Object getExpression() {        
-        Object target = null; //TODO getTarget();
+    public Object getExpression() {
+        Object target = getTarget();
         if (target == null) {
             return null;
         }
+        assert Model.getFacade().isAAttribute(target);
         return Model.getFacade().getInitialValue(target);
     }
 
-    /**
-     * @return
-     * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
-     */
     @Override
-    public Object newExpression() {
-        return Model.getDataTypesFactory().createExpression("", "");
+    public Object newExpression(String lang, String body) {
+        return Model.getDataTypesFactory().createExpression(lang, body);
     }
 
     /**
@@ -68,7 +65,11 @@ class UMLInitialValueExpressionModel
      */
     @Override
     public void setExpression(Object expression) {
-        Object target = null; // TODO  getTarget();
+        Object target = getTarget();
+        assert Model.getFacade().isAAttribute(target);
+        assert (expression == null) || Model.getFacade().isAExpression(expression);
+        /* If we do not set it to null first, then we get a MDR DebugException: */
+        Model.getCoreHelper().setInitialValue(target, null);
         Model.getCoreHelper().setInitialValue(target, expression);
     }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,34 +27,58 @@ package org.argouml.core.propertypanels.ui;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import org.apache.log4j.Logger;
 import org.tigris.swidgets.LabelledLayout;
 
 
 /**
+ * The panel that shows an Expression for an other UML element.
+ * There are 8 kinds of Expressions defined in the UML 1.4.2.
  *
  * @author penyaskito
  */
-class UMLExpressionPanel extends JPanel {
+class UMLExpressionPanel extends JPanel
+	implements ChangeListener {
+
+    private static final Logger LOG =
+        Logger.getLogger(UMLExpressionPanel.class);
 
     private final UMLExpressionModel model;
     private final UMLExpressionLanguageField languageField;
     private final UMLExpressionBodyField bodyField;
-    
+
     public UMLExpressionPanel(UMLExpressionModel model, String title) {
-        
+
         super(new LabelledLayout());
+        LOG.debug(">>New Expression panel created");
+
         TitledBorder border = new TitledBorder(title);
-        this.setBorder(border);        
-        
+        this.setBorder(border);
+
         this.model = model;
         this.languageField = new UMLExpressionLanguageField(model,
                 false);
         this.bodyField = new UMLExpressionBodyField(
                 model, true);
-        
-        add(languageField);        
+
+        add(languageField);
         add(new JScrollPane(bodyField));
+
+        model.addChangeListener(this);
     }
-    
+
+    @Override
+    public void removeNotify() {
+	model.removeChangeListener(this);
+	super.removeNotify();
+    }
+
+    public void stateChanged(ChangeEvent e) {
+	LOG.debug(">>Values shown on panel are changed");
+	bodyField.update();
+	languageField.update();
+    }
 }

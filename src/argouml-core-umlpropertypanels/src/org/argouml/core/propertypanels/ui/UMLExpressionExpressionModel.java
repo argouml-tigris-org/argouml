@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2006 The Regents of the University of California. All
+// Copyright (c) 2004-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,12 +25,11 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * The model for a UML Expression that is obtained from its "parent"
- * by getExpression - hence: Guard, ChangeEvent, TimeEvent.
+ * by getExpression - hence: Guard, ChangeEvent.
  *
  * @author Michiel, Penyaskito
  */
@@ -56,14 +55,19 @@ class UMLExpressionExpressionModel extends UMLExpressionModel {
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expr) {
-        Model.getStateMachinesHelper()
-        	.setExpression(TargetManager.getInstance().getTarget(), expr);
+	assert (expr == null) || Model.getFacade().isAExpression(expr);
+	Object target = TargetManager.getInstance().getTarget();
+	assert Model.getFacade().isAGuard(target)
+		|| Model.getFacade().isAChangeEvent(target);
+	Model.getStateMachinesHelper().setExpression(target, null);
+	/* If we do not set it to null first, then we get a MDR DebugException: */
+	Model.getStateMachinesHelper().setExpression(target, expr);
     }
 
     /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
      */
-    public Object newExpression() {
-        return Model.getDataTypesFactory().createBooleanExpression("", "");
+    public Object newExpression(String lang, String body) {
+        return Model.getDataTypesFactory().createBooleanExpression(lang, body);
     }
 }

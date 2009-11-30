@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,9 +23,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.core.propertypanels.ui;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -52,13 +49,14 @@ class UMLExpressionBodyField extends JTextArea
 
     /**
      * The constructor.
-     * 
+     *
      * @param expressionModel
      *            Expression model, should be shared between Language and Body
      *            fields
      * @param notify
      *            Set to true to forward events to model. Only one of Language
      *            and Body fields should have this set to true.
+     *            TODO: MVW: I do not understand that.
      */
     public UMLExpressionBodyField(UMLExpressionModel expressionModel,
 				  boolean notify) {
@@ -68,11 +66,11 @@ class UMLExpressionBodyField extends JTextArea
         setToolTipText(Translator.localize("label.body.tooltip"));
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         setRows(2); // make it stretch vertically
-        
+
         update();
     }
 
-    private void update() {
+    void update() {
         String oldText = getText();
         String newText = model.getBody();
 

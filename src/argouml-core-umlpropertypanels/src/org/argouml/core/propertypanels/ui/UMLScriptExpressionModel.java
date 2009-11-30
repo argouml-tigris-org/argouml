@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2006 The Regents of the University of California. All
+// Copyright (c) 2003-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,10 +25,9 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetManager;
 
 /**
+ * Model for the ActionExpression that is the script of an Action.
  *
  * @author mkl, penyaskito
  *
@@ -56,14 +55,14 @@ class UMLScriptExpressionModel extends UMLExpressionModel {
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expression) {
-        Model.getCommonBehaviorHelper()
-        	.setScript(getTarget(), expression);
+	Model.getCommonBehaviorHelper().setScript(getTarget(), null);
+	Model.getCommonBehaviorHelper().setScript(getTarget(), expression);
     }
 
     /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
      */
-    public Object newExpression() {
-        return Model.getDataTypesFactory().createActionExpression("", "");
+    public Object newExpression(String lang, String body) {
+        return Model.getDataTypesFactory().createActionExpression(lang, body);
     }
 }

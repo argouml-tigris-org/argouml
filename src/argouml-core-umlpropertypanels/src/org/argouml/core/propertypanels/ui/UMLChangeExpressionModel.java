@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2006-2008 The Regents of the University of California. All
+// Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,14 +26,11 @@ package org.argouml.core.propertypanels.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLExpressionModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 /**
  * The model for the boolean expression of a ChangeEvent.
- * 
+ *
  * @author michiel, penyaskito
  */
 class UMLChangeExpressionModel extends UMLExpressionModel {
@@ -68,14 +65,15 @@ class UMLChangeExpressionModel extends UMLExpressionModel {
         if (target == null) {
             throw new IllegalStateException("There is no target");
         }
+        Model.getStateMachinesHelper().setChangeExpression(target, null);
         Model.getStateMachinesHelper().setChangeExpression(target, expression);
     }
 
     /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
      */
-    public Object newExpression() {
+    public Object newExpression(String lang, String body) {
         LOG.debug("new boolean expression");
-        return Model.getDataTypesFactory().createBooleanExpression("", "");
+        return Model.getDataTypesFactory().createBooleanExpression(lang, body);
     }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,15 +25,15 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
+ * The model for the expression for a default value of a Parameter.
  *
  * @author penyaskito
  */
 class UMLDefaultValueExpressionModel extends UMLExpressionModel {
-    
+
     /**
      * The constructor.
      *
@@ -61,6 +61,7 @@ class UMLDefaultValueExpressionModel extends UMLExpressionModel {
         Object target = TargetManager.getInstance().getTarget();
 
         if (target != null) {
+            Model.getCoreHelper().setDefaultValue(target, null);
             Model.getCoreHelper().setDefaultValue(target, expression);
         }
         else {
@@ -72,23 +73,8 @@ class UMLDefaultValueExpressionModel extends UMLExpressionModel {
     /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
      */
-    public Object newExpression() {
-        return Model.getDataTypesFactory().createExpression("", "");
-    }
-
-    public void targetAdded(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetRemoved(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
-    }
-
-    public void targetSet(TargetEvent e) {
-        // TODO: Auto-generated method stub
-        
+    public Object newExpression(String lang, String body) {
+        return Model.getDataTypesFactory().createExpression(lang, body);
     }
 
 }

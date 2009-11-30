@@ -1,5 +1,5 @@
 // $Id: XmlPropertyPanelsModule.java 17494 2009-11-19 20:14:02Z bobtarling $
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,30 +34,34 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 
 public class TempListener implements TargetListener {
-    
+
     private static final Logger LOG = Logger.getLogger(TempListener.class);
     private TempTabPage tab;
     private JPanel lastPanel;
-    
+
     TempListener(TempTabPage tab) {
         this.tab = tab;
     }
-    
+
     public void targetAdded(TargetEvent e) {
+	setTarget(e.getNewTarget());
     }
 
     public void targetRemoved(TargetEvent e) {
-        // TODO Auto-generated method stub
-        
+	setTarget(e.getNewTarget());
     }
 
     public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTarget());
+    }
+
+    private void setTarget(Object target) {
         try {
-            LOG.info("TARGET SET" + e.getNewTarget());
+            LOG.info("TARGET SET" + target);
             if (lastPanel != null) {
                 tab.remove(lastPanel);
             }
-            lastPanel = XMLPropPanelFactory.getInstance().createPropPanel(e.getNewTarget());
+            lastPanel = XMLPropPanelFactory.getInstance().createPropPanel(target);
             tab.add(lastPanel, BorderLayout.CENTER);
         } catch (Exception ex) {
             //

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2006 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,6 +46,7 @@ class UMLExpressionLanguageField extends JTextField implements
      * Language and Body fields
      * @param n Only one of Language and Body fields should
      * forward events to model
+     * TODO: MVW: I do not understand that.
      */
     public UMLExpressionLanguageField(UMLExpressionModel m, boolean n) {
         model = m;
@@ -56,7 +57,7 @@ class UMLExpressionLanguageField extends JTextField implements
         update();
     }
 
-    private void update() {
+    void update() {
         String oldText = getText();
         String newText = model.getLanguage();
         if (oldText == null || newText == null || !oldText.equals(newText)) {

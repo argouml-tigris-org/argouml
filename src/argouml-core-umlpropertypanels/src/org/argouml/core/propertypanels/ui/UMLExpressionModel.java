@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2007 The Regents of the University of California. All
+// Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,18 +24,54 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.EventListenerList;
+
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 
 /**
- * @author mkl, penyaskito
+ * The model for Expressions.
+ * The target is the UML element to which this Expression is attached.
+ *
+ * The ChangeEvent/ChangeListener handling is inspired by
+ * javax.swing.DefaultBoundedRangeModel.
+ * It listens to UML model changes not caused by us,
+ * which need to trigger an update of the UI rendering.
+ *
+ * @author mkl, penyaskito, mvw
  */
-abstract class UMLExpressionModel {
-    
+abstract class UMLExpressionModel
+	implements PropertyChangeListener {
+
+    private static final Logger LOG =
+        Logger.getLogger(UMLExpressionModel.class);
+
     private Object target;
     private String propertyName;
-    private Object/*MExpression*/ expression;
-    private boolean mustRefresh;
+
+    /** This member is only used when we set the expression ourselves.
+     * In this case, we do not wish to receive UML model change events
+     * for this self-inflicted change.
+     * So, this member is used to detect this situation. */
+    private Object rememberExpression;
+
+//    private boolean mustRefresh;
     private static final String EMPTYSTRING = "";
+
+    /** The listeners waiting for model changes. */
+    protected EventListenerList listenerList = new EventListenerList();
+
+    /**
+     * Only one <code>ChangeEvent</code> is needed per model instance
+     * since the event's only (read-only) state is the expression.  The source
+     * of events generated here is always "this".
+     */
+    protected transient ChangeEvent changeEvent = null;
 
     /**
      * The constructor.
@@ -46,13 +82,42 @@ abstract class UMLExpressionModel {
     public UMLExpressionModel(Object target, String name) {
         this.target = target;
         propertyName = name;
-        mustRefresh = true;
+//        mustRefresh = true;
+        startListeningForModelChanges();
+    }
+
+    protected void startListeningForModelChanges() {
+	if (Model.getFacade().isAUMLElement(target)) {
+	    Model.getPump().addModelEventListener(this, target,
+		    propertyName);
+	}
+	LOG.debug(">>Start listening for UML changes...");
+    }
+
+    protected void stopListeningForModelChanges() {
+	if (Model.getFacade().isAUMLElement(target)) {
+	    Model.getPump().removeModelEventListener(this, target,
+	                propertyName);
+	}
+	LOG.debug(">>Stop listening for UML changes...");
+    }
+
+    public void propertyChange(PropertyChangeEvent e) {
+	if (propertyName.equals(e.getPropertyName())) {
+	    if (rememberExpression != e.getNewValue()) {
+		fireStateChanged();
+		LOG.debug(">>UML expression changed.");
+	    } else {
+		/* This should not happen. */
+		LOG.debug(">>Got an event for a modelchange that we inflicted ourselves...");
+	    }
+	}
     }
 
     protected Object getTarget() {
         return target;
     }
-    
+
     /**
      * @return the expression
      */
@@ -64,18 +129,15 @@ abstract class UMLExpressionModel {
     public abstract void setExpression(Object expr);
 
     /**
-     * @return a new expression
+     * @return a new expression with given language and body
      */
-    public abstract Object newExpression();
-
+    public abstract Object newExpression(String language, String body);
 
     /**
      * @return the language of the expression
      */
     public String getLanguage() {
-        if (mustRefresh) {
-            expression = getExpression();
-        }
+	Object expression = getExpression();
         if (expression == null) {
             return EMPTYSTRING;
         }
@@ -86,9 +148,7 @@ abstract class UMLExpressionModel {
      * @return The body text of the expression.
      */
     public String getBody() {
-        if (mustRefresh) {
-            expression = getExpression();
-        }
+        Object expression = getExpression();
         if (expression == null) {
             return EMPTYSTRING;
         }
@@ -100,6 +160,7 @@ abstract class UMLExpressionModel {
      */
     public void setLanguage(String lang) {
 
+	Object expression = getExpression();
         boolean mustChange = true;
         if (expression != null) {
             String oldValue =
@@ -123,6 +184,8 @@ abstract class UMLExpressionModel {
      * @param body the body text of the expression
      */
     public void setBody(String body) {
+
+	Object expression = getExpression();
         boolean mustChange = true;
         if (expression != null) {
             Object oldValue = Model.getDataTypesHelper().getBody(expression);
@@ -144,17 +207,72 @@ abstract class UMLExpressionModel {
     }
 
     /**
+     * This is only called if we already know that the values differ.
+     *
      * @param lang the language of the expression
      * @param body the body text of the expression
      */
     private void setExpression(String lang, String body) {
+	assert lang != null;
+	assert body != null;
+
         // Expressions are DataTypes, not independent model elements
         // be careful not to reuse them
-        if (mustRefresh || expression == null) {
-            expression = newExpression();
+	rememberExpression = getExpression();
+	stopListeningForModelChanges();
+	if (rememberExpression != null) {
+	    Model.getUmlFactory().delete(rememberExpression);
+	}
+	if (lang.length() == 0 && body.length()==0) {
+	    rememberExpression = null;
+	} else {
+	    rememberExpression = newExpression(lang, body);
+	}
+	setExpression(rememberExpression);
+	startListeningForModelChanges();
+    }
+
+    /**
+     * Adds a <code>ChangeListener</code>.
+     * The change listeners are run each
+     * time the expression changes.
+     *
+     * @param l the ChangeListener to add
+     * @see #removeChangeListener
+     */
+    public void addChangeListener(ChangeListener l) {
+        listenerList.add(ChangeListener.class, l);
+        LOG.debug(">>Add listener");
+    }
+
+    /**
+     * Removes a <code>ChangeListener</code>.
+     *
+     * @param l the <code>ChangeListener</code> to remove
+     * @see #addChangeListener
+     */
+    public void removeChangeListener(ChangeListener l) {
+        listenerList.remove(ChangeListener.class, l);
+        LOG.debug(">>Remove listener");
+    }
+
+    /**
+     * Runs each <code>ChangeListener</code>'s
+     * <code>stateChanged</code> method.
+     *
+     * @see #setRangeProperties
+     * @see EventListenerList
+     */
+    protected void fireStateChanged() {
+	LOG.debug(">>Fire state changed to listeners.");
+        Object[] listeners = listenerList.getListenerList();
+        for (int i = listeners.length - 2; i >= 0; i -=2 ) {
+            if (listeners[i] == ChangeListener.class) {
+                if (changeEvent == null) {
+                    changeEvent = new ChangeEvent(this);
+                }
+                ((ChangeListener)listeners[i+1]).stateChanged(changeEvent);
+            }
         }
-        expression = Model.getDataTypesHelper().setLanguage(expression, lang);
-        expression = Model.getDataTypesHelper().setBody(expression, body);
-        setExpression(expression);
     }
 }
