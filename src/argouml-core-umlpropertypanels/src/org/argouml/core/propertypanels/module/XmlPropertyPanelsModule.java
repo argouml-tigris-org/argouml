@@ -34,6 +34,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelFactory;
 import org.argouml.uml.ui.PropPanelFactoryManager;
+import org.argouml.uml.ui.TabProps;
 
 /**
  * Defines the XMLPropertyPanels module
@@ -68,6 +69,7 @@ public class XmlPropertyPanelsModule
         if (REPLACE) {
             /* Set up the property panels for UML elements: */
             try {
+                TabProps.disableCache();
                 PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
                 PropPanelFactoryManager.addPropPanelFactory(elementFactory);
                 return true;
