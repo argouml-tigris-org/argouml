@@ -235,9 +235,10 @@ public class EUMLModelImplementation implements ModelImplementation {
             }
 
             path = path.replace('\\', '/');
-            if (Character.isLetter(path.charAt(0))) {
-                path = '/' + path;
-            }
+            // These lines were one cause for issue 5915: (Were they needed?)
+            //if (Character.isLetter(path.charAt(0))) {
+            //    path = '/' + path;
+            //}
             URI uri = URI.createURI("jar:file:" + path + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
             LOG.debug("eUML.resource URI --> " + uri); //$NON-NLS-1$
 
@@ -245,6 +246,7 @@ public class EUMLModelImplementation implements ModelImplementation {
                     UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
             resourceSet.getPackageRegistry().put(
                     EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+            // For the .uml files in the eclipse jar files, we need this:
             extensionToFactoryMap.put(
                     UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
             uriMap.put(
