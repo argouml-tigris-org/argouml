@@ -24,10 +24,6 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.awt.Color;
-import java.util.List;
-
-import javax.swing.Action;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -35,8 +31,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
-import javax.swing.ListModel;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
@@ -95,7 +89,6 @@ import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionSetTagDefinitionType;
 import org.argouml.uml.ui.foundation.extension_mechanisms.UMLMetaClassComboBoxModel;
 import org.tigris.swidgets.GridLayout2;
-import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * Creates the XML Property panels
@@ -139,10 +132,16 @@ class SwingUIFactory {
         return panel;
     }
 
-    private void buildTextArea(JPanel panel, Object target, 
-            XMLPropertyPanelsDataRecord prop) {
+    private void buildTextArea(
+            final JPanel panel,
+            final Object target, 
+            final XMLPropertyPanelsDataRecord prop) {
+        
+        // TODO: Why do we need this as well as control? Why is it
+        // instantiated when its not always needed.
         JPanel p = new JPanel();
-        TitledBorder border = new TitledBorder(prop.getName());        
+        
+        final TitledBorder border = new TitledBorder(prop.getName());        
         p.setBorder(border);
 
         JComponent control = null;
@@ -205,13 +204,10 @@ class SwingUIFactory {
         if (control != null) {
             if (control == p) {
                 // if the control is a panel, add it
-                panel.add(control);
+                addControl(panel, null, control);
             } else {
                 // if not, it is a control and must be labeled...
-                JLabel label = new JLabel(prop.getName());
-                label.setLabelFor(control);
-                panel.add(label);
-                panel.add(control);
+                addControl(panel, prop.getName(), control);
             }
             
         }
@@ -225,10 +221,7 @@ class SwingUIFactory {
             factory.createComponent(target, prop.getName());
         
         if (pane != null) {           
-            JLabel label = new JLabel(prop.getName());
-            label.setLabelFor(pane);
-            panel.add(label);
-            panel.add(pane);
+            addControl(panel, prop.getName(), pane);
         }
     }
 
@@ -241,12 +234,7 @@ class SwingUIFactory {
             factory.createComponent(target, prop.getName());
         
         if (list != null) {
-            final String name = prop.getName();
-
-            final JLabel label = new JLabel(name);
-            label.setLabelFor(list);
-            panel.add(label);
-            panel.add(list);
+            addControl(panel, prop.getName(), list);
         }
     }
 
@@ -305,7 +293,7 @@ class SwingUIFactory {
         }
         
         if (control != null) {
-            panel.add(control);
+            addControl(panel, null, control);
         }
     }
 
@@ -326,7 +314,7 @@ class SwingUIFactory {
                 buildCheckBox(p, target, data);
             }                            
         }
-        panel.add(p);
+        addControl(panel, null, p);
     }
 
     private void buildCheckBox(JPanel panel, Object target,
@@ -372,8 +360,10 @@ class SwingUIFactory {
      *        of the combo.
      * @return a combo panel 
      */
-    private void buildComboPanel(JPanel panel, Object target,
-            XMLPropertyPanelsDataRecord prop) {        
+    private void buildComboPanel(
+            final JPanel panel,
+            final Object target,
+            final XMLPropertyPanelsDataRecord prop) {        
         JComponent comp = null;
         if ("namespace".equals(prop.getName())) {
             final UMLComboBoxModel2 model =
@@ -518,12 +508,7 @@ class SwingUIFactory {
        }
         
         if (comp != null) {
-            String name = prop.getName();
-
-            JLabel label = new JLabel(name);
-            label.setLabelFor(comp);
-            panel.add(label);
-            panel.add(comp);
+            addControl(panel, prop.getName(), comp);
         }
     }
 
@@ -555,10 +540,17 @@ class SwingUIFactory {
         
         if (tfield != null) {
             String name = prop.getName();
-            JLabel label = new JLabel(name);
-            label.setLabelFor(tfield);
-            panel.add(label);
-            panel.add(tfield);
-        }        
+            addControl(panel, prop.getName(), tfield);
+        }
     }
+    
+    private void addControl(JPanel panel, String text, JComponent component) {
+        if (text != null) {
+            final JLabel label = new JLabel(text);
+            label.setLabelFor(component);
+            panel.add(label);
+        }
+        panel.add(component);
+    }
+    
 }
