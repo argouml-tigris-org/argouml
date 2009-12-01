@@ -139,20 +139,15 @@ class XmiReaderEUMLImpl implements XmiReader {
             throw new UnsupportedOperationException();
         }
 
-        String id = inputSource.getSystemId();
+        String id = inputSource.getPublicId();
         if (id == null) {
-            id = inputSource.getPublicId();
-        }
-        // The id contains the whole path, which is not what we want in models
-        // (it's a tradeoff, but collisions will be unlikely with the xmi.id)
-        if (id != null) {
-            // for ArgoUML internal profiles, id will start with "org/argouml"
-            int ix = id.indexOf("org/argouml/");
-            if (ix != -1) {
-                id = id.substring(ix);
-            } else if ((ix = id.lastIndexOf('/')) != -1) {
-                // for user profiles, use the filename only
-                id = id.substring(ix + 1);
+            id = inputSource.getSystemId();
+            if (id != null) {
+                // we only take the filename, not the whole system path
+                int ix = id.lastIndexOf('/');
+                if (ix != -1) {
+                    id = id.substring(ix + 1);
+                }
             }
         }
 
