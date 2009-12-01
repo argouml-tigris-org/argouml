@@ -247,16 +247,6 @@ class SwingUIFactory {
             label.setLabelFor(list);
             panel.add(label);
             panel.add(list);
-            if (list instanceof ScrollList) {
-                final ListModel m = ((ScrollList) list).getListModel();
-                if (m instanceof UMLModelElementListModel) {
-                    final List<Action> actions = ((UMLModelElementListModel) m).getActions();
-                    final ToolBarFactory tbf = new ToolBarFactory(actions);
-                    final JToolBar tb = tbf.createToolBar();
-                    tb.setBackground(Color.green);
-                    panel.add(tb);
-                }
-            }
         }
     }
 
