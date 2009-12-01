@@ -32,7 +32,6 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
-import org.argouml.uml.ui.LabelledLayout;
 
 /**
  * This class is the main property panel, based on XML

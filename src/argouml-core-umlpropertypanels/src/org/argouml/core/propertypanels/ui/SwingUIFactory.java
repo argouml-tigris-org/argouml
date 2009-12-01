@@ -26,7 +26,6 @@ package org.argouml.core.propertypanels.ui;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -37,7 +36,6 @@ import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
 import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.LabelledLayout;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -539,18 +537,22 @@ class SwingUIFactory {
         }
         
         if (tfield != null) {
-            String name = prop.getName();
             addControl(panel, prop.getName(), tfield);
         }
     }
     
-    private void addControl(JPanel panel, String text, JComponent component) {
-        if (text != null) {
-            final JLabel label = new JLabel(text);
-            label.setLabelFor(component);
-            panel.add(label);
-        }
-        panel.add(component);
-    }
+//    private void addControl(JPanel panel, String text, JComponent component) {
+//        if (text != null) {
+//            final JLabel label = new JLabel(text);
+//            label.setLabelFor(component);
+//            panel.add(label);
+//        }
+//        panel.add(component);
+//    }
     
+    
+    private void addControl(JPanel panel, String text, JComponent component) {
+        LabelledComponent lc = new LabelledComponent(text, component);
+        panel.add(lc);
+    }
 }
