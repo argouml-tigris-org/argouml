@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2008 The Regents of the University of California. All
+// Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -178,7 +178,8 @@ public class TestProfileConfigurationFilePersister extends TestCase {
         
         // Read it back in to a new empty project
         project = ProjectManager.getManager().makeEmptyProject();
-        persister.load(project, new InputSource(file.toURL().toExternalForm()));
+        persister.load(project,
+                new InputSource(file.toURI().toURL().toExternalForm()));
  
         // Make sure we got what we started with
         assertEquals(startingProfiles, 
