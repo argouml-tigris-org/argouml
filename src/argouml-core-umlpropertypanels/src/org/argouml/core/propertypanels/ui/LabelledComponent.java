@@ -42,12 +42,19 @@ class LabelledComponent extends JPanel {
      */
     private static final long serialVersionUID = -6805892904843209588L;
     
-    final JComponent component;
-    final JLabel label;
+    /**
+     * The label for the component that might also be wrapped inside this
+     * container
+     */
+    private final JLabel label;
     
+    /**
+     * Construct a new LabelledComponent
+     * @param name the name of the label to create
+     * @param component the component to wrap
+     */
     public LabelledComponent(final String name, final JComponent component) {
         super(new BorderLayout());
-        this.component = component;
         setName(name);
         add(component, BorderLayout.CENTER);
         
