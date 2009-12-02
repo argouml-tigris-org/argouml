@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2007-2008 The Regents of the University of California. All
+// Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,6 +41,8 @@ import org.argouml.FileHelper;
 import org.argouml.application.helpers.ApplicationVersion;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.model.XmiReferenceException;
+import org.argouml.model.XmiReferenceRuntimeException;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
@@ -366,6 +368,10 @@ public class TestProjectWithProfiles extends TestCase {
             fail("Failed to throw exception for missing user defined profile");
         } catch (OpenException e) {
             // Success - expected exception
+            Throwable cause = e.getCause();
+            assertTrue("Cause isn't of one of the expected types.",
+                cause instanceof XmiReferenceRuntimeException
+                || cause instanceof XmiReferenceException);
         }
     }
 
