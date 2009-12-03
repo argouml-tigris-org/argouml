@@ -63,20 +63,6 @@ public abstract class FigClassifierBoxWithAttributes extends FigClassifierBox
         super(owner, bounds, settings);
     }
 
-    /*
-     * Insert an Add Attribute entry before the default menu.
-     * 
-     * @see org.argouml.uml.diagram.static_structure.ui.FigClassifierBox#buildAddMenu()
-     */
-    @Override
-    protected ArgoJMenu buildAddMenu() {
-        ArgoJMenu addMenu = super.buildAddMenu();
-        Action addAttribute = new ActionAddAttribute();
-        addAttribute.setEnabled(isSingleTarget());
-        addMenu.insert(addAttribute, 0);
-        return addMenu;
-    }
-    
     /**
      * USED BY PGML.tee.
      * @return the class name and bounds together with compartment

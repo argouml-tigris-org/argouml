@@ -48,7 +48,7 @@ public class ActionAddEnumerationLiteral extends UndoableAction {
      * The constructor.
      */
     public ActionAddEnumerationLiteral() {
-        super(Translator.localize("button.new-enumeration-literal"),
+        super(Translator.localize("button.new-enumerationliteral"),
                 ResourceLoaderWrapper
                         .lookupIcon("button.new-enumeration-literal"));
     }

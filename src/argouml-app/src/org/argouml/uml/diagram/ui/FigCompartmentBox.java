@@ -171,6 +171,10 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         }
         return null;
     }
+    
+    protected List<FigCompartment> getCompartments() {
+        return compartments;
+    }
 
     @Override
     public void addFig(Fig fig) {

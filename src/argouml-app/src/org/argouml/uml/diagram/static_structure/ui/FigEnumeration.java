@@ -93,16 +93,6 @@ public class FigEnumeration extends FigDataType
     }
 
     @Override
-    protected ArgoJMenu buildAddMenu() {
-        ArgoJMenu addMenu = super.buildAddMenu();
-        
-        Action addEnumerationLiteral = new ActionAddEnumerationLiteral();
-        addEnumerationLiteral.setEnabled(isSingleTarget());
-        addMenu.add(addEnumerationLiteral);
-        return addMenu;
-    }
-
-    @Override
     public void renderingChanged() {
         super.renderingChanged();
         if (getOwner() != null) {

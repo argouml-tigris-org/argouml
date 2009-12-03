@@ -28,6 +28,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -37,6 +38,7 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
+import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.OperationsCompartmentContainer;
@@ -46,6 +48,7 @@ import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
+import org.argouml.uml.diagram.ui.FigEditableCompartment;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
 import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.tigris.gef.base.Editor;
@@ -313,9 +316,14 @@ public abstract class FigClassifierBox extends FigCompartmentBox
 
     protected ArgoJMenu buildAddMenu() {
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
-        Action addOperation = new ActionAddOperation();
-        addOperation.setEnabled(isSingleTarget());
-        addMenu.insert(addOperation, 0);
+        
+        List<FigCompartment> comps = getCompartments();
+        for (FigCompartment comp : comps) {
+            final Object metaType = comp.getCompartmentType();
+            Action addAction = new ActionCreateContainedModelElement(metaType, getOwner());
+            addAction.setEnabled(isSingleTarget());
+            addMenu.insert(addAction, 0);
+        }
         addMenu.add(new ActionAddNote());
         addMenu.add(ActionEdgesDisplay.getShowEdges());
         addMenu.add(ActionEdgesDisplay.getHideEdges());

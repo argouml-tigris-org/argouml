@@ -46,6 +46,21 @@ public class ActionCreateContainedModelElement
      * 
      * @param theMetaType the element to be created
      * @param target the container that will own the new element
+     */
+    public ActionCreateContainedModelElement(
+            Object theMetaType, 
+            Object target) {
+        this(theMetaType, target,
+                "button.new-"
+                + Model.getMetaTypes().getName(theMetaType).toLowerCase());
+    }
+    
+    
+    /**
+     * Construct the action.
+     * 
+     * @param theMetaType the element to be created
+     * @param target the container that will own the new element
      * @param menuDescr the description for the menu item label.
      */
     public ActionCreateContainedModelElement(
