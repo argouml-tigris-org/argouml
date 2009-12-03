@@ -40,25 +40,32 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.gefext.DeferredBufferedImage;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.SaveEPSAction;
 import org.tigris.gef.base.SaveGIFAction;
 import org.tigris.gef.base.SaveGraphicsAction;
 import org.tigris.gef.base.SavePNGAction;
 import org.tigris.gef.base.SavePSAction;
 import org.tigris.gef.base.SaveSVGAction;
+import org.tigris.gef.persistence.SvgWriter2D;
 import org.tigris.gef.persistence.export.PostscriptWriter;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.util.Localizer;
 
 
 /**
@@ -316,6 +323,8 @@ public final class SaveGraphicsManager {
             // when an ImageIO GIF writer plugin is bundled
 //            cmd = new SaveGIFAction2(Translator.localize("action.save-gif"));
         } else if (FileFilters.SVG_FILTER.getSuffix().equals(suffix)) {
+            // TODO: Use the SVGWriter2D implementation
+//            cmd = new SaveSVGAction2(Translator.localize("action.save-svg"));
             cmd = new SaveSVGAction(Translator.localize("action.save-svg"));
         }
         return cmd;
@@ -502,4 +511,117 @@ class SaveGIFAction2 extends SaveGIFAction {
 
     }
 
+}
+
+class SaveSVGAction2 extends SaveGraphicsAction {
+
+    /**
+     * Creates a new SaveSVGAction
+     * 
+     * @param name
+     *                The name of the action
+     */
+    public SaveSVGAction2(String name) {
+        this(name, false);
+    }
+
+    /**
+     * Creates a new SaveSVGAction
+     * 
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     */
+    public SaveSVGAction2(String name, Icon icon) {
+        this(name, icon, false);
+    }
+
+    /**
+     * Creates a new SaveSVGAction
+     * 
+     * @param name
+     *                The name of the action
+     * @param localize
+     *                Whether to localize the name or not
+     */
+    public SaveSVGAction2(String name, boolean localize) {
+        super(localize ? Localizer.localize("GefBase", name) : name);
+    }
+
+    /**
+     * Creates a new SaveSVGAction
+     * 
+     * @param name
+     *                The name of the action
+     * @param icon
+     *                The icon of the action
+     * @param localize
+     *                Whether to localize the name or not
+     */
+    public SaveSVGAction2(String name, Icon icon, boolean localize) {
+        super(localize ? Localizer.localize("GefBase", name) : name, icon);
+    }
+
+    protected void saveGraphics(OutputStream s, Editor ce, 
+    		Rectangle drawingArea)
+        throws IOException {
+
+//        LayerPerspective layer = DiagramUtils.getActiveDiagram().getLayer();
+        Layer layer = ce.getLayerManager().getActiveLayer();
+
+        Rectangle bounds = new Rectangle();
+        for (Fig fig : layer.getContents()) {
+            bounds.x = Math.min(bounds.x, fig.getX());
+            bounds.y = Math.min(bounds.y, fig.getY());
+            // we actually are computing max x & max y, not width & height
+            bounds.width = Math.max(bounds.width, fig.getX() + fig.getWidth());
+            bounds.height = Math.max(bounds.height, 
+                    fig.getY() + fig.getHeight());
+        }
+        
+        // Convert max x/y to width/height
+        bounds.width -= bounds.x;
+        bounds.height -= bounds.y;
+        
+    	SvgWriter2D writer = null;
+    	try {
+            // TODO: Do we want the current view or the entire diagram?
+//    	    drawingArea.width /= ce.getScale();
+//            drawingArea.height /= ce.getScale();
+//            writer = new SvgWriter2D(s, drawingArea);
+            writer = new SvgWriter2D(s, bounds);
+        } catch (ParserConfigurationException e) {
+//            LOG.error("Exception creating SVG writer", e);
+            // Not really kosher, but we are constrained by the method signature
+            throw new IOException("Error creating SVGwriter " + e);
+        }
+
+        if (writer != null) {
+            // We'll do the equivalent of the following ourselves
+//            ce.print(writer);
+
+            for (Fig f : layer.getContents()) {
+                // ignore clipping
+                String url = null;
+                String clazz = null;
+                Object owner = f.getOwner();
+                if (Model.getFacade().isAUMLElement(owner)) {
+                    clazz = Model.getMetaTypes().getName(owner);
+                    // TODO: toLower?
+                    if (Model.getFacade().isAModelElement(owner)) {
+                        String name = Model.getFacade().getName(owner);
+                        if (name == null) {
+                            name = "";
+                        }
+                        url = "http://argoeclipse.tigris.org" + "#" + name;
+                    }
+                }
+                writer.beginFig(f, clazz, url);
+                f.paint(writer);
+                writer.endFig();
+            }
+            writer.dispose();
+        }
+    }
 }
