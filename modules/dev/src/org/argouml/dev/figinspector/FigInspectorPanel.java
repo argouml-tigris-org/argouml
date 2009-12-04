@@ -157,13 +157,19 @@ public final class FigInspectorPanel
         String className = f.getClass().getName();
         StringBuffer descr = new StringBuffer(
                 className.substring(className.lastIndexOf(".") + 1));
-//        descr.append(" paints=").append(f.getPaintCount());
-//        descr.append(" damages=").append(f.getDamageCount());
+//        descr.append(" - paints=").append(f.getPaintCount());
+//        descr.append(" - damages=").append(f.getDamageCount());
         descr.append(
-                " bounds=[" + f.getX() + "," + f.getY() + "," + f.getWidth()
+                " - bounds=[" + f.getX() + "," + f.getY() + "," + f.getWidth()
                         + "," + f.getHeight() + "]");
+        if (!f.isVisible()) {
+            descr.append(" - INVISIBLE");
+        }
+        if (f.isFilled()) {
+            descr.append(" - FILLED");
+        }
         descr.append(
-                " fill=[" + f.getFillColor().getRed() + ","
+                " - fill=[" + f.getFillColor().getRed() + ","
                         + f.getFillColor().getGreen() + ","
                         + f.getFillColor().getBlue() + "]");
         if (f.getOwner() != null) {
@@ -171,12 +177,6 @@ public final class FigInspectorPanel
         }
         if (f instanceof FigText) {
             descr.append(" \"").append(((FigText) f).getText()).append("\"");
-        }
-        if (!f.isVisible()) {
-            descr.append(" - INVISIBLE");
-        }
-        if (f.isFilled()) {
-            descr.append(" - FILLED");
         }
         
         descr.append(" - lay=").append(toString(f.getLayer()));
