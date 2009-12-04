@@ -224,20 +224,7 @@ class UseCaseDiagramRenderer2 extends UmlDiagramRenderer {
             newEdge = new FigEdgeNote2(edge, settings);
         }
 
-        if (newEdge == null) {
-            throw new IllegalArgumentException(
-                    "Don't know how to create FigEdge for model type "
-                    + edge.getClass().getName());
-        } else {
-            setPorts(lay, newEdge);
-        }
-
-        lay.add(newEdge);
-        newEdge.setLayer(lay);
-        
-//        newEdge.setDiElement(
-//                GraphChangeAdapter.getInstance().createElement(gm, edge));
-
+        addEdge(lay, newEdge, edge);
         return newEdge;
     }
 }
