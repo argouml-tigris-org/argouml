@@ -97,8 +97,7 @@ class SequenceDiagramRenderer extends UmlDiagramRenderer {
         } else {
             figEdge = getFigEdgeFor(edge, styleAttributes);
         }       
-        setPorts(lay, figEdge);
-        lay.add(figEdge);
+        addEdge(lay, figEdge, edge);
         return figEdge;
     }
 
