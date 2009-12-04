@@ -421,15 +421,6 @@ public abstract class FigEditableCompartment extends FigCompartment {
         }
     }
 
-    @Override
-    public void setFilled(boolean f) {
-        super.setFilled(f);
-        compartmentSeparator.setFilled(true);
-        if (externalSeparatorFig != null) {
-            externalSeparatorFig.setFilled(true);
-        }
-    }
-
     /**
      * Set new bounds for the external separator line (if it exists).
      * 

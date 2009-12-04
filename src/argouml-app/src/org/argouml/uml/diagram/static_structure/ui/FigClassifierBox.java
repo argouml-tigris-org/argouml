@@ -35,6 +35,7 @@ import javax.swing.Action;
 
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
@@ -147,6 +148,14 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         // TODO: We should be able to just call renderingChanged on the child
         // figs here instead of doing an updateOperations...
         updateOperations();
+        
+        // TODO: Taken from FigClassifierBoxWithAttribute to handle events
+        // on an attribute. All this event handling should eventually be moved
+        // to the compartment Fig for attributes
+        if (Model.getFacade().isAAttribute(getOwner())) {
+            // TODO: We shouldn't actually have to do all this work
+            updateAttributes();
+        }
     }
     
     /**
@@ -188,7 +197,52 @@ public abstract class FigClassifierBox extends FigCompartmentBox
                 updateOperations();
             }
         }
+        
+        // TODO: Taken from FigClassifierBoxWithAttribute to handle events
+        // on an attribute. All this event handling should eventually be moved
+        // to the compartment Fig for attributes
+        if (Model.getFacade().isAAttribute(getOwner())) {
+            if (event instanceof AttributeChangeEvent) {
+                Object source = event.getSource();
+                if (Model.getFacade().isAAttribute(source)) {
+                    // TODO: We just need to get someone to re-render a single
+                    // line of text which represents the element here, but I'm
+                    // not sure how to do that. - tfm
+                    // TODO: Bob replies - we shouldn't be interested in this
+                    // event here. The FigFeature (or its notation) should be
+                    // listen for change and the FigFeature should be update
+                    // from that.
+                    updateAttributes();
+                }
+            } else if (event instanceof AssociationChangeEvent 
+                    && getOwner().equals(event.getSource())) {
+                Object o = null;
+                if (event instanceof AddAssociationEvent) {
+                    o = event.getNewValue();
+                } else if (event instanceof RemoveAssociationEvent) {
+                    o = event.getOldValue();
+                }
+                if (Model.getFacade().isAAttribute(o)) {
+                    // TODO: Bob says - we should not be listening here for
+                    // addition and removal of attributes. This should be done in
+                    // FigAttributesCompartment.
+                    updateAttributes();
+                }
+            }
+        }
     }
+
+    protected void updateAttributes() {
+        FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());
+        if (!fc.isVisible()) {
+            return;
+        }
+        fc.populate();
+    
+        // TODO: make setBounds, calcBounds and updateBounds consistent
+        setBounds(getBounds());
+    }
+
 
     /**
      * @return The Fig for the operations compartment

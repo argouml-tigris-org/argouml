@@ -150,25 +150,7 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
             newEdge = new FigEdgeNote(edge, settings); // TODO -> settings
         }
     
-        if (newEdge == null) {
-            throw new IllegalArgumentException(
-                    "Don't know how to create FigEdge for model type "
-                    + edge.getClass().getName());
-        }
-        
-        setPorts(lay, newEdge);
-
-        assert newEdge != null : "There has been no FigEdge created";
-        assert (newEdge.getDestFigNode() != null) 
-            : "The FigEdge has no dest node";
-        assert (newEdge.getDestPortFig() != null) 
-            : "The FigEdge has no dest port";
-        assert (newEdge.getSourceFigNode() != null) 
-            : "The FigEdge has no source node";
-        assert (newEdge.getSourcePortFig() != null) 
-            : "The FigEdge has no source port";
-        
-        lay.add(newEdge);
+        addEdge(lay, newEdge, edge);
         return newEdge;
     }
 }

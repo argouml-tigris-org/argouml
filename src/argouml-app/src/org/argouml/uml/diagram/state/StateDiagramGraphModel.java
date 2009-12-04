@@ -249,11 +249,28 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public void addEdge(Object edge) {
         LOG.debug("adding statechart/activity diagram edge!!!!!!");
+        if (edge == null) {
+            throw new IllegalArgumentException("Cannot add a null edge");
+        }
+
+        if (getDestPort(edge) == null || getSourcePort(edge) == null) {
+            throw new IllegalArgumentException(
+                    "The source and dest port should be provided on an edge");
+        }
+
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Adding an edge of type "
+                   + edge.getClass().getName()
+                   + " to class diagram.");
+        }
 
         if (!canAddEdge(edge)) {
+            LOG.info("Attempt to add edge rejected");
             return;
         }
+        
         getEdges().add(edge);
+        
         fireEdgeAdded(edge);
     }
 

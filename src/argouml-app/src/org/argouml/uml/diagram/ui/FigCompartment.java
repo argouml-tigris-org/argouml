@@ -75,7 +75,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
 
     private void constructFigs(int x, int y, int w, int h) {
         bigPort = new FigRect(x, y, w, h, LINE_COLOR, FILL_COLOR);
-        bigPort.setFilled(true);
+        bigPort.setFilled(false);
         bigPort.setLineWidth(0);
 
         addFig(bigPort);

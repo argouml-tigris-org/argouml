@@ -342,4 +342,31 @@ public abstract class UmlDiagramRenderer
             Model.getFacade().getClassifier(associationEnd);
         return (FigNode) diagram.presentationFor(classifier);
     }
+    
+    protected void addEdge(Layer lay, FigEdge newEdge, Object edge) {
+        if (newEdge == null) {
+            throw new IllegalArgumentException(
+                    "Don't know how to create FigEdge for model type "
+                    + edge.getClass().getName());
+        }
+        
+        setPorts(lay, newEdge);
+
+        assert newEdge != null : "There has been no FigEdge created";
+
+//        newEdge.setDiElement(
+//            GraphChangeAdapter.getInstance().createElement(gm, edge));
+
+        assert newEdge != null : "There has been no FigEdge created";
+        assert (newEdge.getDestFigNode() != null) 
+            : "The FigEdge has no dest node";
+        assert (newEdge.getDestPortFig() != null) 
+            : "The FigEdge has no dest port";
+        assert (newEdge.getSourceFigNode() != null) 
+            : "The FigEdge has no source node";
+        assert (newEdge.getSourcePortFig() != null) 
+            : "The FigEdge has no source port";
+
+        lay.add(newEdge);
+    }
 }
