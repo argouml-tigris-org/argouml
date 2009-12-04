@@ -110,7 +110,9 @@ public class XMLPropPanelFactory implements PropPanelFactory {
         if (stream != null) {
             InputSource source = new InputSource(stream);
             parser.parse(source);        
-        }       
+        } else {
+            LOG.error("Failed to find the panel XML");
+        }
     }
     
     public XMLPropertyPanelsData getPropertyPanelsData (String forType) {
