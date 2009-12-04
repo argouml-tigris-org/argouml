@@ -2,7 +2,7 @@ Manifest-Version: 2.0
 Class-Path: argouml.jar
 Created-By: 1.2 (Sun Microsystems Inc.)
 
-Name: orgargouml/core/propertypanels/module/XmlPropertyPanelsModule.class
+Name: org/argouml/core/propertypanels/module/XmlPropertyPanelsModule.class
 Extension-name: org.argouml.propertypanels.XmlPropertyPanelsModule
 Specification-Title: XML Property Panels Module
 Specification-Version: 0.1
