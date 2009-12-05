@@ -80,6 +80,11 @@ public class TabProps
     private Object target;
 
     /**
+     * @deprecated this is only temporary for dev phase of 0.29
+     */
+    public static boolean replace = true;
+
+    /**
      * The list with targetlisteners, these are the property panels
      * managed by TabProps.
      * It should only contain one listener at a time.
@@ -435,5 +440,5 @@ public class TabProps
     public static void disableCache() {
         cachePanels = false;
     }
-
+    
 } /* end class TabProps */
