@@ -24,8 +24,6 @@
 
 package org.argouml.core.propertypanels.module;
 
-import javax.swing.JPanel;
-
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.ui.XMLPropPanelFactory;
 import org.argouml.moduleloader.ModuleInterface;
@@ -55,18 +53,9 @@ public class XmlPropertyPanelsModule
     
     private TempTabPage tempPanel;
     
-    /**
-     * It is useful during testing to view the current and new property panels
-     * side by side. This can be switched by changing this flag to replace
-     * the existing panels instead. Once XML Property Panels goes live all the
-     * code dependent on this being false can be removed and the flag itself
-     * removed.
-     */
-    private final static boolean REPLACE = true;
-    
     public boolean enable() { 
         
-        if (REPLACE) {
+        if (TabProps.replace) {
             /* Set up the property panels for UML elements: */
             try {
                 TabProps.disableCache();
@@ -89,7 +78,7 @@ public class XmlPropertyPanelsModule
     }
 
     public boolean disable() {
-        if (REPLACE) {
+        if (TabProps.replace) {
             /* Set up the property panels for UML elements: */
             try {
                 PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
