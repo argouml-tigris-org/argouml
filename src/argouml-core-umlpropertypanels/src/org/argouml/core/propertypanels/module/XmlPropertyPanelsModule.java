@@ -62,7 +62,7 @@ public class XmlPropertyPanelsModule
      * code dependent on this being false can be removed and the flag itself
      * removed.
      */
-    private final static boolean REPLACE = false;
+    private final static boolean REPLACE = true;
     
     public boolean enable() { 
         
