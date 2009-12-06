@@ -243,8 +243,8 @@ This is designed to work in two different environments:
   <!-- =================================================================== -->
   <!-- Runs the tests                                                      -->
   <!-- =================================================================== -->
-  <target name="tests"
-          depends="init,compile,compile-tests,junit-report-clean">
+  <target name="tests-xml"
+          depends="init,compile,compile-tests">
     <!-- create directories -->
     <mkdir dir="${tests.classes}"/>
 
@@ -266,6 +266,10 @@ This is designed to work in two different environments:
         </fileset>
       </batchtest>
     </junit>
+  </target>
+
+  <target name="tests"
+          depends="tests-xml,junit-report-clean">
     <antcall target="junit-report-create"/>
   </target>
 

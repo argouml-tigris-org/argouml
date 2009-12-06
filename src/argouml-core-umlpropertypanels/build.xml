@@ -201,7 +201,7 @@ Building this requires:
   <!-- =================================================================== -->
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
-  <target name="tests" depends="compile,compile-tests"
+  <target name="tests-xml" depends="compile,compile-tests"
           description="Run all tests that don't require any GUI components in headleass mode.">
 
     <mkdir dir="build/tests/reports"/>
@@ -225,6 +225,9 @@ Building this requires:
       </batchtest>
     </junit>
   </target>
+
+  <target name="tests" depends="tests-xml"
+          description="Run all the tests."/>
 
 
   <!-- =================================================================== -->

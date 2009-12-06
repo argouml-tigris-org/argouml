@@ -94,18 +94,23 @@ Build file to proxy the argoumlstandard ant targets.
   <!-- =================================================================== -->
   <!-- Targets for tests                                                   -->
   <!-- =================================================================== -->
-  <target name="tests"
+  <target name="tests-xml"
           description="Run normal tests.">
+    <ant dir="src/argouml-build" inheritAll="false"    target="tests-xml"/>
+  </target>
+
+  <target name="tests"
+          description="Run normal tests and build reports.">
     <ant dir="src/argouml-build" inheritAll="false"    target="tests"/>
   </target>
 
   <target name="guitests"
-          description="Run the GUI tests.">
+          description="Run the GUI tests and build reports.">
     <ant dir="src/argouml-build" inheritAll="false"    target="guitests"/>
   </target>
 
   <target name="alltests"
-          description="Run all tests.">
+          description="Run all tests and build reports.">
     <ant dir="src/argouml-build" inheritAll="false"    target="alltests"/>
   </target>
 

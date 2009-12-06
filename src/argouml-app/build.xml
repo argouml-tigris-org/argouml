@@ -495,9 +495,9 @@ Building this requires:
     <antcall target="coverage-report-xml"/>
   </target>
   
-  <target name="tests"
+  <target name="tests-xml"
           description="Run all tests that don't require any GUI components in headleass mode."
-          depends="compile,junit-setup,junit-report-clean,
+          depends="compile,junit-setup,
                    ant.optional.init" >
 
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
@@ -525,7 +525,12 @@ Building this requires:
         </fileset>
       </batchtest>
     </junit>
+  </target>
 
+  <target name="tests"
+          depends="tests-xml,junit-report-clean"
+          description="Run all tests that don't require any GUI components in headleass mode.
+Build reports.">
     <antcall target="junit-report-create"/>
   </target>
 
@@ -541,7 +546,7 @@ Building this requires:
   <target name="guitests"
           depends="compile,junit-setup,junit-report-clean,
                    ant.optional.init"
-          description="Run all tests that require the GUI components.">
+          description="Run all tests that require the GUI components and build reports.">
 
     <junit errorproperty="junit.failure" failureproperty="junit.failure" 
            fork="yes" dir="${basedir}" forkmode="perTest"

@@ -346,8 +346,8 @@ Building this requires:
   <!-- =================================================================== -->
   <!-- Runs the tests                                                      -->
   <!-- =================================================================== -->
-  <target name="tests"
-          depends="init,compile,compile-tests,junit-report-clean">
+  <target name="tests-xml"
+          depends="init,compile,compile-tests">
     <!-- create directories -->
     <mkdir dir="${tests.classes}"/>
 
@@ -368,6 +368,10 @@ Building this requires:
         </fileset>
       </batchtest>
     </junit>
+  </target>
+
+  <target name="tests"
+          depends="tests-xml,junit-report-clean">
     <antcall target="junit-report-create"/>
   </target>
 
