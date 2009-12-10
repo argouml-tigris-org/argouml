@@ -131,6 +131,26 @@ class UMLClassifierRoleAvailableContentsListModel
             fireIntervalAdded(this, 0, getSize() - 1);
         }
     }
+    
+    public void removeModelEventListener() {
+        Collection bases = Model.getFacade().getBases(getTarget());
+        Iterator it = bases.iterator();
+        while (it.hasNext()) {
+            Object base =  it.next();
+            Model.getPump().removeModelEventListener(
+                this,
+                base,
+                "ownedElement");
+        }
+        
+        // make sure we know it when a classifier is added as a base
+        Model.getPump().removeModelEventListener(
+            this,
+            getTarget(),
+            "base");
+    }
+
+    
 
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)

@@ -24,6 +24,7 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -56,8 +57,7 @@ class UMLEnumerationLiteralsListModel
      */
     protected void buildModelList() {
         if (Model.getFacade().isAEnumeration(getTarget())) {
-            setAllElements(
-                    Model.getFacade().getEnumerationLiterals(getTarget()));
+            setAllElements(getModelElements());
         }
     }
 
@@ -66,10 +66,13 @@ class UMLEnumerationLiteralsListModel
      */
     protected boolean isValidElement(Object element) {
         if (Model.getFacade().isAEnumeration(getTarget())) {
-            List literals =
-                Model.getFacade().getEnumerationLiterals(getTarget());
-            return literals.contains(element);
+            return getModelElements().contains(element);
         }
         return false;
+    }
+
+    @Override
+    public Collection getModelElements() {
+        return Model.getFacade().getEnumerationLiterals(getTarget());
     }
 }

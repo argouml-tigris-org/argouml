@@ -75,6 +75,9 @@ class XmlPropertyPanel extends JPanel implements ListSelectionListener {
         if (comp instanceof RowSelector) {
             RowSelector rs = (RowSelector) comp;
             rs.removeListSelectionListener(this);
+            // TODO: Why do we have to call this manually
+            // when the component is listening for its own removal?
+            rs.componentRemoved(null);
         }
     }
 

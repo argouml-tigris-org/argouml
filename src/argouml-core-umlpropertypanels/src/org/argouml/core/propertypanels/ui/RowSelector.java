@@ -160,7 +160,7 @@ class RowSelector extends JPanel
      * By recording the model element being moved the add event can detected
      * when the element is added and mark it as selected.
      */
-    private Object movedModelElement;
+    private MovedModelElement movedModelElement = new MovedModelElement();
 
     /**
      * The label that contains the +/- symbol to indicate
@@ -401,14 +401,14 @@ class RowSelector extends JPanel
     }
 
     public void componentAdded(ContainerEvent arg0) {
-        // TODO Auto-generated method stub
-
+        LOG.info("The RowSelector is being added to a panel");
     }
 
     /**
      * Remove all the listeners that were added in the constructor
      */
-     public void componentRemoved(ContainerEvent event) {
+    public void componentRemoved(ContainerEvent event) {
+        LOG.info("The RowSelector is being removed from a panel");
         getList().removeListSelectionListener(deleteAction);
         if (moveUpAction != null) {
             getList().removeListSelectionListener(moveUpAction);
@@ -419,6 +419,7 @@ class RowSelector extends JPanel
         this.removeMouseListener(this);
         this.removeContainerListener(this);
         getModel().removeListDataListener(this);
+        ((UMLModelElementListModel) getModel()).removeModelEventListener();
     }
 
 
@@ -569,10 +570,11 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            movedModelElement = getList().getSelectedValues()[0];
+            movedModelElement.setElement(getList().getSelectedValues()[0]);
+            assert (movedModelElement != null);
             Model.getUmlHelper().move(
                     target, 
-                    movedModelElement, 
+                    movedModelElement.getElement(), 
                     UmlHelper.Direction.UP);
         }
     }
@@ -613,10 +615,11 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            movedModelElement = getList().getSelectedValues()[0];
+            movedModelElement.setElement(getList().getSelectedValues()[0]);
+            assert (movedModelElement != null);
             Model.getUmlHelper().move(
                     target, 
-                    movedModelElement, 
+                    movedModelElement.getElement(), 
                     UmlHelper.Direction.DOWN);
         }
     }
@@ -656,10 +659,11 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            movedModelElement = getList().getSelectedValues()[0];
+            movedModelElement.setElement(getList().getSelectedValues()[0]);
+            assert (movedModelElement != null);
             Model.getUmlHelper().move(
                     target, 
-                    movedModelElement, 
+                    movedModelElement.getElement(), 
                     UmlHelper.Direction.TOP);
         }
     }
@@ -700,11 +704,25 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            movedModelElement = getList().getSelectedValues()[0];
+            movedModelElement.setElement(getList().getSelectedValues()[0]);
+            assert (movedModelElement != null);
             Model.getUmlHelper().move(
                     target,
-                    movedModelElement,
+                    movedModelElement.getElement(),
                     UmlHelper.Direction.BOTTOM);
+        }
+    }
+    
+    private class MovedModelElement {
+        private Object element;
+
+        public Object getElement() {
+            return element;
+        }
+
+        public void setElement(Object element) {
+            LOG.info("Setting moved model element to " + element);
+            this.element = element;
         }
     }
 }

@@ -25,6 +25,7 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -50,7 +51,7 @@ class UMLAssociationEndQualifiersListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(Model.getFacade().getQualifiers(getTarget()));
+            setAllElements(getModelElements());
         }
     }
 
@@ -60,5 +61,11 @@ class UMLAssociationEndQualifiersListModel
     protected boolean isValidElement(Object o) {
         return Model.getFacade().isAAttribute(o)
             && Model.getFacade().getQualifiers(getTarget()).contains(o);
+    }
+
+    @Override
+    public Collection getModelElements() {
+        // TODO Auto-generated method stub
+        return Model.getFacade().getQualifiers(getTarget());
     }
 }

@@ -24,6 +24,7 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -51,7 +52,7 @@ class UMLClassifierFeatureListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(Model.getFacade().getFeatures(getTarget()));
+            setAllElements(getModelElements());
         }
     }
 
@@ -60,5 +61,10 @@ class UMLClassifierFeatureListModel
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().getFeatures(getTarget()).contains(element);
+    }
+
+    @Override
+    public Collection getModelElements() {
+        return Model.getFacade().getFeatures(getTarget());
     }
 }

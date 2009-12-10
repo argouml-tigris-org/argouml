@@ -57,7 +57,7 @@ class UMLClassifierParameterListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(Model.getFacade().getParameters(getTarget()));
+            setAllElements(getModelElements());
         }
     }
 
@@ -66,5 +66,10 @@ class UMLClassifierParameterListModel
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().getParameters(getTarget()).contains(element);
+    }
+
+    @Override
+    public Collection getModelElements() {
+        return Model.getFacade().getParameters(getTarget());
     }
 }

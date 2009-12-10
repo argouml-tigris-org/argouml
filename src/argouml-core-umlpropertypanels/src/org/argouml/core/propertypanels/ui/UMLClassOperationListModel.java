@@ -24,6 +24,7 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -50,9 +51,7 @@ class UMLClassOperationListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            List opsAndReceps =
-                    Model.getFacade().getOperationsAndReceptions(getTarget());
-            setAllElements(opsAndReceps);
+            setAllElements(getModelElements());
         }
     }
 
@@ -63,5 +62,11 @@ class UMLClassOperationListModel
     protected boolean isValidElement(Object element) {
         return (Model.getFacade().getOperationsAndReceptions(getTarget())
                 .contains(element));
+    }
+
+    @Override
+    public Collection getModelElements() {
+        return
+            Model.getFacade().getOperationsAndReceptions(getTarget());
     }
 }

@@ -24,6 +24,7 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -52,7 +53,7 @@ class UMLExtendExtensionPointListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(Model.getFacade().getExtensionPoints(getTarget()));
+        setAllElements(getModelElements());
     }
 
     /*
@@ -60,6 +61,11 @@ class UMLExtendExtensionPointListModel
      */
     protected boolean isValidElement(Object o) {
         return Model.getFacade().isAExtensionPoint(o)
-            && Model.getFacade().getExtensionPoints(getTarget()).contains(o);
+            && getModelElements().contains(o);
+    }
+
+    @Override
+    public Collection getModelElements() {
+        return Model.getFacade().getExtensionPoints(getTarget());
     }
 }

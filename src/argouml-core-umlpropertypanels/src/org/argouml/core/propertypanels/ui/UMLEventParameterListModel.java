@@ -24,6 +24,8 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.Collection;
+
 import org.argouml.model.Model;
 
 /**
@@ -46,15 +48,18 @@ class UMLEventParameterListModel extends UMLModelElementListModel implements Ord
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        //setAllElements(((MEvent)getTarget()).getParameters());
-        setAllElements(Model.getFacade().getParameters(getTarget()));
+        setAllElements(getModelElements());
     }
 
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return Model.getFacade().getParameters(getTarget()).contains(element);
+        return getModelElements().contains(element);
     }
 
+    @Override
+    public Collection getModelElements() {
+        return Model.getFacade().getParameters(getTarget());
+    }
 }

@@ -24,6 +24,7 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -35,6 +36,11 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 class UMLActionArgumentListModel
         extends UMLModelElementListModel 
         implements Ordered {
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = -3265997785192090331L;
 
     /**
      * Constructor.
@@ -49,7 +55,7 @@ class UMLActionArgumentListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(Model.getFacade().getActualArguments(getTarget()));
+            setAllElements(getModelElements());
         }
     }
 
@@ -60,8 +66,8 @@ class UMLActionArgumentListModel
         return Model.getFacade().isAArgument(element);
     }
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -3265997785192090331L;
+    @Override
+    public Collection getModelElements() {
+        return Model.getFacade().getActualArguments(getTarget());
+    }
 }

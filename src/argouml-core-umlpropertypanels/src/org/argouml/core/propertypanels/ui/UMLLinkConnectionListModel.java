@@ -24,12 +24,9 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Collection;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
  *
@@ -52,7 +49,7 @@ class UMLLinkConnectionListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(Model.getFacade().getConnections(getTarget()));
+            setAllElements(getModelElements());
         }
     }
 
@@ -60,6 +57,11 @@ class UMLLinkConnectionListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return Model.getFacade().getConnections(getTarget()).contains(element);
+        return getModelElements().contains(element);
+    }
+
+    @Override
+    public Collection getModelElements() {
+        return Model.getFacade().getConnections(getTarget());
     }
 }

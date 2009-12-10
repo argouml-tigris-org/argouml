@@ -75,6 +75,8 @@ abstract class UMLModelElementListModel
     private AbstractActionNewModelElement newAction = null;
     private AbstractActionRemoveElement removeAction = null;
     
+    private static int count = 0;
+    private final int instance = count++;
     
     /**
      * Flag to indicate whether list events should be fired
@@ -304,21 +306,25 @@ abstract class UMLModelElementListModel
      * differences between NSUML and MDR - tfm - 20060302
      */
     public void propertyChange(final PropertyChangeEvent e) {
+        final UMLModelElementListModel lm = this;
         Runnable doWorkRunnable = new Runnable() {
             public void run() {
                 try {
                     if (e instanceof AttributeChangeEvent) {
                         try {
                             if (isValidEvent(e)) {
+                                LOG.info("Rebuilding model");
                                 rebuildModelList();
                             }
                         } catch (InvalidElementException iee) {
                             return;
                         }
-                    } else if (e instanceof AddAssociationEvent) {
+                    } else
+                    if (e instanceof AddAssociationEvent) {
                         if (isValidEvent(e)) {
                             Object o = getChangedElement(e);
                             if (o instanceof Collection) {
+                                LOG.info("Elements added");
                                 ArrayList tempList = new ArrayList((Collection) o);
                                 Iterator it = tempList.iterator();
                                 while (it.hasNext()) {
@@ -328,7 +334,25 @@ abstract class UMLModelElementListModel
                             } else {
                                 /* TODO: If this is an ordered list, then you have to 
                                     add in the right location! */
-                                addElement(o); 
+                                if (!lm.contains(o)) {
+                                    if (lm instanceof Ordered) {
+                                        Ordered ordered = (Ordered) lm;
+                                        Collection elements = ordered.getModelElements();
+                                        if (elements instanceof List) {
+                                            LOG.info("Element inserted " + instance + " " + o);
+                                            final int posn = ((List) elements).indexOf(o);
+                                            add(posn, o);
+                                        } else {
+                                            LOG.info("Element addedx" + instance);
+                                            addElement(o);
+                                        }
+                                        int posn = 1;
+                                        add(posn, o);
+                                    } else {
+                                        LOG.info("Element addedy " + o);
+                                        addElement(o);
+                                    }
+                                }
                             }
                         }
                     } else if (e instanceof RemoveAssociationEvent) {
@@ -348,6 +372,7 @@ abstract class UMLModelElementListModel
                             }
                         }
                         if (valid) {
+                            LOG.info("Remove is valid" + instance);
                             Object o = getChangedElement(e);
                             if (o instanceof Collection) {
                                 Iterator it = ((Collection) o).iterator();
@@ -356,8 +381,11 @@ abstract class UMLModelElementListModel
                                     removeElement(o3);
                                 }
                             } else {
+                                LOG.info("Removing" + instance + " " + o);
                                 removeElement(o);
                             }
+                        } else {
+                            LOG.info("Remove is not valid for " + instance + " " + getChangedElement(e));
                         }
                     }
                 } catch (InvalidElementException e) {
@@ -377,6 +405,7 @@ abstract class UMLModelElementListModel
      * Delete and rebuild the model list from scratch.
      */
     private void rebuildModelList() {
+        LOG.info("Rebuilding");
         removeAllElements();
         buildingModel = true;
         try {
@@ -503,6 +532,10 @@ abstract class UMLModelElementListModel
         addOtherModelEventListeners(listTarget);
 
         rebuildModelList();
+    }
+    
+    public void removeModelEventListener() {
+        Model.getPump().removeModelEventListener(this, listTarget, eventName);
     }
 
     /**

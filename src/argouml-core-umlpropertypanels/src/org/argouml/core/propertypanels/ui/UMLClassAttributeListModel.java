@@ -24,10 +24,10 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.util.List;
+import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
  *
@@ -38,12 +38,16 @@ class UMLClassAttributeListModel
         extends UMLModelElementListModel 
         implements Ordered {
 
+    private static final Logger LOG = 
+        Logger.getLogger(UMLClassAttributeListModel.class);
+    
     /**
      * Constructor for UMLClassifierStructuralFeatureListModel.
      */
     public UMLClassAttributeListModel(Object modelElement) {
         super("feature", true, false, Model.getMetaTypes().getAttribute());
         setTarget(modelElement);
+        LOG.info("Constructed UMLClassAttributeListModel");
     }
 
     /*
@@ -51,15 +55,19 @@ class UMLClassAttributeListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-
-            setAllElements(Model.getFacade().getAttributes(getTarget()));
+            setAllElements(getModelElements());
         }
+    }
+    
+    public Collection getModelElements() {
+        return Model.getFacade().getAttributes(getTarget());
     }
 
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return (Model.getFacade().getAttributes(getTarget()).contains(element));
+        return Model.getFacade().isAAttribute(element)
+            && (getModelElements().contains(element));
     }
 }

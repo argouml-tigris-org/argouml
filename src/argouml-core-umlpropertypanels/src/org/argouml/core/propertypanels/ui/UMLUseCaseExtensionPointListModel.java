@@ -25,6 +25,7 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -60,13 +61,20 @@ class UMLUseCaseExtensionPointListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(Model.getFacade().getExtensionPoints(getTarget()));
+        setAllElements(getModelElements());
     }
 
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return Model.getFacade().getExtensionPoints(getTarget()).contains(o);
+        return getModelElements().contains(o);
     }
+
+    @Override
+    public Collection getModelElements() {
+        return Model.getFacade().getExtensionPoints(getTarget());
+    }
+    
+    
 }

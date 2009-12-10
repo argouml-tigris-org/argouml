@@ -24,9 +24,12 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.Collection;
+
 /**
  * A marker interface to be implemented by ordered list models (ie can have
  * items reordered)
  */
 interface Ordered {
+    Collection getModelElements();
 }

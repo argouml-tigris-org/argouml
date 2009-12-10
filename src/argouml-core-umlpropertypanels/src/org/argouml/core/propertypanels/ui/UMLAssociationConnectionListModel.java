@@ -105,4 +105,9 @@ class UMLAssociationConnectionListModel
         return Model.getFacade().isAAssociationEnd(o)
             && Model.getFacade().getConnections(getTarget()).contains(o);
     }
+
+    @Override
+    public Collection getModelElements() {
+        return Model.getFacade().getConnections(getTarget());
+    }
 }

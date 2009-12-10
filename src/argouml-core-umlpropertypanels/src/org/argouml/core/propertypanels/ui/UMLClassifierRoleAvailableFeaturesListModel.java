@@ -139,4 +139,23 @@ class UMLClassifierRoleAvailableFeaturesListModel
     protected boolean isValidElement(Object element) {
         return false;
     }
+    
+    
+    public void removeModelEventListener() {
+        Collection bases = Model.getFacade().getBases(getTarget());
+        Iterator it = bases.iterator();
+        while (it.hasNext()) {
+            Object base =  it.next();
+            Model.getPump().removeModelEventListener(
+                this,
+                base,
+                "feature");
+        }
+        
+        // make sure we know it when a classifier is added as a base
+        Model.getPump().removeModelEventListener(
+            this,
+            getTarget(),
+            "base");
+    }
 }
