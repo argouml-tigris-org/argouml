@@ -287,7 +287,7 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
             figNode = new FigComment(modelElement, bounds, settings);
         } else if (Model.getFacade().isAClassifierRole(modelElement)) {
             if (!getGraphModel().getNodes().contains(modelElement)) {
-                figNode = makeNewFigCR(modelElement, bounds.getLocation());  
+                figNode = makeNewFigCR(modelElement, null);  
             }
         } else if (Model.getFacade().isAClassifier(modelElement)) {
             figNode = makeNewFigCR(
