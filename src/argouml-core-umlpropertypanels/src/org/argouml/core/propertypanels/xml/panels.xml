@@ -2267,10 +2267,6 @@
   </panel>
   <panel name="ComponentInstance">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
-    <checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-    </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
