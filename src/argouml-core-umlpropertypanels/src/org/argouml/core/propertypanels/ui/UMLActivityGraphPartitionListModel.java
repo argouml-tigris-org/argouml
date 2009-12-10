@@ -37,8 +37,9 @@ class UMLActivityGraphPartitionListModel
     /**
      * Constructor for UMLActivityGraphPartiitionListModel.
      */
-    public UMLActivityGraphPartitionListModel() {
+    public UMLActivityGraphPartitionListModel(final Object modelElement) {
         super("partition");
+        setTarget(modelElement);
     }
 
     /*

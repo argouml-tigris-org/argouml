@@ -38,8 +38,9 @@ class UMLSignalEventSignalListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLTransitionTriggerListModel.
      */
-    public UMLSignalEventSignalListModel() {
+    public UMLSignalEventSignalListModel(final Object modelElement) {
         super("signal");
+        setTarget(modelElement);
     }
 
     /*

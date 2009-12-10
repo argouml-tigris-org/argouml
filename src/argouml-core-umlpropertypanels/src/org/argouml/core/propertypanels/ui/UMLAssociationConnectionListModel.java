@@ -57,8 +57,9 @@ class UMLAssociationConnectionListModel
     /**
      * Constructor for UMLModelElementClientDependencyListModel.
      */
-    public UMLAssociationConnectionListModel() {
+    public UMLAssociationConnectionListModel(final Object modelElement) {
         super("connection");
+        setTarget(modelElement);
     }
 
      /*

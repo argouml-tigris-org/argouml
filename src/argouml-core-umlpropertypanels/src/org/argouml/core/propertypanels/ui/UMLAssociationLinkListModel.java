@@ -37,8 +37,9 @@ class UMLAssociationLinkListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLAssociationLinkListModel.
      */
-    public UMLAssociationLinkListModel() {
+    public UMLAssociationLinkListModel(Object modelElement) {
         super("link");
+        setTarget(modelElement);
     }
 
      /*

@@ -41,8 +41,9 @@ class UMLOperationRaisedSignalsListModel
     /**
      * The constructor.
      */
-    public UMLOperationRaisedSignalsListModel() {
+    public UMLOperationRaisedSignalsListModel(Object modelElement) {
         super("signal", true, false);
+        setTarget(modelElement);
     }
 
     /*

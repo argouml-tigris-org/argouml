@@ -38,8 +38,9 @@ class UMLUseCaseExtendListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLUseCaseExtendListModel.
      */
-    public UMLUseCaseExtendListModel() {
+    public UMLUseCaseExtendListModel(Object modelElement) {
         super("extend");
+        setTarget(modelElement);
     }
 
     /*

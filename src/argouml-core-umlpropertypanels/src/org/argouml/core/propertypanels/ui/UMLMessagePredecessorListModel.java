@@ -41,9 +41,10 @@ class UMLMessagePredecessorListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLMessagePredecessorListModel.
      */
-    public UMLMessagePredecessorListModel(Object metaType) {
-        super("predecessor", metaType,
+    public UMLMessagePredecessorListModel(final Object modelElement) {
+        super("predecessor", modelElement.getClass(),
             ActionAddMessagePredecessor.getInstance());
+        setTarget(modelElement);
     }
 
     /*

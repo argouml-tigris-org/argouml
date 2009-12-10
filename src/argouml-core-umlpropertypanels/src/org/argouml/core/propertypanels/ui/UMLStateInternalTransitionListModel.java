@@ -36,9 +36,10 @@ class UMLStateInternalTransitionListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateInternalTransition.
      */
-    public UMLStateInternalTransitionListModel(Object metaType) {
-        super("internalTransition", metaType,
+    public UMLStateInternalTransitionListModel(Object modelElement) {
+        super("internalTransition", modelElement.getClass(),
                 new ActionNewTransition());
+        setTarget(modelElement);
     }
 
     /*

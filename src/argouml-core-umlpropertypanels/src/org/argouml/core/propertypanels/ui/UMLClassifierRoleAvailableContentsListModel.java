@@ -47,8 +47,9 @@ class UMLClassifierRoleAvailableContentsListModel
     /**
      * Constructor for UMLClassifierRoleAvailableContentsListModel.
      */
-    public UMLClassifierRoleAvailableContentsListModel() {
+    public UMLClassifierRoleAvailableContentsListModel(final Object modelElement) {
         super();
+        setTarget(modelElement);
     }
 
     /*

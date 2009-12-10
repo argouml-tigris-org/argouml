@@ -42,8 +42,9 @@ class UMLTagDefinitionTypedValuesListModel
     /**
      * Constructor for UMLTagDefinitionTypeValueListModel.
      */
-    public UMLTagDefinitionTypedValuesListModel() {
+    public UMLTagDefinitionTypedValuesListModel(final Object modelElement) {
         super("typedValue");
+        setTarget(modelElement);
     }
 
     /*

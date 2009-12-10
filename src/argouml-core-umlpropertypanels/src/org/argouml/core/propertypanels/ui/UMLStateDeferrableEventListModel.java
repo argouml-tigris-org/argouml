@@ -39,8 +39,10 @@ class UMLStateDeferrableEventListModel
     /**
      * Constructor for UMLStateDeferrableEventListModel.
      */
-    public UMLStateDeferrableEventListModel() {
+    public UMLStateDeferrableEventListModel(
+            final Object modelElement) {
         super("deferrableEvent");
+        setTarget(modelElement);
     }
 
     /*
@@ -48,6 +50,7 @@ class UMLStateDeferrableEventListModel
      */
     protected void buildModelList() {
         setAllElements(Model.getFacade().getDeferrableEvents(getTarget()));
+        
     }
 
     /*

@@ -38,8 +38,10 @@ class UMLStateMachineTransitionListModel
     /**
      * Constructor for UMLStateMachineTransitionListModel.
      */
-    public UMLStateMachineTransitionListModel() {
+    public UMLStateMachineTransitionListModel(
+            final Object modelElement) {
         super("transition");
+        setTarget(modelElement);
     }
 
     /*

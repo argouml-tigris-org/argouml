@@ -37,8 +37,9 @@ class UMLDependencyClientListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLModelElementClientDependencyListModel.
      */
-    public UMLDependencyClientListModel() {
+    public UMLDependencyClientListModel(Object modelElement) {
         super("client");
+        setTarget(modelElement);
     }
 
      /*

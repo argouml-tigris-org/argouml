@@ -37,8 +37,9 @@ class UMLStateEntryListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateEntryListModel.
      */
-    public UMLStateEntryListModel() {
+    public UMLStateEntryListModel(final Object modelElement) {
         super("entry");
+        setTarget(modelElement);
     }
 
     /*

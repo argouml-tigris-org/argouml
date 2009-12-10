@@ -35,8 +35,9 @@ class UMLPartitionActivityGraphListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateVertexIncomingListModel.
      */
-    public UMLPartitionActivityGraphListModel() {
+    public UMLPartitionActivityGraphListModel(Object target) {
         super("activityGraph");
+        setTarget(target);
     }
 
     /*

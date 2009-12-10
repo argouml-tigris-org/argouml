@@ -37,8 +37,9 @@ class UMLAssociationEndAssociationListModel
     /**
      * Constructor for UMLAssociationEndAssociationListModel.
      */
-    public UMLAssociationEndAssociationListModel() {
+    public UMLAssociationEndAssociationListModel(Object modelElement) {
         super("association");
+        setTarget(modelElement);
     }
 
     /*

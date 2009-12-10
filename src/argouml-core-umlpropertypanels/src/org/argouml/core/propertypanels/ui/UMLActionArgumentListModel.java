@@ -39,8 +39,9 @@ class UMLActionArgumentListModel
     /**
      * Constructor.
      */
-    public UMLActionArgumentListModel() {
+    public UMLActionArgumentListModel(final Object modelElement) {
         super("actualArgument");
+        setTarget(modelElement);
     }
 
     /*

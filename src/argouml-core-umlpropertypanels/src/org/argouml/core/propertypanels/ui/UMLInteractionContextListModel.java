@@ -37,8 +37,9 @@ class UMLInteractionContextListModel
     /**
      * Constructor for UMLInteractionContextListModel.
      */
-    public UMLInteractionContextListModel() {
+    public UMLInteractionContextListModel(Object modelElement) {
         super("context");
+        setTarget(modelElement);
     }
 
     /*

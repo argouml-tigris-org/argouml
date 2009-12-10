@@ -46,169 +46,159 @@ class ListFactory implements ComponentFactory {
         JComponent list = null;
         UMLModelElementListModel model = null;
         
-        Object metaType = modelElement.getClass();
-            
         if ("clientDependency".equals(propName)) {
-            model = new UMLModelElementClientDependencyListModel(metaType);
+            model = new UMLModelElementClientDependencyListModel(modelElement);
         } else if ("supplierDependency".equals(propName)) {
-            model = new UMLModelElementSupplierDependencyListModel(metaType);
+            model = new UMLModelElementSupplierDependencyListModel(modelElement);
         } else if ("generalization".equals(propName)) {
-            model = new UMLGeneralizableElementGeneralizationListModel();
+            model = new UMLGeneralizableElementGeneralizationListModel(modelElement);
         } else if ("specialization".equals(propName)) {
-            model = new UMLGeneralizableElementSpecializationListModel();
+            model = new UMLGeneralizableElementSpecializationListModel(modelElement);
         } else if ("attribute".equals(propName)) {
-            model = new UMLClassAttributeListModel();
+            model = new UMLClassAttributeListModel(modelElement);
         } else if ("association".equals(propName)) {
-            model = new UMLClassifierAssociationEndListModel();
+            model = new UMLClassifierAssociationEndListModel(modelElement);
         } else if ("feature".equals(propName)) {
-            model = new UMLClassifierFeatureListModel();
+            model = new UMLClassifierFeatureListModel(modelElement);
         } else if ("operation".equals(propName)) {
-            model = new UMLClassOperationListModel();
+            model = new UMLClassOperationListModel(modelElement);
         } else if ("ownedElement".equals(propName)) {
-            model = new UMLNamespaceOwnedElementListModel();
+            model = new UMLNamespaceOwnedElementListModel(modelElement);
         } else if ("elementImport".equals(propName)) {
-            model = new UMLClassifierPackageImportsListModel();
+            model = new UMLClassifierPackageImportsListModel(modelElement);
         } else if ("parameter".equals(propName)) {
             if (Model.getFacade().isAObjectFlowState(modelElement)) {
-                model = new UMLObjectFlowStateParameterListModel(metaType);
+                model = new UMLObjectFlowStateParameterListModel(modelElement);
             } else {
-                model = new UMLClassifierParameterListModel();
+                model = new UMLClassifierParameterListModel(modelElement);
             }
         } else if ("raisedSignal".equals(propName)) {
-            model = new UMLOperationRaisedSignalsListModel();
+            model = new UMLOperationRaisedSignalsListModel(modelElement);
         } else if ("method".equals(propName)) {
-            model = new UMLOperationMethodsListModel();
+            model = new UMLOperationMethodsListModel(modelElement);
         } else if ("definedTag".equals(propName)) {
-            model = new UMLStereotypeTagDefinitionListModel();
+            model = new UMLStereotypeTagDefinitionListModel(modelElement);
         } else if ("baseClass".equals(propName)) {
-            model = new UMLStereotypeBaseClassListModel(metaType);
+            model = new UMLStereotypeBaseClassListModel(modelElement);
         } else if ("extended_elements".equals(propName)) {
-            model = new UMLExtendedElementsListModel();
+            model = new UMLExtendedElementsListModel(modelElement);
         } else if ("literal".equals(propName)) {
-            model = new UMLEnumerationLiteralsListModel();
+            model = new UMLEnumerationLiteralsListModel(modelElement);
         } else if ("supplier".equals(propName)) {
-            model = new UMLDependencySupplierListModel();
+            model = new UMLDependencySupplierListModel(modelElement);
         } else if ("client".equals(propName)) {
-            model = new UMLDependencyClientListModel();
+            model = new UMLDependencyClientListModel(modelElement);
         } else if ("connection".equals(propName)) {
-            model = new UMLAssociationConnectionListModel();
+            model = new UMLAssociationConnectionListModel(modelElement);
         } else if ("associationRole".equals(propName)) {
-            model = new UMLAssociationAssociationRoleListModel();
+            model = new UMLAssociationAssociationRoleListModel(modelElement);
         } else if ("link".equals(propName)) {
-            model = new UMLAssociationLinkListModel();
+            model = new UMLAssociationLinkListModel(modelElement);
         } else if ("specification".equals(propName)) {
-            model = new UMLAssociationEndSpecificationListModel(metaType);
+            model = new UMLAssociationEndSpecificationListModel(modelElement);
         } else if ("qualifier".equals(propName)) {
-            model = new UMLAssociationEndQualifiersListModel();
+            model = new UMLAssociationEndQualifiersListModel(modelElement);
         } else if ("annotatedElement".equals(propName)) {
-            model = new UMLCommentAnnotatedElementListModel();
+            model = new UMLCommentAnnotatedElementListModel(modelElement);
         } else if ("context".equals(propName)) {
-            model = new UMLSignalContextListModel(metaType);
+            model = new UMLSignalContextListModel(modelElement);
         } else if ("reception".equals(propName)) {
-            model = new UMLSignalReceptionListModel(metaType);
+            model = new UMLSignalReceptionListModel(modelElement);
         } else if ("extend".equals(propName)) {
-            model = new UMLUseCaseExtendListModel();
+            model = new UMLUseCaseExtendListModel(modelElement);
         } else if ("include".equals(propName)) {
-            model = new UMLUseCaseIncludeListModel();
+            model = new UMLUseCaseIncludeListModel(modelElement);
         } else if ("extensionPoint".equals(propName)) {
             if (Model.getFacade().isAUseCase(modelElement)) {
-                model = new UMLUseCaseExtensionPointListModel();
+                model = new UMLUseCaseExtensionPointListModel(modelElement);
             } else {
                 model = new UMLExtendExtensionPointListModel(modelElement);
             }
         } else if ("base".equals(propName)) {
-            model = new UMLClassifierRoleBaseListModel(metaType);
+            model = new UMLClassifierRoleBaseListModel(modelElement);
         } else if ("availableFeature".equals(propName)) {
-            model = new UMLClassifierRoleAvailableFeaturesListModel();
+            model = new UMLClassifierRoleAvailableFeaturesListModel(modelElement);
         } else if ("availableContents".equals(propName)) {
-            model = new UMLClassifierRoleAvailableContentsListModel();
+            model = new UMLClassifierRoleAvailableContentsListModel(modelElement);
         } else if ("predecessor".equals(propName)) {
-            model = new UMLMessagePredecessorListModel(metaType);
+            model = new UMLMessagePredecessorListModel(modelElement);
         } else if ("actualArgument".equals(propName)) {
-            model = new UMLActionArgumentListModel();
+            model = new UMLActionArgumentListModel(modelElement);
         } else if ("instantiation".equals(propName)) {
-            model = new UMLCreateActionClassifierListModel(metaType);
+            model = new UMLCreateActionClassifierListModel(modelElement);
         } else if ("constrainingElement".equals(propName)) {
-            model = new UMLCollaborationConstrainingElementListModel();
+            model = new UMLCollaborationConstrainingElementListModel(modelElement);
         } else if ("top".equals(propName)) {
-            model = new UMLStateMachineTopListModel();
+            model = new UMLStateMachineTopListModel(modelElement);
         } else if ("transitions".equals(propName)) {
-            model = new UMLStateMachineTransitionListModel();
+            model = new UMLStateMachineTransitionListModel(modelElement);
         } else if ("transition".equals(propName)) {
-            model = new UMLEventTransitionListModel();
+            model = new UMLEventTransitionListModel(modelElement);
         } else if ("submachineState".equals(propName)) {
-            model = new UMLStateMachineSubmachineStateListModel();
+            model = new UMLStateMachineSubmachineStateListModel(modelElement);
         } else if ("message".equals(propName)) {
-            model = new UMLInteractionMessagesListModel();
+            model = new UMLInteractionMessagesListModel(modelElement);
         } else if ("deployedComponent".equals(propName)) {
-            model = new UMLNodeDeployedComponentListModel();
+            model = new UMLNodeDeployedComponentListModel(modelElement);
         } else if ("residentElement".equals(propName)) {
-            model = new UMLComponentResidentListModel();
+            model = new UMLComponentResidentListModel(modelElement);
         } else if ("classifier".equals(propName)) {
-            model = new UMLInstanceClassifierListModel(metaType);
+            model = new UMLInstanceClassifierListModel(modelElement);
         } else if ("resident".equals(propName)) {
-            model = new UMLContainerResidentListModel();
+            model = new UMLContainerResidentListModel(modelElement);
         } else if ("entry".equals(propName)) {
-            model = new UMLStateEntryListModel();
-            model.setTarget(modelElement);
+            model = new UMLStateEntryListModel(modelElement);
             JList l = new UMLStateEntryList(model);
             list = new ScrollList(l);
         } else if ("exit".equals(propName)) {
-            model = new UMLStateExitListModel();
-            model.setTarget(modelElement);
+            model = new UMLStateExitListModel(modelElement);
             JList l = new UMLStateExitList(model);
             list = new ScrollList(l);
         } else if ("deferrableEvent".equals(propName)) {
-            model = new UMLStateDeferrableEventListModel();
-            model.setTarget(modelElement);
+            model = new UMLStateDeferrableEventListModel(modelElement);
             JList l = new UMLStateDeferrableEventList(model);
             list = new ScrollList(l);                    
         } else if ("doActivity".equals(propName)) {
-            model = new UMLStateDoActivityListModel();
-            model.setTarget(modelElement);
+            model = new UMLStateDoActivityListModel(modelElement);
             JList l = new UMLStateDoActivityList(model);
             list = new ScrollList(l);
         } else if ("outgoing".equals(propName)) {
-            model = new UMLStateVertexOutgoingListModel();
+            model = new UMLStateVertexOutgoingListModel(modelElement);
         } else if ("incoming".equals(propName)) {
-            model = new UMLStateVertexIncomingListModel();
+            model = new UMLStateVertexIncomingListModel(modelElement);
         } else if ("classifierInState".equals(propName)) {
-            model = new UMLOFSStateListModel(metaType);
+            model = new UMLOFSStateListModel(modelElement);
         } else if ("internalTransition".equals(propName)) {
-            model = new UMLStateInternalTransitionListModel(metaType);
+            model = new UMLStateInternalTransitionListModel(modelElement);
         } else if ("subvertex".equals(propName)) {
-            model = new UMLCompositeStateSubvertexListModel();
-            model.setTarget(modelElement);
+            model = new UMLCompositeStateSubvertexListModel(modelElement);
             JList l = new UMLCompositeStateSubvertexList(model);
             list = new ScrollList(l);
         } else if ("contents".equals(propName)) {
-            model = new UMLPartitionContentListModel(metaType);
+            model = new UMLPartitionContentListModel(modelElement);
         } else if ("partition".equals(propName)) {
-            model = new UMLActivityGraphPartitionListModel();
+            model = new UMLActivityGraphPartitionListModel(modelElement);
         } else if ("signal".equals(propName)) {
-            model = new UMLSignalEventSignalListModel();
-            model.setTarget(modelElement);
+            model = new UMLSignalEventSignalListModel(modelElement);
             list = new ScrollList(new UMLSignalEventSignalList(model));                    
         } else if ("action".equals(propName)) {
-            model = new UMLActionSequenceActionListModel();
-            model.setTarget(modelElement);
+            model = new UMLActionSequenceActionListModel(modelElement);
             list = new ScrollList(new UMLActionSequenceActionList(model));     
         } else if ("typedValue".equals(propName)) {
-            model = new UMLTagDefinitionTypedValuesListModel(); 
+            model = new UMLTagDefinitionTypedValuesListModel(modelElement); 
+        }
+        
+        if (list != null) {
+            return list;
         }
         
         // If we have a model but no list then build the list with
         // preferred constructor. Eventually all lists should be built
         // this way.
-        if (model != null && list == null) {
-            if (model.getTarget() == null) {
-                // This should only be temporary - we need to pass the target
-                // in the constructors of the models above
-                model.setTarget(modelElement);
-            }
-            list = new RowSelector(model);
+        if (model != null) {
+            return new RowSelector(model);
         }
         
-        return list;
+        return null;
     }
 }

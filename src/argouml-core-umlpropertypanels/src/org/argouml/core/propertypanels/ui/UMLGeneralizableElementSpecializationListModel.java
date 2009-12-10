@@ -37,10 +37,11 @@ class UMLGeneralizableElementSpecializationListModel
     /**
      * Constructor for UMLGeneralizableElementSpecializationListModel.
      */
-    public UMLGeneralizableElementSpecializationListModel() {
+    public UMLGeneralizableElementSpecializationListModel(Object modelElement) {
         super("specialization",
         	Model.getMetaTypes().getGeneralization(),
         	true);
+        setTarget(modelElement);
     }
 
     @Override

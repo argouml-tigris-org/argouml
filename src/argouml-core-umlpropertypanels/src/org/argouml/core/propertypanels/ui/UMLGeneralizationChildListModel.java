@@ -33,8 +33,9 @@ class UMLGeneralizationChildListModel extends UMLModelElementListModel {
     /**
      * Constructor.
      */
-    public UMLGeneralizationChildListModel() {
+    public UMLGeneralizationChildListModel(Object target) {
         super("child");
+        setTarget(target);
     }
 
     /*

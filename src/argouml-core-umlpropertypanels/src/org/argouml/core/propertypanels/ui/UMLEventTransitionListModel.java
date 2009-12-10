@@ -37,8 +37,10 @@ class UMLEventTransitionListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLGuardTransitionListModel.
      */
-    public UMLEventTransitionListModel() {
+    public UMLEventTransitionListModel(
+            final Object modelElement) {
         super("transition");
+        setTarget(modelElement);
     }
 
     /*

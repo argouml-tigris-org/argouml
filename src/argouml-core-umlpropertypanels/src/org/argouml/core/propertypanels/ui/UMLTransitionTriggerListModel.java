@@ -39,8 +39,9 @@ class UMLTransitionTriggerListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLTransitionTriggerListModel.
      */
-    public UMLTransitionTriggerListModel() {
+    public UMLTransitionTriggerListModel(Object modelElement) {
         super("trigger");
+        setTarget(modelElement);
     }
 
     /*

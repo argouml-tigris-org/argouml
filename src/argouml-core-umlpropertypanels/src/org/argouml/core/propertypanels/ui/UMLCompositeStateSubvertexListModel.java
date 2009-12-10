@@ -36,8 +36,9 @@ class UMLCompositeStateSubvertexListModel
     /**
      * Constructor for UMLStateMachineTransitionListModel.
      */
-    public UMLCompositeStateSubvertexListModel() {
+    public UMLCompositeStateSubvertexListModel(final Object modelElement) {
         super("subvertex");
+        setTarget(modelElement);
     }
 
     /*

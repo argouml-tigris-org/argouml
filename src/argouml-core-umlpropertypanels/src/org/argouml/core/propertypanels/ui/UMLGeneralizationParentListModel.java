@@ -34,8 +34,9 @@ class UMLGeneralizationParentListModel
     /**
      * Constructor.
      */
-    public UMLGeneralizationParentListModel() {
+    public UMLGeneralizationParentListModel(Object target) {
         super("parent");
+        setTarget(target);
     }
 
      /*

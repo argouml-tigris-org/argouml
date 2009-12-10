@@ -39,8 +39,9 @@ class UMLNamespaceOwnedElementListModel
     /**
      * Constructor for UMLNamespaceOwnedElementListModel.
      */
-    public UMLNamespaceOwnedElementListModel() {
+    public UMLNamespaceOwnedElementListModel(Object modelElement) {
         super("ownedElement");
+        setTarget(modelElement);
     }
 
     /*

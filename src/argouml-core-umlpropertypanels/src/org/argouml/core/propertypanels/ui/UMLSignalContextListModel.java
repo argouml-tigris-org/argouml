@@ -38,10 +38,12 @@ class UMLSignalContextListModel extends UMLModelElementListModel {
     /**
      * The constructor.
      */
-    public UMLSignalContextListModel(Object metaType) {
-        super("context", metaType,
+    public UMLSignalContextListModel(Object modelElement) {
+        super("context",
+                modelElement.getClass(),
             new ActionAddContextSignal(), 
             new ActionRemoveContextSignal());
+        setTarget(modelElement);
     }
 
     /*

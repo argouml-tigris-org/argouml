@@ -38,8 +38,9 @@ class UMLClassifierAssociationEndListModel
     /**
      * Constructor for UMLClassifierAssociationEndListModel.
      */
-    public UMLClassifierAssociationEndListModel() {
+    public UMLClassifierAssociationEndListModel(Object modelElement) {
         super("association", Model.getMetaTypes().getAssociation());
+        setTarget(modelElement);
     }
 
     /*

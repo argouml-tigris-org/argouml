@@ -41,8 +41,9 @@ class UMLOperationMethodsListModel
     /**
      * The constructor.
      */
-    public UMLOperationMethodsListModel() {
+    public UMLOperationMethodsListModel(Object modelElement) {
         super("method", true, false);
+        setTarget(modelElement);
     }
 
     /*

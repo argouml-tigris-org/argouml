@@ -37,8 +37,10 @@ class UMLStateMachineSubmachineStateListModel
     /**
      * Constructor for UMLStateMachineSubmachineStateListModel.
      */
-    public UMLStateMachineSubmachineStateListModel() {
+    public UMLStateMachineSubmachineStateListModel(
+            final Object modelElement) {
         super("submachineState");
+        setTarget(modelElement);
     }
 
     /*

@@ -46,8 +46,9 @@ class UMLEnumerationLiteralsListModel
     /**
      * Constructor for UMLClassifierStructuralFeatureListModel.
      */
-    public UMLEnumerationLiteralsListModel() {
+    public UMLEnumerationLiteralsListModel(Object modelElement) {
         super("literal");
+        setTarget(modelElement);
     }
 
     /*

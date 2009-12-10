@@ -40,8 +40,9 @@ class UMLStateVertexOutgoingListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateVertexOutgoingListModel.
      */
-    public UMLStateVertexOutgoingListModel() {
+    public UMLStateVertexOutgoingListModel(final Object modelElement) {
         super("outgoing");
+        setTarget(modelElement);
     }
 
     /*

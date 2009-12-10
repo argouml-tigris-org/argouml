@@ -36,8 +36,9 @@ class UMLStateExitListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateExitListModel.
      */
-    public UMLStateExitListModel() {
+    public UMLStateExitListModel(final Object modelElement) {
         super("exit");
+        setTarget(modelElement);
     }
 
     /*

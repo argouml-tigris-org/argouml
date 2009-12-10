@@ -36,14 +36,15 @@ class UMLOFSStateListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLOFSStateListModel.
      */
-    public UMLOFSStateListModel(Object metaType) {
+    public UMLOFSStateListModel(Object modelElement) {
         /* TODO: This needs work...
          * We also need to listen to addition/removal
          * of states to/from a ClassifierInState.
          */
-        super("type", metaType,
+        super("type", modelElement.getClass(),
             new ActionAddOFSState(),
             new ActionRemoveOFSState());
+        setTarget(modelElement);
     }
 
     /*

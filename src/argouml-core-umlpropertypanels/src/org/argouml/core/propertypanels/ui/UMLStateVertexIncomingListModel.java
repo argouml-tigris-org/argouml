@@ -40,8 +40,9 @@ class UMLStateVertexIncomingListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateVertexIncomingListModel.
      */
-    public UMLStateVertexIncomingListModel() {
+    public UMLStateVertexIncomingListModel(final Object modelElement) {
         super("incoming");
+        setTarget(modelElement);
     }
 
     /*

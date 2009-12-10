@@ -37,8 +37,9 @@ class UMLExtendedElementsListModel
     /**
      * Constructor for UMLExtendedElementsListModel.
      */
-    public UMLExtendedElementsListModel() {
+    public UMLExtendedElementsListModel(Object modelElement) {
         super("extendedElement", true, false);
+        setTarget(modelElement);
     }
     
     /*

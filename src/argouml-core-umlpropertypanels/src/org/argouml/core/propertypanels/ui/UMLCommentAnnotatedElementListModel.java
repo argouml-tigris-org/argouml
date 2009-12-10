@@ -39,8 +39,9 @@ class UMLCommentAnnotatedElementListModel
     /**
      * Constructor for UMLCommentAnnotatedElementListModel.
      */
-    public UMLCommentAnnotatedElementListModel() {
+    public UMLCommentAnnotatedElementListModel(Object modelElement) {
         super("annotatedElement");
+        setTarget(modelElement);
     }
 
     /*

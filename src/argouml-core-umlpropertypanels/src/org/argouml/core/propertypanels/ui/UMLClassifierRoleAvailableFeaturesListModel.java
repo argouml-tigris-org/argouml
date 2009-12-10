@@ -48,8 +48,9 @@ class UMLClassifierRoleAvailableFeaturesListModel
     /**
      * Constructor for UMLClassifierRoleAvailableFeaturesListModel.
      */
-    public UMLClassifierRoleAvailableFeaturesListModel() {
+    public UMLClassifierRoleAvailableFeaturesListModel(final Object modelElement) {
         super();
+        setTarget(modelElement);
     }
 
     /*

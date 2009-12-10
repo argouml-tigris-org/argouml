@@ -41,8 +41,9 @@ class UMLComponentResidentListModel
     /**
      * Constructor.
      */
-    public UMLComponentResidentListModel() {
+    public UMLComponentResidentListModel(final Object modelElement) {
         super("resident");
+        setTarget(modelElement);
     }
 
     /*

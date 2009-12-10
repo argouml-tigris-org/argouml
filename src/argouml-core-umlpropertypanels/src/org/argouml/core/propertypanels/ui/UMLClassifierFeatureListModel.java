@@ -41,8 +41,9 @@ class UMLClassifierFeatureListModel
     /**
      * Constructor for UMLClassifierFeatureListModel.
      */
-    public UMLClassifierFeatureListModel() {
+    public UMLClassifierFeatureListModel(Object modelElement) {
         super("feature", true, false);
+        setTarget(modelElement);
     }
 
     /*

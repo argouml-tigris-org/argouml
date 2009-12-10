@@ -38,11 +38,12 @@ class UMLInstanceSenderStimulusListModel
     /**
      * Constructor.
      */
-    public UMLInstanceSenderStimulusListModel() {
+    public UMLInstanceSenderStimulusListModel(Object modelElement) {
         // TODO: Not sure this is the right event name.  It was "stimuli3"
         // which was left over from UML 1.3 and definitely won't work - tfm
         // 20061108
         super("stimulus");
+        setTarget(modelElement);
     }
 
     /*

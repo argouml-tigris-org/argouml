@@ -37,8 +37,9 @@ class UMLGeneralizableElementGeneralizationListModel
     /**
      * Constructor for UMLGeneralizableElementGeneralizationListModel.
      */
-    public UMLGeneralizableElementGeneralizationListModel() {
+    public UMLGeneralizableElementGeneralizationListModel(Object modelElement) {
         super("generalization", Model.getMetaTypes().getGeneralization());
+        setTarget(modelElement);
     }
 
     /*

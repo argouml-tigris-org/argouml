@@ -41,8 +41,9 @@ class UMLClassAttributeListModel
     /**
      * Constructor for UMLClassifierStructuralFeatureListModel.
      */
-    public UMLClassAttributeListModel() {
+    public UMLClassAttributeListModel(Object modelElement) {
         super("feature", true, false, Model.getMetaTypes().getAttribute());
+        setTarget(modelElement);
     }
 
     /*

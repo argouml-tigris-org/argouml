@@ -39,8 +39,10 @@ class UMLInteractionMessagesListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLInteractionMessagesListModel.
      */
-    public UMLInteractionMessagesListModel() {
+    public UMLInteractionMessagesListModel(
+            final Object modelElement) {
         super("message");
+        setTarget(modelElement);
     }
 
     /*

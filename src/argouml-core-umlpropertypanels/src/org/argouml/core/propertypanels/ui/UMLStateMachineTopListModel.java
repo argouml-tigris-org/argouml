@@ -36,8 +36,10 @@ class UMLStateMachineTopListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateMachineTopListModel.
      */
-    public UMLStateMachineTopListModel() {
+    public UMLStateMachineTopListModel(
+            final Object modelElement) {
         super("top");
+        setTarget(modelElement);
     }
 
     /*

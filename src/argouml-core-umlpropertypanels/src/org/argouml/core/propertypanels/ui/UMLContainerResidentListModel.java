@@ -40,8 +40,10 @@ class UMLContainerResidentListModel
     /**
      * Constructor.
      */
-    public UMLContainerResidentListModel() {
+    public UMLContainerResidentListModel(
+            final Object modelElement) {
         super("resident");
+        setTarget(modelElement);
     }
 
     /*

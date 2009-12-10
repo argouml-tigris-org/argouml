@@ -36,8 +36,9 @@ class UMLStateVertexContainerListModel
     /**
      * Constructor for UMLStateVertexIncomingListModel.
      */
-    public UMLStateVertexContainerListModel() {
+    public UMLStateVertexContainerListModel(Object modelElement) {
         super("container");
+        setTarget(modelElement);
     }
 
     /*

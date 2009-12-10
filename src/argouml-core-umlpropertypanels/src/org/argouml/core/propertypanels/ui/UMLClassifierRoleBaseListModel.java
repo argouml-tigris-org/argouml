@@ -38,10 +38,11 @@ class UMLClassifierRoleBaseListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLClassifierRoleBaseListModel.
      */
-    public UMLClassifierRoleBaseListModel(Object metaType) {
-        super("base", metaType,
+    public UMLClassifierRoleBaseListModel(final Object modelElement) {
+        super("base", modelElement.getClass(),
             ActionAddClassifierRoleBase.SINGLETON,
             ActionRemoveClassifierRoleBase.getInstance());
+        setTarget(modelElement);
     }
 
     /*

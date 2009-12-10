@@ -36,8 +36,10 @@ class UMLStateDoActivityListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateDoActivityListModel.
      */
-    public UMLStateDoActivityListModel() {
+    public UMLStateDoActivityListModel(
+            final Object modelElement) {
         super("doActivity");
+        setTarget(modelElement);
     }
 
     /*

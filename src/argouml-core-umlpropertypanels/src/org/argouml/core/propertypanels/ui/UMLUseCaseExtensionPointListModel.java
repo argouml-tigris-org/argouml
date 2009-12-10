@@ -48,10 +48,12 @@ class UMLUseCaseExtensionPointListModel
     /**
      * Constructor for UMLUseCaseExtensionPointListModel.
      */
-    public UMLUseCaseExtensionPointListModel() {
+    public UMLUseCaseExtensionPointListModel(
+            final Object modelElement) {
         super("extensionPoint", 
                 Model.getMetaTypes().getExtensionPoint(),
                 ActionNewUseCaseExtensionPoint.SINGLETON);
+        setTarget(modelElement);
     }
 
     /*

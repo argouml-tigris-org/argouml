@@ -36,8 +36,9 @@ class UMLUseCaseIncludeListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLUseCaseIncludeListModel.
      */
-    public UMLUseCaseIncludeListModel() {
+    public UMLUseCaseIncludeListModel(final Object modelElement) {
         super("include");
+        setTarget(modelElement);
     }
 
     /*

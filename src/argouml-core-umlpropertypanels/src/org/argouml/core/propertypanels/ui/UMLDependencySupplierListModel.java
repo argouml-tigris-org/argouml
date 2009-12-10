@@ -37,8 +37,9 @@ class UMLDependencySupplierListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLDependencySupplierListModel.
      */
-    public UMLDependencySupplierListModel() {
+    public UMLDependencySupplierListModel(Object modelElement) {
         super("supplier");
+        setTarget(modelElement);
     }
 
     /*

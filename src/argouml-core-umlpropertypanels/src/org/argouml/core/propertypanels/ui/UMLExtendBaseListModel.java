@@ -36,10 +36,11 @@ class UMLExtendBaseListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLExtendBaseComboBoxModel.
      */
-    public UMLExtendBaseListModel() {
+    public UMLExtendBaseListModel(Object modelElement) {
         super("base");
         Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
+        setTarget(modelElement);
     }
 
     /*

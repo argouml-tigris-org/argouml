@@ -37,15 +37,17 @@ class UMLSignalReceptionListModel extends UMLModelElementListModel {
     /**
      * Construct a list model showing the receptions of a signal.
      */
-    public UMLSignalReceptionListModel(Object metaType) {
+    public UMLSignalReceptionListModel(Object modelElement) {
         /*
          * The event to listen to is "reception", so that model updates
          * get shown in the list. Reproduce this by adding a new reception,
          * and see the result displayed in the list.
          */
-        super("reception", metaType,
+        super("reception",
+                modelElement.getClass(),
             new ActionAddReceptionSignal(), 
             new ActionRemoveReceptionSignal());
+        setTarget(modelElement);
     }
 
     /*

@@ -40,8 +40,9 @@ class UMLTransitionEffectListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateMachineTopListModel.
      */
-    public UMLTransitionEffectListModel() {
+    public UMLTransitionEffectListModel(Object modelElement) {
         super("effect");
+        setTarget(modelElement);
     }
 
     /*

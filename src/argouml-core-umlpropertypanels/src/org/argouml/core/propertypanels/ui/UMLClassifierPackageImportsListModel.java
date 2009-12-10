@@ -38,8 +38,9 @@ class UMLClassifierPackageImportsListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLClassifierRoleBaseListModel.
      */
-    public UMLClassifierPackageImportsListModel() {
+    public UMLClassifierPackageImportsListModel(Object modelElement) {
         super("elementImport"); // This is the right event.
+        setTarget(modelElement);
     }
 
     /*

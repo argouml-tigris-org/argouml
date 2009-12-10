@@ -40,8 +40,9 @@ class UMLAssociationEndQualifiersListModel
     /**
      * Constructor for UMLAssociationEndQualifiersListModel.
      */
-    public UMLAssociationEndQualifiersListModel() {
+    public UMLAssociationEndQualifiersListModel(Object modelElement) {
         super("qualifier");
+        setTarget(modelElement);
     }
 
      /*

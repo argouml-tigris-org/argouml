@@ -35,8 +35,10 @@ class UMLNodeDeployedComponentListModel extends UMLModelElementListModel {
     /**
      * Construct a list model for the deployed components of a Node.
      */
-    public UMLNodeDeployedComponentListModel() {
+    public UMLNodeDeployedComponentListModel(
+            final Object modelElement) {
         super("deployedComponent");
+        setTarget(modelElement);
     }
     
     /*

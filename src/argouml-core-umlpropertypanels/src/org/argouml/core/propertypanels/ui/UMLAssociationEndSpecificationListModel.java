@@ -39,9 +39,11 @@ class UMLAssociationEndSpecificationListModel
     /**
      * Constructor for UMLAssociationEndSpecificationListModel.
      */
-    public UMLAssociationEndSpecificationListModel(Object metaType) {
-        super("specification", metaType,
+    public UMLAssociationEndSpecificationListModel(Object modelElement) {
+        super("specification",
+                modelElement.getClass(),
                 ActionAddAssociationSpecification.getInstance());
+        setTarget(modelElement);
     }
 
     /*

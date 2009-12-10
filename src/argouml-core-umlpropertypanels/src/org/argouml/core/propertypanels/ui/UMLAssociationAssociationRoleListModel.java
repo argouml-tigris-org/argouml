@@ -38,8 +38,9 @@ class UMLAssociationAssociationRoleListModel
     /**
      * Constructor for UMLAssociationAssociationRoleListModel.
      */
-    public UMLAssociationAssociationRoleListModel() {
+    public UMLAssociationAssociationRoleListModel(final Object modelElement) {
         super("associationRole");
+        setTarget(modelElement);
     }
 
      /*

@@ -39,8 +39,9 @@ class UMLActionSequenceActionListModel
     /**
      * Constructor.
      */
-    public UMLActionSequenceActionListModel() {
+    public UMLActionSequenceActionListModel(final Object modelElement) {
         super("action");
+        setTarget(modelElement);
     }
 
     /*

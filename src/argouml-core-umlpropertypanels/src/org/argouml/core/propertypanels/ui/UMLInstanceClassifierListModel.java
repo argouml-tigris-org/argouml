@@ -37,10 +37,11 @@ class UMLInstanceClassifierListModel
 
     /** build default listmodel with unlimited size and
      * allowed elements CLASSIFIER */
-    public UMLInstanceClassifierListModel(Object metaType) {
-        super("classifier", metaType,
+    public UMLInstanceClassifierListModel(final Object modelElement) {
+        super("classifier", modelElement.getClass(),
             new ActionAddInstanceClassifier(
                     Model.getMetaTypes().getClassifier()));
+        setTarget(modelElement);
     }
 
     /*

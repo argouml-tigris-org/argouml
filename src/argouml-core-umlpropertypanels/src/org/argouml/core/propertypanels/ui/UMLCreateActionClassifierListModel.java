@@ -36,9 +36,10 @@ class UMLCreateActionClassifierListModel extends
     /**
      * Constructor for ClassifierCreateActionListModel.
      */
-    public UMLCreateActionClassifierListModel(Object metaType) {
-        super("instantiation", metaType,
+    public UMLCreateActionClassifierListModel(Object modelElement) {
+        super("instantiation", modelElement.getClass(),
             new ActionAddCreateActionInstantiation());
+        setTarget(modelElement);
     }
 
     /*

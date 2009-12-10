@@ -38,8 +38,10 @@ class UMLCollaborationConstrainingElementListModel
     /**
      * Constructor for UMLCollaborationConstrainingElementListModel.
      */
-    public UMLCollaborationConstrainingElementListModel() {
+    public UMLCollaborationConstrainingElementListModel(
+            final Object modelElement) {
         super("constrainingElement");
+        setTarget(modelElement);
     }
 
     /*
