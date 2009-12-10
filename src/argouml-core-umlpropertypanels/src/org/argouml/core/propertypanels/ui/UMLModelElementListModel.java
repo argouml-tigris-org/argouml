@@ -476,35 +476,16 @@ abstract class UMLModelElementListModel
      * 
      * @param theNewTarget the new target
      */
-    protected void setTarget(Object theNewTarget) {
+    protected void setTarget(final Object theNewTarget) {
         assert (getTarget() == null);
-        assert (!(getTarget() instanceof Fig));
+        assert (Model.getFacade().isAUMLElement(theNewTarget));
         
-        theNewTarget = theNewTarget instanceof Fig
-            ? ((Fig) theNewTarget).getOwner() : theNewTarget;
-        if (Model.getFacade().isAUMLElement(theNewTarget)
-                || theNewTarget instanceof Diagram) {
-            if (Model.getFacade().isAUMLElement(listTarget)) {
-                Model.getPump().removeModelEventListener(this, listTarget,
-                        eventName);
-                // Allow listening to other elements:
-                removeOtherModelEventListeners(listTarget);
-            }
+        listTarget = theNewTarget;
+        Model.getPump().addModelEventListener(this, listTarget, eventName);
+        // Allow listening to other elements:
+        addOtherModelEventListeners(listTarget);
 
-            if (Model.getFacade().isAUMLElement(theNewTarget)) {
-                listTarget = theNewTarget;
-                Model.getPump().addModelEventListener(this, listTarget,
-                        eventName);
-                // Allow listening to other elements:
-                addOtherModelEventListeners(listTarget);
-
-                rebuildModelList();
-
-            } else {
-                listTarget = null;
-                removeAllElements();
-            }
-        }
+        rebuildModelList();
     }
 
     /**
