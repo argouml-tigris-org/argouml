@@ -3314,13 +3314,6 @@
   </panel>
   <panel name="AssociationRole">
     <text name="name" type="Name" />
-    <optionbox name="visibility" type="VisibilityKind" />
-    <checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-      <checkbox name="isRoot" type="Boolean" />
-      <checkbox name="isLeaf" type="Boolean" />
-      <checkbox name="isAbstract" type="Boolean" />
-    </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
