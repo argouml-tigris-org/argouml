@@ -3352,8 +3352,9 @@
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isNavigable" type="Boolean" />
+      <checkbox name="ordering" type="OrderingKind" />
+      <checkbox name="ownerScope" type="ScopeKind" />
     </checkgroup>
-    <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
