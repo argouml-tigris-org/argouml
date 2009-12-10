@@ -689,6 +689,7 @@
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isQuery" type="Boolean" />
+      <checkbox name="ownerScope" type="ScopeKind" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" />
