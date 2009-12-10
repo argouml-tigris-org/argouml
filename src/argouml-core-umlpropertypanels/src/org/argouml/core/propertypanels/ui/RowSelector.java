@@ -29,8 +29,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -46,6 +44,7 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
@@ -462,11 +461,22 @@ class RowSelector extends JPanel
     @Override
     public void intervalAdded(ListDataEvent e) {
         if (e.getIndex0() == e.getIndex1()
-                && getModel().getElementAt(e.getIndex0()) == movedModelElement) {
-            getList().setSelectedValue(movedModelElement, true);
-            movedModelElement = null;
+                && getModel().getElementAt(e.getIndex0()) == movedModelElement.getElement()) {
+            LOG.info("Setting attribute to selected");
+            final Object element = movedModelElement.getElement();
+            movedModelElement.setElement(null);
+            getList().setSelectedValue(element, true);
+            // Pushing this to the end of the AWT thread seems to be the only
+            // way to get this to update correctly
+            Runnable doWorkRunnable = new Runnable() {
+                public void run() {
+                    getList().setSelectedValue(element, true);
+                }
+            };
+            SwingUtilities.invokeLater(doWorkRunnable);
         }
     }
+    
     @Override
     public void intervalRemoved(ListDataEvent e) {
     }

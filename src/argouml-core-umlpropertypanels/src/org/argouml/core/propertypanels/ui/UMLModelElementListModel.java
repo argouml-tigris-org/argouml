@@ -35,10 +35,8 @@ import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.ListModel;
 import javax.swing.MenuElement;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ListDataListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
@@ -50,8 +48,6 @@ import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.uml.ui.AbstractActionAddModelElement2;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBar;
 
 /**
@@ -310,16 +306,20 @@ abstract class UMLModelElementListModel
         Runnable doWorkRunnable = new Runnable() {
             public void run() {
                 try {
-                    if (e instanceof AttributeChangeEvent) {
-                        try {
-                            if (isValidEvent(e)) {
-                                LOG.info("Rebuilding model");
-                                rebuildModelList();
-                            }
-                        } catch (InvalidElementException iee) {
-                            return;
-                        }
-                    } else
+// The original controls on property panels regularly rebuild themselves
+// from scratch rather than add and remove elements
+// For now we just try and add/remove but we can reinstate this if required.
+//                    
+//                    if (e instanceof AttributeChangeEvent) {
+//                        try {
+//                            if (isValidEvent(e)) {
+//                                LOG.info("Rebuilding model");
+//                                rebuildModelList();
+//                            }
+//                        } catch (InvalidElementException iee) {
+//                            return;
+//                        }
+//                    } else
                     if (e instanceof AddAssociationEvent) {
                         if (isValidEvent(e)) {
                             Object o = getChangedElement(e);
@@ -334,22 +334,25 @@ abstract class UMLModelElementListModel
                             } else {
                                 /* TODO: If this is an ordered list, then you have to 
                                     add in the right location! */
-                                if (!lm.contains(o)) {
+                                if (!contains(o)) {
                                     if (lm instanceof Ordered) {
                                         Ordered ordered = (Ordered) lm;
                                         Collection elements = ordered.getModelElements();
                                         if (elements instanceof List) {
-                                            LOG.info("Element inserted " + instance + " " + o);
                                             final int posn = ((List) elements).indexOf(o);
+                                            // We tested this above - do we need to test again?
                                             add(posn, o);
                                         } else {
-                                            LOG.info("Element addedx" + instance);
-                                            addElement(o);
+                                            int posn = 0;
+                                            for (Object element : elements) {
+                                                if (element == o) {
+                                                    break;
+                                                }
+                                                posn++;
+                                            }
+                                            add(posn, o);
                                         }
-                                        int posn = 1;
-                                        add(posn, o);
                                     } else {
-                                        LOG.info("Element addedy " + o);
                                         addElement(o);
                                     }
                                 }
@@ -372,7 +375,6 @@ abstract class UMLModelElementListModel
                             }
                         }
                         if (valid) {
-                            LOG.info("Remove is valid" + instance);
                             Object o = getChangedElement(e);
                             if (o instanceof Collection) {
                                 Iterator it = ((Collection) o).iterator();
@@ -381,11 +383,8 @@ abstract class UMLModelElementListModel
                                     removeElement(o3);
                                 }
                             } else {
-                                LOG.info("Removing" + instance + " " + o);
                                 removeElement(o);
                             }
-                        } else {
-                            LOG.info("Remove is not valid for " + instance + " " + getChangedElement(e));
                         }
                     }
                 } catch (InvalidElementException e) {
@@ -643,7 +642,7 @@ abstract class UMLModelElementListModel
      * @see javax.swing.AbstractListModel#fireContentsChanged(
      *          Object, int, int)
      */
-    protected void fireContentsChanged(Object source, int index0, int index1) {
+    protected final void fireContentsChanged(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel)
             super.fireContentsChanged(source, index0, index1);
     }
@@ -652,7 +651,7 @@ abstract class UMLModelElementListModel
      * @see javax.swing.AbstractListModel#fireIntervalAdded(
      *          Object, int, int)
      */
-    protected void fireIntervalAdded(Object source, int index0, int index1) {
+    protected final void fireIntervalAdded(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel)
             super.fireIntervalAdded(source, index0, index1);
     }
@@ -661,7 +660,7 @@ abstract class UMLModelElementListModel
      * @see javax.swing.AbstractListModel#fireIntervalRemoved(
      *          Object, int, int)
      */
-    protected void fireIntervalRemoved(Object source, int index0, int index1) {
+    protected final void fireIntervalRemoved(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel)
             super.fireIntervalRemoved(source, index0, index1);
     }
