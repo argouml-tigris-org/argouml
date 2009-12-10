@@ -46,6 +46,8 @@ import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.ListModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.TreeUI;
@@ -75,7 +77,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * @since 0.29.2
  */
 class RowSelector extends JPanel
-        implements MouseListener, ContainerListener {
+        implements MouseListener, ContainerListener, ListDataListener {
 
     /**
      * The logger
@@ -97,6 +99,9 @@ class RowSelector extends JPanel
      */
     private static Icon collapsedIcon;
 
+    /**
+     * The model element that is the target of this control
+     */
     private final Object target;
     
     static {
@@ -146,6 +151,16 @@ class RowSelector extends JPanel
      * The current expanded state
      */
     private boolean expanded = false;
+    
+    /**
+     * The model element that is being moved. This is used because move
+     * effectively removes the selected model element and then adds it in a
+     * new place.
+     * The problem to the user is that when added the selection is lost.
+     * By recording the model element being moved the add event can detected
+     * when the element is added and mark it as selected.
+     */
+    private Object movedModelElement;
 
     /**
      * The label that contains the +/- symbol to indicate
@@ -198,11 +213,13 @@ class RowSelector extends JPanel
      */
     public RowSelector(UMLModelElementListModel model, boolean expanded, boolean expandable) {
         super(new BorderLayout());
-
+        
         this.expandable = expandable;
 
         target = model.getTarget();
         Object metaType = model.getMetaType();
+
+        LOG.info("Creating list for " + target);
 
         LOG.info("model = " + model.getClass().getName());
         LOG.info("metatype = " + metaType);
@@ -291,6 +308,8 @@ class RowSelector extends JPanel
                 getList().addListSelectionListener(moveTopAction);
                 getList().addListSelectionListener(moveBottomAction);
             }
+            
+            getModel().addListDataListener(this);
 
             addContainerListener(this);
         }
@@ -399,6 +418,7 @@ class RowSelector extends JPanel
         }
         this.removeMouseListener(this);
         this.removeContainerListener(this);
+        getModel().removeListDataListener(this);
     }
 
 
@@ -439,6 +459,22 @@ class RowSelector extends JPanel
      */
     private ListModel getModel() {
         return (ListModel) scroll.getList().getModel();
+    }
+    
+
+    @Override
+    public void contentsChanged(ListDataEvent e) {
+    }
+    @Override
+    public void intervalAdded(ListDataEvent e) {
+        if (e.getIndex0() == e.getIndex1()
+                && getModel().getElementAt(e.getIndex0()) == movedModelElement) {
+            getList().setSelectedValue(movedModelElement, true);
+            movedModelElement = null;
+        }
+    }
+    @Override
+    public void intervalRemoved(ListDataEvent e) {
     }
 
     /**
@@ -493,9 +529,9 @@ class RowSelector extends JPanel
                 }
             }
 
-            Project p = ProjectManager.getManager().getCurrentProject();
-            Object[] targets = getList().getSelectedValues();
-            p.moveToTrash(Arrays.asList(targets));
+            final Project p = ProjectManager.getManager().getCurrentProject();
+            final Object[] selectedValues = getList().getSelectedValues();
+            p.moveToTrash(Arrays.asList(selectedValues));
         }
     }
 
@@ -533,7 +569,11 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            Model.getUmlHelper().move(target, getList().getSelectedValues()[0], UmlHelper.Direction.UP);
+            movedModelElement = getList().getSelectedValues()[0];
+            Model.getUmlHelper().move(
+                    target, 
+                    movedModelElement, 
+                    UmlHelper.Direction.UP);
         }
     }
 
@@ -573,7 +613,11 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            Model.getUmlHelper().move(target, getList().getSelectedValues()[0], UmlHelper.Direction.DOWN);
+            movedModelElement = getList().getSelectedValues()[0];
+            Model.getUmlHelper().move(
+                    target, 
+                    movedModelElement, 
+                    UmlHelper.Direction.DOWN);
         }
     }
 
@@ -612,7 +656,11 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            Model.getUmlHelper().move(target, getList().getSelectedValues()[0], UmlHelper.Direction.TOP);
+            movedModelElement = getList().getSelectedValues()[0];
+            Model.getUmlHelper().move(
+                    target, 
+                    movedModelElement, 
+                    UmlHelper.Direction.TOP);
         }
     }
 
@@ -652,7 +700,11 @@ class RowSelector extends JPanel
         @Override
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            Model.getUmlHelper().move(target, getList().getSelectedValues()[0], UmlHelper.Direction.BOTTOM);
+            movedModelElement = getList().getSelectedValues()[0];
+            Model.getUmlHelper().move(
+                    target,
+                    movedModelElement,
+                    UmlHelper.Direction.BOTTOM);
         }
     }
 }
