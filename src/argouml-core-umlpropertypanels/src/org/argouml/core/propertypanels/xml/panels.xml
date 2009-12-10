@@ -3315,35 +3315,26 @@
   <panel name="AssociationRole">
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
+    <combo name="base" type="Association" />
     <list name="clientDependency" type="Dependency" />
+    <list name="supplierDependency" type="ModelElement" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
     <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
-    <list name="generalization" type="Generalization" />
     <separator />
-    <list name="specialization" type="GeneralizableElement" />
     <list name="connection" type="AssociationEnd" />
-    <list name="link" type="Association" />
-    <list name="associationRole" type="Association" />
-    <attribute name="multiplicity" type="Multiplicity" />
-    <attribute name="base" type="Association" />
-    <attribute name="message" type="Message" />
+    <list name="message" type="Message" />
     <list name="conformingLink" type="Link" />
   </panel>
   <panel name="AssociationEndRole">
