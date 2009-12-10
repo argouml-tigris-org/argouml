@@ -245,7 +245,7 @@ class UmlHelperMDRImpl implements UmlHelper {
         } else if (direction == Direction.TOP) {
             posn = 0;
         } else if (direction == Direction.BOTTOM) {
-            posn = size;
+            posn = size - 1;
         } else {
             posn = 0;
         }
