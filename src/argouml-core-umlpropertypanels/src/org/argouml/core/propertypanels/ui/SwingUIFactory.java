@@ -49,6 +49,7 @@ import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.behavior.activity_graphs.ActionSetObjectFlowStateClassifier;
 import org.argouml.uml.ui.behavior.activity_graphs.UMLActionSynchCheckBox;
 import org.argouml.uml.ui.behavior.activity_graphs.UMLObjectFlowStateClassifierComboBoxModel;
+import org.argouml.uml.ui.behavior.collaborations.ActionSetAssociationRoleBase;
 import org.argouml.uml.ui.behavior.common_behavior.UMLActionAsynchronousCheckBox;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetContextStateMachine;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetStubStateReferenceState;
@@ -396,6 +397,20 @@ class SwingUIFactory {
                         ActionSetStructuralFeatureType.getInstance());
                 comp = combo;
             }
+        } else if ("base".equals(prop.getName())) {
+            if (Model.getFacade().isAAssociationRole(target)) {
+                final UMLComboBoxModel2 model = 
+                    new UMLAssociationRoleBaseComboBoxModel();
+                model.setTarget(target);
+                final JComboBox combo = new UMLSearchableComboBox(
+                        model,
+                        new ActionSetAssociationRoleBase(), true);
+                comp = new UMLComboBoxNavigator(Translator.localize(
+                        "label.association.navigate.tooltip"),
+                        combo);
+            } else {
+                //
+            }
         } else if ("powertype".equals(prop.getName())) {
             final UMLComboBoxModel2 model = 
                 new UMLGeneralizationPowertypeComboBoxModel();
@@ -540,16 +555,6 @@ class SwingUIFactory {
             addControl(panel, prop.getName(), tfield);
         }
     }
-    
-//    private void addControl(JPanel panel, String text, JComponent component) {
-//        if (text != null) {
-//            final JLabel label = new JLabel(text);
-//            label.setLabelFor(component);
-//            panel.add(label);
-//        }
-//        panel.add(component);
-//    }
-    
     
     private void addControl(JPanel panel, String text, JComponent component) {
         LabelledComponent lc = new LabelledComponent(text, component);
