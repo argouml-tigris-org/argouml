@@ -77,7 +77,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * @since 0.29.2
  */
 class RowSelector extends JPanel
-        implements MouseListener, ContainerListener, ListDataListener {
+        implements MouseListener, ListDataListener {
 
     /**
      * The logger
@@ -310,8 +310,6 @@ class RowSelector extends JPanel
             }
             
             getModel().addListDataListener(this);
-
-            addContainerListener(this);
         }
     }
 
@@ -400,14 +398,10 @@ class RowSelector extends JPanel
         }
     }
 
-    public void componentAdded(ContainerEvent arg0) {
-        LOG.info("The RowSelector is being added to a panel");
-    }
-
     /**
      * Remove all the listeners that were added in the constructor
      */
-    public void componentRemoved(ContainerEvent event) {
+    public void removeNotify() {
         LOG.info("The RowSelector is being removed from a panel");
         getList().removeListSelectionListener(deleteAction);
         if (moveUpAction != null) {
@@ -417,7 +411,6 @@ class RowSelector extends JPanel
             getList().removeListSelectionListener(moveBottomAction);
         }
         this.removeMouseListener(this);
-        this.removeContainerListener(this);
         getModel().removeListDataListener(this);
         ((UMLModelElementListModel) getModel()).removeModelEventListener();
     }
