@@ -105,37 +105,31 @@ class UMLClassifierRoleAvailableFeaturesListModel
      */
     protected void setTarget(Object target) {
         assert (getTarget() == null);
-        assert (!(getTarget() instanceof Fig));
+        assert (Model.getFacade().isAElement(target));
         
-        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (!Model.getFacade().isAModelElement(target))
-            // TODO: - isn't this an error condition? Should we not throw
-            // an exception or at least log.
-            return;
         
         setListTarget(target);
-        if (getTarget() != null) {
-            Collection bases = Model.getFacade().getBases(getTarget());
-            Iterator it = bases.iterator();
-            while (it.hasNext()) {
-                Object base = it.next();
-                Model.getPump().addModelEventListener(
-                    this,
-                    base,
-                    "feature");
-            }
-            // make sure we know it when a classifier is added as a base
+        
+        Collection bases = Model.getFacade().getBases(getTarget());
+        Iterator it = bases.iterator();
+        while (it.hasNext()) {
+            Object base = it.next();
             Model.getPump().addModelEventListener(
                 this,
-                getTarget(),
-                "base");
-            removeAllElements();
-            setBuildingModel(true);
-            buildModelList();
-            setBuildingModel(false);
-            if (getSize() > 0) {
-                fireIntervalAdded(this, 0, getSize() - 1);
-            }
+                base,
+                "feature");
+        }
+        // make sure we know it when a classifier is added as a base
+        Model.getPump().addModelEventListener(
+            this,
+            getTarget(),
+            "base");
+        removeAllElements();
+        setBuildingModel(true);
+        buildModelList();
+        setBuildingModel(false);
+        if (getSize() > 0) {
+            fireIntervalAdded(this, 0, getSize() - 1);
         }
     }
 
