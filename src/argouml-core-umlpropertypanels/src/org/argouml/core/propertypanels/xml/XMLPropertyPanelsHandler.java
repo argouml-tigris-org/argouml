@@ -38,33 +38,34 @@ class XMLPropertyPanelsHandler extends DefaultHandler {
     /**
      * The panel that will host the controls. 
      */
-    private final XMLPropertyPanelsData data;  
-    private XMLPropertyPanelsDataRecord current = null;
+    private final PanelMeta data;  
+    private PropertyMeta current = null;
     
     /**
      * Default constructor.
      * @param theData The XMLPropertyPanelsData that will 
      * host the info read.
      */
-    public XMLPropertyPanelsHandler(XMLPropertyPanelsData theData) {
+    public XMLPropertyPanelsHandler(PanelMeta theData) {
         this.data = theData;
     }
 
     public void startElement(String namespaceURI, String localName, 
             String qName, Attributes attr) throws SAXException { 
-        XMLPropertyPanelsDataRecord record = 
-            new XMLPropertyPanelsDataRecord(localName, attr.getValue("name"));
         
         if (isChild(localName)) {
+            CheckBoxMeta record = 
+                new CheckBoxMeta(localName, attr.getValue("name"));
             current.addCheckbox(record);
-        }
-        else if (hasChildren(localName)) {
-            current = record;
+        } else {
+            PropertyMeta record = 
+                new PropertyMeta(localName, attr.getValue("name"));
+            if (hasChildren(localName)) {
+                current = record;
+            }
             data.addProperty(record);
         }
-        else {
-            data.addProperty(record);
-        }
+        
     }
 
     private boolean isChild(String elementName) {

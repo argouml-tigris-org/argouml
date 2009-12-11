@@ -25,42 +25,57 @@
 package org.argouml.core.propertypanels.xml;
 
 import java.util.Collections;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /**
- * Entry of the XML that defines the property panels
+ * Contains the data read on the XML file.
  *
  * @author penyaskito
  */
-public class XMLPropertyPanelsDataRecord {
+public class PanelMeta  {
     
-    private String type;
-    private String name;
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = 
+        Logger.getLogger(PanelMeta.class);
+        
+    /**
+     * The panel name
+     */
+    private final String name;
     
-    private List<XMLPropertyPanelsDataRecord> children;
+    /**
+     * The info of the properties in the XML.
+     */
+    private final List<PropertyMeta> properties = new LinkedList<PropertyMeta>();
     
-    // TODO: this is a tree node, we must refine the tree structure
-    
-    public XMLPropertyPanelsDataRecord (String theType, String theName) {
-        this.type = theType;
-        this.name = theName;
-        children = new LinkedList<XMLPropertyPanelsDataRecord>();
-    }
-    
-    public String getType() {
-        return type;
-    }
+    /**
+     * The info of the panel in the XML.
+     */
+    private PropertyMeta panel;
 
+    
+    public PanelMeta(String name) {
+        this.name = name;
+    }
+    
+    public void addProperty(PropertyMeta record) {
+        properties.add(record);
+    }
+    
     public String getName() {
         return name;
-    }
+    }    
     
-    public List<XMLPropertyPanelsDataRecord> getCheckboxes() {
-        return Collections.unmodifiableList(children);
-    }
-    
-    public void addCheckbox(XMLPropertyPanelsDataRecord child) {
-        children.add(child);
+    public List<PropertyMeta> getProperties () {
+        return Collections.unmodifiableList(properties);
     }
 }
+

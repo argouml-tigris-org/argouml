@@ -32,8 +32,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
-import org.argouml.core.propertypanels.xml.XMLPropertyPanelsDataRecord;
+import org.argouml.core.propertypanels.xml.CheckBoxMeta;
+import org.argouml.core.propertypanels.xml.PanelMeta;
+import org.argouml.core.propertypanels.xml.PropertyMeta;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLCheckBox2;
@@ -105,11 +106,11 @@ class SwingUIFactory {
      * @see org.argouml.core.propertypanels.panel.UIFactory#createGUI(java.lang.Object)
      */
     public JPanel createGUI (Object target, JPanel panel) throws Exception {
-        XMLPropertyPanelsData data = 
+        PanelMeta data = 
             XMLPropPanelFactory.getInstance().getPropertyPanelsData(
                     Model.getMetaTypes().getName(target));
         
-        for (XMLPropertyPanelsDataRecord prop : data.getProperties()) {
+        for (PropertyMeta prop : data.getProperties()) {
             if ("text".equals(prop.getType())) {
                 buildTextboxPanel(panel, target, prop);
             } else if ("combo".equals(prop.getType())) {
@@ -134,7 +135,7 @@ class SwingUIFactory {
     private void buildTextArea(
             final JPanel panel,
             final Object target, 
-            final XMLPropertyPanelsDataRecord prop) {
+            final PropertyMeta prop) {
         
         // TODO: Why do we need this as well as control? Why is it
         // instantiated when its not always needed.
@@ -213,7 +214,7 @@ class SwingUIFactory {
     }
 
     private void buildSingleRow(JPanel panel, Object target,
-            XMLPropertyPanelsDataRecord prop) {
+            PropertyMeta prop) {
         
         final SingleListFactory factory = new SingleListFactory();
         final JComponent pane =
@@ -226,7 +227,7 @@ class SwingUIFactory {
 
     private void buildList(
             final JPanel panel, Object target, 
-            final XMLPropertyPanelsDataRecord prop) {
+            final PropertyMeta prop) {
         
         final ListFactory factory = new ListFactory();
         final JComponent list =
@@ -244,7 +245,7 @@ class SwingUIFactory {
      * @return a radio button panel with the options 
      */
     private void buildOptionBox(JPanel panel, Object target,
-            XMLPropertyPanelsDataRecord prop) {
+            PropertyMeta prop) {
         
         UMLRadioButtonPanel control = null;
         
@@ -303,21 +304,23 @@ class SwingUIFactory {
      * @return a panel that contains the checkboxes 
      */
     private void buildCheckGroup(JPanel panel, Object target,
-            XMLPropertyPanelsDataRecord prop) {
+            PropertyMeta prop) {
         JPanel p = new JPanel(new GridLayout2());
         TitledBorder border = new TitledBorder(prop.getName());        
         p.setBorder(border);
         
         if ("modifiers".equals(prop.getName())) {  
-            for (XMLPropertyPanelsDataRecord data : prop.getCheckboxes()) {
+            for (CheckBoxMeta data : prop.getCheckboxes()) {
                 buildCheckBox(p, target, data);
             }                            
         }
         addControl(panel, null, p);
     }
 
-    private void buildCheckBox(JPanel panel, Object target,
-            XMLPropertyPanelsDataRecord p) {
+    private void buildCheckBox(
+            final JPanel panel,
+            final Object target,
+            final CheckBoxMeta p) {
         UMLCheckBox2 checkbox = null;
         
         if ("isAbstract".equals(p.getName())) {
@@ -362,7 +365,7 @@ class SwingUIFactory {
     private void buildComboPanel(
             final JPanel panel,
             final Object target,
-            final XMLPropertyPanelsDataRecord prop) {        
+            final PropertyMeta prop) {        
         JComponent comp = null;
         if ("namespace".equals(prop.getName())) {
             final UMLComboBoxModel2 model =
@@ -532,7 +535,7 @@ class SwingUIFactory {
      *        of the options.
      */
     private void buildTextboxPanel(JPanel panel, Object target,
-            XMLPropertyPanelsDataRecord prop) {
+            PropertyMeta prop) {
        
         JTextField tfield = null;
         UMLPlainTextDocument document = null;

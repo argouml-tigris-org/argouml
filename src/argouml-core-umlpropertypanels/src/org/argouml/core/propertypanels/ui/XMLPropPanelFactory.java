@@ -31,7 +31,7 @@ import java.util.Hashtable;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.argouml.core.propertypanels.xml.XMLPropertyPanelsData;
+import org.argouml.core.propertypanels.xml.PanelMeta;
 import org.argouml.core.propertypanels.xml.XmlSinglePanelHandler;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -49,7 +49,7 @@ public class XMLPropPanelFactory implements PropPanelFactory {
     private static final Logger LOG =
         Logger.getLogger(XMLPropPanelFactory.class);
     
-    private final Dictionary<String, XMLPropertyPanelsData> cache;
+    private final Dictionary<String, PanelMeta> cache;
     
     private static XMLPropPanelFactory instance;
     
@@ -62,7 +62,7 @@ public class XMLPropPanelFactory implements PropPanelFactory {
     }
     
     private XMLPropPanelFactory() throws Exception {
-        cache = new Hashtable<String, XMLPropertyPanelsData>();
+        cache = new Hashtable<String, PanelMeta>();
         parseXML();
     }
     
@@ -115,7 +115,7 @@ public class XMLPropPanelFactory implements PropPanelFactory {
         }
     }
     
-    public XMLPropertyPanelsData getPropertyPanelsData (String forType) {
+    public PanelMeta getPropertyPanelsData (String forType) {
         return cache.get(forType);
     }
     

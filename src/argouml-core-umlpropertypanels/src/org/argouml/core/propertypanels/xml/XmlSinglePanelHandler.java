@@ -40,14 +40,14 @@ public class XmlSinglePanelHandler extends DefaultHandler {
     /**
      * The panel that will host the controls. 
      */
-    private final Dictionary<String, XMLPropertyPanelsData> data;
+    private final Dictionary<String, PanelMeta> data;
     
     /**
      * the panel that we are traversing
      */
-    private XMLPropertyPanelsData currentPanel = null;
+    private PanelMeta currentPanel = null;
     
-    private XMLPropertyPanelsDataRecord current = null;
+    private PropertyMeta current = null;
     
     /**
      * Default constructor.
@@ -55,7 +55,7 @@ public class XmlSinglePanelHandler extends DefaultHandler {
      * host the info read.
      */
     public XmlSinglePanelHandler(
-            Dictionary<String, XMLPropertyPanelsData> theData) {
+            Dictionary<String, PanelMeta> theData) {
         this.data = theData;
     }
 
@@ -67,24 +67,20 @@ public class XmlSinglePanelHandler extends DefaultHandler {
         }
         if ("panel".equals(localName)) { 
             if (this.currentPanel == null) {                
-                currentPanel = new XMLPropertyPanelsData();
-                currentPanel.addPanel( 
-                        new XMLPropertyPanelsDataRecord(localName, 
-                                attr.getValue("name")));
+                currentPanel = new PanelMeta(attr.getValue("name"));
             }
-        }
-        else {
-            XMLPropertyPanelsDataRecord record = 
-                new XMLPropertyPanelsDataRecord(localName, 
-                        attr.getValue("name"));            
+        } else {
             if (isChild(localName)) {
+                CheckBoxMeta record = 
+                    new CheckBoxMeta(localName, attr.getValue("name"));            
                 current.addCheckbox(record);
-            }
-            else if (hasChildren(localName)) {
-                current = record;
-                currentPanel.addProperty(record);
-            }
-            else {
+            } else {
+                PropertyMeta record = 
+                    new PropertyMeta(localName, 
+                            attr.getValue("name"));
+                if (hasChildren(localName)) {
+                    current = record;
+                }
                 currentPanel.addProperty(record);
             }
         }
@@ -94,7 +90,7 @@ public class XmlSinglePanelHandler extends DefaultHandler {
     public void endElement(String namespaceURI, String localName, 
             String qName) throws SAXException {
         if ("panel".equals(localName)) { 
-            data.put(currentPanel.getTitle(), currentPanel);
+            data.put(currentPanel.getName(), currentPanel);
             currentPanel = null;
         }
     }
