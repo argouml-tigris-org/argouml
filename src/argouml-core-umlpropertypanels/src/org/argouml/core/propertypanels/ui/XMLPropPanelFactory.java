@@ -33,8 +33,8 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.argouml.core.propertypanels.xml.PanelMeta;
-import org.argouml.core.propertypanels.xml.PanelMetaCache;
+import org.argouml.core.propertypanels.meta.PanelMeta;
+import org.argouml.core.propertypanels.meta.PanelMetaCache;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.PropPanelFactory;

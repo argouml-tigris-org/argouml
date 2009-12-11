@@ -22,60 +22,60 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.core.propertypanels.xml;
+package org.argouml.core.propertypanels.meta;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import java.util.Collections;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
 
 /**
- * This handles the XML events by SAX Api for building 
- * the property panels.
+ * Contains the data read on the XML file.
+ *
  * @author penyaskito
  */
-class XMLPropertyPanelsHandler extends DefaultHandler {
-
-    /**
-     * The panel that will host the controls. 
-     */
-    private final PanelMeta data;  
-    private PropertyMeta current = null;
+public class PanelMeta  {
     
     /**
-     * Default constructor.
-     * @param theData The XMLPropertyPanelsData that will 
-     * host the info read.
+     * Logger.
      */
-    public XMLPropertyPanelsHandler(PanelMeta theData) {
-        this.data = theData;
-    }
-
-    public void startElement(String namespaceURI, String localName, 
-            String qName, Attributes attr) throws SAXException { 
+    private static final Logger LOG = 
+        Logger.getLogger(PanelMeta.class);
         
-        if (isChild(localName)) {
-            CheckBoxMeta record = 
-                new CheckBoxMeta(localName, attr.getValue("name"));
-            current.addCheckbox(record);
-        } else {
-            PropertyMeta record = 
-                new PropertyMeta(localName, attr.getValue("name"));
-            if (hasChildren(localName)) {
-                current = record;
-            }
-            data.addProperty(record);
-        }
-        
-    }
+    /**
+     * The panel name
+     */
+    private final String name;
+    
+    /**
+     * The info of the properties in the XML.
+     */
+    private final List<PropertyMeta> properties = new LinkedList<PropertyMeta>();
+    
+    /**
+     * The info of the panel in the XML.
+     */
+    private PropertyMeta panel;
 
-    private boolean isChild(String elementName) {
-        // for now, the only child are checkboxes.
-        return "checkbox".equals(elementName);
+    
+    public PanelMeta(String name) {
+        this.name = name;
     }
-
-    private boolean hasChildren(String elementName) {
-        // for now, the only element that can have 
-        // children are checkgroups.
-        return "checkgroup".equals(elementName);
+    
+    public void addProperty(PropertyMeta record) {
+        properties.add(record);
+    }
+    
+    public String getName() {
+        return name;
+    }    
+    
+    public List<PropertyMeta> getProperties () {
+        return Collections.unmodifiableList(properties);
     }
 }
+

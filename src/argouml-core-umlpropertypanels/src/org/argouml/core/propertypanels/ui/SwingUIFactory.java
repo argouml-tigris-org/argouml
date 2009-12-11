@@ -32,9 +32,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.argouml.core.propertypanels.xml.CheckBoxMeta;
-import org.argouml.core.propertypanels.xml.PanelMeta;
-import org.argouml.core.propertypanels.xml.PropertyMeta;
+import org.argouml.core.propertypanels.meta.CheckBoxMeta;
+import org.argouml.core.propertypanels.meta.PanelMeta;
+import org.argouml.core.propertypanels.meta.PropertyMeta;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLCheckBox2;

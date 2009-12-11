@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.core.propertypanels.xml;
+package org.argouml.core.propertypanels.meta;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -52,7 +52,7 @@ public class PanelMetaCache {
     }
     
     private void parseXML() throws Exception {
-        String file = "org/argouml/core/propertypanels/xml/panels.xml";        
+        String file = "org/argouml/core/propertypanels/meta/panels.xml";        
         XMLReader parser = XMLReaderFactory.createXMLReader();
         parser.setContentHandler(new XmlSinglePanelHandler(cache));
         InputStream stream = this.getClass().getClassLoader().

@@ -22,60 +22,44 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.core.propertypanels.xml;
+package org.argouml.core.propertypanels.meta;
 
 import java.util.Collections;
-import java.util.Dictionary;
-import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 /**
- * Contains the data read on the XML file.
+ * Entry of the XML that defines the property panels
  *
  * @author penyaskito
  */
-public class PanelMeta  {
+public class PropertyMeta {
     
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = 
-        Logger.getLogger(PanelMeta.class);
-        
-    /**
-     * The panel name
-     */
-    private final String name;
+    private String type;
+    private String name;
     
-    /**
-     * The info of the properties in the XML.
-     */
-    private final List<PropertyMeta> properties = new LinkedList<PropertyMeta>();
+    private List<CheckBoxMeta> checkboxes = new LinkedList<CheckBoxMeta>();
     
-    /**
-     * The info of the panel in the XML.
-     */
-    private PropertyMeta panel;
+    // TODO: this is a tree node, we must refine the tree structure
+    
+    public PropertyMeta (String theType, String theName) {
+        this.type = theType;
+        this.name = theName;
+    }
+    
+    public String getType() {
+        return type;
+    }
 
-    
-    public PanelMeta(String name) {
-        this.name = name;
-    }
-    
-    public void addProperty(PropertyMeta record) {
-        properties.add(record);
-    }
-    
     public String getName() {
         return name;
-    }    
+    }
     
-    public List<PropertyMeta> getProperties () {
-        return Collections.unmodifiableList(properties);
+    public List<CheckBoxMeta> getCheckboxes() {
+        return Collections.unmodifiableList(checkboxes);
+    }
+    
+    public void addCheckbox(CheckBoxMeta child) {
+        checkboxes.add(child);
     }
 }
-
