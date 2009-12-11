@@ -1128,7 +1128,7 @@
   </panel>
   <panel name="TemplateParameter">
     <singlerow name="template" type="ModelElement" />
-    <combo name="parameter" type="ModelElement" />
+    <singlerow name="parameter" type="ModelElement" />
     <combo name="defaultElement" type="ModelElement" />
   </panel>
   <panel name="Primitive">

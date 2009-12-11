@@ -109,6 +109,8 @@ class SingleListFactory implements ComponentFactory {
             model = new UMLPartitionActivityGraphListModel(modelElement);
         } else if ("template".equals(propName)) {
             model = new UMLTemplateParameterTemplateListModel(modelElement);
+        } else if ("parameter".equals(propName)) {
+            model = new UMLTemplateParameterParameterListModel(modelElement);
         }
         
         if (model != null) {

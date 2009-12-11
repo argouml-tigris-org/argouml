@@ -525,13 +525,17 @@ class SwingUIFactory {
             final UMLComboBoxModel model =
                 new UMLTemplateParameterParameterComboBoxModel(target);
             final JComboBox combo = new UMLComboBox(model, null);
-            comp = combo;
+            comp = new UMLComboBoxNavigator(
+                    Translator.localize("label.type.navigate.tooltip"),
+                    combo);
         } else if ("defaultElement".equals(prop.getName())) {
             final UMLComboBoxModel model =
                 new UMLTemplateParameterDefaultElementComboBoxModel();
             model.setTarget(target);           
             final JComboBox combo = new UMLComboBox(model, null);
-            comp = combo;
+            comp = new UMLComboBoxNavigator(
+                    Translator.localize("label.type.navigate.tooltip"),
+                    combo);
         }
         
         if (comp != null) {
