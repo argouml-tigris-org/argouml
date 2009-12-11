@@ -36,8 +36,8 @@ class UMLIncludeAdditionListModel extends UMLIncludeListModel {
     /**
      * Constructor for UMLIncludeAdditionListModel.
      */
-    public UMLIncludeAdditionListModel(Object modelElement) {
-        super("addition");
+    public UMLIncludeAdditionListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

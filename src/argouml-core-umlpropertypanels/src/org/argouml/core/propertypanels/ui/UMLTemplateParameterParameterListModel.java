@@ -35,8 +35,8 @@ class UMLTemplateParameterParameterListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateVertexIncomingListModel.
      */
-    public UMLTemplateParameterParameterListModel(Object target) {
-        super("parameter");
+    public UMLTemplateParameterParameterListModel(Object target, String propertyName) {
+        super(propertyName);
         setTarget(target);
     }
 

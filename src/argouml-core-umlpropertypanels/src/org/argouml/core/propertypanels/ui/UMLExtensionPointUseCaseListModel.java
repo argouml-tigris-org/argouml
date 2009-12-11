@@ -36,8 +36,8 @@ class UMLExtensionPointUseCaseListModel
     /**
      * Constructor for UMLExtensionPointUseCaseListModel.
      */
-    public UMLExtensionPointUseCaseListModel(Object modelElement) {
-        super("useCase");
+    public UMLExtensionPointUseCaseListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

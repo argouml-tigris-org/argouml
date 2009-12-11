@@ -35,8 +35,8 @@ class UMLExtendExtensionListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLExtendExtensionComboBoxModel.
      */
-    public UMLExtendExtensionListModel(Object modelElement) {
-        super("extension");
+    public UMLExtendExtensionListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

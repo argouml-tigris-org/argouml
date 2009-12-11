@@ -37,8 +37,8 @@ class UMLTransitionTargetListModel extends UMLModelElementListModel {
    /**
      * Constructor for UMLStateMachineTopListModel.
      */
-    public UMLTransitionTargetListModel(Object modelElement) {
-        super("target");
+    public UMLTransitionTargetListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

@@ -37,8 +37,8 @@ class UMLTransitionStatemachineListModel
     /**
      * Constructor for UMLStateVertexIncomingListModel.
      */
-    public UMLTransitionStatemachineListModel(Object modelElement) {
-        super("statemachine");
+    public UMLTransitionStatemachineListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

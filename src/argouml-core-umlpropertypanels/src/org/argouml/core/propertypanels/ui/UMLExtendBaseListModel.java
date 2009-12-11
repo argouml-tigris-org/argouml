@@ -36,10 +36,8 @@ class UMLExtendBaseListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLExtendBaseComboBoxModel.
      */
-    public UMLExtendBaseListModel(Object modelElement) {
-        super("base");
-        Model.getPump().addClassModelEventListener(this,
-                Model.getMetaTypes().getNamespace(), "ownedElement");
+    public UMLExtendBaseListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 
@@ -47,8 +45,6 @@ class UMLExtendBaseListModel extends UMLModelElementListModel {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (!isEmpty())
-            removeAllElements();
         addElement(Model.getFacade().getBase(getTarget()));
     }
 
@@ -58,5 +54,4 @@ class UMLExtendBaseListModel extends UMLModelElementListModel {
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAUseCase(element);
     }
-
 }

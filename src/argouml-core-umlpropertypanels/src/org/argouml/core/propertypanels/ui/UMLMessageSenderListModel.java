@@ -37,8 +37,8 @@ class UMLMessageSenderListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLMessageSenderListModel.
      */
-    public UMLMessageSenderListModel(Object modelElement) {
-        super("sender");
+    public UMLMessageSenderListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

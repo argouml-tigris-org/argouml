@@ -36,8 +36,9 @@ class EnumerationListModel extends UMLModelElementListModel {
     /**
      * Constructor for EnumerationListModel.
      */
-    public EnumerationListModel(Object target) {
-        super();
+    public EnumerationListModel(Object target, String propertyName) {
+        super(propertyName);
+        setTarget(target);
     }
 
     @Override

@@ -37,8 +37,8 @@ class UMLAssociationEndAssociationListModel
     /**
      * Constructor for UMLAssociationEndAssociationListModel.
      */
-    public UMLAssociationEndAssociationListModel(Object modelElement) {
-        super("association");
+    public UMLAssociationEndAssociationListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 
@@ -46,10 +46,7 @@ class UMLAssociationEndAssociationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        removeAllElements();
-        if (getTarget() != null) {
-            addElement(Model.getFacade().getAssociation(getTarget()));
-        }
+        addElement(Model.getFacade().getAssociation(getTarget()));
     }
 
     /*

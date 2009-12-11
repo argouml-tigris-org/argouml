@@ -40,41 +40,41 @@ class SingleListFactory implements ComponentFactory {
         UMLModelElementListModel model = null;
         
         if ("owner".equals(propName)) {
-            model = new UMLFeatureOwnerListModel(modelElement);
+            model = new UMLFeatureOwnerListModel(modelElement, propName);
         } else if ("behavioralFeature".equals(propName)) {
-            model = new UMLParameterBehavioralFeatListModel(modelElement);
+            model = new UMLParameterBehavioralFeatListModel(modelElement, propName);
         } else if ("parent".equals(propName)) {
-            model = new UMLGeneralizationParentListModel(modelElement);
+            model = new UMLGeneralizationParentListModel(modelElement, propName);
         } else if ("child".equals(propName)) {
-            model = new UMLGeneralizationChildListModel(modelElement);
+            model = new UMLGeneralizationChildListModel(modelElement, propName);
         } else if ("feature".equals(propName)) {
-            model = new UMLParameterBehavioralFeatListModel(modelElement);
+            model = new UMLParameterBehavioralFeatListModel(modelElement, propName);
         } else if ("enumeration".equals(propName)) {
-            EnumerationListModel m = new EnumerationListModel(modelElement);
+            model = new EnumerationListModel(modelElement, propName);
         } else if ("association".equals(propName)) {
-            model = new UMLAssociationEndAssociationListModel(modelElement);
+            model = new UMLAssociationEndAssociationListModel(modelElement, propName);
         } else if ("base".equals(propName)) {
-            model = new UMLExtendBaseListModel(modelElement);
+            model = new UMLExtendBaseListModel(modelElement, propName);
         } else if ("extension".equals(propName)) {
-            model = new UMLExtendExtensionListModel(modelElement);
+            model = new UMLExtendExtensionListModel(modelElement, propName);
         } else if ("addition".equals(propName)) {
-            model = new UMLIncludeAdditionListModel(modelElement);
+            model = new UMLIncludeAdditionListModel(modelElement, propName);
         } else if ("useCase".equals(propName)) {
-            model = new UMLExtensionPointUseCaseListModel(modelElement);
+            model = new UMLExtensionPointUseCaseListModel(modelElement, propName);
         } else if ("interaction".equals(propName)) {
             if (Model.getFacade().isAMessage(modelElement)) {
-                model = new UMLMessageInteractionListModel(modelElement);
+                model = new UMLMessageInteractionListModel(modelElement, propName);
             } else {
-                model = new UMLCollaborationInteractionListModel(modelElement);
+                model = new UMLCollaborationInteractionListModel(modelElement, propName);
             }
         } else if ("sender".equals(propName)) {
-            model = new UMLMessageSenderListModel(modelElement);
+            model = new UMLMessageSenderListModel(modelElement, propName);
         } else if ("receiver".equals(propName)) {
-            model = new UMLMessageReceiverListModel(modelElement);
+            model = new UMLMessageReceiverListModel(modelElement, propName);
         } else if ("action".equals(propName)) {
-            model = new UMLMessageActionListModel(modelElement);
+            model = new UMLMessageActionListModel(modelElement, propName);
         } else if ("context".equals(propName)) {
-            model = new UMLInteractionContextListModel(modelElement);
+            model = new UMLInteractionContextListModel(modelElement, propName);
         }
         /*
          * The XML generated is "stimulus", because the A_receiver_stimulus
@@ -84,33 +84,33 @@ class SingleListFactory implements ComponentFactory {
          * removed "stimulus".
          */ 
         else if ("sentStimulus".equals(propName)) {
-            model = new UMLInstanceSenderStimulusListModel(modelElement);
+            model = new UMLInstanceSenderStimulusListModel(modelElement, propName);
         } else if ("receivedStimulus".equals(propName)) {
-            model = new UMLInstanceReceiverStimulusListModel(modelElement);
+            model = new UMLInstanceReceiverStimulusListModel(modelElement, propName);
         } else if ("stateMachine".equals(propName)) {
-            model = new UMLTransitionStatemachineListModel(modelElement);
+            model = new UMLTransitionStatemachineListModel(modelElement, propName);
         } else if ("state".equals(propName)) {
-            model = new UMLTransitionStateListModel(modelElement);
+            model = new UMLTransitionStateListModel(modelElement, propName);
         } else if ("source".equals(propName)) {
-            model = new UMLTransitionSourceListModel(modelElement);
+            model = new UMLTransitionSourceListModel(modelElement, propName);
         } else if ("target".equals(propName)) {
-            model = new UMLTransitionTargetListModel(modelElement);
+            model = new UMLTransitionTargetListModel(modelElement, propName);
         } else if ("guard".equals(propName)) {
-            model = new UMLTransitionGuardListModel(modelElement);
+            model = new UMLTransitionGuardListModel(modelElement, propName);
         } else if ("effect".equals(propName)) {
-            model = new UMLTransitionEffectListModel(modelElement);
+            model = new UMLTransitionEffectListModel(modelElement, propName);
         } else if ("trigger".equals(propName)) {
-            model = new UMLTransitionTriggerListModel(modelElement);
+            model = new UMLTransitionTriggerListModel(modelElement, propName);
         } else if ("transition".equals(propName)) {
-            model = new UMLGuardTransitionListModel(modelElement);
+            model = new UMLGuardTransitionListModel(modelElement, propName);
         } else if ("container".equals(propName)) {
-            model = new UMLStateVertexContainerListModel(modelElement);
+            model = new UMLStateVertexContainerListModel(modelElement, propName);
         } else if ("activityGraph".equals(propName)) {
-            model = new UMLPartitionActivityGraphListModel(modelElement);
+            model = new UMLPartitionActivityGraphListModel(modelElement, propName);
         } else if ("template".equals(propName)) {
-            model = new UMLTemplateParameterTemplateListModel(modelElement);
+            model = new UMLTemplateParameterTemplateListModel(modelElement, propName);
         } else if ("parameter".equals(propName)) {
-            model = new UMLTemplateParameterParameterListModel(modelElement);
+            model = new UMLTemplateParameterParameterListModel(modelElement, propName);
         }
         
         if (model != null) {

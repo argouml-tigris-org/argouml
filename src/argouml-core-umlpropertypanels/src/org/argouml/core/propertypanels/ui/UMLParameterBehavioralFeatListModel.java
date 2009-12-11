@@ -37,8 +37,8 @@ class UMLParameterBehavioralFeatListModel
     /**
      * Constructor for UMLParameterBehavioralFeatListModel
      */
-    public UMLParameterBehavioralFeatListModel(Object target) {
-	super("behavioralFeature");
+    public UMLParameterBehavioralFeatListModel(Object target, String propertyName) {
+        super(propertyName);
         setTarget(target);
     }
 

@@ -35,8 +35,8 @@ class UMLFeatureOwnerListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLFeatureOwnerListModel.
      */
-    public UMLFeatureOwnerListModel(Object target) {
-	super("owner");
+    public UMLFeatureOwnerListModel(Object target, String propertyName) {
+        super(propertyName);
 	setTarget(target);
     }
 

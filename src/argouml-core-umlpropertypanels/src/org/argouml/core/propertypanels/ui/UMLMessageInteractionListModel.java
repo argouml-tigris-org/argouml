@@ -37,8 +37,8 @@ class UMLMessageInteractionListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLMessageInteractionListModel.
      */
-    public UMLMessageInteractionListModel(Object modelElement) {
-        super("interaction");
+    public UMLMessageInteractionListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 
@@ -47,7 +47,6 @@ class UMLMessageInteractionListModel extends UMLModelElementListModel {
      */
     protected void buildModelList() {
         if (Model.getFacade().isAMessage(getTarget())) {
-            removeAllElements();
             addElement(Model.getFacade().getInteraction(getTarget()));
         }
     }

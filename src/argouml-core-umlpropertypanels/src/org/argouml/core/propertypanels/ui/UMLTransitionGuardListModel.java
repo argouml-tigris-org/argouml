@@ -41,8 +41,8 @@ class UMLTransitionGuardListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateMachineTopListModel.
      */
-    public UMLTransitionGuardListModel(Object modelElement) {
-        super("guard");
+    public UMLTransitionGuardListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

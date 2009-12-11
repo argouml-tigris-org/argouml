@@ -37,8 +37,8 @@ class UMLMessageActionListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLMessageActionListModel.
      */
-    public UMLMessageActionListModel(Object modelElement) {
-        super("action");
+    public UMLMessageActionListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

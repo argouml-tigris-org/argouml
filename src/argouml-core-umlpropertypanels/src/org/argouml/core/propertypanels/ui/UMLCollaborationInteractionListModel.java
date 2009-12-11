@@ -36,8 +36,8 @@ class UMLCollaborationInteractionListModel
     /**
      * Constructor for UMLInteractionCollaborationListModel2.
      */
-    public UMLCollaborationInteractionListModel(Object modelElement) {
-        super("interaction");
+    public UMLCollaborationInteractionListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

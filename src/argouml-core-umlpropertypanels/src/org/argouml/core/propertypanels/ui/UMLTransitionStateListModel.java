@@ -36,8 +36,8 @@ class UMLTransitionStateListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLStateVertexIncomingListModel.
      */
-    public UMLTransitionStateListModel(Object modelElement) {
-        super("state");
+    public UMLTransitionStateListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

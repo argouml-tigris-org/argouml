@@ -36,8 +36,8 @@ class UMLTransitionSourceListModel extends UMLModelElementListModel {
    /**
      * Constructor for UMLStateMachineTopListModel.
      */
-    public UMLTransitionSourceListModel(Object modelElement) {
-        super("source");
+    public UMLTransitionSourceListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

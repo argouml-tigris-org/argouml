@@ -37,8 +37,8 @@ class UMLMessageReceiverListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLMessageReceiverListModel.
      */
-    public UMLMessageReceiverListModel(Object modelElement) {
-        super("receiver");
+    public UMLMessageReceiverListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 
