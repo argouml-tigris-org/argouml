@@ -51,16 +51,14 @@ class UMLClassifierFeatureListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (getTarget() != null) {
-            setAllElements(getModelElements());
-        }
+        setAllElements(getModelElements());
     }
 
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return Model.getFacade().getFeatures(getTarget()).contains(element);
+        return getModelElements().contains(element);
     }
 
     @Override

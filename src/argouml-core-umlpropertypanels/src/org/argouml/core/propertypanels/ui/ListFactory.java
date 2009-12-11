@@ -186,6 +186,8 @@ class ListFactory implements ComponentFactory {
             list = new ScrollList(new UMLActionSequenceActionList(model));     
         } else if ("typedValue".equals(propName)) {
             model = new UMLTagDefinitionTypedValuesListModel(modelElement); 
+        } else if ("templateParameter".equals(propName)) {
+            model = new UMLModelElementTemplateParameterListModel(modelElement); 
         }
         
         if (list != null) {

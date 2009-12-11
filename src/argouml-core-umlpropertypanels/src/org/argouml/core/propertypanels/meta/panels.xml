@@ -197,6 +197,7 @@
       <checkbox name="isAbstract" type="Boolean" />
       <checkbox name="isActive" type="Boolean" />
     </checkgroup>
+    <list name="templateParameter" type="TemplateParameter" />
 	<separator />
     <list name="clientDependency" type="Dependency" />
     <list name="supplierDependency" type="ModelElement" />
@@ -215,7 +216,6 @@
     <attribute name="targetFlow" type="Flow" />
     <attribute name="sourceFlow" type="Flow" />
     <attribute name="comment" type="Comment" />
-    <attribute name="templateParameter" type="TemplateParameter" />
     <attribute name="presentation" type="ModelElement" />
     <attribute name="defaultedParameter" type="ModelElement" />
     <attribute name="elementResidence" type="ModelElement" />
@@ -401,6 +401,7 @@
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
+    <list name="templateParameter" type="TemplateParameter" />
 	<separator/>
 	<list name="generalization" type="Generalization" />    
     <list name="specialization" type="GeneralizableElement" />

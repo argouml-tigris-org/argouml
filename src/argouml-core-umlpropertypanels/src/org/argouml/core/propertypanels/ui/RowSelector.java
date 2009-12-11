@@ -170,7 +170,7 @@ class RowSelector extends JPanel
     /**
      * The toolbar of controls for manipulating items in the list
      */
-    private final JToolBar tb;
+    private final JToolBar toolbar;
 
     /**
      * The delete action that we must enable/disable
@@ -243,7 +243,7 @@ class RowSelector extends JPanel
             scroll.setVerticalScrollBarPolicy(
                     JScrollPane.VERTICAL_SCROLLBAR_NEVER);
             expander = null;
-            tb = null;
+            toolbar = null;
             deleteAction = null;
             moveUpAction = null;
             moveDownAction = null;
@@ -280,9 +280,9 @@ class RowSelector extends JPanel
             }
 
             final ToolBarFactory tbf = new ToolBarFactory(actions);
-            tb = tbf.createToolBar();
-            tb.setRollover(true);
-            tb.setOrientation(ToolBar.VERTICAL);
+            toolbar = tbf.createToolBar();
+            toolbar.setRollover(true);
+            toolbar.setOrientation(ToolBar.VERTICAL);
 
             JPanel buttonPanel =
                 new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
@@ -290,9 +290,9 @@ class RowSelector extends JPanel
             this.addMouseListener(this);
             setIcon();
             buttonPanel.add(expander);
-            if (tb != null) {
-                tb.setVisible(false);
-                buttonPanel.add(tb);
+            if (toolbar != null) {
+                toolbar.setVisible(false);
+                buttonPanel.add(toolbar);
             }
             add(buttonPanel, BorderLayout.WEST);
 
@@ -377,8 +377,8 @@ class RowSelector extends JPanel
         expanded = !expanded;
 
         setIcon();
-        if (tb != null) {
-            tb.setVisible(expanded);
+        if (toolbar != null) {
+            toolbar.setVisible(expanded);
         }
 
         // Froce the parent to redraw
