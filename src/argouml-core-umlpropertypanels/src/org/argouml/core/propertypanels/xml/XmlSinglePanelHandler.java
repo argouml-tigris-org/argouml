@@ -24,7 +24,7 @@
 
 package org.argouml.core.propertypanels.xml;
 
-import java.util.Dictionary;
+import java.util.Map;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -35,12 +35,12 @@ import org.xml.sax.helpers.DefaultHandler;
  * the property panels.
  * @author penyaskito
  */
-public class XmlSinglePanelHandler extends DefaultHandler {
+class XmlSinglePanelHandler extends DefaultHandler {
 
     /**
      * The panel that will host the controls. 
      */
-    private final Dictionary<String, PanelMeta> data;
+    private final Map<String, PanelMeta> data;
     
     /**
      * the panel that we are traversing
@@ -55,7 +55,7 @@ public class XmlSinglePanelHandler extends DefaultHandler {
      * host the info read.
      */
     public XmlSinglePanelHandler(
-            Dictionary<String, PanelMeta> theData) {
+            Map<String, PanelMeta> theData) {
         this.data = theData;
     }
 

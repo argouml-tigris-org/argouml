@@ -26,19 +26,18 @@ package org.argouml.core.propertypanels.ui;
 
 import java.io.InputStream;
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.xml.PanelMeta;
-import org.argouml.core.propertypanels.xml.XmlSinglePanelHandler;
+import org.argouml.core.propertypanels.xml.PanelMetaCache;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.PropPanelFactory;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * 
@@ -49,7 +48,8 @@ public class XMLPropPanelFactory implements PropPanelFactory {
     private static final Logger LOG =
         Logger.getLogger(XMLPropPanelFactory.class);
     
-    private final Dictionary<String, PanelMeta> cache;
+    private final PanelMetaCache cache =
+        new PanelMetaCache();
     
     private static XMLPropPanelFactory instance;
     
@@ -62,8 +62,6 @@ public class XMLPropPanelFactory implements PropPanelFactory {
     }
     
     private XMLPropPanelFactory() throws Exception {
-        cache = new Hashtable<String, PanelMeta>();
-        parseXML();
     }
     
     /**
@@ -99,20 +97,6 @@ public class XMLPropPanelFactory implements PropPanelFactory {
             // TODO: Auto-generated catch block
             LOG.error("Exception", e);
         }        
-    }
-    
-    private void parseXML() throws Exception {
-        String file = "org/argouml/core/propertypanels/xml/panels.xml";        
-        XMLReader parser = XMLReaderFactory.createXMLReader();
-        parser.setContentHandler(new XmlSinglePanelHandler(cache));
-        InputStream stream = this.getClass().getClassLoader().
-        getResourceAsStream(file);
-        if (stream != null) {
-            InputSource source = new InputSource(stream);
-            parser.parse(source);        
-        } else {
-            LOG.error("Failed to find the panel XML");
-        }
     }
     
     public PanelMeta getPropertyPanelsData (String forType) {
