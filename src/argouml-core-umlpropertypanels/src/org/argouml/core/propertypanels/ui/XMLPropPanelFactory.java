@@ -68,7 +68,7 @@ public class XMLPropPanelFactory implements PropPanelFactory {
      * Create the XML driven property panel for the given target
      */
     public JPanel createPropPanel(Object target) {
-        if (Model.getFacade().isAModelElement(target)) {
+        if (Model.getFacade().isAElement(target) || Model.getFacade().isATemplateParameter(target)) {
             JPanel panel =
                 new XmlPropertyPanel();
             build(panel, target);
