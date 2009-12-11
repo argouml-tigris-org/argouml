@@ -35,7 +35,7 @@ class UMLModelElementTemplateParameterListModel
      * Constructor for UMLStateVertexIncomingListModel.
      */
     public UMLModelElementTemplateParameterListModel(Object target) {
-        super("templateParameters");
+        super("templateParameter");
         setTarget(target);
     }
 
