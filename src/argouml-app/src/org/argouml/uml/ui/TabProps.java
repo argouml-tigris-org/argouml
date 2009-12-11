@@ -77,6 +77,11 @@ public class TabProps
     private JPanel lastPanel;
     private String panelClassBaseName = "";
 
+    /**
+     * The panel currently displayed in center
+     */
+    private JPanel currentPanel;
+    
     private Object target;
 
     /**
@@ -204,20 +209,24 @@ public class TabProps
             repaint();
             lastPanel = blankPanel;
         } else {
-            JPanel newPanel = null;
-            newPanel = findPanelFor(target);
+            JPanel newPanel = findPanelFor(target);
             if (newPanel != null && newPanel instanceof TabModelTarget) {
                 addTargetListener((TabModelTarget) newPanel);
             }
-            if (newPanel instanceof JPanel) {
-                add((JPanel) newPanel, BorderLayout.CENTER);
-                lastPanel = (JPanel) newPanel;
+            
+            if (currentPanel != null) {
+                remove(currentPanel);
+                currentPanel = null;
+            }
+            if (newPanel != null) {
+                currentPanel = newPanel;
             } else {
-                add(blankPanel, BorderLayout.CENTER);
-                validate();
-                repaint();
+                currentPanel = blankPanel;
                 lastPanel = blankPanel;
             }
+            add(currentPanel);
+            validate();
+            repaint();
         }
     }
 
