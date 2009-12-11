@@ -56,15 +56,11 @@ public class XMLPropertyPanelsDataRecord {
         return name;
     }
     
-    public List<XMLPropertyPanelsDataRecord> getChildren() {
+    public List<XMLPropertyPanelsDataRecord> getCheckboxes() {
         return Collections.unmodifiableList(children);
     }
     
-    public void addChild(XMLPropertyPanelsDataRecord child) {
+    public void addCheckbox(XMLPropertyPanelsDataRecord child) {
         children.add(child);
     }
-    public void removeChild(XMLPropertyPanelsDataRecord child) {
-        children.remove(child);
-    }
-    
 }

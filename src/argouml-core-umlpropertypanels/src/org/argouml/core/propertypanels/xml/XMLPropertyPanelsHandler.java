@@ -56,7 +56,7 @@ class XMLPropertyPanelsHandler extends DefaultHandler {
             new XMLPropertyPanelsDataRecord(localName, attr.getValue("name"));
         
         if (isChild(localName)) {
-            current.addChild(record);
+            current.addCheckbox(record);
         }
         else if (hasChildren(localName)) {
             current = record;

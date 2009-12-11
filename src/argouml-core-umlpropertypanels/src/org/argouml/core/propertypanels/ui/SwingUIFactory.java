@@ -309,7 +309,7 @@ class SwingUIFactory {
         p.setBorder(border);
         
         if ("modifiers".equals(prop.getName())) {  
-            for (XMLPropertyPanelsDataRecord data : prop.getChildren()) {
+            for (XMLPropertyPanelsDataRecord data : prop.getCheckboxes()) {
                 buildCheckBox(p, target, data);
             }                            
         }

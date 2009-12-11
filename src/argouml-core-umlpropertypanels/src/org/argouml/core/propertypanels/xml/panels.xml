@@ -3930,4 +3930,7 @@
     <attribute name="package" type="Package" />
     <attribute name="importedElement" type="ModelElement" />
   </panel>
+  <panel name="TemplateParameter">
+    <text name="name" type="Name" />
+  </panel>
 </panels>
