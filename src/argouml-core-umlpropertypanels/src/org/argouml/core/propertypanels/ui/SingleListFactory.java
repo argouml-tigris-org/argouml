@@ -107,6 +107,8 @@ class SingleListFactory implements ComponentFactory {
             model = new UMLStateVertexContainerListModel(modelElement);
         } else if ("activityGraph".equals(propName)) {
             model = new UMLPartitionActivityGraphListModel(modelElement);
+        } else if ("template".equals(propName)) {
+            model = new UMLTemplateParameterTemplateListModel(modelElement);
         }
         
         if (model != null) {

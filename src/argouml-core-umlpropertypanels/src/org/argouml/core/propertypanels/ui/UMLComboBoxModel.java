@@ -358,61 +358,37 @@ abstract class UMLComboBoxModel extends AbstractListModel
             return;
         }
         LOG.debug("setTarget target :  " + theNewTarget);
-        if (Model.getFacade().isAModelElement(theNewTarget) 
-                || theNewTarget instanceof ArgoDiagram) {
+        if (Model.getFacade().isAElement(theNewTarget) 
+                || Model.getFacade().isATemplateParameter(theNewTarget)) {
             
-            /* Remove old listeners: */
-            if (Model.getFacade().isAModelElement(comboBoxTarget)) {
-                Model.getPump().removeModelEventListener(this, comboBoxTarget,
-                        propertySetName);
-                // Allow listening to other elements:
-                removeOtherModelEventListeners(comboBoxTarget);
-            } else if (comboBoxTarget instanceof ArgoDiagram) {
-                ((ArgoDiagram) comboBoxTarget).removePropertyChangeListener(
-                        ArgoDiagram.NAMESPACE_KEY, this);
-            }
+            Model.getPump().removeModelEventListener(this, comboBoxTarget,
+                    propertySetName);
+            // Allow listening to other elements:
+            removeOtherModelEventListeners(comboBoxTarget);
 
             /* Add new listeners: */
-            if (Model.getFacade().isAModelElement(theNewTarget)) {
-                comboBoxTarget = theNewTarget;
-                Model.getPump().addModelEventListener(this, comboBoxTarget,
-                        propertySetName);
-                // Allow listening to other elements:
-                addOtherModelEventListeners(comboBoxTarget);
-                
-                buildingModel = true;
-                try {
-                    LOG.info("Building the combo box model for " + this);
-                    buildMinimalModelList();
-                    // Do not set buildingModel = false here, 
-                    // otherwise the action for selection is performed.
-                    setSelectedItem(getSelectedModelElement());
-                } catch (InvalidElementException e) {
-                    LOG.warn("buildModelList attempted to operate on " 
-                            + "deleted element");
-                } finally {
-                    buildingModel = false;
-                }
-                
-                if (getSize() > 0) {
-                    fireIntervalAdded(this, 0, getSize() - 1);
-                }
-            } else if (theNewTarget instanceof ArgoDiagram) {
-                comboBoxTarget = theNewTarget;
-                ArgoDiagram diagram = (ArgoDiagram) theNewTarget;
-                diagram.addPropertyChangeListener(
-                        ArgoDiagram.NAMESPACE_KEY, this);
-                buildingModel = true;
+            comboBoxTarget = theNewTarget;
+            Model.getPump().addModelEventListener(this, comboBoxTarget,
+                    propertySetName);
+            // Allow listening to other elements:
+            addOtherModelEventListeners(comboBoxTarget);
+            
+            buildingModel = true;
+            try {
                 LOG.info("Building the combo box model for " + this);
-                buildModelList();
+                buildMinimalModelList();
+                // Do not set buildingModel = false here, 
+                // otherwise the action for selection is performed.
                 setSelectedItem(getSelectedModelElement());
+            } catch (InvalidElementException e) {
+                LOG.warn("buildModelList attempted to operate on " 
+                        + "deleted element");
+            } finally {
                 buildingModel = false;
-                if (getSize() > 0) {
-                    fireIntervalAdded(this, 0, getSize() - 1);
-                }
-            } else { /*  MVW: This can never happen, isn't it? */
-                comboBoxTarget = null;
-                removeAllElements();
+            }
+            
+            if (getSize() > 0) {
+                fireIntervalAdded(this, 0, getSize() - 1);
             }
             if (getSelectedItem() != null && isClearable) {
                 addElement(""); // makes sure we can select 'none'

@@ -521,7 +521,18 @@ class SwingUIFactory {
                    typeComboBox);
             // TODO: Why is this disabled always?
             comp.setEnabled(false);
-       }
+        } else if ("parameter".equals(prop.getName())) {
+            final UMLComboBoxModel model =
+                new UMLTemplateParameterParameterComboBoxModel(target);
+            final JComboBox combo = new UMLComboBox(model, null);
+            comp = combo;
+        } else if ("defaultElement".equals(prop.getName())) {
+            final UMLComboBoxModel model =
+                new UMLTemplateParameterDefaultElementComboBoxModel();
+            model.setTarget(target);           
+            final JComboBox combo = new UMLComboBox(model, null);
+            comp = combo;
+        }
         
         if (comp != null) {
             addControl(panel, prop.getName(), comp);

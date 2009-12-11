@@ -1127,9 +1127,9 @@
     <attribute name="container" type="Component" />
   </panel>
   <panel name="TemplateParameter">
-    <attribute name="template" type="ModelElement" />
-    <attribute name="parameter" type="ModelElement" />
-    <attribute name="defaultElement" type="ModelElement" />
+    <singlerow name="template" type="ModelElement" />
+    <combo name="parameter" type="ModelElement" />
+    <combo name="defaultElement" type="ModelElement" />
   </panel>
   <panel name="Primitive">
     <text name="name" type="Name" />
