@@ -25,7 +25,9 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -48,6 +50,8 @@ class LabelledComponent extends JPanel {
      */
     private final JLabel label;
     
+    private final JComponent component;
+    
     /**
      * Construct a new LabelledComponent
      * @param name the name of the label to create
@@ -55,6 +59,7 @@ class LabelledComponent extends JPanel {
      */
     public LabelledComponent(final String name, final JComponent component) {
         super(new BorderLayout());
+        this.component = component;
         setName(name);
         add(component, BorderLayout.CENTER);
         
@@ -75,5 +80,13 @@ class LabelledComponent extends JPanel {
      */
     JLabel getLabel() {
         return label;
+    }
+    
+    public Dimension getPreferredSize() {
+        if (component instanceof JComboBox) {
+            return null;
+        } else {
+            return super.getPreferredSize();
+        }
     }
 }
