@@ -437,7 +437,7 @@ class SwingUIFactory {
                 UMLComboBoxModel2 model = 
                     new UMLCallEventOperationComboBoxModel();
                 model.setTarget(target);
-                JComboBox combo = new UMLCallEventOperationComboBox2(model);
+                JComboBox combo = new UMLCallEventOperationComboBox(model);
                 comp = new UMLComboBoxNavigator(Translator.localize(
                         "label.operation.navigate.tooltip"),
                         combo);
@@ -446,7 +446,7 @@ class SwingUIFactory {
                     new UMLCallActionOperationComboBoxModel();
                 model.setTarget(target); 
                 UMLComboBox operationComboBox =
-                    new UMLCallActionOperationComboBox2(model);
+                    new UMLCallActionOperationComboBox(model);
                 comp = new UMLComboBoxNavigator(
                         Translator.localize("label.operation.navigate.tooltip"),
                         operationComboBox);

@@ -32,14 +32,14 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.tigris.gef.undo.UndoableAction;
 
-class UMLCallActionOperationComboBox2
+class UMLCallActionOperationComboBox
     extends UMLComboBox {
     /**
      * The constructor.
      *
      * @param arg0 the model
      */
-    public UMLCallActionOperationComboBox2(UMLComboBoxModel arg0) {
+    public UMLCallActionOperationComboBox(UMLComboBoxModel arg0) {
         super(arg0, new SetActionOperationAction());
         setEditable(false);
     }

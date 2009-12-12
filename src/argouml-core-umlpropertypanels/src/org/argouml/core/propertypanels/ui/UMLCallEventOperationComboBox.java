@@ -35,13 +35,13 @@ import org.argouml.uml.ui.UMLSearchableComboBox;
 /**
  * @author oliver.heyden@gentleware.de
  */
-class UMLCallEventOperationComboBox2 extends UMLSearchableComboBox {
+class UMLCallEventOperationComboBox extends UMLSearchableComboBox {
     /**
      * The constructor.
      *
      * @param arg0 the model
      */
-    public UMLCallEventOperationComboBox2(UMLComboBoxModel2 arg0) {
+    public UMLCallEventOperationComboBox(UMLComboBoxModel2 arg0) {
         super(arg0, null); // no external action; we do it ourselves
         setEditable(false);
     }
