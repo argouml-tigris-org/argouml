@@ -3828,10 +3828,11 @@ class FacadeMDRImpl implements Facade {
                 return "";
             }
             if (handle instanceof TemplateParameter) {
+                TemplateParameter templateParameter =
+                    (TemplateParameter) handle;
                 // TODO: Do we want to construct an artificial name here?
                 StringBuffer result = new StringBuffer();
-                ModelElement template =
-                        ((TemplateParameter) handle).getTemplate();
+                ModelElement template = templateParameter.getTemplate();
                 if (template != null) {
                     String name = template.getName();
                     if (name != null) {
@@ -3839,8 +3840,7 @@ class FacadeMDRImpl implements Facade {
                     }
                 }
                 result.append(":");
-                ModelElement parameter =
-                        ((TemplateParameter) handle).getParameter();
+                ModelElement parameter = templateParameter.getParameter();
                 if (parameter != null) {
                     String name = parameter.getName();
                     if (name != null) {
