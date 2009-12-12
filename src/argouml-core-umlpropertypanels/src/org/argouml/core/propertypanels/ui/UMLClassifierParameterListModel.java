@@ -47,8 +47,8 @@ class UMLClassifierParameterListModel
      * Constructor for UMLClassifierParameterListModel.
      * This is an ordered list (2nd parameter = true).
      */
-    public UMLClassifierParameterListModel(Object modelElement) {
-        super("parameter");
+    public UMLClassifierParameterListModel(Object modelElement, String propertyName) {
+        super(propertyName);
         setTarget(modelElement);
     }
 

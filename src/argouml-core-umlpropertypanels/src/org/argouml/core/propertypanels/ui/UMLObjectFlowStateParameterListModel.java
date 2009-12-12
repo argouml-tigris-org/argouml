@@ -34,8 +34,9 @@ class UMLObjectFlowStateParameterListModel extends UMLModelElementListModel {
     /**
      * Constructor for UMLObjectFlowStateParameterListModel.
      */
-    public UMLObjectFlowStateParameterListModel(Object modelElement) {
-        super("parameter", modelElement.getClass(),
+    public UMLObjectFlowStateParameterListModel(Object modelElement, String propertyName) {
+        super(propertyName,
+              modelElement.getClass(),
               new ActionAddOFSParameter(),
               new ActionNewOFSParameter(),
               new ActionRemoveOFSParameter());

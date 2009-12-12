@@ -42,10 +42,13 @@ class UMLExtendExtensionPointListModel
     /**
      * Constructor for UMLExtendExtensionPointListModel.
      */
-    public UMLExtendExtensionPointListModel(final Object modelElement) {
-        super("extensionPoint", Model.getMetaTypes().getExtensionPoint(), 
-              ActionAddExtendExtensionPoint.getInstance(),
-              ActionNewExtendExtensionPoint.SINGLETON);
+    public UMLExtendExtensionPointListModel(
+            final Object modelElement,
+            final String propertyName) {
+        super(propertyName,
+                Model.getMetaTypes().getExtensionPoint(), 
+                ActionAddExtendExtensionPoint.getInstance(),
+                ActionNewExtendExtensionPoint.SINGLETON);
         setTarget(modelElement);
     }
 
