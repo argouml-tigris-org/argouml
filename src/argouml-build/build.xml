@@ -392,7 +392,7 @@ Property files to be searched (in argouml-build):
   <target name="tests-xml"
           description="Run tests in all subsystems.">
     <antcall target="tests-run-them-all">
-      <param name="tests-to-do" value="tests"/>
+      <param name="tests-to-do" value="tests-xml"/>
     </antcall>
   </target>
 
