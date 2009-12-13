@@ -110,8 +110,8 @@ Building this requires:
   <target name="prepare" depends="init">
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.classes}"/>
-    <copy todir="${build.classes}/org/argouml/core/propertypanels/xml">
-      <fileset dir="src/org/argouml/core/propertypanels/xml" includes="**/*.xml"/>
+    <copy todir="${build.classes}/org/argouml/core/propertypanels/meta">
+      <fileset dir="src/org/argouml/core/propertypanels/meta" includes="*.xml"/>
     </copy>
   </target>
 
