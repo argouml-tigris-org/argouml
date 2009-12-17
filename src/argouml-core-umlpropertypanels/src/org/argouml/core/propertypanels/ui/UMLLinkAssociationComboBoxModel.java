@@ -24,27 +24,32 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
-import org.argouml.model.UmlChangeEvent;
-import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
  * The model for the combobox to show the Association of the Link.
  *
  * @author Michiel
  */
-class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel2 {
+class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel {
+
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 3232437122889409351L;
 
     /**
      * Constructor for UMLModelElementNamespaceComboBoxModel.
      */
-    public UMLLinkAssociationComboBoxModel() {
-        super("assocation", true);
+    public UMLLinkAssociationComboBoxModel(
+            final String propertyName,
+            final Object target) {
+        super(propertyName, true);
+        setTarget(target);
     }
 
     /*
@@ -103,30 +108,4 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel2 {
         }
         return null;
     }
-
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#modelChanged(org.argouml.model.UmlChangeEvent)
-     */
-    @Override
-    public void modelChanged(UmlChangeEvent evt) {
-        /*
-         * Rebuild the list from scratch to be sure it's correct.
-         */
-        Object t = getTarget();
-        if (t != null
-                && evt.getSource() == t
-                && evt.getNewValue() != null) {
-            buildModelList();
-            /* In some cases (se issue 3780) the list remains the same, but
-             * the selected item differs. Without the next step,
-             * the combo would not be refreshed.
-             */
-            setSelectedItem(getSelectedModelElement());
-        }
-    }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 3232437122889409351L;
 }

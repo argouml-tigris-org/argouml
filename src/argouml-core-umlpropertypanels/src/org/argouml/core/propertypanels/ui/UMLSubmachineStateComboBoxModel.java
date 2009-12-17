@@ -1,5 +1,5 @@
-// $Id: UMLStructuralFeatureTypeComboBoxModel.java 16339 2008-12-11 23:31:22Z tfmorris $
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// $Id: UMLSubmachineStateComboBoxModel.java 11516 2006-11-25 04:30:15Z tfmorris $
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,35 +24,28 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.UmlChangeEvent;
-import org.argouml.uml.ui.UMLComboBoxModel2;
-import org.argouml.uml.util.PathComparator;
 
 /**
- * The combobox model for the default element belonging to some TemplateParameter.
+ * @since Dec 15, 2002
+ * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBoxModel {
+class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel {
 
     /**
      * The class uid
      */
-    private static final long serialVersionUID = -4042236776070635624L;
+    private static final long serialVersionUID = -8661322478068344016L;
 
     /**
-     * Constructor for UMLStructuralFeatureTypeComboBoxModel.
+     * Constructor for UMLSubmachineStateComboBoxModel.
      */
-    public UMLTemplateParameterDefaultElementComboBoxModel(
+    public UMLSubmachineStateComboBoxModel(
             final String propertyName,
             final Object target) {
-        super(propertyName, true); // Allow null
+        super(propertyName, true);
         setTarget(target);
     }
 
@@ -60,57 +53,30 @@ public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBox
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return Model.getFacade().isAModelElement(element);
+        return (Model.getFacade().isAStateMachine(element)
+            && element != Model.getStateMachinesHelper()
+                .getStateMachine(getTarget()));
     }
 
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
-    @SuppressWarnings("unchecked")
     protected void buildModelList() {
-        Set<Object> elements = new TreeSet<Object>(new PathComparator());
-
+        removeAllElements();
         Project p = ProjectManager.getManager().getCurrentProject();
-        if (p == null) {
-            return;
-        }
-        
-        for (Object model : p.getUserDefinedModelList()) {
-            elements.addAll(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKind(
-                            model, Model.getMetaTypes().getModelElement()));
-        }
+        Object model = p.getModel();
+        setElements(Model.getStateMachinesHelper()
+                .getAllPossibleStatemachines(model, getTarget()));
+    }
 
-        elements.addAll(p.getProfileConfiguration().findByMetaType(
-                        Model.getMetaTypes().getClassifier()));
-
-        setElements(elements);
-    }
-    
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void buildMinimalModelList() {
-        Collection list = new ArrayList(1);
-        Object element = getSelectedModelElement();
-        if (element != null) {
-            list.add(element);
-        }
-        setElements(list);
-    }
-    
-    @Override
-    protected boolean isLazy() {
-        return true;
-    }
-    
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        Object o = null;
         if (getTarget() != null) {
-            o = Model.getFacade().getDefaultElement(getTarget());
+            return Model.getFacade().getSubmachine(getTarget());
         }
-        return o;
+        return null;
     }
+
 }

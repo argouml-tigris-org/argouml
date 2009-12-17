@@ -1,5 +1,5 @@
-// $Id: UMLStructuralFeatureTypeComboBoxModel.java 16339 2008-12-11 23:31:22Z tfmorris $
-// Copyright (c) 1996-2008 The Regents of the University of California. All
+// $Id: UMLStubStateComboBoxModel.java 16325 2008-12-11 17:30:41Z tfmorris $
+// Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,35 +24,27 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
-import java.util.TreeSet;
-
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.UmlChangeEvent;
-import org.argouml.uml.ui.UMLComboBoxModel2;
-import org.argouml.uml.util.PathComparator;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
- * The combobox model for the default element belonging to some TemplateParameter.
+ * @author pepargouml@yahoo.es
  */
-public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBoxModel {
+class UMLStubStateComboBoxModel extends UMLComboBoxModel {
 
     /**
      * The class uid
      */
-    private static final long serialVersionUID = -4042236776070635624L;
+    private static final long serialVersionUID = -3567856233571414072L;
 
     /**
-     * Constructor for UMLStructuralFeatureTypeComboBoxModel.
+     * Constructor for UMLStubStateComboBoxModel.
      */
-    public UMLTemplateParameterDefaultElementComboBoxModel(
+    public UMLStubStateComboBoxModel(
             final String propertyName,
             final Object target) {
-        super(propertyName, true); // Allow null
+        super(propertyName, true);
         setTarget(target);
     }
 
@@ -60,57 +52,58 @@ public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBox
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return Model.getFacade().isAModelElement(element);
+        return (Model.getFacade().isAStateVertex(element)
+                && !Model.getFacade().isAConcurrentRegion(element)
+                && Model.getFacade().getName(element) != null);
     }
 
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
-    @SuppressWarnings("unchecked")
     protected void buildModelList() {
-        Set<Object> elements = new TreeSet<Object>(new PathComparator());
-
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p == null) {
-            return;
+        removeAllElements();
+        Object stateMachine = null;
+        if (Model.getFacade().isASubmachineState(
+                Model.getFacade().getContainer(getTarget()))) {
+            stateMachine = Model.getFacade().getSubmachine(
+                    Model.getFacade().getContainer(getTarget()));
         }
-        
-        for (Object model : p.getUserDefinedModelList()) {
-            elements.addAll(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKind(
-                            model, Model.getMetaTypes().getModelElement()));
+        if (stateMachine != null) {
+            ArrayList v = (ArrayList) Model.getStateMachinesHelper()
+                .getAllPossibleSubvertices(
+                        Model.getFacade().getTop(stateMachine));
+            ArrayList v2 = (ArrayList) v.clone();
+            Iterator it = v2.iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (!isValidElement(o)) {
+                    v.remove(o);
+                }
+            }
+            setElements(v);
         }
+    }
 
-        elements.addAll(p.getProfileConfiguration().findByMetaType(
-                        Model.getMetaTypes().getClassifier()));
-
-        setElements(elements);
-    }
-    
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void buildMinimalModelList() {
-        Collection list = new ArrayList(1);
-        Object element = getSelectedModelElement();
-        if (element != null) {
-            list.add(element);
-        }
-        setElements(list);
-    }
-    
-    @Override
-    protected boolean isLazy() {
-        return true;
-    }
-    
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        Object o = null;
+        String objectName = null;
+        Object container = null;
         if (getTarget() != null) {
-            o = Model.getFacade().getDefaultElement(getTarget());
+            objectName = Model.getFacade().getReferenceState(getTarget());
+            container = Model.getFacade().getContainer(getTarget());
+            if (container != null
+                    && Model.getFacade().isASubmachineState(container)
+                    && Model.getFacade().getSubmachine(container) != null) {
+
+                return Model.getStateMachinesHelper()
+                        .getStatebyName(objectName,
+                                Model.getFacade().getTop(Model.getFacade()
+                                        .getSubmachine(container)));
+            }
         }
-        return o;
+        return null;
     }
+
 }

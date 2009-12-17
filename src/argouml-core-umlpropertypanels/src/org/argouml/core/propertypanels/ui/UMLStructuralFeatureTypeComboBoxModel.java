@@ -33,23 +33,21 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
-import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.util.PathComparator;
 
 /**
- * The combobox model for the default element belonging to some TemplateParameter.
+ * The combobox model for the type belonging to some attribute.
+ *
+ * @since Nov 2, 2002
+ * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBoxModel {
+public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
 
-    /**
-     * The class uid
-     */
-    private static final long serialVersionUID = -4042236776070635624L;
 
     /**
      * Constructor for UMLStructuralFeatureTypeComboBoxModel.
      */
-    public UMLTemplateParameterDefaultElementComboBoxModel(
+    public UMLStructuralFeatureTypeComboBoxModel(
             final String propertyName,
             final Object target) {
         super(propertyName, true); // Allow null
@@ -57,10 +55,15 @@ public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBox
     }
 
     /*
+     * This is explained by WFR 2 of a StructuralFeature: 
+     * The type of a StructuralFeature must be a Class, DataType, or Interface.
+     * 
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return Model.getFacade().isAModelElement(element);
+        return Model.getFacade().isAClass(element)
+                || Model.getFacade().isAInterface(element)
+                || Model.getFacade().isADataType(element);
     }
 
     /*
@@ -78,7 +81,13 @@ public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBox
         for (Object model : p.getUserDefinedModelList()) {
             elements.addAll(Model.getModelManagementHelper()
                     .getAllModelElementsOfKind(
-                            model, Model.getMetaTypes().getModelElement()));
+                            model, Model.getMetaTypes().getUMLClass()));
+            elements.addAll(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getInterface()));
+            elements.addAll(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKind(
+                            model, Model.getMetaTypes().getDataType()));
         }
 
         elements.addAll(p.getProfileConfiguration().findByMetaType(
@@ -109,8 +118,36 @@ public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBox
     protected Object getSelectedModelElement() {
         Object o = null;
         if (getTarget() != null) {
-            o = Model.getFacade().getDefaultElement(getTarget());
+            o = Model.getFacade().getType(getTarget());
         }
         return o;
+    }
+
+    @Override
+    protected void addOtherModelEventListeners(Object newTarget) {
+        super.addOtherModelEventListeners(newTarget);
+        
+        Model.getPump().addClassModelEventListener(this,
+              Model.getMetaTypes().getNamespace(), "ownedElement");
+        Model.getPump().addClassModelEventListener(this,
+                Model.getMetaTypes().getUMLClass(), "name");
+        Model.getPump().addClassModelEventListener(this,
+                Model.getMetaTypes().getInterface(), "name");
+        Model.getPump().addClassModelEventListener(this,
+                Model.getMetaTypes().getDataType(), "name");
+    }
+
+    @Override
+    protected void removeOtherModelEventListeners(Object oldTarget) {
+        super.removeOtherModelEventListeners(oldTarget);
+
+        Model.getPump().removeClassModelEventListener(this,
+                Model.getMetaTypes().getNamespace(), "ownedElement");
+        Model.getPump().removeClassModelEventListener(this,
+                Model.getMetaTypes().getUMLClass(), "name");
+        Model.getPump().removeClassModelEventListener(this,
+                Model.getMetaTypes().getInterface(), "name");
+        Model.getPump().removeClassModelEventListener(this,
+                Model.getMetaTypes().getDataType(), "name");
     }
 }

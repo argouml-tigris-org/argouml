@@ -1,4 +1,4 @@
-// $Id: UMLStructuralFeatureTypeComboBoxModel.java 16339 2008-12-11 23:31:22Z tfmorris $
+// $Id: UMLGeneralizationPowertypeComboBoxModel.java 16961 2009-03-26 18:26:21Z tfmorris $
 // Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,6 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $header$
 package org.argouml.core.propertypanels.ui;
 
 import java.util.ArrayList;
@@ -32,69 +33,71 @@ import java.util.TreeSet;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.UmlChangeEvent;
-import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.util.PathComparator;
 
 /**
- * The combobox model for the default element belonging to some TemplateParameter.
+ * TODO: For UML 2.x, powertypes are accessed indirectly through the 
+ * GeneralizationSets that contain a Generalization.
+ * 
+ * @since Nov 3, 2002
+ * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBoxModel {
+public class UMLGeneralizationPowertypeComboBoxModel
+    extends UMLComboBoxModel {
 
     /**
      * The class uid
      */
-    private static final long serialVersionUID = -4042236776070635624L;
+    private static final long serialVersionUID = -7164447610238810497L;
 
     /**
-     * Constructor for UMLStructuralFeatureTypeComboBoxModel.
+     * Constructor for UMLGeneralizationPowertypeComboBoxModel.
      */
-    public UMLTemplateParameterDefaultElementComboBoxModel(
+    public UMLGeneralizationPowertypeComboBoxModel(
             final String propertyName,
             final Object target) {
-        super(propertyName, true); // Allow null
+        super(propertyName, true);
+        Model.getPump().addClassModelEventListener(this,
+                Model.getMetaTypes().getNamespace(), "ownedElement");
         setTarget(target);
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
-    protected boolean isValidElement(Object element) {
-        return Model.getFacade().isAModelElement(element);
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null) {
+            return Model.getFacade().getPowertype(getTarget());
+        }
+        return null;
     }
 
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
-    @SuppressWarnings("unchecked")
     protected void buildModelList() {
         Set<Object> elements = new TreeSet<Object>(new PathComparator());
-
         Project p = ProjectManager.getManager().getCurrentProject();
-        if (p == null) {
-            return;
-        }
-        
         for (Object model : p.getUserDefinedModelList()) {
-            elements.addAll(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKind(
-                            model, Model.getMetaTypes().getModelElement()));
+	    elements.addAll(Model.getModelManagementHelper()
+                .getAllModelElementsOfKind(model,
+                        Model.getMetaTypes().getClassifier()));
         }
 
         elements.addAll(p.getProfileConfiguration().findByMetaType(
-                        Model.getMetaTypes().getClassifier()));
-
-        setElements(elements);
+                Model.getMetaTypes().getClassifier()));
+        removeAllElements();
+        addAll(elements);
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     protected void buildMinimalModelList() {
         Collection list = new ArrayList(1);
         Object element = getSelectedModelElement();
-        if (element != null) {
-            list.add(element);
+        if (element == null) {
+            element = " ";
         }
+        list.add(element);
         setElements(list);
     }
     
@@ -102,15 +105,12 @@ public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBox
     protected boolean isLazy() {
         return true;
     }
-    
+
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
-    protected Object getSelectedModelElement() {
-        Object o = null;
-        if (getTarget() != null) {
-            o = Model.getFacade().getDefaultElement(getTarget());
-        }
-        return o;
+    protected boolean isValidElement(Object element) {
+        return Model.getFacade().isAClassifier(element);
     }
+
 }

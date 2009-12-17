@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
  * The combo box model for the base of an association-role.
@@ -37,15 +36,18 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
+public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel {
 
     private Collection others = new ArrayList();
 
     /**
      * Constructor for UMLAssociationRoleBaseComboBoxModel.
      */
-    public UMLAssociationRoleBaseComboBoxModel() {
-        super("base", true);
+    public UMLAssociationRoleBaseComboBoxModel(
+            final String propertyName,
+            final Object target) {
+        super(propertyName, true);
+        setTarget(target);
     }
 
     /*

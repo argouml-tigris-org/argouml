@@ -41,13 +41,21 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  * @author michiel
  */
 class UMLCollaborationRepresentedOperationComboBoxModel
-    extends  UMLComboBoxModel2  {
+    extends  UMLComboBoxModel {
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -501052343770609804L;
+
     /**
      * Constructor for UMLCollaborationRepresentedOperationComboBoxModel.
      */
-    public UMLCollaborationRepresentedOperationComboBoxModel() {
-        super("representedOperation", true);
+    public UMLCollaborationRepresentedOperationComboBoxModel(
+            final String propertyName,
+            final Object target) {
+        super(propertyName, true);
+        setTarget(target);
     }
     
     /*
@@ -81,13 +89,5 @@ class UMLCollaborationRepresentedOperationComboBoxModel
     
     protected Object getSelectedModelElement() {
         return Model.getFacade().getRepresentedOperation(getTarget());
-    }
-    
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#modelChanged(org.argouml.model.UmlChangeEvent)
-     */
-    @Override
-    public void modelChanged(UmlChangeEvent evt) {
-        /* Do nothing by design. */
     }
 }

@@ -28,26 +28,29 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLComboBoxModel2;
 
-/**
- *
- * @author oliver.heyden@gentleware.de
- */
-class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
+class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
+    
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = 2793208767387711088L;
+
     /**
      * The constructor.
      */
-    public UMLCallEventOperationComboBoxModel() {
-        super("operation", true);
+    public UMLCallEventOperationComboBoxModel(
+            final String propertyName,
+            final Object target) {
+        super(propertyName, true);
+        setTarget(target);
     }
 
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object target = TargetManager.getInstance().getModelTarget();
+        Object target = getTarget();
         Collection ops = new ArrayList();
         if (Model.getFacade().isACallEvent(target)) {
             Object ns = Model.getFacade().getNamespace(target);
@@ -78,7 +81,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        Object target = TargetManager.getInstance().getModelTarget();
+        Object target = getTarget();
         if (Model.getFacade().isACallEvent(target)) {
             return Model.getFacade().getOperation(target);
         }
@@ -89,7 +92,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {
-        Object target = TargetManager.getInstance().getModelTarget();
+        Object target = getTarget();
         if (Model.getFacade().isACallEvent(target)) {
             return element == Model.getFacade().getOperation(target);
         }

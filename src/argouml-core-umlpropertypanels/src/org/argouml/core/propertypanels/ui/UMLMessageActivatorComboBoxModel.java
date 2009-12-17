@@ -37,8 +37,11 @@ class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel {
     /**
      * Constructor for UMLMessageActivatorComboBoxModel.
      */
-    public UMLMessageActivatorComboBoxModel() {
-        super("activator", false);
+    public UMLMessageActivatorComboBoxModel(
+            final String propertyName,
+            final Object target) {
+        super(propertyName, false);
+        setTarget(target);
     }
 
     /*

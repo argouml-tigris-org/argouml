@@ -27,9 +27,6 @@ package org.argouml.core.propertypanels.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxModel2;
-import org.argouml.uml.ui.UMLSearchableComboBox;
 
 
 /**
@@ -41,7 +38,7 @@ class UMLCallEventOperationComboBox extends UMLSearchableComboBox {
      *
      * @param arg0 the model
      */
-    public UMLCallEventOperationComboBox(UMLComboBoxModel2 arg0) {
+    public UMLCallEventOperationComboBox(UMLComboBoxModel arg0) {
         super(arg0, null); // no external action; we do it ourselves
         setEditable(false);
     }
@@ -53,9 +50,9 @@ class UMLCallEventOperationComboBox extends UMLSearchableComboBox {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
-        if (source instanceof UMLComboBox2) {
-            Object selected = ((UMLComboBox2) source).getSelectedItem();
-            Object target = ((UMLComboBox2) source).getTarget();
+        if (source instanceof UMLComboBox) {
+            Object selected = ((UMLComboBox) source).getSelectedItem();
+            Object target = ((UMLComboBox) source).getTarget();
             if (Model.getFacade().isACallEvent(target) 
                 && Model.getFacade().isAOperation(selected)) {
                 if (Model.getFacade().getOperation(target) != selected) {

@@ -37,8 +37,11 @@ class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
     /**
      * The constructor.
      */
-    public UMLCallActionOperationComboBoxModel() {
-        super("operation", true);
+    public UMLCallActionOperationComboBoxModel(
+            final String propertyName,
+            final Object target) {
+        super(propertyName, true);
+        setTarget(target);
     }
 
     /**

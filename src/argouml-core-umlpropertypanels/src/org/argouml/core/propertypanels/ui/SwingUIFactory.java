@@ -39,20 +39,15 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
-import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.behavior.activity_graphs.UMLActionSynchCheckBox;
 import org.argouml.uml.ui.behavior.collaborations.ActionSetAssociationRoleBase;
 import org.argouml.uml.ui.behavior.common_behavior.UMLActionAsynchronousCheckBox;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetContextStateMachine;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetStubStateReferenceState;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetSubmachineStateSubmachine;
-import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineContextComboBoxModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLStubStateComboBoxModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLSubmachineStateComboBoxModel;
 import org.argouml.uml.ui.foundation.core.ActionSetAssociationEndType;
 import org.argouml.uml.ui.foundation.core.ActionSetGeneralizationPowertype;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
@@ -62,22 +57,17 @@ import org.argouml.uml.ui.foundation.core.UMLAssociationEndChangeabilityRadioBut
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndNavigableCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndOrderingCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndTargetScopeCheckbox;
-import org.argouml.uml.ui.foundation.core.UMLAssociationEndTypeComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLBehavioralFeatureQueryCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerScopeCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLGeneralizationPowertypeComboBoxModel;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLOperationConcurrencyRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLParameterDirectionKindRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionSetTagDefinitionType;
-import org.argouml.uml.ui.foundation.extension_mechanisms.UMLMetaClassComboBoxModel;
 import org.tigris.swidgets.GridLayout2;
 
 /**
@@ -149,13 +139,11 @@ class SwingUIFactory {
         } else if ("specification".equals(prop.getName())) {
             UMLPlainTextDocument document = 
                 new UMLOperationSpecificationDocument(prop.getName(), target);
-            document.setTarget(target);
             UMLTextArea osta = new UMLTextArea(document);
             osta.setRows(3);
             control = new JScrollPane(osta);
         } else if ("body".equals(prop.getName())) {
             UMLPlainTextDocument document = new UMLCommentBodyDocument(prop.getName(), target);
-            document.setTarget(target);
             UMLTextArea text = new UMLTextArea(document);
             text.setLineWrap(true);
             text.setRows(5);
@@ -199,7 +187,6 @@ class SwingUIFactory {
                 // if not, it is a control and must be labeled...
                 addControl(panel, prop.getName(), control);
             }
-            
         }
     }
 
@@ -355,12 +342,14 @@ class SwingUIFactory {
     private void buildComboPanel(
             final JPanel panel,
             final Object target,
-            final PropertyMeta prop) {        
+            final PropertyMeta prop) {
+        
         JComponent comp = null;
+        
+        final String propertyName = prop.getName();
         if ("namespace".equals(prop.getName())) {
-            final UMLComboBoxModel2 model =
-                new UMLModelElementNamespaceComboBoxModel();
-            model.setTarget(target);
+            final UMLComboBoxModel model =
+                new UMLModelElementNamespaceComboBoxModel(propertyName, target);
             final JComboBox combo = new UMLSearchableComboBox(
                     model,
                     new ActionSetModelElementNamespace(), true);            
@@ -369,33 +358,26 @@ class SwingUIFactory {
                     "label.namespace.navigate.tooltip"),
                     combo);
         } else if ("type".equals(prop.getName())) {
+            final UMLComboBoxModel model;
             if (Model.getFacade().isATemplateParameter(target)) {
-                final UMLComboBoxModel2 model = 
-                    new UMLConcreteModelElementComboBoxModel();
-                Object parameter = Model.getFacade().getParameter(target);
-                model.setTarget(parameter.getClass());
-                final JComboBox combo = new UMLComboBox2(
-                        model,
-                        null, true);
-                comp = new UMLComboBoxNavigator(Translator.localize(
-                        "label.classifierinstate.navigate.tooltip"),
-                        combo);
+                model = new UMLStructuralFeatureTypeComboBoxModel(
+                        propertyName,
+                        Model.getFacade().getParameter(target));
             } else {
-                final UMLComboBoxModel2 model =
-                    new UMLStructuralFeatureTypeComboBoxModel();
-                model.setTarget(target);           
-                final JComboBox combo = new UMLComboBox2(
-                        model,
-                        // TODO: The action is different for
-                        // attributes and parameters. Issue #5222
-                        ActionSetStructuralFeatureType.getInstance());
-                comp = combo;
+                model = new UMLStructuralFeatureTypeComboBoxModel(
+                        propertyName,
+                        target);
             }
+            final JComboBox combo = new UMLComboBox(
+                    model,
+                    // TODO: The action is different for
+                    // attributes and parameters. Issue #5222
+                    ActionSetStructuralFeatureType.getInstance());
+            comp = combo;
         } else if ("base".equals(prop.getName())) {
             if (Model.getFacade().isAAssociationRole(target)) {
-                final UMLComboBoxModel2 model = 
-                    new UMLAssociationRoleBaseComboBoxModel();
-                model.setTarget(target);
+                final UMLComboBoxModel model = 
+                    new UMLAssociationRoleBaseComboBoxModel(propertyName, target);
                 final JComboBox combo = new UMLSearchableComboBox(
                         model,
                         new ActionSetAssociationRoleBase(), true);
@@ -406,36 +388,31 @@ class SwingUIFactory {
                 //
             }
         } else if ("powertype".equals(prop.getName())) {
-            final UMLComboBoxModel2 model = 
-                new UMLGeneralizationPowertypeComboBoxModel();
-            model.setTarget(target);
-            final JComboBox combo = new UMLComboBox2(
+            final UMLComboBoxModel model = 
+                new UMLGeneralizationPowertypeComboBoxModel(propertyName, target);
+            final JComboBox combo = new UMLComboBox(
                     model,
                     ActionSetGeneralizationPowertype.getInstance());
             comp = combo;
         } else if ("multiplicity".equals(prop.getName())) {            
-            final UMLMultiplicityPanel mPanel = new UMLMultiplicityPanel();
-            mPanel.setTarget(target);
+            final UMLMultiplicityPanel mPanel = new UMLMultiplicityPanel(propertyName, target);
             comp = mPanel;
         } else if ("activator".equals(prop.getName())) {
             final UMLComboBoxModel model = 
-                new UMLMessageActivatorComboBoxModel();
-            model.setTarget(target); 
+                new UMLMessageActivatorComboBoxModel(propertyName, target);
             final JComboBox combo = new UMLMessageActivatorComboBox(model);
             comp = combo;
         } else if ("operation".equals(prop.getName())) {
             if (Model.getFacade().isACallEvent(target)) {
-                UMLComboBoxModel2 model = 
-                    new UMLCallEventOperationComboBoxModel();
-                model.setTarget(target);
+                UMLComboBoxModel model = 
+                    new UMLCallEventOperationComboBoxModel(propertyName, target);
                 JComboBox combo = new UMLCallEventOperationComboBox(model);
                 comp = new UMLComboBoxNavigator(Translator.localize(
                         "label.operation.navigate.tooltip"),
                         combo);
             } else {
                 final UMLComboBoxModel model = 
-                    new UMLCallActionOperationComboBoxModel();
-                model.setTarget(target); 
+                    new UMLCallActionOperationComboBoxModel(propertyName, target);
                 UMLComboBox operationComboBox =
                     new UMLCallActionOperationComboBox(model);
                 comp = new UMLComboBoxNavigator(
@@ -443,69 +420,61 @@ class SwingUIFactory {
                         operationComboBox);
             }
         } else if ("representedClassifier".equals(prop.getName())) {
-            final UMLComboBoxModel2 model = 
-                new UMLCollaborationRepresentedClassifierComboBoxModel();
-            model.setTarget(target);
-            UMLComboBox2 combo =
-                new UMLComboBox2(model,
+            final UMLComboBoxModel model = 
+                new UMLCollaborationRepresentedClassifierComboBoxModel(propertyName, target);
+            UMLComboBox combo =
+                new UMLComboBox(model,
                         new ActionSetRepresentedClassifierCollaboration());
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "label.represented-classifier.navigate.tooltip"),
                             combo);
         } else if ("representedOperation".equals(prop.getName())) {
-            final UMLComboBoxModel2 model = 
-                new UMLCollaborationRepresentedOperationComboBoxModel();
-            model.setTarget(target);
-            UMLComboBox2 combo = new UMLComboBox2(model,
+            final UMLComboBoxModel model = 
+                new UMLCollaborationRepresentedOperationComboBoxModel(propertyName, target);
+            UMLComboBox combo = new UMLComboBox(model,
                         new ActionSetRepresentedOperationCollaboration());
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "label.represented-operation.navigate.tooltip"),
                     combo);
         } else if ("context".equals(prop.getName())) {
-            final UMLComboBoxModel2 model = 
-                new UMLStateMachineContextComboBoxModel();
-            model.setTarget(target);
-            UMLComboBox2 combo = new UMLComboBox2(model,
+            final UMLComboBoxModel model = 
+                new UMLStateMachineContextComboBoxModel(propertyName, target);
+            UMLComboBox combo = new UMLComboBox(model,
                     ActionSetContextStateMachine.getInstance());
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "label.context.navigate.tooltip"),
                     combo);
 
         } else if ("association".equals(prop.getName())) {
-            final UMLComboBoxModel2 model = 
-                new UMLLinkAssociationComboBoxModel();
-            model.setTarget(target);
+            final UMLComboBoxModel model = 
+                new UMLLinkAssociationComboBoxModel(propertyName, target);
             comp =  new UMLComboBoxNavigator(Translator.localize(
                         "label.association.navigate.tooltip"),                
                     new UMLSearchableComboBox(model,
                             new ActionSetLinkAssociation(), true));
         } else if ("participant".equals(prop.getName())) {
-            final UMLComboBoxModel2 model = 
-                new UMLAssociationEndTypeComboBoxModel();
-            model.setTarget(target);
-            comp = new UMLComboBox2(model,
+            final UMLComboBoxModel model = 
+                new UMLAssociationEndTypeComboBoxModel(propertyName, target);
+            comp = new UMLComboBox(model,
                     ActionSetAssociationEndType.getInstance(), true);
         } else if ("submachine".equals(prop.getName())) {
-            final UMLComboBoxModel2 model = 
-                new UMLSubmachineStateComboBoxModel();
-            model.setTarget(target);            
-            final JComboBox submachineBox = new UMLComboBox2(model,
+            final UMLComboBoxModel model =
+                new UMLSubmachineStateComboBoxModel(propertyName, target);
+            final JComboBox submachineBox = new UMLComboBox(model,
                     ActionSetSubmachineStateSubmachine.getInstance());
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "tooltip.nav-submachine"), submachineBox);
         } else if ("referenceState".equals(prop.getName())) {
-            final UMLComboBoxModel2 model = 
-                new UMLStubStateComboBoxModel();
-            model.setTarget(target);            
+            final UMLComboBoxModel model = 
+                new UMLStubStateComboBoxModel(propertyName, target);
             final JComboBox referencestateBox =
-                new UMLComboBox2(model,
+                new UMLComboBox(model,
                         ActionSetStubStateReferenceState.getInstance());
             comp = new UMLComboBoxNavigator(Translator.localize(
                     "tooltip.nav-stubstate"), referencestateBox);            
         } else if ("tagType".equals(prop.getName())) {
-            UMLComboBoxModel2 model = new UMLMetaClassComboBoxModel();
-            model.setTarget(target);
-            final JComboBox typeComboBox = new UMLComboBox2(model, 
+            UMLComboBoxModel model = new UMLMetaClassComboBoxModel(propertyName, target);
+            final JComboBox typeComboBox = new UMLComboBox(model, 
                     ActionSetTagDefinitionType.getInstance());
             comp = new UMLComboBoxNavigator(
                    Translator.localize("label.type.navigate.tooltip"),
@@ -521,8 +490,7 @@ class SwingUIFactory {
                     combo);
         } else if ("defaultElement".equals(prop.getName())) {
             final UMLComboBoxModel model =
-                new UMLTemplateParameterDefaultElementComboBoxModel();
-            model.setTarget(target);           
+                new UMLTemplateParameterDefaultElementComboBoxModel(propertyName, target);
             final JComboBox combo = new UMLComboBox(model, null);
             comp = new UMLComboBoxNavigator(
                     Translator.localize("label.type.navigate.tooltip"),
@@ -546,10 +514,9 @@ class SwingUIFactory {
         UMLPlainTextDocument document = null;
         if ("name".equals(prop.getName())) {
             if (Model.getFacade().isATemplateParameter(target)) {
-                document = new UMLModelElementNameDocument(prop.getName(), Model.getFacade().getParameter(target));
-            } else {
-                document = new UMLModelElementNameDocument(prop.getName(), target);
+                target = Model.getFacade().getParameter(target);
             } 
+            document = new UMLModelElementNameDocument(prop.getName(), target);
         } else if ("discriminator".equals(prop.getName())) {
             document = new UMLDiscriminatorNameDocument(prop.getName(), target);
         } else if ("location".equals(prop.getName())) {

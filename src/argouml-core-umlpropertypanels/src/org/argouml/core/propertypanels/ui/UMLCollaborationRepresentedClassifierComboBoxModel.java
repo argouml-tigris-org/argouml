@@ -41,13 +41,16 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
  * @author michiel
  */
 class UMLCollaborationRepresentedClassifierComboBoxModel
-    extends  UMLComboBoxModel2  {
+    extends  UMLComboBoxModel {
     
     /**
      * Constructor for UMLCollaborationRepresentedClassifierComboBoxModel.
      */
-    public UMLCollaborationRepresentedClassifierComboBoxModel() {
-        super("representedClassifier", true);
+    public UMLCollaborationRepresentedClassifierComboBoxModel(
+            final String propertyName,
+            final Object target) {
+        super(propertyName, true);
+        setTarget(propertyName);
     }
     
     /*
@@ -85,14 +88,6 @@ class UMLCollaborationRepresentedClassifierComboBoxModel
      */
     protected Object getSelectedModelElement() {
         return Model.getFacade().getRepresentedClassifier(getTarget());
-    }
-    
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#modelChanged(org.argouml.model.UmlChangeEvent)
-     */
-    @Override
-    public void modelChanged(UmlChangeEvent evt) {
-        /* Do nothing by design. */
     }
 }
 

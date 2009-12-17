@@ -66,11 +66,13 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
     /**
      * Constructor
      */
-    public UMLMultiplicityPanel() {
+    public UMLMultiplicityPanel(
+            final String propertyName,
+            final Object target) {
         super(new BorderLayout());
         
         multiplicityComboBoxModel =
-            new MultiplicityComboBoxModel("multiplicity");
+            new MultiplicityComboBoxModel(propertyName);
         
         checkBox = new MultiplicityCheckBox();
         multiplicityComboBox =
@@ -81,6 +83,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
         multiplicityComboBox.addItemListener(this);
         add(checkBox, BorderLayout.WEST);
         add(multiplicityComboBox, BorderLayout.CENTER);
+        setTarget(target);
     }
     
     /**
