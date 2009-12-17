@@ -65,6 +65,8 @@ class UMLTextField
     public void propertyChange(PropertyChangeEvent evt) {
         ((UMLDocument) getDocument()).propertyChange(evt);
     }
+    
+    public void removeNotify() {
+        ((UMLPlainTextDocument) getDocument()).setFiring(false);
+    }
 }
-
-

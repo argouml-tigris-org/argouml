@@ -183,7 +183,7 @@ public abstract class UMLPlainTextDocument
      * 
      * @param f new firing state.  Pass false to disable updates.
      */
-    private final synchronized void setFiring(boolean f) {
+    final synchronized void setFiring(boolean f) {
         ModelEventPump eventPump = Model.getPump();
         if (f && target != null) {
             eventPump.addModelEventListener(this, target, eventName);
