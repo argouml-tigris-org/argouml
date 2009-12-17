@@ -150,13 +150,13 @@ class SwingUIFactory {
             UMLPlainTextDocument document = 
                 new UMLOperationSpecificationDocument(prop.getName(), target);
             document.setTarget(target);
-            UMLTextArea2 osta = new UMLTextArea2(document);
+            UMLTextArea osta = new UMLTextArea(document);
             osta.setRows(3);
             control = new JScrollPane(osta);
         } else if ("body".equals(prop.getName())) {
             UMLPlainTextDocument document = new UMLCommentBodyDocument(prop.getName(), target);
             document.setTarget(target);
-            UMLTextArea2 text = new UMLTextArea2(document);
+            UMLTextArea text = new UMLTextArea(document);
             text.setLineWrap(true);
             text.setRows(5);
             control = new JScrollPane(text);
@@ -559,7 +559,7 @@ class SwingUIFactory {
         }
         
         if (document != null) {
-            JTextField tfield = new UMLTextField2(document);
+            JTextField tfield = new UMLTextField(document);
             addControl(panel, prop.getName(), tfield);
         }
     }

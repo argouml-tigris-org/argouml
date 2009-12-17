@@ -1,4 +1,4 @@
-// $Id: UMLTextField2.java 11516 2006-11-25 04:30:15Z tfmorris $
+// $Id: UMLTextArea2.java 15591 2008-08-20 00:21:10Z tfmorris $
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,32 +26,35 @@ package org.argouml.core.propertypanels.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import javax.swing.JTextField;
+
+import javax.swing.JTextArea;
+
+import org.argouml.kernel.UmlModelMutator;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.ui.ActionCopy;
 import org.argouml.uml.ui.ActionCut;
 import org.argouml.uml.ui.ActionPaste;
 
 /**
- * @since Oct 6, 2002
+ * A JTextArea especially made to represent UMLPlainTextDocuments.
  * @author jaap.branderhorst@xs4all.nl
+ * @since Dec 28, 2002
  */
-public class UMLTextField2
-    extends JTextField
+@UmlModelMutator
+class UMLTextArea extends JTextArea
     implements PropertyChangeListener {
 
     /**
-     * Serial version generated for rev 1.15
+     * Serial version generated for rev 1.9
      */
-    private static final long serialVersionUID = -5740838103900828073L;
+    private static final long serialVersionUID = -9172093001792636086L;
 
     /**
-     * Constructor for UMLTextField2.
-     *
+     * Constructor for UMLTextArea2.
      * @param doc the plain text document
      */
-    public UMLTextField2(UMLDocument doc) {
-        super(doc, null, 0);
+    public UMLTextArea(UMLDocument doc) {
+        super(doc);
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addCaretListener(ActionCopy.getInstance());
         addCaretListener(ActionCut.getInstance());
@@ -66,5 +69,3 @@ public class UMLTextField2
         ((UMLDocument) getDocument()).propertyChange(evt);
     }
 }
-
-
