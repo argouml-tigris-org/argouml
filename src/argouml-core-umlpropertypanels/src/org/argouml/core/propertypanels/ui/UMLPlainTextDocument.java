@@ -48,7 +48,7 @@ import org.argouml.model.ModelEventPump;
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class UMLPlainTextDocument
+abstract class UMLPlainTextDocument
     extends PlainDocument
     implements UMLDocument {
 

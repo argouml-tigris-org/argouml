@@ -34,5 +34,5 @@ import javax.swing.text.Document;
  * @author Tom Morris
  *
  */
-public interface UMLDocument extends Document, PropertyChangeListener {
+interface UMLDocument extends Document, PropertyChangeListener {
 }
