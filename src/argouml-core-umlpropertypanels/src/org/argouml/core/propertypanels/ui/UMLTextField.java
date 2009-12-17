@@ -50,7 +50,7 @@ class UMLTextField
      *
      * @param doc the plain text document
      */
-    public UMLTextField(UMLDocument doc) {
+    public UMLTextField(UMLPlainTextDocument doc) {
         super(doc, null, 0);
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addCaretListener(ActionCopy.getInstance());
@@ -63,7 +63,7 @@ class UMLTextField
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        ((UMLDocument) getDocument()).propertyChange(evt);
+        ((UMLPlainTextDocument) getDocument()).propertyChange(evt);
     }
     
     public void removeNotify() {

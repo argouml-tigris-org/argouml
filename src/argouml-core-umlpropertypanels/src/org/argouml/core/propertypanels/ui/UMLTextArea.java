@@ -53,7 +53,7 @@ class UMLTextArea extends JTextArea
      * Constructor for UMLTextArea2.
      * @param doc the plain text document
      */
-    public UMLTextArea(UMLDocument doc) {
+    public UMLTextArea(UMLPlainTextDocument doc) {
         super(doc);
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addCaretListener(ActionCopy.getInstance());
@@ -66,6 +66,10 @@ class UMLTextArea extends JTextArea
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        ((UMLDocument) getDocument()).propertyChange(evt);
+        ((UMLPlainTextDocument) getDocument()).propertyChange(evt);
+    }
+    
+    public void removeNotify() {
+        ((UMLPlainTextDocument) getDocument()).setFiring(false);
     }
 }
