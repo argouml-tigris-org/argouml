@@ -543,10 +543,13 @@ class SwingUIFactory {
     private void buildTextboxPanel(JPanel panel, Object target,
             PropertyMeta prop) {
        
-        JTextField tfield = null;
         UMLPlainTextDocument document = null;
         if ("name".equals(prop.getName())) {
-            document = new UMLModelElementNameDocument(prop.getName(), target);
+            if (Model.getFacade().isATemplateParameter(target)) {
+                document = new UMLModelElementNameDocument(prop.getName(), Model.getFacade().getParameter(target));
+            } else {
+                document = new UMLModelElementNameDocument(prop.getName(), target);
+            } 
         } else if ("discriminator".equals(prop.getName())) {
             document = new UMLDiscriminatorNameDocument(prop.getName(), target);
         } else if ("location".equals(prop.getName())) {
@@ -556,11 +559,7 @@ class SwingUIFactory {
         }
         
         if (document != null) {
-            document.setTarget(target);
-            tfield = new UMLTextField2(document);
-        }
-        
-        if (tfield != null) {
+            JTextField tfield = new UMLTextField2(document);
             addControl(panel, prop.getName(), tfield);
         }
     }
