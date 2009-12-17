@@ -25,15 +25,19 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLPlainTextDocument;
 
 class UMLCommentBodyDocument extends UMLPlainTextDocument {
     
     /**
+     * The class uid
+     */
+    private static final long serialVersionUID = -5835345314712001502L;
+
+    /**
      * Constructor for UMLCommentBodyDocument.
      */
-    public UMLCommentBodyDocument() {
-        super("body"); 
+    public UMLCommentBodyDocument(String propertyName, Object target) {
+        super(propertyName, target); 
         /*
          * TODO: This is probably not the right location
          * for switching off the "filterNewlines".

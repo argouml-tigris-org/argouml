@@ -42,14 +42,9 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
-import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 import org.argouml.uml.ui.UMLSearchableComboBox;
-import org.argouml.uml.ui.UMLTextArea2;
-import org.argouml.uml.ui.UMLTextField2;
-import org.argouml.uml.ui.behavior.activity_graphs.ActionSetObjectFlowStateClassifier;
 import org.argouml.uml.ui.behavior.activity_graphs.UMLActionSynchCheckBox;
-import org.argouml.uml.ui.behavior.activity_graphs.UMLObjectFlowStateClassifierComboBoxModel;
 import org.argouml.uml.ui.behavior.collaborations.ActionSetAssociationRoleBase;
 import org.argouml.uml.ui.behavior.common_behavior.UMLActionAsynchronousCheckBox;
 import org.argouml.uml.ui.behavior.state_machines.ActionSetContextStateMachine;
@@ -58,8 +53,6 @@ import org.argouml.uml.ui.behavior.state_machines.ActionSetSubmachineStateSubmac
 import org.argouml.uml.ui.behavior.state_machines.UMLStateMachineContextComboBoxModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLStubStateComboBoxModel;
 import org.argouml.uml.ui.behavior.state_machines.UMLSubmachineStateComboBoxModel;
-import org.argouml.uml.ui.behavior.state_machines.UMLSynchStateBoundDocument;
-import org.argouml.uml.ui.behavior.use_cases.UMLExtensionPointLocationDocument;
 import org.argouml.uml.ui.foundation.core.ActionSetAssociationEndType;
 import org.argouml.uml.ui.foundation.core.ActionSetGeneralizationPowertype;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
@@ -72,17 +65,14 @@ import org.argouml.uml.ui.foundation.core.UMLAssociationEndTargetScopeCheckbox;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndTypeComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLBehavioralFeatureQueryCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLDiscriminatorNameDocument;
 import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerScopeCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizationPowertypeComboBoxModel;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.uml.ui.foundation.core.UMLModelElementNamespaceComboBoxModel;
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLOperationConcurrencyRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLOperationSpecificationDocument;
 import org.argouml.uml.ui.foundation.core.UMLParameterDirectionKindRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureTypeComboBoxModel;
@@ -158,13 +148,13 @@ class SwingUIFactory {
             control = p;
         } else if ("specification".equals(prop.getName())) {
             UMLPlainTextDocument document = 
-                new UMLOperationSpecificationDocument();
+                new UMLOperationSpecificationDocument(prop.getName(), target);
             document.setTarget(target);
             UMLTextArea2 osta = new UMLTextArea2(document);
             osta.setRows(3);
             control = new JScrollPane(osta);
         } else if ("body".equals(prop.getName())) {
-            UMLPlainTextDocument document = new UMLCommentBodyDocument();
+            UMLPlainTextDocument document = new UMLCommentBodyDocument(prop.getName(), target);
             document.setTarget(target);
             UMLTextArea2 text = new UMLTextArea2(document);
             text.setLineWrap(true);
@@ -379,13 +369,14 @@ class SwingUIFactory {
                     "label.namespace.navigate.tooltip"),
                     combo);
         } else if ("type".equals(prop.getName())) {
-            if (Model.getFacade().isAObjectFlowState(target)) {
+            if (Model.getFacade().isATemplateParameter(target)) {
                 final UMLComboBoxModel2 model = 
-                    new UMLObjectFlowStateClassifierComboBoxModel();
-                model.setTarget(target);
-                final JComboBox combo = new UMLSearchableComboBox(
+                    new UMLConcreteModelElementComboBoxModel();
+                Object parameter = Model.getFacade().getParameter(target);
+                model.setTarget(parameter.getClass());
+                final JComboBox combo = new UMLComboBox2(
                         model,
-                        new ActionSetObjectFlowStateClassifier(), true);
+                        null, true);
                 comp = new UMLComboBoxNavigator(Translator.localize(
                         "label.classifierinstate.navigate.tooltip"),
                         combo);
@@ -555,13 +546,13 @@ class SwingUIFactory {
         JTextField tfield = null;
         UMLPlainTextDocument document = null;
         if ("name".equals(prop.getName())) {
-            document = new UMLModelElementNameDocument();            
+            document = new UMLModelElementNameDocument(prop.getName(), target);
         } else if ("discriminator".equals(prop.getName())) {
-            document = new UMLDiscriminatorNameDocument();            
+            document = new UMLDiscriminatorNameDocument(prop.getName(), target);
         } else if ("location".equals(prop.getName())) {
-            document = new UMLExtensionPointLocationDocument();
+            document = new UMLExtensionPointLocationDocument(prop.getName(), target);
         } else if ("bound".equals(prop.getName())) {
-            document = new UMLSynchStateBoundDocument();
+            document = new UMLSynchStateBoundDocument(prop.getName(), target);
         }
         
         if (document != null) {
