@@ -244,7 +244,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox implements
      */
     public UMLEditableComboBox(UMLComboBoxModel model, Action selectAction,
             boolean showIcon) {
-        super(model, selectAction, showIcon);
+        super(model, showIcon);
         setEditable(true);
         setEditor(new UMLComboBoxEditor(showIcon));
         getEditor().addActionListener(this);

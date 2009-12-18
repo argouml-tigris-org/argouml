@@ -49,15 +49,13 @@ class UMLComboBox extends JComboBox {
      * Constructor for UMLComboBox. Via the given action, the
      * action for this combobox is done.
      * @param model the ComboBoxModel
-     * @param action the action // TODO used for what/when?
      * @param showIcon true if an icon should be shown in front of the items
      */
-    public UMLComboBox(UMLComboBoxModel model, Action action,
-			boolean showIcon) {
+    public UMLComboBox(UMLComboBoxModel model, boolean showIcon) {
         super(model);
-        this.action = action;
-        if (action != null) {
-            addActionListener(action);
+        this.action = model.getAction();
+        if (this.action != null) {
+            addActionListener(this.action);
         }
         setRenderer(new UMLListCellRenderer2(showIcon));
         addPopupMenuListener(model);
@@ -67,11 +65,9 @@ class UMLComboBox extends JComboBox {
      * The constructor.
      *
      * @param model the ComboBoxModel
-     * @param action the action that is called whenever the
-     * combo selection changes
      */
-    public UMLComboBox(UMLComboBoxModel model, Action action) {
-        this(model, action, true);
+    public UMLComboBox(UMLComboBoxModel model) {
+        this(model, true);
     }
 
     @Override

@@ -50,7 +50,7 @@ class UMLMessageActivatorComboBox extends UMLComboBox {
      */
     public UMLMessageActivatorComboBox(
         final UMLComboBoxModel model, Action action) {
-        super(model, action, false);
+        super(model, false);
         setRenderer(new UMLListCellRenderer2(true));
     }
 
