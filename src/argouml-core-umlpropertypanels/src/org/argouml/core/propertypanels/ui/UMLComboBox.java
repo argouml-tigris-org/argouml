@@ -42,7 +42,10 @@ class UMLComboBox extends JComboBox {
      */
     private static final long serialVersionUID = -7556056847962715552L;
     
-    // TODO: Need to document what this is for
+    /**
+     * This action will be called whenever the user changes the selected item
+     * in the combo.
+     */
     private Action action;
     
     /**
