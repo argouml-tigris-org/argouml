@@ -52,7 +52,6 @@ public class UMLAssociationEndTypeComboBoxModel
             final String propertyName,
             final Object target) {
         super(propertyName, target);
-        setTarget(target);
     }
 
     /*
