@@ -27,10 +27,7 @@ package org.argouml.core.propertypanels.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLListCellRenderer2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 /**
  * The combobox for activators on the message proppanel. The only reason this
  * combobox implements melementlistener is to conform to UMLChangeDispatch. The
@@ -38,6 +35,11 @@ import org.argouml.uml.ui.UMLUserInterfaceContainer;
  * model (UMLMessageActivatorComboBoxModel). Kind of strange...
  */
 class UMLMessageActivatorComboBox extends UMLComboBox {
+
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = 9039049225641202332L;
 
     /**
      * Constructor for UMLMessageActivatorComboBox.
