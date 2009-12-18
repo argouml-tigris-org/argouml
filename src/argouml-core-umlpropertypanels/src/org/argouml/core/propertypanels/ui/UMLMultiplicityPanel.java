@@ -38,7 +38,7 @@ import javax.swing.JPanel;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * A compound control containing all the visual controls for specifying

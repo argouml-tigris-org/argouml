@@ -35,7 +35,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * Listmodel for the context of a statemachine.

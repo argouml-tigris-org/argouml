@@ -33,7 +33,7 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * The model for the combobox to show the Association of the Link.

@@ -26,14 +26,11 @@ package org.argouml.core.propertypanels.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
 
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * List model which implements allAvailableContents operation for a
@@ -43,6 +40,13 @@ import org.tigris.gef.presentation.Fig;
  */
 class UMLClassifierRoleAvailableContentsListModel
     extends UMLModelElementListModel {
+
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = 7868841277838127325L;
+
+
 
     /**
      * Constructor for UMLClassifierRoleAvailableContentsListModel.

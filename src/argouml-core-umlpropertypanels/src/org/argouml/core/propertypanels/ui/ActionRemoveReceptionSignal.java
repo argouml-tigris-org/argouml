@@ -32,11 +32,15 @@ import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
  * This Action removes a Reception from a Signal.
- * TODO: We shouldn't have knowledge of GEF classes here
  * 
  * @author Michiel
  */
 class ActionRemoveReceptionSignal extends AbstractActionRemoveElement {
+
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = 8213584329453727152L;
 
     /**
      * Construct an Action which removes a Reception from a Signal.
@@ -45,9 +49,6 @@ class ActionRemoveReceptionSignal extends AbstractActionRemoveElement {
         super(Translator.localize("menu.popup.remove"));
     }
 
-    /*
-     * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
-     */
     @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);

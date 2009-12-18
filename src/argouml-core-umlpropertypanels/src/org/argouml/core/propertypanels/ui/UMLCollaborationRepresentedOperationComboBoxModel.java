@@ -35,7 +35,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * The ComboBox model for the represented Operation 

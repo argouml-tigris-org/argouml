@@ -29,7 +29,6 @@ import java.awt.event.ActionEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
-import org.tigris.gef.undo.UndoManager;
 
 /**
  * The Action to remove a baseclass from a stereotype.
@@ -44,7 +43,6 @@ class ActionDeleteStereotypeBaseClass extends AbstractActionRemoveElement {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        UndoManager.getInstance().startChain();
         Object baseclass = getObjectToRemove();
         if (baseclass != null) {
             Object st = getTarget();

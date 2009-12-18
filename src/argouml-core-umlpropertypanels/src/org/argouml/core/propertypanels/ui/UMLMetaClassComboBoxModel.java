@@ -35,7 +35,7 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * A model for selecting a UML metaclass. Originally designed for use in

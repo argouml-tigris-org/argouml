@@ -31,7 +31,7 @@ import java.util.Collection;
 import javax.swing.Action;
 
 import org.argouml.model.Model;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * The combo box model for the base of an association-role.

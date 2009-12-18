@@ -38,7 +38,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.util.PathComparator;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * TODO: For UML 2.x, powertypes are accessed indirectly through the 

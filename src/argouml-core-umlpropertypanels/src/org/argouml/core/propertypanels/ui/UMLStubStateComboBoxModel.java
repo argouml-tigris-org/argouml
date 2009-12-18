@@ -26,7 +26,7 @@ package org.argouml.core.propertypanels.ui;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;

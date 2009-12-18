@@ -35,8 +35,8 @@ import javax.swing.Action;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
+import org.argouml.ui.UndoableAction;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.undo.UndoableAction;
 
 class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
     

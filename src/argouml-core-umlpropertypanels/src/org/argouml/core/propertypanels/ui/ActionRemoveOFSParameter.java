@@ -41,9 +41,6 @@ class ActionRemoveOFSParameter extends AbstractActionRemoveElement {
         super(Translator.localize("menu.popup.remove"));
     }
 
-    /*
-     * @see org.tigris.gef.undo.UndoableAction#actionPerformed(java.awt.event.ActionEvent)
-     */
     @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
