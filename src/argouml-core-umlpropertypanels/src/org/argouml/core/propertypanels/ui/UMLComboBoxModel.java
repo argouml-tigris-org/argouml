@@ -184,24 +184,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
      */
     public void modelChanged(UmlChangeEvent evt) {
         buildingModel = true;
-        if (evt instanceof AttributeChangeEvent) {
-            if (evt.getPropertyName().equals(propertySetName)) {
-                if (evt.getSource() == getTarget()
-                        && (isClearable || getChangedElement(evt) != null)) {
-                    Object elem = getChangedElement(evt);
-                    if (elem != null && !contains(elem)) {
-                        addElement(elem);
-                    }
-                    /* MVW: for this case, I had to move the 
-                     * call to setSelectedItem() outside the "buildingModel", 
-                     * otherwise the combo does not update 
-                     * with the new selection. See issue 5418. 
-                     **/
-                    buildingModel = false;
-                    setSelectedItem(elem);
-                }
-            }
-        } else if (evt instanceof DeleteInstanceEvent) {
+        if (evt instanceof DeleteInstanceEvent) {
             if (contains(getChangedElement(evt))) {
                 Object o = getChangedElement(evt);
                 removeElement(o);
@@ -211,7 +194,15 @@ abstract class UMLComboBoxModel extends AbstractListModel
                 if (evt.getPropertyName().equals(propertySetName) 
                     && (evt.getSource() == getTarget())) {
                     Object elem = evt.getNewValue();
-                    /* TODO: Here too? */
+                    if (elem != null && !contains(elem)) {
+                        addElement(elem);
+                    }
+                    /* MVW: for this case, I had to move the 
+                     * call to setSelectedItem() outside the "buildingModel", 
+                     * otherwise the combo does not update 
+                     * with the new selection. See issue 5418. 
+                     **/
+                    buildingModel = false;
                     setSelectedItem(elem);
                 } else {
                     Object o = getChangedElement(evt);

@@ -42,12 +42,11 @@ class UMLMessageActivatorComboBox extends UMLComboBox {
     /**
      * Constructor for UMLMessageActivatorComboBox.
      * @param container the UI container
-     * @param arg0 the model
+     * @param model the model
      */
     public UMLMessageActivatorComboBox(
-        UMLComboBoxModel arg0) {
-        // TODO: This super constructor has been deprecated
-        super(arg0);
+        final UMLComboBoxModel model) {
+        super(model, null, false);
         setRenderer(new UMLListCellRenderer2(true));
     }
 

@@ -35,41 +35,31 @@ import org.argouml.uml.ui.UMLListCellRenderer2;
 
 /**
  * ComboBox for UML modelelements. <p>
- *
- * This implementation does not use
- * reflection and seperates Model, View and Controller better then does
- * UMLComboBox. The ancient UMLComboBoxModel and UMLComboBox are
- * replaced with this implementation to improve performance.
  */
 class UMLComboBox extends JComboBox {
 
     /**
-     * Constructor for UMLComboBox2.
-     * @deprecated As of ArgoUml version unknown (before 0.13.5),
-     * replaced by {@link #UMLComboBox2(UMLComboBoxModel2, Action, boolean)}
-     * @param model the ComboBoxModel
+     * The class uid
      */
-    @Deprecated
-    protected UMLComboBox(UMLComboBoxModel model) {
-        super(model);
-        setFont(LookAndFeelMgr.getInstance().getStandardFont());
-        addActionListener(this);
-        addPopupMenuListener(model);
-    }
-
+    private static final long serialVersionUID = -7556056847962715552L;
+    
+    // TODO: Need to document what this is for
+    private Action action;
+    
     /**
-     * Constructor for UMLComboBox2. Via the given action, the
+     * Constructor for UMLComboBox. Via the given action, the
      * action for this combobox is done.
      * @param model the ComboBoxModel
-     * @param action the action
+     * @param action the action // TODO used for what/when?
      * @param showIcon true if an icon should be shown in front of the items
      */
     public UMLComboBox(UMLComboBoxModel model, Action action,
 			boolean showIcon) {
         super(model);
-        //setFont(LookAndFeelMgr.getInstance().getStandardFont());
-        addActionListener(action);
-        // setDoubleBuffered(true);
+        this.action = action;
+        if (action != null) {
+            addActionListener(action);
+        }
         setRenderer(new UMLListCellRenderer2(showIcon));
         addPopupMenuListener(model);
     }
@@ -77,11 +67,11 @@ class UMLComboBox extends JComboBox {
     /**
      * The constructor.
      *
-     * @param arg0 the ComboBoxModel
-     * @param action the action
+     * @param model the ComboBoxModel
+     * @param action the action // TODO used for what/when?
      */
-    public UMLComboBox(UMLComboBoxModel arg0, Action action) {
-        this(arg0, action, true);
+    public UMLComboBox(UMLComboBoxModel model, Action action) {
+        this(model, action, true);
     }
 
     @Override
@@ -112,5 +102,9 @@ class UMLComboBox extends JComboBox {
     @Override
     public void removeNotify() {
         ((UMLComboBoxModel) getModel()).removeModelEventListener();
+        if (action != null) {
+            removeActionListener(action);
+        }
+        removePopupMenuListener((UMLComboBoxModel) getModel());
     }
 }

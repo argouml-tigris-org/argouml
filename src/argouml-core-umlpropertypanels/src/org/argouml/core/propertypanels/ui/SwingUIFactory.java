@@ -38,7 +38,6 @@ import org.argouml.core.propertypanels.meta.PropertyMeta;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLCheckBox2;
-import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
@@ -51,7 +50,6 @@ import org.argouml.uml.ui.behavior.state_machines.ActionSetSubmachineStateSubmac
 import org.argouml.uml.ui.foundation.core.ActionSetAssociationEndType;
 import org.argouml.uml.ui.foundation.core.ActionSetGeneralizationPowertype;
 import org.argouml.uml.ui.foundation.core.ActionSetModelElementNamespace;
-import org.argouml.uml.ui.foundation.core.ActionSetStructuralFeatureType;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndAggregationRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndChangeabilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndNavigableCheckBox;
@@ -372,7 +370,7 @@ class SwingUIFactory {
                     model,
                     // TODO: The action is different for
                     // attributes and parameters. Issue #5222
-                    ActionSetStructuralFeatureType.getInstance());
+                    new ActionSetStructuralFeatureType());
             comp = combo;
         } else if ("base".equals(prop.getName())) {
             if (Model.getFacade().isAAssociationRole(target)) {

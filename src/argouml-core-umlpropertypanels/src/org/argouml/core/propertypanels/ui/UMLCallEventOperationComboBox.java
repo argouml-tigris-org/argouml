@@ -28,18 +28,20 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
 
-
-/**
- * @author oliver.heyden@gentleware.de
- */
 class UMLCallEventOperationComboBox extends UMLSearchableComboBox {
+    
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = -8008883017063694372L;
+
     /**
      * The constructor.
      *
-     * @param arg0 the model
+     * @param model the model
      */
-    public UMLCallEventOperationComboBox(UMLComboBoxModel arg0) {
-        super(arg0, null); // no external action; we do it ourselves
+    public UMLCallEventOperationComboBox(UMLComboBoxModel model) {
+        super(model, null); // no external action; we do it ourselves
         setEditable(false);
     }
 
@@ -56,8 +58,8 @@ class UMLCallEventOperationComboBox extends UMLSearchableComboBox {
             if (Model.getFacade().isACallEvent(target) 
                 && Model.getFacade().isAOperation(selected)) {
                 if (Model.getFacade().getOperation(target) != selected) {
-                    Model.getCommonBehaviorHelper()
-                        .setOperation(target, selected);
+                    Model.getCommonBehaviorHelper().setOperation(
+                            target, selected);
                 }
             }
         }
