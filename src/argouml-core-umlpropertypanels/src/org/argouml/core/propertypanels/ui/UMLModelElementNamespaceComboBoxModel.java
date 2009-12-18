@@ -36,10 +36,7 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.UndoableAction;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.util.PathComparator;
 
 /**
@@ -175,17 +172,15 @@ class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel {
             Object oldNamespace = null;
             Object newNamespace = null;
             Object m = null;
-            if (source instanceof UMLComboBox2) {
-                UMLComboBox2 box = (UMLComboBox2) source;
-                Object o = box.getTarget();
-                if (Model.getFacade().isAModelElement(o)) {
-                    m =  o;
-                    oldNamespace = Model.getFacade().getNamespace(m);
-                }
-                o = box.getSelectedItem();
-                if (Model.getFacade().isANamespace(o)) {
-                    newNamespace = o;
-                }
+            UMLComboBox box = (UMLComboBox) source;
+            Object o = getTarget();
+            if (Model.getFacade().isAModelElement(o)) {
+                m =  o;
+                oldNamespace = Model.getFacade().getNamespace(m);
+            }
+            o = box.getSelectedItem();
+            if (Model.getFacade().isANamespace(o)) {
+                newNamespace = o;
             }
             if (newNamespace != oldNamespace && m != null && newNamespace != null) {
                 super.actionPerformed(e);

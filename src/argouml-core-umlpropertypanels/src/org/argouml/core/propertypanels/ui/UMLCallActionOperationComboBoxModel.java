@@ -36,7 +36,6 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLComboBox2;
 import org.tigris.gef.undo.UndoableAction;
 
 class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
@@ -172,15 +171,13 @@ class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             Object source = e.getSource();
-            if (source instanceof UMLComboBox2) {
-                Object selected = ((UMLComboBox2) source).getSelectedItem();
-                Object target = ((UMLComboBox2) source).getTarget();
-                if (Model.getFacade().isACallAction(target)
-                        && Model.getFacade().isAOperation(selected)) {
-                    if (Model.getFacade().getOperation(target) != selected) {
-                        Model.getCommonBehaviorHelper()
-                        .setOperation(target, selected);
-                    }
+            Object selected = ((UMLComboBox) source).getSelectedItem();
+            Object target = getTarget();
+            if (Model.getFacade().isACallAction(target)
+                    && Model.getFacade().isAOperation(selected)) {
+                if (Model.getFacade().getOperation(target) != selected) {
+                    Model.getCommonBehaviorHelper()
+                    .setOperation(target, selected);
                 }
             }
         }

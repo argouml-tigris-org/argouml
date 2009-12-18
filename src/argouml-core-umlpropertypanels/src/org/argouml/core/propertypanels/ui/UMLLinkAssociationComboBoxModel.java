@@ -33,7 +33,6 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBox2;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -149,17 +148,15 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel {
            Object oldAssoc = null;
            Object newAssoc = null;
            Object link = null;
-           if (source instanceof UMLComboBox2) {
-               UMLComboBox2 box = (UMLComboBox2) source;
-               Object o = box.getTarget();
-               if (Model.getFacade().isALink(o)) {
-                   link = o;
-                   oldAssoc = Model.getFacade().getAssociation(o);
-               }
-               Object n = box.getSelectedItem();
-               if (Model.getFacade().isAAssociation(n)) {
-                   newAssoc = n;
-               }
+           UMLComboBox box = (UMLComboBox) source;
+           Object o = box.getTarget();
+           if (Model.getFacade().isALink(o)) {
+               link = o;
+               oldAssoc = Model.getFacade().getAssociation(o);
+           }
+           Object n = box.getSelectedItem();
+           if (Model.getFacade().isAAssociation(n)) {
+               newAssoc = n;
            }
            if (newAssoc != oldAssoc && link != null && newAssoc != null) {
                Model.getCoreHelper().setAssociation(link, newAssoc);

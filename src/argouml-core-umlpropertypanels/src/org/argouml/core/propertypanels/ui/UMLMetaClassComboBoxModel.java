@@ -33,11 +33,8 @@ import java.util.List;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.foundation.extension_mechanisms.ActionSetTagDefinitionType;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -138,15 +135,13 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel {
             String oldType = null;
             String newType = null;
             Object tagDef = null;
-            if (source instanceof UMLComboBox2) {
-                UMLComboBox2 box = (UMLComboBox2) source;
-                Object t = box.getTarget();
-                if (Model.getFacade().isATagDefinition(t)) {
-                    tagDef = t;
-                    oldType = (String) Model.getFacade().getType(tagDef);
-                }
-                newType = (String) box.getSelectedItem();
+            UMLComboBox box = (UMLComboBox) source;
+            Object t = box.getTarget();
+            if (Model.getFacade().isATagDefinition(t)) {
+                tagDef = t;
+                oldType = (String) Model.getFacade().getType(tagDef);
             }
+            newType = (String) box.getSelectedItem();
             if (newType != null && !newType.equals(oldType) && tagDef != null) {
                 Model.getExtensionMechanismsHelper().setTagType(tagDef, newType);
             }

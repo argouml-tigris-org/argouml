@@ -31,8 +31,6 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.foundation.core.ActionSetAssociationEndType;
 import org.tigris.gef.undo.UndoableAction;
 
 /**

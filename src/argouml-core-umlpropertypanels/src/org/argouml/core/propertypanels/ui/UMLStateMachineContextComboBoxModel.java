@@ -35,8 +35,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.behavior.state_machines.ActionSetContextStateMachine;
 import org.tigris.gef.undo.UndoableAction;
 
 /**

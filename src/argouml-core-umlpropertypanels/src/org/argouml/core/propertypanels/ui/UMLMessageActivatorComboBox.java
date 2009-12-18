@@ -55,7 +55,7 @@ class UMLMessageActivatorComboBox extends UMLComboBox {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBox2#doIt(ActionEvent)
+     * @see org.argouml.uml.ui.UMLComboBox#doIt(ActionEvent)
      */
     protected void doIt(ActionEvent event) {
         Object o = getModel().getElementAt(getSelectedIndex());

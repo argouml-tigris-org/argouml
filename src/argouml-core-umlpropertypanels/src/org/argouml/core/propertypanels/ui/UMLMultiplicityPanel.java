@@ -193,7 +193,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
          * When we change target make sure that the check box is only selected
          * if the multiplicty exists
          * @param e
-         * @see org.argouml.uml.ui.UMLComboBox2#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+         * @see org.argouml.uml.ui.UMLComboBox#targetSet(org.argouml.ui.targetmanager.TargetEvent)
          */
 	public void targetSet(TargetEvent e) {
 	    super.targetSet(e);

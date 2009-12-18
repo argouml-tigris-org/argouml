@@ -37,7 +37,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.util.PathComparator;
 import org.tigris.gef.undo.UndoableAction;
 
@@ -151,17 +150,15 @@ public class UMLGeneralizationPowertypeComboBoxModel
             Object oldClassifier = null;
             Object newClassifier = null;
             Object gen = null;
-            if (source instanceof UMLComboBox2) {
-                UMLComboBox2 box = (UMLComboBox2) source;
-                Object o = box.getTarget();
-                if (Model.getFacade().isAGeneralization(o)) {
-                    gen = o;
-                    oldClassifier = Model.getFacade().getPowertype(gen);
-                }
-                o = box.getSelectedItem();
-                if (Model.getFacade().isAClassifier(o)) {
-                    newClassifier = o;
-                }
+            UMLComboBox box = (UMLComboBox) source;
+            Object o = box.getTarget();
+            if (Model.getFacade().isAGeneralization(o)) {
+                gen = o;
+                oldClassifier = Model.getFacade().getPowertype(gen);
+            }
+            o = box.getSelectedItem();
+            if (Model.getFacade().isAClassifier(o)) {
+                newClassifier = o;
             }
             if (newClassifier != oldClassifier && gen != null) {
                 Model.getCoreHelper().setPowertype(gen, newClassifier);

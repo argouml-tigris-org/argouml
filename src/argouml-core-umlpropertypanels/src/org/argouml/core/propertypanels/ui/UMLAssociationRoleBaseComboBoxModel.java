@@ -31,7 +31,6 @@ import java.util.Collection;
 import javax.swing.Action;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBox2;
 import org.tigris.gef.undo.UndoableAction;
 
 /**
@@ -169,19 +168,17 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel {
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            if (e.getSource() instanceof UMLComboBox2) {
-                UMLComboBox2 source = (UMLComboBox2) e.getSource();
-                Object assoc = source.getSelectedItem();
-                Object ar = source.getTarget();
-                if (Model.getFacade().getBase(ar) == assoc) {
-                    return; // base is already set to this assoc...
-                    /* This check is needed, otherwise the setbase()
-                     *  below gives an exception.*/
-                }
-                if (Model.getFacade().isAAssociation(assoc)
-                        && Model.getFacade().isAAssociationRole(ar)) {
-                    Model.getCollaborationsHelper().setBase(ar, assoc);
-                }
+            UMLComboBox source = (UMLComboBox) e.getSource();
+            Object assoc = source.getSelectedItem();
+            Object ar = source.getTarget();
+            if (Model.getFacade().getBase(ar) == assoc) {
+                return; // base is already set to this assoc...
+                /* This check is needed, otherwise the setbase()
+                 *  below gives an exception.*/
+            }
+            if (Model.getFacade().isAAssociation(assoc)
+                    && Model.getFacade().isAAssociationRole(ar)) {
+                Model.getCollaborationsHelper().setBase(ar, assoc);
             }
         }
 
