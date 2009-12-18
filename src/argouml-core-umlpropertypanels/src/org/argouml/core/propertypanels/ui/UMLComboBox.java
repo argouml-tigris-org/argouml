@@ -30,7 +30,6 @@ import javax.swing.Action;
 import javax.swing.JComboBox;
 
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.ui.targetmanager.TargettableModelView;
 import org.argouml.uml.ui.UMLListCellRenderer2;
 
 
@@ -108,5 +107,10 @@ class UMLComboBox extends JComboBox {
      */
     public Object getTarget() {
         return ((UMLComboBoxModel) getModel()).getTarget();
+    }
+    
+    @Override
+    public void removeNotify() {
+        ((UMLComboBoxModel) getModel()).removeModelEventListener();
     }
 }

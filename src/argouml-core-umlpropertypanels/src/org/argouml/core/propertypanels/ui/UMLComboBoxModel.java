@@ -417,6 +417,13 @@ abstract class UMLComboBoxModel extends AbstractListModel
         }
     }
     
+    public void removeModelEventListener() {
+        Model.getPump().addModelEventListener(this, comboBoxTarget,
+                propertySetName);
+        removeOtherModelEventListeners(comboBoxTarget);
+    }
+
+    
     /**
      * Build the minimal number of items in the model for the edit box
      * to be populated. By default this calls buildModelList but it
