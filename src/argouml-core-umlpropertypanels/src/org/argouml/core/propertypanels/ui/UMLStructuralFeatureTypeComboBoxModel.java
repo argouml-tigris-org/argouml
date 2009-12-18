@@ -45,6 +45,11 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
 
 
     /**
+     * The class uid
+     */
+    private static final long serialVersionUID = 2283910742530930285L;
+
+    /**
      * Constructor for UMLStructuralFeatureTypeComboBoxModel.
      */
     public UMLStructuralFeatureTypeComboBoxModel(

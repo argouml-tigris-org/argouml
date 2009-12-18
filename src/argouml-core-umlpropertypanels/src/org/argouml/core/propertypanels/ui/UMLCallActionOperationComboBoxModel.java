@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 
 class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
@@ -129,7 +130,7 @@ class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void modelChanged(UmlChangeEvent evt) {
         if (evt instanceof AttributeChangeEvent) {
             if (evt.getPropertyName().equals("operation")) {
                 if (evt.getSource() == getTarget()

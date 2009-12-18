@@ -28,11 +28,13 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.SwingUtilities;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
@@ -44,7 +46,7 @@ import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.model.UmlChangeEvent;
 
 /**
  * ComboBox Model for UML modelelements. <p>
@@ -53,15 +55,17 @@ import org.argouml.uml.diagram.ArgoDiagram;
  * at construction time of this class. I.e. it is "clearable".
  */
 abstract class UMLComboBoxModel extends AbstractListModel
-        implements PropertyChangeListener,
-        ComboBoxModel,
-        PopupMenuListener {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG =
-        Logger.getLogger(UMLComboBoxModel.class);
+        implements PropertyChangeListener, ComboBoxModel, PopupMenuListener {
 
+    private static final Logger LOG = Logger.getLogger(UMLComboBoxModel.class);
+
+    /**
+     * The string that represents a null or cleared choice.
+     */
+    // TODO: I18N
+    // Don't use the empty string for this or it won't show in the list
+    protected static final String CLEARED = "<none>";
+    
     /**
      * The target of the comboboxmodel. This is some UML modelelement
      */
@@ -69,8 +73,10 @@ abstract class UMLComboBoxModel extends AbstractListModel
 
     /**
      * The list with objects that should be shown in the combobox.
+     * TODO: Using a list here forces a linear search when we're trying to add
+     * a new element to the model which can be very slow for large models.
      */
-    private List objects = new ArrayList();
+    private List objects = new LinkedList();
 
     /**
      * The selected object.
@@ -78,11 +84,11 @@ abstract class UMLComboBoxModel extends AbstractListModel
     private Object selectedObject = null;
 
     /**
-     * Flag to indicate if the user may select the empty string ("") as value in
-     * the combobox. If true the attribute that is shown by this combobox may be
-     * set to null. Makes sure that there is always a "" in the list with
-     * objects so the user has the oportunity to select this to clear the
-     * attribute.
+     * Flag to indicate if the user may select the special CLEARED choice
+     * ("<none>") as value in the combobox. If true the attribute that is shown
+     * by this combobox may be set to null. Makes sure that there is always an
+     * entry in the list with objects so the user has the opportunity to select
+     * this to clear the attribute.
      */
     private boolean isClearable = false;
 
@@ -103,32 +109,36 @@ abstract class UMLComboBoxModel extends AbstractListModel
     protected boolean buildingModel = false;
     
     /**
-     * Flag needed to prevent a loop during popup notification
+     * Flag needed to prevent infinite recursion during processing of
+     * popup visibility notification event.
      */
-    private boolean willBecomeVisible = false;
+    private boolean processingWillBecomeVisible = false;
+
+    private boolean modelValid;
 
 
     /**
-     * Constructs a model for a combobox. The container given is used
-     * to retrieve the target that is manipulated through this
-     * combobox. If clearable is true, the user can select null in the
-     * combobox and thereby clear the attribute in the model.
-     *
-     * @param name The name of the property change event that must be
-     * fired to set the selected item programmatically (via changing
-     * the model)
-     * @param clearable Flag to indicate if the user may select ""
-     * as value in the combobox. If true the attribute that is shown
-     * by this combobox may be set to null.
-     * Makes sure that there is always a "" in the list with objects so the
-     * user has the opportunity to select this to clear the attribute.
+     * Constructs a model for a combobox. The container given is used to
+     * retrieve the target that is manipulated through this combobox. If
+     * clearable is true, the user can select null in the combobox and thereby
+     * clear the attribute in the model.
+     * 
+     * @param name The name of the property change event that must be fired to
+     *            set the selected item programmatically (via changing the
+     *            model)
+     * @param clearable Flag to indicate if the user may select the special
+     *            CLEARED value (<none>) as value in the combobox. If true the
+     *            attribute that is shown by this combobox may be set to null.
+     *            Makes sure that there is always an entry for this in the list
+     *            with objects so the user has the opportunity to select this to
+     *            clear the attribute.
      * @throws IllegalArgumentException if one of the arguments is null
      */
     public UMLComboBoxModel(String name, boolean clearable) {
         super();
         if (name == null || name.equals("")) {
-            throw new IllegalArgumentException("one of the arguments is null");
-	}
+            throw new IllegalArgumentException("A property name must be provided");
+        }
         // It would be better if we didn't need the container to get
         // the target. This constructor can have zero parameters as
         // soon as we improve targetChanged.
@@ -136,15 +146,43 @@ abstract class UMLComboBoxModel extends AbstractListModel
         propertySetName = name;
     }
 
+    public final void propertyChange(final PropertyChangeEvent pve) {
+        if (pve instanceof UmlChangeEvent) {
+            final UmlChangeEvent event = (UmlChangeEvent) pve;
+
+            Runnable doWorkRunnable = new Runnable() {
+                public void run() {
+                    try {
+                        modelChanged(event);
+                    } catch (InvalidElementException e) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("event = "
+                                    + event.getClass().getName());
+                            LOG.debug("source = " + event.getSource());
+                            LOG.debug("old = " + event.getOldValue());
+                            LOG.debug("name = " + event.getPropertyName());
+                            LOG.debug("updateLayout method accessed "
+                                    + "deleted element ", e);
+                        }
+                    }
+                }  
+            };
+            SwingUtilities.invokeLater(doWorkRunnable);
+        }
+    }
+    
+    
+    
     /**
      * If the property that this comboboxmodel depicts is changed in the UML
      * model, this method will make sure that the changes will be 
      * done in the combobox-model equally. <p>
      * TODO: This function is not yet completely written!
-     *
+     * 
+     * {@inheritDoc}
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void modelChanged(UmlChangeEvent evt) {
         buildingModel = true;
         if (evt instanceof AttributeChangeEvent) {
             if (evt.getPropertyName().equals(propertySetName)) {
@@ -154,6 +192,12 @@ abstract class UMLComboBoxModel extends AbstractListModel
                     if (elem != null && !contains(elem)) {
                         addElement(elem);
                     }
+                    /* MVW: for this case, I had to move the 
+                     * call to setSelectedItem() outside the "buildingModel", 
+                     * otherwise the combo does not update 
+                     * with the new selection. See issue 5418. 
+                     **/
+                    buildingModel = false;
                     setSelectedItem(elem);
                 }
             }
@@ -167,6 +211,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
                 if (evt.getPropertyName().equals(propertySetName) 
                     && (evt.getSource() == getTarget())) {
                     Object elem = evt.getNewValue();
+                    /* TODO: Here too? */
                     setSelectedItem(elem);
                 } else {
                     Object o = getChangedElement(evt);
@@ -176,8 +221,9 @@ abstract class UMLComboBoxModel extends AbstractListModel
         } else if (evt instanceof RemoveAssociationEvent && isValidEvent(evt)) {
             if (evt.getPropertyName().equals(propertySetName) 
                     && (evt.getSource() == getTarget())) {
-                if (evt.getOldValue() == getSelectedItem()) {
-                    setSelectedItem(evt.getNewValue());
+                if (evt.getOldValue() == internal2external(getSelectedItem())) {
+                    /* TODO: Here too? */
+                    setSelectedItem(external2internal(evt.getNewValue()));
                 }
             } else {
                 Object o = getChangedElement(evt);
@@ -185,17 +231,6 @@ abstract class UMLComboBoxModel extends AbstractListModel
                     removeElement(o);
                 }
             }
-        }
-        else if (evt.getSource() instanceof ArgoDiagram
-                && evt.getPropertyName().equals(propertySetName)) {
-            /* This should not be necessary, but let's be sure: */
-            addElement(evt.getNewValue());
-            /* TODO: MVW: for this case, I have to move the 
-             * call to setSelectedItem() outside the "buildingModel", otherwise
-             * the combo does not update with the new selection. 
-             * Does the same not apply in the cases above? */
-            buildingModel = false;
-            setSelectedItem(evt.getNewValue());
         }
         buildingModel = false;
     }
@@ -215,7 +250,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
      * selected item if there is one. Called from targetChanged every time the
      * target of the proppanel is changed.
      */
-    abstract protected void buildModelList();
+    protected abstract void buildModelList();
 
     /**
      * @param obj an UML object
@@ -241,25 +276,30 @@ abstract class UMLComboBoxModel extends AbstractListModel
     protected void setElements(Collection elements) {
         if (elements != null) {
             ArrayList toBeRemoved = new ArrayList();
-            for (int i = 0; i < objects.size(); i++) {
-                Object o = objects.get(i);
-                if (!elements.contains(o) && !(isClearable && "".equals(o))) {
+            for (Object o : objects) {
+                if (!elements.contains(o)
+                        && !(isClearable 
+                                // Check against "" is needed for backward 
+                                // compatibility.  Don't remove without 
+                                // checking subclasses and warning downstream
+                                // developers - tfm - 20081211
+                                && ("".equals(o) || CLEARED.equals(o)))) {
                     toBeRemoved.add(o);
                 }
             }
             removeAll(toBeRemoved);
             addAll(elements);
             
+            if (isClearable && !elements.contains(CLEARED)) {
+                addElement(CLEARED);
+            }
             if (!objects.contains(selectedObject)) {
                 selectedObject = null;
             }
-            if (isClearable && !elements.contains("")) {
-                addElement("");
-            }
         } else {
             throw new IllegalArgumentException("In setElements: may not set "
-					       + "elements to null collection");
-	}
+                                               + "elements to null collection");
+        }
     }
 
     /**
@@ -307,18 +347,17 @@ abstract class UMLComboBoxModel extends AbstractListModel
      * @param col the elements to be addd
      */
     protected void addAll(Collection col) {
-        Object o2 = getSelectedItem();
+        Object selected = getSelectedItem();
         fireListEvents = false;
         int oldSize = objects.size();
         for (Object o : col) {
             addElement(o);
         }
-        if (o2 != null) {
-            setSelectedItem(o2);
-        }
+        setSelectedItem(external2internal(selected));
         fireListEvents = true;
         if (objects.size() != oldSize) {
-            fireIntervalAdded(this, oldSize - 1, objects.size() - 1);
+            fireIntervalAdded(this, oldSize == 0 ? 0 : oldSize - 1, 
+                    objects.size() - 1);
         }
     }
 
@@ -352,47 +391,29 @@ abstract class UMLComboBoxModel extends AbstractListModel
      */
     protected void setTarget(Object theNewTarget) {
         assert (getTarget() == null);
-        
-        if (theNewTarget != null && theNewTarget.equals(comboBoxTarget)) {
-            LOG.debug("Ignoring duplicate setTarget request " + theNewTarget);
-            return;
-        }
+        assert (theNewTarget != null);
+        modelValid = false;
         LOG.debug("setTarget target :  " + theNewTarget);
-        if (Model.getFacade().isAElement(theNewTarget) 
-                || Model.getFacade().isATemplateParameter(theNewTarget)) {
             
-            Model.getPump().removeModelEventListener(this, comboBoxTarget,
-                    propertySetName);
-            // Allow listening to other elements:
-            removeOtherModelEventListeners(comboBoxTarget);
+        /* Add new listeners: */
+        comboBoxTarget = theNewTarget;
+        Model.getPump().addModelEventListener(this, comboBoxTarget,
+                propertySetName);
+        // Allow listening to other elements:
+        addOtherModelEventListeners(comboBoxTarget);
+        
+        buildingModel = true;
+        buildMinimalModelList();
+        // Do not set buildingModel = false here, 
+        // otherwise the action for selection is performed.
+        setSelectedItem(external2internal(getSelectedModelElement()));
+        buildingModel = false;
 
-            /* Add new listeners: */
-            comboBoxTarget = theNewTarget;
-            Model.getPump().addModelEventListener(this, comboBoxTarget,
-                    propertySetName);
-            // Allow listening to other elements:
-            addOtherModelEventListeners(comboBoxTarget);
-            
-            buildingModel = true;
-            try {
-                LOG.info("Building the combo box model for " + this);
-                buildMinimalModelList();
-                // Do not set buildingModel = false here, 
-                // otherwise the action for selection is performed.
-                setSelectedItem(getSelectedModelElement());
-            } catch (InvalidElementException e) {
-                LOG.warn("buildModelList attempted to operate on " 
-                        + "deleted element");
-            } finally {
-                buildingModel = false;
-            }
-            
-            if (getSize() > 0) {
-                fireIntervalAdded(this, 0, getSize() - 1);
-            }
-            if (getSelectedItem() != null && isClearable) {
-                addElement(""); // makes sure we can select 'none'
-            }
+        if (getSize() > 0) {
+            fireIntervalAdded(this, 0, getSize() - 1);
+        }
+        if (getSelectedItem() != null && isClearable) {
+            addElement(CLEARED); // makes sure we can select 'none'
         }
     }
     
@@ -400,10 +421,25 @@ abstract class UMLComboBoxModel extends AbstractListModel
      * Build the minimal number of items in the model for the edit box
      * to be populated. By default this calls buildModelList but it
      * can be overridden in subclasses to delay population of the list
-     * till the list is displayed.
+     * till the list is displayed. <p>
+     * 
+     * If this lazy list building is used, do call setModelInvalid() here!
      */
     protected void buildMinimalModelList() {
-        buildModelList();
+        buildModelListTimed();
+    }
+
+    private void buildModelListTimed() {
+        long startTime = System.currentTimeMillis();
+        try {
+            buildModelList();
+            long endTime = System.currentTimeMillis();
+            LOG.debug("buildModelList took " + (endTime - startTime)
+                    + " msec. for " + this.getClass().getName());
+        } catch (InvalidElementException e) {
+            LOG.warn("buildModelList attempted to operate on "
+                    + "deleted element");
+        }
     }
 
     /**
@@ -442,7 +478,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
     public Object getElementAt(int index) {
         if (index >= 0 && index < objects.size()) {
             return objects.get(index);
-	}
+        }
         return null;
     }
 
@@ -477,7 +513,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
      */
     public void setSelectedItem(Object o) {
         if ((selectedObject != null && !selectedObject.equals(o))
-            || (selectedObject == null && o != null)) {
+                || (selectedObject == null && o != null)) {
             selectedObject = o;
             fireContentsChanged(this, -1, -1);
         }
@@ -522,7 +558,15 @@ abstract class UMLComboBoxModel extends AbstractListModel
     public Object getSelectedItem() {
         return selectedObject;
     }
+    
+    private Object external2internal(Object o) {
+        return o == null && isClearable ? CLEARED : o;
+    }
 
+    private Object internal2external(Object o) {
+        return isClearable && CLEARED.equals(o) ? null : o;
+    }
+    
     /**
      * Returns true if some object elem is contained by the list of choices.
      *
@@ -532,12 +576,12 @@ abstract class UMLComboBoxModel extends AbstractListModel
     public boolean contains(Object elem) {
         if (objects.contains(elem)) {
             return true;
-	}
+        }
         if (elem instanceof Collection) {
             for (Object o : (Collection) elem) {
                 if (!objects.contains(o)) {
                     return false;
-		}
+                }
             }
             return true;
         }
@@ -590,7 +634,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
     protected void fireContentsChanged(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel) {
             super.fireContentsChanged(source, index0, index1);
-	}
+        }
     }
 
     /*
@@ -601,7 +645,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
     protected void fireIntervalAdded(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel) {
             super.fireIntervalAdded(source, index0, index1);
-	}
+        }
     }
 
     /*
@@ -612,11 +656,15 @@ abstract class UMLComboBoxModel extends AbstractListModel
     protected void fireIntervalRemoved(Object source, int index0, int index1) {
         if (fireListEvents && !buildingModel) {
             super.fireIntervalRemoved(source, index0, index1);
-	}
+        }
     }
-
+    
     /**
-     * Return boolean indicating whether combo allows empty string.
+     * Return boolean indicating whether combo allows empty string.  This 
+     * flag can only be specified in the constructor, so it will never change.
+     * The flag is checked directly internally, so overriding this method will
+     * have no effect.
+     * 
      * @return state of isClearable flag
      */
     protected boolean isClearable() {
@@ -644,10 +692,20 @@ abstract class UMLComboBoxModel extends AbstractListModel
         this.fireListEvents = events;
     }
     
-    boolean isLazy() {
+    protected boolean isLazy() {
         return false;
     }
     
+    /**
+     * Indicate that the model has to be rebuild. 
+     * For a lazy model, this suffices to get the model rebuild 
+     * the next time the user opens the combo.
+     */
+    protected void setModelInvalid() {
+        assert isLazy(); // catch callers attempting to use one without other
+        modelValid = false;
+    }
+
     public void popupMenuCanceled(PopupMenuEvent e) {
     }
 
@@ -655,16 +713,19 @@ abstract class UMLComboBoxModel extends AbstractListModel
     }
 
     public void popupMenuWillBecomeVisible(PopupMenuEvent ev) {
-        if (isLazy() && !willBecomeVisible) {
+        if (isLazy() && !modelValid && !processingWillBecomeVisible) {
+            buildModelListTimed();
+            modelValid = true;
+            // We should be able to just do the above, but Swing has already
+            // computed the size of the popup menu.  The rest of this is
+            // a workaround for Swing bug 
+            // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4743225
             JComboBox list = (JComboBox) ev.getSource();
-
-            buildModelList();
-
-            willBecomeVisible = true; // the flag is needed to prevent a loop
+            processingWillBecomeVisible = true;
             try {
                 list.getUI().setPopupVisible( list, true );
             } finally {
-                willBecomeVisible = false;
+                processingWillBecomeVisible = false;
             }
         }
     }
