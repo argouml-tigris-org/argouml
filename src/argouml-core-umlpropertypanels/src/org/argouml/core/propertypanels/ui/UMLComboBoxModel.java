@@ -32,6 +32,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.AbstractListModel;
+import javax.swing.Action;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.SwingUtilities;
@@ -727,4 +728,6 @@ abstract class UMLComboBoxModel extends AbstractListModel
             }
         }
     }
+    
+    abstract public Action getAction();
 }

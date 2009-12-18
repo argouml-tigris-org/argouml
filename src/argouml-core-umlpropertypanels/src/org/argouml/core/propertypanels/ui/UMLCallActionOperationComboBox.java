@@ -24,13 +24,8 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.awt.event.ActionEvent;
+import javax.swing.Action;
 
-import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxModel2;
-import org.argouml.uml.ui.UMLSearchableComboBox;
-import org.tigris.gef.undo.UndoableAction;
 
 class UMLCallActionOperationComboBox
     extends UMLComboBox {
@@ -39,8 +34,8 @@ class UMLCallActionOperationComboBox
      *
      * @param arg0 the model
      */
-    public UMLCallActionOperationComboBox(UMLComboBoxModel arg0) {
-        super(arg0, new SetActionOperationAction());
+    public UMLCallActionOperationComboBox(UMLComboBoxModel arg0, Action action) {
+        super(arg0, action);
         setEditable(false);
     }
 
@@ -50,36 +45,3 @@ class UMLCallActionOperationComboBox
     private static final long serialVersionUID = 1453984990567492914L;
 }
 
-class SetActionOperationAction extends UndoableAction {
-
-    /**
-     * The constructor.
-     */
-    public SetActionOperationAction() {
-        super("");
-    }
-
-    /*
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        Object source = e.getSource();
-        if (source instanceof UMLComboBox2) {
-            Object selected = ((UMLComboBox2) source).getSelectedItem();
-            Object target = ((UMLComboBox2) source).getTarget();
-            if (Model.getFacade().isACallAction(target)
-                    && Model.getFacade().isAOperation(selected)) {
-                if (Model.getFacade().getOperation(target) != selected) {
-                    Model.getCommonBehaviorHelper()
-                    .setOperation(target, selected);
-                }
-            }
-        }
-    }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -3574312020866131632L;
-}

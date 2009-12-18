@@ -26,6 +26,8 @@ package org.argouml.core.propertypanels.ui;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.Action;
+
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLListCellRenderer2;
 /**
@@ -47,8 +49,8 @@ class UMLMessageActivatorComboBox extends UMLComboBox {
      * @param model the model
      */
     public UMLMessageActivatorComboBox(
-        final UMLComboBoxModel model) {
-        super(model, null, false);
+        final UMLComboBoxModel model, Action action) {
+        super(model, action, false);
         setRenderer(new UMLListCellRenderer2(true));
     }
 

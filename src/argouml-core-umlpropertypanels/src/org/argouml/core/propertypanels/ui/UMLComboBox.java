@@ -29,7 +29,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 import javax.swing.JComboBox;
 
-import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.ui.UMLListCellRenderer2;
 
 
@@ -68,7 +67,8 @@ class UMLComboBox extends JComboBox {
      * The constructor.
      *
      * @param model the ComboBoxModel
-     * @param action the action // TODO used for what/when?
+     * @param action the action that is called whenever the
+     * combo selection changes
      */
     public UMLComboBox(UMLComboBoxModel model, Action action) {
         this(model, action, true);

@@ -24,15 +24,18 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.beans.PropertyChangeEvent;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.UmlChangeEvent;
-import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * The ComboBox model for the represented classifier 
@@ -88,6 +91,48 @@ class UMLCollaborationRepresentedClassifierComboBoxModel
      */
     protected Object getSelectedModelElement() {
         return Model.getFacade().getRepresentedClassifier(getTarget());
+    }
+    
+    public Action getAction() {
+        return new ActionSetRepresentedClassifierCollaboration();
+    }
+    
+    /**
+     * This Action sets the represented classifier 
+     * of a collaboration.
+     * 
+     * @author michiel
+     */
+    private class ActionSetRepresentedClassifierCollaboration extends UndoableAction {
+
+        /**
+         * Constructor for ActionSetCompositeStateConcurrent.
+         */
+        ActionSetRepresentedClassifierCollaboration() {
+            super(Translator.localize("action.set"),
+                    ResourceLoaderWrapper.lookupIcon("action.set"));
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            UMLComboBox source = (UMLComboBox) e.getSource();
+            Object target = source.getTarget();
+            Object newValue = source.getSelectedItem();
+            /* The selected value may be "" to 
+             * clear the represented classifier. */
+            if (!Model.getFacade().isAClassifier(newValue)) {
+                newValue = null;
+            }
+            if (Model.getFacade().getRepresentedClassifier(target)
+                    != newValue) {
+                Model.getCollaborationsHelper().setRepresentedClassifier(
+                        target, newValue);
+            }
+        }
+
     }
 }
 

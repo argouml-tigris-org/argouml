@@ -24,15 +24,21 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
+import org.argouml.ui.UndoableAction;
+import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.util.PathComparator;
 
@@ -139,5 +145,52 @@ class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel {
     @Override
     protected boolean isLazy() {
         return true;
+    }
+    
+    public Action getAction() {
+        
+        return new SetAction();
+    }
+    
+    class SetAction extends UndoableAction {
+        
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = 6281434994800778660L;
+
+        /**
+         * Constructor for ActionSetModelElementNamespace.
+         */
+        public SetAction() {
+            super();
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(
+         * java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object source = e.getSource();
+            Object oldNamespace = null;
+            Object newNamespace = null;
+            Object m = null;
+            if (source instanceof UMLComboBox2) {
+                UMLComboBox2 box = (UMLComboBox2) source;
+                Object o = box.getTarget();
+                if (Model.getFacade().isAModelElement(o)) {
+                    m =  o;
+                    oldNamespace = Model.getFacade().getNamespace(m);
+                }
+                o = box.getSelectedItem();
+                if (Model.getFacade().isANamespace(o)) {
+                    newNamespace = o;
+                }
+            }
+            if (newNamespace != oldNamespace && m != null && newNamespace != null) {
+                super.actionPerformed(e);
+                Model.getCoreHelper().setNamespace(m, newNamespace);
+            }
+        }
     }
 }

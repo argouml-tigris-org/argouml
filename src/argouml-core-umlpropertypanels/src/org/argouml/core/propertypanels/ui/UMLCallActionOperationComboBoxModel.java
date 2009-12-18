@@ -24,17 +24,28 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.Action;
+
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.tigris.gef.undo.UndoableAction;
 
 class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
+    
+    /**
+     * The UID.
+     */
+    private static final long serialVersionUID = 7752478921939209157L;
+    
     /**
      * The constructor.
      */
@@ -142,8 +153,41 @@ class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
         }
     }
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 7752478921939209157L;
+    public Action getAction() {
+        return new SetActionOperationAction();
+    }
+    
+    private class SetActionOperationAction extends UndoableAction {
+
+        /**
+         * The constructor.
+         */
+        public SetActionOperationAction() {
+            super("");
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object source = e.getSource();
+            if (source instanceof UMLComboBox2) {
+                Object selected = ((UMLComboBox2) source).getSelectedItem();
+                Object target = ((UMLComboBox2) source).getTarget();
+                if (Model.getFacade().isACallAction(target)
+                        && Model.getFacade().isAOperation(selected)) {
+                    if (Model.getFacade().getOperation(target) != selected) {
+                        Model.getCommonBehaviorHelper()
+                        .setOperation(target, selected);
+                    }
+                }
+            }
+        }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -3574312020866131632L;
+    }    
 }

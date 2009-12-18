@@ -24,14 +24,19 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
 import org.argouml.uml.util.PathComparator;
 
 /**
@@ -153,5 +158,61 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
                 Model.getMetaTypes().getInterface(), "name");
         Model.getPump().removeClassModelEventListener(this,
                 Model.getMetaTypes().getDataType(), "name");
+    }
+    
+    public Action getAction() {
+        return new ActionSetStructuralFeatureType();
+    }
+    
+    /**
+     * @since Nov 3, 2002
+     * @author jaap.branderhorst@xs4all.nl
+     */
+    class ActionSetStructuralFeatureType extends UndoableAction {
+
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = 8227201276430122294L;
+        
+        /**
+         * Constructor for ActionSetStructuralFeatureType.
+         */
+        protected ActionSetStructuralFeatureType() {
+            super(Translator.localize("Set"), null);
+            // Set the tooltip string:
+            putValue(Action.SHORT_DESCRIPTION, 
+                    Translator.localize("Set"));
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            assert (e.getSource() instanceof UMLComboBox);
+            Object oldClassifier = null;
+            final UMLComboBox box = (UMLComboBox) e.getSource();
+            final Object feature = box.getTarget();
+            assert (feature != null);
+            
+            oldClassifier = Model.getFacade().getType(feature);
+            
+            Object selectedClassifier = box.getSelectedItem();
+            System.out.println("The selected classifier is " + selectedClassifier);
+            
+            final Object newClassifier;
+            if (Model.getFacade().isAElement(selectedClassifier)) {
+                newClassifier = selectedClassifier;
+            } else {
+                newClassifier = null;
+            }
+            
+            if (newClassifier != oldClassifier) {
+                System.out.println("Setting the type to " + newClassifier);
+                Model.getCoreHelper().setType(feature, newClassifier);
+            }
+        }
     }
 }

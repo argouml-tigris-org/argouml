@@ -24,10 +24,15 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.swing.Action;
+
 import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * The combo box model for the base of an association-role.
@@ -38,6 +43,11 @@ import org.argouml.model.Model;
  */
 public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel {
 
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = -7060017054488071743L;
+    
     private Collection others = new ArrayList();
 
     /**
@@ -135,5 +145,45 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel {
         }
         others.clear();
     }
+    
+    public Action getAction() {
+        return new ActionSetAssociationRoleBase();
+    }
+    
+    private class ActionSetAssociationRoleBase extends UndoableAction {
 
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = -3966106395848112765L;
+
+        /**
+         * Constructor for ActionSetAssociationRoleBase.
+         */
+        public ActionSetAssociationRoleBase() {
+            super();
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            if (e.getSource() instanceof UMLComboBox2) {
+                UMLComboBox2 source = (UMLComboBox2) e.getSource();
+                Object assoc = source.getSelectedItem();
+                Object ar = source.getTarget();
+                if (Model.getFacade().getBase(ar) == assoc) {
+                    return; // base is already set to this assoc...
+                    /* This check is needed, otherwise the setbase()
+                     *  below gives an exception.*/
+                }
+                if (Model.getFacade().isAAssociation(assoc)
+                        && Model.getFacade().isAAssociationRole(ar)) {
+                    Model.getCollaborationsHelper().setBase(ar, assoc);
+                }
+            }
+        }
+
+    }
 }

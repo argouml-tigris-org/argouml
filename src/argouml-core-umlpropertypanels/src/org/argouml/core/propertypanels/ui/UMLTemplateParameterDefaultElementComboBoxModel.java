@@ -29,6 +29,8 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.Action;
+
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -112,5 +114,9 @@ public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBox
             o = Model.getFacade().getDefaultElement(getTarget());
         }
         return o;
+    }
+    
+    public Action getAction() {
+        return null;
     }
 }

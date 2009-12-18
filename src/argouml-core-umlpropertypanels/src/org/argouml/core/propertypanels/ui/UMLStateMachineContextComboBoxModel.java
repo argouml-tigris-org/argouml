@@ -24,13 +24,20 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.behavior.state_machines.ActionSetContextStateMachine;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Listmodel for the context of a statemachine.
@@ -90,5 +97,41 @@ public class UMLStateMachineContextComboBoxModel
 
     public void modelChanged(UmlChangeEvent evt) {
         /* Do nothing by design. */
+    }
+    
+    public Action getAction() {
+        return new ActionSetContextStateMachine();
+    }
+    
+    private class ActionSetContextStateMachine extends UndoableAction {
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = -8118983979324112900L;
+
+        /**
+         * Constructor for ActionSetCompositeStateConcurrent.
+         */
+        protected ActionSetContextStateMachine() {
+            super(Translator.localize("action.set"), null);
+            // Set the tooltip string:
+            putValue(Action.SHORT_DESCRIPTION, 
+                    Translator.localize("action.set"));
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            UMLComboBox source = (UMLComboBox) e.getSource();
+            Object target = source.getTarget();
+            if (Model.getFacade().getContext(target)
+                    != source.getSelectedItem()) {
+                Model.getStateMachinesHelper().setContext(
+                        target, source.getSelectedItem());
+            }
+        }
     }
 }

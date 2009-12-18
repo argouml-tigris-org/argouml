@@ -25,12 +25,20 @@
 // $header$
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.Action;
+
+import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionSetTagDefinitionType;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * A model for selecting a UML metaclass. Originally designed for use in
@@ -99,5 +107,49 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel {
     protected boolean isValidElement(Object element) {
         return metaClasses.contains(element);
     }
+    
+    public Action getAction() {
+        return new ActionSetTagDefinitionType();
+    }
+    
+    /**
+     * Action to set the type of a TagDefinition. The tagType attribute of a
+     * TagDefinition is a Name of a UML metaclass (ie String).
+     */
+    private class ActionSetTagDefinitionType extends UndoableAction {
 
+        /**
+         * Constructor for ActionSetTagDefinitionType.
+         */
+        protected ActionSetTagDefinitionType() {
+            super(Translator.localize("Set"), null);
+            // Set the tooltip string:
+            putValue(Action.SHORT_DESCRIPTION, 
+                    Translator.localize("Set"));
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object source = e.getSource();
+            String oldType = null;
+            String newType = null;
+            Object tagDef = null;
+            if (source instanceof UMLComboBox2) {
+                UMLComboBox2 box = (UMLComboBox2) source;
+                Object t = box.getTarget();
+                if (Model.getFacade().isATagDefinition(t)) {
+                    tagDef = t;
+                    oldType = (String) Model.getFacade().getType(tagDef);
+                }
+                newType = (String) box.getSelectedItem();
+            }
+            if (newType != null && !newType.equals(oldType) && tagDef != null) {
+                Model.getExtensionMechanismsHelper().setTagType(tagDef, newType);
+            }
+        }
+    }
 }

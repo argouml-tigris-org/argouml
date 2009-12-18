@@ -27,6 +27,8 @@ package org.argouml.core.propertypanels.ui;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.swing.Action;
+
 import org.argouml.model.Model;
 
 class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
@@ -97,5 +99,9 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
             return element == Model.getFacade().getOperation(target);
         }
         return false;
+    }
+    
+    public Action getAction() {
+        return null;
     }
 }

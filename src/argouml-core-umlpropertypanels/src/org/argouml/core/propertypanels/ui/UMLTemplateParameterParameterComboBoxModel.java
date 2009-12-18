@@ -29,6 +29,8 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.Action;
+
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -41,6 +43,11 @@ import org.argouml.uml.util.PathComparator;
 public class UMLTemplateParameterParameterComboBoxModel
         extends UMLComboBoxModel {
 
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = -1295242702819038923L;
+    
     private static final Logger LOG =
         Logger.getLogger(UMLTemplateParameterParameterComboBoxModel.class);
 
@@ -113,5 +120,9 @@ public class UMLTemplateParameterParameterComboBoxModel
             o = Model.getFacade().getParameter(getTarget());
         }
         return o;
+    }
+    
+    public Action getAction() {
+        return null;
     }
 }

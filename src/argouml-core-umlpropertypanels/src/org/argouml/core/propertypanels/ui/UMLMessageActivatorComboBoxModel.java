@@ -24,6 +24,8 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import javax.swing.Action;
+
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -96,6 +98,10 @@ class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel {
                     "message");
             }
         }
+    }
+    
+    public Action getAction() {
+        return null;
     }
 }
 

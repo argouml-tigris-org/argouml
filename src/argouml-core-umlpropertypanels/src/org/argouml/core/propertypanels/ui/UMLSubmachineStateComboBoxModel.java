@@ -24,9 +24,17 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.behavior.state_machines.ActionSetSubmachineStateSubmachine;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * @since Dec 15, 2002
@@ -78,5 +86,40 @@ class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel {
         }
         return null;
     }
+    
+    public Action getAction() {
+        return new ActionSetSubmachineStateSubmachine();
+    }
+    
+    /**
+     * @since Dec 15, 2002
+     * @author jaap.branderhorst@xs4all.nl
+     */
+    private class ActionSetSubmachineStateSubmachine extends UndoableAction {
 
+        /**
+         * 
+         */
+        private static final long serialVersionUID = -2501791485368016442L;
+
+        /**
+         * Constructor for ActionSetModelElementStereotype.
+         */
+        protected ActionSetSubmachineStateSubmachine() {
+            super(Translator.localize("action.set"), null);
+            // Set the tooltip string:
+            putValue(Action.SHORT_DESCRIPTION, 
+                    Translator.localize("action.set"));
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            UMLComboBox box = (UMLComboBox) e.getSource();
+            Model.getStateMachinesHelper().setStatemachineAsSubmachine(
+                    getTarget(), box.getSelectedItem());
+        }
+    }
 }

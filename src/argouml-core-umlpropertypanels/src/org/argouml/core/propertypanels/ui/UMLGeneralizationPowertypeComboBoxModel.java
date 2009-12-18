@@ -25,15 +25,21 @@
 // $header$
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.util.PathComparator;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * TODO: For UML 2.x, powertypes are accessed indirectly through the 
@@ -112,5 +118,54 @@ public class UMLGeneralizationPowertypeComboBoxModel
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAClassifier(element);
     }
+    
+    public Action getAction() {
+        return new ActionSetGeneralizationPowertype();
+    }
 
+    private class ActionSetGeneralizationPowertype extends UndoableAction {
+
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = -6222244327700907236L;
+
+        /**
+         * Constructor for ActionSetStructuralFeatureType.
+         */
+        protected ActionSetGeneralizationPowertype() {
+            super(Translator.localize("Set"), null);
+            // Set the tooltip string:
+            putValue(Action.SHORT_DESCRIPTION, 
+                    Translator.localize("Set"));
+        }
+
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object source = e.getSource();
+            Object oldClassifier = null;
+            Object newClassifier = null;
+            Object gen = null;
+            if (source instanceof UMLComboBox2) {
+                UMLComboBox2 box = (UMLComboBox2) source;
+                Object o = box.getTarget();
+                if (Model.getFacade().isAGeneralization(o)) {
+                    gen = o;
+                    oldClassifier = Model.getFacade().getPowertype(gen);
+                }
+                o = box.getSelectedItem();
+                if (Model.getFacade().isAClassifier(o)) {
+                    newClassifier = o;
+                }
+            }
+            if (newClassifier != oldClassifier && gen != null) {
+                Model.getCoreHelper().setPowertype(gen, newClassifier);
+            }
+        }
+    }
 }

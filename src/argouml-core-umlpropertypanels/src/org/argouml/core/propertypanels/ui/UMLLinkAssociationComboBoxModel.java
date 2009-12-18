@@ -24,11 +24,17 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * The model for the combobox to show the Association of the Link.
@@ -108,4 +114,56 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel {
         }
         return null;
     }
+    
+    public Action getAction() {
+        return new ActionSetLinkAssociation();
+    }
+    
+    /**
+     *
+     * @author Michiel
+     */
+    class ActionSetLinkAssociation extends UndoableAction {
+
+       /**
+        * The UID.
+        */
+       private static final long serialVersionUID = 6168167355078835252L;
+
+       /**
+        * Constructor for ActionSetModelElementNamespace.
+        */
+       public ActionSetLinkAssociation() {
+           super(Translator.localize("Set"), null);
+                   // Set the tooltip string:
+           putValue(Action.SHORT_DESCRIPTION, Translator.localize("Set"));
+       }
+
+       /*
+        * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+        */
+       @Override
+       public void actionPerformed(ActionEvent e) {
+           super.actionPerformed(e);
+           Object source = e.getSource();
+           Object oldAssoc = null;
+           Object newAssoc = null;
+           Object link = null;
+           if (source instanceof UMLComboBox2) {
+               UMLComboBox2 box = (UMLComboBox2) source;
+               Object o = box.getTarget();
+               if (Model.getFacade().isALink(o)) {
+                   link = o;
+                   oldAssoc = Model.getFacade().getAssociation(o);
+               }
+               Object n = box.getSelectedItem();
+               if (Model.getFacade().isAAssociation(n)) {
+                   newAssoc = n;
+               }
+           }
+           if (newAssoc != oldAssoc && link != null && newAssoc != null) {
+               Model.getCoreHelper().setAssociation(link, newAssoc);
+           }
+       }
+   }
 }

@@ -25,7 +25,15 @@
 // $header$
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.foundation.core.ActionSetAssociationEndType;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * @since Nov 2, 2002
@@ -58,5 +66,54 @@ public class UMLAssociationEndTypeComboBoxModel
         }
         return null;
     }
+    
+    public Action getAction() {
+        return new ActionSetAssociationEndType();
+    }
 
+    private class ActionSetAssociationEndType extends UndoableAction {
+
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = 5055557403240849587L;
+
+
+        /**
+         * Constructor for ActionSetStructuralFeatureType.
+         */
+        public ActionSetAssociationEndType() {
+            super(Translator.localize("Set"), null);
+            // Set the tooltip string:
+            putValue(Action.SHORT_DESCRIPTION, 
+                    Translator.localize("Set"));
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object source = e.getSource();
+            Object oldClassifier = null;
+            Object newClassifier = null;
+            Object end = null;
+            UMLComboBox box = (UMLComboBox) source;
+            Object o = getTarget();
+            if (Model.getFacade().isAAssociationEnd(o)) {
+                end = o;
+                oldClassifier = Model.getFacade().getType(end);
+            }
+            o = box.getSelectedItem();
+            if (Model.getFacade().isAClassifier(o)) {
+                newClassifier = o;
+            }
+            if (newClassifier != oldClassifier && end != null
+                    && newClassifier != null) {
+                Model.getCoreHelper().setType(end, newClassifier);
+                super.actionPerformed(e);
+            }
+        }
+    }
 }
