@@ -79,7 +79,7 @@ public class UMLStateMachineContextComboBoxModel
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAClassifier(element)
@@ -87,7 +87,7 @@ public class UMLStateMachineContextComboBoxModel
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
         return Model.getFacade().getContext(getTarget());

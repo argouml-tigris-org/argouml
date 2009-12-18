@@ -67,7 +67,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
      * This is explained by WFR 2 of a StructuralFeature: 
      * The type of a StructuralFeature must be a Class, DataType, or Interface.
      * 
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAClass(element)
@@ -76,7 +76,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     @SuppressWarnings("unchecked")
     protected void buildModelList() {
@@ -122,7 +122,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
     }
     
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
         Object o = null;

@@ -56,7 +56,7 @@ public class UMLAssociationEndTypeComboBoxModel
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
 	if (getTarget() != null) {

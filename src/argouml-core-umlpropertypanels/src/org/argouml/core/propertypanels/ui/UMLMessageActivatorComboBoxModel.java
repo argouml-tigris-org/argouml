@@ -27,13 +27,17 @@ package org.argouml.core.propertypanels.ui;
 import javax.swing.Action;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
  * The model behind the UMLMessageActivatorComboBox.
  */
 class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel {
 
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = 5785236557511670953L;
+    
     private Object interaction = null;
 
     /**
@@ -47,7 +51,7 @@ class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     protected void buildModelList() {
         Object target = getTarget();
@@ -62,7 +66,7 @@ class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel {
 
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object m) {
         return ((Model.getFacade().isAMessage(m))
@@ -73,7 +77,7 @@ class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
@@ -83,7 +87,7 @@ class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel {
     }
     
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#setTarget(java.lang.Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#setTarget(java.lang.Object)
      */
     protected void setTarget(Object target) {
         assert (getTarget() == null);

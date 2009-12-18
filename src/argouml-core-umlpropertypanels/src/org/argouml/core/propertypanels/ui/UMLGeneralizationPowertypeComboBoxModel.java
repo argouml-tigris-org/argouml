@@ -68,7 +68,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
@@ -78,7 +78,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     protected void buildModelList() {
         Set<Object> elements = new TreeSet<Object>(new PathComparator());
@@ -112,7 +112,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAClassifier(element);

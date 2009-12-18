@@ -81,7 +81,7 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     @Override
     protected Object getSelectedModelElement() {
@@ -92,14 +92,14 @@ public class UMLMetaClassComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     protected void buildModelList() {
         setElements(metaClasses);
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
         return metaClasses.contains(element);

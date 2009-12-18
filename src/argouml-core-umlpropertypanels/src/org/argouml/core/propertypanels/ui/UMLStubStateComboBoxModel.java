@@ -55,7 +55,7 @@ class UMLStubStateComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
         return (Model.getFacade().isAStateVertex(element)
@@ -64,7 +64,7 @@ class UMLStubStateComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     protected void buildModelList() {
         removeAllElements();
@@ -91,7 +91,7 @@ class UMLStubStateComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
         String objectName = null;

@@ -63,7 +63,7 @@ class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
      * TODO: In fact, we also should include operations of imported
      * clasifiers.
      *
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     protected void buildModelList() {
         Object target = TargetManager.getInstance().getModelTarget();
@@ -105,7 +105,7 @@ class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
         Object target = TargetManager.getInstance().getModelTarget();
@@ -116,7 +116,7 @@ class UMLCallActionOperationComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {
         Object target = TargetManager.getInstance().getModelTarget();

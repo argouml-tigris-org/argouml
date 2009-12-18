@@ -58,7 +58,7 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
         return Model.getFacade().isAAssociation(o);
@@ -74,7 +74,7 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel {
      * and associationclasses. This algo best goes in the model subsystem, e.g.
      * in a method getAllPossibleAssociationsForALink().
      *
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     protected void buildModelList() {
         Collection linkEnds;
@@ -105,7 +105,7 @@ class UMLLinkAssociationComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
         if (Model.getFacade().isALink(getTarget())) {

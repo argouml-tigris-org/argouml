@@ -41,7 +41,7 @@ class UMLExtendExtensionListModel extends UMLModelElementListModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     protected void buildModelList() {
         if (!isEmpty())
@@ -51,7 +51,7 @@ class UMLExtendExtensionListModel extends UMLModelElementListModel {
 
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAUseCase(element);

@@ -30,7 +30,6 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
@@ -71,7 +70,7 @@ class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
         return Model.getFacade().isANamespace(o)
@@ -79,7 +78,7 @@ class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     @Override
     protected void buildMinimalModelList() {
@@ -96,7 +95,7 @@ class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     protected void buildModelList() {
         Set<Object> elements = new TreeSet<Object>(new PathComparator());
@@ -130,7 +129,7 @@ class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {

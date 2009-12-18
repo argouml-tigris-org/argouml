@@ -517,7 +517,7 @@ abstract class UMLModelElementListModel
      * Hence, we block firing list events completely by setting 
      * buildingModel to true for the duration of this function. <p>
      * 
-     * This function looks a lot like the one in UMLComboBoxModel2.
+     * This function looks a lot like the one in UMLComboBoxModel.
      * 
      * @param theNewTarget the new target
      */

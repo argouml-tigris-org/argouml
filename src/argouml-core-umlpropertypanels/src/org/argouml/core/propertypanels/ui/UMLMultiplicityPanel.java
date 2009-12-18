@@ -26,6 +26,7 @@ package org.argouml.core.propertypanels.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -33,14 +34,11 @@ import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.uml.ui.UMLComboBoxModel2;
-import org.argouml.uml.ui.UMLSearchableComboBox;
-import org.argouml.uml.ui.behavior.collaborations.ActionSetClassifierRoleMultiplicity;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * A compound control containing all the visual controls for specifying
@@ -78,7 +76,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
         multiplicityComboBox =
 		new MultiplicityComboBox(
 		        multiplicityComboBoxModel,
-		        ActionSetClassifierRoleMultiplicity.getInstance());
+		        multiplicityComboBoxModel.getAction());
         multiplicityComboBox.setEditable(true);
         multiplicityComboBox.addItemListener(this);
         add(checkBox, BorderLayout.WEST);
@@ -152,13 +150,18 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
     private class MultiplicityComboBox extends UMLSearchableComboBox {
 
         /**
+         * The class uid
+         */
+        private static final long serialVersionUID = -5860730478954634611L;
+
+        /**
          * Constructor for UMLMultiplicityComboBox2.
          * @param arg0 the combobox model
          * @param selectAction the action
          */
-        public MultiplicityComboBox(UMLComboBoxModel2 arg0,
+        public MultiplicityComboBox(UMLComboBoxModel model,
                 Action selectAction) {
-            super(arg0, selectAction);
+            super(model, selectAction);
         }
 
         /**
@@ -189,22 +192,6 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
             }
         }
 
-        /**
-         * When we change target make sure that the check box is only selected
-         * if the multiplicty exists
-         * @param e
-         * @see org.argouml.uml.ui.UMLComboBox#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-         */
-	public void targetSet(TargetEvent e) {
-	    super.targetSet(e);
-	    Object target = getTarget();
-	    boolean exists = target != null 
-                && Model.getFacade().getMultiplicity(target) != null;
-	    multiplicityComboBox.setEnabled(exists);
-	    multiplicityComboBox.setEditable(exists);
-	    checkBox.setSelected(exists);
-	}
-	
 	public void setTarget(Object target) {
 	    boolean exists = (target != null 
 	        && Model.getFacade().getMultiplicity(target) != null);
@@ -219,7 +206,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
      * A model for multiplicities.
      */
     private class MultiplicityComboBoxModel
-        extends UMLComboBoxModel2 {
+        extends UMLComboBoxModel {
 
         /**
          * Constructor for UMLMultiplicityComboBoxModel.
@@ -231,14 +218,14 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
         }
     
         /*
-         * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+         * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
          */
         protected boolean isValidElement(Object element) {
             return element instanceof String;
         }
     
         /*
-         * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+         * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
          */
         protected void buildModelList() {
             setElements(multiplicityList);
@@ -249,7 +236,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
         }
     
         /*
-         * @see org.argouml.uml.ui.UMLComboBoxModel2#addElement(java.lang.Object)
+         * @see org.argouml.uml.ui.UMLComboBoxModel#addElement(java.lang.Object)
          */
         public void addElement(Object o) {
             if (o == null) {
@@ -287,6 +274,51 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
         @Override
         protected Object getTarget() {
             return super.getTarget();
+        }
+        
+        public Action getAction() {
+            return new ActionSetClassifierRoleMultiplicity();
+        }
+        
+        /**
+        *
+        * @author mkl
+        */
+        class ActionSetClassifierRoleMultiplicity extends ActionSetMultiplicity {
+
+            /**
+             * The class uid
+             */
+            private static final long serialVersionUID = -6091471231385415904L;
+
+            public ActionSetClassifierRoleMultiplicity() {
+                super();
+            }
+
+            /*
+             * @see org.argouml.uml.ui.ActionSetMultiplicity#setSelectedItem(
+             *      java.lang.Object, java.lang.Object)
+             */
+            public void setSelectedItem(Object item, Object target) {
+                if (target != null
+                        && Model.getFacade().isAClassifierRole(target)) {
+                    if (Model.getFacade().isAMultiplicity(item)) {
+                        if (!item.equals(Model.getFacade().getMultiplicity(target))) {
+                            Model.getCoreHelper().setMultiplicity(target, item);
+                        }
+                    } else if (item instanceof String) {
+                        if (!item.equals(Model.getFacade().toString(
+                                Model.getFacade().getMultiplicity(target)))) {
+                            Model.getCoreHelper().setMultiplicity(
+                                    target,
+                                    Model.getDataTypesFactory().createMultiplicity(
+                                            (String) item));
+                        }
+                    } else {
+                        Model.getCoreHelper().setMultiplicity(target, null);
+                    }
+                }
+            }
         }
     }
     
@@ -327,4 +359,48 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
 	    setSelected(exists);
         }
     }
+    
+}
+
+
+/**
+ * Framework action to set the multiplicity of some modelelement.
+ * @author jaap.branderhorst@xs4all.nl
+ * @since Jan 6, 2003
+ */
+abstract class ActionSetMultiplicity extends UndoableAction {
+
+    /**
+     * Constructor for ActionSetMultiplicity.
+     */
+    protected ActionSetMultiplicity() {
+        super(Translator.localize("Set"), null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, 
+                Translator.localize("Set"));
+    }
+
+    /*
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        Object source = e.getSource();
+        if (source instanceof UMLComboBox) {
+            Object selected = ((UMLComboBox) source).getSelectedItem();
+            Object target = ((UMLComboBox) source).getTarget();
+            if (target != null && selected != null)
+                setSelectedItem(selected, target);
+        }
+    }
+
+    /**
+     * The user should implement this method to set the multiplicity (the given
+     * item) for the target of the comboboxmodel (target
+     * @param item The multiplicity that should be set
+     * @param target The target of the comboboxmodel (the modelelement that
+     * should have its multiplicity set).
+     */
+    public abstract void setSelectedItem(Object item, Object target);
+
 }

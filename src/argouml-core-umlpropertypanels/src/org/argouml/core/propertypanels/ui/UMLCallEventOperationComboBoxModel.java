@@ -49,7 +49,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     protected void buildModelList() {
         Object target = getTarget();
@@ -80,7 +80,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
         Object target = getTarget();
@@ -91,7 +91,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(java.lang.Object)
      */
     protected boolean isValidElement(Object element) {
         Object target = getTarget();

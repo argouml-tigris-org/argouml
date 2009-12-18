@@ -82,7 +82,7 @@ class UMLCollaborationRepresentedOperationComboBoxModel
     }
     
     /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAOperation(element)
