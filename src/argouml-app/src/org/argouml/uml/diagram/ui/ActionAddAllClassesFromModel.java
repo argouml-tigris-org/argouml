@@ -31,7 +31,7 @@ import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.reveng.DiagramInterface;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * ActionAddAllClassesFromModel enables pasting of an existing node into a

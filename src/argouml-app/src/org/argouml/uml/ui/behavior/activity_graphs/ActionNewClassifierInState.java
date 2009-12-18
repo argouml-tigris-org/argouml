@@ -31,7 +31,7 @@ import java.util.Iterator;
 
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * This Action creates a new ClassifierInState for a ObjectFlowState. <p>

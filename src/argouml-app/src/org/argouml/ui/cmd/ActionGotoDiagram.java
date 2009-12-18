@@ -35,7 +35,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.GotoDialog;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 ////////////////////////////////////////////////////////////////
 // items on view menu

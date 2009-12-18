@@ -56,7 +56,7 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationL
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewTagDefinition;
 import org.argouml.util.ArgoFrame;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 
 /**

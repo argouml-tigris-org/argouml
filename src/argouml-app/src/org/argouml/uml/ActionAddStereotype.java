@@ -37,7 +37,7 @@ import org.argouml.kernel.ProjectSettings;
 import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
 import org.argouml.notation.providers.uml.NotationUtilityUml;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * Action to add a sterotype to a collection of model elements.

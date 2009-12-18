@@ -35,7 +35,7 @@ import javax.swing.JOptionPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.UmlModelMutator;
 import org.argouml.util.ArgoFrame;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * Abstract action that is the parent to all add actions that add the

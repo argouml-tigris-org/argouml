@@ -33,7 +33,7 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.MutableGraphModel;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
 * ActionAddExistingEdge enables pasting of an existing edge into a Diagram.

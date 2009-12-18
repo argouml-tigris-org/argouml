@@ -30,7 +30,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import org.argouml.i18n.Translator;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * This class resembles UMLModelElementListModel2, but is for those associations

@@ -42,7 +42,7 @@ import org.argouml.uml.reveng.ImportInterface;
 import org.argouml.uml.reveng.ImporterManager;
 import org.argouml.uml.reveng.ui.ImportStatusScreen;
 import org.argouml.util.ArgoFrame;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 
 /** Action to trigger importing from sources.

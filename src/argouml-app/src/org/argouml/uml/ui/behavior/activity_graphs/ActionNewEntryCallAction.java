@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * This action creates a new CallAction as a Entry activity 

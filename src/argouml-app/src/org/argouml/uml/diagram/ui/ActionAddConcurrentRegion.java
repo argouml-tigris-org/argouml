@@ -48,7 +48,7 @@ import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 //TODO: There is a cyclic dependency between this class and FigConcurrentRegion
 

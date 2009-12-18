@@ -29,7 +29,7 @@ import javax.swing.Action;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * Base class for remove actions. Remove actions can remove an element

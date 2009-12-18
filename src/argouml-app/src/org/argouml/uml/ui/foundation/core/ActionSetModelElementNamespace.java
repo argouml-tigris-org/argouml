@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.tigris.gef.undo.UndoableAction;
+import org.argouml.ui.UndoableAction;
 
 /**
  * @since Oct 10, 2002
