@@ -1128,7 +1128,7 @@
     <attribute name="container" type="Component" />
   </panel>
   <panel name="TemplateParameter">
-    <combo name="type" type="Metatype" />
+    <combo name="type" type="Classifier" />
     <text name="name" type="Name" />
     <singlerow name="template" type="ModelElement" />
     <combo name="defaultElement" type="ModelElement" />
