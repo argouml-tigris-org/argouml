@@ -44,7 +44,7 @@ import org.argouml.ui.UndoableAction;
  * 
  * @author mkl
  */
-public class UMLMetaClassComboBoxModel extends UMLComboBoxModel {
+class UMLMetaClassComboBoxModel extends UMLComboBoxModel {
 
     /**
      * The class uid

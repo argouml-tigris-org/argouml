@@ -40,7 +40,7 @@ import org.argouml.ui.UndoableAction;
  * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel {
+class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel {
 
     /**
      * The class uid

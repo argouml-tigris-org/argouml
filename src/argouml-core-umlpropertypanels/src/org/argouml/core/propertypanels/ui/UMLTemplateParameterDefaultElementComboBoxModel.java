@@ -39,7 +39,7 @@ import org.argouml.uml.util.PathComparator;
 /**
  * The combobox model for the default element belonging to some TemplateParameter.
  */
-public class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBoxModel {
+class UMLTemplateParameterDefaultElementComboBoxModel extends UMLComboBoxModel {
 
     /**
      * The class uid

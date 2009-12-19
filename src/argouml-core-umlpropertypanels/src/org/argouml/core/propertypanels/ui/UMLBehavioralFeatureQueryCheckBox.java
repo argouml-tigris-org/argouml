@@ -34,7 +34,7 @@ import org.argouml.ui.UndoableAction;
 
 /**
  */
-public class UMLBehavioralFeatureQueryCheckBox extends UMLCheckBox {
+class UMLBehavioralFeatureQueryCheckBox extends UMLCheckBox {
 
     /**
      * The class uid

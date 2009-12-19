@@ -29,7 +29,7 @@ import org.argouml.model.Model;
 /**
  * @author tfmorris
  */
-public class UMLOperationSpecificationDocument extends UMLPlainTextDocument {
+class UMLOperationSpecificationDocument extends UMLPlainTextDocument {
 
     /**
      * The serial version.

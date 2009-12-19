@@ -43,7 +43,7 @@ import org.argouml.ui.UndoableAction;
  * @since Dec 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLStateMachineContextComboBoxModel
+class UMLStateMachineContextComboBoxModel
     extends  UMLComboBoxModel {
 
     /**

@@ -33,7 +33,7 @@ import org.argouml.model.Model;
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLExtensionPointLocationDocument extends UMLPlainTextDocument {
+class UMLExtensionPointLocationDocument extends UMLPlainTextDocument {
 
     /**
      * The class uid

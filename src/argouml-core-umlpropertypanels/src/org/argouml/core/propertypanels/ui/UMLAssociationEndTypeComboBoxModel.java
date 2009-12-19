@@ -37,7 +37,7 @@ import org.argouml.ui.UndoableAction;
  * @since Nov 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLAssociationEndTypeComboBoxModel
+class UMLAssociationEndTypeComboBoxModel
     extends UMLStructuralFeatureTypeComboBoxModel {
 
     /**

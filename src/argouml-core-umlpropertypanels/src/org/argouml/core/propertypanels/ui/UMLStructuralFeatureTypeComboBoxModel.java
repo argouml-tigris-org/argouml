@@ -45,7 +45,7 @@ import org.argouml.uml.util.PathComparator;
  * @since Nov 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
+class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
 
 
     /**

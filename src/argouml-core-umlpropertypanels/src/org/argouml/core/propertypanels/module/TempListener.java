@@ -33,7 +33,7 @@ import org.argouml.core.propertypanels.ui.XMLPropPanelFactory;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 
-public class TempListener implements TargetListener {
+class TempListener implements TargetListener {
 
     private static final Logger LOG = Logger.getLogger(TempListener.class);
     private TempTabPage tab;

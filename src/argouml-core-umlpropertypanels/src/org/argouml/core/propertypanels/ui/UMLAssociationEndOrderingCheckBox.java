@@ -37,7 +37,7 @@ import org.argouml.ui.UndoableAction;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public class UMLAssociationEndOrderingCheckBox extends UMLCheckBox {
+class UMLAssociationEndOrderingCheckBox extends UMLCheckBox {
 
     /**
      * Constructor for UMLAssociationEndOrderingCheckBox.

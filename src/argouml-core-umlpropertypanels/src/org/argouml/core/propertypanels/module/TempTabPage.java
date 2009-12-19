@@ -32,7 +32,7 @@ import org.argouml.core.propertypanels.ui.XMLPropPanelFactory;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 
-public class TempTabPage extends JPanel {
+class TempTabPage extends JPanel {
     
     TempTabPage() {
         super(new BorderLayout());

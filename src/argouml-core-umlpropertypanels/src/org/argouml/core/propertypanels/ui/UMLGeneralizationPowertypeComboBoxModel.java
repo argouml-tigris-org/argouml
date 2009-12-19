@@ -47,7 +47,7 @@ import org.argouml.ui.UndoableAction;
  * @since Nov 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLGeneralizationPowertypeComboBoxModel
+class UMLGeneralizationPowertypeComboBoxModel
     extends UMLComboBoxModel {
 
     /**

@@ -31,7 +31,7 @@ import org.argouml.model.Facade;
  *
  * @author tfmorris
  */
-public class UMLDerivedCheckBox extends UMLTaggedValueCheckBox {
+class UMLDerivedCheckBox extends UMLTaggedValueCheckBox {
     
     /**
      * The constructor.

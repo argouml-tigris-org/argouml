@@ -37,7 +37,7 @@ import org.argouml.ui.UndoableAction;
  * @author MarkusK
  *
  */
-public class UMLActionAsynchronousCheckBox extends UMLCheckBox {
+class UMLActionAsynchronousCheckBox extends UMLCheckBox {
 
     /**
      * The class uid

@@ -37,7 +37,7 @@ import org.argouml.ui.UndoableAction;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 27, 2003
  */
-public class UMLGeneralizableElementRootCheckBox extends UMLCheckBox {
+class UMLGeneralizableElementRootCheckBox extends UMLCheckBox {
 
     /**
      * The class uid

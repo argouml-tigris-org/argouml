@@ -121,7 +121,7 @@ class UMLStubStateComboBoxModel extends UMLComboBoxModel {
      *
      * @author pepargouml@yahoo.es
      */
-    public class ActionSetStubStateReferenceState extends UndoableAction {
+    class ActionSetStubStateReferenceState extends UndoableAction {
 
         /**
          * The class uid

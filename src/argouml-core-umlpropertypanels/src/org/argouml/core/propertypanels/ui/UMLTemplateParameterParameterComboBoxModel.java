@@ -40,7 +40,7 @@ import org.argouml.uml.util.PathComparator;
 /**
  * The combobox model for the parameter belonging to some TemplateParameter.
  */
-public class UMLTemplateParameterParameterComboBoxModel
+class UMLTemplateParameterParameterComboBoxModel
         extends UMLComboBoxModel {
 
     /**

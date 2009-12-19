@@ -33,7 +33,7 @@ import javax.swing.text.BadLocationException;
  *
  * @author pepargouml@yahoo.es
  */
-public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
+class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
 
     /**
      * The serial version.

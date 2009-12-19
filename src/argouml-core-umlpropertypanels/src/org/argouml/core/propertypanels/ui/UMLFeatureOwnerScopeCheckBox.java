@@ -36,7 +36,7 @@ import org.argouml.ui.UndoableAction;
  * @since Nov 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox {
+class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox {
 
     /**
      * The class uid

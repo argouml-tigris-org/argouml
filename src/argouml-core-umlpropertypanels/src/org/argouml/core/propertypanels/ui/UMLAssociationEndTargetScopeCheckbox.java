@@ -37,7 +37,7 @@ import org.argouml.ui.UndoableAction;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox {
+class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox {
 
     /**
      * Constructor for UMLAssociationEndTargetScopeCheckbox.

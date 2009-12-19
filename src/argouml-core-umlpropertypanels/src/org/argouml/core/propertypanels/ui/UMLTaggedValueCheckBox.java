@@ -39,7 +39,7 @@ import org.argouml.ui.UndoableAction;
  * 
  * @author tfmorris
  */
-public class UMLTaggedValueCheckBox extends UMLCheckBox {
+class UMLTaggedValueCheckBox extends UMLCheckBox {
 
     private String tagName;
     

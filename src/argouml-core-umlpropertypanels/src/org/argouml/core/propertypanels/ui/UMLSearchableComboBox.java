@@ -37,7 +37,7 @@ import org.argouml.uml.ui.UMLListCellRenderer2;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 5, 2003
  */
-public class UMLSearchableComboBox extends UMLEditableComboBox {
+class UMLSearchableComboBox extends UMLEditableComboBox {
 
     /**
      * Constructor for UMLSearchableComboBox.
