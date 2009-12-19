@@ -24,7 +24,13 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
 
 /**
  * @author mkl
@@ -49,5 +55,53 @@ class UMLPartitionContentListModel extends  UMLModelElementListModel {
         Object partition = getTarget();
         return Model.getFacade().getContents(partition).contains(element);
     }
-    
+
+    /**
+     * @author mkl
+     */
+    private static class ActionAddPartitionContent extends AbstractActionAddModelElement2 {
+
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = -3371454533555822156L;
+
+        public ActionAddPartitionContent() {
+            super();
+            setMultiSelect(true);
+        }
+
+        @Override
+        protected void doIt(Collection selected) {
+            Object partition = getTarget();
+            if (Model.getFacade().isAPartition(partition)) {
+                Model.getActivityGraphsHelper().setContents(
+                        partition, selected);
+            }
+        }
+
+        protected List getChoices() {
+            List ret = new ArrayList();
+            if (Model.getFacade().isAPartition(getTarget())) {
+                Object partition = getTarget();
+                Object ag = Model.getFacade().getActivityGraph(partition);
+                if (ag != null) {
+                    Object top = Model.getFacade().getTop(ag);
+                    /* There are no composite states, so this will work: */
+                    ret.addAll(Model.getFacade().getSubvertices(top));
+                }
+            }
+            return ret;
+        }
+
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-contents");
+        }
+
+        protected List getSelected() {
+            List ret = new ArrayList();
+            ret.addAll(Model.getFacade().getContents(getTarget()));
+            return ret;
+        }
+    }
 }

@@ -24,9 +24,16 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.behavior.common_behavior.ActionAddContextSignal;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
  * The model for the listbox showing the contexts of a signal.
@@ -35,6 +42,11 @@ import org.argouml.uml.ui.behavior.common_behavior.ActionAddContextSignal;
  */
 class UMLSignalContextListModel extends UMLModelElementListModel {
 
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = 2002737769556890982L;
+    
     /**
      * The constructor.
      */
@@ -64,4 +76,75 @@ class UMLSignalContextListModel extends UMLModelElementListModel {
                         element);
     }
 
+    /**
+     * This Action removes a Context from a Signal.
+     * 
+     * @author Michiel
+     */
+    private static class ActionRemoveContextSignal extends AbstractActionRemoveElement {
+
+        /**
+         * The serial version.
+         */
+        private static final long serialVersionUID = -3345844954130000669L;
+
+        /**
+         * Construct an Action which removes a Context from a Signal.
+         */
+        public ActionRemoveContextSignal() {
+            super(Translator.localize("menu.popup.remove"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object context = getObjectToRemove(); 
+            if (context != null) {
+                Object signal = getTarget();
+                if (Model.getFacade().isASignal(signal)) {
+                    Model.getCommonBehaviorHelper().removeContext(signal, context);
+                }
+            }
+        }
+    }
+    
+    /**
+     * This action adds a context to a signal.
+     *
+     * @author mvw@tigris.org
+     */
+    private static class ActionAddContextSignal extends AbstractActionAddModelElement2 {
+
+        /**
+         * The constructor.
+         */
+        public ActionAddContextSignal() {
+            super();
+        }
+
+        protected List getChoices() {
+            List ret = new ArrayList();
+            Object model =
+                ProjectManager.getManager().getCurrentProject().getModel();
+            if (getTarget() != null) {
+                ret.addAll(Model.getModelManagementHelper()
+                        .getAllBehavioralFeatures(model));
+            }
+            return ret;
+        }
+
+        protected List getSelected() {
+            List ret = new ArrayList();
+            ret.addAll(Model.getFacade().getContexts(getTarget()));
+            return ret;
+        }
+
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-contexts");
+        }
+
+        protected void doIt(Collection selected) {
+            Model.getCommonBehaviorHelper().setContexts(getTarget(), selected);
+        }
+    }
 }

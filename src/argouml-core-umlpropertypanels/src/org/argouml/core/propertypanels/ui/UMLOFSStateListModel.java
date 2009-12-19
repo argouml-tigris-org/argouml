@@ -24,14 +24,25 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
  * @author mkl
  */
 class UMLOFSStateListModel extends UMLModelElementListModel {
+
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = -9214579555300746872L;
 
     /**
      * Constructor for UMLOFSStateListModel.
@@ -76,5 +87,139 @@ class UMLOFSStateListModel extends UMLModelElementListModel {
             }
         }
         return false;
+    }
+    
+    /**
+     * @author mkl
+     */
+    private static class ActionAddOFSState extends AbstractActionAddModelElement2 {
+        private Object choiceClass = Model.getMetaTypes().getState();
+
+
+        /**
+         * The constructor.
+         */
+        public ActionAddOFSState() {
+            super();
+            setMultiSelect(true);
+        }
+
+
+        protected void doIt(Collection selected) {
+            Object t = getTarget();
+            if (Model.getFacade().isAObjectFlowState(t)) {
+                Object type = Model.getFacade().getType(t);
+                if (Model.getFacade().isAClassifierInState(type)) {
+                    Model.getActivityGraphsHelper().setInStates(type, selected);
+                } else if (Model.getFacade().isAClassifier(type)
+                        && (selected != null)
+                        && (selected.size() > 0)) {
+                    /* So, we found a Classifier
+                     * that is not a ClassifierInState.
+                     * And at least one state has been selected.
+                     * Well, let's correct that:
+                     */
+                    Object cis =
+                        Model.getActivityGraphsFactory()
+                            .buildClassifierInState(type, selected);
+                    Model.getCoreHelper().setType(t, cis);
+                }
+            }
+        }
+
+
+        protected List getChoices() {
+            List ret = new ArrayList();
+            Object t = getTarget();
+            if (Model.getFacade().isAObjectFlowState(t)) {
+                Object classifier = getType(t);
+                if (Model.getFacade().isAClassifier(classifier)) {
+                    ret.addAll(Model.getModelManagementHelper()
+                            .getAllModelElementsOfKindWithModel(classifier,
+                                    choiceClass));
+                }
+                removeTopStateFrom(ret);
+            }
+            return ret;
+        }
+
+
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-state");
+        }
+
+
+        protected List getSelected() {
+            Object t = getTarget();
+            if (Model.getFacade().isAObjectFlowState(t)) {
+                Object type = Model.getFacade().getType(t);
+                if (Model.getFacade().isAClassifierInState(type)) {
+                    return new ArrayList(Model.getFacade().getInStates(type));
+                }
+            }
+            return new ArrayList();
+        }
+        
+        private static Object getType(Object target) {
+            Object type = Model.getFacade().getType(target);
+            if (Model.getFacade().isAClassifierInState(type)) {
+                type = Model.getFacade().getType(type);
+            }
+            return type;
+        }
+        /**
+         * Utility function to remove the top states
+         * from a given collection of states.
+         *
+         * @param ret a collection of states
+         */
+        static void removeTopStateFrom(Collection ret) {
+            Collection tops = new ArrayList();
+            for (Object state : ret) {
+                if (Model.getFacade().isACompositeState(state)
+                        && Model.getFacade().isTop(state)) {
+                    tops.add(state);
+                }
+            }
+            ret.removeAll(tops);
+        }
+    }
+    
+    /**
+     * @author mkl
+     */
+    private static class ActionRemoveOFSState extends AbstractActionRemoveElement {
+
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = 4745674604611374936L;
+
+        /**
+         * Constructor.
+         */
+        public ActionRemoveOFSState() {
+            super(Translator.localize("menu.popup.remove"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object state = getObjectToRemove();
+            if (state != null) {
+                Object t = getTarget();
+                if (Model.getFacade().isAObjectFlowState(t)) {
+                    Object type = Model.getFacade().getType(t);
+                    if (Model.getFacade().isAClassifierInState(type)) {
+                        Collection states =
+                            new ArrayList(
+                                Model.getFacade().getInStates(type));
+                        states.remove(state);
+                        Model.getActivityGraphsHelper()
+                                .setInStates(type, states);
+                    }
+                }
+            }
+        }
     }
 }

@@ -24,17 +24,31 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JPopupMenu;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionAddModelElement2;
-import org.argouml.uml.ui.behavior.common_behavior.ActionNewSignal;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
- *
  * @author MarkusK
- *
  */
 class UMLSignalEventSignalList extends UMLMutableLinkedList {
+
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = -1557658052001738064L;
 
     /**
      * Constructor for UMLTransitionTriggerList.
@@ -49,9 +63,120 @@ class UMLSignalEventSignalList extends UMLMutableLinkedList {
      */
     public JPopupMenu getPopupMenu() {
         JPopupMenu menu = new JPopupMenu();
-        ActionAddSignalsToSignalEvent.SINGLETON.setTarget(getTarget());
-        menu.add(ActionAddSignalsToSignalEvent.SINGLETON);
+        menu.add(new ActionAddSignalsToSignalEvent(getTarget()));
         menu.add(new ActionNewSignal());
         return menu;
+    }
+    
+    /**
+     * Provide a dialog which helps the user to select one event
+     * out of an existing list,
+     * which will be used as the trigger of the transition.
+     *
+     * @author MarkusK
+     *
+     */
+    private static class ActionAddSignalsToSignalEvent extends AbstractActionAddModelElement2 {
+
+        /**
+         * Constructor for ActionAddClassifierRoleBase.
+         */
+        public ActionAddSignalsToSignalEvent(Object target) {
+            super();
+            setMultiSelect(false);
+            setTarget(target);
+        }
+
+
+        protected List getChoices() {
+            List vec = new ArrayList();
+
+            vec.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
+                    Model.getFacade().getRoot(getTarget()),
+                    Model.getMetaTypes().getSignal()));
+
+            return vec;
+        }
+
+
+        protected List getSelected() {
+            List vec = new ArrayList();
+            Object signal = Model.getFacade().getSignal(getTarget());
+            if (signal != null) {
+                vec.add(signal);
+            }
+            return vec;
+        }
+
+
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-signal");
+        }
+
+
+        @Override
+        protected void doIt(Collection selected) {
+            Object event = getTarget();
+            if (selected == null || selected.size() == 0) {
+                Model.getCommonBehaviorHelper().setSignal(event, null);
+            } else {
+                Model.getCommonBehaviorHelper().setSignal(event,
+                        selected.iterator().next());
+            }
+        }
+
+        /**
+         * The UID.
+         */
+        private static final long serialVersionUID = 6890869588365483936L;
+    }
+    
+    /**
+     * Create a new Signal.
+     */
+    public class ActionNewSignal extends AbstractActionNewModelElement {
+
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = -1905204858078372670L;
+
+        /**
+         * The constructor.
+         */
+        public ActionNewSignal() {
+            super("button.new-signal");
+            putValue(Action.NAME, Translator.localize("button.new-signal"));
+            Icon icon = ResourceLoaderWrapper.lookupIcon("SignalSending");
+            putValue(Action.SMALL_ICON, icon);
+        }
+
+        /**
+         * Creates a new signal and in case of a SignalEvent as target also set the
+         * Signal for this event.<p>
+         * {@inheritDoc}
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (Model.getFacade().isASignalEvent(target)
+                    || Model.getFacade().isASendAction(target)
+                    || Model.getFacade().isAReception(target)
+                    || Model.getFacade().isABehavioralFeature(target)) {
+                Object newSig = 
+                    Model.getCommonBehaviorFactory().buildSignal(target);
+                TargetManager.getInstance().setTarget(newSig);
+            } else {
+                Object ns = null;
+                if (Model.getFacade().isANamespace(target)) {
+                    ns = target;
+                } else {
+                    ns = Model.getFacade().getNamespace(target);
+                }
+                Object newElement = Model.getCommonBehaviorFactory().createSignal();
+                TargetManager.getInstance().setTarget(newElement);
+                Model.getCoreHelper().setNamespace(newElement, ns);
+            }
+            super.actionPerformed(e);
+        }
     }
 }

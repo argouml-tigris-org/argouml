@@ -24,8 +24,16 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
  * The model for the listbox showing the receptions of a signal.
@@ -33,6 +41,11 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author Michiel
  */
 class UMLSignalReceptionListModel extends UMLModelElementListModel {
+
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = 1045014158284951739L;
 
     /**
      * Construct a list model showing the receptions of a signal.
@@ -67,4 +80,86 @@ class UMLSignalReceptionListModel extends UMLModelElementListModel {
             && Model.getFacade().getReceptions(getTarget()).contains(element);
     }
 
+    /**
+     * This Action adds a Reception to a Signal.
+     * 
+     * @author Michiel
+     */
+    private static class ActionAddReceptionSignal extends AbstractActionAddModelElement2 {
+
+        /**
+         * Construct an Action which adds a Reception to a Signal.
+         */
+        public ActionAddReceptionSignal() {
+            super();
+        }
+
+
+        protected List getChoices() {
+            List ret = new ArrayList();
+            Object model =
+                ProjectManager.getManager().getCurrentProject().getModel();
+            if (getTarget() != null) {
+                ret.addAll(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKind(model, 
+                        Model.getMetaTypes().getReception()));
+            }
+            return ret;
+        }
+
+
+        protected List getSelected() {
+            List ret = new ArrayList();
+            ret.addAll(Model.getFacade().getReceptions(getTarget()));
+            return ret;
+        }
+
+
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-receptions");
+        }
+
+
+        @Override
+        protected void doIt(Collection selected) {
+            Model.getCommonBehaviorHelper().setReception(getTarget(), selected);
+        }
+
+    }
+    
+    /**
+     * This Action removes a Reception from a Signal.
+     * 
+     * @author Michiel
+     */
+    private static class ActionRemoveReceptionSignal extends AbstractActionRemoveElement {
+
+        /**
+         * The class uid
+         */
+        private static final long serialVersionUID = 8213584329453727152L;
+
+        /**
+         * Construct an Action which removes a Reception from a Signal.
+         */
+        public ActionRemoveReceptionSignal() {
+            super(Translator.localize("menu.popup.remove"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object reception = getObjectToRemove(); 
+            if (reception != null) {
+                Object signal = getTarget();
+                if (Model.getFacade().isASignal(signal)) {
+                    // TODO: Should we delete the Reception?  A Reception
+                    // without a Signal violates the cardinality of 1 in
+                    // the metamodel - tfm - 20070308
+                    Model.getCommonBehaviorHelper().removeReception(signal, 
+                            reception);
+                }
+            }
+        }
+    }
 }

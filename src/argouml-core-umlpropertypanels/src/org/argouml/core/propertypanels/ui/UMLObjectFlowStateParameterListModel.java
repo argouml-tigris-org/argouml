@@ -24,12 +24,26 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
  * @author mkl
  */
 class UMLObjectFlowStateParameterListModel extends UMLModelElementListModel {
+
+    /**
+     * The class uid
+     */
+    private static final long serialVersionUID = -6095531893213309195L;
 
     /**
      * Constructor for UMLObjectFlowStateParameterListModel.
@@ -59,5 +73,123 @@ class UMLObjectFlowStateParameterListModel extends UMLModelElementListModel {
         return Model.getFacade().getParameters(getTarget()).contains(
                 element);
     }
+    
+    /**
+     * @author mkl
+     */
+    private static class ActionAddOFSParameter extends AbstractActionAddModelElement2 {
+        private Object choiceClass = Model.getMetaTypes().getParameter();
 
+        /**
+         * The constructor.
+         */
+        public ActionAddOFSParameter() {
+            super();
+            setMultiSelect(true);
+        }
+
+
+        protected void doIt(Collection selected) {
+            Object t = getTarget();
+            if (Model.getFacade().isAObjectFlowState(t)) {
+                Model.getActivityGraphsHelper().setParameters(t, selected);
+            }
+        }
+
+
+        protected List getChoices() {
+            List ret = new ArrayList();
+            Object t = getTarget();
+            if (Model.getFacade().isAObjectFlowState(t)) {
+                Object classifier = getType(t);
+                if (Model.getFacade().isAClassifier(classifier)) {
+                    ret.addAll(Model.getModelManagementHelper()
+                            .getAllModelElementsOfKindWithModel(classifier,
+                                    choiceClass));
+                }
+
+                // TODO: We may want to restrict the list to parameters which 
+                // conform to the following WFR:
+//              parameter.type = ofstype
+//              or (parameter.kind = #in
+//              and ofstype.allSupertypes->includes(type))
+//              or ((parameter.kind = #out or parameter.kind = #return)
+//              and type.allSupertypes->includes(ofstype))
+//              or (parameter.kind = #inout
+//              and ( ofstype.allSupertypes->includes(type)
+//              or type.allSupertypes->includes(ofstype))))
+
+            }
+            return ret;
+        }
+
+
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-state");
+        }
+
+
+        protected List getSelected() {
+            Object t = getTarget();
+            if (Model.getFacade().isAObjectFlowState(t)) {
+                return new ArrayList(Model.getFacade().getParameters(t));
+            }
+            return new ArrayList();
+        }
+        
+        private static Object getType(Object target) {
+            Object type = Model.getFacade().getType(target);
+            if (Model.getFacade().isAClassifierInState(type)) {
+                type = Model.getFacade().getType(type);
+            }
+            return type;
+        }
+    }
+    
+    /**
+     * @author mkl
+     */
+    private static class ActionNewOFSParameter extends AbstractActionNewModelElement {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Object target = getTarget();
+            if (Model.getFacade().isAObjectFlowState(target)) {
+                Object type = getType(target);
+                Object parameter = Model.getCoreFactory().createParameter();
+                Model.getCoreHelper().setType(parameter, type);
+                Model.getActivityGraphsHelper().addParameter(target, parameter);
+            }
+        }
+        private static Object getType(Object target) {
+            Object type = Model.getFacade().getType(target);
+            if (Model.getFacade().isAClassifierInState(type)) {
+                type = Model.getFacade().getType(type);
+            }
+            return type;
+        }
+    }
+    
+    /**
+     * @author mkl
+     */
+    private static class ActionRemoveOFSParameter extends AbstractActionRemoveElement {
+        /**
+         * Constructor.
+         */
+        public ActionRemoveOFSParameter() {
+            super(Translator.localize("menu.popup.remove"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object param = getObjectToRemove();
+            if (param != null) {
+                Object t = getTarget();
+                if (Model.getFacade().isAObjectFlowState(t)) {
+                    Model.getActivityGraphsHelper().removeParameter(t, param);
+                }
+            }
+        }
+    }
 }

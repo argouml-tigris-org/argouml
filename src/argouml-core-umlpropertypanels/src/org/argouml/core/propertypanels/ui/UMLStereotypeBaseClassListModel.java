@@ -24,11 +24,19 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
  * The list model for the BaseClasses of the stereotype.
@@ -66,5 +74,110 @@ class UMLStereotypeBaseClassListModel extends UMLModelElementListModel {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * The Action to add a baseclass to the stereotype.
+     *
+     * @author Michiel
+     */
+    private static class ActionAddStereotypeBaseClass extends AbstractActionAddModelElement2 {
+
+        private List<String> metaClasses;
+        
+        public ActionAddStereotypeBaseClass() {
+            super();
+            initMetaClasses();
+        }
+        
+        /**
+         * Initialize the meta-classes list. <p>
+         * 
+         * All this code is necessary to be independent of 
+         * model repository implementation, 
+         * i.e. to ensure that we have a 
+         * sorted list of strings.
+         */
+        void initMetaClasses() {
+            Collection<String> tmpMetaClasses = 
+                Model.getCoreHelper().getAllMetatypeNames();
+            if (tmpMetaClasses instanceof List) {
+                metaClasses = (List<String>) tmpMetaClasses;
+            } else {
+                metaClasses = new LinkedList<String>(tmpMetaClasses);
+            }
+            try {
+                Collections.sort(metaClasses);
+            } catch (UnsupportedOperationException e) {
+                // We got passed an unmodifiable List.  Copy it and sort the result
+                metaClasses = new LinkedList<String>(tmpMetaClasses);
+                Collections.sort(metaClasses);
+            }
+        }
+        
+        @Override
+        protected List<String> getChoices() {
+            return Collections.unmodifiableList(metaClasses);
+        }
+
+        @Override
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-baseclasses");
+        }
+
+        @Override
+        protected List<String> getSelected() {
+            List<String> result = new ArrayList<String>();
+            if (Model.getFacade().isAStereotype(getTarget())) {
+                Collection<String> bases = 
+                    Model.getFacade().getBaseClasses(getTarget());
+                result.addAll(bases);
+            }
+            return result;
+        }
+
+        @Override
+        protected void doIt(Collection selected) {
+            Object stereo = getTarget();
+            Set<Object> oldSet = new HashSet<Object>(getSelected());
+            Set toBeRemoved = new HashSet<Object>(oldSet);
+
+            for (Object o : selected) {
+                if (oldSet.contains(o)) {
+                    toBeRemoved.remove(o);
+                } else {
+                    Model.getExtensionMechanismsHelper()
+                            .addBaseClass(stereo, o);
+                }
+            }
+            for (Object o : toBeRemoved) {
+                Model.getExtensionMechanismsHelper().removeBaseClass(stereo, o);
+            }
+        }
+        
+    }
+    
+    /**
+     * The Action to remove a baseclass from a stereotype.
+     *
+     * @author Michiel
+     */
+    private static class ActionDeleteStereotypeBaseClass extends AbstractActionRemoveElement {
+
+        public ActionDeleteStereotypeBaseClass() {
+            super(Translator.localize("menu.popup.remove"));
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Object baseclass = getObjectToRemove();
+            if (baseclass != null) {
+                Object st = getTarget();
+                if (Model.getFacade().isAStereotype(st)) {
+                    Model.getExtensionMechanismsHelper().removeBaseClass(st,
+                            baseclass);
+                }
+            }
+        }
     }
 }
