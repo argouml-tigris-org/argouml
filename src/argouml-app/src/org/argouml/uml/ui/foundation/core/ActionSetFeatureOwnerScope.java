@@ -30,8 +30,8 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
 import org.argouml.uml.ui.UMLCheckBox2;
-import org.tigris.gef.undo.UndoableAction;
 
 /**
  * @since Nov 6, 2002
@@ -39,13 +39,10 @@ import org.tigris.gef.undo.UndoableAction;
  */
 public class ActionSetFeatureOwnerScope extends UndoableAction {
 
-    private static final ActionSetFeatureOwnerScope SINGLETON =
-        new ActionSetFeatureOwnerScope();
-
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
      */
-    protected ActionSetFeatureOwnerScope() {
+    public ActionSetFeatureOwnerScope() {
         super(Translator.localize("Set"), null);
         // Set the tooltip string:
         putValue(Action.SHORT_DESCRIPTION, 
@@ -65,12 +62,4 @@ public class ActionSetFeatureOwnerScope extends UndoableAction {
             }
         }
     }
-
-    /**
-     * @return Returns the SINGLETON.
-     */
-    public static ActionSetFeatureOwnerScope getInstance() {
-        return SINGLETON;
-    }
-
 }

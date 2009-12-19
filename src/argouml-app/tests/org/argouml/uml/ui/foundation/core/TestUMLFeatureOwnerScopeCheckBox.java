@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * @since Nov 6, 2002
@@ -59,6 +60,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
+        new InitProfileSubsystem().init();
         elem = Model.getCoreFactory().createAttribute();
 
 	box = new UMLFeatureOwnerScopeCheckBox();
