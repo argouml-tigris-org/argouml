@@ -37,23 +37,10 @@ import org.argouml.core.propertypanels.meta.PanelMeta;
 import org.argouml.core.propertypanels.meta.PropertyMeta;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLDerivedCheckBox;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
-import org.argouml.uml.ui.behavior.activity_graphs.UMLActionSynchCheckBox;
-import org.argouml.uml.ui.behavior.common_behavior.UMLActionAsynchronousCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndAggregationRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLAssociationEndChangeabilityRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLAssociationEndNavigableCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLAssociationEndOrderingCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLAssociationEndTargetScopeCheckbox;
-import org.argouml.uml.ui.foundation.core.UMLBehavioralFeatureQueryCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLClassActiveCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLFeatureOwnerScopeCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
-import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLOperationConcurrencyRadioButtonPanel;
 import org.argouml.uml.ui.foundation.core.UMLParameterDirectionKindRadioButtonPanel;
@@ -288,7 +275,7 @@ class SwingUIFactory {
             final JPanel panel,
             final Object target,
             final CheckBoxMeta p) {
-        UMLCheckBox2 checkbox = null;
+        UMLCheckBox checkbox = null;
         
         if ("isAbstract".equals(p.getName())) {
             checkbox = new UMLGeneralizableElementAbstractCheckBox();
