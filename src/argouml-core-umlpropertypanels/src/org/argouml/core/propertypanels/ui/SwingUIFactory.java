@@ -275,40 +275,43 @@ class SwingUIFactory {
             final JPanel panel,
             final Object target,
             final CheckBoxMeta prop) {
-        UMLCheckBox checkbox = null;
         
         final String propertyName = prop.getName();
         
-        if ("isAbstract".equals(propertyName)) {
-            checkbox = new UMLGeneralizableElementAbstractCheckBox(propertyName, target);
+        GetterSetter getterSetter = GetterSetter.getGetterSetter();
+        
+        CheckBox checkbox = null;
+        if ("derived".equals(propertyName)) {
+            checkbox = new CheckBox(propertyName, target, getterSetter);
+        } else if ("isAbstract".equals(propertyName)) {
+            checkbox = new CheckBox(propertyName, target, getterSetter);
         } else if ("isLeaf".equals(propertyName)) {
-            checkbox = new UMLGeneralizableElementLeafCheckBox(propertyName, target);
+            checkbox = new CheckBox(propertyName, target, getterSetter);
         } else if ("isRoot".equals(propertyName)) {
-            checkbox = new UMLGeneralizableElementRootCheckBox(propertyName, target);
-        } else if ("derived".equals(propertyName)) {
-            checkbox = new UMLDerivedCheckBox(propertyName, target);
+            checkbox = new CheckBox(propertyName, target, getterSetter);
         } else if ("isActive".equals(propertyName)) {
-            checkbox = new UMLClassActiveCheckBox(propertyName, target);    
+            checkbox = new CheckBox(propertyName, target, getterSetter);
         } else if ("ownerScope".equals(propertyName)) {   
-            checkbox = new UMLFeatureOwnerScopeCheckBox(propertyName, target);
+            checkbox = new CheckBox(propertyName, target, getterSetter);
         } else if ("targetScope".equals(propertyName)) {
             // TODO: An alternative property name will need to be inserted for
             // UML 2.x
-            checkbox = new UMLAssociationEndTargetScopeCheckbox(propertyName, target);
+            checkbox = new CheckBox(propertyName, target, getterSetter);
         } else if ("isQuery".equals(propertyName)) {
-            checkbox = new UMLBehavioralFeatureQueryCheckBox(propertyName, target);
+            checkbox = new CheckBox(propertyName, target, getterSetter);
         } else if ("isNavigable".equals(propertyName)) {
-            checkbox = new UMLAssociationEndNavigableCheckBox(propertyName, target);
+            checkbox = new CheckBox(propertyName, target, getterSetter);
         } else if ("ordering".equals(propertyName)) {
-            checkbox = new UMLAssociationEndOrderingCheckBox(propertyName, target);
+            checkbox = new CheckBox(propertyName, target, getterSetter);
         } else if ("isAsynchronous".equals(propertyName)) {
-            checkbox = new UMLActionAsynchronousCheckBox(propertyName, target);
+            checkbox = new CheckBox(propertyName, target, getterSetter);
         } else if ("isSynch".equals(propertyName)) {
-            checkbox = new UMLActionSynchCheckBox(propertyName, target);
+            checkbox = new CheckBox(propertyName, target, getterSetter);
+        } else if ("derived".equals(propertyName)) {
+            checkbox = new CheckBox(propertyName, target, getterSetter);
         }
         
         if (checkbox != null) {
-            checkbox.setTarget(target);
             panel.add(checkbox);
         }
     }
