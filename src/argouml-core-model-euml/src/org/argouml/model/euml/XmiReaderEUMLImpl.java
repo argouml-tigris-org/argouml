@@ -156,6 +156,7 @@ class XmiReaderEUMLImpl implements XmiReader {
         
         try {
             modelImpl.getModelEventPump().stopPumpingEvents();
+            r.unload();
             r.load(is, null);
         } catch (IOException e) {
             throw new UmlException(e);
