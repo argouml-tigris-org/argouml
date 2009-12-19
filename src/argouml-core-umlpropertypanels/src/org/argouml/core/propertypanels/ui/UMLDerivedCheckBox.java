@@ -24,8 +24,6 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import org.argouml.model.Facade;
-
 /**
  * Class to represent a checkbox for the derived tagged value.
  *
@@ -34,11 +32,16 @@ import org.argouml.model.Facade;
 class UMLDerivedCheckBox extends UMLTaggedValueCheckBox {
     
     /**
+     * The class uid
+     */
+    private static final long serialVersionUID = 4011685721602249221L;
+
+    /**
      * The constructor.
      *
      */
-    public UMLDerivedCheckBox() {
+    public UMLDerivedCheckBox(final String propertyName, final Object target) {
         // TODO: This is a tagged value name which will never trigger an event
-        super(Facade.DERIVED_TAG);
+        super(propertyName, target);
     }
 }

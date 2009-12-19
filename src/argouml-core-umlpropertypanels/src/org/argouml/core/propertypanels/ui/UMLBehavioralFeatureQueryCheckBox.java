@@ -44,9 +44,11 @@ class UMLBehavioralFeatureQueryCheckBox extends UMLCheckBox {
     /**
      * Constructor.
      */
-    public UMLBehavioralFeatureQueryCheckBox() {
+    public UMLBehavioralFeatureQueryCheckBox(
+            final String propertyName,
+            final Object target) {
         super(Translator.localize("checkbox.query-lc"),
-                new ActionSetBehavioralFeatureQuery(), "isQuery");
+                new ActionSetBehavioralFeatureQuery(), propertyName, target);
     }
 
     /*
@@ -83,13 +85,11 @@ class UMLBehavioralFeatureQueryCheckBox extends UMLCheckBox {
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            if (e.getSource() instanceof UMLCheckBox) {
-                UMLCheckBox source = (UMLCheckBox) e.getSource();
-                Object target = source.getTarget();
-                if (Model.getFacade().isABehavioralFeature(target)) {
-                    Object m = target;
-                    Model.getCoreHelper().setQuery(m, source.isSelected());
-                }
+            UMLCheckBox source = (UMLCheckBox) e.getSource();
+            Object target = source.getTarget();
+            if (Model.getFacade().isABehavioralFeature(target)) {
+                Object m = target;
+                Model.getCoreHelper().setQuery(m, source.isSelected());
             }
         }
     }

@@ -40,14 +40,18 @@ import org.argouml.ui.UndoableAction;
 class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox {
 
     /**
+     * The class uid
+     */
+    private static final long serialVersionUID = -8161016926703486344L;
+
+    /**
      * Constructor for UMLAssociationEndTargetScopeCheckbox.
      */
-    public UMLAssociationEndTargetScopeCheckbox() {
-        // TODO: property name will need to be updated for UML 2.x
-        // Unfortunately we can specify two property names here
+    public UMLAssociationEndTargetScopeCheckbox(final String propertyName, final Object target) {
         super(Translator.localize("label.static"),
                 new ActionSetAssociationEndTargetScope(), 
-                "targetScope");
+                propertyName,
+                target);
     }
 
     /*
@@ -87,13 +91,11 @@ class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox {
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            if (e.getSource() instanceof UMLCheckBox) {
-                UMLCheckBox source = (UMLCheckBox) e.getSource();
-                Object target = source.getTarget();
-                if (Model.getFacade().isAAssociationEnd(target)) {
-                    Object m = target;
-                    Model.getCoreHelper().setStatic(m, source.isSelected());
-                }
+            UMLCheckBox source = (UMLCheckBox) e.getSource();
+            Object target = source.getTarget();
+            if (Model.getFacade().isAAssociationEnd(target)) {
+                Object m = target;
+                Model.getCoreHelper().setStatic(m, source.isSelected());
             }
         }
     }

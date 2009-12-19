@@ -42,9 +42,11 @@ class UMLGeneralizableElementLeafCheckBox extends UMLCheckBox {
     /**
      * Constructor for UMLGeneralizableElementLeafCheckBox.
      */
-    public UMLGeneralizableElementLeafCheckBox() {
+    public UMLGeneralizableElementLeafCheckBox(final String propertyName, final Object target) {
         super(Translator.localize("checkbox.leaf-lc"),
-                new ActionSetGeneralizableElementLeaf(), "isLeaf");
+                new ActionSetGeneralizableElementLeaf(), 
+                propertyName,
+                target);
     }
 
     /*

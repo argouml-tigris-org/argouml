@@ -47,9 +47,10 @@ class UMLActionAsynchronousCheckBox extends UMLCheckBox {
     /**
      * Constructor for UMLAssociationEndNavigableCheckBox.
      */
-    public UMLActionAsynchronousCheckBox() {
+    public UMLActionAsynchronousCheckBox(final String propertyName, final Object target) {
         super(Translator.localize("checkbox.asynchronous"),
-                new ActionSetActionAsynchronous(), "isAsynchronous");
+                new ActionSetActionAsynchronous(), propertyName,
+                target);
     }
 
     /*
@@ -84,15 +85,13 @@ class UMLActionAsynchronousCheckBox extends UMLCheckBox {
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            if (e.getSource() instanceof UMLCheckBox) {
-                UMLCheckBox source = (UMLCheckBox) e.getSource();
-                Object target = source.getTarget();
-                if (Model.getFacade().isAAction(target)) {
-                    Object m = target;
-                    Model.getCommonBehaviorHelper().setAsynchronous(
-                            m,
-                            source.isSelected());
-                }
+            UMLCheckBox source = (UMLCheckBox) e.getSource();
+            Object target = source.getTarget();
+            if (Model.getFacade().isAAction(target)) {
+                Object m = target;
+                Model.getCommonBehaviorHelper().setAsynchronous(
+                        m,
+                        source.isSelected());
             }
         }
 

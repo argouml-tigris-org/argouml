@@ -40,11 +40,17 @@ import org.argouml.ui.UndoableAction;
 class UMLClassActiveCheckBox extends UMLCheckBox {
 
     /**
+     * The class uid
+     */
+    private static final long serialVersionUID = 4417702876240900704L;
+
+    /**
      * Constructor for UMLGeneralizableElementRootCheckBox.
      */
-    public UMLClassActiveCheckBox() {
+    public UMLClassActiveCheckBox(final String propertyName, final Object target) {
         super(Translator.localize("checkbox.active-lc"),
-                new ActionSetClassActive(), "isActive");
+                new ActionSetClassActive(), propertyName,
+                target);
     }
 
     /*
@@ -63,6 +69,11 @@ class UMLClassActiveCheckBox extends UMLCheckBox {
     private static class ActionSetClassActive extends UndoableAction {
 
         /**
+         * The class uid
+         */
+        private static final long serialVersionUID = 251121174283896062L;
+
+        /**
          * Constructor.
          */
         public ActionSetClassActive() {
@@ -77,13 +88,11 @@ class UMLClassActiveCheckBox extends UMLCheckBox {
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            if (e.getSource() instanceof UMLCheckBox) {
-                UMLCheckBox source = (UMLCheckBox) e.getSource();
-                Object target = source.getTarget();
-                if (Model.getFacade().isAClass(target)) {
-                    Object m = target;
-                    Model.getCoreHelper().setActive(m, source.isSelected());
-                }
+            UMLCheckBox source = (UMLCheckBox) e.getSource();
+            Object target = source.getTarget();
+            if (Model.getFacade().isAClass(target)) {
+                Object m = target;
+                Model.getCoreHelper().setActive(m, source.isSelected());
             }
         }
     }

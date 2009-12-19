@@ -274,33 +274,37 @@ class SwingUIFactory {
     private void buildCheckBox(
             final JPanel panel,
             final Object target,
-            final CheckBoxMeta p) {
+            final CheckBoxMeta prop) {
         UMLCheckBox checkbox = null;
         
-        if ("isAbstract".equals(p.getName())) {
-            checkbox = new UMLGeneralizableElementAbstractCheckBox();
-        } else if ("isLeaf".equals(p.getName())) {
-            checkbox = new UMLGeneralizableElementLeafCheckBox();
-        } else if ("isRoot".equals(p.getName())) {
-            checkbox = new UMLGeneralizableElementRootCheckBox(); 
-        } else if ("derived".equals(p.getName())) {
-            checkbox = new UMLDerivedCheckBox();
-        } else if ("isActive".equals(p.getName())) {
-            checkbox = new UMLClassActiveCheckBox();    
-        } else if ("ownerScope".equals(p.getName())) {   
-            checkbox = new UMLFeatureOwnerScopeCheckBox();
-        } else if ("targetScope".equals(p.getName())) {
-            checkbox = new UMLAssociationEndTargetScopeCheckbox();
-        } else if ("isQuery".equals(p.getName())) {
-            checkbox = new UMLBehavioralFeatureQueryCheckBox();
-        } else if ("isNavigable".equals(p.getName())) {
-            checkbox = new UMLAssociationEndNavigableCheckBox();
-        } else if ("ordering".equals(p.getName())) {
-            checkbox = new UMLAssociationEndOrderingCheckBox();
-        } else if ("isAsynchronous".equals(p.getName())) {
-            checkbox = new UMLActionAsynchronousCheckBox();
-        } else if ("isSynch".equals(p.getName())) {
-            checkbox = new UMLActionSynchCheckBox();
+        final String propertyName = prop.getName();
+        
+        if ("isAbstract".equals(propertyName)) {
+            checkbox = new UMLGeneralizableElementAbstractCheckBox(propertyName, target);
+        } else if ("isLeaf".equals(propertyName)) {
+            checkbox = new UMLGeneralizableElementLeafCheckBox(propertyName, target);
+        } else if ("isRoot".equals(propertyName)) {
+            checkbox = new UMLGeneralizableElementRootCheckBox(propertyName, target);
+        } else if ("derived".equals(propertyName)) {
+            checkbox = new UMLDerivedCheckBox(propertyName, target);
+        } else if ("isActive".equals(propertyName)) {
+            checkbox = new UMLClassActiveCheckBox(propertyName, target);    
+        } else if ("ownerScope".equals(propertyName)) {   
+            checkbox = new UMLFeatureOwnerScopeCheckBox(propertyName, target);
+        } else if ("targetScope".equals(propertyName)) {
+            // TODO: An alternative property name will need to be inserted for
+            // UML 2.x
+            checkbox = new UMLAssociationEndTargetScopeCheckbox(propertyName, target);
+        } else if ("isQuery".equals(propertyName)) {
+            checkbox = new UMLBehavioralFeatureQueryCheckBox(propertyName, target);
+        } else if ("isNavigable".equals(propertyName)) {
+            checkbox = new UMLAssociationEndNavigableCheckBox(propertyName, target);
+        } else if ("ordering".equals(propertyName)) {
+            checkbox = new UMLAssociationEndOrderingCheckBox(propertyName, target);
+        } else if ("isAsynchronous".equals(propertyName)) {
+            checkbox = new UMLActionAsynchronousCheckBox(propertyName, target);
+        } else if ("isSynch".equals(propertyName)) {
+            checkbox = new UMLActionSynchCheckBox(propertyName, target);
         }
         
         if (checkbox != null) {

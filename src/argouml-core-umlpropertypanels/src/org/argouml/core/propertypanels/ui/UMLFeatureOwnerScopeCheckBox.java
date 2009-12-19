@@ -46,9 +46,10 @@ class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox {
     /**
      * Constructor for UMLFeatureOwnerScopeCheckBox.
      */
-    public UMLFeatureOwnerScopeCheckBox() {
+    public UMLFeatureOwnerScopeCheckBox(final String propertyName, final Object target) {
         super(Translator.localize("checkbox.static-lc"),
-                new ActionSetFeatureOwnerScope(), "ownerScope");
+                new ActionSetFeatureOwnerScope(), propertyName,
+                target);
     }
 
     /*
@@ -84,12 +85,10 @@ class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox {
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            if (e.getSource() instanceof UMLCheckBox) {
-                UMLCheckBox source = (UMLCheckBox) e.getSource();
-                Object target = source.getTarget();
-                if (Model.getFacade().isAFeature(target)) {
-                    Model.getCoreHelper().setStatic(target, source.isSelected());
-                }
+            UMLCheckBox source = (UMLCheckBox) e.getSource();
+            Object target = source.getTarget();
+            if (Model.getFacade().isAFeature(target)) {
+                Model.getCoreHelper().setStatic(target, source.isSelected());
             }
         }
     }

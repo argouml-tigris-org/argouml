@@ -47,10 +47,13 @@ class UMLGeneralizableElementAbstractCheckBox extends UMLCheckBox {
     /**
      * Constructor for UMLGeneralizableElementRootCheckBox.
      */
-    public UMLGeneralizableElementAbstractCheckBox() {
+    public UMLGeneralizableElementAbstractCheckBox(
+            final String propertyName,
+            final Object target) {
         super(Translator.localize("checkbox.abstract-lc"),
                 new ActionSetGeneralizableElementAbstract(),
-                "isAbstract");
+                propertyName,
+                target);
     }
 
     /*
@@ -92,14 +95,12 @@ class UMLGeneralizableElementAbstractCheckBox extends UMLCheckBox {
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            if (e.getSource() instanceof UMLCheckBox) {
-                UMLCheckBox source = (UMLCheckBox) e.getSource();
-                Object target = source.getTarget();
-                if (Model.getFacade().isAGeneralizableElement(target)
-                        || Model.getFacade().isAOperation(target)
-                        || Model.getFacade().isAReception(target)) {
-                    Model.getCoreHelper().setAbstract(target, source.isSelected());
-                }
+            UMLCheckBox source = (UMLCheckBox) e.getSource();
+            Object target = source.getTarget();
+            if (Model.getFacade().isAGeneralizableElement(target)
+                    || Model.getFacade().isAOperation(target)
+                    || Model.getFacade().isAReception(target)) {
+                Model.getCoreHelper().setAbstract(target, source.isSelected());
             }
         }
     }

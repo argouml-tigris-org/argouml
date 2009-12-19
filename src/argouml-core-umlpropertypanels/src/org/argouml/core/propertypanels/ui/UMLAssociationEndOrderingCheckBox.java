@@ -40,11 +40,17 @@ import org.argouml.ui.UndoableAction;
 class UMLAssociationEndOrderingCheckBox extends UMLCheckBox {
 
     /**
+     * The class uid
+     */
+    private static final long serialVersionUID = 2024978703219494507L;
+
+    /**
      * Constructor for UMLAssociationEndOrderingCheckBox.
      */
-    public UMLAssociationEndOrderingCheckBox() {
+    public UMLAssociationEndOrderingCheckBox(final String propertyName, final Object target) {
         super(Translator.localize("label.ordered"),
-                new ActionSetAssociationEndOrdering(), "ordering");
+                new ActionSetAssociationEndOrdering(), propertyName,
+                target);
     }
 
     /*
@@ -86,18 +92,16 @@ class UMLAssociationEndOrderingCheckBox extends UMLCheckBox {
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            if (e.getSource() instanceof UMLCheckBox) {
-                 UMLCheckBox source = (UMLCheckBox) e.getSource();
-                 Object target = source.getTarget();
-                 if (Model.getFacade().isAAssociationEnd(target)) {
-                    Object m = target;
-                    if (source.isSelected()) {
-                        Model.getCoreHelper().setOrdering(m,
-                                Model.getOrderingKind().getOrdered());
-                    } else {
-                        Model.getCoreHelper().setOrdering(m,
-                                Model.getOrderingKind().getUnordered());
-                    }
+             UMLCheckBox source = (UMLCheckBox) e.getSource();
+             Object target = source.getTarget();
+             if (Model.getFacade().isAAssociationEnd(target)) {
+                Object m = target;
+                if (source.isSelected()) {
+                    Model.getCoreHelper().setOrdering(m,
+                            Model.getOrderingKind().getOrdered());
+                } else {
+                    Model.getCoreHelper().setOrdering(m,
+                            Model.getOrderingKind().getUnordered());
                 }
             }
         }

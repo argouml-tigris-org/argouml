@@ -43,11 +43,12 @@ class UMLTaggedValueCheckBox extends UMLCheckBox {
 
     private String tagName;
     
-    public UMLTaggedValueCheckBox(String name) {
-        super(Translator.localize("checkbox." + name + "-lc"), 
-                new ActionBooleanTaggedValue(name), 
-                name);
-        tagName = name;
+    public UMLTaggedValueCheckBox(String propertyName, Object target) {
+        super(Translator.localize("checkbox." + propertyName + "-lc"), 
+                new ActionBooleanTaggedValue(propertyName), 
+                propertyName,
+                target);
+        tagName = propertyName;
     }
 
     /**

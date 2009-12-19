@@ -47,9 +47,11 @@ class UMLGeneralizableElementRootCheckBox extends UMLCheckBox {
     /**
      * Constructor for UMLGeneralizableElementRootCheckBox.
      */
-    public UMLGeneralizableElementRootCheckBox() {
+    public UMLGeneralizableElementRootCheckBox(final String propertyName, final Object target) {
         super(Translator.localize("checkbox.root-lc"),
-                new ActionSetGeneralizableElementRoot(), "isRoot");
+                new ActionSetGeneralizableElementRoot(),
+                propertyName,
+                target);
     }
 
     /*

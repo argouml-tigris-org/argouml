@@ -32,9 +32,6 @@ import javax.swing.JCheckBox;
 
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetListener;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * The checkbox to be used to show boolean UML attributes in the GUI's. Mostly
@@ -52,6 +49,11 @@ abstract class UMLCheckBox extends JCheckBox
 
     private Object checkBoxTarget;
     private String propertySetName;
+    
+    /**
+     * The action that will be called when the checkbox changes
+     */
+    private Action action;
 
     /**
      * Constructor for UMLCheckBox.
@@ -59,13 +61,15 @@ abstract class UMLCheckBox extends JCheckBox
      * @param a the action we're going to listen to
      * @param name the property set name
      */
-    public UMLCheckBox(String text, Action a, String name) {
+    public UMLCheckBox(String text, Action a, String name, Object target) {
         super(text);
+        action = a;
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         propertySetName = name;
         addActionListener(a);
 
         setActionCommand((String) a.getValue(Action.ACTION_COMMAND_KEY));
+        setTarget(target);
     }
 
     /*
@@ -90,7 +94,7 @@ abstract class UMLCheckBox extends JCheckBox
      * not come via the container.
      * @param target The target to set
      */
-    public void setTarget(Object target) {
+    protected void setTarget(Object target) {
         checkBoxTarget = target;
         Model.getPump().addModelEventListener(
                 this, checkBoxTarget, propertySetName);
@@ -103,4 +107,13 @@ abstract class UMLCheckBox extends JCheckBox
      * for example UMLModelElementListModel.
      */
     public abstract void buildModel();
+    
+    /**
+     * Remove all listeners when the component is removed from its parent
+     */
+    public void removeNotify() {
+        removeActionListener(action);
+        Model.getPump().removeModelEventListener(
+                this, checkBoxTarget, propertySetName);
+    }
 }

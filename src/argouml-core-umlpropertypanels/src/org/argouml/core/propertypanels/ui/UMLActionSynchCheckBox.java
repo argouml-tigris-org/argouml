@@ -47,9 +47,11 @@ class UMLActionSynchCheckBox extends UMLCheckBox {
     /**
      * Constructor for UMLAssociationEndNavigableCheckBox.
      */
-    public UMLActionSynchCheckBox() {
+    public UMLActionSynchCheckBox(final String propertyName, final Object target) {
         super(Translator.localize("checkbox.synch-lc"),
-                new ActionSetSynch(), "isSynch");
+                new ActionSetSynch(),
+                propertyName,
+                target);
     }
 
     /*
@@ -83,15 +85,13 @@ class UMLActionSynchCheckBox extends UMLCheckBox {
          */
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
-            if (e.getSource() instanceof UMLCheckBox) {
-                UMLCheckBox source = (UMLCheckBox) e.getSource();
-                Object target = source.getTarget();
-                if (Model.getFacade().isAObjectFlowState(target)) {
-                    Object m = target;
-                    Model.getActivityGraphsHelper().setSynch(
-                            m,
-                            source.isSelected());
-                }
+            UMLCheckBox source = (UMLCheckBox) e.getSource();
+            Object target = source.getTarget();
+            if (Model.getFacade().isAObjectFlowState(target)) {
+                Object m = target;
+                Model.getActivityGraphsHelper().setSynch(
+                        m,
+                        source.isSelected());
             }
         }
     }

@@ -47,9 +47,11 @@ class UMLAssociationEndNavigableCheckBox extends UMLCheckBox {
     /**
      * Constructor for UMLAssociationEndNavigableCheckBox.
      */
-    public UMLAssociationEndNavigableCheckBox() {
+    public UMLAssociationEndNavigableCheckBox(final String propertyName, final Object target) {
         super(Translator.localize("label.navigable"),
-                new ActionSetAssociationEndNavigable(), "isNavigable");
+                new ActionSetAssociationEndNavigable(),
+                propertyName,
+                target);
     }
 
     /*
@@ -89,13 +91,11 @@ class UMLAssociationEndNavigableCheckBox extends UMLCheckBox {
         */
        public void actionPerformed(ActionEvent e) {
            super.actionPerformed(e);
-           if (e.getSource() instanceof UMLCheckBox) {
-               UMLCheckBox source = (UMLCheckBox) e.getSource();
-               Object target = source.getTarget();
-               if (Model.getFacade().isAAssociationEnd(target)) {
-                   Object m = target;
-                   Model.getCoreHelper().setNavigable(m, source.isSelected());
-               }
+           UMLCheckBox source = (UMLCheckBox) e.getSource();
+           Object target = source.getTarget();
+           if (Model.getFacade().isAAssociationEnd(target)) {
+               Object m = target;
+               Model.getCoreHelper().setNavigable(m, source.isSelected());
            }
        }
    }
