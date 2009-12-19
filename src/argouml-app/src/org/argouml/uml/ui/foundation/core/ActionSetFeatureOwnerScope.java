@@ -31,7 +31,7 @@ import javax.swing.Action;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLCheckBox2;
-import org.argouml.ui.UndoableAction;
+import org.tigris.gef.undo.UndoableAction;
 
 /**
  * @since Nov 6, 2002
