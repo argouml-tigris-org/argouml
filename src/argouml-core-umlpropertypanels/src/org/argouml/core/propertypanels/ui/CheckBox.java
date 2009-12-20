@@ -64,6 +64,9 @@ class CheckBox extends JCheckBox
         
         action = new SetAction(getterSetter, modelElement, propertyName);
         setActionCommand((String) action.getValue(Action.ACTION_COMMAND_KEY));
+        addActionListener(action);
+        Model.getPump().addModelEventListener(
+                this, modelElement, propertyName);
     }
     
     private String propertyToLabel(String propertyName) {
@@ -75,18 +78,10 @@ class CheckBox extends JCheckBox
     }
     
     /**
-     * Add listeners when the component is placed on its parent
-     */
-    public void addNotify() {
-        addActionListener(action);
-        Model.getPump().addModelEventListener(
-                this, modelElement, propertyName);
-    }
-    
-    /**
      * Remove all listeners when the component is removed from its parent
      */
     public void removeNotify() {
+        super.removeNotify();
         removeActionListener(action);
         Model.getPump().removeModelEventListener(
                 this, modelElement, propertyName);
@@ -142,7 +137,7 @@ class CheckBox extends JCheckBox
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             CheckBox source = (CheckBox) e.getSource();
-            this.getterSetter.set(modelElement, source.isSelected(), propertyName);
+            getterSetter.set(modelElement, source.isSelected(), propertyName);
         }
     }
 }

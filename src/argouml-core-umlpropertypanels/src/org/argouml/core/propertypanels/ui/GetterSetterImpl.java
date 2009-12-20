@@ -10,6 +10,23 @@ import org.argouml.model.Model;
  */
 class GetterSetterImpl extends GetterSetter {
     
+    public GetterSetterImpl() {
+        addGetterSetter(new AbstractGetterSetter());
+        addGetterSetter(new LeafGetterSetter());
+        addGetterSetter(new RootGetterSetter());
+        addGetterSetter(new ActiveGetterSetter());
+        addGetterSetter(new OwnerScopeGetterSetter());
+        addGetterSetter(new TargetScopeGetterSetter());
+        addGetterSetter(new QueryGetterSetter());
+        addGetterSetter(new NavigableGetterSetter());
+        addGetterSetter(new AsynchronousGetterSetter());
+        addGetterSetter(new SynchGetterSetter());
+        addGetterSetter(new OrderingGetterSetter());
+    }
+    
+    private void addGetterSetter(BooleanGetterSetter bgs) {
+        getterSetterByPropertyName.put(bgs.getPropertyName(), bgs);
+    }
     /**
      * Set a UML property by property name
      * @param handle the element to which a property must be set
@@ -17,53 +34,9 @@ class GetterSetterImpl extends GetterSetter {
      * @param propertyName the property name
      */
     public void set(Object handle, Object value, String propertyName) {
-        if ("isAbstract".equals(propertyName)) {
-            Model.getCoreHelper().setAbstract(handle, (Boolean) value);
-        } else if ("isLeaf".equals(propertyName)) {
-            Model.getCoreHelper().setLeaf(handle, (Boolean) value);
-        } else if ("isRoot".equals(propertyName)) {
-            Model.getCoreHelper().setRoot(handle, (Boolean) value);
-        } else if ("isActive".equals(propertyName)) {
-            Model.getCoreHelper().setActive(handle, (Boolean) value);
-        } else if ("ownerScope".equals(propertyName)) {
-            Model.getCoreHelper().setStatic(handle, (Boolean) value);
-        } else if ("targetScope".equals(propertyName)) {
-            // Have we handled UML2 here?
-            Model.getCoreHelper().setStatic(handle, (Boolean) value);
-        } else if ("isQuery".equals(propertyName)) {
-            Model.getCoreHelper().setQuery(handle, (Boolean) value);
-        } else if ("isNavigable".equals(propertyName)) {
-            Model.getCoreHelper().setNavigable(handle, (Boolean) value);
-        } else if ("ordering".equals(propertyName)) {
-            if ((Boolean) value) {
-                Model.getCoreHelper().setOrdering(handle,
-                        Model.getOrderingKind().getOrdered());
-            } else {
-                Model.getCoreHelper().setOrdering(handle,
-                        Model.getOrderingKind().getUnordered());
-            }
-        } else if ("isAsynchronous".equals(propertyName)) {
-            Model.getCommonBehaviorHelper().setAsynchronous(
-                    handle,
-                    (Boolean) value);
-        } else if ("isSynch".equals(propertyName)) {
-            Model.getActivityGraphsHelper().setSynch(
-                    handle,
-                    (Boolean) value);
-        } else if ("derived".equals(propertyName)) {
-            Object taggedValue = Model.getFacade().getTaggedValue(handle, (String) propertyName);
-            if (taggedValue == null) {
-                taggedValue =
-                        Model.getExtensionMechanismsFactory().buildTaggedValue(
-                                (String) propertyName, "");
-                Model.getExtensionMechanismsHelper().addTaggedValue(
-                        handle, taggedValue);
-            }
-            if ((Boolean) value) {
-                Model.getCommonBehaviorHelper().setValue(taggedValue, "true");
-            } else {
-                Model.getCommonBehaviorHelper().setValue(taggedValue, "false");
-            }
+        BooleanGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        if (bgs != null) {
+            bgs.set(handle, (Boolean) value);
         }
     }
     
@@ -74,37 +47,180 @@ class GetterSetterImpl extends GetterSetter {
      * @param propertyName the property name
      */
     public Object get(Object handle, String propertyName) {
-        if ("isAbstract".equals(propertyName)) {
-            return Model.getFacade().isAbstract(handle);
-        } else if ("isLeaf".equals(propertyName)) {
-            return Model.getFacade().isLeaf(handle);
-        } else if ("isRoot".equals(propertyName)) {
-            return Model.getFacade().isRoot(handle);
-        } else if ("isActive".equals(propertyName)) {
-            return Model.getFacade().isActive(handle);
-        } else if ("ownerScope".equals(propertyName)) {
-            return Model.getFacade().isStatic(handle);
-        } else if ("targetScope".equals(propertyName)) {
-            // Have we handled UML2 here?
-            return Model.getFacade().isStatic(handle);
-        } else if ("isQuery".equals(propertyName)) {
-            return Model.getFacade().isQuery(handle);
-        } else if ("isNavigable".equals(propertyName)) {
-            return Model.getFacade().isNavigable(handle);
-        } else if ("ordering".equals(propertyName)) {
-            return Model.getFacade().getOrdering(handle) == Model.getOrderingKind().getOrdered();
-        } else if ("isAsynchronous".equals(propertyName)) {
-            return Model.getFacade().isAsynchronous(handle);
-        } else if ("isSynch".equals(propertyName)) {
-            return Model.getFacade().isSynch(handle);
-        } else if ("derived".equals(propertyName)) {
-            Object tv = Model.getFacade().getTaggedValue(handle, propertyName);
+        BooleanGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        if (bgs != null) {
+            return bgs.get(handle);
+        }
+        
+        return null;
+    }
+    
+    private class AbstractGetterSetter extends BooleanGetterSetter {
+        public String getPropertyName() {
+            return "isAbstract";
+        }
+        public Boolean get(Object modelElement) {
+            return Model.getFacade().isAbstract(modelElement);
+        }
+        public void set(Object modelElement, Boolean value) {
+            Model.getCoreHelper().setAbstract(modelElement, value);
+        }
+    }
+    
+    private class LeafGetterSetter extends BooleanGetterSetter {
+        public String getPropertyName() {
+            return "isLeaf";
+        }
+        public Boolean get(Object modelElement) {
+            return Model.getFacade().isLeaf(modelElement);
+        }
+        public void set(Object modelElement, Boolean value) {
+            Model.getCoreHelper().setLeaf(modelElement, value);
+        }
+    }
+    
+    private class RootGetterSetter extends BooleanGetterSetter {
+        public String getPropertyName() {
+            return "isRoot";
+        }
+        public Boolean get(Object modelElement) {
+            return Model.getFacade().isRoot(modelElement);
+        }
+        public void set(Object modelElement, Boolean value) {
+            Model.getCoreHelper().setRoot(modelElement, value);
+        }
+    }
+    
+    private class ActiveGetterSetter extends BooleanGetterSetter {
+        public String getPropertyName() {
+            return "isActive";
+        }
+        public Boolean get(Object modelElement) {
+            return Model.getFacade().isActive(modelElement);
+        }
+        public void set(Object modelElement, Boolean value) {
+            Model.getCoreHelper().setActive(modelElement, value);
+        }
+    }
+    
+    private class OwnerScopeGetterSetter extends BooleanGetterSetter {
+        public String getPropertyName() {
+            return "ownerScope";
+        }
+        public Boolean get(Object modelElement) {
+            return Model.getFacade().isStatic(modelElement);
+        }
+        public void set(Object modelElement, Boolean value) {
+            Model.getCoreHelper().setStatic(modelElement, value);
+        }
+    }
+    
+    private class TargetScopeGetterSetter extends BooleanGetterSetter {
+        // Have we handled UML2 here?
+        public String getPropertyName() {
+            return "targetScope";
+        }
+        public Boolean get(Object modelElement) {
+            return Model.getFacade().isStatic(modelElement);
+        }
+        public void set(Object modelElement, Boolean value) {
+            Model.getCoreHelper().setStatic(modelElement, value);
+        }
+    }
+    
+    private class QueryGetterSetter extends BooleanGetterSetter {
+        public String getPropertyName() {
+            return "isQuery";
+        }
+        public Boolean get(Object modelElement) {
+            return Model.getFacade().isQuery(modelElement);
+        }
+        public void set(Object modelElement, Boolean value) {
+            Model.getCoreHelper().setQuery(modelElement, value);
+        }
+    }
+    
+    private class NavigableGetterSetter extends BooleanGetterSetter {
+        public String getPropertyName() {
+            return "navigable";
+        }
+        public Boolean get(Object modelElement) {
+            return Model.getFacade().isNavigable(modelElement);
+        }
+        public void set(Object modelElement, Boolean value) {
+            Model.getCoreHelper().setNavigable(modelElement, value);
+        }
+    }
+    
+    private class AsynchronousGetterSetter extends BooleanGetterSetter {
+        public String getPropertyName() {
+            return "isSynchronous";
+        }
+        public Boolean get(Object modelElement) {
+            return Model.getFacade().isAsynchronous(modelElement);
+        }
+        public void set(Object modelElement, Boolean value) {
+            Model.getCommonBehaviorHelper().setAsynchronous(modelElement, value);
+        }
+    }
+    
+    private class SynchGetterSetter extends BooleanGetterSetter {
+        public String getPropertyName() {
+            return "isSynch";
+        }
+        public Boolean get(Object modelElement) {
+            return Model.getFacade().isSynch(modelElement);
+        }
+        public void set(Object modelElement, Boolean value) {
+            Model.getActivityGraphsHelper().setSynch(modelElement, value);
+        }
+    }
+    
+    private class OrderingGetterSetter extends BooleanGetterSetter {
+        public String getPropertyName() {
+            return "ordering";
+        }
+        public Boolean get(Object modelElement) {
+            return Model.getFacade().getOrdering(modelElement) ==
+                Model.getOrderingKind().getOrdered();
+        }
+        public void set(Object modelElement, Boolean value) {
+            if ((Boolean) value) {
+                Model.getCoreHelper().setOrdering(modelElement,
+                        Model.getOrderingKind().getOrdered());
+            } else {
+                Model.getCoreHelper().setOrdering(modelElement,
+                        Model.getOrderingKind().getUnordered());
+            }
+        }
+    }
+    
+    private class DerivedGetterSetter extends BooleanGetterSetter {
+        public String getPropertyName() {
+            return "derived";
+        }
+        public Boolean get(Object modelElement) {
+            Object tv = Model.getFacade().getTaggedValue(modelElement, getPropertyName());
             if (tv != null) {
                 String tag = Model.getFacade().getValueOfTag(tv);
                 return ("true".equals(tag));
             }
             return false;
         }
-        return null;
+        public void set(Object modelElement, Boolean value) {
+            Object taggedValue = Model.getFacade().getTaggedValue(modelElement, (String) getPropertyName());
+            if (taggedValue == null) {
+                taggedValue =
+                        Model.getExtensionMechanismsFactory().buildTaggedValue(
+                                (String) getPropertyName(), "");
+                Model.getExtensionMechanismsHelper().addTaggedValue(
+                        modelElement, taggedValue);
+            }
+            if ((Boolean) value) {
+                Model.getCommonBehaviorHelper().setValue(taggedValue, "true");
+            } else {
+                Model.getCommonBehaviorHelper().setValue(taggedValue, "false");
+            }
+        }
     }
 }

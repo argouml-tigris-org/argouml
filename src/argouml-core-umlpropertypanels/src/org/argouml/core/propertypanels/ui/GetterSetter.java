@@ -1,6 +1,15 @@
 package org.argouml.core.propertypanels.ui;
 
+import java.util.HashMap;
+import java.util.Map;
+
 abstract class GetterSetter {
+    
+    /**
+     * The list of boolean property getter/setters
+     */
+    protected final Map<String, BooleanGetterSetter> getterSetterByPropertyName =
+        new HashMap<String, BooleanGetterSetter>();
     
     /**
      * Set a UML property by property name
@@ -18,7 +27,19 @@ abstract class GetterSetter {
      */
     abstract Object get(Object handle, String propertyName);
     
+    boolean contains(String propertyName) {
+        return getterSetterByPropertyName.containsKey(propertyName);
+    }
+    
     static GetterSetter getGetterSetter() {
         return new GetterSetterImpl();
     }
+    
+    protected abstract class BooleanGetterSetter {
+        
+        abstract String getPropertyName();
+        abstract Boolean get(Object modelElement);
+        abstract void set(Object modelElement, Boolean value);
+    }
+    
 }
