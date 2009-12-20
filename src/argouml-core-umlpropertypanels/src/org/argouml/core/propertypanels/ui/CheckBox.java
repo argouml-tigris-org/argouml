@@ -14,6 +14,11 @@ import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.UndoableAction;
 
+/**
+ * A check box representing a boolean property in the UML model
+ * @author Bob Tarling
+ * @since 0.29.2 19th Dec 2009
+ */
 class CheckBox extends JCheckBox 
     implements PropertyChangeListener {
 
@@ -22,35 +27,51 @@ class CheckBox extends JCheckBox
      */
     private static final long serialVersionUID = 2654856740168885592L;
 
-    private Object target;
-    private String propertyName;
+    private final Object modelElement;
+    
+    private final String propertyName;
     
     /**
      * The action that will be called when the checkbox changes
      */
-    private Action action;
+    private final Action action;
 
     private final GetterSetter getterSetter;
     
     /**
      * Constructor for UMLCheckBox.
      * @param text the text of the check box
-     * @param a the action we're going to listen to
-     * @param name the property set name
+     * @param modelElement the model element the check box represents, updates and
+     * is listening for changes to
+     * @param propertyName the property of the target that the checkbox is listening
+     * @param getterSetter the facade used to get and set properties on the model
+     * for and updating
      */
-    public CheckBox(final String propertyName, final Object target, GetterSetter getterSetter) {
-        super(Translator.localize("label." + propertyName));
+    public CheckBox(
+            final String text,
+            final Object modelElement,
+            final String propertyName, 
+            final GetterSetter getterSetter) {
+        super(text);
         
         this.getterSetter = getterSetter;
         this.propertyName = propertyName;
-        this.target = target;
+        this.modelElement = modelElement;
         
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         
         build();
         
-        action = new SetAction(getterSetter, target, propertyName);
+        action = new SetAction(getterSetter, modelElement, propertyName);
         setActionCommand((String) action.getValue(Action.ACTION_COMMAND_KEY));
+    }
+    
+    private String propertyToLabel(String propertyName) {
+        if (propertyName.startsWith("is")) {
+            return "checkbox." + propertyName.substring(2).toLowerCase();
+        } else {
+            return "checkbox." + propertyName.toLowerCase();
+        }
     }
     
     /**
@@ -59,7 +80,7 @@ class CheckBox extends JCheckBox
     public void addNotify() {
         addActionListener(action);
         Model.getPump().addModelEventListener(
-                this, target, propertyName);
+                this, modelElement, propertyName);
     }
     
     /**
@@ -68,7 +89,7 @@ class CheckBox extends JCheckBox
     public void removeNotify() {
         removeActionListener(action);
         Model.getPump().removeModelEventListener(
-                this, target, propertyName);
+                this, modelElement, propertyName);
     }
     
     /*
@@ -84,7 +105,7 @@ class CheckBox extends JCheckBox
      */
     private void build() {
         if (getterSetter != null) {
-            setSelected((Boolean) getterSetter.get(target, propertyName));
+            setSelected((Boolean) getterSetter.get(modelElement, propertyName));
         }
     }
     
@@ -97,17 +118,17 @@ class CheckBox extends JCheckBox
         
         private final GetterSetter getterSetter;
         private final String propertyName;
-        private Object target;
+        private Object modelElement;
         
         /**
          * Constructor for ActionSetElementOwnershipSpecification.
          */
         protected SetAction(
                 final GetterSetter getterSetter, 
-                final Object target,
+                final Object modelElement,
                 final String propertyName) {
             super(Translator.localize("Set"), null);
-            this.target = target;
+            this.modelElement = modelElement;
             this.getterSetter = getterSetter;
             this.propertyName = propertyName;
             // Set the tooltip string:
@@ -121,7 +142,7 @@ class CheckBox extends JCheckBox
         public void actionPerformed(ActionEvent e) {
             super.actionPerformed(e);
             CheckBox source = (CheckBox) e.getSource();
-            this.getterSetter.set(target, source.isSelected(), propertyName);
+            this.getterSetter.set(modelElement, source.isSelected(), propertyName);
         }
     }
 }

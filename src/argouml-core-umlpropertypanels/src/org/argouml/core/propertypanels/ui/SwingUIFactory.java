@@ -278,37 +278,45 @@ class SwingUIFactory {
         
         final String propertyName = prop.getName();
         
-        GetterSetter getterSetter = GetterSetter.getGetterSetter();
+        final GetterSetter getterSetter = GetterSetter.getGetterSetter();
+
+        String label;
+        if (propertyName.startsWith("is")) {
+            label = "label." + propertyName.substring(2).toLowerCase();
+        } else {
+            label = "label." + propertyName.toLowerCase();
+        }
+        label = Translator.localize(label);        
         
         CheckBox checkbox = null;
         if ("derived".equals(propertyName)) {
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("isAbstract".equals(propertyName)) {
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("isLeaf".equals(propertyName)) {
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("isRoot".equals(propertyName)) {
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("isActive".equals(propertyName)) {
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("ownerScope".equals(propertyName)) {   
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("targetScope".equals(propertyName)) {
             // TODO: An alternative property name will need to be inserted for
             // UML 2.x
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("isQuery".equals(propertyName)) {
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("isNavigable".equals(propertyName)) {
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("ordering".equals(propertyName)) {
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("isAsynchronous".equals(propertyName)) {
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("isSynch".equals(propertyName)) {
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         } else if ("derived".equals(propertyName)) {
-            checkbox = new CheckBox(propertyName, target, getterSetter);
+            checkbox = new CheckBox(label, target, propertyName, getterSetter);
         }
         
         if (checkbox != null) {
