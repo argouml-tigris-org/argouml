@@ -54,7 +54,11 @@ import org.argouml.uml.ui.UMLTextField2;
 
 /**
  * The properties panel for a modelelement.
+ * @deprecated By Bob Tarling in 0.29.2. All property panels are now to be
+ * built using the UML panels.
+ * subsystem.
  */
+@Deprecated
 public abstract class PropPanelModelElement extends PropPanel {
 
     private JComboBox namespaceSelector;
