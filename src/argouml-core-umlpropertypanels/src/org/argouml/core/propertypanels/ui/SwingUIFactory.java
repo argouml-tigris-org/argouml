@@ -1,3 +1,16 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling - Post GSOC improvements
+ *******************************************************************************
+ */
+
 // $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,13 +51,6 @@ import org.argouml.core.propertypanels.meta.PropertyMeta;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLAssociationEndAggregationRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLAssociationEndChangeabilityRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLModelElementVisibilityRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLOperationConcurrencyRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLParameterDirectionKindRadioButtonPanel;
-import org.argouml.uml.ui.foundation.core.UMLStructuralFeatureChangeabilityRadioButtonPanel;
 import org.tigris.swidgets.GridLayout2;
 
 /**
@@ -201,52 +207,16 @@ class SwingUIFactory {
     private void buildOptionBox(JPanel panel, Object target,
             PropertyMeta prop) {
         
-        UMLRadioButtonPanel control = null;
-        
-        if ("visibility".equals(prop.getName())) {
-            UMLRadioButtonPanel visibilityPanel =   
-                new UMLModelElementVisibilityRadioButtonPanel(
-                    Translator.localize("label.visibility"), 
-                    true); 
-            visibilityPanel.setTarget(target);
-            control = visibilityPanel;
-        } else if ("changeability".equals(prop.getName())) {
-            UMLRadioButtonPanel cPanel = null;
-            if (Model.getFacade().isAAssociationEnd(target)) {
-                cPanel = 
-                    new UMLAssociationEndChangeabilityRadioButtonPanel(
-                            "label.changeability", true);
-            } else {
-                cPanel =   
-                    new UMLStructuralFeatureChangeabilityRadioButtonPanel(
-                            Translator.localize("label.changeability"), 
-                            true);
-            }
-            cPanel.setTarget(target);
-            control = cPanel;
+        final String propertyName = prop.getName();
 
-        } else if ("concurrency".equals(prop.getName())) { 
-            UMLRadioButtonPanel cPanel =   
-                new UMLOperationConcurrencyRadioButtonPanel(
-                        Translator.localize("label.concurrency"), true); 
-            cPanel.setTarget(target);
-            control = cPanel;
-            
-        } else if ("kind".equals(prop.getName())) {
-            UMLRadioButtonPanel cPanel = 
-                new UMLParameterDirectionKindRadioButtonPanel(
-                    Translator.localize("label.parameter.kind"), true);
-            cPanel.setTarget(target);
-            control = cPanel;   
-        } else if ("aggregation".equals(prop.getName())) {
-            UMLRadioButtonPanel cPanel = 
-                new UMLAssociationEndAggregationRadioButtonPanel(
-                        "label.aggregation", true);
-            cPanel.setTarget(target);
-            control = cPanel;   
-        }
-        
-        if (control != null) {
+        final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter();
+
+        if (getterSetter.contains(propertyName)) {
+            JPanel control = new RadioButtonPanel(
+                    target, 
+                    propertyName, 
+                    true, 
+                    getterSetter);
             addControl(panel, null, control);
         }
     }
@@ -278,7 +248,7 @@ class SwingUIFactory {
         
         final String propertyName = prop.getName();
         
-        final GetterSetter getterSetter = GetterSetter.getGetterSetter();
+        final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter();
 
         String label;
         if (propertyName.startsWith("is")) {
@@ -288,39 +258,8 @@ class SwingUIFactory {
         }
         label = Translator.localize(label);        
         
-        CheckBox checkbox = null;
-        if ("derived".equals(propertyName)) {
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("isAbstract".equals(propertyName)) {
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("isLeaf".equals(propertyName)) {
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("isRoot".equals(propertyName)) {
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("isActive".equals(propertyName)) {
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("ownerScope".equals(propertyName)) {   
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("targetScope".equals(propertyName)) {
-            // TODO: An alternative property name will need to be inserted for
-            // UML 2.x
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("isQuery".equals(propertyName)) {
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("isNavigable".equals(propertyName)) {
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("ordering".equals(propertyName)) {
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("isAsynchronous".equals(propertyName)) {
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("isSynch".equals(propertyName)) {
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        } else if ("derived".equals(propertyName)) {
-            checkbox = new CheckBox(label, target, propertyName, getterSetter);
-        }
-        
-        if (checkbox != null) {
-            panel.add(checkbox);
+        if (getterSetter.contains(propertyName)) {
+            panel.add(new CheckBox(label, target, propertyName, getterSetter));
         }
     }
 

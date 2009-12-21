@@ -1,4 +1,15 @@
-// $Id: Checkbox.java 15920 2008-10-14 18:03:33Z bobtarling $
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling - Original implementation
+ *******************************************************************************
+ */
 
 package org.argouml.core.propertypanels.ui;
 
@@ -36,7 +47,7 @@ class CheckBox extends JCheckBox
      */
     private final Action action;
 
-    private final GetterSetter getterSetter;
+    private final GetterSetterManager getterSetter;
     
     /**
      * Constructor for UMLCheckBox.
@@ -51,7 +62,7 @@ class CheckBox extends JCheckBox
             final String text,
             final Object modelElement,
             final String propertyName, 
-            final GetterSetter getterSetter) {
+            final GetterSetterManager getterSetter) {
         super(text);
         
         this.getterSetter = getterSetter;
@@ -111,7 +122,7 @@ class CheckBox extends JCheckBox
          */
         private static final long serialVersionUID = -2708077474004286682L;
         
-        private final GetterSetter getterSetter;
+        private final GetterSetterManager getterSetter;
         private final String propertyName;
         private Object modelElement;
         
@@ -119,7 +130,7 @@ class CheckBox extends JCheckBox
          * Constructor for ActionSetElementOwnershipSpecification.
          */
         protected SetAction(
-                final GetterSetter getterSetter, 
+                final GetterSetterManager getterSetter, 
                 final Object modelElement,
                 final String propertyName) {
             super(Translator.localize("Set"), null);
