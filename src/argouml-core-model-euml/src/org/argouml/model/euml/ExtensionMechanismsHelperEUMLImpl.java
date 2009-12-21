@@ -38,6 +38,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.Extension;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Profile;
@@ -101,8 +102,8 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
                 ((Profile) handle).applyProfile((Profile) profile);
             }
             // also apply subprofiles:
-            Iterator<Package> iter =
-                ((Profile) profile).getNestedPackages().iterator();
+            Iterator<Package> iter = ((Profile) profile).getNestedPackages()
+                    .iterator();
             while (iter.hasNext()) {
                 Package p = iter.next();
                 if (p instanceof Profile) {
@@ -210,8 +211,8 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
             for (Object ns : models) {
                 if (ns instanceof Profile) {
                     l.addAll(((Profile) ns).getOwnedStereotypes());
-                    Iterator<Package> iter =
-                        ((Profile) ns).getNestedPackages().iterator();
+                    Iterator<Package> iter = ((Profile) ns).getNestedPackages()
+                            .iterator();
                     while (iter.hasNext()) {
                         Package p = iter.next();
                         if (p instanceof Profile) {
@@ -288,11 +289,16 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     public void removeBaseClass(Object handle, Object baseClass) {
         if (handle instanceof Stereotype) {
             org.eclipse.uml2.uml.Class metaclass = getMetaclass(baseClass);
-            Profile profile = (Profile) modelImpl.getFacade().getRoot(handle);
+            Profile profile = ((Stereotype) handle).getProfile();
             if (metaclass != null && profile != null) {
                 Stereotype st = (Stereotype) handle;
-                st.getExtension(metaclass.getName());
-                // TODO: remove extension
+                for (Extension ext : profile.getOwnedExtensions(false)) {
+                    if (ext.getMetaclass() == metaclass
+                            && ext.getEndTypes().contains(st)) {
+                        ext.destroy();
+                        break;
+                    }
+                }
                 return;
             }
         }
@@ -336,8 +342,8 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
                 ((Profile) handle).unapplyProfile((Profile) profile);
             }
             // also unapply subprofiles:
-            Iterator<Package> iter =
-                ((Profile) profile).getNestedPackages().iterator();
+            Iterator<Package> iter = ((Profile) profile).getNestedPackages()
+                    .iterator();
             while (iter.hasNext()) {
                 Package p = iter.next();
                 if (p instanceof Profile) {
@@ -352,8 +358,8 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         if (handle instanceof Profile) {
             result = ((Profile) handle).define();
             // also define subprofiles:
-            Iterator<Package> iter =
-                ((Profile) handle).getNestedPackages().iterator();
+            Iterator<Package> iter = ((Profile) handle).getNestedPackages()
+                    .iterator();
             while (iter.hasNext()) {
                 Package p = iter.next();
                 if (p instanceof Profile) {
