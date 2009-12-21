@@ -29,6 +29,7 @@ import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.model.Model;
+import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.UndoableAction;

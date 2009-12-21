@@ -48,6 +48,7 @@ import javax.swing.border.TitledBorder;
 import org.argouml.core.propertypanels.meta.CheckBoxMeta;
 import org.argouml.core.propertypanels.meta.PanelMeta;
 import org.argouml.core.propertypanels.meta.PropertyMeta;
+import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxNavigator;

@@ -20,6 +20,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Action;
 import javax.swing.JCheckBox;
 
+import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.LookAndFeelMgr;

@@ -11,14 +11,14 @@
  *******************************************************************************
  */
 
-package org.argouml.core.propertypanels.ui;
+package org.argouml.core.propertypanels.model;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.argouml.model.Model;
 
-abstract class GetterSetterManager {
+public abstract class GetterSetterManager {
     
     /**
      * The list of boolean property getter/setters
@@ -32,29 +32,29 @@ abstract class GetterSetterManager {
      * @param value the new property value
      * @param propertyName the property name
      */
-    abstract void set(Object handle, Object value, String propertyName);
+    public abstract void set(Object handle, Object value, String propertyName);
     
     /**
      * Get a UML property by property name
      * @param handle the element from which a property must be return
      * @param value the new property value
      * @param propertyName the property name
+     * @return the UML element or property
      */
-    abstract Object get(Object handle, String propertyName);
+    public abstract Object get(Object handle, String propertyName);
 
-    abstract String[] getOptions(String propertyName);
+    public abstract String[] getOptions(String propertyName);
     
-    boolean contains(String propertyName) {
+    public boolean contains(String propertyName) {
         return getterSetterByPropertyName.containsKey(propertyName);
     }
     
-    static GetterSetterManager getGetterSetter() {
+    public static GetterSetterManager getGetterSetter() {
         return new GetterSetterManagerImpl();
     }
     
     protected abstract class BaseGetterSetter {
         
-//        abstract String getPropertyName();
         abstract Object get(Object modelElement);
         abstract void set(Object modelElement, Object value);
     }

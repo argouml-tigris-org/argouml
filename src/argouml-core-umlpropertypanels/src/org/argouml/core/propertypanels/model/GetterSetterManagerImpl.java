@@ -11,7 +11,7 @@
  *******************************************************************************
  */
 
-package org.argouml.core.propertypanels.ui;
+package org.argouml.core.propertypanels.model;
 
 import org.argouml.model.Model;
 
