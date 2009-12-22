@@ -36,12 +36,14 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Extension;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Profile;
+import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
@@ -295,6 +297,16 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
                 for (Extension ext : profile.getOwnedExtensions(false)) {
                     if (ext.getMetaclass() == metaclass
                             && ext.getEndTypes().contains(st)) {
+                        for (Property p : st.getAttributes()) {
+                            Association assoc = p.getAssociation();
+                            if (assoc != null && assoc == ext) {
+                                // additional cleanup needed, because
+                                // this would not be removed by ext.destroy():
+                                p.destroy();
+                                break;
+                            }
+                        }
+                        // remove base class by destroying the extension
                         ext.destroy();
                         break;
                     }
