@@ -455,10 +455,9 @@ class RowSelector extends JPanel
     }
     
 
-    @Override
     public void contentsChanged(ListDataEvent e) {
     }
-    @Override
+
     public void intervalAdded(ListDataEvent e) {
         if (e.getIndex0() == e.getIndex1()
                 && getModel().getElementAt(e.getIndex0()) == movedModelElement.getElement()) {
@@ -476,8 +475,7 @@ class RowSelector extends JPanel
             SwingUtilities.invokeLater(doWorkRunnable);
         }
     }
-    
-    @Override
+
     public void intervalRemoved(ListDataEvent e) {
     }
 

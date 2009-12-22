@@ -25,7 +25,6 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.argouml.model.Model;
 
@@ -64,7 +63,6 @@ class UMLClassOperationListModel
                 .contains(element));
     }
 
-    @Override
     public Collection getModelElements() {
         return
             Model.getFacade().getOperationsAndReceptions(getTarget());

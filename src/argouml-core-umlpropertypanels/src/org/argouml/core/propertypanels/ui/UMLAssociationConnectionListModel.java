@@ -27,10 +27,8 @@ package org.argouml.core.propertypanels.ui;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
  * The list model for the connections of the association. <p>
@@ -106,7 +104,6 @@ class UMLAssociationConnectionListModel
             && Model.getFacade().getConnections(getTarget()).contains(o);
     }
 
-    @Override
     public Collection getModelElements() {
         return Model.getFacade().getConnections(getTarget());
     }

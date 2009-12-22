@@ -25,10 +25,8 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
  * This is the model for the list of parameters for a classifier,
@@ -68,7 +66,6 @@ class UMLClassifierParameterListModel
         return Model.getFacade().getParameters(getTarget()).contains(element);
     }
 
-    @Override
     public Collection getModelElements() {
         return Model.getFacade().getParameters(getTarget());
     }

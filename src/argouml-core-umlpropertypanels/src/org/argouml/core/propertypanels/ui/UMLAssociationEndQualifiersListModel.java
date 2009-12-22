@@ -26,10 +26,8 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
  * @author pepargouml@yahoo.es
@@ -63,7 +61,6 @@ class UMLAssociationEndQualifiersListModel
             && Model.getFacade().getQualifiers(getTarget()).contains(o);
     }
 
-    @Override
     public Collection getModelElements() {
         // TODO Auto-generated method stub
         return Model.getFacade().getQualifiers(getTarget());

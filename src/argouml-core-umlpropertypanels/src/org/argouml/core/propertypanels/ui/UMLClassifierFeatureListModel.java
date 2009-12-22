@@ -25,10 +25,8 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
  *
@@ -61,7 +59,6 @@ class UMLClassifierFeatureListModel
         return getModelElements().contains(element);
     }
 
-    @Override
     public Collection getModelElements() {
         return Model.getFacade().getFeatures(getTarget());
     }

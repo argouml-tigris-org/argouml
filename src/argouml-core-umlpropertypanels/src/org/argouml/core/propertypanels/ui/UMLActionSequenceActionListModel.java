@@ -25,7 +25,6 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.argouml.model.Model;
 
@@ -61,7 +60,6 @@ class UMLActionSequenceActionListModel
         return Model.getFacade().isAAction(element);
     }
 
-    @Override
     public Collection getModelElements() {
         return Model.getFacade().getActions(getTarget());
     }

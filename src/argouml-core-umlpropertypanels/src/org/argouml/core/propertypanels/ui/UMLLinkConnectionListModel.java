@@ -60,7 +60,6 @@ class UMLLinkConnectionListModel
         return getModelElements().contains(element);
     }
 
-    @Override
     public Collection getModelElements() {
         return Model.getFacade().getConnections(getTarget());
     }

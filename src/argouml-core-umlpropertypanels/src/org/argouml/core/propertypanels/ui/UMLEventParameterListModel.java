@@ -58,7 +58,6 @@ class UMLEventParameterListModel extends UMLModelElementListModel implements Ord
         return getModelElements().contains(element);
     }
 
-    @Override
     public Collection getModelElements() {
         return Model.getFacade().getParameters(getTarget());
     }
