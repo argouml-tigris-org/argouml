@@ -35,7 +35,8 @@ class SingleListFactory implements ComponentFactory {
     
     public JComponent createComponent(
             final Object modelElement,
-            final String propName) {
+            final String propName,
+            final String type) {
         
         UMLModelElementListModel model = null;
         

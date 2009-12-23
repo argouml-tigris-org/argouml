@@ -19,6 +19,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Collection;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -86,11 +87,12 @@ public class RadioButtonPanel extends JPanel
         super(true);
         setDoubleBuffered(true);
         
-        final String[] options = getterSetterManager.getOptions(propertyName);
+        final Collection options =
+            getterSetterManager.getOptions(umlElement, propertyName, null);
         
         setLayout(horizontal
                 ? new GridLayout()
-                : new FlexiGridLayout(0, options.length));
+                : new FlexiGridLayout(0, options.size()));
         
         this.propertyName = propertyName;
         this.getterSetterManager = getterSetterManager;
@@ -108,14 +110,14 @@ public class RadioButtonPanel extends JPanel
         
         buttonGroup.add(new JRadioButton());
         
-        for (String option : options) {
+        for (Object option : options) {
             final String optionLabel =
                 Translator.localize("label." + propertyName + "-" + option);
             final JRadioButton button = new JRadioButton(optionLabel);
             button.addActionListener(action);
-            button.setActionCommand(option);
+            button.setActionCommand((String) option);
             button.setFont(font);
-            button.setName(option);
+            button.setName((String) option);
             buttonGroup.add(button);
             add(button);
         }
@@ -163,7 +165,7 @@ public class RadioButtonPanel extends JPanel
 
     private void build() {
         final String value =
-            (String) getGetterSetter().get(umlElement, propertyName);
+            (String) getGetterSetter().get(umlElement, propertyName, null);
         final Enumeration<AbstractButton> en =
             buttonGroup.getElements();
         if (value == null) {

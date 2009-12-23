@@ -35,6 +35,7 @@ import java.util.List;
  */
 public class PropertyMeta {
     
+    private String controlType;
     private String type;
     private String name;
     
@@ -42,11 +43,16 @@ public class PropertyMeta {
     
     // TODO: this is a tree node, we must refine the tree structure
     
-    public PropertyMeta (String theType, String theName) {
-        this.type = theType;
-        this.name = theName;
+    public PropertyMeta (String controlType, String name, String type) {
+        this.controlType = controlType;
+        this.name = name;
+        this.type = type;
     }
     
+    public String getControlType() {
+        return controlType;
+    }
+
     public String getType() {
         return type;
     }

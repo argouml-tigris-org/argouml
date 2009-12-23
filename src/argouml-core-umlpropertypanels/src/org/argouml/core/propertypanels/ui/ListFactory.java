@@ -24,8 +24,11 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.JList;
+
+import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.behavior.use_cases.ActionAddExtendExtensionPoint;
 import org.argouml.uml.ui.behavior.use_cases.ActionNewExtendExtensionPoint;
@@ -42,13 +45,14 @@ class ListFactory implements ComponentFactory {
     
     public JComponent createComponent(
             final Object modelElement,
-            final String propName) {
+            final String propName,
+            final String type) {
         JComponent list = null;
-        UMLModelElementListModel model = null;
+        DefaultListModel model = null;
         
         if ("action".equals(propName)) {
             model = new UMLActionSequenceActionListModel(modelElement);
-            list = new ScrollList(new UMLActionSequenceActionList(model));     
+            list = new OldScrollList(new UMLActionSequenceActionList((UMLModelElementListModel) model));     
         } else if ("actualArgument".equals(propName)) {
             model = new UMLActionArgumentListModel(modelElement, propName);
         } else if ("annotatedElement".equals(propName)) {
@@ -57,8 +61,8 @@ class ListFactory implements ComponentFactory {
             model = new UMLClassifierAssociationEndListModel(modelElement);
         } else if ("associationRole".equals(propName)) {
             model = new UMLAssociationAssociationRoleListModel(modelElement);
-        } else if ("attribute".equals(propName)) {
-            model = new UMLClassAttributeListModel(modelElement);
+//        } else if ("attribute".equals(propName)) {
+//            model = new UMLClassAttributeListModel(modelElement);
         } else if ("availableContents".equals(propName)) {
             model = new UMLClassifierRoleAvailableContentsListModel(modelElement);
         } else if ("availableFeature".equals(propName)) {
@@ -85,26 +89,26 @@ class ListFactory implements ComponentFactory {
             model = new UMLSignalContextListModel(modelElement);
         } else if ("deferrableEvent".equals(propName)) {
             model = new UMLStateDeferrableEventListModel(modelElement);
-            JList l = new UMLStateDeferrableEventList(model);
-            list = new ScrollList(l);                    
+            JList l = new UMLStateDeferrableEventList((UMLModelElementListModel) model);
+            list = new OldScrollList(l);                    
         } else if ("definedTag".equals(propName)) {
             model = new UMLStereotypeTagDefinitionListModel(modelElement);
         } else if ("deployedComponent".equals(propName)) {
             model = new UMLNodeDeployedComponentListModel(modelElement);
         } else if ("doActivity".equals(propName)) {
             model = new UMLStateDoActivityListModel(modelElement);
-            JList l = new UMLStateDoActivityList(model);
-            list = new ScrollList(l);
+            JList l = new UMLStateDoActivityList((UMLModelElementListModel) model);
+            list = new OldScrollList(l);
         } else if ("elementImport".equals(propName)) {
             model = new UMLClassifierPackageImportsListModel(modelElement);
         } else if ("entry".equals(propName)) {
             model = new UMLStateEntryListModel(modelElement);
-            JList l = new UMLStateEntryList(model);
-            list = new ScrollList(l);
+            JList l = new UMLStateEntryList((UMLModelElementListModel) model);
+            list = new OldScrollList(l);
         } else if ("exit".equals(propName)) {
             model = new UMLStateExitListModel(modelElement);
-            JList l = new UMLStateExitList(model);
-            list = new ScrollList(l);
+            JList l = new UMLStateExitList((UMLModelElementListModel) model);
+            list = new OldScrollList(l);
         } else if ("extend".equals(propName)) {
             model = new UMLUseCaseExtendListModel(modelElement);
         } else if ("extended_elements".equals(propName)) {
@@ -115,8 +119,8 @@ class ListFactory implements ComponentFactory {
             } else {
                 model = new UMLExtendExtensionPointListModel(modelElement, propName);
             }
-        } else if ("feature".equals(propName)) {
-            model = new UMLClassifierFeatureListModel(modelElement);
+//        } else if ("feature".equals(propName)) {
+//            model = new UMLClassifierFeatureListModel(modelElement);
         } else if ("generalization".equals(propName)) {
             model = new UMLGeneralizableElementGeneralizationListModel(modelElement);
         } else if ("include".equals(propName)) {
@@ -135,8 +139,8 @@ class ListFactory implements ComponentFactory {
             model = new UMLInteractionMessagesListModel(modelElement);
         } else if ("method".equals(propName)) {
             model = new UMLOperationMethodsListModel(modelElement);
-        } else if ("operation".equals(propName)) {
-            model = new UMLClassOperationListModel(modelElement);
+//        } else if ("operation".equals(propName)) {
+//            model = new UMLClassOperationListModel(modelElement);
         } else if ("ownedElement".equals(propName)) {
             model = new UMLNamespaceOwnedElementListModel(modelElement);
         } else if ("outgoing".equals(propName)) {
@@ -163,7 +167,7 @@ class ListFactory implements ComponentFactory {
             model = new UMLComponentResidentListModel(modelElement);
         } else if ("signal".equals(propName)) {
             model = new UMLSignalEventSignalListModel(modelElement);
-            list = new ScrollList(new UMLSignalEventSignalList(model));                    
+            list = new OldScrollList(new UMLSignalEventSignalList((UMLModelElementListModel) model));                    
         } else if ("specialization".equals(propName)) {
             model = new UMLGeneralizableElementSpecializationListModel(modelElement);
         } else if ("specification".equals(propName)) {
@@ -172,8 +176,8 @@ class ListFactory implements ComponentFactory {
             model = new UMLStateMachineSubmachineStateListModel(modelElement);
         } else if ("subvertex".equals(propName)) {
             model = new UMLCompositeStateSubvertexListModel(modelElement);
-            JList l = new UMLCompositeStateSubvertexList(model);
-            list = new ScrollList(l);
+            JList l = new UMLCompositeStateSubvertexList((UMLModelElementListModel) model);
+            list = new OldScrollList(l);
         } else if ("supplier".equals(propName)) {
             model = new UMLDependencySupplierListModel(modelElement);
         } else if ("supplierDependency".equals(propName)) {
@@ -188,6 +192,14 @@ class ListFactory implements ComponentFactory {
             model = new UMLTagDefinitionTypedValuesListModel(modelElement); 
         } else if ("templateParameter".equals(propName)) {
             model = new UMLModelElementTemplateParameterListModel(modelElement); 
+        }
+        
+        if (model == null) {
+            final GetterSetterManager getterSetterManager =
+                GetterSetterManager.getGetterSetter();
+            if (getterSetterManager.contains(propName)) {
+                model = new SimpleListModel(propName, type, modelElement, getterSetterManager);
+            }
         }
         
         if (list != null) {

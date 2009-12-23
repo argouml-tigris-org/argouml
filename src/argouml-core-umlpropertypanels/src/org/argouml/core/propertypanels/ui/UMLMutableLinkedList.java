@@ -30,6 +30,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
@@ -115,7 +116,7 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
      * @param theDeleteAction the action for deleting
      * @param showIcon true if an icon should be shown
      */
-    public UMLMutableLinkedList(UMLModelElementListModel dataModel,
+    public UMLMutableLinkedList(DefaultListModel dataModel,
             AbstractActionAddModelElement2 theAddAction,
             AbstractActionNewModelElement theNewAction,
             AbstractActionRemoveElement theDeleteAction) {

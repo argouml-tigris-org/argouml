@@ -59,7 +59,7 @@ class XMLPropertyPanelsHandler extends DefaultHandler {
             current.addCheckbox(record);
         } else {
             PropertyMeta record = 
-                new PropertyMeta(localName, attr.getValue("name"));
+                new PropertyMeta(localName, attr.getValue("name"), attr.getValue("type"));
             if (hasChildren(localName)) {
                 current = record;
             }

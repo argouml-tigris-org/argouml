@@ -13,6 +13,10 @@
 
 package org.argouml.core.propertypanels.model;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 import org.argouml.model.Model;
 
 /**
@@ -50,6 +54,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("kind", new ParameterDirectionGetterSetter());
         addGetterSetter("changeability", new ChangeabilityGetterSetter());
         addGetterSetter("concurrency", new ConcurrencyGetterSetter());
+        addGetterSetter("feature", new FeatureGetterSetter());
     }
     
     /**
@@ -80,22 +85,40 @@ class GetterSetterManagerImpl extends GetterSetterManager {
      * @param value the new property value
      * @param propertyName the property name
      */
-    public Object get(Object handle, String propertyName) {
+    public Object get(Object handle, String propertyName, String type) {
         BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs != null) {
-            return bgs.get(handle);
+            return bgs.get(handle, type);
         }
         
         return null;
     }
     
-    public String[] getOptions(String propertyName) {
+    public Collection getOptions(Object umlElement, String propertyName, String type) {
         BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
-        if (bgs instanceof RadioGetterSetter) {
-            return ((RadioGetterSetter) bgs).getOptions();
+        if (bgs instanceof OptionGetterSetter) {
+            return ((OptionGetterSetter) bgs).getOptions(umlElement, type);
         }
         
         return null;
+    }
+    
+    public boolean isValidElement(String propertyName, String type, Object element) {
+        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        if (bgs instanceof ListGetterSetter) {
+            return ((ListGetterSetter) bgs).isValidElement(element, type);
+        }
+        
+        return false;
+    }
+    
+    public Object getMetaType(String propertyName) {
+        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        if (bgs instanceof ListGetterSetter) {
+            return ((ListGetterSetter) bgs).getMetaType();
+        }
+        
+        return false;
     }
     
     /**
@@ -103,7 +126,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
      * @author Bob Tarling
      */
     private class AbstractGetterSetter extends BaseGetterSetter {
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             return Model.getFacade().isAbstract(modelElement);
         }
         public void set(Object modelElement, Object value) {
@@ -112,7 +135,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     private class LeafGetterSetter extends BaseGetterSetter {
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             return Model.getFacade().isLeaf(modelElement);
         }
         public void set(Object modelElement, Object value) {
@@ -121,7 +144,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     private class RootGetterSetter extends BaseGetterSetter {
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             return Model.getFacade().isRoot(modelElement);
         }
         public void set(Object modelElement, Object value) {
@@ -130,7 +153,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     private class ActiveGetterSetter extends BaseGetterSetter {
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             return Model.getFacade().isActive(modelElement);
         }
         public void set(Object modelElement, Object value) {
@@ -139,7 +162,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     private class OwnerScopeGetterSetter extends BaseGetterSetter {
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             return Model.getFacade().isStatic(modelElement);
         }
         public void set(Object modelElement, Object value) {
@@ -149,7 +172,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class TargetScopeGetterSetter extends BaseGetterSetter {
         // Have we handled UML2 here?
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             return Model.getFacade().isStatic(modelElement);
         }
         public void set(Object modelElement, Object value) {
@@ -158,7 +181,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     private class QueryGetterSetter extends BaseGetterSetter {
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             return Model.getFacade().isQuery(modelElement);
         }
         public void set(Object modelElement, Object value) {
@@ -167,7 +190,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     private class NavigableGetterSetter extends BaseGetterSetter {
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             return Model.getFacade().isNavigable(modelElement);
         }
         public void set(Object modelElement, Object value) {
@@ -176,7 +199,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     private class AsynchronousGetterSetter extends BaseGetterSetter {
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             return Model.getFacade().isAsynchronous(modelElement);
         }
         public void set(Object modelElement, Object value) {
@@ -185,7 +208,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     private class SynchGetterSetter extends BaseGetterSetter {
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             return Model.getFacade().isSynch(modelElement);
         }
         public void set(Object modelElement, Object value) {
@@ -194,7 +217,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     private class OrderingGetterSetter extends BaseGetterSetter {
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             return Model.getFacade().getOrdering(modelElement) ==
                 Model.getOrderingKind().getOrdered();
         }
@@ -217,7 +240,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
          */
         private static final String TagName = "derived";
         
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             Object tv = Model.getFacade().getTaggedValue(modelElement, TagName);
             if (tv != null) {
                 String tag = Model.getFacade().getValueOfTag(tv);
@@ -243,7 +266,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     
-    public class VisibilityGetterSetter extends RadioGetterSetter {
+    public class VisibilityGetterSetter extends OptionGetterSetter {
         
         /**
          * Identifier for public visibility.
@@ -266,10 +289,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public static final String PACKAGE = "package";
         
         public VisibilityGetterSetter() {
-            setOptions(new String[] {PUBLIC, PACKAGE, PROTECTED, PRIVATE});
+            setOptions(Arrays.asList((new String[] {PUBLIC, PACKAGE, PROTECTED, PRIVATE})));
         }
         
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             Object kind = Model.getFacade().getVisibility(modelElement);
             if (kind == null) {
                 return null;
@@ -302,7 +325,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     
-    private class AggregationGetterSetter extends RadioGetterSetter {
+    private class AggregationGetterSetter extends OptionGetterSetter {
         
         /**
          * Identifier for aggregate aggregation kind.
@@ -320,10 +343,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public static final String NONE = "none";
         
         public AggregationGetterSetter() {
-            setOptions(new String[] {AGGREGATE, COMPOSITE, NONE});
+            setOptions(Arrays.asList(new String[] {AGGREGATE, COMPOSITE, NONE}));
         }
         
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             Object kind = Model.getFacade().getAggregation(modelElement);
             if (kind == null) {
                 return null;
@@ -353,7 +376,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class ParameterDirectionGetterSetter extends RadioGetterSetter {
+    private class ParameterDirectionGetterSetter extends OptionGetterSetter {
         
         /**
          * Identifier for an "in" parameter.
@@ -376,14 +399,14 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public static final String RETURN = "return";
         
         public ParameterDirectionGetterSetter() {
-            setOptions(new String[] {
+            setOptions(Arrays.asList(new String[] {
                     IN,
                     OUT,
                     INOUT,
-                    RETURN});
+                    RETURN}));
         }
         
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             Object kind = Model.getFacade().getKind(modelElement);
             if (kind == null) {
                 return null;
@@ -417,7 +440,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     
-    private class ConcurrencyGetterSetter extends RadioGetterSetter {
+    private class ConcurrencyGetterSetter extends OptionGetterSetter {
         
         /**
          * Identifier for sequential concurrency.
@@ -435,13 +458,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public static final String CONCURRENT = "concurrent";
 
         public ConcurrencyGetterSetter() {
-            setOptions(new String[] {
+            setOptions(Arrays.asList(new String[] {
                     SEQUENTIAL,
                     GUARDED,
-                    CONCURRENT});
+                    CONCURRENT}));
         }
         
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             Object kind = Model.getFacade().getConcurrency(modelElement);
             if (kind == null) {
                 return null;
@@ -470,7 +493,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     
-    private class ChangeabilityGetterSetter extends RadioGetterSetter {
+    private class ChangeabilityGetterSetter extends OptionGetterSetter {
         
         /**
          * Identifier for addonly changeability.
@@ -489,10 +512,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public static final String FROZEN = "frozen";
 
         public ChangeabilityGetterSetter() {
-            setOptions(new String[] {ADDONLY, CHANGEABLE, FROZEN});
+            setOptions(Arrays.asList(new String[] {ADDONLY, CHANGEABLE, FROZEN}));
         }
         
-        public Object get(Object modelElement) {
+        public Object get(Object modelElement, String type) {
             Object kind = Model.getFacade().getChangeability(modelElement);
             if (kind == null) {
                 return null;
@@ -516,6 +539,45 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             } else {
                 Model.getCoreHelper().setReadOnly(modelElement, true);
             }
+        }
+    }
+    
+    protected class FeatureGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            if ("Attribute".equals(type)) {
+                return Model.getFacade().getAttributes(modelElement);
+            } else if ("Operation".equals(type)) {
+                return Model.getFacade().getOperations(modelElement);
+            } else {
+                return Collections.EMPTY_LIST;
+            }
+        }
+      
+        public Collection get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        protected boolean isValidElement(Object element, String type) {
+          
+            if ("Attribute".equals(type)
+                    && !Model.getFacade().isAAttribute(element)) {
+                return false;
+            } else if ("Operation".equals(type)
+                    && !Model.getFacade().isAOperation(element)) {
+                return false;
+            }
+          
+            return get(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getAttribute();
         }
     }
 }

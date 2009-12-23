@@ -77,7 +77,7 @@ class XmlSinglePanelHandler extends DefaultHandler {
             } else {
                 PropertyMeta record = 
                     new PropertyMeta(localName, 
-                            attr.getValue("name"));
+                            attr.getValue("name"), attr.getValue("type"));
                 if (hasChildren(localName)) {
                     current = record;
                 }

@@ -41,5 +41,6 @@ interface ComponentFactory {
      */
     JComponent createComponent(
             final Object modelElement,
-            final String propName);
+            final String propName,
+            final String type);
 }

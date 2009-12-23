@@ -75,21 +75,21 @@ class SwingUIFactory {
                     Model.getMetaTypes().getName(target));
         
         for (PropertyMeta prop : data.getProperties()) {
-            if ("text".equals(prop.getType())) {
+            if ("text".equals(prop.getControlType())) {
                 buildTextboxPanel(panel, target, prop);
-            } else if ("combo".equals(prop.getType())) {
+            } else if ("combo".equals(prop.getControlType())) {
                 buildComboPanel(panel, target, prop);                
-            } else if ("checkgroup".equals(prop.getType())) {
+            } else if ("checkgroup".equals(prop.getControlType())) {
                 buildCheckGroup(panel, target, prop);
-            } else if ("optionbox".equals(prop.getType())) {
+            } else if ("optionbox".equals(prop.getControlType())) {
                 buildOptionBox(panel, target, prop);
-            } else if ("singlerow".equals(prop.getType())) {
+            } else if ("singlerow".equals(prop.getControlType())) {
                 buildSingleRow(panel, target, prop);
-            } else if ("list".equals(prop.getType())) {                    
+            } else if ("list".equals(prop.getControlType())) {                    
                 buildList(panel, target, prop);
-            } else if ("textarea".equals(prop.getType())) {
+            } else if ("textarea".equals(prop.getControlType())) {
                 buildTextArea(panel, target, prop);
-            } else if ("separator".equals(prop.getType())) {
+            } else if ("separator".equals(prop.getControlType())) {
                 panel.add(LabelledLayout.getSeparator());
             }
         }
@@ -179,7 +179,7 @@ class SwingUIFactory {
         
         final SingleListFactory factory = new SingleListFactory();
         final JComponent pane =
-            factory.createComponent(target, prop.getName());
+            factory.createComponent(target, prop.getName(), prop.getType());
         
         if (pane != null) {           
             addControl(panel, prop.getName(), pane);
@@ -192,8 +192,8 @@ class SwingUIFactory {
         
         final ListFactory factory = new ListFactory();
         final JComponent list =
-            factory.createComponent(target, prop.getName());
-        
+            factory.createComponent(target, prop.getName(), prop.getType());
+
         if (list != null) {
             addControl(panel, prop.getName(), list);
         }

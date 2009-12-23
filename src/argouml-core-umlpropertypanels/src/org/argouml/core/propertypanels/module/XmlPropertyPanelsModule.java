@@ -55,7 +55,7 @@ public class XmlPropertyPanelsModule
     
     public boolean enable() { 
         
-        if (TabProps.replace) {
+//        if (TabProps.replace) {
             /* Set up the property panels for UML elements: */
             try {
                 TabProps.disableCache();
@@ -66,15 +66,15 @@ public class XmlPropertyPanelsModule
                 LOG.error("Exception caught", e);
                 return false;
             }
-        } else {
-            DetailsPane detailsPane = (DetailsPane) ProjectBrowser.getInstance().getDetailsPane();
-            tempPanel = new TempTabPage();
-            detailsPane.addTab(tempPanel, true);
-            
-            TempListener listener = new TempListener(tempPanel);
-            TargetManager.getInstance().addTargetListener(listener);
-            return true;
-        }
+//        } else {
+//            DetailsPane detailsPane = (DetailsPane) ProjectBrowser.getInstance().getDetailsPane();
+//            tempPanel = new TempTabPage();
+//            detailsPane.addTab(tempPanel, true);
+//            
+//            TempListener listener = new TempListener(tempPanel);
+//            TargetManager.getInstance().addTargetListener(listener);
+//            return true;
+//        }
     }
 
     public boolean disable() {

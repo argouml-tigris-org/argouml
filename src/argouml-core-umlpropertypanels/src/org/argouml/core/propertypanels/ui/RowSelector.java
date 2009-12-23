@@ -35,7 +35,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.Action;
+import javax.swing.DefaultListModel;
 import javax.swing.Icon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -201,7 +203,7 @@ class RowSelector extends JPanel
      * Constructor
      * @param model The single item list model
      */
-    public RowSelector(UMLModelElementListModel model) {
+    public RowSelector(DefaultListModel model) {
         this(model, false, true);
 
     }
@@ -210,13 +212,23 @@ class RowSelector extends JPanel
      * @param model The single item list model
      * @param singleRow true if we only ever want a single row
      */
-    public RowSelector(UMLModelElementListModel model, boolean expanded, boolean expandable) {
+    public RowSelector(DefaultListModel model, boolean expanded, boolean expandable) {
         super(new BorderLayout());
         
         this.expandable = expandable;
+        Object metaType = null;
 
-        target = model.getTarget();
-        Object metaType = model.getMetaType();
+        if (model instanceof UMLModelElementListModel) {
+            target = ((UMLModelElementListModel) model).getTarget();
+            metaType = ((UMLModelElementListModel) model).getMetaType();
+            scroll = new OldScrollList(model, 1);
+        } else if (model instanceof org.argouml.core.propertypanels.ui.SimpleListModel) {
+            target = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getUmlElement();
+            metaType = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaType();
+            scroll = new ScrollListImpl(model, 1);
+        } else {
+            target = null;
+        }
 
         LOG.info("Creating list for " + target);
 
@@ -224,23 +236,24 @@ class RowSelector extends JPanel
         LOG.info("metatype = " + metaType);
         LOG.info("target = " + target);
 
-        scroll = new ScrollList(model, 1);
-        add(scroll);
+        add((JComponent) scroll);
 
-        shrunkPreferredSize = scroll.getPreferredSize();
+        shrunkPreferredSize = ((JComponent) scroll).getPreferredSize();
 
-        remove(scroll);
-        scroll = new ScrollList(model);
+        remove(((JComponent) scroll));
 
-        add(scroll);
-        expandedPreferredSize = scroll.getPreferredSize();
-        expandedMaximumSize = scroll.getMaximumSize();
+        scroll = ScrollListFactory.create(model);
+        JScrollPane jscroll = ((JScrollPane) scroll);
+        
+        add(jscroll);
+        expandedPreferredSize = jscroll.getPreferredSize();
+        expandedMaximumSize = jscroll.getMaximumSize();
 
-        scroll.setHorizontalScrollBarPolicy(
+        jscroll.setHorizontalScrollBarPolicy(
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         if (!expandable && !expanded) {
-            scroll.setVerticalScrollBarPolicy(
+            jscroll.setVerticalScrollBarPolicy(
                     JScrollPane.VERTICAL_SCROLLBAR_NEVER);
             expander = null;
             toolbar = null;
@@ -411,7 +424,11 @@ class RowSelector extends JPanel
         }
         this.removeMouseListener(this);
         getModel().removeListDataListener(this);
-        ((UMLModelElementListModel) getModel()).removeModelEventListener();
+        if (getModel() instanceof UMLModelElementListModel) {
+            ((UMLModelElementListModel) getModel()).removeModelEventListener();
+        } else {
+            ((org.argouml.core.propertypanels.ui.SimpleListModel) getModel()).removeModelEventListener();
+        }
     }
 
 

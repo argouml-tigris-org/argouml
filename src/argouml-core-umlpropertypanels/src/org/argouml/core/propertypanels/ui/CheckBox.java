@@ -112,7 +112,7 @@ class CheckBox extends JCheckBox
      */
     private void build() {
         if (getterSetter != null) {
-            setSelected((Boolean) getterSetter.get(modelElement, propertyName));
+            setSelected((Boolean) getterSetter.get(modelElement, propertyName, null));
         }
     }
     
