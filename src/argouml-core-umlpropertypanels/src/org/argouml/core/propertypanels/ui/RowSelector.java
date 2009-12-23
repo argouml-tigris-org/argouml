@@ -276,7 +276,7 @@ class RowSelector extends JPanel
             deleteAction = new DeleteAction();
             actions.add(deleteAction);
 
-            if (getModel() instanceof Ordered) {
+            if (Model.getUmlHelper().isMovable(metaType)) {
                 moveUpAction = new MoveUpAction();
                 moveDownAction = new MoveDownAction();
                 moveTopAction = new MoveTopAction();
