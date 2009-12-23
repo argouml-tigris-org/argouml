@@ -73,4 +73,11 @@ public abstract class AbstractUmlHelperDecorator implements UmlHelper {
         impl.move(parent, element, direction);
     }
 
+    /*
+     * @see org.argouml.model.UmlHelper#move(java.lang.Object)
+     */
+    public boolean isMovable(Object element) {
+        return impl.isMovable(element);
+    }
+
 }

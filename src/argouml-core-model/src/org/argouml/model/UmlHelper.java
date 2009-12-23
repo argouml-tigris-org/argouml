@@ -76,6 +76,13 @@ public interface UmlHelper {
     Object getDestination(Object relationShip);
     
     /**
+     * Returns true if a model element can be moved within its parent 
+     * @param parent the parent model element
+     * @param element the element to move
+     */
+    boolean isMovable(Object element);
+    
+    /**
      * This is used to change the ordering of elements that are already
      * in some container. E.g. attributes within a class. They can be moved
      * up, down or to top or bottom. 
