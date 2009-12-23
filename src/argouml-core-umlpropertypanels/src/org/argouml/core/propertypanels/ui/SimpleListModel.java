@@ -16,14 +16,18 @@ package org.argouml.core.propertypanels.ui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Collection;
+import java.util.List;
+
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.model.GetterSetterManager;
+import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.util.CollectionUtil;
 
 /**
  * The simplest model for a list of UML elements
@@ -82,6 +86,21 @@ class SimpleListModel
                     if (e instanceof RemoveAssociationEvent) {
                         removeElement(
                                 ((RemoveAssociationEvent) e).getChangedValue());
+                    } else if (e instanceof AddAssociationEvent) {
+                        Object newElement = ((AddAssociationEvent) e).getChangedValue();
+                        
+                        if (Model.getUmlHelper().isMovable(getMetaType())) {
+                            final Collection c =
+                                (Collection) getterSetterManager.getOptions( 
+                                    umlElement, 
+                                    propertyName, 
+                                    type);
+                            final int index =
+                                CollectionUtil.indexOf(c, newElement);
+                            add(index, newElement);
+                        } else {
+                            addElement(newElement);
+                        }
                     }
                 } catch (InvalidElementException e) {
                     LOG.debug("propertyChange accessed a deleted element ", e);
