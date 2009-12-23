@@ -25,10 +25,17 @@
 // SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.argouml.model.euml;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.UmlHelper;
+import org.eclipse.uml2.uml.Action;
+import org.eclipse.uml2.uml.EnumerationLiteral;
+import org.eclipse.uml2.uml.Extend;
+import org.eclipse.uml2.uml.ExtensionPoint;
+import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Relationship;
 import org.eclipse.uml2.uml.Transition;
@@ -100,6 +107,21 @@ class UmlHelperEUMLImpl implements UmlHelper {
             return modelImpl.getCoreHelper().getDestination(relationShip);
         }
         throw new IllegalArgumentException();
+    }
+    
+    /*
+     * @see org.argouml.model.UmlHelper#move(java.lang.Object, org.argouml.model.UmlHelper.Direction)
+     */
+    public boolean isMovable(Object metaType) {
+        final Class<?>[] movableMetaType = {
+            Action.class, 
+            EnumerationLiteral.class,
+            Extend.class,
+            ExtensionPoint.class,
+            Operation.class,
+            Parameter.class,
+            Property.class};
+        return Arrays.asList(movableMetaType).contains(metaType);
     }
 
     /*
