@@ -1,3 +1,16 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *******************************************************************************
+ */
+
 // $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -68,5 +81,30 @@ public final class CollectionUtil {
             return null;
         }
         return getFirstItem(c);
+    }
+
+    /**
+     * Get the index position of an element in a collection
+     *
+     * @param c The Collection.
+     * @param elem the element to find the index of
+     * @return the element index
+     */
+    public static int indexOf(
+            final Collection c,
+            final Object elem) {
+        if (c instanceof List) {
+            return ((List) c).indexOf(elem);
+        } else {
+            int index = 0;
+            for (Object element : c) {
+                if (element == elem) {
+                    return index;
+                } else {
+                    ++index;
+                }
+            }
+            return -1;
+        }
     }
 }
