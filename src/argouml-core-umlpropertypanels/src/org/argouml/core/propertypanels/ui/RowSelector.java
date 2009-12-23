@@ -1,4 +1,18 @@
-// $Id: UMLSingleRowSelector.java 15914 2008-10-13 17:10:00Z bobtarling $
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *******************************************************************************
+ */
+
+
+// $Id: RowSelector.java 15914 2008-10-13 17:10:00Z bobtarling $
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -314,7 +328,7 @@ class RowSelector extends JPanel
             // but we have no API yet.
             // Can we just check if the collection to build the JList
             // control implements the List interface?
-            if (getModel() instanceof Ordered) {
+            if (Model.getUmlHelper().isMovable(metaType)) {
                 getList().addListSelectionListener(moveUpAction);
                 getList().addListSelectionListener(moveDownAction);
                 getList().addListSelectionListener(moveTopAction);
