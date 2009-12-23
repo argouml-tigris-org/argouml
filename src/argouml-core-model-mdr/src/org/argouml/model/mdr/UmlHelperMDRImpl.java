@@ -25,14 +25,13 @@
 package org.argouml.model.mdr;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.Model;
 import org.argouml.model.UmlHelper;
-import org.argouml.model.UmlHelper.Direction;
 import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.commonbehavior.Action;
 import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
@@ -51,10 +50,10 @@ import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.Enumeration;
 import org.omg.uml.foundation.core.EnumerationLiteral;
 import org.omg.uml.foundation.core.Feature;
+import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.core.Parameter;
 import org.omg.uml.foundation.core.Relationship;
 import org.omg.uml.foundation.core.UmlAssociation;
-import org.omg.uml.foundation.core.UmlClass;
 
 /**
  * Helper class for UML metamodel.
@@ -235,6 +234,26 @@ class UmlHelperMDRImpl implements UmlHelper {
             Model.getUseCasesHelper().setExtensionPoints(ep, f);
         }
     }
+    
+    /*
+     * @see org.argouml.model.UmlHelper#move(java.lang.Object, org.argouml.model.UmlHelper.Direction)
+     */
+    public boolean isMovable(Object metaType) {
+        final Class<?>[] movableMetaType = new Class<?> [] {
+            Action.class, 
+            Argument.class, 
+            AssociationEnd.class, 
+            Attribute.class, 
+            EnumerationLiteral.class,
+            Extend.class,
+            ExtensionPoint.class,
+            Feature.class, 
+            LinkEnd.class,
+            Operation.class, 
+            Parameter.class};
+        return Arrays.asList(movableMetaType).contains(metaType);
+    }
+    
     
     private int newPosition(int index, int size, Direction direction) {
         final int posn;
