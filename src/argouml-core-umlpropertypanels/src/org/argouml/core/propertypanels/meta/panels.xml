@@ -694,32 +694,35 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
-    <list name="comment" type="Comment" />
-    <separator />
-    <list name="templateParameter" type="TemplateParameter" />
     <list name="supplierDependency" type="ModelElement" />
+    <separator />
+    <list name="behavior" type="ModelElement" />
+    <list name="classifierRole" type="ModelElement" />
+    <list name="collaboration" type="ModelElement" />
+    <list name="collaborationInstanceSet" type="ModelElement" />
+    <text name="body" type="ProcedureExpression" />
+    <attribute name="specification" type="Operation" />
+    <!-- 
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <separator />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
+    <list name="raisedSignal" type="BehavioralFeature" />
+    <list name="templateParameter" type="TemplateParameter" />
+    <list name="elementImport" type="ModelElement" />
+    <attribute name="ownerScope" type="ScopeKind" />
+    <attribute name="owner" type="Classifier" />
+    <list name="targetFlow" type="Flow" />
+    <list name="sourceFlow" type="Flow" />
+    <list name="comment" type="Comment" />
     <list name="partition" type="ModelElement" />
     <list name="elementImport" type="ModelElement" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
-    <list name="parameter" type="Parameter" />
-    <separator />
-    <list name="raisedSignal" type="BehavioralFeature" />
-    <attribute name="body" type="ProcedureExpression" />
-    <attribute name="specification" type="Operation" />
+
+     -->
   </panel>
   <panel name="Generalization">
     <text name="name" type="Name" />
@@ -2270,27 +2273,24 @@
   <panel name="ComponentInstance">
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
+    <separator />
+    <singlerow name="stimulus" type="Instance" />
+    <singlerow name="stimulus" type="Instance" />
+    <list name="resident" type="Instance" />
     <list name="clientDependency" type="Dependency" />
+    <list name="supplierDependency" type="ModelElement" />
+    <separator />
+    <list name="classifier" type="Classifier" />
+    <!--
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
-    <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <separator />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
     <list name="elementImport" type="ModelElement" />
-    <list name="classifier" type="Classifier" />
     <list name="linkEnd" type="LinkEnd" />
     <list name="slot" type="AttributeLink" />
     <attribute name="componentInstance" type="ComponentInstance" />
@@ -2298,11 +2298,15 @@
     <list name="ownedInstance" type="Instance" />
     <list name="ownedLink" type="Link" />
     <list name="attributeLink" type="Instance" />
-    <list name="stimulus" type="Instance" />
     <attribute name="owner" type="Instance" />
     <list name="playedRole" type="Instance" />
     <attribute name="nodeInstance" type="NodeInstance" />
-    <list name="resident" type="Instance" />
+    <list name="presentation" type="ModelElement" />
+    <list name="defaultedParameter" type="ModelElement" />
+    <list name="elementResidence" type="ModelElement" />
+    <list name="referenceTag" type="ModelElement" />
+    <list name="templateArgument" type="ModelElement" />
+  -->
   </panel>
   <panel name="NodeInstance">
     <text name="name" type="Name" />
