@@ -1,4 +1,18 @@
-// $Id$
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Linus Tolke
+ *******************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -236,7 +250,7 @@ public class AboutBox extends ArgoDialog {
         buf.append(localize("aboutbox.developed-by"));
         buf.append("\n\n");
         buf.append(localize("aboutbox.project-leader"));
-        buf.append("Linus Tolke (linus@tigris.org)");
+        buf.append(" Linus Tolke (linus@tigris.org)");
         buf.append("\n\n");
         buf.append(localize("aboutbox.module-owners"));
         buf.append("\n");
@@ -274,7 +288,7 @@ public class AboutBox extends ArgoDialog {
         buf.append("+ Bogdan Szanto\n");
         buf.append("+ Bogdan Pistol\n");
         buf.append("+ Brian Hudson\n");
-        buf.append("+ Christian LÅÛpez EspÅÌnola\n");
+        buf.append("+ Christian LÛpez EspÌnola\n");
         buf.append("+ Dave Thompson\n");
         buf.append("+ Harald Braun\n");
         buf.append("+ Jan Magne Andersen\n");
