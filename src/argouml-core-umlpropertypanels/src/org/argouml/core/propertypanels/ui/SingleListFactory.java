@@ -1,3 +1,16 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *******************************************************************************
+ */
+
 // $Id: ListFactory.java 17009 2009-03-31 22:53:20Z bobtarling $
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -24,7 +37,10 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
+
+import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.model.Model;
 
 /**
@@ -38,7 +54,7 @@ class SingleListFactory implements ComponentFactory {
             final String propName,
             final String type) {
         
-        UMLModelElementListModel model = null;
+        DefaultListModel model = null;
         
         if ("owner".equals(propName)) {
             model = new UMLFeatureOwnerListModel(modelElement, propName);
@@ -113,6 +129,16 @@ class SingleListFactory implements ComponentFactory {
         } else if ("parameter".equals(propName)) {
             model = new UMLTemplateParameterParameterListModel(modelElement, propName);
         }
+        
+        if (model == null) {
+            final GetterSetterManager getterSetterManager =
+                GetterSetterManager.getGetterSetter();
+            if (getterSetterManager.contains(propName)) {
+                model = new SimpleListModel(propName, type, modelElement, getterSetterManager);
+            }
+        }
+        
+        
         
         if (model != null) {
             return new RowSelector(model, false, false);

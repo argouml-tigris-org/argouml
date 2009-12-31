@@ -110,12 +110,14 @@ class SwingUIFactory {
 
         JComponent control = null;
         
+        final String propertyName = prop.getName();
+        
         if ("initialValue".equals(prop.getName())) {        
             UMLExpressionModel model = 
                 new UMLInitialValueExpressionModel(target);
             p  = new UMLExpressionPanel(model, prop.getName());
             control = p;
-        } else if ("defaultValue".equals(prop.getName())) {        
+        } else if ("defaultValue".equals(prop.getName())) {
             UMLExpressionModel model = 
                 new UMLDefaultValueExpressionModel(target);
             p  = new UMLExpressionPanel(model, prop.getName());
@@ -126,7 +128,7 @@ class SwingUIFactory {
             UMLTextArea osta = new UMLTextArea(document);
             osta.setRows(3);
             control = new JScrollPane(osta);
-        } else if ("body".equals(prop.getName())) {
+        } else if ("body".equals(prop.getName()) && "String".equals(prop.getType())) {
             UMLPlainTextDocument document = new UMLCommentBodyDocument(prop.getName(), target);
             UMLTextArea text = new UMLTextArea(document);
             text.setLineWrap(true);
@@ -170,6 +172,20 @@ class SwingUIFactory {
             } else {
                 // if not, it is a control and must be labeled...
                 addControl(panel, prop.getName(), control);
+            }
+        } else {
+            final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter();
+
+            if (getterSetter.contains(propertyName)) {
+                ExpressionModel model = new ExpressionModel(propertyName, prop.getType(), target, getterSetter);
+                final JTextField languageField = 
+                    new ExpressionLanguageField(model);
+                addControl(
+                        panel,
+                        Translator.localize("label.language"),
+                        languageField);
+                control = new JScrollPane(new ExpressionBodyField(model));
+                addControl(panel, null, control);
             }
         }
     }
@@ -412,6 +428,13 @@ class SwingUIFactory {
         } else if ("defaultElement".equals(prop.getName())) {
             final UMLComboBoxModel model =
                 new UMLTemplateParameterDefaultElementComboBoxModel(propertyName, target);
+            final JComboBox combo = new UMLComboBox(model);
+            comp = new UMLComboBoxNavigator(
+                    Translator.localize("label.type.navigate.tooltip"),
+                    combo);
+        } else if ("specification".equals(prop.getName())) {
+            final UMLComboBoxModel model =
+                new UMLMethodSpecificationComboBoxModel(propertyName, target);
             final JComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(
                     Translator.localize("label.type.navigate.tooltip"),

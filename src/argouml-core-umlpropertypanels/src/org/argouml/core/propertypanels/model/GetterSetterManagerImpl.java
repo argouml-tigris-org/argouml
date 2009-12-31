@@ -55,6 +55,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("changeability", new ChangeabilityGetterSetter());
         addGetterSetter("concurrency", new ConcurrencyGetterSetter());
         addGetterSetter("feature", new FeatureGetterSetter());
+        addGetterSetter("stimulus", new StimuliGetterSetter());
+        addGetterSetter("body", new MethodExpressionGetterSetter());
     }
     
     /**
@@ -98,6 +100,16 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof OptionGetterSetter) {
             return ((OptionGetterSetter) bgs).getOptions(umlElement, type);
+        }
+        
+        return null;
+    }
+    
+    
+    public Object create(String propertyName, String language, String body) {
+        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        if (bgs instanceof ExpressionGetterSetter) {
+            return ((ExpressionGetterSetter) bgs).create(language, body);
         }
         
         return null;
@@ -542,7 +554,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    protected class FeatureGetterSetter extends ListGetterSetter {
+    private class FeatureGetterSetter extends ListGetterSetter {
         
         public Collection getOptions(Object modelElement, String type) {
             if ("Attribute".equals(type)) {
@@ -554,7 +566,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             }
         }
       
-        public Collection get(Object modelElement, String type) {
+        public Object get(Object modelElement, String type) {
             // not needed
             return null;
         }
@@ -573,7 +585,51 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 return false;
             }
           
-            return get(element, type).contains(element);
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getAttribute();
+        }
+    }
+    
+    
+    private class MethodExpressionGetterSetter extends ExpressionGetterSetter {
+        
+        @Override
+        public Object get(Object modelElement, String type) {
+            return Model.getFacade().getBody(modelElement);
+        }
+      
+        @Override
+        public void set(Object modelElement, Object value) {
+            Model.getCoreHelper().setBody(modelElement, value);
+        }
+
+        @Override
+        Object create(final String language, final String body) {
+            return Model.getDataTypesFactory().createProcedureExpression(language, body);
+        }
+    }
+    
+    private class StimuliGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            return Model.getFacade().getReceivedStimuli(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        protected boolean isValidElement(Object element, String type) {
+          
+            return getOptions(element, type).contains(element);
         }
         
         public Object getMetaType() {

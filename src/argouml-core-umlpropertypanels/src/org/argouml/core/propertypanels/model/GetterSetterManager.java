@@ -41,6 +41,8 @@ public abstract class GetterSetterManager {
      * @return the UML element or property
      */
     public abstract Object get(Object umlElement, String propertyName, String type);
+    
+    public abstract Object create(String propertyName, String language, String body);
 
     public abstract Collection getOptions(Object umlElement, String propertyName, String type);
     
@@ -61,6 +63,11 @@ public abstract class GetterSetterManager {
         abstract Object get(Object modelElement, String type);
         abstract void set(Object modelElement, Object value);
     }
+    
+    protected abstract class ExpressionGetterSetter extends BaseGetterSetter {
+        abstract Object create(String language, String body);
+    }
+    
     
     protected abstract class OptionGetterSetter extends BaseGetterSetter {
         

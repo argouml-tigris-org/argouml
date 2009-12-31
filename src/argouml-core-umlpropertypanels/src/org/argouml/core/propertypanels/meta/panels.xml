@@ -686,22 +686,23 @@
   </panel>
   <panel name="Method">
     <text name="name" type="Name" />
+    <singlerow name="owner" type="Classifier" />
+    <combo name="specification" type="Operation" />
+    <list name="clientDependency" type="Dependency" />
+    <list name="supplierDependency" type="ModelElement" />
+    <separator />
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isQuery" type="Boolean" />
       <checkbox name="ownerScope" type="ScopeKind" />
     </checkgroup>
-    <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
-    <list name="supplierDependency" type="ModelElement" />
     <separator />
+    <textarea name="body" type="ProcedureExpression" />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
-    <text name="body" type="ProcedureExpression" />
-    <attribute name="specification" type="Operation" />
     <!-- 
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
