@@ -69,6 +69,6 @@ public class CoreProfileReference extends ProfileReference {
      */
     public static void setProfileDirectory(String dir) {
         PROFILES_RESOURCE_PATH = "/org/argouml/profile/profiles/" + dir + '/';
-        PROFILES_BASE_URL = "http://argouml.org/profiles" + dir + '/';
+        PROFILES_BASE_URL = "http://argouml.org/profiles/" + dir + '/';
     }
 }
