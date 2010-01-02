@@ -113,6 +113,7 @@ public class ProfileManagerImpl implements ProfileManager {
             registerProfile(new ProfileMeta());
 
         } catch (ProfileException e) {
+            // TODO: Why is this throwing a generic runtime exception?!?!
             throw new RuntimeException(e);
         } finally {
             disableConfigurationUpdate = false;

@@ -236,6 +236,7 @@ class ModelMemberFilePersister extends MemberFilePersister
             reader = Model.getXmiReader();
             
             if (Configuration.getBoolean(Argo.KEY_XMI_STRIP_DIAGRAMS, false)) {
+                // TODO: Not implemented by eUML
                 reader.setIgnoredElements(new String[] {"UML:Diagram"});
             } else {
                 reader.setIgnoredElements(null);
