@@ -64,6 +64,7 @@ import org.eclipse.uml2.uml.CreateObjectAction;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.DestroyObjectAction;
+import org.eclipse.uml2.uml.DirectedRelationship;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Enumeration;
@@ -2284,10 +2285,18 @@ class FacadeEUMLImpl implements Facade {
     public String[] getMetatypeNames() {
         // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
-        
     }
 
     public boolean isA(String metatypeName, Object element) {
         return getUMLClassName(element).equals(metatypeName);
+    }
+
+    public Collection getTargets(Object handle) {
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
+    }
+
+    public boolean isADirectedRelationship(Object handle) {
+        return handle instanceof DirectedRelationship;
     }
 }
