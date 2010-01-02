@@ -173,7 +173,7 @@ class SwingUIFactory {
                 addControl(panel, null, control);
             } else {
                 // if not, it is a control and must be labeled...
-                addControl(panel, prop.getLabel(), control);
+                addControl(panel, Translator.localize(prop.getLabel()), control);
             }
         } else {
             final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter();
@@ -200,7 +200,7 @@ class SwingUIFactory {
             factory.createComponent(target, prop.getName(), prop.getType());
         
         if (pane != null) {           
-            addControl(panel, prop.getLabel(), pane);
+            addControl(panel, Translator.localize(prop.getLabel()), pane);
         }
     }
 
@@ -213,7 +213,7 @@ class SwingUIFactory {
             factory.createComponent(target, prop.getName(), prop.getType());
 
         if (list != null) {
-            addControl(panel, prop.getLabel(), list);
+            addControl(panel, Translator.localize(prop.getLabel()), list);
         }
     }
 
@@ -444,7 +444,7 @@ class SwingUIFactory {
         }
         
         if (comp != null) {
-            addControl(panel, prop.getLabel(), comp);
+            addControl(panel, Translator.localize(prop.getLabel()), comp);
         }
     }
 
@@ -473,7 +473,7 @@ class SwingUIFactory {
         
         if (document != null) {
             JTextField tfield = new UMLTextField(document);
-            addControl(panel, prop.getLabel(), tfield);
+            addControl(panel, Translator.localize(prop.getLabel()), tfield);
         }
     }
     

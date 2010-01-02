@@ -65,8 +65,12 @@ public class PropertyMeta {
         
         if (label != null)
         	this.label = label;
-        else
-        	this.label = name;
+        else if (name != null)
+        	// TODO: Getting the labels is more complex than this.
+        	// Options: 
+        	// 1) Make the logic here (plurals, camel-to-hyphens...)
+        	// 2) Change the labels in i18n files for every language.
+        	this.label = "label." + name.toLowerCase();
     }
     
     public String getControlType() {

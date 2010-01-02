@@ -207,8 +207,8 @@
     <!-- 
     <list name="feature" type="Feature" />
      -->
-    <list name="feature" type="Attribute" label="Attributes" />
-    <list name="feature" type="Operation" label="Operations" />
+    <list name="feature" type="Attribute" label="label.attributes" />
+    <list name="feature" type="Operation" label="label.operations" />
     <list name="association" type="Classifier" />    
     <list name="ownedElement" type="ModelElement" />
 	
