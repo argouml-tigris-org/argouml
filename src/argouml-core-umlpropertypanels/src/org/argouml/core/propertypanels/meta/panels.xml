@@ -1738,8 +1738,8 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <singlerow name="sentStimulus" type="Instance" />
-    <singlerow name="receivedStimulus" type="Instance" />
+    <singlerow name="sender" type="Instance" />
+    <singlerow name="receiver" type="Instance" />
     <separator />
     <list name="classifier" type="Classifier" />
     
@@ -2275,8 +2275,8 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <singlerow name="stimulus" type="Instance" />
-    <singlerow name="stimulus" type="Instance" />
+    <singlerow name="sender" type="Instance" />
+    <singlerow name="receiver" type="Instance" />
     <list name="resident" type="Instance" />
     <list name="clientDependency" type="Dependency" />
     <list name="supplierDependency" type="ModelElement" />
@@ -2313,8 +2313,8 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <singlerow name="sentStimulus" type="Instance" />
-    <singlerow name="receivedStimulus" type="Instance" />
+    <singlerow name="sender" type="Instance" />
+    <singlerow name="receiver" type="Instance" />
     <list name="resident" type="ComponentInstance" />
     <separator />
     <list name="classifier" type="Classifier" />

@@ -85,25 +85,35 @@ class SingleListFactory implements ComponentFactory {
                 model = new UMLCollaborationInteractionListModel(modelElement, propName);
             }
         } else if ("sender".equals(propName)) {
-            model = new UMLMessageSenderListModel(modelElement, propName);
+            if (Model.getFacade().isAMessage(modelElement)) {
+                model = new UMLMessageSenderListModel(modelElement, propName);
+            } else {
+                /*
+                 * The XML generated is "stimulus", because the A_receiver_stimulus
+                 * association has "stimulus" and "receiver" as association ends.
+                 * The A_stimulus_sender has "sender" and "stimulus", so it is generated
+                 * once. So we have created them by hand with a more explicit name and
+                 * removed "stimulus".
+                 */ 
+                model = new UMLInstanceSenderStimulusListModel(modelElement, propName);
+            }
         } else if ("receiver".equals(propName)) {
-            model = new UMLMessageReceiverListModel(modelElement, propName);
+            if (Model.getFacade().isAMessage(modelElement)) {
+                model = new UMLMessageReceiverListModel(modelElement, propName);
+            } else {
+                /*
+                 * The XML generated is "stimulus", because the A_receiver_stimulus
+                 * association has "stimulus" and "receiver" as association ends.
+                 * The A_stimulus_sender has "sender" and "stimulus", so it is generated
+                 * once. So we have created them by hand with a more explicit name and
+                 * removed "stimulus".
+                 */ 
+                model = new UMLInstanceReceiverStimulusListModel(modelElement, propName);
+            }
         } else if ("action".equals(propName)) {
             model = new UMLMessageActionListModel(modelElement, propName);
         } else if ("context".equals(propName)) {
             model = new UMLInteractionContextListModel(modelElement, propName);
-        }
-        /*
-         * The XML generated is "stimulus", because the A_receiver_stimulus
-         * association has "stimulus" and "receiver" as association ends.
-         * The A_stimulus_sender has "sender" and "stimulus", so it is generated
-         * once. So we have created them by hand with a more explicit name and
-         * removed "stimulus".
-         */ 
-        else if ("sentStimulus".equals(propName)) {
-            model = new UMLInstanceSenderStimulusListModel(modelElement, propName);
-        } else if ("receivedStimulus".equals(propName)) {
-            model = new UMLInstanceReceiverStimulusListModel(modelElement, propName);
         } else if ("stateMachine".equals(propName)) {
             model = new UMLTransitionStatemachineListModel(modelElement, propName);
         } else if ("state".equals(propName)) {
