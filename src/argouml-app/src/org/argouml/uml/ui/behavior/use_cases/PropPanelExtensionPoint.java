@@ -1,4 +1,17 @@
-// $Id$
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Jeremy Bennett - initial implementation
+ *    <see source control change log for other early contributors>
+ *    
+ *******************************************************************************
+ */
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -68,13 +81,13 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         addField("label.name", getNameTextField());
 
-        // Our location (a String). Allow the location label to
-        // expand vertically so we all float to the top.
-
-        JTextField locationField = new UMLTextField2(
-                new UMLExtensionPointLocationDocument());
-        addField("label.location",
-                locationField);
+        if (Model.getFacade().getUmlVersion().startsWith("1.")) {
+            // Our location (a String). Allow the location label to
+            // expand vertically so we all float to the top.
+            JTextField locationField = new UMLTextField2(
+                    new UMLExtensionPointLocationDocument());
+            addField("label.location", locationField);
+        }
 
         addSeparator();
 
