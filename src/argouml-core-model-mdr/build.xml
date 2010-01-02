@@ -349,7 +349,7 @@ Building this requires:
   <target name="tests-xml"
           depends="init,compile,compile-tests">
     <!-- create directories -->
-    <mkdir dir="${tests.classes}"/>
+    <mkdir dir="${tests.reports}/junit/output"/>
 
     <junit errorproperty="junit.failure" fork="yes" haltonfailure="false"
            maxmemory="256M" printsummary="true">
