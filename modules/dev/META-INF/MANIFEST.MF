@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.argouml.module.dev
-Bundle-Version: 0.25.5
+Bundle-Version: 0.29.3.qualifier
 Bundle-ClassPath: argouml-module-dev.jar,
  lib/mdrapi.jar
 Export-Package: org.argouml.dev,
@@ -15,4 +15,5 @@ Require-Bundle: org.argouml.app,
  org.argouml.core.model,
  org.argouml.core.model.mdr,
  org.argouml.core.infra,
- org.argouml.sequence2;bundle-version="0.28.0"
+ org.argouml.sequence2;bundle-version="0.29.3"
+Eclipse-RegisterBuddy: org.argouml.core.infra, org.argouml.app
