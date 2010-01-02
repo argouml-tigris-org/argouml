@@ -1,4 +1,17 @@
-// $Id$
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Jason Robbins - initial implementation
+ *    <see source control change log for other early contributors>
+ *    
+ *******************************************************************************
+ */
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -316,6 +329,16 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         } else if (edge instanceof CommentEdge) {
             sourceModelElement = ((CommentEdge) edge).getSource();
             destModelElement = ((CommentEdge) edge).getDestination();
+        } else if (Model.getFacade().isADirectedRelationship(edge)) {
+            Collection sources = Model.getFacade().getSources(edge);
+            Collection targets = Model.getFacade().getTargets(edge);
+            if (sources.size() == 1 && targets.size() == 1) {
+                sourceModelElement = sources.iterator().next();
+                destModelElement = targets.iterator().next();
+            } else {
+                LOG.error("Edge rejected. More than one source or target for a DirectedRelationship");
+                return false;
+            }
         } else {
             return false;
         }

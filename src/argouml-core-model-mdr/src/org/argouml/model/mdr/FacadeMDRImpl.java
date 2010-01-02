@@ -1,5 +1,19 @@
-// $Id$
-// Copyright (c) 2005-2009 The Regents of the University of California. All
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Linus Tolke - initial framework implementation
+ *    <see source control change log for other early contributors>
+ *    Ludovic Maitre - UML 1.4
+ *    Tom Morris - UML 1.4 
+ *    
+ *******************************************************************************
+ */// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -4545,5 +4559,14 @@ class FacadeMDRImpl implements Facade {
         RefPackage pkg = extent.refPackage(names.get(0));
         // Return the metatype proxy 
         return pkg.refClass(names.get(1));
+    }
+
+
+    public Collection getTargets(Object handle) {
+        return Collections.emptySet();
+    }
+
+    public boolean isADirectedRelationship(Object handle) {
+        return false;
     }
 }

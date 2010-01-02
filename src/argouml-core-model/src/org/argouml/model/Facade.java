@@ -1,4 +1,18 @@
-// $Id$
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Linus Tolke - initial implementation
+ *    <see source control change log for other early contributors>
+ *    Tom Morris - UML 1.4 and UML 2.x additions
+ *    
+ *******************************************************************************
+ */
 // Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -409,6 +423,13 @@ public interface Facade {
      */
     boolean isADependency(Object handle);
 
+    
+    /**
+     * @param handle element to test
+     * @return true if Element is a DirectedRelationship
+     */
+    public boolean isADirectedRelationship(Object handle);
+    
     /**
      * Recognizer for DestroyAction.
      *
@@ -1417,13 +1438,21 @@ public interface Facade {
      * return value is a Collection of elements, not a single element.  If you
      * know you are dealing with a ClassifierRole, it is prefeable to use
      * {@link #getBases(Object)}.
+     * <p>
+     * For UML 2.x with a target of an Include element, use getIncludingCase().
      * 
      * @param handle
      *            the model element
      * @return the base
      */
     Object getBase(Object handle);
-
+    
+    /**
+     * @param handle Include element
+     * @return the UseCase into which the included UseCase will be added
+     */
+//    Object getIncludingCase(Object handle);
+    
     /**
      * Get the bases of a ClassifierRole.
      *
@@ -2567,9 +2596,9 @@ public interface Facade {
     Object getSource(Object handle);
 
     /**
-     * Return the source for some given flow.
+     * Return the source for some given flow or a UML2 DirectedRelationship.
      *
-     * @param handle the flow
+     * @param handle the flow or DirectedRelationship
      * @return Collection
      */
     Collection getSources(Object handle);
@@ -2738,6 +2767,14 @@ public interface Facade {
      */
     Object getTarget(Object handle);
 
+    /**
+     * Return the targets of a UML 2.x DirectedRelationship.
+     *
+     * @param handle the relationship
+     * @return Object
+     */
+    Collection getTargets(Object handle);
+    
     /**
      * Return the target scope of a StructuralFeature or AssociationEnd.
      * 
@@ -3245,4 +3282,17 @@ public interface Facade {
      * @return true if the element is an instance of the given metatype
      */
     boolean isA(String metatypeName, Object element);
+    
+    /**
+     * @param element a PackageImport or ElementImport
+     * @return the Namepace into which the PackageImport is pulling things
+     */
+//    Object getImportingNamespace(Object element);
+    
+    /**
+     * @param element a PackageImport
+     * @return the Package being imported
+     */
+//    Object getImportedPackage(Object element);
+    
 }
