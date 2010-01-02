@@ -3,11 +3,10 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %pluginProvider
 Bundle-SymbolicName: org.argouml.core.infra
-Bundle-Version: 0.28.0.qualifier
+Bundle-Version: 0.29.3.qualifier
 Bundle-Localization: plugin
 Eclipse-BuddyPolicy: registered
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/log4j-1.2.6.jar
 Export-Package: org.apache.log4j,
  org.apache.log4j.chainsaw,
