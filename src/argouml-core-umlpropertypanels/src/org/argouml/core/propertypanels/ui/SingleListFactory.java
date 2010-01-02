@@ -87,28 +87,10 @@ class SingleListFactory implements ComponentFactory {
         } else if ("sender".equals(propName)) {
             if (Model.getFacade().isAMessage(modelElement)) {
                 model = new UMLMessageSenderListModel(modelElement, propName);
-            } else {
-                /*
-                 * The XML generated is "stimulus", because the A_receiver_stimulus
-                 * association has "stimulus" and "receiver" as association ends.
-                 * The A_stimulus_sender has "sender" and "stimulus", so it is generated
-                 * once. So we have created them by hand with a more explicit name and
-                 * removed "stimulus".
-                 */ 
-                model = new UMLInstanceSenderStimulusListModel(modelElement, propName);
             }
         } else if ("receiver".equals(propName)) {
             if (Model.getFacade().isAMessage(modelElement)) {
                 model = new UMLMessageReceiverListModel(modelElement, propName);
-            } else {
-                /*
-                 * The XML generated is "stimulus", because the A_receiver_stimulus
-                 * association has "stimulus" and "receiver" as association ends.
-                 * The A_stimulus_sender has "sender" and "stimulus", so it is generated
-                 * once. So we have created them by hand with a more explicit name and
-                 * removed "stimulus".
-                 */ 
-                model = new UMLInstanceReceiverStimulusListModel(modelElement, propName);
             }
         } else if ("action".equals(propName)) {
             model = new UMLMessageActionListModel(modelElement, propName);

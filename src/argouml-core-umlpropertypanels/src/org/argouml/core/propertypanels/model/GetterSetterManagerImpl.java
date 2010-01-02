@@ -55,7 +55,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("changeability", new ChangeabilityGetterSetter());
         addGetterSetter("concurrency", new ConcurrencyGetterSetter());
         addGetterSetter("feature", new FeatureGetterSetter());
-        addGetterSetter("stimulus", new StimuliGetterSetter());
+        addGetterSetter("receiver", new ReceiverGetterSetter());
+        addGetterSetter("sender", new SenderGetterSetter());
         addGetterSetter("body", new MethodExpressionGetterSetter());
     }
     
@@ -612,7 +613,32 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class StimuliGetterSetter extends ListGetterSetter {
+    private class SenderGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            return Model.getFacade().getSentStimuli(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        protected boolean isValidElement(Object element, String type) {
+          
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getAttribute();
+        }
+    }
+    
+    private class ReceiverGetterSetter extends ListGetterSetter {
         
         public Collection getOptions(Object modelElement, String type) {
             return Model.getFacade().getReceivedStimuli(modelElement);
