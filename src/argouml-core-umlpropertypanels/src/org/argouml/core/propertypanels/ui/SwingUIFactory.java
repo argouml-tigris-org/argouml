@@ -8,9 +8,11 @@
  *
  * Contributors:
  *    Bob Tarling - Post GSOC improvements
+ *    Christian López Espínola
  *******************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
  */
-
 // $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -171,7 +173,7 @@ class SwingUIFactory {
                 addControl(panel, null, control);
             } else {
                 // if not, it is a control and must be labeled...
-                addControl(panel, prop.getName(), control);
+                addControl(panel, prop.getLabel(), control);
             }
         } else {
             final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter();
@@ -198,7 +200,7 @@ class SwingUIFactory {
             factory.createComponent(target, prop.getName(), prop.getType());
         
         if (pane != null) {           
-            addControl(panel, prop.getName(), pane);
+            addControl(panel, prop.getLabel(), pane);
         }
     }
 
@@ -211,7 +213,7 @@ class SwingUIFactory {
             factory.createComponent(target, prop.getName(), prop.getType());
 
         if (list != null) {
-            addControl(panel, prop.getName(), list);
+            addControl(panel, prop.getLabel(), list);
         }
     }
 
@@ -442,7 +444,7 @@ class SwingUIFactory {
         }
         
         if (comp != null) {
-            addControl(panel, prop.getName(), comp);
+            addControl(panel, prop.getLabel(), comp);
         }
     }
 
@@ -471,7 +473,7 @@ class SwingUIFactory {
         
         if (document != null) {
             JTextField tfield = new UMLTextField(document);
-            addControl(panel, prop.getName(), tfield);
+            addControl(panel, prop.getLabel(), tfield);
         }
     }
     

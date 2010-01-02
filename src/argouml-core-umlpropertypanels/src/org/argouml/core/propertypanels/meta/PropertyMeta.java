@@ -1,4 +1,18 @@
-// $Id$
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Christian López Espínola 
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,15 +52,21 @@ public class PropertyMeta {
     private String controlType;
     private String type;
     private String name;
+    private String label;
     
     private List<CheckBoxMeta> checkboxes = new LinkedList<CheckBoxMeta>();
     
     // TODO: this is a tree node, we must refine the tree structure
     
-    public PropertyMeta (String controlType, String name, String type) {
+    public PropertyMeta (String controlType, String name, String type, String label) {
         this.controlType = controlType;
         this.name = name;
         this.type = type;
+        
+        if (label != null)
+        	this.label = label;
+        else
+        	this.label = name;
     }
     
     public String getControlType() {
@@ -59,6 +79,10 @@ public class PropertyMeta {
 
     public String getName() {
         return name;
+    }
+    
+    public String getLabel() {
+    	return label;
     }
     
     public List<CheckBoxMeta> getCheckboxes() {
