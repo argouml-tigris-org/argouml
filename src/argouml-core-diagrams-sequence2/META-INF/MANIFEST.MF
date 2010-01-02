@@ -2,15 +2,15 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.argouml.sequence2
-Bundle-Version: 0.28.0.qualifier
+Bundle-Version: 0.29.3.qualifier
 Bundle-ClassPath: .
 Export-Package: org.argouml.Images,
  org.argouml.sequence2,
  org.argouml.sequence2.diagram
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: %pluginProvider
-Require-Bundle: org.argouml.app,
- org.argouml.core.infra
+Require-Bundle: org.argouml.app;bundle-version="0.29.3",
+ org.argouml.core.infra;bundle-version="0.29.3"
 Bundle-Localization: plugin
-Eclipse-RegisterBuddy: org.argouml.core.infra
+Eclipse-RegisterBuddy: org.argouml.core.infra,org.argouml.app
 

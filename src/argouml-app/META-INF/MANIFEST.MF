@@ -3,9 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-Vendor: %pluginProvider
 Bundle-SymbolicName: org.argouml.app;singleton:=true
-Bundle-Version: 0.28.0.qualifier
+Bundle-Version: 0.29.3.qualifier
 Bundle-Localization: plugin
-Bundle-ActivationPolicy: lazy
 Export-Package: org.argouml.Images,
  org.argouml.Images.plaf.javax.swing.plaf.metal.MetalLookAndFeel.toolbarButtonGraphics.argouml,
  org.argouml.Images.plaf.javax.swing.plaf.metal.MetalLookAndFeel.toolbarButtonGraphics.argouml.diagrams,
@@ -141,6 +140,7 @@ Export-Package: org.argouml.Images,
 Require-Bundle: org.argouml.core.infra,
  org.argouml.core.model
 Eclipse-RegisterBuddy: org.argouml.core.infra
+Eclipse-BuddyPolicy: registered
 Bundle-ClassPath: lib/commons-logging-1.0.2.jar,
  lib/gef-0.13.1M3.jar,
  lib/ocl-argo-1.1.jar,
