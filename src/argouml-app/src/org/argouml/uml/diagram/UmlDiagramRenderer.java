@@ -340,7 +340,7 @@ public abstract class UmlDiagramRenderer
             final Object associationEnd) {
         Object classifier = 
             Model.getFacade().getClassifier(associationEnd);
-        return (FigNode) diagram.presentationFor(classifier);
+        return getNodePresentationFor(diagram.getLayer(), classifier);
     }
     
     protected void addEdge(Layer lay, FigEdge newEdge, Object edge) {
