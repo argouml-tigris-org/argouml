@@ -83,7 +83,6 @@ Building this requires:
       <pathelement location="build/tests/classes"/>
       <path refid="tests.run.classpath"/>
     </path>
-      
   </target>
 	
   <!-- =================================================================== -->
@@ -238,6 +237,8 @@ Building this requires:
       build.jars
       gather.bin.parts - must create and populate "${destination.temp.folder}/<Bundle-SymbolicName>_<Bundle-Version>
       gather.logs
+    If p2.gathering = true in build.properties:
+      publish.bin.parts target replaces gather.bin.parts
   -->
   
     <target name="pde-properties" if="eclipse.running">
@@ -274,6 +275,9 @@ Building this requires:
       </condition>
       <property name="build.result.folder" value="${basedir}" />
       <property name="plugin.destination" value="${basedir}" />            
+      <condition property="p2.publish.parts" value="true">
+        <istrue value="${p2.gathering}"/>
+      </condition>
     </target>
 
   <target name="pde-clean" depends="pde-init">
@@ -303,6 +307,24 @@ Building this requires:
     </copy>
 
     <eclipse.versionReplacer path="${destination.temp.folder}/${bundleId}_${bundleVersion}" version="${bundleVersion}" />
+  </target>
+
+  <target name="publish.bin.parts" depends="init" if="p2.publish.parts">
+
+    <!-- First call old target to gather binaries -->
+    <antcall target="gather.bin.parts">
+      <param name="destination.temp.folder" value="${build.result.folder}"/>
+    </antcall>
+
+    <eclipse.versionReplacer path="${build.result.folder}" version="${bundleVersion}" />
+
+    <!-- Now use P2 publishing tools to publish to our build repository -->
+    <eclipse.gatherBundle
+      metadataRepository="${p2.build.repo}"
+      artifactRepository="${p2.build.repo}"
+      buildResultFolder="${build.result.folder}"
+      baseDirectory="${basedir}"
+    />
   </target>
 
   <target name="gather.logs" depends="init" if="destination.temp.folder">
