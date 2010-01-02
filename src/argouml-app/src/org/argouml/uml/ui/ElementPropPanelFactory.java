@@ -1,4 +1,17 @@
-// $Id$
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp - initial implementation
+ *    <see source control change log for other early contributors>
+ *    
+ *******************************************************************************
+ */
 // Copyright (c) 2008, 2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -120,6 +133,8 @@ import org.argouml.uml.ui.model_management.PropPanelSubsystem;
 class ElementPropPanelFactory implements PropPanelFactory {
 
     public PropPanel createPropPanel(Object element) {
+        // TODO: This all needs to be reviewed for changes in type hierarchy
+        // for UML 2.x
         if (Model.getFacade().isAElement(element)) {
             // A Subsytem is a Classifier also, so it needs to come before
             // the classifier check
@@ -288,6 +303,7 @@ class ElementPropPanelFactory implements PropPanelFactory {
             if (Model.getFacade().isAAbstraction(element)) {
                 return new PropPanelAbstraction();
             } else if (Model.getFacade().isAPackageImport(element)) {
+                // Type hierarchy has changed for UML 2.x - no longer a Dependency
                 return new PropPanelPermission();
             } else if (Model.getFacade().isAUsage(element)) {
                 return new PropPanelUsage();
@@ -304,6 +320,8 @@ class ElementPropPanelFactory implements PropPanelFactory {
             return new PropPanelGeneralization();
         } else if (Model.getFacade().isAInclude(element)) {
             return new PropPanelInclude();
+        } else if (Model.getFacade().isAPackageImport(element)) {
+            return new PropPanelPermission();
         }
         throw new IllegalArgumentException("Unsupported Relationship type");
     }
