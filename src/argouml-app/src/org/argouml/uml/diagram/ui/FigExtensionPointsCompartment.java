@@ -1,3 +1,19 @@
+/* $Id: FigEditableCompartment.java 17718 2010-01-02 14:06:22Z bobtarling $
+ *******************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
 // $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
 // Copyright (c) 2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,7 +54,7 @@ import org.argouml.uml.diagram.use_case.ui.FigExtensionPoint;
  *
  * @author michiel
  */
-public class FigExtensionPointsCompartment extends FigEditableCompartment {
+public class FigExtensionPointsCompartment extends FigCompartment {
 
     /**
      * The constructor.

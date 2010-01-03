@@ -1,3 +1,18 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
 // $Id$
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -36,7 +51,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
-import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.SelectionClass;
@@ -453,8 +467,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
                 2);
 
         Fig f = hitFig(r);
-        if (f instanceof FigEditableCompartment) {
-            FigEditableCompartment figCompartment = (FigEditableCompartment) f;
+        if (f instanceof FigCompartment) {
+            FigCompartment figCompartment = (FigCompartment) f;
             f = figCompartment.hitFig(r);
             if (f instanceof CompartmentFigText) {
                 if (highlightedFigText != null && highlightedFigText != f) {
@@ -481,9 +495,9 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         // Search all feature compartments for a text fig to unhighlight
         for (int i = 1; i < getFigs().size(); i++) {
             fc = getFigAt(i);
-            if (fc instanceof FigEditableCompartment) {
+            if (fc instanceof FigCompartment) {
                 CompartmentFigText ft = 
-                    unhighlight((FigEditableCompartment) fc);
+                    unhighlight((FigCompartment) fc);
                 if (ft != null) {
                     return ft;
                 }
@@ -499,7 +513,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      * @param fc compartment to search for highlight item
      * @return item that was unhighlighted or null if no action was taken
      */
-    protected final CompartmentFigText unhighlight(FigEditableCompartment fc) {
+    protected final CompartmentFigText unhighlight(
+            FigCompartment fc) {
         Fig ft;
         for (int i = 1; i < fc.getFigs().size(); i++) {
             ft = fc.getFigAt(i);
@@ -514,14 +529,14 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     }
 
     protected void createContainedModelElement(FigGroup fg, InputEvent ie) {
-        if (!(fg instanceof FigEditableCompartment)) {
+        if (!(fg instanceof FigCompartment)) {
             return;
         }
-        ((FigEditableCompartment) fg).createModelElement();
+        ((FigCompartment) fg).createModelElement();
         /* Populate the compartment now, 
          * so that we can put the last one in edit mode: 
          * This fixes issue 5439. */
-        ((FigEditableCompartment) fg).populate();
+        ((FigCompartment) fg).populate();
         // TODO: The above populate works but seems rather heavy here.
         // I can see something like this is needed though as events
         // won't manage this quick enough. Could we make

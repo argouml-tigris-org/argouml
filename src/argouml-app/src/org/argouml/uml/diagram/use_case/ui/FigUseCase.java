@@ -1,3 +1,18 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Michiel van der Wulp
+ *******************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
 // $Id$
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -47,7 +62,6 @@ import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
-import org.argouml.uml.diagram.ui.FigEditableCompartment;
 import org.argouml.uml.diagram.ui.FigExtensionPointsCompartment;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
@@ -100,7 +114,7 @@ import org.tigris.gef.presentation.FigCircle;
  * coordinates of any partition line required between use case name
  * and extension points.<p>
  *
- * Finally we need to transform our coordinates, to recognize that the
+ * Finally we need to transform our coordinates, to recognise that the
  * origin is at our top left corner, and the Y coordinates are
  * reversed.<p>
  */
@@ -380,9 +394,7 @@ public class FigUseCase extends FigCompartmentBox
                 ob.height / 2.0 - (cb.y - ob.y))));
         r.x = cb.x + cb.width / 2 - r.width / 2;
 
-        if (c instanceof FigEditableCompartment) {
-            ((FigEditableCompartment) c).setExternalSeparatorFigBounds(r);            
-        }
+        c.setExternalSeparatorFigBounds(r);            
         c.setBounds(cb.x, cb.y, cb.width, cb.height);
     }
 

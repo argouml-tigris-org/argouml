@@ -1,3 +1,18 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2009-2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
 // $Id$
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -39,7 +54,7 @@ import org.argouml.uml.diagram.static_structure.ui.FigEnumerationLiteral;
  * 
  * @author Tom Morris
  */
-public class FigEnumLiteralsCompartment extends FigEditableCompartment {
+public class FigEnumLiteralsCompartment extends FigCompartment {
     /**
      * Serial version for initial implementation.
      */
@@ -81,7 +96,7 @@ public class FigEnumLiteralsCompartment extends FigEditableCompartment {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigEditableCompartment#createModelElement()
+     * @see org.argouml.uml.diagram.ui.FigCompartment#createModelElement()
      */
     protected void createModelElement() {
         Object enumeration = getGroup().getOwner();
