@@ -153,7 +153,7 @@ public class FigUseCase extends FigCompartmentBox
          * This horizontal line sticks out of the box, 
          * and touches the ellipse edge.
          */
-        Fig separatorFig = epc.makeExternalSeparatorFig();
+        Fig separatorFig = epc.getSeparatorFig();
         
         /* TODO: This next line prevent loading a UseCase 
          * with a stereotype to grow. Why? */

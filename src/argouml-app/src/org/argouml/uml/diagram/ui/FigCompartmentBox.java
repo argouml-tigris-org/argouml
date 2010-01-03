@@ -200,6 +200,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     private void addCompartment(FigCompartment c) {
         assert !compartments.contains(c);
+        addFig(c.getSeparatorFig());
         compartments.add(c);
     }
 
@@ -406,7 +407,13 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      */
     protected void setCompartmentBounds(FigCompartment c, 
             Rectangle cb, Rectangle ob) {
-        c.setBounds(cb.x, cb.y, cb.width, cb.height);
+        Rectangle r = new Rectangle();
+        r.y = cb.y;
+        r.height = getLineWidth();
+        r.width = ob.width;
+        r.x = ob.x;
+        c.setExternalSeparatorFigBounds(r);            
+        c.setBounds(cb.x, cb.y + 1, cb.width, cb.height - 1);
     }
 
     /*

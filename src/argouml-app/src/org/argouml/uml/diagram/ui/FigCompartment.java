@@ -81,14 +81,9 @@ public abstract class FigCompartment extends ArgoFigGroup {
     private static final int MIN_HEIGHT = FigNodeModelElement.NAME_FIG_HEIGHT;
 
     /**
-     * A separator line that has the same width as the compartment.
-     */
-    private FigSeparator compartmentSeparator;
-
-    /**
      * A separator line that may be wider than the compartment.
      */
-    private Fig externalSeparatorFig = null;
+    private Fig externalSeparatorFig = new FigSeparator(X0, Y0, 11, LINE_WIDTH);
 
 
     /**
@@ -108,15 +103,11 @@ public abstract class FigCompartment extends ArgoFigGroup {
     }
 
     private void constructFigs(int x, int y, int w, int h) {
-        bigPort = new FigRect(x, y, w, h, LINE_COLOR, FILL_COLOR);
+        bigPort = new FigRect(X0, Y0, w, h, LINE_COLOR, FILL_COLOR);
         bigPort.setFilled(false);
         bigPort.setLineWidth(0);
 
         addFig(bigPort);
-        
-        compartmentSeparator = 
-            new FigSeparator(X0, Y0, 11, LINE_WIDTH);
-        addFig(compartmentSeparator); // number 2
     }
     
     /**
@@ -132,13 +123,6 @@ public abstract class FigCompartment extends ArgoFigGroup {
         constructFigs(bounds.x, bounds.y, bounds.width, bounds.height);
     }
     
-    /**
-     * @return separator figure
-     */
-    protected FigSeparator getSeperatorFig() {
-        return compartmentSeparator;
-    }
-
     /**
      * If a boxed compartment is set to invisible then remove all its
      * children.
@@ -214,8 +198,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
 
         minHeight += 2; // 2 Pixel padding after compartment
         
-        minHeight = Math.max(minHeight, 
-                MIN_HEIGHT + compartmentSeparator.getHeight());
+        minHeight = Math.max(minHeight, MIN_HEIGHT);
         
         return new Dimension(minWidth, minHeight);
     }
@@ -307,7 +290,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
         int xpos = bigPort.getX();
         int ypos = bigPort.getY();
 
-        List<Fig> figs = getElementFigs();
+        List<CompartmentFigText> figs = getElementFigs();
         // We remove all of them:
         for (Fig f : figs) {
             removeFig(f);    
@@ -458,27 +441,24 @@ public abstract class FigCompartment extends ArgoFigGroup {
     }
     
     /* Find the compartment fig for this umlObject: */
-    private CompartmentFigText findCompartmentFig(List<Fig> figs, 
+    private CompartmentFigText findCompartmentFig(List<CompartmentFigText> figs, 
             Object umlObject) {
-        for (Fig fig : figs) {
-            if (fig instanceof CompartmentFigText) {
-                CompartmentFigText candidate = (CompartmentFigText) fig;
-                if (candidate.getOwner() == umlObject) {
-                    return candidate;
-                }
+        for (CompartmentFigText fig : figs) {
+            if (fig.getOwner() == umlObject) {
+                return fig;
             }
         }
         return null;
     }
 
-    private List<Fig> getElementFigs() {
-        List<Fig> figs = new ArrayList<Fig>(getFigs());
-        // TODO: This is fragile and depends on the behavior of the super class
-        // not changing
-        if (figs.size() > 1) {
-            // Ignore the first 2 figs:
-            figs.remove(1); // the separator
-            figs.remove(0); // the bigPort
+    private List<CompartmentFigText> getElementFigs() {
+        final List<CompartmentFigText> figs =
+            new ArrayList<CompartmentFigText>(getFigs().size());
+        
+        for (Object f : getFigs()) {
+            if (f instanceof CompartmentFigText) {
+                figs.add((CompartmentFigText) f);
+            }
         }
         return figs;
     }
@@ -486,41 +466,20 @@ public abstract class FigCompartment extends ArgoFigGroup {
     @Override
     public void setLineColor(Color col) {
         super.setLineColor(col);
-        if (col != null) {
-            
-            compartmentSeparator.setFilled(true);
-            if (externalSeparatorFig != null) {
-                externalSeparatorFig.setFillColor(col);
-                externalSeparatorFig.setFilled(true);
-                compartmentSeparator.setFillColor(null);
-            } else {
-                compartmentSeparator.setFillColor(col);
-            }
-        }
+        externalSeparatorFig.setFillColor(col);
     }
 
     @Override
     public void setLineWidth(int w) {
         super.setLineWidth(0);
         bigPort.setLineWidth(0);
-        compartmentSeparator.setHeight(w);
-        if (externalSeparatorFig != null) {
-            externalSeparatorFig.setHeight(w);
-        }
+        externalSeparatorFig.setHeight(w);
     }
 
     @Override
     public void setFillColor(Color col) {
         super.setFillColor(col);
-        
-        compartmentSeparator.setFilled(true);
-        if (externalSeparatorFig != null) {
-            externalSeparatorFig.setFillColor(getLineColor());
-            externalSeparatorFig.setFilled(true);
-            compartmentSeparator.setFillColor(null);
-        } else {
-            compartmentSeparator.setFillColor(getLineColor());
-        }
+        externalSeparatorFig.setFillColor(getLineColor());
     }
 
     /**
@@ -529,19 +488,13 @@ public abstract class FigCompartment extends ArgoFigGroup {
      * @param r the new bounds
      */
     public void setExternalSeparatorFigBounds(Rectangle r) {
-        if (externalSeparatorFig != null) {
-            externalSeparatorFig.setBounds(r);
-        }
+        externalSeparatorFig.setBounds(r);
     }
 
     /**
-     * Create an external Fig as separator line.
-     * 
-     * @return the separator Fig
+     * @return separator figure
      */
-    public Fig makeExternalSeparatorFig() {
-        assert externalSeparatorFig == null;
-        externalSeparatorFig = new FigSeparator(X0, Y0, 11, LINE_WIDTH);
+    public Fig getSeparatorFig() {
         return externalSeparatorFig;
     }
     
@@ -552,7 +505,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
      * filled with the line color, since using a FigLine would draw the line 
      * around the start and end coordinates with a line width > 1.
      */
-    protected static class FigSeparator extends FigRect {
+    private static class FigSeparator extends FigRect {
         /**
          * Constructor.
          *
@@ -563,13 +516,19 @@ public abstract class FigCompartment extends ArgoFigGroup {
         FigSeparator(int x, int y, int len, int lineWidth) {
             super(x, y, len, lineWidth);
             setLineWidth(0);
-            setFilled(true);
+            super.setFilled(true);
         }
 
         @Override
         public Dimension getMinimumSize() {
             return new Dimension(MIN_SIZE, getHeight());
         }
+        
 
+        @Override
+        public void setFilled(boolean filled) {
+            // Override superclass to do nothing.
+            // Fill property cannot be changed.
+        }
     }
 }
