@@ -75,8 +75,6 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
 //        addFig(tagsFig);
 //        addFig(constraintsFig);
 
-        addFig(getBorderFig());
-        
         // Make all the parts match the main fig
         setFilled(true);
         setFillColor(FILL_COLOR);

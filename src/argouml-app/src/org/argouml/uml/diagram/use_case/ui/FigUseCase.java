@@ -166,7 +166,6 @@ public class FigUseCase extends FigCompartmentBox
         addFig(getStereotypeFig());
         addFig(epc);
         addFig(separatorFig);
-        addFig(getBorderFig());
 
         // Make all the parts match the main fig
         setFilled(true);
@@ -190,11 +189,6 @@ public class FigUseCase extends FigCompartmentBox
     @Override
     protected Fig createBigPortFig() {
         /* Use arbitrary dimensions for now. */
-        return new FigMyCircle(0, 0, 100, 60);
-    }
-
-    @Override
-    protected Fig createBorderFig() {
         Fig b = new FigMyCircle(0, 0, 100, 60);
         b.setLineColor(LINE_COLOR);
         b.setLineWidth(LINE_WIDTH);
@@ -447,7 +441,6 @@ public class FigUseCase extends FigCompartmentBox
     @Override
     public void setFillColor(Color col) {
         super.setFillColor(col);
-        getBorderFig().setFillColor(null);
     }
 
     /**
@@ -464,7 +457,6 @@ public class FigUseCase extends FigCompartmentBox
     @Override
     public void setFilled(boolean f) {
         super.setFilled(f);
-        getBorderFig().setFilled(false);
     }
 
     /**

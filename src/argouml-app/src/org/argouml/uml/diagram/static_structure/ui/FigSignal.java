@@ -78,7 +78,6 @@ public class FigSignal extends FigClassifierBoxWithAttributes {
                 DEFAULT_COMPARTMENT_BOUNDS, 
                 getSettings()));
         addFig(getOperationsFig());
-        addFig(getBorderFig());
 
         // Make all the parts match the main fig
         setFilled(true);

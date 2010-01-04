@@ -83,7 +83,6 @@ public class FigClass extends FigClassifierBoxWithAttributes {
                 DEFAULT_COMPARTMENT_BOUNDS, 
                 getSettings()));
         addFig(getOperationsFig());
-        addFig(getBorderFig());
         
         // Make all the parts match the main fig
         setFilled(true);
@@ -109,10 +108,6 @@ public class FigClass extends FigClassifierBoxWithAttributes {
         while (thisIter.hasNext()) {
             Fig thisFig = (Fig) thisIter.next();
             Fig cloneFig = (Fig) cloneIter.next();
-            if (thisFig == getBorderFig()) {
-                /* TODO: complete this */
-//                figClone.setBorderFig(thisFig);
-            }
         }
         return figClone;
     }

@@ -49,9 +49,7 @@ import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
-import org.argouml.uml.diagram.ui.FigEditableCompartment;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
-import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -70,12 +68,6 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      */
     private FigOperationsCompartment operationsFigCompartment;
     
-    /**
-     * Initialization shared by all constructors.
-     */
-    private void constructFigs() {
-    }
-
     private Rectangle getDefaultBounds() {
         // this rectangle marks the operation section; all operations
         // are inside it
@@ -99,7 +91,6 @@ public abstract class FigClassifierBox extends FigCompartmentBox
                 owner, 
                 getDefaultBounds(),
                 getSettings());
-        constructFigs();
     }
 
     /*
@@ -260,10 +251,21 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         return operationsFigCompartment.getBounds();
     }
 
+    /**
+     * @deprecated by Bob Tarling in 0.29.2 use
+     * isCompartmentVisible(Model.getMetaTypes().getOperation())
+     * @return the visibility
+     */
     public boolean isOperationsVisible() {
         return operationsFigCompartment != null && operationsFigCompartment.isVisible();
     }
 
+    /**
+     * TODO: Should not be on this class as we don't know if we'll have
+     * operations
+     * @param isVisible true if the operation compartment is visible
+     * @deprecated by Bob Tarling in 0.29.2 use setCompartmentVisible
+     */
     public void setOperationsVisible(boolean isVisible) {
         setCompartmentVisible(operationsFigCompartment, isVisible);
     }
@@ -292,7 +294,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
 
     /**
      * @deprecated by Bob Tarling in 0.29.2 use
-     * getCompartment(Model.getMetaTypes().getAttribute()).isVisible()
+     * isCompartmentVisible(Model.getMetaTypes().getAttribute())
      * @return the visibility
      */
     @Deprecated

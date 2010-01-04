@@ -79,7 +79,6 @@ public class FigInterface extends FigClassifierBox {
                     getSettings()));
         }
         addFig(getOperationsFig());
-        addFig(getBorderFig());
 
         // Make all the parts match the main fig
         setFilled(true);

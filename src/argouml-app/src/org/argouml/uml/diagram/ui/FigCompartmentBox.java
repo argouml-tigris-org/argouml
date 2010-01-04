@@ -59,6 +59,7 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigRect;
 
 /**
  * Class to display graphics for a node with compartments in a diagram.
@@ -68,28 +69,11 @@ import org.tigris.gef.presentation.FigGroup;
  * bottom order.
  * <p>
  * 
- * It adds a border around the box, and deals with highlighting editable
- * compartments.
+ * It deals with highlighting editable compartments.
  * <p>
  * 
  * All descendants of this class have the bigPort filled with the main fig fill
- * color, without border. The borderFig has a transparent fill, and a visible
- * border.
- * <p>
- * 
- * TODO: Why do we need a separate border fig: I (MVW) think because 
- * some figs may have parts protruding outside the box like a 
- * UML Package or like a UML Component.
- * Bob says: But we already have bigPort. Why do we need another Fig the same
- * size as that. Can't we have bigPort set with a fill color and line color?
- * 
- * TODO: Why is the fill not drawn by the borderFig? In the current 
- * situation, the border is drawn OVER the background fill (which 
- * won't work if colors have alpha channels). But the fill should only 
- * be drawn WITHIN the border. MVW: I propose to have the borderFig
- * show the fill color and have the bigPort be transparent and 
- * without border. Then we would need a drawing sequence change,
- * too. Or maybe the compartments should draw the fill color instead?
+ * color, with line border.
  * <p>
  * 
  * The name, keyword and stereotype are shown in transparent figs without
@@ -114,8 +98,6 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      */
     private static CompartmentFigText highlightedFigText = null;
 
-    private Fig borderFig;
-
     private List<FigCompartment> compartments = 
         new ArrayList<FigCompartment>();
 
@@ -138,23 +120,15 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
          * drawn by the bigPort.
          */
         getNameFig().setFillColor(null);
-
-        /*
-         * The borderFig shows the outside border of the box around all
-         * compartments. Its size always equals the bigPort. Its body is
-         * transparent.
-         */
-        borderFig = createBorderFig();
-
-        getBigPort().setLineWidth(0);
-        /* The bigPort draws the background color: */
-        getBigPort().setFillColor(FILL_COLOR);
     }
 
-    protected Fig createBorderFig() {
-        Fig b = new FigEmptyRect(X0, Y0, 0, 0);
-        b.setLineColor(LINE_COLOR);
-        b.setLineWidth(LINE_WIDTH);
+    /**
+     * Overrule this if a rectangle is not usable.
+     * 
+     * @return the Fig to be used as bigPort
+     */
+    protected Fig createBigPortFig() {
+        Fig b = new FigRect(X0, Y0, 0, 0, LINE_COLOR, FILL_COLOR);
         return b;
     }
 
@@ -186,6 +160,20 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             }
         }
         return null;
+    }
+    
+    /**
+     * Return true of a compartment exists and is visible
+     * @param metaType the model element type for which the compartment is
+     * required.
+     * @return true if the compartment exists and is visible
+     */
+    public boolean isCompartmentVisible(Object metaType) {
+        FigCompartment f = getCompartment(metaType);
+        if (f == null) {
+            return false;
+        }
+        return f.isVisible();
     }
     
     protected List<FigCompartment> getCompartments() {
@@ -387,7 +375,6 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
         /* Finally set the bounds of the big box and the border fig: */
         getBigPort().setBounds(x, y, newW, newH);
-        getBorderFig().setBounds(x, y, newW, newH);
 
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
@@ -573,10 +560,6 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         ie.consume();
     }
 
-    protected Fig getBorderFig() {
-        return borderFig;
-    }
-
     /**
      * Show or hide a compartment based on the meta-type of its contents.
      * 
@@ -647,7 +630,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     @Override
     public int getLineWidth() {
-        return borderFig.getLineWidth();
+        return getBigPort().getLineWidth();
     }
 
     @Override
