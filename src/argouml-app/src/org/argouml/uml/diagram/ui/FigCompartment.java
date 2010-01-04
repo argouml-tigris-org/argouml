@@ -103,7 +103,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
     }
 
     private void constructFigs(int x, int y, int w, int h) {
-        bigPort = new FigRect(X0, Y0, w, h, LINE_COLOR, FILL_COLOR);
+        bigPort = new FigPort(X0, Y0, w, h);
         bigPort.setFilled(false);
         bigPort.setLineWidth(0);
 
@@ -235,7 +235,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
     public void setFilled(boolean f) {
         // Only the bigPort may be filled
         super.setFilled(false);
-        bigPort.setFilled(f);
+//        bigPort.setFilled(f);
     }
 
     @Deprecated //see parent
@@ -520,15 +520,78 @@ public abstract class FigCompartment extends ArgoFigGroup {
         }
 
         @Override
-        public Dimension getMinimumSize() {
-            return new Dimension(MIN_SIZE, getHeight());
+        public void setFilled(boolean filled) {
+            // Override superclass to do nothing.
+            // Fill property cannot be changed.
         }
         
+        @Override
+        public void setLineWidth(int width) {
+            // Override superclass to do nothing.
+            // Line width cannot be changed.
+        }
+        
+    }
+    
+    /**
+     * Fig representing a horizontal line separator for compartment. <p>
+     * 
+     * This is a horizontal line, but implemented as a rectangle 
+     * filled with the line color, since using a FigLine would draw the line 
+     * around the start and end coordinates with a line width > 1.
+     */
+    private static class FigPort extends FigRect {
+        /**
+         * Constructor.
+         *
+         * @param x coordinate
+         * @param y coordinate
+         * @param len length of the line
+         */
+        FigPort(int x, int y, int len, int lineWidth) {
+            super(x, y, len, lineWidth);
+            super.setLineWidth(0);
+            super.setFillColor(null);
+            super.setFilled(false);
+        }
 
         @Override
         public void setFilled(boolean filled) {
             // Override superclass to do nothing.
             // Fill property cannot be changed.
+        }
+        @Override
+        public void setFillColor(Color color) {
+            // Override superclass to do nothing.
+            // Fill property cannot be changed.
+        }
+        @Override
+        public void setLineWidth(int width) {
+            // Override superclass to do nothing.
+            // Line width property cannot be changed.
+        }
+        
+        /**
+         * The hit method in GEF {Fig.hit(Rectangle)} does not register a hit
+         * inside the Fig if the FIg is not filled. When not filled only a hit
+         * on the border is registered.
+         * 
+         * This override is a workaround until GEF is fixed.
+         * 
+         * We require GEF to all a Fig to be set so that filled = true but
+         * have fill color as null (transparent). That way the base
+         * functionality will work for us.
+         * 
+         * @param r
+         *                the rectangular hit area
+         * @return true if the hit rectangle strikes this fig
+         */
+        public boolean hit(Rectangle r) {
+            if (!isVisible() || !isSelectable())
+                return false;
+            final int cornersHit =
+                countCornersContained(r.x, r.y, r.width, r.height);
+            return cornersHit > 0;
         }
     }
 }
