@@ -77,9 +77,11 @@ import org.tigris.gef.presentation.FigGroup;
  * border.
  * <p>
  * 
- * Why do we need a separate border fig: I (MVW) think because 
+ * TODO: Why do we need a separate border fig: I (MVW) think because 
  * some figs may have parts protruding outside the box like a 
  * UML Package or like a UML Component.
+ * Bob says: But we already have bigPort. Why do we need another Fig the same
+ * size as that. Can't we have bigPort set with a fill color and line color?
  * 
  * TODO: Why is the fill not drawn by the borderFig? In the current 
  * situation, the border is drawn OVER the background fill (which 
