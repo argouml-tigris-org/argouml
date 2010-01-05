@@ -67,11 +67,16 @@ public class FigSingleLineText extends ArgoFigText  {
 
     private void initialize() {
         setFillColor(FILL_COLOR); // in case someone turns it on
-        setFilled(false);
+        super.setFilled(false);
         setTabAction(FigText.END_EDITING);
         setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
         setTextColor(TEXT_COLOR);
+    }
+    
+    public void setFilled(boolean filled) {
+        // Do not allow fill to change. We should see through
+        // the text to the color of the main FIg background.
     }
 
     /**
