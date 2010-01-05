@@ -110,16 +110,8 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     }
 
     /**
-     * Updates the operations box. Called from updateLayout if there is
-     * a model event effecting the attributes and from renderingChanged in all
-     * cases.
-     * TODO: The above statement means that the entire contents of the
-     * FigOperationsCompartment is being rebuilt whenever an add/remove
-     * of an operation or a reception is detected. It would be better to
-     * have FigOperationsCompartment itself listen for add and remove events
-     * and make minimum change rather than entirely rebuild. 
-     * Remark MVW: This is a bit exaggerated, since the populate() 
-     * method is already heavily optimized.
+     * @deprecated by Bob Tarling in 0.29.3 use
+     * updateCompartment(Model.getMetaTypes().getAttribute())
      */
     protected void updateOperations() {
         if (!isOperationsVisible()) {
@@ -223,6 +215,10 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         }
     }
 
+    /**
+     * @deprecated by Bob Tarling in 0.29.3 use
+     * updateCompartment(Model.getMetaTypes().getAttribute())
+     */
     protected void updateAttributes() {
         FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());
         if (!fc.isVisible()) {
@@ -234,18 +230,44 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         setBounds(getBounds());
     }
 
+    /**
+     * Updates a compartment box. Called from updateLayout if there is
+     * a model event effecting the attributes/operations and from
+     * renderingChanged in all cases.
+     * TODO: The above statement means that the entire contents of the
+     * compartments are being rebuilt whenever an add/remove
+     * of an attribute, operation or a reception is detected. It would be
+     * better to have compartments listen for add and remove events
+     * and make minimum change rather than entirely rebuild. 
+     * Remark MVW: This is a bit exaggerated, since the populate() 
+     * method is already heavily optimized.
+     */
+    protected void updateCompartment(Object metaType) {
+        FigCompartment fc = getCompartment(metaType);
+        if (!fc.isVisible()) {
+            return;
+        }
+        fc.populate();
+    
+        // TODO: make setBounds, calcBounds and updateBounds consistent
+        setBounds(getBounds());
+    }
 
     /**
-     * @return The Fig for the operations compartment
+     * @return The graphics for the UML operations (if any).
+     * @deprecated in 0.29.3 use
+     * getCompartment(Model.getUmlFactory(Model.getMetaTypes(),getOperation()))
+     * to determine if an operation compartment exists and return it.
+     * The operationsCompartment should be created by the concrete class
      */
     protected FigOperationsCompartment getOperationsFig() {
         return operationsFigCompartment;
     }
 
     /**
-     * Get the bounds of the operations compartment.
-     *
-     * @return the bounds of the operations compartment
+     * @deprecated by Bob Tarling in 0.29.3 use
+     * getCompartment(Model.getMetaTypes().getOperation()).getBounds()
+     * @return the bounds
      */
     public Rectangle getOperationsBounds() {
         return operationsFigCompartment.getBounds();
