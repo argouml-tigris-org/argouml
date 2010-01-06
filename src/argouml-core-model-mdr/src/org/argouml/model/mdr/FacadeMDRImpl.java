@@ -13,7 +13,8 @@
  *    Tom Morris - UML 1.4 
  *    
  *******************************************************************************
- */// Copyright (c) 2005-2009 The Regents of the University of California. All
+ */
+// Copyright (c) 2005-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -4563,7 +4564,7 @@ class FacadeMDRImpl implements Facade {
 
 
     public Collection getTargets(Object handle) {
-        return Collections.emptySet();
+        return illegalArgumentCollection(handle);
     }
 
     public boolean isADirectedRelationship(Object handle) {
