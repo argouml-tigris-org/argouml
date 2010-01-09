@@ -57,7 +57,7 @@ import org.tigris.gef.base.Selection;
  * 
  * @author Tom Morris
  */
-public class FigSignal extends FigClassifierBoxWithAttributes {
+public class FigSignal extends FigClassifierBox {
 
     /**
      * Construct a Fig representing a Signal.

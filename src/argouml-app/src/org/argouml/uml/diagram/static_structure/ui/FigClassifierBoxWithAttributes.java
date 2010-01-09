@@ -1,3 +1,18 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
 // $Id$
 // Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -25,29 +40,17 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Rectangle;
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.swing.Action;
-
-import org.argouml.model.AddAssociationEvent;
-import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
-import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.model.UmlChangeEvent;
-import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.FigAttributesCompartment;
-import org.argouml.uml.diagram.ui.FigCompartment;
-import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 
 /**
  * A Fig for a ClassifierBox that adds an attributes compartment.
  *
  * @author Michiel
+ * @deprecated in 0.29.3 by Bob Tarling use FigClassifierBox.
  */
+@Deprecated
 public abstract class FigClassifierBoxWithAttributes extends FigClassifierBox 
     implements AttributesCompartmentContainer {
     
@@ -61,117 +64,5 @@ public abstract class FigClassifierBoxWithAttributes extends FigClassifierBox
     public FigClassifierBoxWithAttributes(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, bounds, settings);
-    }
-
-    /**
-     * USED BY PGML.tee.
-     * @return the class name and bounds together with compartment
-     * visibility.
-     */
-    @Override
-    public String classNameAndBounds() {
-        return super.classNameAndBounds()
-            + "attributesVisible=" + isAttributesVisible() + ";";
-    }
-
-    @Override
-    protected void updateListeners(Object oldOwner, Object newOwner) {
-        Set<Object[]> listeners = new HashSet<Object[]>();
-
-        // Collect the set of model elements that we want to listen to
-        if (newOwner != null) {
-            // TODO: Because we get called on each and every change event, when
-            // the model is in a state of flux, we'll often get an
-            // InvalidElementException before we finish this collection. The
-            // only saving grace is that we're called SO many times that on the
-            // last time, things should be stable again and we'll get a good set
-            // of elements for the final update.  We need a better mechanism.
-            
-            // add the listeners to the newOwner
-            listeners.add(new Object[] {newOwner, null});
-            
-            // and its stereotypes
-            // TODO: Aren't stereotypes handled elsewhere?
-            for (Object stereotype 
-                    : Model.getFacade().getStereotypes(newOwner)) {
-                listeners.add(new Object[] {stereotype, null});
-            }
-
-            // and its features
-            for (Object feat : Model.getFacade().getFeatures(newOwner)) {
-                listeners.add(new Object[] {feat, null});
-                // and the stereotypes of its features
-                for (Object stereotype 
-                        : Model.getFacade().getStereotypes(feat)) {
-                    listeners.add(new Object[] {stereotype, null});
-                }
-                // and the parameter of its operations
-                if (Model.getFacade().isAOperation(feat)) {
-                    for (Object param : Model.getFacade().getParameters(feat)) {
-                        listeners.add(new Object[] {param, null});
-                    }
-                }
-            }
-        }
-        
-        // Update the listeners to match the desired set using the minimal
-        // update facility
-        updateElementListeners(listeners);
-    }
-    
-    @Override
-    public void renderingChanged() {
-        super.renderingChanged();
-        if (getOwner() != null) {
-            // TODO: We shouldn't actually have to do all this work
-            updateAttributes();
-        }
-    }
-    
-    /*
-     * TODO: Based on my comments below, with that work done,
-     * this method can be removed - Bob.
-     */
-    @Override
-    protected void updateLayout(UmlChangeEvent event) {
-        super.updateLayout(event);
-
-        if (event instanceof AttributeChangeEvent) {
-            Object source = event.getSource();
-            if (Model.getFacade().isAAttribute(source)) {
-                // TODO: We just need to get someone to rerender a single line
-                // of text which represents the element here, but I'm not sure
-                // how to do that. - tfm
-                // TODO: Bob replies - we shouldn't be interested in this event
-                // here. The FigFeature (or its notation) should be listen for
-                // change and the FigFeature should be update from that.
-                updateAttributes();
-            }
-        } else if (event instanceof AssociationChangeEvent 
-                && getOwner().equals(event.getSource())) {
-            Object o = null;
-            if (event instanceof AddAssociationEvent) {
-                o = event.getNewValue();
-            } else if (event instanceof RemoveAssociationEvent) {
-                o = event.getOldValue();
-            }
-            if (Model.getFacade().isAAttribute(o)) {
-                // TODO: Bob says - we should not be listening here for
-                // addition and removal of attributes. This should be done in
-                // FigAttributesCompartment.
-                updateAttributes();
-            }
-        }
-    }
-    
-    protected void updateAttributes() {
-        FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());
-        if (!fc.isVisible()) {
-            return;
-        }
-        fc.populate();
-
-        // TODO: make setBounds, calcBounds and updateBounds consistent
-        setBounds(getBounds());
     }
 }

@@ -1,3 +1,18 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Michiel van der Wulp
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
 // $Id$
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,10 +44,8 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.uml.diagram.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.PathContainer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
@@ -61,9 +74,8 @@ import org.tigris.gef.presentation.FigText;
  *
  * @author bob.tarling@gmail.com
  */
-public class FigAssociationClass extends FigAssociation implements
-        AttributesCompartmentContainer, PathContainer,
-        OperationsCompartmentContainer {
+public class FigAssociationClass
+        extends FigAssociation implements PathContainer {
 
     private static final long serialVersionUID = 3643715304027095083L;
 
@@ -168,32 +180,6 @@ public class FigAssociationClass extends FigAssociation implements
         return null;
     }
 
-    /**
-     * @return the bounds of the operations compartment for the associated
-     *         FigClassAssociationClass.
-     */
-    public Rectangle getAttributesBounds() {
-        if (getAssociationClass() != null) {
-            return getAssociationClass().getAttributesBounds();
-        } else {
-            return new Rectangle(0, 0, 0, 0);
-        }
-    }
-
-    public boolean isAttributesVisible() {
-        if (getAssociationClass() != null) {
-            return getAssociationClass().isAttributesVisible();
-        } else {
-            return true;
-        }
-    }
-
-    public void setAttributesVisible(boolean visible) {
-        if (getAssociationClass() != null) {
-            getAssociationClass().setAttributesVisible(visible);
-        }
-    }
-
     /*
      * Overridden in order to implement PathCompartmentContainer.
      */
@@ -227,12 +213,6 @@ public class FigAssociationClass extends FigAssociation implements
             return getAssociationClass().isOperationsVisible();
         } else {
             return true;
-        }
-    }
-
-    public void setOperationsVisible(boolean visible) {
-        if (getAssociationClass() != null) {
-            getAssociationClass().setOperationsVisible(visible);
         }
     }
 

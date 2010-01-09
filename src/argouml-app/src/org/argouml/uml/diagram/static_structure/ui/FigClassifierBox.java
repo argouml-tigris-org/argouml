@@ -1,3 +1,18 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Michiel van der Wulp
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
 // $Id$
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,8 +42,10 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Action;
@@ -135,9 +152,9 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         // TODO: Taken from FigClassifierBoxWithAttribute to handle events
         // on an attribute. All this event handling should eventually be moved
         // to the compartment Fig for attributes
-        if (Model.getFacade().isAAttribute(getOwner())) {
+        if (isAttributesVisible()) {
             // TODO: We shouldn't actually have to do all this work
-            updateAttributes();
+            updateCompartment(Model.getMetaTypes().getAttribute());
         }
     }
     
@@ -195,7 +212,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
                     // event here. The FigFeature (or its notation) should be
                     // listen for change and the FigFeature should be update
                     // from that.
-                    updateAttributes();
+                    updateCompartment(Model.getMetaTypes().getAttribute());
                 }
             } else if (event instanceof AssociationChangeEvent 
                     && getOwner().equals(event.getSource())) {
@@ -209,27 +226,62 @@ public abstract class FigClassifierBox extends FigCompartmentBox
                     // TODO: Bob says - we should not be listening here for
                     // addition and removal of attributes. This should be done in
                     // FigAttributesCompartment.
-                    updateAttributes();
+                    updateCompartment(Model.getMetaTypes().getAttribute());
                 }
             }
         }
     }
-
-    /**
-     * @deprecated by Bob Tarling in 0.29.3 use
-     * updateCompartment(Model.getMetaTypes().getAttribute())
-     */
-    protected void updateAttributes() {
-        FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());
-        if (!fc.isVisible()) {
-            return;
-        }
-        fc.populate();
     
-        // TODO: make setBounds, calcBounds and updateBounds consistent
-        setBounds(getBounds());
-    }
+    @Override
+    protected void updateListeners(Object oldOwner, Object newOwner) {
+       
+        if (isAttributesVisible()) {
+            Set<Object[]> listeners = new HashSet<Object[]>();
 
+            // Collect the set of model elements that we want to listen to
+            if (newOwner != null) {
+                // TODO: Because we get called on each and every change event, when
+                // the model is in a state of flux, we'll often get an
+                // InvalidElementException before we finish this collection. The
+                // only saving grace is that we're called SO many times that on the
+                // last time, things should be stable again and we'll get a good set
+                // of elements for the final update.  We need a better mechanism.
+                
+                // add the listeners to the newOwner
+                listeners.add(new Object[] {newOwner, null});
+                
+                // and its stereotypes
+                // TODO: Aren't stereotypes handled elsewhere?
+                for (Object stereotype 
+                        : Model.getFacade().getStereotypes(newOwner)) {
+                    listeners.add(new Object[] {stereotype, null});
+                }
+
+                // and its features
+                for (Object feat : Model.getFacade().getFeatures(newOwner)) {
+                    listeners.add(new Object[] {feat, null});
+                    // and the stereotypes of its features
+                    for (Object stereotype 
+                            : Model.getFacade().getStereotypes(feat)) {
+                        listeners.add(new Object[] {stereotype, null});
+                    }
+                    // and the parameter of its operations
+                    if (Model.getFacade().isAOperation(feat)) {
+                        for (Object param : Model.getFacade().getParameters(feat)) {
+                            listeners.add(new Object[] {param, null});
+                        }
+                    }
+                }
+            }
+            
+            // Update the listeners to match the desired set using the minimal
+            // update facility
+            updateElementListeners(listeners);
+        } else {
+            super.updateListeners(oldOwner, newOwner);
+        }
+    }
+    
     /**
      * Updates a compartment box. Called from updateLayout if there is
      * a model event effecting the attributes/operations and from

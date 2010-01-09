@@ -12,7 +12,6 @@
  *
  * Some portions of this file was previously release using the BSD License:
  */
-
 // $Id$
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -58,7 +57,7 @@ import org.tigris.gef.presentation.FigText;
  * A Class may show stereotypes, a name and compartments for
  * attributes and operations.
  */
-public class FigClass extends FigClassifierBoxWithAttributes {
+public class FigClass extends FigClassifierBox {
 
     /**
      * Constructor for a {@link FigClass} during file load.<p>
