@@ -56,10 +56,10 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.static_structure.ui.SelectionClass;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
+import org.tigris.gef.base.SelectionButtons;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRect;
@@ -417,8 +417,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         Editor ce = Globals.curEditor();
         if (ce != null) {
             Selection sel = ce.getSelectionManager().findSelectionFor(this);
-            if (sel instanceof SelectionClass) {
-                ((SelectionClass) sel).hideButtons();
+            if (sel instanceof SelectionButtons) {
+                ((SelectionButtons) sel).hideButtons();
             }
         }
     }
@@ -463,8 +463,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         Editor ce = Globals.curEditor();
         if (ce != null) {
             Selection sel = ce.getSelectionManager().findSelectionFor(this);
-            if (sel instanceof SelectionClass) {
-                ((SelectionClass) sel).hideButtons();
+            if (sel instanceof SelectionButtons) {
+                ((SelectionButtons) sel).hideButtons();
             }
         }
         unhighlight();
