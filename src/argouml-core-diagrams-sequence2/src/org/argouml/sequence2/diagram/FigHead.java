@@ -1,3 +1,18 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Christian López Espínola
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
 // $Id$
 // Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -45,16 +60,9 @@ public class FigHead extends ArgoFigGroup  {
     static final int DEFAULT_WIDTH = 150;
     static final int DEFAULT_HEIGHT = 50;
     
-    /**
-     * Constructor.
-     * 
-     * @param stereotypeFigure the stereotype fig
-     * @param nameFigure the name fig
-     * @deprecated for 0.28 by tfmorris. Use
-     *             {@link #FigHead(Object, DiagramSettings, Fig, FigText)}.
-     */
-    @Deprecated
-    FigHead(Fig stereotypeFigure, FigText nameFigure) {
+    FigHead(Object owner, DiagramSettings settings, Fig stereotypeFigure,
+            FigText nameFigure) {
+        super(owner, settings);
         initialize(stereotypeFigure, nameFigure);
     }
 
@@ -75,14 +83,6 @@ public class FigHead extends ArgoFigGroup  {
         addFig(nameFig);
         addFig(stereotypeFig);
     }
-    
-    FigHead(Object owner, DiagramSettings settings, Fig stereotypeFigure,
-            FigText nameFigure) {
-        super(owner, settings);
-        initialize(stereotypeFigure, nameFigure);
-    }
-
-
 
     /**
      * @param x The x coordinate.

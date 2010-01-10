@@ -1,3 +1,19 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Christian López Espínola
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
+
 // $Id$
 // Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -47,33 +63,6 @@ class FigActivation extends ArgoFigGroup {
     private FigMessage activatingMessage;
     
     /**
-     * TODO: Document
-     * 
-     * @param x
-     * @param y
-     * @param destroy 
-     * @deprecated for 0.28 by tfmorris.  
-     */
-    public FigActivation(int x, int y, boolean destroy) {
-        super();
-        initialize(new Rectangle(x, y, DEFAULT_HEIGHT, DEFAULT_WIDTH), destroy);
-    }
-
-    private void initialize(Rectangle bounds, boolean destroy) {
-        if (bounds.width == 0) {
-            bounds.width = DEFAULT_WIDTH;
-        }
-        if (bounds.height == 0) {
-            bounds.height = DEFAULT_HEIGHT;
-        }
-        rectFig = new FigRect(bounds.x - bounds.width / 2, bounds.y,
-                bounds.width, bounds.height, LINE_COLOR, FILL_COLOR);
-        rectFig.setLineWidth(LINE_WIDTH);
-        addFig(rectFig);
-        setDestroy(destroy);
-    }
-
-    /**
      * Create a new default activation fig (ie one without a destroy fig at the
      * end).
      * 
@@ -113,6 +102,21 @@ class FigActivation extends ArgoFigGroup {
         this.activatingMessage = activatingMessage;
         initialize(bounds, destroy);
     }
+    
+    private void initialize(Rectangle bounds, boolean destroy) {
+        if (bounds.width == 0) {
+            bounds.width = DEFAULT_WIDTH;
+        }
+        if (bounds.height == 0) {
+            bounds.height = DEFAULT_HEIGHT;
+        }
+        rectFig = new FigRect(bounds.x - bounds.width / 2, bounds.y,
+                bounds.width, bounds.height, LINE_COLOR, FILL_COLOR);
+        rectFig.setLineWidth(LINE_WIDTH);
+        addFig(rectFig);
+        setDestroy(destroy);
+    }
+
     
     /**     
      * @param isDestroy 

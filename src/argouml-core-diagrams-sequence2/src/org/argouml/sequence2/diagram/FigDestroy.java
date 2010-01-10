@@ -1,3 +1,19 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Christian López Espínola
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
+
 // $Id$
 // Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,14 +54,17 @@ import org.tigris.gef.presentation.FigLine;
 class FigDestroy extends ArgoFigGroup {
     
     /**
-     * @param x
-     * @param y
-     * @deprecated for 0.28 by tfmorris
+     * Create an X to mark the destruction of a lifeline
+     * @param owner owning UML element
+     * @param bounds position and size (X will be drawn from corner to corner)
+     * @param settings render settings
      */
-    FigDestroy(int x, int y) {
-        createCross(new Rectangle(x, y, 10, 10));
+    FigDestroy(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, settings);
+        createCross(bounds);
+        setLineWidth(LINE_WIDTH);
     }
-
+    
     private void createCross(Rectangle bounds) {
         addFig(new FigLine(bounds.x,
                         bounds.y,
@@ -56,17 +75,5 @@ class FigDestroy extends ArgoFigGroup {
                         bounds.y + bounds.height,
                         bounds.x + bounds.width,
                         bounds.y));
-    }
-    
-    /**
-     * Create an X to mark the destruction of a lifeline
-     * @param owner owning UML element
-     * @param bounds position and size (X will be drawn from corner to corner)
-     * @param settings render settings
-     */
-    FigDestroy(Object owner, Rectangle bounds, DiagramSettings settings) {
-        super(owner, settings);
-        createCross(bounds);
-        setLineWidth(LINE_WIDTH);
     }
 }

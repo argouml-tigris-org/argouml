@@ -1,3 +1,19 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *    Christian López Espínola
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
+
 // $Id$
 // Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -54,20 +70,11 @@ class FigLifeLine extends ArgoFigGroup {
     static final int WIDTH = 150;
     static final int HEIGHT = 500;
 
-    /**
-     * Creates a FigLifeLine that starts in (x,y)
-     * @param x The x coordinate of the FigLifeLine
-     * @param y The y coordinate of the FigLifeLine
-     * @deprecated for 0.28 by tfmorris.  Use 
-     * {@link #FigLifeLine(Object, Rectangle, DiagramSettings)}.
-     */
-    @Deprecated
-    FigLifeLine(int x, int y) {
-        super();
-
-        initialize(x, y);
+    FigLifeLine(Object owner, Rectangle bounds, DiagramSettings settings) {
+        super(owner, settings);
+        initialize(bounds.x, bounds.y);
     }
-
+    
     private void initialize(int x, int y) {
         activations = new LinkedList<FigActivation>();
         stackedActivations = new LinkedList<FigActivation>();
@@ -82,11 +89,6 @@ class FigLifeLine extends ArgoFigGroup {
         
         addFig(rectFig);
         addFig(lineFig);
-    }
-    
-    FigLifeLine(Object owner, Rectangle bounds, DiagramSettings settings) {
-        super(owner, settings);
-        initialize(bounds.x, bounds.y);
     }
     
     // TODO: Does this still need to be synchronized? If so then explain why.
