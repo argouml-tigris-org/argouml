@@ -90,11 +90,13 @@ import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.util.IItemUID;
 import org.argouml.util.ItemUID;
+import org.tigris.gef.base.Geometry;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.persistence.pgml.PgmlUtility;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigEdgePoly;
 import org.tigris.gef.presentation.FigGroup;
@@ -1685,5 +1687,78 @@ public abstract class FigEdgeModelElement
                     "Owner must be set in constructor and left unchanged");
         }
     }
+    
+    /**
+     * We override GEF completely here (no call to super method).
+     * Code is unfortunately copied from GEF to avoid multiple calls
+     * to calcBounds()
+     * 
+     * @see org.tigris.gef.presentation.FigEdgePoly#computeRouteImpl()
+     */
+    public void computeRouteImpl() {
+        if (!_initiallyLaidOut) {
+            layoutEdge();
+            _initiallyLaidOut = true;
+        }
+        FigPoly p = ((FigPoly) getFig());
 
+        Fig sourcePortFig = getSourcePortFig();
+        Fig destPortFig = getDestPortFig();
+
+        if (sourcePortFig instanceof FigNodeModelElement) {
+            sourcePortFig = ((FigNodeModelElement) sourcePortFig).getBigPort();
+        }
+        
+        if (destPortFig instanceof FigNodeModelElement) {
+            destPortFig = ((FigNodeModelElement) destPortFig).getBigPort();
+        }
+        
+        Point srcPt = sourcePortFig.getCenter();
+        Point dstPt = destPortFig.getCenter();
+
+        if (_useNearest) {
+            if (p.getNumPoints() == 2) {
+                // ? two iterations of refinement, maybe should be a for-loop
+                srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
+                dstPt = destPortFig.connectionPoint(p
+                        .getPoint(p.getNumPoints() - 2));
+                srcPt = sourcePortFig.connectionPoint(dstPt);
+                dstPt = destPortFig.connectionPoint(srcPt);
+                
+                // If the line angle is less than 3 degrees then snap the line
+                // straight
+                final boolean snapStraight;
+                final int delta = 3;
+                if (sourcePortFig instanceof FigCircle
+                        && destPortFig instanceof FigCircle) {
+                    double angle = Geometry.segmentAngle(srcPt, dstPt);
+                    double mod = (angle % 90);
+                    snapStraight = (mod < delta || mod > 90 - delta);
+                } else {
+                    snapStraight = false;
+                }
+
+                if (snapStraight) {
+                    int newX = (srcPt.x + dstPt.x) / 2;
+                    int newY = (srcPt.y + dstPt.y) / 2;
+                    if (newX < getSourcePortFig().getX() + getSourcePortFig().getWidth()
+                            && newX >= getSourcePortFig().getX()) {
+                        srcPt.x = newX;
+                        dstPt.x = newX;
+                    } else if (newY >= getSourcePortFig().getY()
+                            && newY < getSourcePortFig().getY() + getSourcePortFig().getHeight()) {
+                        srcPt.y = newY;
+                        dstPt.y = newY;
+                    }
+                }
+            } else {
+                srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
+                dstPt = destPortFig.connectionPoint(p
+                        .getPoint(p.getNumPoints() - 2));
+            }
+        }
+
+        setEndPoints(srcPt, dstPt);
+        calcBounds();
+    } /* end computeRoute */
 }
