@@ -63,8 +63,8 @@ import org.tigris.gef.presentation.FigRect;
  * which is common to e.g. an operations
  * compartment and an attributes compartment.<p>
  * 
- * The bigPort is filled, but has no border. All other figs contained 
- * in this group may not be filled, but can have a border. <p>
+ * The bigPort is filled with a border. All other figs contained 
+ * in this group may not be filled.<p>
  * 
  * The size calculation done here supports vertically 
  * stacked sub-figs of this group and supports all 
