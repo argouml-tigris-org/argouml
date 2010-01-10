@@ -48,9 +48,12 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.log4j.Logger;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
+import org.argouml.model.InvalidElementException;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.SelectionClass;
@@ -422,12 +425,23 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     @Override
     protected void modelChanged(PropertyChangeEvent mee) {
-        // Let our superclass sort itself out first
         super.modelChanged(mee);
         if (mee instanceof AssociationChangeEvent 
                 || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
+            Runnable doWorkRunnable = new Runnable() {
+                public void run() {
+                    try {
+                        renderingChanged();
+                        updateListeners(getOwner(), getOwner());
+                    } catch (InvalidElementException e) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("method accessed "
+                                    + "deleted element", e);
+                        }
+                    }
+                }  
+            };
+            SwingUtilities.invokeLater(doWorkRunnable);
         }
     }
     
