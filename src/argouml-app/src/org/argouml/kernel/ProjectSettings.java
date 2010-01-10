@@ -1,3 +1,19 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Michiel van der Wulp
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
+
 // $Id$
 // Copyright (c) 2006-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -236,48 +252,7 @@ public class ProjectSettings {
      * @return Returns "true" if we show bold names.
      */
     public String getShowBoldNames() {
-        return Boolean.toString(getShowBoldNamesValue());
-    }
-
-    /**
-     * @return Returns <code>true</code> if we show bold names.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
-     */
-    @Deprecated
-    public boolean getShowBoldNamesValue() {
-        return diaDefault.isShowBoldNames();
-    }
-
-    /**
-     * @param showbold <code>true</code> if names are to be shown in bold font.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
-     */
-    @Deprecated
-    public void setShowBoldNames(String showbold) {
-        setShowBoldNames(Boolean.valueOf(showbold).booleanValue());
-    }
-
-    /**
-     * @param showem <code>true</code> if names are to be shown in bold font.
-     * @deprecated for 0.27.2 by tfmorris.  Use {@link DiagramSettings}.
-     */
-    @Deprecated
-    public void setShowBoldNames(final boolean showem) {
-        if (diaDefault.isShowBoldNames() == showem) {
-            return;
-        }
-
-        Memento memento = new Memento() {
-
-            public void redo() {
-                diaDefault.setShowBoldNames(showem);
-            }
-
-            public void undo() {
-                diaDefault.setShowBoldNames(!showem);
-            }
-        };
-        doUndoable(memento);
+        return Boolean.toString(diaDefault.isShowBoldNames());
     }
 
     /**

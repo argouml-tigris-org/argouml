@@ -101,26 +101,10 @@ public class FigStereotypesGroup extends ArgoFigGroup {
     
     private boolean hidingStereotypesWithIcon = false;
     
-    /**
-     * The constructor.
-     *
-     * @param x x
-     * @param y y
-     * @param w width
-     * @param h height
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigStereotypesGroup(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigStereotypesGroup(int x, int y, int w, int h) {
-        super();
-        constructFigs(x, y, w, h);
-    }
-
     private void constructFigs(int x, int y, int w, int h) {
         bigPort = new FigRect(x, y, w, h, LINE_COLOR, FILL_COLOR);
         addFig(bigPort);
+        bigPort.setFilled(false);
 
         /* Do not show border line, make transparent: */
         setLineWidth(0);

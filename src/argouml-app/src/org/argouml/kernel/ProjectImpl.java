@@ -1,3 +1,19 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
+
 // $Id$
 // Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -525,7 +541,16 @@ public class ProjectImpl implements java.io.Serializable, Project {
         return Collections.unmodifiableCollection(result);
     }
 
-
+    /**
+     * Return the model.<p>
+     *
+     * If there isn't exactly one model, <code>null</code> is returned.
+     *
+     * @return the model.
+     * @deprecated for 0.25.4 by tfmorris.  Use 
+     * {@link #getUserDefinedModelList()} or {@link #getModels()}.
+     * @see org.argouml.kernel.Project#getModel()
+     */
     @SuppressWarnings("deprecation")
     @Deprecated
     public Object getModel() {
@@ -763,23 +788,11 @@ public class ProjectImpl implements java.io.Serializable, Project {
         return null;
     }
 
-
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public VetoableChangeSupport getVetoSupport() {
-        if (vetoSupport == null) {
-            vetoSupport = new VetoableChangeSupport(this);
-        }
-        return vetoSupport;
-    }
-
-
     public void preSave() {
         for (ArgoDiagram diagram : diagrams) {
             diagram.preSave();
         }
     }
-
 
     public void postSave() {
         for (ArgoDiagram diagram : diagrams) {
@@ -787,7 +800,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         }
         setSaveEnabled(true);
     }
-
 
     public void postLoad() {
         long startTime = System.currentTimeMillis();
@@ -996,14 +1008,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
     public void setUUIDRefs(Map<String, Object> uUIDRefs) {
         uuidRefs = uUIDRefs;
     }
-
-
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public void setVetoSupport(VetoableChangeSupport theVetoSupport) {
-        vetoSupport = theVetoSupport;
-    }
-
 
     @SuppressWarnings("deprecation")
     @Deprecated

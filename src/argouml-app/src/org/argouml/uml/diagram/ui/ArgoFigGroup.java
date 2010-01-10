@@ -1,3 +1,18 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
 // $Id$
 // Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -43,19 +58,9 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
 
     private static final Logger LOG = Logger.getLogger(ArgoFigGroup.class);
     
+    // TODO: Make this final asap.
     private DiagramSettings settings;
     
-    /**
-     * Default constructor.
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #ArgoFigGroup(Object, DiagramSettings)}.
-     */
-    @Deprecated
-    public ArgoFigGroup() {
-        super();
-    }
-
-
     /**
      * Construct an empty FigGroup with the given DiagramSettings.
      * object.
@@ -67,19 +72,6 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
         super.setOwner(owner);
         settings = renderSettings;
     }
-    
-    /**
-     * Construct a FigGroup which contains the listed figs.
-     * 
-     * @param arg0 the Figs that make up the Group
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #ArgoFigGroup(List, DiagramSettings)}.
-     */
-    @Deprecated
-    public ArgoFigGroup(List<ArgoFig> arg0) {
-        super(arg0);
-    }
-
     
     /**
      * This optional method is not implemented.  It will throw an
@@ -132,6 +124,11 @@ public abstract class ArgoFigGroup extends FigGroup implements ArgoFig {
         return settings;
     }
     
+    /**
+     * @deprecated for 0.29.3 by Bob Tarling. The diagram settings are
+     * provided to the constructor and then should never change.
+     * When this method is removed the "settings" variable can become final.
+     */
     public void setSettings(DiagramSettings renderSettings) {
         settings = renderSettings;
         renderingChanged();

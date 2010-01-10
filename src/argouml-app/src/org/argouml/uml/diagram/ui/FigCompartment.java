@@ -86,22 +86,6 @@ public abstract class FigCompartment extends ArgoFigGroup {
     private Fig externalSeparatorFig = new FigSeparator(X0, Y0, 11, LINE_WIDTH);
 
 
-    /**
-     * The constructor.
-     *
-     * @param x x
-     * @param y y
-     * @param w width
-     * @param h height
-     * @deprecated for 0.27.3 by tfmorris.  Use 
-     * {@link #FigCompartment(Object, Rectangle, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigCompartment(int x, int y, int w, int h) {
-        constructFigs(x, y, w, h);
-    }
-
     private void constructFigs(int x, int y, int w, int h) {
         bigPort = new FigPort(X0, Y0, w, h);
         bigPort.setFilled(false);

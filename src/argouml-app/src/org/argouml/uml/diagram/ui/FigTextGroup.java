@@ -1,3 +1,17 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
 // $Id$
 // Copyright (c) 2003-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -45,16 +59,6 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
 
     private boolean supressCalcBounds = false;
 
-    /**
-     * @deprecated for 0.27.3 by tfmorris. Use
-     *             {@link #FigTextGroup(Object, DiagramSettings)}.
-     */
-    @SuppressWarnings("deprecation")
-    @Deprecated
-    public FigTextGroup() {
-        super();
-    }
-    
     /**
      * Construct a FigGroup with the given render settings.
      * 

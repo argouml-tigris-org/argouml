@@ -1,3 +1,19 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
+
 // $Id$
 // Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -412,15 +428,6 @@ public interface Project {
     public Object getInitialTarget();
 
     /**
-     * @return the VetoableChangeSupport object
-     * @see VetoableChangeSupport
-     * @deprecated for 0.27.3 by tfmorris. This appears to be unused anywhere in
-     *             ArgoUML. Speak up now if you need it.
-     */
-    @Deprecated
-    public VetoableChangeSupport getVetoSupport();
-
-    /**
      * This is executed before a save.
      */
     public void preSave();
@@ -548,20 +555,6 @@ public interface Project {
      * @param uUIDRefs The uUIDRefs to set
      */
     public void setUUIDRefs(final Map<String, Object> uUIDRefs);
-
-    /**
-     * Sets the VetoableChangeSupport object. This will be returned by
-     * {@link #getVetoSupport()} but is otherwise unused.
-     * <p>
-     * TODO: Why is this here since it's never used? - tfm
-     * 
-     * @param theVetoSupport The vetoSupport to set
-     * @see VetoableChangeSupport
-     * @deprecated for 0.27.3 by tfmorris. This appears to be unused anywhere in
-     *             ArgoUML. Speak up now if you need it.
-     */
-    @Deprecated
-    public void setVetoSupport(VetoableChangeSupport theVetoSupport);
 
     /**
      * Get the current viewed diagram.

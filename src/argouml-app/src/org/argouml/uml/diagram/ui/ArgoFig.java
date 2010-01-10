@@ -1,3 +1,18 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Tom Morris
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
 // $Id$
 // Copyright (c) 2007-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,11 +41,10 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 
-import org.argouml.kernel.Project;
 import org.argouml.uml.diagram.DiagramSettings;
 
 /**
- * An interface that all ArgoUML Figs are required to interface. It provides a
+ * An interface that all ArgoUML Figs are required to implament. It provides a
  * single place to specify behaviors that we want all Figs to have since we
  * don't have access to the GEF class hierarchy (and it is made up of concrete
  * classes instead of interfaces.
@@ -118,30 +132,6 @@ public interface ArgoFig {
      */
     static final Color DEBUG_COLOR = new Color(255, 0, 255, !DEBUG ? 0 : 255);
 
-
-    /**
-     * Set the owning project for this Fig. This is an optional operation which
-     * may throw an {@link UnsupportedOperationException} if not implemented.
-     * 
-     * @param project the project
-     * @deprecated for 0.27.2 by tfmorris. This optional method has never been
-     *             implemented by any concrete class that implements this
-     *             interface and should not be used. Project ownership is
-     *             maintained at a coarser granularity level.
-     */
-    @Deprecated
-    public void setProject(Project project);
-
-    /**
-     * Get the owning project for this fig.
-     * 
-     * @return the owning project
-     * @deprecated for 0.27.2 by tfmorris. Implementations should have all the
-     *             information that they require in the DiagramSettings object.
-     */
-    @Deprecated
-    public Project getProject();
-    
     /**
      * Rerender the entire fig.
      * <p>
@@ -165,16 +155,4 @@ public interface ArgoFig {
      * @param settings the rendering settings to use
      */
     public void setSettings(DiagramSettings settings);
-    
-    /**
-     * Setting the owner of the Fig must be done in the constructor and
-     * not changed afterwards for all ArgoUML figs.
-     * 
-     * @param owner owning UML element
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     * @deprecated for 0.27.3 by tfmorris.  Set owner in constructor.
-     */
-    @Deprecated
-    public void setOwner(Object owner);
-    
 }

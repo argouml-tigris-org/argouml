@@ -1,3 +1,18 @@
+/* $Id$
+ *******************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *******************************************************************************
+ *
+ * Some portions of this file were previously release using the BSD License:
+ */
+
 // $Id$
 // Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -656,12 +671,8 @@ public class ToDoList extends Observable implements Runnable {
 
     /**
      * @param item the todo item
-     * @deprecated in 0.27.2 by Bob Tarling. ToDoList is not designed to be
-     * extended so protected is not required. This method is not used with the
-     * package so scope will become private in future.
      */
-    @Deprecated
-    protected void fireToDoItemChanged(ToDoItem item) {
+    void fireToDoItemChanged(ToDoItem item) {
         Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;
         // Process the listeners last to first, notifying
