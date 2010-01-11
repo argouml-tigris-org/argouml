@@ -4,10 +4,15 @@
 for dir in `find . -type d -print | grep -v /.svn`
 do
   (
-    echo Processing $dir:
+    echo Processing $dir...
     cd $dir
     for file in *.java
     do
+      if [ "$file" = "*.java" ]
+      then
+        continue;
+      fi
+
       if head -1 $file | grep '^//'
       then
         author=`svn info -r {2010-01-01} $file | egrep '^Last Changed Author:' | sed 's/^.*: //'`
@@ -37,7 +42,6 @@ EOF
         if [ "X`wc -l < svn-diff.tmp`" != X24 ]
         then
           cat svn-diff.tmp
-          rm svn-diff.tmp
 	  echo -n "Replace? N/Y/Q "
 	  read ans
 	  case "$ans" in
@@ -45,6 +49,7 @@ EOF
 	    ;;
 	  Q)
 	    svn revert $file
+            rm svn-diff.tmp
 	    exit 0;
 	    ;;
 	  *)
@@ -55,6 +60,7 @@ EOF
       fi
     done
     svn ci --depth files -m'Added EPL License header.'
+    rm -f svn-diff.tmp
     echo Processing $dir...done.
   )
 done
