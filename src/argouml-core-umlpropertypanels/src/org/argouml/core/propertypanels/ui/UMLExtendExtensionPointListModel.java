@@ -1,4 +1,4 @@
-// $Id: UMLExtendExtensionPointListModel.java 12801 2007-06-09 15:49:57Z mvw $
+// $Id$
 // Copyright (c) 2002-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

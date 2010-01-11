@@ -1,4 +1,4 @@
-// $Id: TestProfileJava.java 13911 2007-12-13 00:09:36Z euluis $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

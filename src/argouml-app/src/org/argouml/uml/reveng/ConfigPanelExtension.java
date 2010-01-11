@@ -1,4 +1,4 @@
-// $Id: FileImportSupport.java 11168 2006-09-14 20:35:24Z andrea_nironi $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

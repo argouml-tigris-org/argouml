@@ -1,4 +1,4 @@
-// $Id: UseCaseDiagramRenderer.java 16640 2009-01-17 22:06:52Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

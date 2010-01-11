@@ -11,7 +11,7 @@
  *******************************************************************************
  */
 
-// $Id: UMLExpressionBodyField.java 17560 2009-11-30 06:56:31Z mvw $
+// $Id$
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

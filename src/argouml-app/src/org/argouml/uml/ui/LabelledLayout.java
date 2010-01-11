@@ -1,4 +1,4 @@
-// $Id: LabelledLayout.java 14825 2008-05-28 23:21:50Z euluis $
+// $Id$
 // Copyright (c) 2008-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

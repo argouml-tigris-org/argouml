@@ -1,4 +1,4 @@
-/* $Id: FigEditableCompartment.java 17718 2010-01-02 14:06:22Z bobtarling $
+/* $Id$
  *******************************************************************************
  * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
@@ -14,7 +14,7 @@
  * Some portions of this file was previously release using the BSD License:
  */
 
-// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
+// $Id$
 // Copyright (c) 2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

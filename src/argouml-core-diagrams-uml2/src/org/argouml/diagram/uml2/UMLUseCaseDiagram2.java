@@ -1,4 +1,4 @@
-// $Id: UMLUseCaseDiagram.java 17255 2009-08-10 21:33:00Z bobtarling $
+// $Id$
 // Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

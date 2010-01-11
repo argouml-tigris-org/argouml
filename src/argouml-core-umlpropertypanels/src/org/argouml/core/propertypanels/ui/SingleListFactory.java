@@ -11,7 +11,7 @@
  *******************************************************************************
  */
 
-// $Id: ListFactory.java 17009 2009-03-31 22:53:20Z bobtarling $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

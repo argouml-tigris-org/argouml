@@ -1,4 +1,4 @@
-// $Id: DiagramPropPanelFactory.java 14530 2008-04-30 12:26:50Z mvw $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

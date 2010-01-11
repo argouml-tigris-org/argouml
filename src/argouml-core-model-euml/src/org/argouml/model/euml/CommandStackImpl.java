@@ -1,4 +1,4 @@
-// $Id: CommandStackImpl.java 13421 2007-08-20 17:04:35Z b00__1 $
+// $Id$
 // Copyright (c) 2007,2008 Bogdan Pistol and other contributors
 // All rights reserved.
 //

@@ -1,4 +1,4 @@
-// $Id: UMLModelElementStereotypeListModel.java 13108 2007-07-22 18:52:42Z mvw $
+// $Id$
 // Copyright (c) 1996-2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

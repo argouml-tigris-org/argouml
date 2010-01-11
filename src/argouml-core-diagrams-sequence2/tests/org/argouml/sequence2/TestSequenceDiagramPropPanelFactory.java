@@ -1,4 +1,4 @@
-// $Id: TestSequenceDiagramPropPanelFactory.java 16187 2008-11-26 17:12:09Z penyaskito $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

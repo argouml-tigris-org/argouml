@@ -1,4 +1,4 @@
-// $Id: UMLStateMachineContextComboBoxModel.java 15837 2008-09-30 23:53:25Z bobtarling $
+// $Id$
 // Copyright (c) 1996-2006 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

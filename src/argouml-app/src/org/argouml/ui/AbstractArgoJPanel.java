@@ -1,4 +1,4 @@
-// $Id: AbstractArgoJPanel.java 14168 2008-02-29 16:44:07Z mvw $
+// $Id$
 // Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

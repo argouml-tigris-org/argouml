@@ -1,4 +1,4 @@
-// $Id: ModeAddToDiagram.java 14844 2008-05-31 12:15:11Z bobtarling $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

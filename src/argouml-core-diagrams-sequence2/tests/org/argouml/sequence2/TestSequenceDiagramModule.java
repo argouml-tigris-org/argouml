@@ -1,4 +1,4 @@
-// $Id: TestSequenceDiagramModule.java 14304 2008-04-08 14:29:51Z penyaskito $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

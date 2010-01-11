@@ -1,4 +1,4 @@
-// $Id: UMLStructuralFeatureTypeComboBoxModel.java 16339 2008-12-11 23:31:22Z tfmorris $
+// $Id$
 // Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

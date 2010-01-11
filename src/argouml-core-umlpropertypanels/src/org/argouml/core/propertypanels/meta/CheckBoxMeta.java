@@ -1,4 +1,4 @@
-// $Id: XMLPropertyPanelsDataRecord.java 17635 2009-12-11 12:22:07Z bobtarling $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

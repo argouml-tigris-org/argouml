@@ -1,4 +1,4 @@
-// $Id: ActivityDiagramFactory.java 16381 2008-12-19 15:37:46Z bobtarling $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

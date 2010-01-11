@@ -1,4 +1,4 @@
-// $Id: ChangeCommand.java 13359 2007-08-15 08:23:10Z b00__1 $
+// $Id$
 // Copyright (c) 2007 Bogdan Pistol and other contributors
 // All rights reserved.
 //

@@ -1,4 +1,4 @@
-// $Id: JavaRuntimeUtility.java 11531 2006-11-27 17:40:06Z bobtarling $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

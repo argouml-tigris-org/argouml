@@ -1,4 +1,4 @@
-// $Id: ActivityDiagramModule.java 16924 2009-03-23 17:35:16Z thn $
+// $Id$
 // Copyright (c) 2007 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

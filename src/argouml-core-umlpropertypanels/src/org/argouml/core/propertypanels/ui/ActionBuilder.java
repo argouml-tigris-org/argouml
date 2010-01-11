@@ -1,4 +1,4 @@
-// $Id: PopupMenuNewEvent.java 15918 2008-10-14 06:40:41Z mvw $
+// $Id$
 // Copyright (c) 1996-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

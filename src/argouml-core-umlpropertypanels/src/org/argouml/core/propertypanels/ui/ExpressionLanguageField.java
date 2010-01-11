@@ -1,4 +1,4 @@
-/* $Id: SwingUIFactory.java 17700 2009-12-23 10:40:18Z bobtarling $
+/* $Id$
  *******************************************************************************
  * Copyright (c) 2009 Contributors - see below
  * All rights reserved. This program and the accompanying materials
@@ -11,7 +11,7 @@
  *******************************************************************************
  */
 
-// $Id: UMLExpressionLanguageField.java 17560 2009-11-30 06:56:31Z mvw $
+// $Id$
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written

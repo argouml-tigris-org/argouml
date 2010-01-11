@@ -1,4 +1,4 @@
-// $Id: UMLPartitionActivityGraphListModel.java 17617 2009-12-10 02:17:22Z bobtarling $
+// $Id$
 // Copyright (c) 2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
