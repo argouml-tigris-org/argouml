@@ -1,20 +1,20 @@
 #!/bin/sh
 
-find . -type f \( -name \*.java -o -name \*.xml -o -name \*.txt \) -print |
-xargs -r svn propset svn:eol-style native
+svn ls -R > ls-R.tmp
 
-find . -type f \( -name \*.java -o -name \*.xml -o -name \*.properties -o -name \*.txt -o -name \*.html \) -print |
-xargs -r svn propset svn:keywords 'Author Date Id Revision'
-
-find . -type f \( -name \*.java -o -name \*.xml -o -name \*.properties -o -name \*.txt \) -print |
-xargs -r svn propdel svn:executable
+egrep '\.(java|xml|properties|txt|html)$' < ls-R.tmp | 
+  xargs -r -n 1 svn propdel svn:executable
+egrep '\.(java|xml|properties|txt|html)$' < ls-R.tmp | 
+  xargs -r svn propset svn:keywords 'Author Date Id Revision'
+egrep '\.(java|xml|txt)$' < ls-R.tmp | 
+  xargs -r svn propset svn:eol-style native
 
 # Scripts
-find . -type f -name \*.bat -print |
-xargs -r svn propset svn:eol-style 'CRLF'
+egrep '\.(bat)$' < ls-R.tmp | 
+  xargs -r svn propset svn:eol-style 'CRLF'
+egrep '\.(sh)$' < ls-R.tmp | 
+  xargs -r svn propset svn:eol-style 'LF'
+egrep '\.(bat|sh)$' < ls-R.tmp | 
+  xargs -r svn propset svn:executable '*'
 
-find . -type f -name \*.sh -print |
-xargs -r svn propset svn:eol-style 'LF'
-
-find . -type f \( -name \*.sh -o -name \*.bat \) -print |
-xargs -r svn propset svn:executable '*'
+rm ls-R.tmp
