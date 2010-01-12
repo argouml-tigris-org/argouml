@@ -91,7 +91,7 @@ Index: D:/ArgoUML/argouml/org/argouml/cognitive/Highlightable.java
 --- D:/ArgoUML/argouml/org/argouml/cognitive/Highlightable.java	(revision 12607)
 +++ D:/ArgoUML/argouml/org/argouml/cognitive/Highlightable.java	(working copy)
 @@ -1,4 +1,4 @@
--// $Id:$
+-// $Id$
 +// $Id$
  // Copyright (c) 1996-99 The Regents of the University of California. All
  // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -800,7 +800,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ResourceModelLoader.java
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/ResourceModelLoader.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/ResourceModelLoader.java	(revision 0)
 @@ -0,0 +1,53 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -858,7 +858,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/Profile.java
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/Profile.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/Profile.java	(revision 0)
 @@ -0,0 +1,52 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -1373,7 +1373,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/java/JavaFormatingStrategy.jav
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/java/JavaFormatingStrategy.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/java/JavaFormatingStrategy.java	(revision 0)
 @@ -0,0 +1,233 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -1611,7 +1611,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/StreamModelLoader.java
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/StreamModelLoader.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/StreamModelLoader.java	(revision 0)
 @@ -0,0 +1,74 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -1690,7 +1690,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/FileModelLoader.java
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/FileModelLoader.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/FileModelLoader.java	(revision 0)
 @@ -0,0 +1,63 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -1758,7 +1758,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileConfiguration.java
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileConfiguration.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileConfiguration.java	(revision 0)
 @@ -0,0 +1,87 @@
-+// $Id: Profile.java 11516 2006-11-25 04:30:15Z tfmorris $
++// $Id$
 +// Copyright (c) 1996-2006 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -1850,7 +1850,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileModelLoader.java
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileModelLoader.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileModelLoader.java	(revision 0)
 @@ -0,0 +1,41 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -1896,7 +1896,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/FormatingStrategy.java
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/FormatingStrategy.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/FormatingStrategy.java	(revision 0)
 @@ -0,0 +1,54 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -1955,7 +1955,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ZipModelLoader.java
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/ZipModelLoader.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/ZipModelLoader.java	(revision 0)
 @@ -0,0 +1,105 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -2065,7 +2065,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManager.java
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManager.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManager.java	(revision 0)
 @@ -0,0 +1,38 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -2108,7 +2108,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManagerImpl.java
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManagerImpl.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/ProfileManagerImpl.java	(revision 0)
 @@ -0,0 +1,62 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -2175,7 +2175,7 @@ Index: D:/ArgoUML/argouml/org/argouml/uml/profile/UserDefinedProfile.java
 --- D:/ArgoUML/argouml/org/argouml/uml/profile/UserDefinedProfile.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/uml/profile/UserDefinedProfile.java	(revision 0)
 @@ -0,0 +1,61 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written
@@ -2484,7 +2484,7 @@ Index: D:/ArgoUML/argouml/org/argouml/ui/ProfileSelectionTab.java
 --- D:/ArgoUML/argouml/org/argouml/ui/ProfileSelectionTab.java	(revision 0)
 +++ D:/ArgoUML/argouml/org/argouml/ui/ProfileSelectionTab.java	(revision 0)
 @@ -0,0 +1,329 @@
-+// $Id: eclipse-argo-codetemplates.xml 11347 2006-10-26 22:37:44Z linus $
++// $Id$
 +// Copyright (c) 2007 The Regents of the University of California. All
 +// Rights Reserved. Permission to use, copy, modify, and distribute this
 +// software and its documentation without fee, and without a written

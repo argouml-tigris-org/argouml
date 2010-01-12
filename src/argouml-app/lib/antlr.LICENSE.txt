@@ -1,6 +1,6 @@
 
 SOFTWARE RIGHTS
-$Id: //depot/code/org.antlr/main/main/RIGHTS#3 $
+$Id$
 
 ANTLR 1989-2000 Developed by jGuru.com (MageLang Institute), 
 http://www.ANTLR.org  and http://www.jGuru.com
