@@ -310,7 +310,9 @@ Building this requires:
         <include name="**/*.lcf"/>
       </fileset>
       <fileset dir="tests">
-        <include name="testmodels/*.xmi"/>
+        <include name="testmodels/**/*.xmi"/>
+        <include name="testmodels/**/*.xml.zip"/>
+        <include name="testmodels/**/*.xml"/>
       </fileset>
     </copy>
         

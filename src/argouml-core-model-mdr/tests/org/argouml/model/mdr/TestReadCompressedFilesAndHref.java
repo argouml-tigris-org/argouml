@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    euluis
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -41,8 +42,6 @@ package org.argouml.model.mdr;
 import java.io.File;
 import java.io.FileInputStream;
 
-import javax.jmi.reflect.RefPackage;
-
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 
@@ -58,16 +57,18 @@ public class TestReadCompressedFilesAndHref extends
         AbstractMDRModelImplementationTestCase {
 
     private Logger LOG = Logger.getLogger(TestReadCompressedFilesAndHref.class);
-    
-    //notice that i must replace and hardcode user.home on my Mac OS X computer
-    //[since this always give "/tmp" (at least under Eclipe)]
-    private static final String ANDROMDA_HOME = System.getProperty("user.home")
-            + "/andromda-bin-3.1-RC1";
 
-    private String testModel = "tests/testmodels/MDASampleModel.xmi";
-
+    /**
+     * TODO: either the AndroMDA profiles are added to the repository or this
+     * should be deleted [euluis on 2010-01-18].
+     */
     public void testReadCompressedFileAndHref() {
-        File mdaIsHere = new File (ANDROMDA_HOME);
+        String testModel = "tests/testmodels/MDASampleModel.xmi";
+        //notice that i must replace and hardcode user.home on my Mac OS X computer
+        //[since this always give "/tmp" (at least under Eclipe)]
+        final String ANDROMDA_HOME = System.getProperty("user.home")
+            + "/andromda-bin-3.1-RC1";
+        File mdaIsHere = new File(ANDROMDA_HOME);
         if (mdaIsHere.exists()) {
             LOG.info("Begin testReadCompressedFileAndHref()");        
             XmiReaderImpl reader = new XmiReaderImpl(modelImplementation);
@@ -82,11 +83,59 @@ public class TestReadCompressedFilesAndHref extends
             assertTrue("model is loaded", true);
         }
     }
+    
+    private final String ISSUE5946_BASE_DIR = "/testmodels/AndroMDA-3.3/";
 
-    /*
-     * @see org.argouml.model.mdr.AbstractMDRModelImplementationTestCase#setUp()
+    public void testReadAndroMDAProfileIssue5946() {
+        assertLoadModel(ISSUE5946_BASE_DIR + "unzipped-uml14"
+            + "/andromda-profile-datatype-3.3.xml", null,
+            "testReadAndroMDAProfileIssue5946");
+    }
+
+    public void testReadCompressedAndroMDAProfileIssue5946() {
+        // TODO: uncomment the following to get the failure.
+//        assertLoadModel(ISSUE5946_BASE_DIR + "zipped-uml14"
+//            + "/andromda-profile-datatype/3.3/andromda-profile-datatype-3.3.xml.zip",
+//            null, "testReadCompressedAndroMDAProfileFileIssue5946");
+    }
+
+    public void testReadFileAndHrefIssue5946() {
+        assertLoadModel(ISSUE5946_BASE_DIR + "timetracker2.xmi",
+            ISSUE5946_BASE_DIR + "unzipped-uml14/",
+            "testReadFileAndHrefIssue5946");
+    }
+
+    /**
+     * This test reproduces the problem as reported in issue 5946.
+     * We have two parts for which there is no support:
+     * <ul>
+     * <li>reading compressed profiles;</li>
+     * <li>reading profiles within the directory tree recursively.</li>
+     * </ul>
      */
-    protected void setUp() throws Exception {
-        super.setUp();
+    public void testReadCompressedFileAndHrefIssue5946() {
+        // TODO: uncomment the following to get the failure.
+//        assertLoadModel(ISSUE5946_BASE_DIR + "timetracker.xmi",
+//            ISSUE5946_BASE_DIR + "zipped-uml14/",
+//            "testReadFileAndHrefIssue5946");
+    }
+    
+    void assertLoadModel(String modelPath, String profilesPath,
+            String testName) {
+        LOG.info("Begin " + testName + "()");
+        XmiReaderImpl reader = new XmiReaderImpl(modelImplementation);
+        if (profilesPath != null) {
+            reader.addSearchPath(
+                getClass().getResource(profilesPath).getFile());
+        }
+        try {
+            reader.parse(new InputSource(getClass().getResourceAsStream(
+                modelPath)), false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception while loading model");
+        }
+        assertTrue(modelPath + " model is loaded", true);
+        
     }
 }
