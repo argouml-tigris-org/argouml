@@ -567,7 +567,7 @@ public final class ModuleLoader2 {
 	                ClassLoader classloader =
 			    new URLClassLoader(new URL[] {
 				file.toURI().toURL(),
-			    });
+			    }, getClass().getClassLoader());
 	                try {
 	                    processJarFile(classloader, file);
 	                } catch (ClassNotFoundException e) {
