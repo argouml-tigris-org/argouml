@@ -562,8 +562,6 @@ public final class ModuleLoader2 {
 		try {
 		    jarfile = new JarFile(file);
 		    if (jarfile != null) {
-		        // TODO: Should we be delegating to a different
-		        // classloader than the default here? - - tfm
 	                ClassLoader classloader =
 			    new URLClassLoader(new URL[] {
 				file.toURI().toURL(),
