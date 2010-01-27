@@ -58,7 +58,6 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramEdgeSettings;
-import org.argouml.uml.diagram.DiagramElementSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadComposite;
