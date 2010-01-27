@@ -217,7 +217,7 @@ public class StylePanel
     }
 
     /**
-     * @return Returns the _target.
+     * @return Returns the target of the Style Panel.
      */
     protected Fig getPanelTarget() {
         return panelTarget;

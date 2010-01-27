@@ -40,25 +40,57 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Rectangle;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyListener;
+import java.beans.PropertyChangeEvent;
 
-import org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass;
+import javax.swing.JCheckBox;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.ui.StylePanelFigNodeModelElement;
 import org.tigris.gef.presentation.Fig;
 
 /**
  * The style Panel for FigEdgeModelElement.
  *
  */
-public class StylePanelFigAssociationClass extends StylePanelFigClass implements
-        ItemListener, FocusListener, KeyListener {
+public class StylePanelFigAssociationClass
+    extends StylePanelFigNodeModelElement
+    implements ItemListener, FocusListener, KeyListener {
 
+    private JCheckBox attrCheckBox =
+        new JCheckBox(Translator.localize("checkbox.attributes"));
+
+    private JCheckBox operCheckBox =
+        new JCheckBox(Translator.localize("checkbox.operations"));
+
+    /**
+     * Flag to indicate that a refresh is going on.
+     */
+    private boolean refreshTransaction;
+
+    /**
+     * Constructor.
+     */
     public StylePanelFigAssociationClass() {
+        super();
+
+        addToDisplayPane(attrCheckBox);
+        addToDisplayPane(operCheckBox);
+
+        attrCheckBox.setSelected(false);
+        operCheckBox.setSelected(false);
+        attrCheckBox.addItemListener(this);
+        operCheckBox.addItemListener(this);
     }
 
     /**
      * Bounding box is editable (although this is style panel for an
      * FigEdgeModelElement).
+     * 
+     * @param value Ignored argument.
      */
     @Override
     protected void hasEditableBoundingBox(boolean value) {
@@ -100,17 +132,45 @@ public class StylePanelFigAssociationClass extends StylePanelFigClass implements
     }
 
     /*
+     * Only refresh the tab if the bounds propertyChange event arrives.
+     *
+     * @see org.argouml.ui.StylePanel#refresh(java.beans.PropertyChangeEvent)
+     */
+    public void refresh(PropertyChangeEvent e) {
+        String propertyName = e.getPropertyName();
+        if (propertyName.equals("bounds")) {
+            refresh();
+        }
+    }
+    /*
      * @see org.argouml.ui.StylePanelFig#refresh()
      */
     @Override
     public void refresh() {
-        super.refresh();
+        // StylePanelFigClass relies on getPanelTarget() to return a 
+        // FigCompartmentBox
+        refreshTransaction = true;
+        FigAssociationClass panelTarget =
+            (FigAssociationClass) getPanelTarget();
+        try {
+            super.refresh();
+            final FigCompartmentBox fcb = panelTarget.getAssociationClass();
+            if (fcb != null) {
+                FigCompartment compartment =
+                    fcb.getCompartment(Model.getMetaTypes().getAttribute());
+                attrCheckBox.setSelected(compartment.isVisible());
+                compartment =
+                    fcb.getCompartment(Model.getMetaTypes().getOperation());
+                operCheckBox.setSelected(compartment.isVisible());
+            }
+        } finally {
+            refreshTransaction = false;
+        }
 
-        // The boundary box as held in the target fig, and as listed in
-        // the
-        // boundary box style field (null if we don't have anything
-        // valid)
-        Fig target = getPanelTarget();
+        // The boundary box as held in the target fig, and as listed
+        // in the boundary box style field (null if we don't have 
+        // anything valid)
+        Fig target = panelTarget;
 
         // Get class box, because we will set it's bounding box in text field
         if (((FigAssociationClass) target).getAssociationClass() != null) {
@@ -132,6 +192,30 @@ public class StylePanelFigAssociationClass extends StylePanelFigClass implements
             getBBoxField().setText(
                     figBounds.x + "," + figBounds.y + "," + figBounds.width
                             + "," + figBounds.height);
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // event handling
+
+    /*
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
+    public void itemStateChanged(ItemEvent e) {
+        if (!refreshTransaction) {
+            Object src = e.getSource();
+
+            if (src == attrCheckBox) {
+                FigCompartmentBox fcb = (FigCompartmentBox) getPanelTarget();
+                fcb.showCompartment(Model.getMetaTypes().getAttribute(), 
+                        attrCheckBox.isSelected());
+            } else if (src == operCheckBox) {
+                FigCompartmentBox fcb = (FigCompartmentBox) getPanelTarget();
+                fcb.showCompartment(Model.getMetaTypes().getOperation(),
+                        operCheckBox.isSelected());
+            } else {
+                super.itemStateChanged(e);
+            }
         }
     }
 
