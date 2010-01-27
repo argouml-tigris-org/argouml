@@ -82,7 +82,7 @@ public class ArgoFigText extends FigText
     public ArgoFigText(Object owner, Rectangle bounds,
             DiagramSettings renderSettings, boolean expandOnly) {        
         super(bounds.x, bounds.y, bounds.width, bounds.height, expandOnly);
-        setFontFamily("dialog"); /* TODO: Is this needed?*/
+        //setFontFamily("dialog"); /* TODO: Is this needed?*/
 
         // TODO: We don't currently have any settings that can change on a
         // per-fig basis, so we can just use the project/diagram defaults
@@ -90,8 +90,10 @@ public class ArgoFigText extends FigText
         settings = renderSettings;
         super.setFontFamily(settings.getFontName());
         super.setFontSize(settings.getFontSize());
-        super.setFillColor(FILL_COLOR);
-        super.setTextFillColor(FILL_COLOR);
+        super.setFilled(false);
+        super.setFillColor(null);
+        super.setTextFilled(false);
+        super.setTextFillColor(null);
         super.setTextColor(TEXT_COLOR);
         /* This makes the text not touch the text-border line: */
         super.setTopMargin(1);
