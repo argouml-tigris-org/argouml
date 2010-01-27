@@ -56,7 +56,6 @@ import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ExtensionPointsCompartmentContainer;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -118,8 +117,7 @@ import org.tigris.gef.presentation.FigCircle;
  * origin is at our top left corner, and the Y coordinates are
  * reversed.<p>
  */
-public class FigUseCase extends FigCompartmentBox
-    implements ExtensionPointsCompartmentContainer {
+public class FigUseCase extends FigCompartmentBox {
 
     /**
      * The minimum padding allowed above the rectangle for
@@ -169,9 +167,9 @@ public class FigUseCase extends FigCompartmentBox
 
         // Make all the parts match the main fig
         setFilled(true);
-        setFillColor(FILL_COLOR);
-        setLineColor(LINE_COLOR);
-        setLineWidth(LINE_WIDTH);
+        super.setFillColor(FILL_COLOR);
+        super.setLineColor(LINE_COLOR);
+        super.setLineWidth(LINE_WIDTH);
         
         // by default, do not show extension points:
         setExtensionPointsVisible(false);
@@ -190,6 +188,8 @@ public class FigUseCase extends FigCompartmentBox
     protected Fig createBigPortFig() {
         /* Use arbitrary dimensions for now. */
         Fig b = new FigMyCircle(0, 0, 100, 60);
+        b.setFilled(true);
+        b.setFillColor(FILL_COLOR);
         b.setLineColor(LINE_COLOR);
         b.setLineWidth(LINE_WIDTH);
         return b;
@@ -410,26 +410,6 @@ public class FigUseCase extends FigCompartmentBox
     }
 
     /**
-     * Set the line colour for the use case oval.<p>
-     *
-     * This involves setting the line color of all the figs, but not the bigPort.
-     * Calling the super method causes all FigGroup elements
-     * to follow suit - which is not wanted for the bigPort and the separator.
-     *
-     * @param col The colour desired.
-     */
-    @Override
-    public void setLineColor(Color col) {
-           super.setLineColor(col);
-           getBigPort().setLineColor(null);
-    }
-    
-    @Override
-    public void setLineWidth(int w) {
-        super.setLineWidth(w);
-    }
-
-    /**
      * Set the fill colour for the use case oval.<p>
      *
      * This involves setting the fill color of all figs, but not the bigPort.
@@ -440,23 +420,30 @@ public class FigUseCase extends FigCompartmentBox
      */
     @Override
     public void setFillColor(Color col) {
-        super.setFillColor(col);
+        getBigPort().setFillColor(col);
+    }
+    
+    public Color getFillColor() {
+        return getBigPort().getFillColor();
+    }
+    
+    public boolean getFilled() {
+        return getBigPort().isFilled();
+    }
+    
+    public boolean isFilled() {
+        return getBigPort().isFilled();
     }
 
     /**
      * Set whether the use case oval is to be filled.<p>
      *
-     * This involves making all figs filled, but not the bigPort.<p>
-     * Calling the super method would cause all FigGroup elements
-     * to be filled, too - which is not wanted for e.g. the stereotype figs.
-     * See issue 5581.
-     *
-     * @param f  <code>true</code> if the oval is to be filled,
-     *           <code>false</code> if not.
+     * This is overridden to have no effect as the use case is always filled
+     * @param f this argument is ignored.
      */
     @Override
     public void setFilled(boolean f) {
-        super.setFilled(f);
+        //
     }
 
     /**
