@@ -312,7 +312,11 @@ public final class Translator {
     /**
      * Synonym for messageFormat to encourage developers to convert
      * existing uses of localize() + string concatenation to use
-     * this method instead.
+     * this method instead.<p>
+     *
+     * The localized string is a pattern to be processed by
+     * {@link MessageFormat}.
+     *
      * @see org.argouml.i18n.Translator#messageFormat(String, Object[])
      *
      * @param key the key to localize
