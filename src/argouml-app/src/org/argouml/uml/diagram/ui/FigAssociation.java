@@ -226,7 +226,9 @@ public class FigAssociation extends FigEdgeModelElement {
         /* This fixes issue 4987: */
         srcEnd.renderingChanged();
         destEnd.renderingChanged();
-        middleGroup.renderingChanged();
+        if (middleGroup != null) {
+            middleGroup.renderingChanged();
+        }
     }
 
 
