@@ -114,9 +114,7 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
      */
     private void initialize() {
         // Set properties of the stereotype box.
-        // Initially not set to be displayed, but this will be changed
-        // when we try to render it, if we find we have a stereotype.
-        getStereotypeFig().setVisible(false);
+        getStereotypeFig().setHeight(STEREOHEIGHT + LINE_WIDTH);
 
         /*
          * The nameFig is transparent, since this is a box and the fill color is
