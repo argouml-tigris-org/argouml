@@ -1710,12 +1710,7 @@ public abstract class FigEdgeModelElement
      * @see org.tigris.gef.presentation.FigEdgePoly#computeRouteImpl()
      */
     public void computeRouteImpl() {
-        if (!_initiallyLaidOut) {
-            layoutEdge();
-            _initiallyLaidOut = true;
-        }
-        FigPoly p = ((FigPoly) getFig());
-
+        
         Fig sourcePortFig = getSourcePortFig();
         Fig destPortFig = getDestPortFig();
 
@@ -1727,52 +1722,66 @@ public abstract class FigEdgeModelElement
             destPortFig = ((FigNodeModelElement) destPortFig).getBigPort();
         }
         
-        Point srcPt = sourcePortFig.getCenter();
-        Point dstPt = destPortFig.getCenter();
-
-        if (_useNearest) {
-            if (p.getNumPoints() == 2) {
-                // ? two iterations of refinement, maybe should be a for-loop
-                srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-                dstPt = destPortFig.connectionPoint(p
-                        .getPoint(p.getNumPoints() - 2));
-                srcPt = sourcePortFig.connectionPoint(dstPt);
-                dstPt = destPortFig.connectionPoint(srcPt);
-                
-                // If the line angle is less than 3 degrees then snap the line
-                // straight
-                final boolean snapStraight;
-                final int delta = 3;
-                if (sourcePortFig instanceof FigCircle
-                        && destPortFig instanceof FigCircle) {
-                    double angle = Geometry.segmentAngle(srcPt, dstPt);
-                    double mod = (angle % 90);
-                    snapStraight = (mod < delta || mod > 90 - delta);
-                } else {
-                    snapStraight = false;
-                }
-
-                if (snapStraight) {
-                    int newX = (srcPt.x + dstPt.x) / 2;
-                    int newY = (srcPt.y + dstPt.y) / 2;
-                    if (newX < getSourcePortFig().getX() + getSourcePortFig().getWidth()
-                            && newX >= getSourcePortFig().getX()) {
-                        srcPt.x = newX;
-                        dstPt.x = newX;
-                    } else if (newY >= getSourcePortFig().getY()
-                            && newY < getSourcePortFig().getY() + getSourcePortFig().getHeight()) {
-                        srcPt.y = newY;
-                        dstPt.y = newY;
-                    }
-                }
-            } else {
-                srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
-                dstPt = destPortFig.connectionPoint(p
-                        .getPoint(p.getNumPoints() - 2));
+        if (!(sourcePortFig instanceof FigCircle)
+                || !(destPortFig instanceof FigCircle)) {
+            // If this is not a circle to circle edge we default to let GEF
+            // calculate edge route.
+            super.computeRouteImpl();
+        } else {
+            // If the edge is from a circle to a circle (e.g. between use
+            // cases) we have our own implementation overriding GEF. Which
+            // attempts to keep the edges perpendicular if the edge is already
+            // close to perpendicular.
+        
+            if (!_initiallyLaidOut) {
+                layoutEdge();
+                _initiallyLaidOut = true;
             }
+            FigPoly p = ((FigPoly) getFig());
+    
+            
+            
+            Point srcPt = sourcePortFig.getCenter();
+            Point dstPt = destPortFig.getCenter();
+    
+            if (_useNearest) {
+                if (p.getNumPoints() == 2) {
+                    // ? two iterations of refinement, maybe should be a for-loop
+                    srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
+                    dstPt = destPortFig.connectionPoint(p
+                            .getPoint(p.getNumPoints() - 2));
+                    srcPt = sourcePortFig.connectionPoint(dstPt);
+                    dstPt = destPortFig.connectionPoint(srcPt);
+                    
+                    // If the line angle is less than 3 degrees then snap the line
+                    // straight
+                    final int delta = 3;
+                    double angle = Geometry.segmentAngle(srcPt, dstPt);
+                    double mod = angle % 90;
+                    final boolean snapStraight = (mod != 0 && (mod < delta || mod > 90 - delta));
+    
+                    if (snapStraight) {
+                        int newX = (srcPt.x + dstPt.x) / 2;
+                        int newY = (srcPt.y + dstPt.y) / 2;
+                        if (newX < getSourcePortFig().getX() + getSourcePortFig().getWidth()
+                                && newX >= getSourcePortFig().getX()) {
+                            srcPt.x = newX;
+                            dstPt.x = newX;
+                        } else if (newY >= getSourcePortFig().getY()
+                                && newY < getSourcePortFig().getY() + getSourcePortFig().getHeight()) {
+                            srcPt.y = newY;
+                            dstPt.y = newY;
+                        }
+                    }
+                } else {
+                    srcPt = sourcePortFig.connectionPoint(p.getPoint(1));
+                    dstPt = destPortFig.connectionPoint(p
+                            .getPoint(p.getNumPoints() - 2));
+                }
+            }
+    
+            setEndPoints(srcPt, dstPt);
+            calcBounds();
         }
-
-        setEndPoints(srcPt, dstPt);
-        calcBounds();
     } /* end computeRoute */
 }
