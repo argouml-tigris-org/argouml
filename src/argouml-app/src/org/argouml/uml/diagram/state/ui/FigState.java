@@ -57,12 +57,8 @@ import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * The fig hierarchy should comply as much as possible to the hierarchy of the
- * UML metamodel. Reason for this is to make sure that events from the model are
- * not missed by the figs. The hierarchy of the states was not compliant to
- * this. This resulted in a number of issues (issue 1430 for example). Therefore
- * introduced an abstract FigState and made FigCompositeState and FigSimpleState
- * subclasses of this state.
+ * Abstract class with common functionality for all Figs representing a UML
+ * State element.
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Dec 30, 2002
