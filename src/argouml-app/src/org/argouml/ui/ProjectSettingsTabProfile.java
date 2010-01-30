@@ -358,7 +358,8 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 File file = chooser.getSelectedFile();
                 chooser.setCurrentDirectory(file.getParentFile());
                 try {
-                    UserDefinedProfile profile = new UserDefinedProfile(file);
+                    UserDefinedProfile profile = new UserDefinedProfile(file,
+                        ProfileFacade.getManager());
                     ProfileFacade.getManager().registerProfile(profile);
 
                     modelAvailable.addElement(profile);

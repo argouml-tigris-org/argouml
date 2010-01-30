@@ -132,6 +132,12 @@ class XmlInputStream extends BufferedInputStream {
      * @param theTag the tag name
      */
     public synchronized void reopen(String theTag) {
+        try {
+            reset();
+        } catch (IOException e) {
+            // TODO: Auto-generated catch block
+            LOG.error("Exception while reset().", e);
+        }
         endStream = false;
         xmlStarted = false;
         inTag = false;

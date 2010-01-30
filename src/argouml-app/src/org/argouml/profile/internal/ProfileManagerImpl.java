@@ -172,7 +172,7 @@ public class ProfileManagerImpl implements ProfileManager {
 
                             if (p == null) {
                                 try {
-                                    p = new UserDefinedProfile(file);
+                                    p = new UserDefinedProfile(file, this);
                                     registerProfile(p);
                                 } catch (ProfileException e) {
                                     LOG.error("Error loading profile: " + file,
@@ -398,7 +398,7 @@ public class ProfileManagerImpl implements ProfileManager {
                 if (!found) {
                     UserDefinedProfile udp = null;
                     try {
-                        udp = new UserDefinedProfile(file);
+                        udp = new UserDefinedProfile(file, this);
                         registerProfile(udp);
                     } catch (ProfileException e) {
                         // if an exception is raised file is unusable

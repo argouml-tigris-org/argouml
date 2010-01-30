@@ -375,7 +375,8 @@ public class SettingsTabProfile extends JPanel implements
                 for (File file : files) {
                     try {
                         UserDefinedProfile profile =
-                            new UserDefinedProfile(file);
+                            new UserDefinedProfile(file,
+                                ProfileFacade.getManager());
                         ProfileFacade.getManager().registerProfile(profile);
                         modelAvl.addElement(profile);
                     } catch (ProfileException e) {

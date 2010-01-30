@@ -54,7 +54,7 @@ import org.argouml.profile.internal.ocl.CrOCL;
  * Some basic tests for the {@link UserDefinedProfile} class.
  * 
  * @author Luis Sergio Oliveira (euluis)
- * @authos maurelio1234
+ * @author maurelio1234
  */
 public class TestUserDefinedProfile extends TestCase {
 
@@ -88,7 +88,8 @@ public class TestUserDefinedProfile extends TestCase {
         // save the profile into a xmi file
         File profileFile = new File(testDir, "testLoadingConstructor.xmi");
         profileMother.saveProfileModel(model, profileFile);
-        Profile profile = new UserDefinedProfile(profileFile);
+        Profile profile = new UserDefinedProfile(profileFile,
+            ProfileFacade.getManager());
         assertTrue(profile.getDisplayName().contains(profileFile.getName()));
     }
 
@@ -115,8 +116,8 @@ public class TestUserDefinedProfile extends TestCase {
         profiles.add(pm.getUMLProfile().getProfileIdentifier());
         critics.add(critic);
 
-        Profile profile = new UserDefinedProfile("displayName", profileFile
-                .toURI().toURL(), critics, profiles);
+        Profile profile = new UserDefinedProfile("displayName",
+            profileFile.toURI().toURL(), critics, profiles, pm);
 
         assertEquals(profile.getDisplayName(), "displayName");
         assertTrue(profile.getDependencies().contains(pm.getUMLProfile()));

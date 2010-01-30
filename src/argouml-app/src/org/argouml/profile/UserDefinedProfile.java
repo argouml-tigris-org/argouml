@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    thn
+ *    euluis
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -60,6 +61,7 @@ import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.model.Model;
 import org.argouml.profile.internal.ocl.CrOCL;
 import org.argouml.profile.internal.ocl.InvalidOclException;
@@ -126,9 +128,12 @@ public class UserDefinedProfile extends Profile {
      * The default constructor for this class
      * 
      * @param file the file from where the model should be read
+     * @param manager the profile manager which will be used to resolve
+     *        dependencies 
      * @throws ProfileException if the profile could not be loaded
      */
-    public UserDefinedProfile(File file) throws ProfileException {
+    public UserDefinedProfile(File file, ProfileManager manager)
+            throws ProfileException {
         LOG.info("load " + file);
         displayName = file.getName();
         modelFile = file;
@@ -141,23 +146,104 @@ public class UserDefinedProfile extends Profile {
         }
         profilePackages = new FileModelLoader().loadModel(reference);
 
-        finishLoading();
+        finishLoading(manager);
+    }
+
+    /**
+     * The default constructor for this class
+     * 
+     * @param file the file from where the model should be read
+     * @throws ProfileException if the profile could not be loaded
+     * @deprecated for 0.30 by euluis. Use
+     * {@link UserDefinedProfile#UserDefinedProfile(File, ProfileManager)}
+     * instead.
+     */
+    @Deprecated
+    public UserDefinedProfile(File file) throws ProfileException {
+        this(file, getSomeProfileManager());
+    }
+    
+    private static class NullProfileManager implements ProfileManager {
+
+        public void addSearchPathDirectory(String path) {
+        }
+
+        public void addToDefaultProfiles(Profile profile) {
+        }
+
+        public void applyConfiguration(ProfileConfiguration pc) {
+        }
+
+        public List<Profile> getDefaultProfiles() {
+            return new ArrayList<Profile>();
+        }
+
+        public Profile getProfileForClass(String className) {
+            return null;
+        }
+
+        public List<Profile> getRegisteredProfiles() {
+            return new ArrayList<Profile>();
+        }
+
+        public List<String> getSearchPathDirectories() {
+            return new ArrayList<String>();
+        }
+
+        public Profile getUMLProfile() {
+            return null;
+        }
+
+        public Profile lookForRegisteredProfile(String profile) {
+            return null;
+        }
+
+        public void refreshRegisteredProfiles() {
+        }
+
+        public void registerProfile(Profile profile) {
+        }
+
+        public void removeFromDefaultProfiles(Profile profile) {
+        }
+
+        public void removeProfile(Profile profile) {
+        }
+
+        public void removeSearchPathDirectory(String path) {
+        }
+        
     }
 
     /**
      * A constructor that reads a file from an URL
      * 
      * @param url the URL
+     * @param manager the profile manager which will be used to resolve
+     *        dependencies
      * @throws ProfileException if the profile can't be read or is not valid
      */
-    public UserDefinedProfile(URL url) throws ProfileException {
+    public UserDefinedProfile(URL url, ProfileManager manager)
+            throws ProfileException {
         LOG.info("load " + url);
-
         ProfileReference reference = null;
         reference = new UserProfileReference(url.getPath(), url);
         profilePackages = new URLModelLoader().loadModel(reference);
+        finishLoading(manager);
+    }
 
-        finishLoading();
+    /**
+     * A constructor that reads a file from an URL
+     * 
+     * @param url the URL
+     * @throws ProfileException if the profile could not be loaded
+     * @deprecated for 0.30 by euluis. Use
+     * {@link UserDefinedProfile#UserDefinedProfile(URL, ProfileManager)}
+     * instead.
+     */
+    @Deprecated
+    public UserDefinedProfile(URL url) throws ProfileException {
+        this(url, getSomeProfileManager());
     }
 
     /**
@@ -167,10 +253,13 @@ public class UserDefinedProfile extends Profile {
      * @param url the URL of the profile mode
      * @param critics the Critics defined by this profile
      * @param dependencies the dependencies of this profile
+     * @param manager the profile manager which will be used to resolve
+     *        dependencies
      * @throws ProfileException if the model cannot be loaded
      */
     public UserDefinedProfile(String dn, URL url, Set<Critic> critics,
-            Set<String> dependencies) throws ProfileException {
+            Set<String> dependencies, ProfileManager manager)
+            throws ProfileException {
         LOG.info("load " + url);
 
         this.displayName = dn;
@@ -188,13 +277,41 @@ public class UserDefinedProfile extends Profile {
             addProfileDependency(profileID);
         }
 
-        finishLoading();
+        finishLoading(manager);
+    }
+
+    /**
+     * A constructor that reads a file from an URL associated with some profiles
+     * 
+     * @param dn the display name of the profile
+     * @param url the URL of the profile mode
+     * @param critics the Critics defined by this profile
+     * @param dependencies the dependencies of this profile
+     * @throws ProfileException if the model cannot be loaded
+     * 
+     * @deprecated for 0.30 by euluis. Use
+     * {@link UserDefinedProfile#UserDefinedProfile(String, URL, Set, Set, ProfileManager)}
+     * instead.
+     */
+    @Deprecated
+    public UserDefinedProfile(String dn, URL url, Set<Critic> critics,
+            Set<String> dependencies) throws ProfileException {
+        this(dn, url, critics, dependencies, getSomeProfileManager());
+    }
+
+    private static ProfileManager getSomeProfileManager() {
+        if (ProfileFacade.isInitiated()) {
+            return ProfileFacade.getManager();
+        }
+        return new NullProfileManager();
     }
 
     /**
      * Reads the informations defined as TaggedValues
+     * @param manager the profile manager which will be used to resolve
+     *        dependencies
      */
-    private void finishLoading() {
+    private void finishLoading(ProfileManager manager) {
         Collection packagesInProfile = filterPackages();
         
         for (Object obj : packagesInProfile) {
@@ -224,14 +341,23 @@ public class UserDefinedProfile extends Profile {
                     StringTokenizer st = new StringTokenizer(dependencyListStr,
                             " ,;:");
 
-                    String profile = null;
+                    String dependencyName = null;
 
                     while (st.hasMoreTokens()) {
-                        profile = st.nextToken();
-                        if (profile != null) {
-                            LOG.debug("AddingDependency " + profile);
-                            this.addProfileDependency(ProfileFacade.getManager()
-                                    .lookForRegisteredProfile(profile));
+                        dependencyName = st.nextToken();
+                        if (dependencyName != null) {
+                            LOG.debug("Adding dependency " + dependencyName);
+                            Profile profile =
+                                manager.lookForRegisteredProfile(
+                                    dependencyName);
+                            if (profile != null) {
+                                addProfileDependency(profile);
+                            } else {
+                                LOG.warn("The profile \"" + displayName
+                                    + "\" has a dependency named \""
+                                    + dependencyName
+                                    + "\" which isn't solvable.");
+                            }
                         }
                     }
                 }

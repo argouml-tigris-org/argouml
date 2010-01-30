@@ -104,7 +104,8 @@ public class ActionDeployProfile extends AbstractAction {
         }
         // register it as a user profile
         try {
-            profileManager.registerProfile(new UserDefinedProfile(f));
+            profileManager.registerProfile(new UserDefinedProfile(f,
+                profileManager));
         } catch (ProfileException e) {
             LOG.warn("failed to load profile from file " + f.getPath(), e);
         }

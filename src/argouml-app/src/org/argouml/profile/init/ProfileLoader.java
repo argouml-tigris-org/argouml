@@ -158,7 +158,8 @@ public final class ProfileLoader {
 
                     UserDefinedProfile udp = new UserDefinedProfile(entryName,
                             modelURL, critics,
-                            loadManifestDependenciesForProfile(attr));
+                            loadManifestDependenciesForProfile(attr),
+                            ProfileFacade.getManager());
 
                     ProfileFacade.getManager().registerProfile(udp);
                     LOG.debug("Registered Profile: " + udp.getDisplayName()
