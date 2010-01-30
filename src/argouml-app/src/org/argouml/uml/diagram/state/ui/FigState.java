@@ -1,13 +1,15 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
+ *    Bob Tarling
+ *    Tom Morris
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -152,8 +154,18 @@ public abstract class FigState extends FigStateVertex {
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
+        // TODO: Do we really need to be listening for both of these events?
         if (mee instanceof AssociationChangeEvent 
                 || mee instanceof AttributeChangeEvent) {
+            
+            // TODO: We definitely don't want to react to addition and
+            // removal of transitions. Can't we be more specific when
+            // we register ourselves as a listener.
+            if ((mee.getPropertyName().equals("incoming")
+                        || mee.getPropertyName().equals("outgoing"))) {
+                return;
+            }
+            
             renderingChanged();
             notationProviderBody.updateListener(this, getOwner(), mee);
             damage();
@@ -178,6 +190,9 @@ public abstract class FigState extends FigStateVertex {
     public void renderingChanged() {
         super.renderingChanged();
         Object state = getOwner();
+        // Entered in 0.29.3
+        // Prove that the test below is not needed
+        assert state != null;
         if (state == null) {
             return;
         }
