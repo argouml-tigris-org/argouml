@@ -86,7 +86,7 @@ class XmlSinglePanelHandler extends DefaultHandler {
         } else {
             if (isChild(localName)) {
                 CheckBoxMeta record = 
-                    new CheckBoxMeta(localName, attr.getValue("name"));            
+                    new CheckBoxMeta(localName, attr.getValue("name"), attr.getValue("label"));            
                 current.addCheckbox(record);
             } else {
                 PropertyMeta record = 

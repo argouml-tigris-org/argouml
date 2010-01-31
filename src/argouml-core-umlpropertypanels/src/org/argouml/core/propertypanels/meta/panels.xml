@@ -56,13 +56,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -87,13 +87,13 @@
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -118,13 +118,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -138,7 +138,7 @@
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
     <list name="elementImport" type="ModelElement" />
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
   </panel>
   <panel name="Classifier">
     <text name="name" type="Name" />
@@ -150,13 +150,13 @@
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -173,7 +173,7 @@
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     <list name="feature" type="Feature" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
@@ -195,12 +195,12 @@
       <checkbox name="isRoot" type="Boolean" />
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
-      <checkbox name="isActive" type="Boolean" />
+      <checkbox name="isActive" type="Boolean" label="checkbox.active-uc" />
     </checkgroup>
-    <list name="templateParameter" type="TemplateParameter" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
 	<separator />
-    <list name="clientDependency" type="Dependency" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
     <separator />
@@ -210,7 +210,7 @@
     <list name="feature" type="Attribute" label="label.attributes" />
     <list name="feature" type="Operation" label="label.operations" />
     <list name="association" type="Classifier" />    
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
 	
 	<debug />
     <attribute name="targetFlow" type="Flow" />
@@ -248,8 +248,8 @@
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
     <separator />
-    <list name="clientDependency" type="Dependency" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
     <separator />
@@ -290,13 +290,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -320,13 +320,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -401,7 +401,7 @@
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
-    <list name="templateParameter" type="TemplateParameter" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
 	<separator/>
 	<list name="generalization" type="Generalization" />    
     <list name="specialization" type="GeneralizableElement" />
@@ -445,13 +445,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -475,13 +475,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -543,7 +543,7 @@
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
-      <checkbox name="ownerScope" type="ScopeKind" />
+      <checkbox name="ownerScope" type="ScopeKind" label="label.static" />
     </checkgroup>
     <optionbox name="changeability" type="ChangeableKind" />
     <textarea name="initialValue" type="Expression" />    
@@ -580,13 +580,13 @@
       <checkbox name="isQuery" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -604,7 +604,7 @@
     <attribute name="owner" type="Classifier" />
     <list name="parameter" type="Parameter" />
     <separator />
-    <list name="raisedSignal" type="BehavioralFeature" />
+    <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
   </panel>
   <panel name="Operation">
     <text name="name" type="Name" />
@@ -618,11 +618,11 @@
       <checkbox name="isRoot" type="Boolean" />
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
-      <checkbox name="ownerScope" type="ScopeKind" />
+      <checkbox name="ownerScope" type="ScopeKind" label="label.static" />
     </checkgroup>
     <optionbox name="concurrency" type="CallConcurrencyKind" />
     <separator />
-    <list name="raisedSignal" type="BehavioralFeature" />
+    <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
     <list name="method" type="Operation" />
     <textarea name="specification" type="String" />
     
@@ -688,14 +688,14 @@
     <text name="name" type="Name" />
     <singlerow name="owner" type="Classifier" />
     <combo name="specification" type="Operation" />
-    <list name="clientDependency" type="Dependency" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isQuery" type="Boolean" />
-      <checkbox name="ownerScope" type="ScopeKind" />
+      <checkbox name="ownerScope" type="ScopeKind" label="label.static" />
     </checkgroup>
     <separator />
     <textarea name="body" type="ProcedureExpression" />
@@ -710,8 +710,8 @@
     <attribute name="parameterTemplate" type="ModelElement" />
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
-    <list name="raisedSignal" type="BehavioralFeature" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
     <list name="elementImport" type="ModelElement" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
@@ -767,11 +767,11 @@
       <checkbox name="isRoot" type="Boolean" />
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
-      <checkbox name="isActive" type="Boolean" />
+      <checkbox name="isActive" type="Boolean" label="checkbox.active-uc" />
     </checkgroup>
     <separator />
-    <list name="clientDependency" type="Dependency" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />    
     <list name="connection" type="AssociationEnd" />
@@ -782,7 +782,7 @@
     <list name="attribute" type="Feature" />
     <list name="operation" type="Feature" />
     <list name="association" type="Classifier" />
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     
     <debug />
     <attribute name="link" type="Association" />    
@@ -916,13 +916,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -953,8 +953,8 @@
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <list name="clientDependency" type="Dependency" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="residentElement" type="ElementResidence" />
         
 	<debug />
@@ -1103,13 +1103,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -1147,13 +1147,13 @@
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -1170,7 +1170,7 @@
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     <list name="feature" type="Feature" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
@@ -1194,8 +1194,8 @@
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
     <separator />
-    <list name="clientDependency" type="Dependency" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
 	<separator />
@@ -1242,7 +1242,7 @@
     <attribute name="targetFlow" type="Flow" />
     <attribute name="sourceFlow" type="Flow" />
     <attribute name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
     <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1333,13 +1333,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -1368,13 +1368,13 @@
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -1391,7 +1391,7 @@
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     <list name="feature" type="Feature" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
@@ -1415,13 +1415,13 @@
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -1438,7 +1438,7 @@
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     <list name="feature" type="Feature" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
@@ -1463,13 +1463,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -1553,13 +1553,13 @@
       <checkbox name="isAsynchronous" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -1709,13 +1709,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -1816,13 +1816,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -1857,13 +1857,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -2015,13 +2015,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -2049,13 +2049,13 @@
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -2073,7 +2073,7 @@
     <attribute name="owner" type="Classifier" />
     <list name="parameter" type="Parameter" />
     <separator />
-    <list name="raisedSignal" type="BehavioralFeature" />
+    <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
     <attribute name="specification" type="String" />
     <attribute name="signal" type="Signal" />
   </panel>
@@ -2088,7 +2088,7 @@
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
     <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -2192,13 +2192,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -2278,8 +2278,8 @@
     <singlerow name="sender" type="Instance" />
     <singlerow name="receiver" type="Instance" />
     <list name="resident" type="Instance" />
-    <list name="clientDependency" type="Dependency" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
     <list name="classifier" type="Classifier" />
     <!--
@@ -2358,13 +2358,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -2399,8 +2399,8 @@
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
-    <list name="clientDependency" type="Dependency" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
@@ -2498,13 +2498,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -2667,13 +2667,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -2698,13 +2698,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -2729,13 +2729,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -3235,7 +3235,7 @@
     <singlerow name="interaction" type="Interaction" />
     <list name="constrainingElement" type="ModelElement" />    
     <separator />        
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
 	
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -3323,12 +3323,12 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <combo name="base" type="Association" />
-    <list name="clientDependency" type="Dependency" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -3350,8 +3350,8 @@
     <singlerow name="base" type="AssociationEnd" />
     <singlerow name="association" type="Association" />
     <combo name="multiplicity" type="Multiplicity" />
-    <list name="clientDependency" type="Dependency" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
@@ -3360,11 +3360,11 @@
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isNavigable" type="Boolean" />
       <checkbox name="ordering" type="OrderingKind" />
-      <checkbox name="ownerScope" type="ScopeKind" />
+      <checkbox name="ownerScope" type="ScopeKind" label="label.static" />
     </checkgroup>
     <list name="specification" type="Classifier" />
     <list name="qualifier" type="Attribute" />
-    <list name="templateParameter" type="TemplateParameter" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -3471,13 +3471,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -3502,13 +3502,13 @@
       <checkbox name="isSpecification" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -3601,13 +3601,13 @@
       <checkbox name="isDynamic" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -3774,13 +3774,13 @@
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -3797,7 +3797,7 @@
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     <list name="feature" type="Feature" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
@@ -3826,7 +3826,7 @@
     <list name="generalization" type="Generalization" />    
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     <list name="elementImport" type="ModelElement" />       
     <attribute name="clientDependency" type="Dependency" />
     <attribute name="supplierDependency" type="ModelElement" />    
@@ -3860,7 +3860,7 @@
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
 	<separator />
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
 	<list name="elementImport" type="ModelElement" />
 	    
     <attribute name="clientDependency" type="Dependency" />
@@ -3892,13 +3892,13 @@
       <checkbox name="isInstantiable" type="Boolean" />
     </checkgroup>
     <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" />
     <list name="sourceFlow" type="Flow" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" />
-    <list name="supplierDependency" type="ModelElement" />
+    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -3915,7 +3915,7 @@
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
-    <list name="ownedElement" type="ModelElement" />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     <list name="feature" type="Feature" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />

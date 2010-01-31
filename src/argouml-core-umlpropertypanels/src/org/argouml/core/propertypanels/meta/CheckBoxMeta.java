@@ -47,10 +47,23 @@ public class CheckBoxMeta {
     
     private String type;
     private String name;
+    private String label;
     
-    public CheckBoxMeta (String theType, String theName) {
+    public CheckBoxMeta(
+            final String theType,
+            final String theName,
+            final String label) {
         this.type = theType;
         this.name = theName;
+        if (label != null) {
+            this.label = label;
+        } else {
+            if (theName.startsWith("is")) {
+                this.label = "label." + theName.substring(2).toLowerCase();
+            } else {
+                this.label = "label." + theName.toLowerCase();
+            }
+        }
     }
     
     public String getType() {
@@ -59,5 +72,9 @@ public class CheckBoxMeta {
 
     public String getName() {
         return name;
+    }
+
+    public String getLabel() {
+        return label;
     }
 }

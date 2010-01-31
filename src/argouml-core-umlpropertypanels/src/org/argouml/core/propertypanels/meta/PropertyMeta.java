@@ -58,19 +58,24 @@ public class PropertyMeta {
     
     // TODO: this is a tree node, we must refine the tree structure
     
-    public PropertyMeta (String controlType, String name, String type, String label) {
+    public PropertyMeta(
+            final String controlType,
+            final String name,
+            final String type,
+            final String label) {
         this.controlType = controlType;
         this.name = name;
         this.type = type;
         
-        if (label != null)
-        	this.label = label;
-        else if (name != null)
-        	// TODO: Getting the labels is more complex than this.
-        	// Options: 
-        	// 1) Make the logic here (plurals, camel-to-hyphens...)
-        	// 2) Change the labels in i18n files for every language.
-        	this.label = "label." + name.toLowerCase();
+        if (label != null) {
+            this.label = label;
+        } else if (name != null) {
+            // TODO: Getting the labels is more complex than this.
+            // Options: 
+            // 1) Make the logic here (plurals, camel-to-hyphens...)
+            // 2) Change the labels in i18n files for every language.
+            this.label = "label." + name.toLowerCase();
+        }
     }
     
     public String getControlType() {

@@ -294,13 +294,7 @@ class SwingUIFactory {
         
         final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter();
 
-        String label;
-        if (propertyName.startsWith("is")) {
-            label = "label." + propertyName.substring(2).toLowerCase();
-        } else {
-            label = "label." + propertyName.toLowerCase();
-        }
-        label = Translator.localize(label);        
+        final String label = Translator.localize(prop.getLabel());
         
         if (getterSetter.contains(propertyName)) {
             panel.add(new CheckBox(label, target, propertyName, getterSetter));
