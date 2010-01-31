@@ -76,19 +76,14 @@ class SwingUIFactory {
      * @throws Exception If something goes wrong
      * @see org.argouml.core.propertypanels.panel.UIFactory#createGUI(java.lang.Object)
      */
-    public JPanel createGUI (Object target, JPanel panel) throws Exception {
+    public void createGUI (
+            final Object target,
+            final JPanel panel) throws Exception {
         PanelMeta data = 
             XMLPropPanelFactory.getInstance().getPropertyPanelsData(
                     Model.getMetaTypes().getName(target));
         
-        final String metaTypeName = Model.getMetaTypes().getName(target);
-        ToolBarFactory tbf = new ToolBarFactory(new Object[0]);
-        tbf.setRollover(true);
-        JToolBar tb = tbf.createToolBar();
-        tb.add(new JLabel(metaTypeName, ResourceLoaderWrapper.lookupIconResource(metaTypeName), JLabel.LEFT));
-        tb.add(new ActionNewStereotype());
-        
-        panel.add(tb);
+        createLabel(target, panel);
         
         for (PropertyMeta prop : data.getProperties()) {
             if ("text".equals(prop.getControlType())) {
@@ -109,9 +104,25 @@ class SwingUIFactory {
                 panel.add(LabelledLayout.getSeparator());
             }
         }
-        return panel;
     }
 
+    /**
+     * Create the label with icon and description for the panel.
+     * @param target
+     * @param panel
+     */
+    private void createLabel (Object target, JPanel panel) {
+        final String metaTypeName = Model.getMetaTypes().getName(target);
+        ToolBarFactory tbf = new ToolBarFactory(new Object[0]);
+        tbf.setRollover(true);
+        JToolBar tb = tbf.createToolBar();
+        tb.add(new JLabel(metaTypeName, ResourceLoaderWrapper.lookupIconResource(metaTypeName), JLabel.LEFT));
+        // We only have this here until we have stereotypes
+        // list on property panel
+        tb.add(new ActionNewStereotype());
+        panel.add(tb);
+    }
+    
     private void buildTextArea(
             final JPanel panel,
             final Object target, 
