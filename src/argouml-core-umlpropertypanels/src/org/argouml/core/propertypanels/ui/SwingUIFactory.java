@@ -41,12 +41,15 @@ package org.argouml.core.propertypanels.ui;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.border.TitledBorder;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.core.propertypanels.meta.CheckBoxMeta;
 import org.argouml.core.propertypanels.meta.PanelMeta;
 import org.argouml.core.propertypanels.meta.PropertyMeta;
@@ -54,7 +57,9 @@ import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.tigris.swidgets.GridLayout2;
+import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * Creates the XML Property panels
@@ -75,6 +80,15 @@ class SwingUIFactory {
         PanelMeta data = 
             XMLPropPanelFactory.getInstance().getPropertyPanelsData(
                     Model.getMetaTypes().getName(target));
+        
+        final String metaTypeName = Model.getMetaTypes().getName(target);
+        ToolBarFactory tbf = new ToolBarFactory(new Object[0]);
+        tbf.setRollover(true);
+        JToolBar tb = tbf.createToolBar();
+        tb.add(new JLabel(metaTypeName, ResourceLoaderWrapper.lookupIconResource(metaTypeName), JLabel.LEFT));
+        tb.add(new ActionNewStereotype());
+        
+        panel.add(tb);
         
         for (PropertyMeta prop : data.getProperties()) {
             if ("text".equals(prop.getControlType())) {
