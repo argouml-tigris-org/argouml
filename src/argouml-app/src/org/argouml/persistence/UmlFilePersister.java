@@ -7,7 +7,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Bob Tarling
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -88,36 +89,32 @@ import org.tigris.gef.ocl.TemplateReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-
 /**
  * To persist to and from argo (xml file) storage.
- *
+ * 
  * @author Bob Tarling
  */
 public class UmlFilePersister extends AbstractFilePersister {
 
     /**
      * The PERSISTENCE_VERSION is increased every time the persistence format
-     * changes.
-     * This controls conversion of old persistence version files to be
+     * changes. This controls conversion of old persistence version files to be
      * converted to the current one, keeping ArgoUML backwards compatible.
      */
     public static final int PERSISTENCE_VERSION = 6;
-    
+
     /**
      * The TOTAL_PHASES_LOAD constant is the number of phases used by the load
      * process.
      */
     protected static final int UML_PHASES_LOAD = 2;
-    
+
     /**
      * Logger.
      */
-    private static final Logger LOG =
-        Logger.getLogger(UmlFilePersister.class);
+    private static final Logger LOG = Logger.getLogger(UmlFilePersister.class);
 
-    private static final String ARGO_TEE =
-	"/org/argouml/persistence/argo.tee";
+    private static final String ARGO_TEE = "/org/argouml/persistence/argo.tee";
 
     /**
      * The constructor.
@@ -140,25 +137,24 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * It is being considered to save out individual
-     * xmi's from individuals diagrams to make
-     * it easier to modularize the output of Argo.
-     *
+     * It is being considered to save out individual xmi's from individuals
+     * diagrams to make it easier to modularize the output of Argo.
+     * 
      * @param file The file to write.
      * @param project the project to save
      * @throws SaveException when anything goes wrong
-     * @throws InterruptedException     if the thread is interrupted
-     *
-     * @see org.argouml.persistence.ProjectFilePersister#save(
-     * org.argouml.kernel.Project, java.io.File)
+     * @throws InterruptedException if the thread is interrupted
+     * 
+     * @see org.argouml.persistence.ProjectFilePersister#save(org.argouml.kernel.Project,
+     *      java.io.File)
      */
-    public void doSave(Project project, File file)
-        throws SaveException, InterruptedException {
+    public void doSave(Project project, File file) throws SaveException,
+        InterruptedException {
 
         ProgressMgr progressMgr = new ProgressMgr();
         progressMgr.setNumberOfPhases(4);
         progressMgr.nextPhase();
-        
+
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
 
@@ -202,9 +198,9 @@ public class UmlFilePersister extends AbstractFilePersister {
             if (tempFile.exists()) {
                 tempFile.delete();
             }
-            
+
             progressMgr.nextPhase();
-            
+
         } catch (Exception e) {
             LOG.error("Exception occured during save attempt", e);
 
@@ -216,13 +212,13 @@ public class UmlFilePersister extends AbstractFilePersister {
             if (e instanceof InterruptedException) {
                 throw (InterruptedException) e;
             } else {
-                // we have to give a message to user and set the system 
+                // we have to give a message to user and set the system
                 // to unsaved!
                 throw new SaveException(e);
             }
         }
     }
-    
+
     /**
      * The .uml save format is no longer available to save.
      * 
@@ -235,37 +231,34 @@ public class UmlFilePersister extends AbstractFilePersister {
 
     /**
      * Write the output for a project on the given stream.
-     *
+     * 
      * @param project The project to output.
      * @param stream The stream to write to.
      * @throws SaveException If something goes wrong.
-     * @throws InterruptedException     if the thread is interrupted
+     * @throws InterruptedException if the thread is interrupted
      */
-    void writeProject(Project project, 
-            OutputStream oStream, 
-            ProgressMgr progressMgr) throws SaveException, 
-            InterruptedException {
+    void writeProject(Project project, OutputStream oStream,
+            ProgressMgr progressMgr) throws SaveException, InterruptedException {
         OutputStreamWriter outputStreamWriter;
         try {
-            outputStreamWriter =
-                    new OutputStreamWriter(oStream, Argo.getEncoding());
+            outputStreamWriter = new OutputStreamWriter(oStream, Argo
+                    .getEncoding());
         } catch (UnsupportedEncodingException e) {
             throw new SaveException(e);
         }
-        PrintWriter writer =
-            new PrintWriter(new BufferedWriter(outputStreamWriter));
+        PrintWriter writer = new PrintWriter(new BufferedWriter(
+                outputStreamWriter));
 
-        XmlFilterOutputStream filteredStream =
-                new XmlFilterOutputStream(oStream, Argo.getEncoding());
+        XmlFilterOutputStream filteredStream = new XmlFilterOutputStream(
+                oStream, Argo.getEncoding());
         try {
-            writer.println("<?xml version = \"1.0\" "
-                    + "encoding = \"" 
+            writer.println("<?xml version = \"1.0\" " + "encoding = \""
                     + Argo.getEncoding() + "\" ?>");
             writer.println("<uml version=\"" + PERSISTENCE_VERSION + "\">");
             // Write out header section
             try {
-                Hashtable templates =
-                    TemplateReader.getInstance().read(ARGO_TEE);
+                Hashtable templates = TemplateReader.getInstance().read(
+                        ARGO_TEE);
                 OCLExpander expander = new OCLExpander(templates);
                 expander.expand(writer, project, "  ");
             } catch (ExpansionException e) {
@@ -282,8 +275,7 @@ public class UmlFilePersister extends AbstractFilePersister {
                 if (LOG.isInfoEnabled()) {
                     LOG.info("Saving member : " + projectMember);
                 }
-                MemberFilePersister persister
-                    = getMemberFilePersister(projectMember);
+                MemberFilePersister persister = getMemberFilePersister(projectMember);
                 filteredStream.startEntry();
                 persister.save(projectMember, filteredStream);
                 try {
@@ -309,49 +301,44 @@ public class UmlFilePersister extends AbstractFilePersister {
     /*
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
-    public Project doLoad(File file) throws OpenException, 
-    InterruptedException {
+    public Project doLoad(File file) throws OpenException, InterruptedException {
         // let's initialize the progressMgr
         ProgressMgr progressMgr = new ProgressMgr();
         progressMgr.setNumberOfPhases(UML_PHASES_LOAD);
-        
+
         ThreadUtils.checkIfInterrupted();
         return doLoad(file, file, progressMgr);
     }
 
-
     protected Project doLoad(File originalFile, File file,
-            ProgressMgr progressMgr) throws OpenException, 
-            InterruptedException {
+            ProgressMgr progressMgr) throws OpenException, InterruptedException {
 
         XmlInputStream inputStream = null;
         try {
             Project p = ProjectFactory.getInstance()
                     .createProject(file.toURI());
-            
+
             // Run through any stylesheet upgrades
             int fileVersion = getPersistenceVersionFromFile(file);
 
             LOG.info("Loading uml file of version " + fileVersion);
-            if (!checkVersion(fileVersion,  getReleaseVersionFromFile(file))) {
+            if (!checkVersion(fileVersion, getReleaseVersionFromFile(file))) {
                 // If we're about to upgrade the file lets take an archive
                 // of it first.
                 String release = getReleaseVersionFromFile(file);
-                copyFile(
-                    originalFile,
-                    new File(originalFile.getAbsolutePath() + '~' + release));
-                
-                progressMgr.setNumberOfPhases(progressMgr.getNumberOfPhases() 
+                copyFile(originalFile, new File(originalFile.getAbsolutePath()
+                        + '~' + release));
+
+                progressMgr.setNumberOfPhases(progressMgr.getNumberOfPhases()
                         + (PERSISTENCE_VERSION - fileVersion));
-                
+
                 while (fileVersion < PERSISTENCE_VERSION) {
                     ++fileVersion;
                     LOG.info("Upgrading to version " + fileVersion);
                     long startTime = System.currentTimeMillis();
                     file = transform(file, fileVersion);
                     long endTime = System.currentTimeMillis();
-                    LOG.info("Upgrading took "
-                            + ((endTime - startTime) / 1000)
+                    LOG.info("Upgrading took " + ((endTime - startTime) / 1000)
                             + " seconds");
                     progressMgr.nextPhase();
                 }
@@ -359,45 +346,41 @@ public class UmlFilePersister extends AbstractFilePersister {
 
             progressMgr.nextPhase();
 
-            inputStream = new XmlInputStream(
-                        file.toURI().toURL().openStream(),
-                        "argo",
-                        file.length(),
-                        100000);
+            inputStream = new XmlInputStream(file.toURI().toURL().openStream(),
+                    "argo", file.length(), 100000);
 
             ArgoParser parser = new ArgoParser();
-            Reader reader =
-                    new InputStreamReader(inputStream, 
-                            Argo.getEncoding());
+            Reader reader = new InputStreamReader(inputStream, Argo
+                    .getEncoding());
             parser.readProject(p, reader);
-            
+
             List memberList = parser.getMemberList();
 
             LOG.info(memberList.size() + " members");
 
             for (int i = 0; i < memberList.size(); ++i) {
-                MemberFilePersister persister
-                    = getMemberFilePersister((String) memberList.get(i));
+                MemberFilePersister persister = getMemberFilePersister((String) memberList
+                        .get(i));
                 LOG.info("Loading member with "
                         + persister.getClass().getName());
                 inputStream.reopen(persister.getMainTag());
-                // TODO: Do we need to set the input encoding here?  It was
+                // TODO: Do we need to set the input encoding here? It was
                 // done for ToDo parsing, but none of the other member types
-//                InputSource inputSource = new InputSource(
-//                        new InputStreamReader(inputStream, Argo
-//                                .getEncoding()));
+                // InputSource inputSource = new InputSource(
+                // new InputStreamReader(inputStream, Argo
+                // .getEncoding()));
                 InputSource inputSource = new InputSource(inputStream);
-                // Don't use systemId here or it will get opened in preference 
-                // to inputStream. 
-                inputSource.setPublicId(
-                        originalFile.toURI().toURL().toExternalForm());
+                // Don't use systemId here or it will get opened in preference
+                // to inputStream.
+                inputSource.setPublicId(originalFile.toURI().toURL()
+                        .toExternalForm());
                 try {
                     persister.load(p, inputSource);
                 } catch (OpenException e) {
                     // UML 2.x files could also contain a profile model.
                     // Try again with uml:Profile as main tag.
-                    if ("uml:Model".equals(persister.getMainTag()) 
-                            && e.getCause() instanceof UmlException 
+                    if ("uml:Model".equals(persister.getMainTag())
+                            && e.getCause() instanceof UmlException
                             && e.getCause().getCause() instanceof IOException) {
                         inputStream.reopen("uml:Profile");
                         persister.load(p, inputSource);
@@ -407,7 +390,7 @@ public class UmlFilePersister extends AbstractFilePersister {
                     }
                 }
             }
-            
+
             // let's update the progress
             progressMgr.nextPhase();
             ThreadUtils.checkIfInterrupted();
@@ -431,28 +414,25 @@ public class UmlFilePersister extends AbstractFilePersister {
         // complain and refuse.
         if (fileVersion > PERSISTENCE_VERSION) {
             throw new VersionException(
-                "The file selected is from a more up to date version of "
-                + "ArgoUML. It has been saved with ArgoUML version "
-                + releaseVersion
-                + ". Please load with that or a more up to date"
-                + "release of ArgoUML");
+                    "The file selected is from a more up to date version of "
+                            + "ArgoUML. It has been saved with ArgoUML version "
+                            + releaseVersion
+                            + ". Please load with that or a more up to date"
+                            + "release of ArgoUML");
         }
         return fileVersion >= PERSISTENCE_VERSION;
     }
 
-
-    
     /**
      * Transform a string of XML data according to the service required.
-     *
+     * 
      * @param file The XML file to be transformed
-     * @param version the version of the persistence format
-     *                the XML is to be transformed to.
+     * @param version the version of the persistence format the XML is to be
+     *            transformed to.
      * @return the transformed XML file
      * @throws OpenException on XSLT transformation error or file read
      */
-    public final File transform(File file, int version)
-        throws OpenException {
+    public final File transform(File file, int version) throws OpenException {
 
         try {
             String upgradeFilesPath = "/org/argouml/persistence/upgrades/";
@@ -465,22 +445,20 @@ public class UmlFilePersister extends AbstractFilePersister {
             // Read xsltStream into a temporary file
             // Get url for temp file.
             // openStream from url and wrap in StreamSource
-            StreamSource xsltStreamSource =
-                new StreamSource(xsltUrl.openStream());
+            StreamSource xsltStreamSource = new StreamSource(xsltUrl
+                    .openStream());
             xsltStreamSource.setSystemId(xsltUrl.toExternalForm());
 
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(xsltStreamSource);
 
-            File transformedFile =
-                File.createTempFile("upgrade_" + version + "_", ".uml");
+            File transformedFile = File.createTempFile("upgrade_" + version
+                    + "_", ".uml");
             transformedFile.deleteOnExit();
 
-            FileOutputStream stream =
-                new FileOutputStream(transformedFile);
-            Writer writer =
-                new BufferedWriter(new OutputStreamWriter(stream, 
-                        Argo.getEncoding()));
+            FileOutputStream stream = new FileOutputStream(transformedFile);
+            Writer writer = new BufferedWriter(new OutputStreamWriter(stream,
+                    Argo.getEncoding()));
             Result result = new StreamResult(writer);
 
             StreamSource inputStreamSource = new StreamSource(file);
@@ -497,9 +475,9 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * Read stream in .argo format and extracts the
-     * persistence version number from the root tag.
-     *
+     * Read stream in .argo format and extracts the persistence version number
+     * from the root tag.
+     * 
      * @param file the XML file
      * @return The version number
      * @throws OpenException on any error
@@ -507,8 +485,7 @@ public class UmlFilePersister extends AbstractFilePersister {
     private int getPersistenceVersionFromFile(File file) throws OpenException {
         InputStream stream = null;
         try {
-            stream = new BufferedInputStream(file.toURI().toURL()
-                    .openStream());
+            stream = new BufferedInputStream(file.toURI().toURL().openStream());
             int version = getPersistenceVersion(stream);
             stream.close();
             return version;
@@ -526,22 +503,22 @@ public class UmlFilePersister extends AbstractFilePersister {
             }
         }
     }
-        
+
     /**
-     * Reads an XML file of uml format and extracts the
-     * persistence version number from the root tag.
-     *
+     * Reads an XML file of uml format and extracts the persistence version
+     * number from the root tag.
+     * 
      * @param inputStream stream pointing to file to read.
      * @return The version number
      * @throws OpenException on any error
      */
     protected int getPersistenceVersion(InputStream inputStream)
         throws OpenException {
-        
+
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(inputStream, 
-                    Argo.getEncoding()));
+            reader = new BufferedReader(new InputStreamReader(inputStream, Argo
+                    .getEncoding()));
             String rootLine = reader.readLine();
             while (rootLine != null && !rootLine.trim().startsWith("<argo ")) {
                 rootLine = reader.readLine();
@@ -566,9 +543,9 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * Reads an XML file of uml format and extracts the
-     * persistence version number from the root tag.
-     *
+     * Reads an XML file of uml format and extracts the persistence version
+     * number from the root tag.
+     * 
      * @param file the XML file
      * @return The ArgoUML release number
      * @throws OpenException on any error
@@ -596,9 +573,9 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * Reads an XML file of uml format and extracts the
-     * persistence version number from the root tag.
-     *
+     * Reads an XML file of uml format and extracts the persistence version
+     * number from the root tag.
+     * 
      * @param inputStream the stream point to the XML file
      * @return The ArgoUML release number
      * @throws OpenException on any error
@@ -608,8 +585,8 @@ public class UmlFilePersister extends AbstractFilePersister {
 
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(inputStream, 
-                    Argo.getEncoding()));
+            reader = new BufferedReader(new InputStreamReader(inputStream, Argo
+                    .getEncoding()));
             String versionLine = reader.readLine();
             while (!versionLine.trim().startsWith("<version>")) {
                 versionLine = reader.readLine();
@@ -641,6 +618,7 @@ public class UmlFilePersister extends AbstractFilePersister {
 
     /**
      * Get the version attribute value from a string of XML.
+     * 
      * @param rootLine the line
      * @return the version
      */
@@ -665,10 +643,10 @@ public class UmlFilePersister extends AbstractFilePersister {
     public boolean hasAnIcon() {
         return true;
     }
-    
+
     /**
-     * Class to filter XML declaration and DOCTYPE declaration from
-     * an output stream to allow use as nested XML files.
+     * Class to filter XML declaration and DOCTYPE declaration from an output
+     * stream to allow use as nested XML files.
      * 
      * @author Tom Morris
      */
@@ -679,8 +657,7 @@ public class UmlFilePersister extends AbstractFilePersister {
         private boolean headerProcessed = false;
 
         private static final int BUFFER_SIZE = 120;
-        
-        
+
         /**
          * The following three fields make up a doubly mapped buffer with two
          * sets of pointers (the ByteBuffer objects), one for input and one for
@@ -699,20 +676,22 @@ public class UmlFilePersister extends AbstractFilePersister {
          * out yet.
          */
         private byte[] bytes = new byte[BUFFER_SIZE * 2];
+
         private ByteBuffer outBB = ByteBuffer.wrap(bytes);
+
         private ByteBuffer inBB = ByteBuffer.wrap(bytes);
 
         // Buffer containing characters which have been decoded from the bytes
         // in inBB.
         private CharBuffer outCB = CharBuffer.allocate(BUFFER_SIZE);
-        
+
         // RegEx pattern for XML declaration and, optionally, DOCTYPE
         // Backslashes are doubled up - one for Java, one for Regex
-        private final Pattern xmlDeclarationPattern = Pattern.compile(
-                "\\s*<\\?xml.*\\?>\\s*(<!DOCTYPE.*>\\s*)?");
+        private final Pattern xmlDeclarationPattern = Pattern
+                .compile("\\s*<\\?xml.*\\?>\\s*(<!DOCTYPE.*>\\s*)?");
 
         /**
-         * Construct a filtered output stream using the given character set 
+         * Construct a filtered output stream using the given character set
          * name.
          * 
          * @param outputStream source output stream to filter
@@ -729,15 +708,14 @@ public class UmlFilePersister extends AbstractFilePersister {
          * @param outputStream source output stream to filter
          * @param charset character set to use for encoding
          */
-        public XmlFilterOutputStream(OutputStream outputStream, 
-                Charset charset) {
+        public XmlFilterOutputStream(OutputStream outputStream, Charset charset) {
             super(outputStream);
             decoder = charset.newDecoder();
             decoder.onMalformedInput(CodingErrorAction.REPORT);
             decoder.onUnmappableCharacter(CodingErrorAction.REPORT);
             startEntry();
-        }  
-        
+        }
+
         /**
          * Reset processing for the beginning of an entry.
          */
@@ -764,7 +742,7 @@ public class UmlFilePersister extends AbstractFilePersister {
                 // TODO: Make this more efficient for large I/Os
                 for (int i = 0; i < len; i++) {
                     write(b[off + i]);
-                }                
+                }
             }
 
         }
@@ -783,7 +761,7 @@ public class UmlFilePersister extends AbstractFilePersister {
                     throw new RuntimeException(
                             "Unknown character decoding error");
                 }
-                
+
                 // This will have problems if the smallest possible
                 // data segment is smaller than the size of the buffer
                 // needed for regex matching
@@ -797,7 +775,7 @@ public class UmlFilePersister extends AbstractFilePersister {
         private void processHeader() throws IOException {
             headerProcessed = true;
             outCB.position(0); // rewind our character buffer
-            
+
             Matcher matcher = xmlDeclarationPattern.matcher(outCB);
             // Remove anything that matches our pattern
             String headerRemainder = matcher.replaceAll("");
@@ -812,7 +790,7 @@ public class UmlFilePersister extends AbstractFilePersister {
 
             // Reencode the remaining characters as bytes again
             ByteBuffer bb = decoder.charset().encode(headerRemainder);
-            
+
             // and write them to our output stream
             byte[] outBytes = new byte[bb.limit()];
             bb.get(outBytes);
@@ -821,13 +799,11 @@ public class UmlFilePersister extends AbstractFilePersister {
             // Write any left over bytes in the input buffer
             // (perhaps from a partially decoded character)
             if (inBB.remaining() > 0) {
-                out.write(inBB.array(), inBB.position(), 
-                        inBB.remaining());
+                out.write(inBB.array(), inBB.position(), inBB.remaining());
                 inBB.position(0);
                 inBB.limit(0);
             }
         }
-
 
         /**
          * This method has no effect to keep sub-writers from closing it
@@ -838,7 +814,7 @@ public class UmlFilePersister extends AbstractFilePersister {
         public void close() throws IOException {
             flush();
         }
-        
+
         /**
          * Close the stream.
          * 
@@ -860,6 +836,6 @@ public class UmlFilePersister extends AbstractFilePersister {
             }
             out.flush();
         }
-        
+
     }
 }
