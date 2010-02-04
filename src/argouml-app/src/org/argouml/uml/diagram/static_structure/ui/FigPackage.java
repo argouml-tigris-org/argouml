@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -41,6 +41,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -135,7 +136,8 @@ public class FigPackage extends FigNodeModelElement
      */
     private int tabHeight = 20;
 
-    private FigText body;
+    private FigPackageFigText body;
+    private PackageBackground background;
     
     private FigPoly figPoly;
 
@@ -152,7 +154,8 @@ public class FigPackage extends FigNodeModelElement
         
         setBigPort(
             new PackagePortFigRect(0, 0, width, height, indentX, tabHeight));
-
+        background = new PackageBackground(0, 0, width, height, indentX, tabHeight);
+        
         getNameFig().setBounds(0, 0, width - indentX, textH + 2);
         getNameFig().setJustification(FigText.JUSTIFY_LEFT);
 
@@ -167,6 +170,7 @@ public class FigPackage extends FigNodeModelElement
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
+        addFig(background);
         addFig(getNameFig());
         addFig(getStereotypeFig());
         addFig(body);
@@ -214,7 +218,7 @@ public class FigPackage extends FigNodeModelElement
         FigPackage figClone = (FigPackage) super.clone();
         for (Fig thisFig : (List<Fig>) getFigs()) {
             if (thisFig == body) {
-                figClone.body = (FigText) thisFig;
+                figClone.body = (FigPackageFigText) thisFig;
             }
         }
         return figClone;
@@ -257,38 +261,16 @@ public class FigPackage extends FigNodeModelElement
     }
 
     /*
-     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
-     */
-    @Override
-    public void setFillColor(Color col) {
-        super.setFillColor(col);
-        getStereotypeFig().setFillColor(null);
-        getNameFig().setFillColor(col);
-        body.setFillColor(col);
-    }
-
-    /*
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     @Override
     public Color getFillColor() {
-        return body.getFillColor();
+        return background.getFillColor();
     }
 
-    /*
-     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
-     */
-    @Override
-    public void setFilled(boolean f) {
-        getStereotypeFig().setFilled(false);
-        getNameFig().setFilled(f);
-        body.setFilled(f);
-    }
-
-    
     @Override
     public boolean isFilled() {
-        return body.isFilled();
+        return background.isFilled();
     }
 
     /*
@@ -507,6 +489,8 @@ public class FigPackage extends FigNodeModelElement
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
         // has changed.
+        
+        background.setBounds(xa, ya, w, h);
 
         calcBounds();
         updateEdges();
@@ -715,6 +699,14 @@ public class FigPackage extends FigNodeModelElement
 	    } /* if doubleclicks */
 	    super.mouseClicked(me);
 	}
+	
+	public void setFilled(boolean f) {
+	    super.setFilled(false);
+	}
+        
+        public void setFillColor(Color c) {
+            super.setFillColor(c);
+        }
 
         /**
          * The UID.
@@ -982,7 +974,102 @@ public class FigPackage extends FigNodeModelElement
         private static final long serialVersionUID =
             7722093402948975834L;
     }
-
+    
+    private class PackageBackground extends FigPoly {
+        
+        int indentX;
+        int tabHeight;
+        
+        /**
+         * The constructor.
+         *
+         * @param x The x.
+         * @param y The y.
+         * @param w The width.
+         * @param h The height.
+         * @param ix The indent.
+         * @param th The tab height.
+         */
+        public PackageBackground(int x, int y, int w, int h, int ix, int th) {
+            super(x, y);
+            addPoint(x + ix - 1, y);
+            addPoint(x + ix - 1, y + th);
+            addPoint(x + w - 1, y + th);
+            addPoint(x + w - 1, y + h);
+            addPoint(x, y + h);
+            addPoint(x, y);
+            setFilled(true);
+            this.indentX = ix;
+            tabHeight = 30;
+        }
+        
+        /*
+         * @see org.tigris.gef.presentation.Fig#getClosestPoint(java.awt.Point)
+         */
+        @Override
+        public Point getClosestPoint(Point anotherPt) {
+            Rectangle r = getBounds();
+            int[] xs = {
+                r.x, r.x + r.width - indentX, r.x + r.width - indentX,
+                r.x + r.width,   r.x + r.width,  r.x,            r.x,
+            };
+            int[] ys = {
+                r.y, r.y,                     r.y + tabHeight,
+                r.y + tabHeight, r.y + r.height, r.y + r.height, r.y,
+            };
+            Point p =
+                Geometry.ptClosestTo(
+                    xs,
+                    ys,
+                    7,
+                    anotherPt);
+            return p;
+        };
+        
+        public void setBoundsImpl(
+                final int x, 
+                final int y, 
+                final int w, 
+                final int h) {
+            
+            final int labelWidth = getNameBounds().width;
+            final int labelHeight = getNameBounds().height;
+            
+            final int xs[] = new int[7];
+            final int ys[] = new int[7];
+            xs[0] = x;
+            ys[0] = y;
+            
+            xs[1] = x + labelWidth - 1;
+            ys[1] = y;
+            
+            xs[2] = x + labelWidth - 1;
+            ys[2] = y + labelHeight - 1;
+            
+            xs[3] = x + w - 1;
+            ys[3] = y + labelHeight - 1;
+            
+            xs[4] = x + w - 1;
+            ys[4] = y + h - 1;
+            
+            xs[5] = x;
+            ys[5] = y + h - 1;
+            
+            xs[6] = x;
+            ys[6] = y;
+            
+            Polygon p = new Polygon(xs, ys, 7);
+            
+            super.setPolygon(p);
+            setFilled(true);
+            setLineWidth(0);
+        }
+        
+        public void setLineWidth(int w) {
+            super.setLineWidth(0);
+        }
+    }
+    
 } /* end class FigPackage */
 
 /**
@@ -1033,9 +1120,18 @@ class PackagePortFigRect extends FigRect {
                 anotherPt);
         return p;
     }
+    
+    public void setFilled(boolean f) {
+        super.setFilled(false);
+    }
+    
+    public void setFillColor(Color c) {
+        super.setFillColor(null);
+    }
 
     /**
      * The UID.
      */
     private static final long serialVersionUID = -7083102131363598065L;
 }
+
