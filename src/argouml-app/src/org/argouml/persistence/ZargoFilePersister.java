@@ -68,6 +68,7 @@ import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectFactory;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.model.Model;
 import org.argouml.util.FileConstants;
 import org.argouml.util.ThreadUtils;
 import org.xml.sax.InputSource;
@@ -245,6 +246,11 @@ class ZargoFilePersister extends UmlFilePersister {
         
         //boolean upgradeRequired = !checkVersion(fileVersion, releaseVersion)
         boolean upgradeRequired = true;
+        
+        // Upgrade is in the way for UML2 projects, so we turn it off in that case:
+        if (Model.getFacade().getUmlVersion().charAt(0) == '2') {
+            upgradeRequired = false;
+        }
         
         LOG.info("Loading zargo file of version " + fileVersion);
         
