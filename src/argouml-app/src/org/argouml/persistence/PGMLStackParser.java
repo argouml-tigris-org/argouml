@@ -42,6 +42,7 @@ import java.awt.Rectangle;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -354,7 +355,18 @@ class PGMLStackParser
     public ArgoDiagram readArgoDiagram(InputSource is, boolean closeStream)
         throws SAXException {
 
-        return (ArgoDiagram) readDiagram(is.getByteStream(), closeStream);
+        InputStream stream = is.getByteStream();
+        if (stream == null) {
+            try {
+            // happens when 'is' comes from a zip file
+            URL url = new URL(is.getSystemId());
+            stream = url.openStream();
+            closeStream = true;
+            } catch (Exception e) {
+                // continue with null stream, readDiagram(...) will take care of it
+            }
+        }
+        return (ArgoDiagram) readDiagram(stream, closeStream);
     }
     
     /**
