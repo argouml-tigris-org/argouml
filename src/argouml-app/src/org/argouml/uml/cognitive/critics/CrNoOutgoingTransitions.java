@@ -90,8 +90,12 @@ public class CrNoOutgoingTransitions extends CrUML {
             return NO_PROBLEM;
         }
         /* Now we are sure dm is a State. */
-        Object sm = Model.getFacade().getStateMachine(dm);
-        if (sm != null && Model.getFacade().getTop(sm) == dm) {
+        Object stateMachine = Model.getFacade().getStateMachine(dm);
+        if (stateMachine == null) {
+            return NO_PROBLEM;
+        }
+        
+        if (stateMachine != null && Model.getFacade().getTop(stateMachine) == dm) {
             /* If dm is the top state of the statemachine, then it is 
              * not supposed to have outgoing transitions. */
             return NO_PROBLEM;
@@ -109,7 +113,7 @@ public class CrNoOutgoingTransitions extends CrUML {
 
         /* Issue 689: Look for a transition that starts 
          * at a sub-state and goes out of the composite state: */
-        Collection transitions = Model.getFacade().getTransitions(sm);
+        Collection transitions = Model.getFacade().getTransitions(stateMachine);
         for (Object t : transitions) {
             Object sourceState = Model.getFacade().getSource(t);
             Object targetState = Model.getFacade().getTarget(t);
