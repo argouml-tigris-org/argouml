@@ -54,8 +54,8 @@ public abstract class GetterSetterManager {
         return getterSetterByPropertyName.containsKey(propertyName);
     }
     
-    public static GetterSetterManager getGetterSetter() {
-        return new GetterSetterManagerImpl();
+    public static GetterSetterManager getGetterSetter(String type) {
+        return new GetterSetterManagerImpl(type);
     }
     
     protected abstract class BaseGetterSetter {

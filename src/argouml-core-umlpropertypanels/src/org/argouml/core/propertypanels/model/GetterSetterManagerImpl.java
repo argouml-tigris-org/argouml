@@ -28,14 +28,14 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     /**
      * The constructor
      */
-    public GetterSetterManagerImpl() {
-        build();
+    public GetterSetterManagerImpl(String type) {
+        build(type);
     }
     
     /**
      * Create all the getter/setters for this implementation
      */
-    private void build() {
+    private void build(String type) {
         addGetterSetter("isAbstract", new AbstractGetterSetter());
         addGetterSetter("isLeaf", new LeafGetterSetter());
         addGetterSetter("isRoot", new RootGetterSetter());
@@ -54,7 +54,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("kind", new ParameterDirectionGetterSetter());
         addGetterSetter("changeability", new ChangeabilityGetterSetter());
         addGetterSetter("concurrency", new ConcurrencyGetterSetter());
-        addGetterSetter("feature", new FeatureGetterSetter());
+        addGetterSetter("feature", new FeatureGetterSetter(type));
         addGetterSetter("receiver", new ReceiverGetterSetter());
         addGetterSetter("sender", new SenderGetterSetter());
         addGetterSetter("body", new MethodExpressionGetterSetter());
@@ -557,10 +557,19 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class FeatureGetterSetter extends ListGetterSetter {
         
+        private Class metaType;
+        
+        public FeatureGetterSetter(String type) {
+            try {
+                metaType = Class.forName(type);
+            } catch (ClassNotFoundException e) {
+                // ignore
+            }
+        }
         public Collection getOptions(Object modelElement, String type) {
-            if ("Attribute".equals(type)) {
+            if (Model.getMetaTypes().getAttribute().equals(metaType)) {
                 return Model.getFacade().getAttributes(modelElement);
-            } else if ("Operation".equals(type)) {
+            } else if (Model.getMetaTypes().getOperation().equals(metaType)) {
                 return Model.getFacade().getOperations(modelElement);
             } else {
                 return Collections.EMPTY_LIST;
@@ -577,20 +586,11 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
 
         protected boolean isValidElement(Object element, String type) {
-          
-            if ("Attribute".equals(type)
-                    && !Model.getFacade().isAAttribute(element)) {
-                return false;
-            } else if ("Operation".equals(type)
-                    && !Model.getFacade().isAOperation(element)) {
-                return false;
-            }
-          
             return getOptions(element, type).contains(element);
         }
         
         public Object getMetaType() {
-            return Model.getMetaTypes().getAttribute();
+            return metaType;
         }
     }
     

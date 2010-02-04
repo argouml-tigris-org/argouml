@@ -201,7 +201,7 @@ class SwingUIFactory {
                 addControl(panel, Translator.localize(prop.getLabel()), control);
             }
         } else {
-            final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter();
+            final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter(prop.getType());
 
             if (getterSetter.contains(propertyName)) {
                 ExpressionModel model = new ExpressionModel(propertyName, prop.getType(), target, getterSetter);
@@ -253,7 +253,7 @@ class SwingUIFactory {
         
         final String propertyName = prop.getName();
 
-        final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter();
+        final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter(prop.getType());
 
         if (getterSetter.contains(propertyName)) {
             JPanel control = new RadioButtonPanel(
@@ -292,7 +292,8 @@ class SwingUIFactory {
         
         final String propertyName = prop.getName();
         
-        final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter();
+        final GetterSetterManager getterSetter =
+            GetterSetterManager.getGetterSetter(prop.getType());
 
         final String label = Translator.localize(prop.getLabel());
         

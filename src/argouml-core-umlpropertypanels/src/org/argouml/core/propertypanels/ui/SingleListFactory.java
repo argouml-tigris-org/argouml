@@ -124,7 +124,7 @@ class SingleListFactory implements ComponentFactory {
         
         if (model == null) {
             final GetterSetterManager getterSetterManager =
-                GetterSetterManager.getGetterSetter();
+                GetterSetterManager.getGetterSetter(type);
             if (getterSetterManager.contains(propName)) {
                 model = new SimpleListModel(propName, type, modelElement, getterSetterManager);
             }
