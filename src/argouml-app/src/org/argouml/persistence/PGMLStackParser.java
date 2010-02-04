@@ -9,6 +9,7 @@
  * Contributors:
  *    Michiel Van Der Wulp
  *    Bob Tarling
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -78,19 +79,19 @@ import org.xml.sax.helpers.DefaultHandler;
 // TODO: Move to Diagram subsystem?
 
 /**
- * The PGML Parser. <p>
+ * The PGML Parser.
+ * <p>
  * 
  * This replaces much of the identically named class from GEF.
  */
-class PGMLStackParser
-    extends org.tigris.gef.persistence.pgml.PGMLStackParser {
+class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
     private static final Logger LOG = Logger.getLogger(PGMLStackParser.class);
 
     private List<EdgeData> figEdges = new ArrayList<EdgeData>(50);
-    
-    private LinkedHashMap<FigEdge, Object> modelElementsByFigEdge =
-        new LinkedHashMap<FigEdge, Object>(50);
+
+    private LinkedHashMap<FigEdge, Object> modelElementsByFigEdge = new LinkedHashMap<FigEdge, Object>(
+            50);
 
     private DiagramSettings diagramSettings;
 
@@ -101,11 +102,11 @@ class PGMLStackParser
         addTranslation("org.argouml.uml.diagram.ui.FigNote",
                 "org.argouml.uml.diagram.static_structure.ui.FigComment");
         addTranslation("org.argouml.uml.diagram.static_structure.ui.FigNote",
-            "org.argouml.uml.diagram.static_structure.ui.FigComment");
+                "org.argouml.uml.diagram.static_structure.ui.FigComment");
         addTranslation("org.argouml.uml.diagram.state.ui.FigState",
-            "org.argouml.uml.diagram.state.ui.FigSimpleState");
+                "org.argouml.uml.diagram.state.ui.FigSimpleState");
         addTranslation("org.argouml.uml.diagram.ui.FigCommentPort",
-            "org.argouml.uml.diagram.ui.FigEdgePort");
+                "org.argouml.uml.diagram.ui.FigEdgePort");
         addTranslation("org.tigris.gef.presentation.FigText",
                 "org.argouml.uml.diagram.ui.ArgoFigText");
         addTranslation("org.tigris.gef.presentation.FigLine",
@@ -124,7 +125,7 @@ class PGMLStackParser
         addTranslation("org.argouml.uml.diagram.ui.FigRealization",
                 "org.argouml.uml.diagram.ui.FigAbstraction");
     }
-    
+
     /**
      * Construct a PGML parser with the given HREF/Object map and default
      * diagram settings.
@@ -134,41 +135,36 @@ class PGMLStackParser
      * @param defaultSettings default diagram settings to use for newly created
      *            diagram and its contained Figs
      */
-    public PGMLStackParser(Map<String, Object> modelElementsByUuid, 
+    public PGMLStackParser(Map<String, Object> modelElementsByUuid,
             DiagramSettings defaultSettings) {
         super(modelElementsByUuid);
         addTranslations();
-        // Create a new diagram wide settings block which is backed by 
+        // Create a new diagram wide settings block which is backed by
         // the project-wide defaults that we were passed
         diagramSettings = new DiagramSettings(defaultSettings);
     }
 
     /*
      * @see org.tigris.gef.persistence.pgml.HandlerFactory#getHandler(
-     *         HandlerStack, Object, String, String, String, Attributes)
+     * HandlerStack, Object, String, String, String, Attributes)
      */
     @Override
-    public DefaultHandler getHandler(HandlerStack stack,
-                                             Object container,
-                                             String uri,
-                                             String localname,
-                                             String qname,
-                                             Attributes attributes)
+    public DefaultHandler getHandler(HandlerStack stack, Object container,
+            String uri, String localname, String qname, Attributes attributes)
         throws SAXException {
 
         String href = attributes.getValue("href");
         Object owner = null;
-        
+
         if (href != null) {
             owner = findOwner(href);
             if (owner == null) {
-                LOG.warn("Found href of " 
-                        + href
+                LOG.warn("Found href of " + href
                         + " with no matching element in model");
                 return null;
             }
         }
-        
+
         // Ignore non-private elements within FigNode groups
         if (container instanceof FigGroupHandler) {
             FigGroup group = ((FigGroupHandler) container).getFigGroup();
@@ -181,14 +177,13 @@ class PGMLStackParser
         if (qname.equals("private") && (container instanceof Container)) {
             return new PrivateHandler(this, (Container) container);
         }
-        
-        DefaultHandler handler =
-            super.getHandler(stack, container, uri, localname, qname,
-                    attributes);
+
+        DefaultHandler handler = super.getHandler(stack, container, uri,
+                localname, qname, attributes);
 
         if (handler instanceof FigEdgeHandler) {
-            return new org.argouml.persistence.FigEdgeHandler(
-                    this, ((FigEdgeHandler) handler).getFigEdge());
+            return new org.argouml.persistence.FigEdgeHandler(this,
+                    ((FigEdgeHandler) handler).getFigEdge());
         }
 
         return handler;
@@ -197,18 +192,17 @@ class PGMLStackParser
 
     /*
      * @see org.tigris.gef.persistence.pgml.PGMLStackParser#setAttrs(
-     *         org.tigris.gef.presentation.Fig, org.xml.sax.Attributes)
+     * org.tigris.gef.presentation.Fig, org.xml.sax.Attributes)
      */
     @Override
     protected final void setAttrs(Fig f, Attributes attrList)
         throws SAXException {
-        
+
         if (f instanceof FigGroup) {
             FigGroup group = (FigGroup) f;
             String clsNameBounds = attrList.getValue("description");
             if (clsNameBounds != null) {
-                StringTokenizer st =
-                    new StringTokenizer(clsNameBounds, ",;[] ");
+                StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
                 // Discard class name, x y w h
                 if (st.hasMoreElements()) {
                     st.nextToken();
@@ -246,7 +240,7 @@ class PGMLStackParser
             if (modelElement == null) {
                 LOG.error("Can't find href of " + href);
                 throw new SAXException("Found href of " + href
-                                       + " with no matching element in model");
+                        + " with no matching element in model");
             }
             // The owner should always have already been set in the constructor
             if (f.getOwner() != modelElement) {
@@ -258,7 +252,7 @@ class PGMLStackParser
                 }
             } else {
                 LOG.debug("Ignoring href on " + f.getClass().getName()
-                         + " as it's already set");
+                        + " as it's already set");
             }
         }
     }
@@ -268,10 +262,10 @@ class PGMLStackParser
      * of style identifiers in the format name=value;name=value;name=value....
      * Each name value pair is interpreted and the Fig configured accordingly.
      * The value is optional and will default to a value applicable for its
-     * name.
-     * The current applicable names are operationsVisible and attributesVisible
-     * and are used to show or hide the compartments within Class and Interface.
-     * The default values are true.
+     * name. The current applicable names are operationsVisible and
+     * attributesVisible and are used to show or hide the compartments within
+     * Class and Interface. The default values are true.
+     * 
      * @param st The StrinkTokenizer positioned at the first style identifier
      * @return a map of attributes
      */
@@ -279,7 +273,7 @@ class PGMLStackParser
         Map<String, String> map = new HashMap<String, String>();
         String name;
         String value;
-        
+
         while (st.hasMoreElements()) {
             String namevaluepair = st.nextToken();
             int equalsPos = namevaluepair.indexOf('=');
@@ -297,49 +291,48 @@ class PGMLStackParser
     }
 
     /**
-     * Set the fig style attributes. <p>
+     * Set the fig style attributes.
+     * <p>
      * 
-     * TODO: This should move into
-     * the render factories as described in issue 859.
+     * TODO: This should move into the render factories as described in issue
+     * 859.
      * 
      * @param fig the fig to style.
      * @param attributeMap a map of name value pairs
      */
     private void setStyleAttributes(Fig fig, Map<String, String> attributeMap) {
-        
+
         for (Map.Entry<String, String> entry : attributeMap.entrySet()) {
             final String name = entry.getKey();
             final String value = entry.getValue();
 
-            if(fig instanceof FigCompartmentBox) {
+            if (fig instanceof FigCompartmentBox) {
                 FigCompartmentBox fcb = (FigCompartmentBox) fig;
                 if ("operationsVisible".equals(name)) {
-                    fcb.showCompartment(
-                            Model.getMetaTypes().getOperation(), 
+                    fcb.showCompartment(Model.getMetaTypes().getOperation(),
                             value.equalsIgnoreCase("true"));
                 } else if ("attributesVisible".equals(name)) {
-                    fcb.showCompartment(
-                            Model.getMetaTypes().getAttribute(), 
+                    fcb.showCompartment(Model.getMetaTypes().getAttribute(),
                             value.equalsIgnoreCase("true"));
                 } else if ("enumerationLiteralsVisible".equals(name)) {
-                    fcb.showCompartment(
-                            Model.getMetaTypes().getEnumerationLiteral(), 
-                            value.equalsIgnoreCase("true"));
+                    fcb.showCompartment(Model.getMetaTypes()
+                            .getEnumerationLiteral(), value
+                            .equalsIgnoreCase("true"));
                 } else if ("extensionPointVisible".equals(name)) {
-                    fcb.showCompartment(
-                            Model.getMetaTypes().getExtensionPoint(), 
-                            value.equalsIgnoreCase("true"));
+                    fcb.showCompartment(Model.getMetaTypes()
+                            .getExtensionPoint(), value
+                            .equalsIgnoreCase("true"));
                 }
             }
             if ("stereotypeVisible".equals(name)) {
-                ((StereotypeContainer) fig)
-                    .setStereotypeVisible(value.equalsIgnoreCase("true"));
+                ((StereotypeContainer) fig).setStereotypeVisible(value
+                        .equalsIgnoreCase("true"));
             } else if ("visibilityVisible".equals(name)) {
-                ((VisibilityContainer) fig)
-                .setVisibilityVisible(value.equalsIgnoreCase("true"));
+                ((VisibilityContainer) fig).setVisibilityVisible(value
+                        .equalsIgnoreCase("true"));
             } else if ("pathVisible".equals(name)) {
-                ((PathContainer) fig)
-                    .setPathVisible(value.equalsIgnoreCase("true"));
+                ((PathContainer) fig).setPathVisible(value
+                        .equalsIgnoreCase("true"));
             }
         }
     }
@@ -358,17 +351,18 @@ class PGMLStackParser
         InputStream stream = is.getByteStream();
         if (stream == null) {
             try {
-            // happens when 'is' comes from a zip file
-            URL url = new URL(is.getSystemId());
-            stream = url.openStream();
-            closeStream = true;
+                // happens when 'is' comes from a zip file
+                URL url = new URL(is.getSystemId());
+                stream = url.openStream();
+                closeStream = true;
             } catch (Exception e) {
-                // continue with null stream, readDiagram(...) will take care of it
+                // continue with null stream, readDiagram(...) will take care of
+                // it
             }
         }
         return (ArgoDiagram) readDiagram(stream, closeStream);
     }
-    
+
     /**
      * Read and parse the input stream to create a new diagram and return it.
      * 
@@ -382,33 +376,34 @@ class PGMLStackParser
 
         return (ArgoDiagram) readDiagram(is, closeStream);
     }
-    
+
     @Override
     public Diagram readDiagram(InputStream is, boolean closeStream)
         throws SAXException {
-        
+
         // TODO: we really want to be able replace the initial content handler
         // which is passed to SAX, but we can't do this without cloning a
         // whole bunch of code because it's private in the super class.
-        
+
         Diagram d = super.readDiagram(is, closeStream);
-        
+
         attachEdges(d);
-        
+
         return d;
     }
-    
+
     /**
-     * This is called when all nodes and edges have been read and placed on
-     * the diagram. This method then attaches the edges to the correct node,
+     * This is called when all nodes and edges have been read and placed on the
+     * diagram. This method then attaches the edges to the correct node,
      * including the nodes contained within edges allowing edge to edge
      * connections for comment edges, association classes and dependencies.
+     * 
      * @param d the Diagram
      */
     private void attachEdges(Diagram d) {
         for (EdgeData edgeData : figEdges) {
             final FigEdge edge = edgeData.getFigEdge();
-            
+
             Object modelElement = modelElementsByFigEdge.get(edge);
             if (modelElement != null) {
                 if (edge.getOwner() == null) {
@@ -416,25 +411,24 @@ class PGMLStackParser
                 }
             }
         }
-        
+
         for (EdgeData edgeData : figEdges) {
             final FigEdge edge = edgeData.getFigEdge();
-            
+
             Fig sourcePortFig = findFig(edgeData.getSourcePortFigId());
             Fig destPortFig = findFig(edgeData.getDestPortFigId());
-            final FigNode sourceFigNode =
-                getFigNode(edgeData.getSourceFigNodeId());
-            final FigNode destFigNode =
-                getFigNode(edgeData.getDestFigNodeId());
-            
+            final FigNode sourceFigNode = getFigNode(edgeData
+                    .getSourceFigNodeId());
+            final FigNode destFigNode = getFigNode(edgeData.getDestFigNodeId());
+
             if (sourceFigNode instanceof FigEdgePort) {
                 sourcePortFig = sourceFigNode;
             }
-            
+
             if (destFigNode instanceof FigEdgePort) {
                 destPortFig = destFigNode;
             }
-            
+
             if (sourcePortFig == null && sourceFigNode != null) {
                 sourcePortFig = getPortFig(sourceFigNode);
             }
@@ -443,12 +437,9 @@ class PGMLStackParser
                 destPortFig = getPortFig(destFigNode);
             }
 
-            if (sourcePortFig == null
-                || destPortFig == null 
-                || sourceFigNode == null 
-                || destFigNode == null) {
-                LOG.error("Can't find nodes for FigEdge: "
-                        + edge.getId() + ":"
+            if (sourcePortFig == null || destPortFig == null
+                    || sourceFigNode == null || destFigNode == null) {
+                LOG.error("Can't find nodes for FigEdge: " + edge.getId() + ":"
                         + edge.toString());
                 edge.removeFromDiagram();
             } else {
@@ -458,7 +449,7 @@ class PGMLStackParser
                 edge.setDestFigNode(destFigNode);
             }
         }
-        
+
         // Once all edges are connected do a compute route on each to make
         // sure that annotations and the edge port is positioned correctly
         // Only do this after all edges are connected as compute route
@@ -470,34 +461,31 @@ class PGMLStackParser
             figEdge.computeRouteImpl();
         }
     }
-    
+
     // TODO: Move to GEF
     /**
      * Store data of a FigEdge together with the id's of nodes to connect to
+     * 
      * @param figEdge The FigEdge
      * @param sourcePortFigId The id of the source port
      * @param destPortFigId The id of the destination port
      * @param sourceFigNodeId The id of the source node
      * @param destFigNodeId The id of the destination node
      */
-    public void addFigEdge(
-            final FigEdge figEdge,
-            final String sourcePortFigId, 
-            final String destPortFigId, 
-            final String sourceFigNodeId, 
+    public void addFigEdge(final FigEdge figEdge, final String sourcePortFigId,
+            final String destPortFigId, final String sourceFigNodeId,
             final String destFigNodeId) {
-        figEdges.add(new EdgeData(figEdge, sourcePortFigId, destPortFigId, 
+        figEdges.add(new EdgeData(figEdge, sourcePortFigId, destPortFigId,
                 sourceFigNodeId, destFigNodeId));
     }
-    
+
     // TODO: Move to GEF
     /**
      * Get the FigNode that the fig id represents.
-     *
+     * 
      * @param figId (In the form Figx.y.z)
      * @return the FigNode with the given id
-     * @throws IllegalStateException
-     *              if the figId supplied is not of a FigNode
+     * @throws IllegalStateException if the figId supplied is not of a FigNode
      */
     private FigNode getFigNode(String figId) throws IllegalStateException {
         if (figId.contains(".")) {
@@ -508,8 +496,8 @@ class PGMLStackParser
             figId = figId.substring(0, figId.indexOf('.'));
             FigEdgeModelElement edge = (FigEdgeModelElement) findFig(figId);
             if (edge == null) {
-                throw new IllegalStateException(
-                        "Can't find a FigNode with id " + figId);
+                throw new IllegalStateException("Can't find a FigNode with id "
+                        + figId);
             }
             edge.makeEdgePort();
             return edge.getEdgePort();
@@ -525,12 +513,11 @@ class PGMLStackParser
             }
         }
     }
-    
 
     // TODO: Move to GEF
     /**
      * Get the Fig from the FigNode that is the port.
-     *
+     * 
      * @param figNode the FigNode
      * @return the Fig that is the port on the given FigNode
      */
@@ -542,79 +529,90 @@ class PGMLStackParser
             return (Fig) figNode.getPortFigs().get(0);
         }
     }
-    
+
     // TODO: Move to GEF
-    
+
     /**
-     * The data from an edge extracted from the PGML before we can guarantee
-     * all the nodes have been constructed. This stores the FigEdge and the
-     * id's of the nodes to connect to later.
-     * If the nodes are not known then the ports are returned instead.
+     * The data from an edge extracted from the PGML before we can guarantee all
+     * the nodes have been constructed. This stores the FigEdge and the id's of
+     * the nodes to connect to later. If the nodes are not known then the ports
+     * are returned instead.
      */
     private class EdgeData {
         private final FigEdge figEdge;
+
         private final String sourcePortFigId;
+
         private final String destPortFigId;
+
         private final String sourceFigNodeId;
+
         private final String destFigNodeId;
-        
+
         /**
          * Constructor
+         * 
          * @param edge The FigEdge
          * @param sourcePortId The id of the source port
          * @param destPortId The id of the destination port
          * @param sourceNodeId The id of the source node
          * @param destNodeId The id of the destination node
          */
-        public EdgeData(FigEdge edge, String sourcePortId, 
-                String destPortId, String sourceNodeId, String destNodeId) {
+        public EdgeData(FigEdge edge, String sourcePortId, String destPortId,
+                String sourceNodeId, String destNodeId) {
             if (sourcePortId == null || destPortId == null) {
                 throw new IllegalArgumentException(
                         "source port and dest port must not be null"
-                        + " source = " + sourcePortId
-                        + " dest = " + destPortId
-                        + " figEdge = " + edge);
+                                + " source = " + sourcePortId + " dest = "
+                                + destPortId + " figEdge = " + edge);
             }
             this.figEdge = edge;
             this.sourcePortFigId = sourcePortId;
             this.destPortFigId = destPortId;
-            this.sourceFigNodeId =
-                sourceNodeId != null ? sourceNodeId : sourcePortId;
-            this.destFigNodeId = 
-                destNodeId != null ? destNodeId : destPortId;
+            this.sourceFigNodeId = sourceNodeId != null ? sourceNodeId
+                    : sourcePortId;
+            this.destFigNodeId = destNodeId != null ? destNodeId : destPortId;
         }
-        
+
         /**
          * Get the id of the destination FigNode
+         * 
          * @return the id
          */
         public String getDestFigNodeId() {
             return destFigNodeId;
         }
-        
+
         /**
          * Get the id of the destination port
+         * 
          * @return the id
          */
         public String getDestPortFigId() {
             return destPortFigId;
         }
+
         /**
          * Get the FigEdge
+         * 
          * @return the FigEdge
          */
         public FigEdge getFigEdge() {
             return figEdge;
         }
+
         /**
          * Get the id of the source FigNode
+         * 
          * @return the id
          */
         public String getSourceFigNodeId() {
             return sourceFigNodeId;
         }
+
         /**
          * Get the id of the source port
+         * 
          * @return the id
          */
         public String getSourcePortFigId() {
@@ -623,40 +621,38 @@ class PGMLStackParser
     }
 
     /**
-     * Construct a new instance of the named Fig with the owner represented
-     * by the given href and the bounds parsed from the PGML file.  We look
-     * for constructors of the form Fig(Object owner, Rectangle
-     * bounds, DiagramSettings settings) which is typically used for subclasses
-     * of FigNodeModelElement, then Fig(Object owner, DiagramSettings settings)
+     * Construct a new instance of the named Fig with the owner represented by
+     * the given href and the bounds parsed from the PGML file. We look for
+     * constructors of the form Fig(Object owner, Rectangle bounds,
+     * DiagramSettings settings) which is typically used for subclasses of
+     * FigNodeModelElement, then Fig(Object owner, DiagramSettings settings)
      * which is used for subclasses of FigEdgeModelElement.
      * <p>
-     * If we fail to find any of the constructors that we know about, we'll
-     * call GEF's version of this method to see if it can find a constructor.
+     * If we fail to find any of the constructors that we know about, we'll call
+     * GEF's version of this method to see if it can find a constructor.
      * 
      * @param className fully qualified name of class to instantiate
      * @param href string representing UUID of owning element
      * @param bounds position and size of figure
      * @return
      * @throws SAXException
-     * @see org.tigris.gef.persistence.pgml.PGMLStackParser#constructFig(java.lang.String, java.lang.String, java.awt.Rectangle)
+     * @see org.tigris.gef.persistence.pgml.PGMLStackParser#constructFig(java.lang.String,
+     *      java.lang.String, java.awt.Rectangle)
      */
     @Override
-    protected Fig constructFig(
-            final String className,
-            final String href,
-            final Rectangle bounds,
-            final Attributes attributes)
+    protected Fig constructFig(final String className, final String href,
+            final Rectangle bounds, final Attributes attributes)
         throws SAXException {
-        
-        final DiagramSettings diagramSettings =
-            ((ArgoDiagram) getDiagram()).getDiagramSettings();
+
+        final DiagramSettings diagramSettings = ((ArgoDiagram) getDiagram())
+                .getDiagramSettings();
 
         Fig f = null;
         try {
             Class figClass = Class.forName(className);
-            
+
             final Constructor[] constructors = figClass.getConstructors();
-            
+
             // We are looking first to match with 3 different constructor
             // types. We would not expect a Fig to have any mix of these.
             // Any constructor other than these should be deprecated so we
@@ -669,8 +665,7 @@ class PGMLStackParser
                 if (parameterTypes.length == 3
                         && parameterTypes[0].equals(Object.class)
                         && parameterTypes[1].equals(Rectangle.class)
-                        && parameterTypes[2].equals(DiagramSettings.class)
-                ) {
+                        && parameterTypes[2].equals(DiagramSettings.class)) {
                     // FigNodeModelElements should match here
                     final Object parameters[] = new Object[3];
                     final Object owner = getOwner(className, href);
@@ -680,25 +675,24 @@ class PGMLStackParser
                     parameters[0] = owner;
                     parameters[1] = bounds;
                     parameters[2] = diagramSettings;
-                    
+
                     constructor.setAccessible(true);
-                    f =  (Fig) constructor.newInstance(parameters);
+                    f = (Fig) constructor.newInstance(parameters);
                 } else if (parameterTypes.length == 2
                         && parameterTypes[0].equals(DiagramEdgeSettings.class)
-                        && parameterTypes[1].equals(DiagramSettings.class)
-                ) {
-                    // FigEdgeModelElements should match here (they have no bounds)
+                        && parameterTypes[1].equals(DiagramSettings.class)) {
+                    // FigEdgeModelElements should match here (they have no
+                    // bounds)
                     final Object parameters[] = new Object[2];
                     final Object owner = getOwner(className, href);
                     if (owner == null) {
                         return null;
                     }
-                    
-                    String sourceUuid =
-                        attributes.getValue("sourceConnector");
-                    String destinationUuid =
-                        attributes.getValue("destConnector");
-                    
+
+                    String sourceUuid = attributes.getValue("sourceConnector");
+                    String destinationUuid = attributes
+                            .getValue("destConnector");
+
                     final Object source;
                     final Object destination;
                     if (sourceUuid != null && destinationUuid != null) {
@@ -708,27 +702,27 @@ class PGMLStackParser
                         source = null;
                         destination = null;
                     }
-                    
-                    DiagramEdgeSettings settings =
-                        new DiagramEdgeSettings(owner, source, destination);
+
+                    DiagramEdgeSettings settings = new DiagramEdgeSettings(
+                            owner, source, destination);
                     parameters[0] = settings;
                     parameters[1] = diagramSettings;
 
                     constructor.setAccessible(true);
-                    f =  (Fig) constructor.newInstance(parameters);
+                    f = (Fig) constructor.newInstance(parameters);
                 } else if (parameterTypes.length == 2
                         && parameterTypes[0].equals(Rectangle.class)
-                        && parameterTypes[1].equals(DiagramSettings.class)
-                ) {
+                        && parameterTypes[1].equals(DiagramSettings.class)) {
                     // A FigNodeModelElement with no owner should match here
-                    // TODO: This is a temporary solution due to FigPool extending
+                    // TODO: This is a temporary solution due to FigPool
+                    // extending
                     // FigNodeModelElement when in fact it should not do so.
                     Object parameters[] = new Object[2];
                     parameters[0] = bounds;
                     parameters[1] = diagramSettings;
-                    
+
                     constructor.setAccessible(true);
-                    f =  (Fig) constructor.newInstance(parameters);
+                    f = (Fig) constructor.newInstance(parameters);
                 }
             }
             if (f == null) {
@@ -743,10 +737,9 @@ class PGMLStackParser
                     Class[] parameterTypes = constructor.getParameterTypes();
                     if (parameterTypes.length == 2
                             && parameterTypes[0].equals(Object.class)
-                            && parameterTypes[1].equals(DiagramSettings.class)
-                    ) {
+                            && parameterTypes[1].equals(DiagramSettings.class)) {
                         Object parameters[] = new Object[2];
-                        
+
                         final Object owner = getOwner(className, href);
                         if (owner == null) {
                             return null;
@@ -755,8 +748,9 @@ class PGMLStackParser
                         parameters[1] = diagramSettings;
 
                         constructor.setAccessible(true);
-                        f =  (Fig) constructor.newInstance(parameters);
-                        LOG.warn("Fig created by old style constructor " + f.getClass().getName());
+                        f = (Fig) constructor.newInstance(parameters);
+                        LOG.warn("Fig created by old style constructor "
+                                + f.getClass().getName());
                         break;
                     }
                 }
@@ -778,50 +772,51 @@ class PGMLStackParser
                     + " falling back to GEF's default constructors");
             f = super.constructFig(className, href, bounds, attributes);
         }
-        
+
         return f;
     }
-    
+
     /**
-     * Given the href extracted from the PGML return the model element with
-     * that uuid.
+     * Given the href extracted from the PGML return the model element with that
+     * uuid.
+     * 
      * @param className Used only for logging should the href not be found
-     * @param href The href 
+     * @param href The href
      * @return
      */
     private Object getOwner(String className, String id) {
         if (id == null) {
-            LOG.warn("There is no href attribute provided for a "
-                    + className
+            LOG.warn("There is no href attribute provided for a " + className
                     + " so the diagram element is ignored on load");
             return null;
         }
         final Object owner = findOwner(id);
         if (owner == null) {
-            LOG.warn("The href " + id + " is not found for a "
-                    + className
+            LOG.warn("The href " + id + " is not found for a " + className
                     + " so the diagram element is ignored on load");
             return null;
         }
         return owner;
     }
-    
+
     /**
-     * Save the newly created Diagram for use by the parser.  We take the 
+     * Save the newly created Diagram for use by the parser. We take the
      * opportunity to attach our default diagram settings to it so we'll have
      * them if needed when constructing Figs.
      * <p>
      * Diagrams are created in GEF's PGMLHandler.initDiagram() which is private
-     * and can't be overridden.  Initialization sequence is:<ul> 
+     * and can't be overridden. Initialization sequence is:
+     * <ul>
      * <li>load diagram class using name in PGML file
      * <li>instantiate using 0-arg constructor
      * <li>invoke this method (setDiagram(<newDiagramInstance))
      * <li>invoke diagram's initialize(Object owner) method
      * <li>diagram.setName()
      * <li>diagram.setScale()
-     * <li>diagram.setShowSingleMultiplicity() 
-     *     (?!why does GEF care about multiplicity?!)
+     * <li>diagram.setShowSingleMultiplicity() (?!why does GEF care about
+     * multiplicity?!)
      * </ul>
+     * 
      * @param diagram the new diagram
      * @see org.tigris.gef.persistence.pgml.PGMLStackParser#setDiagram(org.tigris.gef.base.Diagram)
      */
@@ -831,7 +826,7 @@ class PGMLStackParser
         ((ArgoDiagram) diagram).setDiagramSettings(getDiagramSettings());
         super.setDiagram(diagram);
     }
-    
+
     public DiagramSettings getDiagramSettings() {
         return diagramSettings;
     }
