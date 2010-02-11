@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,11 @@ import java.net.URL;
  */
 public class UserProfileReference extends ProfileReference {
 
-    static final String DEFAULT_USER_PROFILE_BASE_URL = 
+    /**
+     * The default user profile base URL, which will be used if no explicit URL
+     * is specified.
+     */
+    public static final String DEFAULT_USER_PROFILE_BASE_URL = 
         "http://argouml.org/user-profiles/";
 
     /**
@@ -76,5 +80,4 @@ public class UserProfileReference extends ProfileReference {
         super(path, 
             new URL(DEFAULT_USER_PROFILE_BASE_URL + new File(path).getName()));
     }
-
 }

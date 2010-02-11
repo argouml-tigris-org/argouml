@@ -40,6 +40,7 @@
 package org.argouml.profile;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,6 +49,7 @@ import junit.framework.TestCase;
 import org.argouml.FileHelper;
 import org.argouml.cognitive.Critic;
 import org.argouml.model.InitializeModel;
+import org.argouml.model.Model;
 import org.argouml.profile.internal.ProfileManagerImpl;
 import org.argouml.profile.internal.ocl.CrOCL;
 
@@ -66,13 +68,22 @@ public class TestUserDefinedProfile extends TestCase {
         super.setUp();
         InitializeModel.initializeDefault();
         ProfileFacade.setManager(new ProfileManagerImpl());
-
+        // TODO: the following cleans up left overs from previous tests, but,
+        // preferably we shouldn't have to do this...
+        Collection rootElements = Model.getFacade().getRootElements();
+        for (Object rootElement : rootElements) {
+            if (Model.getFacade().isAModel(rootElement)
+                && "SimpleProfile".equals(Model.getFacade().getName(
+                    rootElement))) {
+                Model.getUmlFactory().deleteExtent(rootElement);
+            }
+        }
         testDir = FileHelper.setUpDir4Test(getClass());
     }
 
     @Override
     protected void tearDown() throws Exception {
-        FileHelper.deleteDir(testDir);
+        FileHelper.delete(testDir);
         super.tearDown();
     }
 
@@ -85,19 +96,20 @@ public class TestUserDefinedProfile extends TestCase {
     public void testLoadingConstructor() throws Exception {
         // create profile model
         ProfileMother profileMother = new ProfileMother();
-        Object model = profileMother.createSimpleProfileModel();
+        final String profileName = "testLoadingConstructorProfile";
+        Object model = profileMother.createSimpleProfileModel(profileName);
         // save the profile into a xmi file
         File profileFile = new File(testDir, "testLoadingConstructor.xmi");
         profileMother.saveProfileModel(model, profileFile);
         Profile profile = new UserDefinedProfile(profileFile,
             ProfileFacade.getManager());
-        assertTrue(profile.getDisplayName().contains(profileFile.getName()));
+        assertEquals(profileName, profile.getDisplayName());
     }
 
     /**
-     * Test the constructor used for loading a profile from a Jar file TODO Test
-     * FigNode!
-     * 
+     * Test the constructor used for loading a profile from a Jar file.
+     * TODO: Test FigNode!
+     *
      * @throws Exception if something goes wrong
      */
     public void testLoadingAsFromJar() throws Exception {

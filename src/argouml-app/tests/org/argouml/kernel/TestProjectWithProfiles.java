@@ -83,6 +83,7 @@ public class TestProjectWithProfiles extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
+    @SuppressWarnings("unchecked")
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -97,13 +98,13 @@ public class TestProjectWithProfiles extends TestCase {
             initMethod.invoke(null);
             assertNotNull(ApplicationVersion.getVersion());
         }
-        String testCaseDirName = getClass().getPackage().getName();
-        testCaseDir = FileHelper.setUpDir4Test(testCaseDirName);
+        String testCaseDirNamePrefix = getClass().getPackage().getName();
+        testCaseDir = FileHelper.setUpDir4Test(testCaseDirNamePrefix);
     }
     
     @Override
     protected void tearDown() throws Exception {
-        FileHelper.deleteDir(testCaseDir);
+        FileHelper.delete(testCaseDir);
         super.tearDown();
     }
 

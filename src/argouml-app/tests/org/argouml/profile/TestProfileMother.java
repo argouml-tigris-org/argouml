@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    maurelio1234
+ *    euluis
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -41,23 +42,32 @@ package org.argouml.profile;
 import static org.argouml.model.Model.getExtensionMechanismsHelper;
 import static org.argouml.model.Model.getFacade;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import org.argouml.FileHelper;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.model.UmlException;
+import org.argouml.model.XmiReader;
+import org.xml.sax.InputSource;
 
+import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 /**
+ * Integration tests for the {@link ProfileMother} class.
  *
  * @author Luis Sergio Oliveira (euluis)
  */
 public class TestProfileMother extends TestCase {
     
     private ProfileMother mother;
-    private File testDir;
 
     @Override
     protected void setUp() throws Exception {
@@ -65,6 +75,9 @@ public class TestProfileMother extends TestCase {
         mother = new ProfileMother();
     }
     
+    /**
+     * Test the creation of a profile model.
+     */
     public void testCreateProfileModel() {
         Object model = mother.createSimpleProfileModel();
         assertNotNull(model);
@@ -74,7 +87,11 @@ public class TestProfileMother extends TestCase {
             getFacade().getName(profileStereotypes.iterator().next()));
     }
     
-    public void testCreateSimpleProfileModel() throws Exception {
+    /**
+     * Test the creation of a simple profile model and check that specific
+     * model elements are contained in it.
+     */
+    public void testCreateSimpleProfileModel() {
         final Object model = mother.createSimpleProfileModel();
         Collection<Object> models = new ArrayList<Object>() { {
                 add(model);
@@ -92,15 +109,133 @@ public class TestProfileMother extends TestCase {
         }
         assertNotNull("\"st\" stereotype not found in model.", st);
         assertTrue(Model.getExtensionMechanismsHelper().isStereotype(st, 
-                ProfileMother.STEREOTYPE_NAME_ST, "Class"));
+            ProfileMother.STEREOTYPE_NAME_ST, "Class"));
     }
     
+    /**
+     * Test saving a profile model.
+     * 
+     * @throws Exception when saving the profile model fails
+     */
     public void testSaveProfileModel() throws Exception {
         Object model = mother.createSimpleProfileModel();
-        File file = new File(testDir, "testSaveProfileModel.xmi");
+        File file = File.createTempFile("testSaveProfileModel", ".xmi");
         mother.saveProfileModel(model, file);
         assertTrue("The file to where the file was supposed to be saved " 
-                + "doesn't exist.", file.exists());
+            + "doesn't exist.", file.exists());
     }
     
+    /**
+     * Test the creation of a profile which depends on another profile.
+     * Doesn't use the {@link ProfileMother#createXmiDependentProfile(File, ProfileMother.DependencyCreator, File, String)}
+     * method, but, it serves as good executable documentation of how this is
+     * done as a whole.
+     * @throws IOException When saving the profile models fails.
+     * @throws UmlException When something in the model subsystem goes wrong.
+     */
+    public void testXmiDependentProfile() throws IOException, UmlException {
+        Object model = mother.createSimpleProfileModel();
+        File file = File.createTempFile("simple-profile", ".xmi");
+        mother.saveProfileModel(model, file);
+        XmiReader xmiReader = Model.getXmiReader();
+        xmiReader.addSearchPath(file.getParent());
+        InputSource pIs = new InputSource(file.toURI().toURL().toExternalForm());
+        pIs.setPublicId(file.getName());
+        Collection simpleModelTopElements = xmiReader.parse(pIs, true);
+        Object model2 = mother.createSimpleProfileModel();
+        Object theClass = Model.getCoreFactory().buildClass("TheClass", model2);
+        Collection stereotypes = getFacade().getStereotypes(
+            simpleModelTopElements.iterator().next());
+        Object stereotype = stereotypes.iterator().next();
+        Model.getCoreHelper().addStereotype(theClass, stereotype);
+        File dependentProfileFile = File.createTempFile("dependent-profile",
+            ".xmi");
+        mother.saveProfileModel(model2, dependentProfileFile);
+        assertTrue("The file to where the file was supposed to be saved " 
+            + "doesn't exist.", dependentProfileFile.exists());
+        assertStringInLineOfFile("The name of the file which contains the profile "
+            + "from which the dependent profile depends must occur in the "
+            + "file.",
+            file.getName(), dependentProfileFile);
+    }
+    
+    /**
+     * Test the creation of a profile which depends on another profile.
+     * @throws IOException When saving the profile models fails.
+     * @throws UmlException When something in the model subsystem goes wrong.
+     */
+    public void testCreateXmiDependentProfile() throws IOException, UmlException {
+        File profilesDir = FileHelper.createTempDirectory();
+        File profileFromWhichDependsFile = File.createTempFile(
+            "simple-profile", ".xmi", profilesDir);
+        Object model = mother.createSimpleProfileModel();
+        mother.saveProfileModel(model, profileFromWhichDependsFile);
+        Model.getUmlFactory().deleteExtent(model);
+        // setting up the dependent profile creation
+        ProfileMother.DependencyCreator dependencyCreator =
+            new ProfileMother.DependencyCreator() {
+            public void create(Object profileFromWhichDepends,
+                    Object dependentProfile) {
+                Object theClass = Model.getCoreFactory().buildClass("TheClass",
+                    dependentProfile);
+                Collection stereotypes = getFacade().getStereotypes(
+                    profileFromWhichDepends);
+                Object stereotype = stereotypes.iterator().next();
+                Model.getCoreHelper().addStereotype(theClass, stereotype);
+            }
+        };
+        String dependentProfileFilenamePrefix = "dependent-profile";
+        // actual call that executes everything
+        File dependentProfileFile = mother.createXmiDependentProfile(
+            profileFromWhichDependsFile, dependencyCreator,
+            profilesDir, dependentProfileFilenamePrefix);
+        // verifications
+        assertTrue("The file to where the file was supposed to be saved " 
+            + "doesn't exist.", dependentProfileFile.exists());
+        assertStringInLineOfFile("The name of the file which contains the profile "
+            + "from which the dependent profile depends must occur in the "
+            + "file.",
+            profileFromWhichDependsFile.getName(), dependentProfileFile);
+        XmiReader xmiReader = Model.getXmiReader();
+        xmiReader.addSearchPath(profilesDir.getAbsolutePath());
+        InputSource pIs = new InputSource(
+            dependentProfileFile.toURI().toURL().toExternalForm());
+        pIs.setPublicId(dependentProfileFile.getName());
+        Collection dependentProfileModelTopElements = xmiReader.parse(pIs,
+            true);
+        assertEquals("There should exist only one top level element.",
+            1, dependentProfileModelTopElements.size());
+    }
+
+    private void assertStringInLineOfFile(String failureMsg, String str, File file)
+            throws IOException {
+        BufferedReader fileReader = new BufferedReader(new FileReader(file));
+        try {
+            String line = "";
+            while (null != (line = fileReader.readLine())) {
+                if (line.contains(str))
+                    return;
+            }
+        } finally {
+            if (fileReader != null) {
+                fileReader.close();
+            }
+        }
+        throw new AssertionFailedError(failureMsg + " '" + str
+            + "' not found in " + file.getName());
+    }
+    
+    /**
+     * Test {@link ProfileMother#createProfileFilePairWithSecondDependingOnFirstThroughXmi()}.
+     * @throws IOException when file IO goes wrong...
+     * @throws UmlException when UML manipulation goes wrong...
+     */
+    public void testCreateProfilePairWithSecondDependingOnFirstThroughXmi() throws IOException, UmlException {
+        List<File> profilesFiles =
+            mother.createProfileFilePairWithSecondDependingOnFirstThroughXmi();
+        assertEquals("Should contain two elements.", 2, profilesFiles.size());
+        File baseFile = profilesFiles.get(0);
+        File dependentFile = profilesFiles.get(1);
+        assertStringInLineOfFile("", baseFile.getName(), dependentFile);
+    }
 }

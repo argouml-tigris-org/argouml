@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,9 @@
 package org.argouml;
 
 import java.io.File;
+import java.io.IOException;
+
+import junit.framework.TestCase;
 
 /**
  * Helper for common File related operations used in automated tests.
@@ -46,39 +49,78 @@ import java.io.File;
  * @author Luis Sergio Oliveira (euluis)
  */
 public class FileHelper {
-
+    
     /**
-     * System temporary directory property name.
+     * Default temporary directory prefix.
      */
-    public static final String SYSPROPNAME_TMPDIR = "java.io.tmpdir";
-
-
-    public static File getTmpDir() {
-        return new File(System.getProperty(SYSPROPNAME_TMPDIR));
-    }
+    static final String DEFAULT_TEMP_DIR_PREFIX = "prefix";
 
     /**
-     * Setup a directory with the given name for the caller test.
+     * Setup a directory with the given name prefix for the caller test.
      * 
-     * @param dirName the directory to be created in the system temporary dir
-     * @return the created directory
+     * @param dirNamePrefix the prefix of the directory name to be created in
+     *        the system temporary directory.
+     * @return the created directory.
+     * @throws IOException if the directory creation fails.
      */
-    public static File setUpDir4Test(String dirName) {
-        File generationDir = new File(getTmpDir(), dirName);
-        generationDir.mkdirs();
-        return generationDir;
+    public static File setUpDir4Test(String dirNamePrefix) throws IOException {
+        return createTempDirectory(dirNamePrefix);
     }
     
-    public static File setUpDir4Test(Class<?> testClass) {
+    /**
+     * @param testClass the {@link TestCase} class for which to create a
+     *        directory.
+     * @return the created directory.
+     * @throws IOException if the directory creation fails.
+     */
+    public static File setUpDir4Test(Class<?> testClass) throws IOException {
         String name = testClass.getPackage().getName() + "." 
             + testClass.getSimpleName();
         return setUpDir4Test(name);
     }
     
-    public static void deleteDir(File dir) {
-        if (dir != null && dir.exists()) {
-            dir.delete();
+    /**
+     * Delete fileOrDirectory with the bonus of recursively deleting children
+     * of fileOrDirectory if it is a directory.
+     * 
+     * @param fileOrDirectory the file or directory to be deleted.
+     */
+    public static void delete(File fileOrDirectory) {
+        if (fileOrDirectory != null && fileOrDirectory.exists()) {
+            if (fileOrDirectory.isDirectory()) {
+                File[] children = fileOrDirectory.listFiles();
+                for (File child : children) {
+                    delete(child);
+                }
+            }
+            fileOrDirectory.delete();
         }
     }
 
+    /**
+     * @param prefix the prefix of the directory name.
+     * @return a {@link File} associated to a newly created directory which is
+     * contained within the system temporary directory.
+     * @throws IOException When the creation of the directory throws.
+     */
+    public static File createTempDirectory(String prefix) throws IOException {
+        File tempFile = File.createTempFile(prefix, "");
+        String absolutePath = tempFile.getAbsolutePath();
+        tempFile.delete();
+        tempFile.mkdir();
+        return new File(absolutePath);
+    }
+
+    /**
+     * Create a unique temporary directory contained within the system
+     * temporary directory.
+     * 
+     * @return a {@link File} associated to a newly created directory which is
+     * contained within the system temporary directory and with prefix
+     * {@link FileHelper#DEFAULT_TEMP_DIR_PREFIX}.
+     * @throws IOException When the creation of the directory throws.
+     */
+    public static File createTempDirectory() throws IOException {
+        return createTempDirectory(DEFAULT_TEMP_DIR_PREFIX);
+    }
 }
