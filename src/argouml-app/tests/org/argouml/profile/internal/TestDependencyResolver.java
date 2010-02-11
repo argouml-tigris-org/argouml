@@ -49,6 +49,8 @@ public class TestDependencyResolver extends TestCase {
         };
         resolver = new DependencyResolver<String>(checker2);
         resolver.resolve();
+        assertTrue("There should be no unresolved items.",
+            resolver.unresolvedItems.isEmpty());
     }
 
     /**
@@ -82,6 +84,8 @@ public class TestDependencyResolver extends TestCase {
         assertEquals(3, checker.calls);
         assertTrue("All the items should have been resolved.",
             checker.resolved.containsAll(items));
+        assertTrue("There should be no unresolved items.",
+            resolver.unresolvedItems.isEmpty());
     }
 
     /**
@@ -108,6 +112,8 @@ public class TestDependencyResolver extends TestCase {
         resolver.resolve(items);
         assertTrue("All the items should have been resolved.",
             checker.resolved.containsAll(items));
+        assertTrue("There should be no unresolved items.",
+            resolver.unresolvedItems.isEmpty());
     }
 
     /**
@@ -135,6 +141,8 @@ public class TestDependencyResolver extends TestCase {
         assertTrue("All the items should have been resolved.",
             checker.resolved.containsAll(items1)
             && checker.resolved.containsAll(items2));
+        assertTrue("There should be no unresolved items.",
+            resolver.unresolvedItems.isEmpty());
     }
 
     /**
@@ -172,6 +180,8 @@ public class TestDependencyResolver extends TestCase {
         resolver.resolve();
         assertTrue("All the items should have been resolved.",
             checker.resolved.containsAll(items));
+        assertTrue("There should be no unresolved items.",
+            resolver.unresolvedItems.isEmpty());
     }
 }
 

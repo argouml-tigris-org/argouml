@@ -45,8 +45,12 @@ import static org.argouml.model.Model.getExtensionMechanismsHelper;
 import static org.argouml.model.Model.getFacade;
 import static org.argouml.model.Model.getModelManagementFactory;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -205,7 +209,7 @@ public class ProfileMother {
      * @throws IOException if the new profile file creation fails.
      * @throws UmlException if the model subsystem throws.
      */
-    public File createXmiDependentProfile(File profileFromWhichDependsFile,
+    File createXmiDependentProfile(File profileFromWhichDependsFile,
             DependencyCreator dependencyCreator,
             File profilesDir, String dependentProfileFilenamePrefix)
         throws IOException, UmlException {
@@ -245,7 +249,7 @@ public class ProfileMother {
      * @throws IOException if file IO causes errors.
      * @throws UmlException if the manipulation of models causes errors.
      */
-    public List<File> createProfileFilePairWithSecondDependingOnFirstThroughXmi()
+    List<File> createProfileFilePairWith2ndDependingOn1stViaXmi()
             throws IOException, UmlException {
         File profilesDir = FileHelper.createTempDirectory();
         final File baseFile = File.createTempFile(
@@ -272,5 +276,81 @@ public class ProfileMother {
             dependentProfileFilenamePrefix);
         return new ArrayList<File>() { { add(baseFile); add(dependentFile); }
         };
+    }
+
+    /**
+     * Creates two profiles with one depending of the other. Saves the two
+     * profiles in different temporary directories and returns the associated
+     * {@link File Files}, being that the second XMI file depends on the first.
+     * 
+     * Ensures that both profiles aren't remembered by the model sub-system
+     * by renaming them.
+     *
+     * @return A list of two files, the second File contains an XMI that
+     *         depends of the first.
+     * @throws IOException if file IO causes errors.
+     * @throws UmlException if the manipulation of models causes errors.
+     */
+    public List<File> createUnloadedProfilePairWith2ndDependingOn1stViaXmi()
+            throws IOException, UmlException {
+        List<File> profileFiles =
+            createProfileFilePairWith2ndDependingOn1stViaXmi();
+        File baseProfileFile = profileFiles.get(0);
+        String baseProfileFileName = baseProfileFile.getName();
+        // ensure that model subsystem implementation doesn't remember the
+        // profiles by changing their names and directories
+        baseProfileFile = FileHelper.moveFileToNewTempDirectory(
+            baseProfileFile, "new-base-profile", ".xmi",
+            ProfileMother.class.getCanonicalName());
+        File dependentProfileFile = profileFiles.get(1);
+        replaceStringInFile(dependentProfileFile, baseProfileFileName,
+            baseProfileFile.getName());
+        dependentProfileFile = FileHelper.moveFileToNewTempDirectory(
+            dependentProfileFile, "new-dependent-profile", ".xmi",
+            ProfileMother.class.getCanonicalName());
+        profileFiles.clear();
+        profileFiles.add(baseProfileFile);
+        profileFiles.add(dependentProfileFile);
+        return profileFiles;
+    }
+
+    /**
+     * The regular expression occurrences in file are replaced by
+     * replacement {@link String}.
+     * @param file the file in which to replace.
+     * @param regex the regular expression to replace.
+     * @param replacement the replacement {@link String}.
+     * @throws IOException if IO operations throw.
+     */
+    static public void replaceStringInFile(File file, String regex,
+            String replacement) throws IOException {
+        StringBuffer fileContents = new StringBuffer();
+        BufferedReader reader = null;
+        String fileContents2 = null;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String line = "";
+            while (null != (line = reader.readLine())) {
+                fileContents.append(line);
+                fileContents.append("\n");
+            }
+            fileContents2 = fileContents.toString();
+            fileContents2 = fileContents2.replaceAll(regex, replacement);
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
+        if (fileContents2 != null && file.delete() && file.createNewFile()) {
+            BufferedWriter writer = null;
+            try {
+                writer = new BufferedWriter(new FileWriter(file));
+                writer.append(fileContents2);
+            } finally {
+                if (writer != null) {
+                    writer.close();
+                }
+            }
+        }
     }
 }

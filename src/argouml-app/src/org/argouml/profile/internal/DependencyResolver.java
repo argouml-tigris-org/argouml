@@ -13,6 +13,8 @@
 
 package org.argouml.profile.internal;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Collection;
 
@@ -31,7 +33,12 @@ class DependencyResolver<T> {
             DependencyResolver.class);
 
     private DependencyChecker<T> checker;
-    private Collection<T> unresolvedItems;
+    /**
+     * WARNING: only to be used from outside classes by tests.
+     * This is the state-full part of the algorithm, storing the unresolved
+     * items between resolve methods calls.
+     */
+    Collection<T> unresolvedItems;
 
     /**
      * Create a dependency resolver and initialize it with the associated
@@ -53,7 +60,9 @@ class DependencyResolver<T> {
         if (unresolvedItems.isEmpty()) {
             return;
         }
-        resolve(new HashSet<T>());
+        final Collection<T> items = Collections.unmodifiableCollection(
+            new ArrayList<T>());
+        resolve(items);
     }
 
     /**
@@ -72,6 +81,7 @@ class DependencyResolver<T> {
         }
         Collection<T> resolved = internalResolve(allUnresolvedItems);
         allUnresolvedItems.removeAll(resolved);
+        unresolvedItems.clear();
         unresolvedItems.addAll(allUnresolvedItems);
         if (!unresolvedItems.isEmpty()) {
             LOG.warn(items2Msg(

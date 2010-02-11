@@ -123,4 +123,24 @@ public class FileHelper {
     public static File createTempDirectory() throws IOException {
         return createTempDirectory(DEFAULT_TEMP_DIR_PREFIX);
     }
+
+    /**
+     * @param fileToMove the original file that must be moved.
+     * @param filePrefix the prefix of the new file name.
+     * @param fileSuffix the suffix (or extension) of the file.
+     *        NOTE: should contain "." if it is intended to be an extension.
+     * @param directoryPrefix the prefix of the new directory name.
+     * @return the new {@link File}.
+     * @throws IOException
+     */
+    public static File moveFileToNewTempDirectory(File fileToMove,
+            String filePrefix, String fileSuffix, String directoryPrefix)
+            throws IOException {
+        File directory = createTempDirectory(directoryPrefix);
+        File newFile = File.createTempFile(filePrefix, fileSuffix, directory);
+        boolean renamed = fileToMove.renameTo(newFile);
+        assert renamed : "Renaming of " + fileToMove + " to "
+            + newFile + " failed.";
+        return newFile;
+    }
 }

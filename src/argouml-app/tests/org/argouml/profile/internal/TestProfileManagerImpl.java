@@ -39,11 +39,7 @@
 
 package org.argouml.profile.internal;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +51,6 @@ import java.util.Vector;
 
 import junit.framework.TestCase;
 
-import org.argouml.FileHelper;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.UmlException;
 import org.argouml.profile.Profile;
@@ -165,7 +160,7 @@ public class TestProfileManagerImpl extends TestCase {
         int numRegisteredBefore = registeredProfiles.size();
         ProfileMother mother = new ProfileMother();
         List<File> profileFiles =
-            mother.createProfileFilePairWithSecondDependingOnFirstThroughXmi();
+            mother.createUnloadedProfilePairWith2ndDependingOn1stViaXmi();
         Collections.reverse(profileFiles);
         
         ProfileManagerImpl managerImpl = (ProfileManagerImpl) manager;
@@ -191,27 +186,16 @@ public class TestProfileManagerImpl extends TestCase {
             throws IOException, UmlException {
         List<Profile> registeredProfiles = manager.getRegisteredProfiles();
         int numRegisteredBefore = registeredProfiles.size();
+
         ProfileMother mother = new ProfileMother();
         List<File> profileFiles =
-            mother.createProfileFilePairWithSecondDependingOnFirstThroughXmi();
-        
-        File baseProfileFile = profileFiles.get(0);
-        String baseProfileFileName = baseProfileFile.getName();
-        File baseProfileDirectory = FileHelper.createTempDirectory(
-            getClass().getCanonicalName());
-        String newBaseProfileFileName = "new-base-profile.xmi";
-        File newBaseProfileFile = new File(baseProfileDirectory,
-            newBaseProfileFileName);
-        assertTrue(baseProfileFile.renameTo(newBaseProfileFile));
-        baseProfileFile = newBaseProfileFile;
-        
-        ProfileManagerImpl managerImpl = (ProfileManagerImpl) manager;
-        
+            mother.createUnloadedProfilePairWith2ndDependingOn1stViaXmi();
         File dependentProfileFile = profileFiles.get(1);
-        replaceStringInFile(dependentProfileFile, baseProfileFileName,
-            newBaseProfileFileName);
+        File baseProfileFile = profileFiles.get(0);
         ArrayList<File> dependentProfileList = new ArrayList<File>();
         dependentProfileList.add(dependentProfileFile);
+        
+        ProfileManagerImpl managerImpl = (ProfileManagerImpl) manager;
         managerImpl.loadProfiles(dependentProfileList);
         assertEquals("We should have exaclty the same number of registered "
             + "profiles as in the begining.",
@@ -220,40 +204,7 @@ public class TestProfileManagerImpl extends TestCase {
         ArrayList<File> baseProfileList = new ArrayList<File>();
         baseProfileList.add(baseProfileFile);
         managerImpl.loadProfiles(baseProfileList);
-        
         assertEquals("Now we should have two more registered profiles.",
             numRegisteredBefore + 2, manager.getRegisteredProfiles().size());
-    }
-
-    private void replaceStringInFile(File file, String regex,
-            String replacement) throws IOException {
-        StringBuffer fileContents = new StringBuffer();
-        BufferedReader reader = null;
-        String fileContents2 = null;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String line = "";
-            while (null != (line = reader.readLine())) {
-                fileContents.append(line);
-                fileContents.append("\n");
-            }
-            fileContents2 = fileContents.toString();
-            fileContents2 = fileContents2.replaceAll(regex, replacement);
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-        }
-        if (fileContents2 != null && file.delete() && file.createNewFile()) {
-            BufferedWriter writer = null;
-            try {
-                writer = new BufferedWriter(new FileWriter(file));
-                writer.append(fileContents2);
-            } finally {
-                if (writer != null) {
-                    writer.close();
-                }
-            }
-        }
     }
 }

@@ -207,8 +207,8 @@ public class TestProfileMother extends TestCase {
             1, dependentProfileModelTopElements.size());
     }
 
-    private void assertStringInLineOfFile(String failureMsg, String str, File file)
-            throws IOException {
+    private void assertStringInLineOfFile(String failureMsg, String str,
+            File file) throws IOException {
         BufferedReader fileReader = new BufferedReader(new FileReader(file));
         try {
             String line = "";
@@ -226,13 +226,14 @@ public class TestProfileMother extends TestCase {
     }
     
     /**
-     * Test {@link ProfileMother#createProfileFilePairWithSecondDependingOnFirstThroughXmi()}.
+     * Test {@link ProfileMother#createProfileFilePairWith2ndDependingOn1stViaXmi()}.
      * @throws IOException when file IO goes wrong...
      * @throws UmlException when UML manipulation goes wrong...
      */
-    public void testCreateProfilePairWithSecondDependingOnFirstThroughXmi() throws IOException, UmlException {
+    public void testCreateProfilePairWith2ndDependingOn1stViaXmi()
+            throws IOException, UmlException {
         List<File> profilesFiles =
-            mother.createProfileFilePairWithSecondDependingOnFirstThroughXmi();
+            mother.createProfileFilePairWith2ndDependingOn1stViaXmi();
         assertEquals("Should contain two elements.", 2, profilesFiles.size());
         File baseFile = profilesFiles.get(0);
         File dependentFile = profilesFiles.get(1);
