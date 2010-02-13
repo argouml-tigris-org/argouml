@@ -218,20 +218,6 @@ public abstract class AbstractArgoJPanel extends JPanel
 	    return null; //failed to clone
 	}
 
-//        if (newPanel instanceof TabToDo) {
-//            TabToDo me = (TabToDo) this;
-//            TabToDo it = (TabToDo) newPanel;
-//            it.setTarget(me.getTarget());
-//        } else if (newPanel instanceof TabModelTarget) {
-//            TabModelTarget me = (TabModelTarget) this;
-//            TabModelTarget it = (TabModelTarget) newPanel;
-//            it.setTarget(me.getTarget());
-//        } else if (newPanel instanceof TabDiagram) {
-//            TabDiagram me = (TabDiagram) this;
-//            TabDiagram it = (TabDiagram) newPanel;
-//            it.setTarget(me.getTarget());
-//        }
-
         // TODO: Once we have fixed all subclasses the title will
         // always be localized so this localization can be removed.
         newPanel.setTitle(Translator.localize(title));
