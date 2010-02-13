@@ -47,6 +47,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.util.PathComparator;
 
@@ -95,7 +96,12 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         Collection c = new ArrayList(1);
 
         if (target != null) {
-            Object namespace = Model.getFacade().getNamespace(target);
+            Object namespace = null;
+            if (target instanceof UMLDiagram) {
+                namespace = ((UMLDiagram) target).getNamespace();
+            } else if (Model.getFacade().isAElement(target)) {
+                namespace = Model.getFacade().getNamespace(target);
+            }
             if (namespace != null && !c.contains(namespace)) {
                 c.add(namespace);
             }
@@ -142,7 +148,8 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
+        Object target = getTarget();
+        if (getTarget() != null && Model.getFacade().isANamedElement(target)) {
             return Model.getFacade().getNamespace(getTarget());
         }
         return null;

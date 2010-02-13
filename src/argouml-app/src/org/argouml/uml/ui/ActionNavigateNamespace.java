@@ -40,6 +40,7 @@
 package org.argouml.uml.ui;
 
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 
 
 /**
@@ -53,7 +54,12 @@ public class ActionNavigateNamespace extends AbstractActionNavigate {
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object elem) {
-        return Model.getFacade().getNamespace(elem);
+        if (elem instanceof UMLDiagram) {
+            return ((UMLDiagram) elem).getNamespace();
+        } else if (Model.getFacade().isANamedElement(elem)) {
+            return Model.getFacade().getNamespace(elem);
+        }
+        return null;
     }
 
 }
