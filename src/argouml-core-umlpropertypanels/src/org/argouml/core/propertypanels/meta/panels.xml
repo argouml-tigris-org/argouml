@@ -75,7 +75,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
   </panel>
   <panel name="GeneralizableElement">
     <text name="name" type="Name" />
@@ -106,7 +106,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
@@ -137,7 +137,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
   </panel>
   <panel name="Classifier">
@@ -169,7 +169,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
@@ -183,7 +183,7 @@
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
     <separator />
-    <list name="classifierInState" type="Classifier" />
+    <list name="classifierInState" type="Classifier" label="label.classifier-in-state" />
     <list name="objectFlowState" type="Classifier" />
   </panel>
   <panel name="Class">
@@ -309,7 +309,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
   </panel>
@@ -339,7 +339,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
     <attribute name="multiplicity" type="Multiplicity" />
@@ -464,7 +464,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="body" type="BooleanExpression" />
     <list name="constrainedElement" type="ModelElement" />
   </panel>
@@ -494,7 +494,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
   </panel>
   <panel name="Association">
     <text name="name" type="Name" />
@@ -599,7 +599,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
     <list name="parameter" type="Parameter" />
@@ -712,14 +712,14 @@
     <list name="templateArgument" type="ModelElement" />
     <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
     <list name="targetFlow" type="Flow" label="label.target-flows" />
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
 
@@ -935,7 +935,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="client" type="ModelElement" />
     <list name="supplier" type="ModelElement" />
     <list name="argument" type="TemplateArgument" />
@@ -955,8 +955,7 @@
     <separator />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
-    <list name="residentElement" type="ElementResidence" />
-        
+    <list name="residentElement" type="ElementResidence" label="label.residents" />
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
     <attribute name="targetFlow" type="Flow" />
@@ -1002,7 +1001,7 @@
     <list name="generalization" type="Generalization" />    
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <list name="deployedComponent" type="Component" />
+    <list name="deployedComponent" type="Component" label="label.deployedcomponents"  />
 	
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
@@ -1122,7 +1121,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="target" type="ModelElement" />
     <list name="source" type="ModelElement" />
   </panel>
@@ -1166,7 +1165,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
@@ -1180,7 +1179,7 @@
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
     <separator />
-    <list name="classifierInState" type="Classifier" />
+    <list name="classifierInState" type="Classifier" label="label.classifier-in-state" />
     <list name="objectFlowState" type="Classifier" />
   </panel>
   <panel name="Enumeration">
@@ -1352,7 +1351,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="dataValue" type="String" />
     <attribute name="modelElement" type="ModelElement" />
     <attribute name="type" type="TagDefinition" />
@@ -1387,7 +1386,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
@@ -1401,7 +1400,7 @@
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
     <separator />
-    <list name="classifierInState" type="Classifier" />
+    <list name="classifierInState" type="Classifier" label="label.classifier-in-state" />
     <list name="objectFlowState" type="Classifier" />
     <attribute name="expression" type="TypeExpression" />
   </panel>
@@ -1434,7 +1433,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
@@ -1448,7 +1447,7 @@
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
     <separator />
-    <list name="classifierInState" type="Classifier" />
+    <list name="classifierInState" type="Classifier" label="label.classifier-in-state" />
     <list name="objectFlowState" type="Classifier" />
     <list name="implementationLocation" type="Artifact" />
   </panel>
@@ -1482,7 +1481,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="classifier" type="Classifier" />
     <list name="linkEnd" type="LinkEnd" />
     <list name="slot" type="AttributeLink" />
@@ -1572,7 +1571,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="recurrence" type="IterationExpression" />
     <attribute name="target" type="ObjectSetExpression" />
     <attribute name="script" type="ActionExpression" />
@@ -1728,7 +1727,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="attribute" type="Attribute" />
     <attribute name="value" type="Instance" />
     <attribute name="instance" type="Instance" />
@@ -1835,7 +1834,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="classifier" type="Classifier" />
     <list name="linkEnd" type="LinkEnd" />
     <list name="slot" type="AttributeLink" />
@@ -1876,7 +1875,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="classifier" type="Classifier" />
     <list name="linkEnd" type="LinkEnd" />
     <list name="slot" type="AttributeLink" />
@@ -2034,7 +2033,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="value" type="Expression" />
     <attribute name="action" type="Action" />
   </panel>
@@ -2068,7 +2067,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
     <list name="parameter" type="Parameter" />
@@ -2211,7 +2210,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="argument" type="Instance" />
     <attribute name="sender" type="Instance" />
     <attribute name="receiver" type="Instance" />
@@ -2291,7 +2290,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="linkEnd" type="LinkEnd" />
     <list name="slot" type="AttributeLink" />
     <attribute name="componentInstance" type="ComponentInstance" />
@@ -2377,7 +2376,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="classifier" type="Classifier" />
     <list name="linkEnd" type="LinkEnd" />
     <list name="slot" type="AttributeLink" />
@@ -2413,7 +2412,7 @@
 	<list name="attribute" type="Feature" />
     <list name="operation" type="Feature" />
     <list name="association" type="Classifier" />
-    <list name="extensionPoint" type="ExtensionPoint" />
+    <list name="extensionPoint" type="ExtensionPoint" label="label.extension-points" />
 	
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
@@ -2517,7 +2516,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="classifier" type="Classifier" />
     <list name="linkEnd" type="LinkEnd" />
     <list name="slot" type="AttributeLink" />
@@ -2536,7 +2535,7 @@
     <separator /> 
     <singlerow name="base" type="UseCase" />
     <singlerow name="extension" type="UseCase" />
-    <list name="extensionPoint" type="ExtensionPoint" />    
+    <list name="extensionPoint" type="ExtensionPoint" label="label.extension-points" />    
     <separator />
     <textarea name="condition" type="BooleanExpression" />
     
@@ -2631,7 +2630,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
 	<combo name="context" type="ModelElement" />
-    <list name="top" type="State" />
+    <list name="top" type="State" label="label.top-state" />
     <separator />
     <list name="transitions" type="Transition" />
     <list name="submachineState" type="SubmachineState" />
@@ -2686,7 +2685,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="parameter" type="Parameter" />
     <list name="state" type="Event" />
     <list name="transition" type="Event" />
@@ -2717,7 +2716,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="container" type="CompositeState" />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
@@ -2748,15 +2747,15 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="container" type="CompositeState" />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
     <attribute name="entry" type="Action" />
     <separator />
     <attribute name="exit" type="Action" />
-    <list name="deferrableEvent" type="Event" />
-    <list name="internalTransition" type="Transition" />
+    <list name="deferrableEvent" type="Event" label="label.deferrable" />
+    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
     <list name="classifierInState" type="State" />
@@ -2904,11 +2903,11 @@
 	<singlerow name="container" type="CompositeState" />    
     <list name="entry" type="Action" />
     <list name="exit" type="Action" />
-    <list name="doActivity" type="Action" />
+    <list name="doActivity" type="Action" label="label.do-activity" />
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
-    <list name="internalTransition" type="Transition" />
+    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
 	<separator />
     <list name="subvertex" type="StateVertex" />
     
@@ -3044,12 +3043,11 @@
     <singlerow name="container" type="CompositeState" />
     <list name="entry" type="Action" />
     <list name="exit" type="Action" />
-    <list name="doActivity" type="Action" />
-    <list name="deferrableEvent" type="Event" />
-    <separator />    
+    <list name="doActivity" type="Action" label="label.do-activity" />
+    <list name="deferrableEvent" type="Event" label="label.deferrable" />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />    
-    <list name="internalTransition" type="Transition" />
+    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -3084,11 +3082,11 @@
     <combo name="submachine" type="StateMachine" />
     <list name="entry" type="Action" />
     <list name="exit" type="Action" />
-    <list name="doActivity" type="Action" />
+    <list name="doActivity" type="Action" label="label.do-activity" />
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
-    <list name="internalTransition" type="Transition" />    
+    <list name="internalTransition" type="Transition" label="label.internal-transitions" />    
     <separator />    
     <list name="subvertex" type="StateVertex" />    
     
@@ -3191,10 +3189,10 @@
     <text name="name" type="Name" />
     <singlerow name="container" type="CompositeState" />
 	<list name="entry" type="Action" />
-    <list name="doActivity" type="Action" />
+    <list name="doActivity" type="Action" label="label.do-activity" />
     <separator />
     <list name="incoming" type="Transition" />
-    <list name="internalTransition" type="Transition" />
+    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
   
   	<debug />
     <attribute name="outgoing" type="Transition" />    
@@ -3277,8 +3275,8 @@
     <list name="specialization" type="GeneralizableElement" />
     <list name="association" type="Classifier" />
     <separator />
-    <list name="availableFeature" type="Feature" />
-    <list name="availableContents" type="ModelElement" />
+    <list name="availableFeature" type="Feature" label="label.available-features" />
+    <list name="availableContents" type="ModelElement" label="label.available-contents" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -3380,7 +3378,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="ordering" type="OrderingKind" />
     <attribute name="aggregation" type="AggregationKind" />
     <attribute name="targetScope" type="ScopeKind" />
@@ -3490,7 +3488,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="context" type="CollaborationInstanceSet" />
     <attribute name="interaction" type="Interaction" />
     <list name="participatingStimulus" type="Stimulus" />
@@ -3521,7 +3519,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="interactionInstanceSet" type="InteractionInstanceSet" />
     <list name="participatingInstance" type="Instance" />
     <list name="participatingLink" type="Link" />
@@ -3531,7 +3529,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <combo name="context" type="ModelElement" />    
-    <list name="top" type="State" />    
+    <list name="top" type="State" label="label.top-state" />    
     <separator />
     <list name="transitions" type="Transition" />
     <list name="submachineState" type="SubmachineState" />
@@ -3563,7 +3561,7 @@
   </panel>
   <panel name="Partition">
     <text name="name" type="Name" />
-	<singlerow name="activityGraph" type="ActivityGraph" />
+	<singlerow name="activityGraph" type="ActivityGraph" label="label.activity-graph" />
     <separator />
     <list name="contents" type="ModelElement" />
     
@@ -3620,18 +3618,18 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="container" type="CompositeState" />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
     <attribute name="entry" type="Action" />
     <separator />
     <attribute name="exit" type="Action" />
-    <list name="deferrableEvent" type="Event" />
-    <list name="internalTransition" type="Transition" />
+    <list name="deferrableEvent" type="Event" label="label.deferrable" />
+    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
-    <list name="classifierInState" type="State" />
+    <list name="classifierInState" type="State" label="label.classifier-in-state" />
     <list name="subvertex" type="StateVertex" />
     <attribute name="submachine" type="StateMachine" />
     <separator />
@@ -3642,7 +3640,7 @@
     <text name="name" type="Name" />
     <singlerow name="container" type="CompositeState" />
     <list name="entry" type="Action" />
-    <list name="deferrableEvent" type="Event" />    
+    <list name="deferrableEvent" type="Event" label="label.deferrable" />    
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
@@ -3684,7 +3682,7 @@
     <text name="name" type="Name" />
     <singlerow name="container" type="CompositeState" />
     <list name="entry" type="Action" />
-    <list name="deferrableEvent" type="Event" />
+    <list name="deferrableEvent" type="Event" label="label.deferrable" />
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
@@ -3727,7 +3725,7 @@
     <singlerow name="container" type="CompositeState" />    
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
-      <checkbox name="isSynch" type="Boolean" />
+      <checkbox name="isSynch" type="Boolean" label="checkbox.synch-lc" />
     </checkgroup>
     <combo name="type" type="Classifier" />
     <list name="classifierInState" type="State" />
@@ -3793,7 +3791,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
@@ -3807,7 +3805,7 @@
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
     <separator />
-    <list name="classifierInState" type="Classifier" />
+    <list name="classifierInState" type="Classifier" label="label.classifier-in-state" />
     <list name="objectFlowState" type="Classifier" />
     <attribute name="type" type="Classifier" />
     <list name="inState" type="State" />
@@ -3827,7 +3825,7 @@
     <list name="specialization" type="GeneralizableElement" />
     <separator />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="elementImport" type="ModelElement" />       
+    <list name="elementImport" type="ModelElement" label="label.element-import" />       
     <attribute name="clientDependency" type="Dependency" />
     <attribute name="supplierDependency" type="ModelElement" />    
     <attribute name="targetFlow" type="Flow" />
@@ -3861,7 +3859,7 @@
     <list name="specialization" type="GeneralizableElement" />
 	<separator />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-	<list name="elementImport" type="ModelElement" />
+	<list name="elementImport" type="ModelElement" label="label.element-import" />
 	    
     <attribute name="clientDependency" type="Dependency" />
     <attribute name="targetFlow" type="Flow" />
@@ -3911,7 +3909,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" />
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <list name="generalization" type="Generalization" />
     <separator />
     <list name="specialization" type="GeneralizableElement" />
@@ -3925,7 +3923,7 @@
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
     <separator />
-    <list name="classifierInState" type="Classifier" />
+    <list name="classifierInState" type="Classifier" label="label.classifier-in-state" />
     <list name="objectFlowState" type="Classifier" />
   </panel>
   <panel name="ElementImport">
