@@ -57,8 +57,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -88,8 +88,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -119,8 +119,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -151,8 +151,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -291,8 +291,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -321,8 +321,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -446,8 +446,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -476,8 +476,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -581,8 +581,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -688,7 +688,7 @@
     <text name="name" type="Name" />
     <singlerow name="owner" type="Classifier" />
     <combo name="specification" type="Operation" />
-    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="dency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
     <optionbox name="visibility" type="VisibilityKind" />
@@ -715,8 +715,8 @@
     <list name="elementImport" type="ModelElement" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <list name="partition" type="ModelElement" />
     <list name="elementImport" type="ModelElement" />
@@ -917,8 +917,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -1104,8 +1104,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -1148,8 +1148,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -1334,8 +1334,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -1369,8 +1369,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -1416,8 +1416,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -1464,8 +1464,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -1554,8 +1554,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -1710,8 +1710,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -1817,8 +1817,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -1858,8 +1858,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -2016,8 +2016,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -2050,8 +2050,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -2085,8 +2085,8 @@
     </attribute>
     <attribute name="namespace" type="Namespace" />
     <attribute name="clientDependency" type="Dependency" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
     <attribute name="supplierDependency" type="ModelElement" />
@@ -2193,8 +2193,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -2283,8 +2283,8 @@
     <separator />
     <list name="classifier" type="Classifier" />
     <!--
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <list name="behavior" type="ModelElement" />
     <list name="classifierRole" type="ModelElement" />
@@ -2359,8 +2359,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -2499,8 +2499,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -2668,8 +2668,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -2699,8 +2699,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -2730,8 +2730,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -3325,8 +3325,8 @@
     <combo name="base" type="Association" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
     <list name="presentation" type="ModelElement" />
@@ -3352,8 +3352,8 @@
     <combo name="multiplicity" type="Multiplicity" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <checkgroup name="modifiers">
@@ -3472,8 +3472,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -3503,8 +3503,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -3602,8 +3602,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -3775,8 +3775,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
@@ -3893,8 +3893,8 @@
     </checkgroup>
     <combo name="namespace" type="Namespace" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
-    <list name="targetFlow" type="Flow" />
-    <list name="sourceFlow" type="Flow" />
+    <list name="targetFlow" type="Flow" label="label.target-flows" />
+    <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
