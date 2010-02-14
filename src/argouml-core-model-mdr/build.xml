@@ -321,7 +321,8 @@ Building this requires:
   <!-- =================================================================== -->
   <!-- Clean out the tests                                                 -->
   <!-- =================================================================== -->
-  <target name="junit-report-clean">
+  <target name="junit-report-clean"
+          depends="init">
     <mkdir dir="${tests.reports}/junit/output"/>
     <mkdir dir="${tests.reports}/junit/output/html"/>
     <delete>
@@ -335,7 +336,8 @@ Building this requires:
   <!-- =================================================================== -->
   <!-- Create the report                                                   -->
   <!-- =================================================================== -->
-  <target name="junit-report-create">
+  <target name="junit-report-create"
+          depends="init">
     <junitreport todir="${tests.reports}/junit/output">
       <fileset dir="${tests.reports}/junit/output">
         <include name="TEST-*.xml"/>
@@ -372,7 +374,8 @@ Building this requires:
   </target>
 
   <target name="tests"
-          depends="tests-xml,junit-report-clean">
+          depends="junit-report-clean,tests-xml"
+          description="Run the automated tests and create reports.">
     <antcall target="junit-report-create"/>
   </target>
 
