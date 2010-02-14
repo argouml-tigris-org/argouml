@@ -407,7 +407,7 @@
     <list name="specialization" type="GeneralizableElement" />
 	<separator />
 	<list name="association" type="Classifier" />
-	<list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
 	
 	<debug />
     <attribute name="clientDependency" type="Dependency" />
