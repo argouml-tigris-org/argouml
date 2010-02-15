@@ -204,9 +204,6 @@
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <!-- 
-    <list name="feature" type="Feature" />
-     -->
     <list name="feature" type="org.omg.uml.foundation.core.Attribute" label="label.attributes" />
     <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
     <list name="association" type="Classifier" />    
@@ -253,8 +250,7 @@
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <list name="feature" type="Feature" />    
-    
+    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
     <debug />
     <attribute name="targetFlow" type="Flow" />
     <attribute name="sourceFlow" type="Flow" />
@@ -351,17 +347,17 @@
   </panel>
   <panel name="AssociationEnd">
     <text name="name" type="Name" />
-    <combo name="participant" type="Classifier" />
+    <combo name="participant" type="Classifier" label="label.type" />
     <combo name="multiplicity" type="Multiplicity" />
 	<singlerow name="association" type="Association" />
 	<separator />
 	<checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isNavigable" type="Boolean" />
-      <checkbox name="targetScope" type="ScopeKind" />
-      <checkbox name="ordering" type="OrderingKind" />
+      <checkbox name="targetScope" type="ScopeKind" label="label.static" />
+      <checkbox name="ordering" type="OrderingKind" label="label.ordered" />
     </checkgroup>
-    <list name="qualifier" type="Attribute" />
+    <list name="qualifier" type="Attribute" label="label.qualifiers" />
     <list name="specification" type="Classifier" />
 	<separator />
     <optionbox name="aggregation" type="AggregationKind" />
@@ -507,9 +503,9 @@
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
     <separator />
-    <list name="connection" type="AssociationEnd" />    
+    <list name="connection" type="AssociationEnd" label="label.connections" />
     <separator />
-    <list name="associationRole" type="Association" />
+    <list name="associationRole" type="Association" label="label.association-roles" />
     <list name="link" type="Association" />
     
     <debug />
@@ -774,13 +770,10 @@
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />    
-    <list name="connection" type="AssociationEnd" />
+    <list name="connection" type="AssociationEnd" label="label.connections" />
     <separator />
-    <!-- 
-    <list name="feature" type="Feature" />
-     -->
-    <list name="attribute" type="Feature" />
-    <list name="operation" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Attribute" label="label.attributes" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
     <list name="association" type="Classifier" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     
@@ -816,8 +809,8 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator /> 
-    <list name="client" type="ModelElement" />
-    <list name="supplier" type="ModelElement" />
+    <list name="client" type="ModelElement" label="label.clients" />
+    <list name="supplier" type="ModelElement" label="label.suppliers" />
     
     <debug />
 	<attribute name="visibility" type="VisibilityKind" />
@@ -851,8 +844,8 @@
       <attribute name="isSpecification" type="Boolean" />
     </attribute>
     <separator />
-    <list name="client" type="ModelElement" />
-    <list name="supplier" type="ModelElement" />
+    <list name="client" type="ModelElement" label="label.clients" />
+    <list name="supplier" type="ModelElement" label="label.suppliers" />
     
     <debug />
     <attribute name="supplierDependency" type="ModelElement" />
@@ -882,8 +875,8 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="client" type="ModelElement" />
-    <list name="supplier" type="ModelElement" />
+    <list name="client" type="ModelElement" label="label.clients" />
+    <list name="supplier" type="ModelElement" label="label.suppliers" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -936,8 +929,8 @@
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
     <list name="elementImport" type="ModelElement" label="label.element-import" />
-    <list name="client" type="ModelElement" />
-    <list name="supplier" type="ModelElement" />
+    <list name="client" type="ModelElement" label="label.clients" />
+    <list name="supplier" type="ModelElement" label="label.suppliers" />
     <list name="argument" type="TemplateArgument" />
   </panel>
   <panel name="Component">
@@ -1061,12 +1054,12 @@
     <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <separator />
-    <list name="client" type="ModelElement" />
-    <list name="supplier" type="ModelElement" />
+    <list name="client" type="ModelElement" label="label.clients" />
+    <list name="supplier" type="ModelElement" label="label.suppliers" />
   </panel>
   <panel name="Comment">
     <text name="name" type="Name" />
-    <list name="annotatedElement" type="ModelElement" />
+    <list name="annotatedElement" type="ModelElement" label="label.annotated-elements" />
     <separator />
     <textarea name="body" type="String" />
     
@@ -1198,8 +1191,8 @@
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
 	<separator />
-	<list name="feature" type="Feature" />
-	<list name="literal" type="EnumerationLiteral" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
+	<list name="literal" type="EnumerationLiteral" label="label.literals" />
 
 	<debug />
     <attribute name="targetFlow" type="Flow" />
@@ -1269,9 +1262,9 @@
     <separator />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
-    <list name="definedTag" type="TagDefinition" />
+    <list name="definedTag" type="TagDefinition" label="label.tagdefinitions" />
     <separator />
-	<list name="baseClass" type="Name" />
+	<list name="baseClass" type="Name" label="label.base-class" />
 
 	<debug />
     <attribute name="clientDependency" type="Dependency" />
@@ -1576,7 +1569,7 @@
     <attribute name="target" type="ObjectSetExpression" />
     <attribute name="script" type="ActionExpression" />
     <separator />
-    <list name="actualArgument" type="Argument" />
+    <list name="actualArgument" type="Argument" label="label.arguments" />
     <attribute name="actionSequence" type="ActionSequence" />
     <list name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
@@ -1593,7 +1586,7 @@
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
     <list name="instantiation" type="Classifier" />
-    <list name="actualArgument" type="Argument" />
+    <list name="actualArgument" type="Argument" label="label.arguments" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1632,7 +1625,7 @@
     <textarea name="script" type="ActionExpression" />
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
-    <list name="actualArgument" type="Argument" />
+    <list name="actualArgument" type="Argument" label="label.arguments" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1671,7 +1664,7 @@
     <textarea name="script" type="ActionExpression" />
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
-    <list name="actualArgument" type="Argument" />
+    <list name="actualArgument" type="Argument" label="label.arguments" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1779,7 +1772,7 @@
     <combo name="namespace" type="Namespace" />
     <combo name="association" type="Association" />    
     <separator />
-    <list name="connection" type="LinkEnd" />
+    <list name="connection" type="LinkEnd" label="label.connections" />
 	
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1847,7 +1840,7 @@
     <attribute name="owner" type="Instance" />
     <list name="playedRole" type="Instance" />
     <attribute name="association" type="Association" />
-    <list name="connection" type="LinkEnd" />
+    <list name="connection" type="LinkEnd" label="label.connections" />
   </panel>
   <panel name="DataValue">
     <text name="name" type="Name" />
@@ -1898,7 +1891,7 @@
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
 	<combo name="operation" type="Operation" />    
-    <list name="actualArgument" type="Argument" />
+    <list name="actualArgument" type="Argument" label="label.arguments" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1938,7 +1931,7 @@
     <textarea name="recurrence" type="IterationExpression" />    
     <separator />
 	<list name="signal" type="Signal" />
-    <list name="actualArgument" type="Argument" />
+    <list name="actualArgument" type="Argument" label="label.arguments" />
 	
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -2115,7 +2108,7 @@
     <textarea name="script" type="ActionExpression" />
 	<textarea name="recurrence" type="IterationExpression" />    
     <separator />
-    <list name="actualArgument" type="Argument" />    
+    <list name="actualArgument" type="Argument" label="label.arguments" />    
 	
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -2154,7 +2147,7 @@
     <textarea name="script" type="ActionExpression" />
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
-    <list name="actualArgument" type="Argument" />
+    <list name="actualArgument" type="Argument" label="label.arguments" />
         
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -2406,11 +2399,8 @@
     <list name="extend" type="Extend" />
     <list name="include" type="Include" />
     <separator />
-    <!-- 
-    <list name="feature" type="Feature" />
-    -->
-	<list name="attribute" type="Feature" />
-    <list name="operation" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Attribute" label="label.attributes" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
     <list name="association" type="Classifier" />
     <list name="extensionPoint" type="ExtensionPoint" label="label.extension-points" />
 	
@@ -2758,7 +2748,7 @@
     <list name="internalTransition" type="Transition" label="label.internal-transitions" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
-    <list name="classifierInState" type="State" />
+    <list name="classifierInState" type="State" label="label.instate" />
   </panel>
   <panel name="TimeEvent">
     <text name="name" type="Name" />
@@ -3338,7 +3328,7 @@
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
     <separator />
-    <list name="connection" type="AssociationEnd" />
+    <list name="connection" type="AssociationEnd" label="label.connections" />
     <list name="message" type="Message" />
     <list name="conformingLink" type="Link" />
   </panel>
@@ -3357,11 +3347,11 @@
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isNavigable" type="Boolean" />
-      <checkbox name="ordering" type="OrderingKind" />
+      <checkbox name="ordering" type="OrderingKind" label="label.ordered" />
       <checkbox name="ownerScope" type="ScopeKind" label="label.static" />
     </checkgroup>
     <list name="specification" type="Classifier" />
-    <list name="qualifier" type="Attribute" />
+    <list name="qualifier" type="Attribute" label="label.qualifiers" />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -3728,7 +3718,7 @@
       <checkbox name="isSynch" type="Boolean" label="checkbox.synch-lc" />
     </checkgroup>
     <combo name="type" type="Classifier" />
-    <list name="classifierInState" type="State" />
+    <list name="classifierInState" type="State" label="label.instate" />
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
@@ -3923,7 +3913,7 @@
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
     <separator />
-    <list name="classifierInState" type="Classifier" label="label.classifier-in-state" />
+    <list name="classifierInState" type="Classifier" label="label.instate" />
     <list name="objectFlowState" type="Classifier" />
   </panel>
   <panel name="ElementImport">
