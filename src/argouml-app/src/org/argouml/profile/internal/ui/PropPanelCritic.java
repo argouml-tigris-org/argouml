@@ -120,9 +120,17 @@ public class PropPanelCritic extends PropPanel {
      * @see org.argouml.uml.ui.PropPanel#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
+        
+        final String targetType =
+            getTarget().getClass().getCanonicalName();
+        
+        if (!(t instanceof Critic)) {
+            throw new IllegalArgumentException("A Critic is expected as the target, a " + targetType + " was received");
+        }
+        
         super.setTarget(t);
 
-        criticClass.setText(getTarget().getClass().getCanonicalName());
+        criticClass.setText(targetType);
 
         Critic c = (Critic) getTarget();
         name.setText(c.getCriticName());
