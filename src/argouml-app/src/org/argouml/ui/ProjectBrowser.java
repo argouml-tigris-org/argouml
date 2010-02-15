@@ -975,7 +975,9 @@ public final class ProjectBrowser
      * save and exit, exit without saving or cancel the exit operation.
      */
     public void tryExit() {
+        LOG.info("Trying to exit the application");
         if (saveAction != null && saveAction.isEnabled()) {
+            LOG.info("A save is needed - prompting the user");
             Project p = ProjectManager.getManager().getCurrentProject();
 
             String t =
@@ -990,15 +992,18 @@ public final class ProjectBrowser
                 // The trySave method results in the save taking place in another thread.
                 // If that completes without error the ProjectBrowser.exit() method will
                 // be called which will actually exist the system.
+                LOG.info("The user chose to exit and save");
                 trySave(ProjectManager.getManager().getCurrentProject() != null
                         && ProjectManager.getManager().getCurrentProject()
                                 .getURI() != null,
                                 false, true);
                 return;
             } else if (response == JOptionPane.CANCEL_OPTION) {
+                LOG.info("The user cancelled the save dialog");
                 return;
             }
         }
+        LOG.info("We will now exit");
         exit();
     }
     
@@ -1033,6 +1038,7 @@ public final class ProjectBrowser
          * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
          */
         public void windowClosing(WindowEvent e) {
+            LOG.info("Detected attempt to close application - checking if save needed");
             tryExit();
         }
     } /* end class WindowCloser */
