@@ -83,7 +83,7 @@ public class TabProps
      */
     private static final Logger LOG = Logger.getLogger(TabProps.class);
     
-    private static boolean cachePanels = true;
+    private static boolean cachePanels = false;
 
     private JPanel blankPanel = new JPanel();
     private Hashtable<Class, JPanel> panels = 
@@ -207,6 +207,8 @@ public class TabProps
         if (lastPanel != null) {
             remove(lastPanel);
             if (lastPanel instanceof TargetListener) {
+                // TODO: We should assert this never happens before removing
+                // panels should control their own listeners
                 removeTargetListener((TargetListener) lastPanel);
             }
         }
