@@ -741,9 +741,10 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
                         Object parameters[] = new Object[2];
 
                         final Object owner = getOwner(className, href);
-                        if (owner == null) {
-                            return null;
-                        }
+                        // currently FigEdgeNote can be passed null
+//                        if (owner == null) {
+//                            return null;
+//                        }
                         parameters[0] = owner;
                         parameters[1] = diagramSettings;
 
