@@ -1145,19 +1145,26 @@ public class GenericArgoMenuBar extends JMenuBar implements
     }
     
     private void registerForMacEvents() {
+        LOG.info("Determining if Mac OS to set special handlers");
         if (OsUtil.isMacOSX()) {
+            LOG.info("System is Mac OS - setting special handlers");
             try {
                 // Generate and register the OSXAdapter, passing the methods 
                 // we wish to use as delegates for various
                 // com.apple.eawt.ApplicationListener methods
+                LOG.info("Registering Quit handler for Mac");
                 OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod(
                         "macQuit", (Class[]) null));
+                LOG.info("Registering About handler for Mac");
                 OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod(
                         "macAbout", (Class[]) null));
+                LOG.info("Registering Preferences handler for Mac");
                 OSXAdapter.setPreferencesHandler(this, getClass()
                         .getDeclaredMethod("macPreferences", (Class[]) null));
+                LOG.info("Registering File handler for Mac");
                 OSXAdapter.setFileHandler(this, getClass().getDeclaredMethod(
                         "macOpenFile", new Class[] {String.class}));
+                LOG.info("All Mac handlers set");
             } catch (Exception e) {
                 LOG.error("Error while loading the OSXAdapter:", e);
             }
@@ -1168,6 +1175,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * Internal use only.  Do not use.
      */
     public void macQuit() {
+        LOG.info("Quit has been chosen on a Mac");
         exitAction.actionPerformed(null);
     }
     
