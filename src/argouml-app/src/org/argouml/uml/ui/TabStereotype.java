@@ -62,6 +62,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.swingext.UpArrowIcon;
+import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeListModel;
@@ -76,7 +77,7 @@ import org.tigris.swidgets.Vertical;
  * The code for the 2 lists and the buttons to move items
  * from one side to the other is based on the PerspectiveConfigurator class.
  */
-public class TabStereotype extends PropPanel {
+public class TabStereotype extends PropPanel implements TabModelTarget {
 
     /**
      * Insets in pixels.

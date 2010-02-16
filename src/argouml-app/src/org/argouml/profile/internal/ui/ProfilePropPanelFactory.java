@@ -51,7 +51,7 @@ public class ProfilePropPanelFactory implements PropPanelFactory {
 
     public PropPanel createPropPanel(Object object) {
         if (object instanceof CrUML) {
-            return new PropPanelCritic();
+            return new PropPanelCritic(object);
         } else {
             return null;
         }

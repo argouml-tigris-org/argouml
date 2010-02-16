@@ -56,6 +56,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.ScrollList;
@@ -73,7 +74,7 @@ import org.argouml.uml.ui.UMLTextField2;
  * subsystem.
  */
 @Deprecated
-public abstract class PropPanelModelElement extends PropPanel {
+public abstract class PropPanelModelElement extends PropPanel implements TabModelTarget {
 
     private JComboBox namespaceSelector;
 

@@ -97,7 +97,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * hierarchy that matches the UML metamodel.
  */
 public abstract class PropPanel extends AbstractArgoJPanel implements
-        TabModelTarget, UMLUserInterfaceContainer, ComponentListener {
+        UMLUserInterfaceContainer, ComponentListener {
 
     /**
      * Logger.

@@ -52,6 +52,7 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
+import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.UndoableAction;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
@@ -69,7 +70,7 @@ import org.argouml.uml.util.PathComparator;
  * This class represents the properties panel for a Diagram.
  *
  */
-public class PropPanelDiagram extends PropPanel {
+public class PropPanelDiagram extends PropPanel implements TabModelTarget {
 
     private JComboBox homeModelSelector;
     private UMLDiagramHomeModelComboBoxModel homeModelComboBoxModel =

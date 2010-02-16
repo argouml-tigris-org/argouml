@@ -50,6 +50,7 @@ import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.swingext.UpArrowIcon;
+import org.argouml.ui.TabModelTarget;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Vertical;
@@ -85,7 +86,7 @@ import org.tigris.swidgets.Vertical;
  * UMLModelElementTaggedValueDocument is used to access the tagged values of an
  * MModelElement.
  */
-public class TabDocumentation extends PropPanel {
+public class TabDocumentation extends PropPanel implements TabModelTarget {
 
     private static String orientation = Configuration.getString(Configuration
             .makeKey("layout", "tabdocumentation"));
