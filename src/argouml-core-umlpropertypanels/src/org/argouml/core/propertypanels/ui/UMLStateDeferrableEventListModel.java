@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,10 +38,20 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.swing.JMenu;
 import javax.swing.JPopupMenu;
 
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.behavior.state_machines.ActionNewEvent;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
  * @since Dec 14, 2002
@@ -77,12 +87,137 @@ class UMLStateDeferrableEventListModel
 
     @Override
     public boolean buildPopup(JPopupMenu popup, int index) {
-        final PopupMenuNewEvent menu =
-            new PopupMenuNewEvent(ActionNewEvent.Roles.DEFERRABLE_EVENT, getTarget());
         
-        menu.buildMenu(popup,
-                ActionNewEvent.Roles.DEFERRABLE_EVENT, getTarget(), "action.new");;
+        JMenu subMenu = new JMenu(Translator.localize("action.new"));
+        subMenu.add(new ActionNewEvent(getTarget(), Model.getMetaTypes().getCallEvent(), "button.new-callevent"));
+        subMenu.add(new ActionNewEvent(getTarget(), Model.getMetaTypes().getChangeEvent(), "button.new-changeevent"));
+        subMenu.add(new ActionNewEvent(getTarget(), Model.getMetaTypes().getSignalEvent(), "button.new-signalevent"));
+        subMenu.add(new ActionNewEvent(getTarget(), Model.getMetaTypes().getTimeEvent(), "button.new-timeevent"));
+        
+        popup.add(subMenu);
         
         return true;
+    }
+    
+    
+    public AbstractActionAddModelElement2 getAddAction() {
+        return new ActionAddEvent();
+    }
+    
+    private class ActionAddEvent extends AbstractActionAddModelElement2 {
+
+        /**
+         * Constructor for ActionAddClassifierRoleBase.
+         */
+        public ActionAddEvent() {
+            super();
+            setMultiSelect(true);
+        }
+    
+        protected List getChoices() {
+            List vec = new ArrayList();
+            // TODO: the namespace of created events is currently the model.
+            // I think this is wrong, they should be
+            // in the namespace of the activitygraph!
+    //        vec.addAll(
+    //                Model.getModelManagementHelper().getAllModelElementsOfKind(
+    //                        Model.getFacade().getNamespace(getTarget()),
+    //                        Model.getMetaTypes().getEvent()));
+            vec.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
+                    Model.getFacade().getRoot(getTarget()),
+                    Model.getMetaTypes().getEvent()));
+    
+            return vec;
+        }
+    
+    
+        protected List getSelected() {
+            List vec = new ArrayList();
+            Collection events = Model.getFacade().getDeferrableEvents(getTarget());
+            if (events != null) {
+                vec.addAll(events);
+            }
+            return vec;
+        }
+    
+    
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-events");
+        }
+    
+    
+        @Override
+        protected void doIt(Collection selected) {
+            Object state = getTarget();
+            if (!Model.getFacade().isAState(state)) return;
+            Collection oldOnes = new ArrayList(Model.getFacade()
+                    .getDeferrableEvents(state));
+            Collection toBeRemoved = new ArrayList(oldOnes);
+            for (Object o : selected) {
+                if (oldOnes.contains(o)) {
+                    toBeRemoved.remove(o);
+                } else {
+                    Model.getStateMachinesHelper().addDeferrableEvent(state, o);
+                }
+            }
+            for (Object o : toBeRemoved) {
+                Model.getStateMachinesHelper().removeDeferrableEvent(state, o);
+            }
+        }
+    }
+    
+
+    private class ActionNewEvent extends AbstractActionNewModelElement {
+
+        private Object eventMetaType;
+        
+        /**
+         * Constructor for ActionNewEvent.
+         */
+        public ActionNewEvent(Object transition, Object eventMetaType, String name) {
+            super(name);
+            setTarget(transition);
+            this.eventMetaType = eventMetaType;
+        }
+
+        /**
+         * Implementors should create a concrete event like an instance of
+         * SignalEvent in this method.
+         * @param ns the namespace
+         * @return Object
+         */
+        private Object createEvent(Object ns) {
+            if (eventMetaType.equals(Model.getMetaTypes().getCallEvent())) {
+                return Model.getStateMachinesFactory().buildCallEvent(ns);
+            }
+            if (eventMetaType.equals(Model.getMetaTypes().getChangeEvent())) {
+                return Model.getStateMachinesFactory().buildChangeEvent(ns);
+            }
+            if (eventMetaType.equals(Model.getMetaTypes().getSignalEvent())) {
+                return Model.getStateMachinesFactory().buildSignalEvent(ns);
+            }
+            if (eventMetaType.equals(Model.getMetaTypes().getTimeEvent())) {
+                return Model.getStateMachinesFactory().buildTimeEvent(ns);
+            }
+            throw new IllegalStateException("We expect a metatype which is an Event");
+        }
+
+        /**
+         * Creates the event, sets its role and namespace,
+         * and navigates towards it.
+         *
+         * {@inheritDoc}
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            Object target = getTarget();
+            Object model =
+                    ProjectManager.getManager().getCurrentProject().getModel();
+            Object ns = Model.getStateMachinesHelper()
+                            .findNamespaceForEvent(target, model);
+            Object event = createEvent(ns);
+            Model.getStateMachinesHelper().addDeferrableEvent(target, event);
+            TargetManager.getInstance().setTarget(event);
+        }
     }
 }

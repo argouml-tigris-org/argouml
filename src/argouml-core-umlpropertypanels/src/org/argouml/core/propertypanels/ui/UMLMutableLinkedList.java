@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -86,6 +86,8 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
 
     private boolean newPossible = false;
 
+    // TODO: This should not be an instance variable. It should just be
+    // created and discarded as needed.
     private JPopupMenu popupMenu;
 
     private AbstractActionAddModelElement2 addAction = null;
@@ -356,9 +358,7 @@ class UMLMutableLinkedList extends UMLLinkedList implements MouseListener {
      * @return JPopupMenu
      */
     public JPopupMenu getPopupMenu() {
-        if (popupMenu == null) {
-            popupMenu =  new PopupMenu();
-        }
+        popupMenu =  new PopupMenu();
         return popupMenu;
     }
 
