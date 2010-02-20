@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    euluis
+ *    linus
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -41,8 +42,6 @@ package org.argouml;
 import java.io.File;
 import java.io.IOException;
 
-import junit.framework.TestCase;
-
 /**
  * Helper for common File related operations used in automated tests.
  *
@@ -68,8 +67,8 @@ public class FileHelper {
     }
     
     /**
-     * @param testClass the {@link TestCase} class for which to create a
-     *        directory.
+     * @param testClass the {@link junit.framework.TestCase} class for 
+     *        which to create a directory.
      * @return the created directory.
      * @throws IOException if the directory creation fails.
      */
@@ -106,8 +105,13 @@ public class FileHelper {
     public static File createTempDirectory(String prefix) throws IOException {
         File tempFile = File.createTempFile(prefix, "");
         String absolutePath = tempFile.getAbsolutePath();
-        tempFile.delete();
-        tempFile.mkdir();
+        if (tempFile.exists()) {
+            boolean deleted = tempFile.delete();
+            assert deleted : "Deletion of " + tempFile + " failed.";
+        }
+        boolean created = tempFile.mkdir();
+        assert created : "Creation of directory " + tempFile + " failed.";
+        tempFile.deleteOnExit();
         return new File(absolutePath);
     }
 
@@ -131,16 +135,20 @@ public class FileHelper {
      *        NOTE: should contain "." if it is intended to be an extension.
      * @param directoryPrefix the prefix of the new directory name.
      * @return the new {@link File}.
-     * @throws IOException
+     * @throws IOException if any of the file operation throws it.
      */
     public static File moveFileToNewTempDirectory(File fileToMove,
             String filePrefix, String fileSuffix, String directoryPrefix)
-            throws IOException {
+        throws IOException {
         File directory = createTempDirectory(directoryPrefix);
         File newFile = File.createTempFile(filePrefix, fileSuffix, directory);
+        boolean deleted = newFile.delete();
+        assert deleted 
+            : "Deletion of newly created file " + newFile + "failed.";
         boolean renamed = fileToMove.renameTo(newFile);
-        assert renamed : "Renaming of " + fileToMove + " to "
-            + newFile + " failed.";
+        assert renamed 
+            : "Renaming of " + fileToMove + " to " + newFile + " failed.";
+        newFile.deleteOnExit();
         return newFile;
     }
 }
