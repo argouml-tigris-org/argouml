@@ -117,9 +117,11 @@ class SwingUIFactory {
         tbf.setRollover(true);
         JToolBar tb = tbf.createToolBar();
         tb.add(new JLabel(metaTypeName, ResourceLoaderWrapper.lookupIconResource(metaTypeName), JLabel.LEFT));
-        // We only have this here until we have stereotypes
-        // list on property panel
-        tb.add(new ActionNewStereotype());
+        if (!Model.getModelManagementHelper().isReadOnly(target)) {
+            // We only have this here until we have stereotypes
+            // list on property panel
+            tb.add(new ActionNewStereotype());
+        }
         panel.add(tb);
     }
     
@@ -195,24 +197,27 @@ class SwingUIFactory {
         if (control != null) {
             if (control == p) {
                 // if the control is a panel, add it
-                addControl(panel, null, control);
+                addControl(panel, null, control, target);
             } else {
                 // if not, it is a control and must be labeled...
-                addControl(panel, Translator.localize(prop.getLabel()), control);
+                addControl(panel, Translator.localize(prop.getLabel()),
+                		control, target);
             }
         } else {
-            final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter(prop.getType());
+            final GetterSetterManager getterSetter = 
+            	GetterSetterManager.getGetterSetter(prop.getType());
 
             if (getterSetter.contains(propertyName)) {
-                ExpressionModel model = new ExpressionModel(propertyName, prop.getType(), target, getterSetter);
+                ExpressionModel model =
+                	new ExpressionModel(propertyName, prop.getType(), target, getterSetter);
                 final JTextField languageField = 
                     new ExpressionLanguageField(model);
                 addControl(
                         panel,
                         Translator.localize("label.language"),
-                        languageField);
+                        languageField, target);
                 control = new JScrollPane(new ExpressionBodyField(model));
-                addControl(panel, null, control);
+                addControl(panel, null, control, target);
             }
         }
     }
@@ -224,8 +229,8 @@ class SwingUIFactory {
         final JComponent pane =
             factory.createComponent(target, prop.getName(), prop.getType());
         
-        if (pane != null) {           
-            addControl(panel, Translator.localize(prop.getLabel()), pane);
+        if (pane != null) {
+            addControl(panel, Translator.localize(prop.getLabel()), pane, target);
         }
     }
 
@@ -238,7 +243,7 @@ class SwingUIFactory {
             factory.createComponent(target, prop.getName(), prop.getType());
 
         if (list != null) {
-            addControl(panel, Translator.localize(prop.getLabel()), list);
+            addControl(panel, Translator.localize(prop.getLabel()), list, target);
         }
     }
 
@@ -261,7 +266,7 @@ class SwingUIFactory {
                     propertyName, 
                     true, 
                     getterSetter);
-            addControl(panel, null, control);
+            addControl(panel, null, control, target);
         }
     }
 
@@ -282,7 +287,7 @@ class SwingUIFactory {
                 buildCheckBox(p, target, data);
             }                            
         }
-        addControl(panel, null, p);
+        addControl(panel, null, p, target);
     }
 
     private void buildCheckBox(
@@ -298,7 +303,13 @@ class SwingUIFactory {
         final String label = Translator.localize(prop.getLabel());
         
         if (getterSetter.contains(propertyName)) {
-            panel.add(new CheckBox(label, target, propertyName, getterSetter));
+        	final CheckBox cb =
+        		new CheckBox(label, target, propertyName, getterSetter);
+        	if (Model.getModelManagementHelper().isReadOnly(target)) {
+        		cb.setEnabled(false);
+        	}
+        	
+            panel.add(cb);
         }
     }
 
@@ -464,7 +475,8 @@ class SwingUIFactory {
         }
         
         if (comp != null) {
-            addControl(panel, Translator.localize(prop.getLabel()), comp);
+            addControl(panel, Translator.localize(prop.getLabel()),
+            		comp, target);
         }
     }
 
@@ -493,11 +505,20 @@ class SwingUIFactory {
         
         if (document != null) {
             JTextField tfield = new UMLTextField(document);
-            addControl(panel, Translator.localize(prop.getLabel()), tfield);
+            addControl(panel, Translator.localize(prop.getLabel()),
+            		tfield, target);
         }
     }
     
-    private void addControl(JPanel panel, String text, JComponent component) {
+    private void addControl(
+    		final JPanel panel,
+    		final String text,
+    		final JComponent component,
+    		final Object target) {
+    	if (Model.getModelManagementHelper().isReadOnly(target)) {
+    		component.setEnabled(false);
+    	}
+
         LabelledComponent lc = new LabelledComponent(text, component);
         panel.add(lc);
     }

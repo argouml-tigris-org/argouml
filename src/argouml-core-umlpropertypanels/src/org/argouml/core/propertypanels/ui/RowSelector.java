@@ -277,39 +277,53 @@ class RowSelector extends JPanel
             moveTopAction = null;
             moveBottomAction = null;
         } else {
-            // Create actions and expander if we have multiple rows
-            final ArrayList<Action> actions = new ArrayList<Action>(2);
+        	if (!Model.getModelManagementHelper().isReadOnly(target)) {
+        		// TODO: Lets build this into a separate buildToolbar method
+        		
+                // Create actions and expander if we have multiple rows
+                final ArrayList<Action> actions = new ArrayList<Action>(6);
 
-            if (Model.getUmlFactory().isContainmentValid(metaType, target)) {
-                final Action createAction = new ActionCreateContainedModelElement(
-                        metaType,
-                        target,
-                        "button.new-" + Model.getMetaTypes().getName(metaType).toLowerCase());
-                actions.add(createAction);
-            }
-            deleteAction = new DeleteAction();
-            actions.add(deleteAction);
+                if (Model.getUmlFactory().isContainmentValid(metaType, target)) {
+                    final Action createAction = new ActionCreateContainedModelElement(
+                            metaType,
+                            target,
+                            "button.new-" + Model.getMetaTypes().getName(metaType).toLowerCase());
+                    actions.add(createAction);
+                }
+                deleteAction = new DeleteAction();
+                actions.add(deleteAction);
 
-            if (Model.getUmlHelper().isMovable(metaType)) {
-                moveUpAction = new MoveUpAction();
-                moveDownAction = new MoveDownAction();
-                moveTopAction = new MoveTopAction();
-                moveBottomAction = new MoveBottomAction();
-                actions.add(moveUpAction);
-                actions.add(moveDownAction);
-                actions.add(moveTopAction);
-                actions.add(moveBottomAction);
-            } else {
+                if (Model.getUmlHelper().isMovable(metaType)) {
+                    moveUpAction = new MoveUpAction();
+                    moveDownAction = new MoveDownAction();
+                    moveTopAction = new MoveTopAction();
+                    moveBottomAction = new MoveBottomAction();
+                    actions.add(moveUpAction);
+                    actions.add(moveDownAction);
+                    actions.add(moveTopAction);
+                    actions.add(moveBottomAction);
+                } else {
+                    moveUpAction = null;
+                    moveDownAction = null;
+                    moveTopAction = null;
+                    moveBottomAction = null;
+                }
+
+                final ToolBarFactory tbf = new ToolBarFactory(actions);
+                toolbar = tbf.createToolBar();
+                toolbar.setRollover(true);
+                toolbar.setOrientation(ToolBar.VERTICAL);
+        	} else {
+                final ToolBarFactory tbf = new ToolBarFactory(new Object[] {});
+                toolbar = tbf.createToolBar();
+                toolbar.setRollover(true);
+                toolbar.setOrientation(ToolBar.VERTICAL);
                 moveUpAction = null;
                 moveDownAction = null;
                 moveTopAction = null;
                 moveBottomAction = null;
-            }
-
-            final ToolBarFactory tbf = new ToolBarFactory(actions);
-            toolbar = tbf.createToolBar();
-            toolbar.setRollover(true);
-            toolbar.setOrientation(ToolBar.VERTICAL);
+                deleteAction = null;
+        	}
 
             JPanel buttonPanel =
                 new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
@@ -323,17 +337,19 @@ class RowSelector extends JPanel
             }
             add(buttonPanel, BorderLayout.WEST);
 
-            getList().addListSelectionListener(deleteAction);
-            // TODO: We should really test the model instead for this
-            // but we have no API yet.
-            // Can we just check if the collection to build the JList
-            // control implements the List interface?
-            if (Model.getUmlHelper().isMovable(metaType)) {
-                getList().addListSelectionListener(moveUpAction);
-                getList().addListSelectionListener(moveDownAction);
-                getList().addListSelectionListener(moveTopAction);
-                getList().addListSelectionListener(moveBottomAction);
-            }
+        	if (!Model.getModelManagementHelper().isReadOnly(target)) {
+	            getList().addListSelectionListener(deleteAction);
+	            // TODO: We should really test the model instead for this
+	            // but we have no API yet.
+	            // Can we just check if the collection to build the JList
+	            // control implements the List interface?
+	            if (Model.getUmlHelper().isMovable(metaType)) {
+	                getList().addListSelectionListener(moveUpAction);
+	                getList().addListSelectionListener(moveDownAction);
+	                getList().addListSelectionListener(moveTopAction);
+	                getList().addListSelectionListener(moveBottomAction);
+	            }
+        	}
             
             getModel().addListDataListener(this);
         }
@@ -408,7 +424,7 @@ class RowSelector extends JPanel
             toolbar.setVisible(expanded);
         }
 
-        // Froce the parent to redraw
+        // Force the parent to redraw
         getParent().invalidate();
         getParent().validate();
     }
@@ -429,13 +445,15 @@ class RowSelector extends JPanel
      */
     public void removeNotify() {
         LOG.info("The RowSelector is being removed from a panel");
-        getList().removeListSelectionListener(deleteAction);
-        if (moveUpAction != null) {
-            getList().removeListSelectionListener(moveUpAction);
-            getList().removeListSelectionListener(moveDownAction);
-            getList().removeListSelectionListener(moveTopAction);
-            getList().removeListSelectionListener(moveBottomAction);
-        }
+    	if (!Model.getModelManagementHelper().isReadOnly(target)) {
+	        getList().removeListSelectionListener(deleteAction);
+	        if (moveUpAction != null) {
+	            getList().removeListSelectionListener(moveUpAction);
+	            getList().removeListSelectionListener(moveDownAction);
+	            getList().removeListSelectionListener(moveTopAction);
+	            getList().removeListSelectionListener(moveBottomAction);
+	        }
+    	}
         this.removeMouseListener(this);
         getModel().removeListDataListener(this);
         if (getModel() instanceof UMLModelElementListModel) {

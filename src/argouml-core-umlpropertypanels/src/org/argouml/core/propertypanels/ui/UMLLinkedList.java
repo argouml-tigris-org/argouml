@@ -136,6 +136,9 @@ class UMLLinkedList extends JList implements MouseListener {
      * @return Object
      */
     public Object getTarget() {
+    	if (getModel() instanceof SimpleListModel) {
+            return ((SimpleListModel) getModel()).getUmlElement();
+    	}
         return ((UMLModelElementListModel) getModel()).getTarget();
     }
 
