@@ -46,6 +46,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -370,26 +371,27 @@ class XmiReferenceResolverImpl extends XmiContext {
         if (modulesPath == null) {
             return null;
         }
-
         if (LOG.isDebugEnabled()) {
             LOG.debug("findModuleURL: modulesPath.size() = " 
                     + modulesPath.size());
         }
         for (String moduleDirectory : modulesPath) {
-            File candidate = new File(moduleDirectory, moduleName);
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("candidate '" + candidate.toString() + "' exists="
-                        + candidate.exists());
-            }
-            if (candidate.exists()) {
-                String urlString;
-                try {
-                    urlString = candidate.toURI().toURL().toExternalForm();
-                } catch (MalformedURLException e) {
-                    return null;
+            Collection<File> candidates = findAllCandidateModulePaths(
+                moduleDirectory, moduleName);
+            for (File candidate : candidates) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("candidate '" + candidate.toString()
+                            + "' exists=" + candidate.exists());
                 }
-
-                return fixupURL(urlString);
+                if (candidate.exists()) {
+                    String urlString;
+                    try {
+                        urlString = candidate.toURI().toURL().toExternalForm();
+                    } catch (MalformedURLException e) {
+                        return null;
+                    }
+                    return fixupURL(urlString);
+                }
             }
         }
         if (public2SystemIds.containsKey(moduleName)) {
@@ -403,8 +405,36 @@ class XmiReferenceResolverImpl extends XmiContext {
         return null;
     }
 
+    private static Collection<File> findAllCandidateModulePaths(
+            String basePath, String fileName) {
+        Collection<File> candidates = new ArrayList<File>();
+        if (basePath != null && basePath.length() > 0) {
+            Collection<File> dirs = new ArrayList<File>();
+            dirs = findAllInternalDirectories(new File(basePath));
+            for (File dir : dirs) {
+                candidates.add(new File(dir, fileName));
+            }
+        } else {
+            candidates.add(new File(fileName));
+        }
+        return candidates;
+    }
 
-    
+    private static Collection<File> findAllInternalDirectories(File baseDir) {
+        List<File> dirs = new ArrayList<File>();
+        if (baseDir.exists() && baseDir.isDirectory()) {
+            dirs.add(baseDir);
+            File[] files = baseDir.listFiles();
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    dirs.add(file);
+                    dirs.addAll(findAllInternalDirectories(file));
+                }
+            }
+        }
+        return dirs;
+    }
+
     /**
      * Gets the suffix of the <code>systemId</code>.
      * <p>

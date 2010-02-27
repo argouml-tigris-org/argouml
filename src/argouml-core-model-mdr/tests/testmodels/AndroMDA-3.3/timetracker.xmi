@@ -21,7 +21,7 @@
 			</XMI.extension>
 			<UML:Namespace.ownedElement>
 				<UML:Package xmi.id='eee_1045467100313_365297_7' name='Component View'/>
-				<UML:Package href='andromda-profile-3.3.xml|_8a70287_1078771814628_224704_589'>
+				<UML:Package href='andromda-profile-3.3.xml.zip|_8a70287_1078771814628_224704_589'>
 					<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 						<referentPath xmi.value='::org.andromda.profile'/>
 					</XMI.extension>
@@ -167,7 +167,7 @@
 												<UML:Comment xmi.id='_9_0_2_8980277_1149642394454_972306_376' name='This class enumerates the three states a timecard can be in.'/>
 											</UML:ModelElement.comment>
 											<UML:ModelElement.stereotype>
-												<UML:Stereotype href='andromda-profile-3.3.xml|_9_0_1fe00f9_1119373197267_700962_14'>
+												<UML:Stereotype href='andromda-profile-3.3.xml.zip|_9_0_1fe00f9_1119373197267_700962_14'>
 													<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 														<referentPath xmi.value='org.andromda.profile::Enumeration'/>
 													</XMI.extension>
@@ -508,7 +508,7 @@
 										</UML:Association>
 										<UML:Class xmi.id='_9_0_2_8980277_1156394472130_552212_164' name='Role'>
 											<UML:ModelElement.stereotype>
-												<UML:Stereotype href='andromda-profile-3.3.xml|_9_0_1fe00f9_1119373197267_700962_14'>
+												<UML:Stereotype href='andromda-profile-3.3.xml.zip|_9_0_1fe00f9_1119373197267_700962_14'>
 													<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 														<referentPath xmi.value='org.andromda.profile::Enumeration'/>
 													</XMI.extension>
@@ -617,7 +617,7 @@
 										<UML:Class xmi.id='_9_0_2_8980277_1148170347964_451862_237' name='UserVO[]'/>
 										<UML:Class xmi.id='_9_0_2_8980277_1148170347974_962254_242' name='UserVO'>
 											<UML:ModelElement.stereotype>
-												<UML:Stereotype href='andromda-profile-3.3.xml|_9_0_1fe00f9_1119373197267_59537_10'>
+												<UML:Stereotype href='andromda-profile-3.3.xml.zip|_9_0_1fe00f9_1119373197267_59537_10'>
 													<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 														<referentPath xmi.value='org.andromda.profile::ValueObject'/>
 													</XMI.extension>
@@ -673,7 +673,7 @@
 										<UML:Class xmi.id='_9_0_2_8980277_1149642611356_750576_500' name='TaskVO[]'/>
 										<UML:Class xmi.id='_9_0_2_8980277_1149642611356_405034_505' name='TimePeriodVO'>
 											<UML:ModelElement.stereotype>
-												<UML:Stereotype href='andromda-profile-3.3.xml|_9_0_1fe00f9_1119373197267_59537_10'>
+												<UML:Stereotype href='andromda-profile-3.3.xml.zip|_9_0_1fe00f9_1119373197267_59537_10'>
 													<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 														<referentPath xmi.value='org.andromda.profile::ValueObject'/>
 													</XMI.extension>
@@ -702,7 +702,7 @@
 										</UML:Class>
 										<UML:Class xmi.id='_9_0_2_8980277_1149642611356_560722_508' name='TaskVO'>
 											<UML:ModelElement.stereotype>
-												<UML:Stereotype href='andromda-profile-3.3.xml|_9_0_1fe00f9_1119373197267_59537_10'>
+												<UML:Stereotype href='andromda-profile-3.3.xml.zip|_9_0_1fe00f9_1119373197267_59537_10'>
 													<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 														<referentPath xmi.value='org.andromda.profile::ValueObject'/>
 													</XMI.extension>
@@ -740,7 +740,7 @@
 										<UML:Class xmi.id='_9_0_2_8980277_1149642611356_915381_513' name='TimecardSummaryVO[]'/>
 										<UML:Class xmi.id='_9_0_2_8980277_1149642611356_360927_520' name='TimecardSummaryVO'>
 											<UML:ModelElement.stereotype>
-												<UML:Stereotype href='andromda-profile-3.3.xml|_9_0_1fe00f9_1119373197267_59537_10'>
+												<UML:Stereotype href='andromda-profile-3.3.xml.zip|_9_0_1fe00f9_1119373197267_59537_10'>
 													<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 														<referentPath xmi.value='org.andromda.profile::ValueObject'/>
 													</XMI.extension>
@@ -804,7 +804,7 @@
 										</UML:Class>
 										<UML:Class xmi.id='_9_0_2_8980277_1149642611356_414295_533' name='TimeAllocationVO'>
 											<UML:ModelElement.stereotype>
-												<UML:Stereotype href='andromda-profile-3.3.xml|_9_0_1fe00f9_1119373197267_59537_10'>
+												<UML:Stereotype href='andromda-profile-3.3.xml.zip|_9_0_1fe00f9_1119373197267_59537_10'>
 													<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 														<referentPath xmi.value='org.andromda.profile::ValueObject'/>
 													</XMI.extension>
@@ -841,7 +841,7 @@
 										</UML:Class>
 										<UML:Class xmi.id='_9_0_2_8980277_1149642611356_904176_535' name='TimecardVO'>
 											<UML:ModelElement.stereotype>
-												<UML:Stereotype href='andromda-profile-3.3.xml|_9_0_1fe00f9_1119373197267_59537_10'>
+												<UML:Stereotype href='andromda-profile-3.3.xml.zip|_9_0_1fe00f9_1119373197267_59537_10'>
 													<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 														<referentPath xmi.value='org.andromda.profile::ValueObject'/>
 													</XMI.extension>
@@ -853,7 +853,7 @@
 										</UML:Class>
 										<UML:Class xmi.id='_9_0_2_8980277_1149644056824_230589_1219' name='TimecardSearchCriteriaVO'>
 											<UML:ModelElement.stereotype>
-												<UML:Stereotype href='andromda-profile-3.3.xml|_9_0_1fe00f9_1119373197267_59537_10'>
+												<UML:Stereotype href='andromda-profile-3.3.xml.zip|_9_0_1fe00f9_1119373197267_59537_10'>
 													<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 														<referentPath xmi.value='org.andromda.profile::ValueObject'/>
 													</XMI.extension>
@@ -938,7 +938,7 @@
 										<UML:Class xmi.id='_9_0_2_8980277_1156396215447_781061_342' name='UserRoleVO[]'/>
 										<UML:Class xmi.id='_9_0_2_8980277_1156396244188_824032_358' name='UserRoleVO'>
 											<UML:ModelElement.stereotype>
-												<UML:Stereotype href='andromda-profile-3.3.xml|_9_0_1fe00f9_1119373197267_59537_10'>
+												<UML:Stereotype href='andromda-profile-3.3.xml.zip|_9_0_1fe00f9_1119373197267_59537_10'>
 													<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 														<referentPath xmi.value='org.andromda.profile::ValueObject'/>
 													</XMI.extension>
@@ -966,7 +966,7 @@
 										</UML:Class>
 										<UML:Class xmi.id='_9_0_2_8980277_1156396447130_332684_387' name='UserDetailsVO'>
 											<UML:ModelElement.stereotype>
-												<UML:Stereotype href='andromda-profile-3.3.xml|_9_0_1fe00f9_1119373197267_59537_10'>
+												<UML:Stereotype href='andromda-profile-3.3.xml.zip|_9_0_1fe00f9_1119373197267_59537_10'>
 													<XMI.extension xmi.extender='MagicDraw UML 9.5' xmi.extenderID='MagicDraw UML 9.5'>
 														<referentPath xmi.value='org.andromda.profile::ValueObject'/>
 													</XMI.extension>

@@ -40,49 +40,22 @@
 package org.argouml.model.mdr;
 
 import java.io.File;
-import java.io.FileInputStream;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 
 /**
- * Test read models. 
+ * Test read compressed models, mainly to verify the correct reading of
+ * AndroMDA profiles.
  * TODO: Move this test into argouml base when we will want to read also zip 
  * file.
  * 
  * @author lmaitre
- * 
  */
 public class TestReadCompressedFilesAndHref extends
         AbstractMDRModelImplementationTestCase {
 
     private Logger LOG = Logger.getLogger(TestReadCompressedFilesAndHref.class);
-
-    /**
-     * TODO: either the AndroMDA profiles are added to the repository or this
-     * should be deleted [euluis on 2010-01-18].
-     */
-    public void testReadCompressedFileAndHref() {
-        String testModel = "tests/testmodels/MDASampleModel.xmi";
-        //notice that i must replace and hardcode user.home on my Mac OS X computer
-        //[since this always give "/tmp" (at least under Eclipe)]
-        final String ANDROMDA_HOME = System.getProperty("user.home")
-            + "/andromda-bin-3.1-RC1";
-        File mdaIsHere = new File(ANDROMDA_HOME);
-        if (mdaIsHere.exists()) {
-            LOG.info("Begin testReadCompressedFileAndHref()");        
-            XmiReaderImpl reader = new XmiReaderImpl(modelImplementation);
-            reader.addSearchPath(ANDROMDA_HOME + "/andromda/xml.zips");
-            try {
-                reader.parse(
-                        new InputSource(new FileInputStream(testModel)), false);
-            } catch (Exception e) {
-                e.printStackTrace();
-                fail("Exception while loading model");
-            }
-            assertTrue("model is loaded", true);
-        }
-    }
     
     private final String ISSUE5946_BASE_DIR = "/testmodels/AndroMDA-3.3/";
 
@@ -114,10 +87,9 @@ public class TestReadCompressedFilesAndHref extends
      * </ul>
      */
     public void testReadCompressedFileAndHrefIssue5946() {
-        // TODO: uncomment the following to get the failure.
-//        assertLoadModel(ISSUE5946_BASE_DIR + "timetracker.xmi",
-//            ISSUE5946_BASE_DIR + "zipped-uml14/",
-//            "testReadFileAndHrefIssue5946");
+        assertLoadModel(ISSUE5946_BASE_DIR + "timetracker.xmi",
+            ISSUE5946_BASE_DIR + "zipped-uml14/",
+            "testCompressedReadFileAndHrefIssue5946");
     }
     
     void assertLoadModel(String modelPath, String profilesPath,
@@ -125,17 +97,18 @@ public class TestReadCompressedFilesAndHref extends
         LOG.info("Begin " + testName + "()");
         XmiReaderImpl reader = new XmiReaderImpl(modelImplementation);
         if (profilesPath != null) {
-            reader.addSearchPath(
-                getClass().getResource(profilesPath).getFile());
+            String file = getClass().getResource(profilesPath).getFile();
+            reader.addSearchPath(file);
         }
         try {
-            reader.parse(new InputSource(getClass().getResourceAsStream(
-                modelPath)), false);
+            InputSource inputSource = new InputSource(
+                getClass().getResource(modelPath).toExternalForm());
+            inputSource.setPublicId(new File(modelPath).getName());
+            reader.parse(inputSource, false);
         } catch (Exception e) {
             e.printStackTrace();
-            fail("Exception while loading model");
+            fail("Exception while loading model: " + e.getMessage());
         }
         assertTrue(modelPath + " model is loaded", true);
-        
     }
 }
