@@ -119,6 +119,11 @@ class RowSelector extends JPanel
      */
     private final Object target;
     
+    /**
+     * Identifies if the model element is a readonly modelelement
+     */
+    private final boolean readonly;
+    
     static {
         // Extract the icon that is used by the tree control
         // for the current look and feel
@@ -224,7 +229,8 @@ class RowSelector extends JPanel
     /**
      * Constructor
      * @param model The single item list model
-     * @param singleRow true if we only ever want a single row
+     * @param expanded true if the control should be initially expanded
+     * @param expandable true if the control should be expandable
      */
     public RowSelector(DefaultListModel model, boolean expanded, boolean expandable) {
         super(new BorderLayout());
@@ -233,16 +239,23 @@ class RowSelector extends JPanel
         Object metaType = null;
 
         if (model instanceof UMLModelElementListModel) {
+            // Temporary until SimpleListModel is used for all
             target = ((UMLModelElementListModel) model).getTarget();
             metaType = ((UMLModelElementListModel) model).getMetaType();
             scroll = new OldScrollList(model, 1);
+            readonly = Model.getModelManagementHelper().isReadOnly(target);
         } else if (model instanceof org.argouml.core.propertypanels.ui.SimpleListModel) {
             target = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getUmlElement();
             metaType = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaType();
             scroll = new ScrollListImpl(model, 1);
+            readonly = Model.getModelManagementHelper().isReadOnly(target);
         } else {
+            // Temporary until SimpleListModel is used for all
             target = null;
+            readonly = true;
         }
+        
+        assert (target != null);
 
         LOG.info("Creating list for " + target);
 
@@ -277,7 +290,7 @@ class RowSelector extends JPanel
             moveTopAction = null;
             moveBottomAction = null;
         } else {
-        	if (!Model.getModelManagementHelper().isReadOnly(target)) {
+        	if (!readonly) {
         		// TODO: Lets build this into a separate buildToolbar method
         		
                 // Create actions and expander if we have multiple rows
@@ -445,7 +458,7 @@ class RowSelector extends JPanel
      */
     public void removeNotify() {
         LOG.info("The RowSelector is being removed from a panel");
-    	if (!Model.getModelManagementHelper().isReadOnly(target)) {
+    	if (!readonly) {
 	        getList().removeListSelectionListener(deleteAction);
 	        if (moveUpAction != null) {
 	            getList().removeListSelectionListener(moveUpAction);

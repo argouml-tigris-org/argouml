@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -56,7 +56,6 @@ import javax.swing.event.PopupMenuListener;
 import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
-import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
@@ -121,7 +120,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
     /**
      * Flag to indicate whether the model is being build.
      */
-    protected boolean buildingModel = false;
+    private boolean buildingModel = false;
     
     /**
      * Flag needed to prevent infinite recursion during processing of
@@ -424,7 +423,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
     }
     
     public void removeModelEventListener() {
-        Model.getPump().addModelEventListener(this, comboBoxTarget,
+        Model.getPump().removeModelEventListener(this, comboBoxTarget,
                 propertySetName);
         removeOtherModelEventListeners(comboBoxTarget);
     }
