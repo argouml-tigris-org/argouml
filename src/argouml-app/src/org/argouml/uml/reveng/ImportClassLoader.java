@@ -1,12 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Thomas N.
  *    tfmorris
  *****************************************************************************
  *
@@ -187,7 +188,9 @@ public final class ImportClassLoader extends URLClassLoader {
 	}
 
         // can't remove from existing one so create new one.
-        instance = new ImportClassLoader((URL[]) urls.toArray());
+        URL[] urlArray = new URL[urls.size()];
+        urlArray = urls.toArray(urlArray);
+        instance = new ImportClassLoader(urlArray);
     }
 
     /**
