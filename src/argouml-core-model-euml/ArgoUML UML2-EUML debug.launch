@@ -55,5 +55,5 @@
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.argouml.application.Main"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-nouml2warning"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="argouml-app"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx400M -ea -Dargouml.modules=org.argouml.sequence2.SequenceDiagramModule -Dlog4j.configuration=org/argouml/resource/full_console.lcf  -DeUML.resources=../argouml-core-model-euml/lib/uml2/org.eclipse.uml2.uml.resources_3.0.0.v200906011111.jar -Dargouml.model.implementation=org.argouml.model.euml.EUMLModelImplementation"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx400M -ea -Dargouml.modules=org.argouml.sequence2.SequenceDiagramModule;org.argouml.core.propertypanels.module.XmlPropertyPanelsModule -Dlog4j.configuration=org/argouml/resource/full_console.lcf  -DeUML.resources=../argouml-core-model-euml/lib/uml2/org.eclipse.uml2.uml.resources_3.0.0.v200906011111.jar -Dargouml.model.implementation=org.argouml.model.euml.EUMLModelImplementation"/>
 </launchConfiguration>
