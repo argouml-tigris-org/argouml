@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 
 /**
@@ -24,6 +25,9 @@ import org.argouml.model.Model;
  * @author Bob Tarling
  */
 class GetterSetterManagerImpl extends GetterSetterManager {
+    
+    private static final Logger LOG =
+        Logger.getLogger(GetterSetterManagerImpl.class);
     
     /**
      * The constructor
@@ -55,6 +59,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("changeability", new ChangeabilityGetterSetter());
         addGetterSetter("concurrency", new ConcurrencyGetterSetter());
         addGetterSetter("feature", new FeatureGetterSetter(type));
+        addGetterSetter("parameter", new ParameterGetterSetter());
         addGetterSetter("receiver", new ReceiverGetterSetter());
         addGetterSetter("sender", new SenderGetterSetter());
         addGetterSetter("body", new MethodExpressionGetterSetter());
@@ -131,7 +136,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             return ((ListGetterSetter) bgs).getMetaType();
         }
         
-        return false;
+        return null;
     }
     
     /**
@@ -591,6 +596,31 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         public Object getMetaType() {
             return metaType;
+        }
+    }
+    
+    
+    private class ParameterGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            return Model.getFacade().getParameters(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        protected boolean isValidElement(Object element, String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getParameter();
         }
     }
     

@@ -159,12 +159,12 @@ class ListFactory implements ComponentFactory {
             model = new UMLNamespaceOwnedElementListModel(modelElement);
         } else if ("outgoing".equals(propName)) {
             model = new UMLStateVertexOutgoingListModel(modelElement);
-        } else if ("parameter".equals(propName)) {
-            if (Model.getFacade().isAObjectFlowState(modelElement)) {
-                model = new UMLObjectFlowStateParameterListModel(modelElement, propName);
-            } else {
-                model = new UMLClassifierParameterListModel(modelElement, propName);
-            }
+//        } else if ("parameter".equals(propName)) {
+//            if (Model.getFacade().isAObjectFlowState(modelElement)) {
+//                model = new UMLObjectFlowStateParameterListModel(modelElement, propName);
+//            } else {
+//                model = new UMLClassifierParameterListModel(modelElement, propName);
+//            }
         } else if ("partition".equals(propName)) {
             model = new UMLActivityGraphPartitionListModel(modelElement);
         } else if ("predecessor".equals(propName)) {

@@ -97,7 +97,14 @@ class SimpleListModel
                                     type);
                             final int index =
                                 CollectionUtil.indexOf(c, newElement);
-                            add(index, newElement);
+                            if (index < 0 || index > getSize() - 1) {
+                                LOG.warn(
+                                        "Unable to add element at correct position "
+                                        + index + " added to end instead");
+                                addElement(newElement);
+                            } else {
+                                add(index, newElement);
+                            }
                         } else {
                             addElement(newElement);
                         }
