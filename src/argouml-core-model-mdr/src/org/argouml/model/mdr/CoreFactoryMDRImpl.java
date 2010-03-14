@@ -50,6 +50,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.ModelCommand;
 import org.argouml.model.ModelManagementHelper;
+import org.omg.uml.behavioralelements.activitygraphs.ObjectFlowState;
 import org.omg.uml.behavioralelements.commonbehavior.Reception;
 import org.omg.uml.behavioralelements.commonbehavior.Signal;
 import org.omg.uml.behavioralelements.statemachines.Event;
@@ -1100,10 +1101,19 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Parameter res = buildParameter((Classifier) type, event);
             res.setKind(ParameterDirectionKindEnum.PDK_IN);
             event.getParameter().add(res);
+            res.setName("arg" + event.getParameter().size());
+            return res;
+        } else if (o instanceof ObjectFlowState) {
+            ObjectFlowState ofs = (ObjectFlowState) o;
+            Parameter res = buildParameter((Classifier) type, ofs);
+            res.setKind(ParameterDirectionKindEnum.PDK_IN);
+            ofs.getParameter().add(res);
+            res.setName("arg" + ofs.getParameter().size());
             return res;
         } else if (o instanceof BehavioralFeature) {
             BehavioralFeature oper = (BehavioralFeature) o;
             Parameter res = buildParameter((Classifier) type, oper);
+            res.setKind(ParameterDirectionKindEnum.PDK_IN);
             oper.getParameter().add(res);
             res.setName("arg" + oper.getParameter().size());
             return res;

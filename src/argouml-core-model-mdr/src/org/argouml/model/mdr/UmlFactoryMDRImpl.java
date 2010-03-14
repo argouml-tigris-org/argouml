@@ -93,6 +93,7 @@ import org.omg.uml.behavioralelements.commonbehavior.TerminateAction;
 import org.omg.uml.behavioralelements.commonbehavior.UmlException;
 import org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction;
 import org.omg.uml.behavioralelements.statemachines.CompositeState;
+import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.behavioralelements.statemachines.FinalState;
 import org.omg.uml.behavioralelements.statemachines.Guard;
 import org.omg.uml.behavioralelements.statemachines.Pseudostate;
@@ -152,6 +153,7 @@ import org.omg.uml.foundation.core.TemplateParameter;
 import org.omg.uml.foundation.core.UmlAssociation;
 import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.foundation.core.Usage;
+import org.omg.uml.foundation.datatypes.ParameterDirectionKindEnum;
 import org.omg.uml.modelmanagement.ElementImport;
 import org.omg.uml.modelmanagement.Subsystem;
 import org.omg.uml.modelmanagement.UmlPackage;
@@ -415,8 +417,20 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     Operation.class 
                 });
         
-        // specifies valid elements for a Attribute to contain
+        // specifies valid elements for a Operation to contain
         validContainmentMap.put(Operation.class, 
+                new Class<?>[] { 
+                    Parameter.class
+                });
+        
+        // specifies valid elements for an Event to contain
+        validContainmentMap.put(Event.class, 
+                new Class<?>[] { 
+                    Parameter.class
+                });
+        
+        // specifies valid elements for an ObjectFlowState to contain
+        validContainmentMap.put(ObjectFlowState.class, 
                 new Class<?>[] { 
                     Parameter.class
                 });
@@ -588,7 +602,10 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Object element = null;
         
         // if this is a feature get the owner of that feature
-        if (this.modelImpl.getFacade().isAFeature(container)) {
+        // TODO: Does anything actually make use of this? It can
+        // cause unexpected behaviour.
+        if (this.modelImpl.getFacade().isAFeature(container)
+                && elementType != metaTypes.getParameter()) {
             container = this.modelImpl.getFacade().getOwner(container);
         }
         
@@ -618,7 +635,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             param.setName("T"); // default parameter name
             element = 
                 modelImpl.getCoreFactory().buildTemplateParameter(container, 
-                        param, null);            
+                        param, null);
+        } else if (elementType == metaTypes.getParameter()) {
+            element = getCore().buildParameter(container, null);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);
