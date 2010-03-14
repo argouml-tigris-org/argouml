@@ -1107,8 +1107,13 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             oper.getParameter().add(res);
             res.setName("arg" + oper.getParameter().size());
             return res;
+        } else if (o == null) {
+            throw new IllegalArgumentException(
+                    "A containing element must be supplied for the parameter");
         } else {
-            throw new IllegalArgumentException("Unsupported object type");
+            throw new IllegalArgumentException(
+                    "Unsupported contining element for parameter "
+                    + o.getClass().getName());
         }
     }
 
