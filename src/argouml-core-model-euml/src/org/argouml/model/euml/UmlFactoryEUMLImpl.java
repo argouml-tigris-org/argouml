@@ -351,6 +351,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = modelImpl.getCommonBehaviorFactory().createException();
         } else if (elementType == metaTypes.getTransition()) {
             o = modelImpl.getStateMachinesFactory().createTransition();
+        } else if (elementType == metaTypes.getParameter()) {
+            o = modelImpl.getCoreFactory().createParameter();
         }
         if (!(o instanceof EObject)) {
             throw new IllegalArgumentException(
