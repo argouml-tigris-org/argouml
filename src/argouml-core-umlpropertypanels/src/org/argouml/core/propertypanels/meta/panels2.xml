@@ -945,9 +945,10 @@
     <separator />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
-    <separator />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
+    <separator />
+    <list name="feature" type="org.eclipse.uml2.uml.Operation" label="label.operations" />
     <list name="residentElement" type="ElementResidence" label="label.residents" />
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
@@ -993,7 +994,10 @@
 	<separator />
     <list name="generalization" type="Generalization" />    
     <list name="specialization" type="GeneralizableElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
+    <list name="feature" type="org.eclipse.uml2.uml.Operation" label="label.operations" />
     <list name="deployedComponent" type="Component" label="label.deployedcomponents"  />
 	
 	<debug />
