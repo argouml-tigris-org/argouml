@@ -396,13 +396,15 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for a Component to contain
         validContainmentMap.put(Component.class, 
                 new Class<?>[] { 
-                    Reception.class
+                    Reception.class,
+                    Operation.class
                 });
         
         // specifies valid elements for a Node to contain
         validContainmentMap.put(Node.class, 
                 new Class<?>[] { 
-                    Reception.class
+                    Reception.class,
+                    Operation.class
                 });
         
         // specifies valid elements for a Enumeration to contain
