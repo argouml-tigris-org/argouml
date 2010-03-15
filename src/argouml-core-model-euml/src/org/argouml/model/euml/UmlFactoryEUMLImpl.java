@@ -595,12 +595,14 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         // specifies valid elements for a Component to contain
         validContainmentMap.put(Component.class, 
                 new Class<?>[] { 
+                    Operation.class,
                     Reception.class
                 });
         
         // specifies valid elements for a Node to contain
         validContainmentMap.put(Node.class, 
                 new Class<?>[] { 
+                    Operation.class,
                     Reception.class
                 });
         
