@@ -174,7 +174,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
@@ -205,7 +205,7 @@
     <list name="specialization" type="GeneralizableElement" />
     <separator />
     <list name="feature" type="org.omg.uml.foundation.core.Attribute" label="label.attributes" />
-    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
     <list name="association" type="Classifier" />    
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
 	
@@ -1167,7 +1167,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
@@ -1388,7 +1388,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
@@ -1435,7 +1435,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
@@ -3790,7 +3790,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
@@ -3908,7 +3908,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />

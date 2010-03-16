@@ -47,6 +47,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
@@ -237,6 +238,7 @@ class RowSelector extends JPanel
         
         this.expandable = expandable;
         Object metaType = null;
+        List metaTypes = null;
 
         if (model instanceof UMLModelElementListModel) {
             // Temporary until SimpleListModel is used for all
@@ -247,6 +249,7 @@ class RowSelector extends JPanel
         } else if (model instanceof org.argouml.core.propertypanels.ui.SimpleListModel) {
             target = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getUmlElement();
             metaType = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaType();
+            metaTypes = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaTypes();
             scroll = new ScrollListImpl(model, 1);
             readonly = Model.getModelManagementHelper().isReadOnly(target);
         } else {
@@ -256,6 +259,11 @@ class RowSelector extends JPanel
         }
         
         assert (target != null);
+
+        if (metaTypes == null) {
+            metaTypes = new ArrayList();
+            metaTypes.add(metaType);
+        }
 
         LOG.info("Creating list for " + target);
 
@@ -290,18 +298,20 @@ class RowSelector extends JPanel
             moveTopAction = null;
             moveBottomAction = null;
         } else {
-        	if (!readonly) {
+            if (!readonly) {
         		// TODO: Lets build this into a separate buildToolbar method
         		
                 // Create actions and expander if we have multiple rows
                 final ArrayList<Action> actions = new ArrayList<Action>(6);
 
-                if (Model.getUmlFactory().isContainmentValid(metaType, target)) {
-                    final Action createAction = new ActionCreateContainedModelElement(
-                            metaType,
-                            target,
-                            "button.new-" + Model.getMetaTypes().getName(metaType).toLowerCase());
-                    actions.add(createAction);
+                for (Object meta : metaTypes) {
+                    if (Model.getUmlFactory().isContainmentValid(meta, target)) {
+                        final Action createAction = new ActionCreateContainedModelElement(
+                                meta,
+                                target,
+                                "button.new-" + Model.getMetaTypes().getName(meta).toLowerCase());
+                        actions.add(createAction);
+                    }
                 }
                 deleteAction = new DeleteAction();
                 actions.add(deleteAction);

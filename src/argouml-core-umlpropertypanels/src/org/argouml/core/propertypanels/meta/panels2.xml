@@ -205,7 +205,7 @@
     <list name="specialization" type="GeneralizableElement" />
     <separator />
     <list name="feature" type="org.eclipse.uml2.uml.Property" label="label.attributes" />
-    <list name="feature" type="org.eclipse.uml2.uml.Operation" label="label.operations" />
+    <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
     <list name="association" type="Classifier" />    
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
 	<debug />

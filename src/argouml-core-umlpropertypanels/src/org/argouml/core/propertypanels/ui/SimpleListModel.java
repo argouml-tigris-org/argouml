@@ -15,8 +15,10 @@ package org.argouml.core.propertypanels.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
@@ -47,6 +49,11 @@ class SimpleListModel
      */
     private final String type;
     
+    /**
+     * The metatypes to provide buttons to create
+     */
+    private final ArrayList metaTypes;
+    
     private final Object umlElement;
     private final String propertyName;
 
@@ -60,6 +67,15 @@ class SimpleListModel
         super();
         this.getterSetterManager = getterSetterManager;
         this.type = type;
+        metaTypes = new ArrayList(2);
+        try {
+            final StringTokenizer st = new StringTokenizer(type, ",");
+            while (st.hasMoreTokens()) {
+                metaTypes.add(Class.forName(st.nextToken()));
+            }
+        } catch (ClassNotFoundException e) {
+            LOG.warn("Exception", e);
+        }
         this.propertyName = propertyName;
         this.umlElement = umlElement;
 
@@ -73,7 +89,14 @@ class SimpleListModel
     }
     
     public Object getMetaType() {
+        if (metaTypes.size() > 0) {
+            return metaTypes.get(0);
+        }
 	return getterSetterManager.getMetaType(propertyName);
+    }
+    
+    public List getMetaTypes() {
+        return metaTypes;
     }
     
     /*

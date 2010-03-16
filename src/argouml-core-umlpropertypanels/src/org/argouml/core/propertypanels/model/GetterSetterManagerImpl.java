@@ -16,6 +16,7 @@ package org.argouml.core.propertypanels.model;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
@@ -58,7 +59,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("kind", new ParameterDirectionGetterSetter());
         addGetterSetter("changeability", new ChangeabilityGetterSetter());
         addGetterSetter("concurrency", new ConcurrencyGetterSetter());
-        addGetterSetter("feature", new FeatureGetterSetter(type));
+        addGetterSetter("feature", new FeatureGetterSetter());
         addGetterSetter("parameter", new ParameterGetterSetter());
         addGetterSetter("receiver", new ReceiverGetterSetter());
         addGetterSetter("sender", new SenderGetterSetter());
@@ -102,7 +103,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         return null;
     }
     
-    public Collection getOptions(Object umlElement, String propertyName, String type) {
+    public Collection getOptions(
+            final Object umlElement,
+            final String propertyName,
+            final String type) {
         BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof OptionGetterSetter) {
             return ((OptionGetterSetter) bgs).getOptions(umlElement, type);
@@ -121,7 +125,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         return null;
     }
     
-    public boolean isValidElement(String propertyName, String type, Object element) {
+    public boolean isValidElement(
+            final String propertyName,
+            final String type,
+            final Object element) {
         BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof ListGetterSetter) {
             return ((ListGetterSetter) bgs).isValidElement(element, type);
@@ -559,24 +566,32 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             }
         }
     }
-    
+
     private class FeatureGetterSetter extends ListGetterSetter {
         
-        private Class metaType;
-        
-        public FeatureGetterSetter(String type) {
+        /**
+         * Get all the features for the model
+         * @param modelElement
+         * @param type
+         * @return
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         */
+        public Collection getOptions(
+                final Object modelElement,
+                final String type /* TODO: change this to a metatype */ ) {
+            
+            StringTokenizer st = new StringTokenizer(type, ",");
             try {
-                metaType = Class.forName(type);
+                Class metaType = Class.forName(st.nextToken());
+                if (Model.getMetaTypes().getAttribute().equals(metaType)) {
+                    return Model.getFacade().getAttributes(modelElement);
+                } else if (Model.getMetaTypes().getOperation().equals(metaType)) {
+                    return Model.getFacade().getOperationsAndReceptions(modelElement);
+                } else {
+                    return Collections.EMPTY_LIST;
+                }
             } catch (ClassNotFoundException e) {
-                // ignore
-            }
-        }
-        public Collection getOptions(Object modelElement, String type) {
-            if (Model.getMetaTypes().getAttribute().equals(metaType)) {
-                return Model.getFacade().getAttributes(modelElement);
-            } else if (Model.getMetaTypes().getOperation().equals(metaType)) {
-                return Model.getFacade().getOperationsAndReceptions(modelElement);
-            } else {
+                LOG.error("Exception", e);
                 return Collections.EMPTY_LIST;
             }
         }
@@ -590,12 +605,14 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        protected boolean isValidElement(Object element, String type) {
+        protected boolean isValidElement(
+                final Object element,
+                final String type) {
             return getOptions(element, type).contains(element);
         }
         
         public Object getMetaType() {
-            return metaType;
+            return Model.getMetaTypes().getOperation();
         }
     }
     
