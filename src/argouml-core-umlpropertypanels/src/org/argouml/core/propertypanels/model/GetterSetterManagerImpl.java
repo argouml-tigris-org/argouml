@@ -575,7 +575,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             if (Model.getMetaTypes().getAttribute().equals(metaType)) {
                 return Model.getFacade().getAttributes(modelElement);
             } else if (Model.getMetaTypes().getOperation().equals(metaType)) {
-                return Model.getFacade().getOperations(modelElement);
+                return Model.getFacade().getOperationsAndReceptions(modelElement);
             } else {
                 return Collections.EMPTY_LIST;
             }
