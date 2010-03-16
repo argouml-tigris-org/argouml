@@ -618,10 +618,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == this.metaTypes.getOperation()) {
             element = getCore().buildOperation(container, null);
         } else if (elementType == this.metaTypes.getReception()) {
-            element = this.modelImpl.getCommonBehaviorFactory().
-                createReception();
-            
-            this.modelImpl.getCoreHelper().addOwnedElement(container, element);
+            element = this.modelImpl.getCommonBehaviorFactory().buildReception(container);
         } else if (elementType == this.metaTypes.getEnumerationLiteral()) {
             element = getCore().buildEnumerationLiteral(null, container);
         } else if (elementType == this.metaTypes.getExtensionPoint()) {
