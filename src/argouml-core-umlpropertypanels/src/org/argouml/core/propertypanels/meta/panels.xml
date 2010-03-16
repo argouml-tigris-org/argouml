@@ -2036,6 +2036,7 @@
   </panel>
   <panel name="Reception">
     <text name="name" type="Name" />
+    <singlerow name="owner" type="Classifier" />
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
@@ -2044,13 +2045,12 @@
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
-    <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" label="label.target-flows" />
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
