@@ -948,7 +948,7 @@
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
-    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
     <list name="residentElement" type="ElementResidence" label="label.residents" />
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
@@ -997,7 +997,7 @@
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
-    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
     <list name="deployedComponent" type="Component" label="label.deployedcomponents"  />
 	
 	<debug />
