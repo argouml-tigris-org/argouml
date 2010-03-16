@@ -2063,13 +2063,13 @@
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" label="label.element-import" />
+    <!--  list name="partition" type="ModelElement" / -->
+    <!--  list name="elementImport" type="ModelElement" label="label.element-import" / -->
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
     <list name="parameter" type="Parameter" />
-    <separator />
-    <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
+    <!-- separator / -->
+    <!-- list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" / -->
     <attribute name="specification" type="String" />
     <attribute name="signal" type="Signal" />
   </panel>
