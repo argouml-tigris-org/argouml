@@ -1119,7 +1119,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getRaisedSignals(Object handle) {
-        throw new NotYetImplementedException();
+        return getRaisedExceptions(handle);
     }
     
     public Collection getRaisedExceptions( Object handle) {
