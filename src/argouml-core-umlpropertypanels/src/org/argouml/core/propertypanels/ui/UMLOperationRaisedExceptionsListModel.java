@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -41,7 +41,6 @@ package org.argouml.core.propertypanels.ui;
 import java.util.Collection;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 
 /**
@@ -49,13 +48,13 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  *
  * @author Michiel
  */
-class UMLOperationRaisedSignalsListModel
+class UMLOperationRaisedExceptionsListModel
     extends UMLModelElementListModel {
 
     /**
      * The constructor.
      */
-    public UMLOperationRaisedSignalsListModel(Object modelElement) {
+    public UMLOperationRaisedExceptionsListModel(Object modelElement) {
         super("signal", true, false);
         setTarget(modelElement);
     }
@@ -68,7 +67,7 @@ class UMLOperationRaisedSignalsListModel
             Collection signals = null;
             Object target = getTarget();
             if (Model.getFacade().isAOperation(target)) {
-                signals = Model.getFacade().getRaisedSignals(target);
+                signals = Model.getFacade().getRaisedExceptions(target);
             }
             setAllElements(signals);
         }
@@ -81,7 +80,7 @@ class UMLOperationRaisedSignalsListModel
         Collection signals = null;
         Object target = getTarget();
         if (Model.getFacade().isAOperation(target)) {
-            signals = Model.getFacade().getRaisedSignals(target);
+            signals = Model.getFacade().getRaisedExceptions(target);
         }
         return (signals != null) && signals.contains(element);
     }

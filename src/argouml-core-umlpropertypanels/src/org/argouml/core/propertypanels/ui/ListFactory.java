@@ -172,7 +172,7 @@ class ListFactory implements ComponentFactory {
         } else if ("qualifier".equals(propName)) {
             model = new UMLAssociationEndQualifiersListModel(modelElement);
         } else if ("raisedSignal".equals(propName)) {
-            model = new UMLOperationRaisedSignalsListModel(modelElement);
+            model = new UMLOperationRaisedExceptionsListModel(modelElement);
         } else if ("reception".equals(propName)) {
             model = new UMLSignalReceptionListModel(modelElement);
         } else if ("resident".equals(propName)) {
