@@ -2068,10 +2068,10 @@
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
     <list name="parameter" type="Parameter" />
+    <combo name="signal" type="Signal" />
+    <textarea name="specification" type="String" />
     <!-- separator / -->
     <!-- list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" / -->
-    <attribute name="specification" type="String" />
-    <attribute name="signal" type="Signal" />
   </panel>
   <panel name="LinkEnd">
     <text name="name" type="Name" />

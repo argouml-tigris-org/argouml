@@ -465,6 +465,13 @@ class SwingUIFactory {
             comp = new UMLComboBoxNavigator(
                     Translator.localize("label.type.navigate.tooltip"),
                     combo);
+        } else if ("signal".equals(prop.getName())) {
+            final UMLComboBoxModel model =
+                new UMLReceptionSignalComboBoxModel(propertyName, target);
+            final JComboBox combo = new UMLComboBox(model);
+            comp = new UMLComboBoxNavigator(
+                    Translator.localize("label.type.navigate.tooltip"),
+                    combo);
         } else if ("specification".equals(prop.getName())) {
             final UMLComboBoxModel model =
                 new UMLMethodSpecificationComboBoxModel(propertyName, target);
