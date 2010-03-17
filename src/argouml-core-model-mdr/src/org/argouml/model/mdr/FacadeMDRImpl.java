@@ -3006,16 +3006,7 @@ class FacadeMDRImpl implements Facade {
 
 
     public Collection getRaisedSignals(Object handle) {
-        try {
-            if (handle instanceof BehavioralFeature) {
-                return getRefOutermostPackage(handle).getCommonBehavior()
-                        .getAContextRaisedSignal().getRaisedSignal(
-                                (BehavioralFeature) handle);
-            }
-        } catch (InvalidObjectException e) {
-            throw new InvalidElementException(e);
-        }
-        return illegalArgumentCollection(handle);
+        return getRaisedExceptions(handle);
     }
     
     /**
@@ -3026,9 +3017,14 @@ class FacadeMDRImpl implements Facade {
      * @see org.argouml.model.Facade#getRaisedExceptions(java.lang.Object)
      */
     public Collection getRaisedExceptions(Object handle) {
-        if (handle instanceof Operation) {
-            throw new NotImplementedException(
-                    "There are no exceptions in UML 1.x operations"); 
+        try {
+            if (handle instanceof BehavioralFeature) {
+                return getRefOutermostPackage(handle).getCommonBehavior()
+                        .getAContextRaisedSignal().getRaisedSignal(
+                                (BehavioralFeature) handle);
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
         }
         return illegalArgumentCollection(handle);
     }
