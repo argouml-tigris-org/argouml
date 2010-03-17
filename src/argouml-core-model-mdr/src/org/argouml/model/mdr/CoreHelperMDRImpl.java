@@ -3204,6 +3204,10 @@ class CoreHelperMDRImpl implements CoreHelper {
             ((Operation) operation).setSpecification(specification);
             return;
         }
+        if (operation instanceof Reception) {
+            ((Reception) operation).setSpecification(specification);
+            return;
+        }
         throw new IllegalArgumentException("operation: " + operation);
     }
 
