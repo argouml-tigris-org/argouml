@@ -44,9 +44,6 @@ import javax.swing.JList;
 
 import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.model.Model;
-import org.argouml.uml.ui.behavior.use_cases.ActionAddExtendExtensionPoint;
-import org.argouml.uml.ui.behavior.use_cases.ActionNewExtendExtensionPoint;
-import org.argouml.uml.ui.behavior.use_cases.ActionNewUseCaseExtensionPoint;
 
 /**
  * Creates the XML Property panels
@@ -153,18 +150,8 @@ class ListFactory implements ComponentFactory {
             model = new UMLInteractionMessagesListModel(modelElement);
         } else if ("method".equals(propName)) {
             model = new UMLOperationMethodsListModel(modelElement);
-//        } else if ("operation".equals(propName)) {
-//            model = new UMLClassOperationListModel(modelElement);
-        } else if ("ownedElement".equals(propName)) {
-            model = new UMLNamespaceOwnedElementListModel(modelElement);
         } else if ("outgoing".equals(propName)) {
             model = new UMLStateVertexOutgoingListModel(modelElement);
-//        } else if ("parameter".equals(propName)) {
-//            if (Model.getFacade().isAObjectFlowState(modelElement)) {
-//                model = new UMLObjectFlowStateParameterListModel(modelElement, propName);
-//            } else {
-//                model = new UMLClassifierParameterListModel(modelElement, propName);
-//            }
         } else if ("partition".equals(propName)) {
             model = new UMLActivityGraphPartitionListModel(modelElement);
         } else if ("predecessor".equals(propName)) {

@@ -3818,8 +3818,8 @@
     <list name="generalization" type="Generalization" />    
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="elementImport" type="ModelElement" label="label.element-import" />       
+    <list name="ownedElement" type="org.omg.uml.modelmanagement.UmlPackage,org.omg.uml.foundation.core.DataType,org.omg.uml.foundation.core.Enumeration" label="label.owned-elements"/>
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="clientDependency" type="Dependency" />
     <attribute name="supplierDependency" type="ModelElement" />    
     <attribute name="targetFlow" type="Flow" />

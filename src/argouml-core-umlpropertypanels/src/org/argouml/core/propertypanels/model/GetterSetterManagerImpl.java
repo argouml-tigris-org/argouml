@@ -64,6 +64,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("receiver", new ReceiverGetterSetter());
         addGetterSetter("sender", new SenderGetterSetter());
         addGetterSetter("body", new MethodExpressionGetterSetter());
+        addGetterSetter("ownedElement", new OwnedElementGetterSetter());
     }
     
     /**
@@ -594,6 +595,44 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 LOG.error("Exception", e);
                 return Collections.EMPTY_LIST;
             }
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        protected boolean isValidElement(
+                final Object element,
+                final String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getOperation();
+        }
+    }
+    
+    
+
+    private class OwnedElementGetterSetter extends ListGetterSetter {
+        
+        /**
+         * Get all the owned elements for the namespace
+         * @param modelElement
+         * @param type
+         * @return
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         */
+        public Collection getOptions(
+                final Object modelElement,
+                final String type) {
+            
+            return Model.getFacade().getOwnedElements(modelElement);
         }
       
         public Object get(Object modelElement, String type) {

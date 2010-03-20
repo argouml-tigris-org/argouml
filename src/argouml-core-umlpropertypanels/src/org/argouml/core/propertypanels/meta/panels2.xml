@@ -3814,7 +3814,7 @@
     <list name="generalization" type="Generalization" />    
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
+    <list name="ownedElement" type="org.eclipse.uml2.uml.UMLPackage,org.eclipse.uml2.uml.DataType,org.eclipse.uml2.uml.Enumeration" label="label.owned-elements"/>
     <list name="elementImport" type="ModelElement" label="label.element-import" />       
     <attribute name="clientDependency" type="Dependency" />
     <attribute name="supplierDependency" type="ModelElement" />    
