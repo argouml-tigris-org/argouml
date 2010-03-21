@@ -397,6 +397,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-extension-point", "New Extension Point");
         images.put("button.new-extend", "Extend");
         images.put("button.new-exception", "Exception");
+        images.put("button.new-method", "Method");
         images.put("button.new-template-parameter", "TemplateParameter");
     }
 
