@@ -265,11 +265,12 @@ class RowSelector extends JPanel
             metaTypes.add(metaType);
         }
 
-        LOG.info("Creating list for " + target);
-
-        LOG.info("model = " + model.getClass().getName());
-        LOG.info("metatype = " + metaType);
-        LOG.info("target = " + target);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Creating list for " + target);
+            LOG.debug("model = " + model.getClass().getName());
+            LOG.debug("metatype = " + metaType);
+            LOG.debug("target = " + target);
+        }
 
         add((JComponent) scroll);
 
@@ -299,17 +300,19 @@ class RowSelector extends JPanel
             moveBottomAction = null;
         } else {
             if (!readonly) {
-        		// TODO: Lets build this into a separate buildToolbar method
+        	// TODO: Lets build this into a separate buildToolbar method
         		
                 // Create actions and expander if we have multiple rows
                 final ArrayList<Action> actions = new ArrayList<Action>(6);
 
                 for (Object meta : metaTypes) {
                     if (Model.getUmlFactory().isContainmentValid(meta, target)) {
+                        final String label =
+                            "button.new-" + Model.getMetaTypes().getName(meta).toLowerCase();
                         final Action createAction = new ActionCreateContainedModelElement(
                                 meta,
                                 target,
-                                "button.new-" + Model.getMetaTypes().getName(meta).toLowerCase());
+                                label);
                         actions.add(createAction);
                     }
                 }
@@ -336,7 +339,7 @@ class RowSelector extends JPanel
                 toolbar = tbf.createToolBar();
                 toolbar.setRollover(true);
                 toolbar.setOrientation(ToolBar.VERTICAL);
-        	} else {
+            } else {
                 final ToolBarFactory tbf = new ToolBarFactory(new Object[] {});
                 toolbar = tbf.createToolBar();
                 toolbar.setRollover(true);
@@ -346,7 +349,7 @@ class RowSelector extends JPanel
                 moveTopAction = null;
                 moveBottomAction = null;
                 deleteAction = null;
-        	}
+            }
 
             JPanel buttonPanel =
                 new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
@@ -360,19 +363,19 @@ class RowSelector extends JPanel
             }
             add(buttonPanel, BorderLayout.WEST);
 
-        	if (!Model.getModelManagementHelper().isReadOnly(target)) {
-	            getList().addListSelectionListener(deleteAction);
-	            // TODO: We should really test the model instead for this
-	            // but we have no API yet.
-	            // Can we just check if the collection to build the JList
-	            // control implements the List interface?
-	            if (Model.getUmlHelper().isMovable(metaType)) {
-	                getList().addListSelectionListener(moveUpAction);
-	                getList().addListSelectionListener(moveDownAction);
-	                getList().addListSelectionListener(moveTopAction);
-	                getList().addListSelectionListener(moveBottomAction);
-	            }
-        	}
+            if (!Model.getModelManagementHelper().isReadOnly(target)) {
+                getList().addListSelectionListener(deleteAction);
+                // TODO: We should really test the model instead for this
+                // but we have no API yet.
+                // Can we just check if the collection to build the JList
+                // control implements the List interface?
+                if (Model.getUmlHelper().isMovable(metaType)) {
+                    getList().addListSelectionListener(moveUpAction);
+                    getList().addListSelectionListener(moveDownAction);
+                    getList().addListSelectionListener(moveTopAction);
+                    getList().addListSelectionListener(moveBottomAction);
+                }
+            }
             
             getModel().addListDataListener(this);
         }

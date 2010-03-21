@@ -598,14 +598,14 @@
     <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <separator />
     <list name="raisedSignal" type="org.omg.uml.behavioralelements.commonbehavior.Signal" label="label.raisedsignals" />
   </panel>
   <panel name="Operation">
     <text name="name" type="Name" />
     <singlerow name="owner" type="Classifier" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <separator />    
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
@@ -619,7 +619,7 @@
     <optionbox name="concurrency" type="CallConcurrencyKind" />
     <separator />
     <list name="raisedSignal" type="org.omg.uml.behavioralelements.commonbehavior.Signal" label="label.raisedsignals" />
-    <list name="method" type="Operation" />
+    <list name="method" type="org.omg.uml.foundation.core.Method" />
     <textarea name="specification" type="String" />
     
     <debug />
@@ -2067,7 +2067,7 @@
     <!--  list name="elementImport" type="ModelElement" label="label.element-import" / -->
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <combo name="signal" type="Signal" />
     <textarea name="specification" type="String" />
     <!-- separator / -->
@@ -2680,7 +2680,7 @@
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
     <list name="elementImport" type="ModelElement" label="label.element-import" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <list name="state" type="Event" />
     <list name="transition" type="Event" />
   </panel>
@@ -2758,7 +2758,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <list name="transition" type="Event" />    
     <separator />
     <textarea name="when" type="TimeExpression" />
@@ -2792,7 +2792,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <list name="transition" type="Event" />
 	<separator />
 	<combo name="operation" type="Operation" />    
@@ -2826,7 +2826,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <list name="transition" type="Event" />    
     <separator />
     <list name="signal" type="Signal" />
@@ -2938,7 +2938,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <list name="transition" type="Event" />
     <separator />    
     <textarea name="changeExpression" type="BooleanExpression" />    
@@ -3726,7 +3726,7 @@
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
 	
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />

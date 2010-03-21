@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -148,8 +148,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLEnumerationLiteralsListModel(modelElement);
         } else if ("message".equals(propName)) {
             model = new UMLInteractionMessagesListModel(modelElement);
-        } else if ("method".equals(propName)) {
-            model = new UMLOperationMethodsListModel(modelElement);
         } else if ("outgoing".equals(propName)) {
             model = new UMLStateVertexOutgoingListModel(modelElement);
         } else if ("partition".equals(propName)) {

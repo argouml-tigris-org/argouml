@@ -71,10 +71,15 @@ class SimpleListModel
         try {
             final StringTokenizer st = new StringTokenizer(type, ",");
             while (st.hasMoreTokens()) {
-                metaTypes.add(Class.forName(st.nextToken()));
+                String className = st.nextToken();
+                if (className.contains(".")) {
+                    metaTypes.add(Class.forName(className));
+                } else {
+                    //LOG.debug(className + " is not recognised as a class name");
+                }
             }
         } catch (ClassNotFoundException e) {
-            LOG.warn("Exception", e);
+            LOG.warn("Exception building model for " + propertyName, e);
         }
         this.propertyName = propertyName;
         this.umlElement = umlElement;
