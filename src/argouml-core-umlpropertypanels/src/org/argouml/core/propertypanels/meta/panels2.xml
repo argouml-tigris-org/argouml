@@ -207,7 +207,7 @@
     <list name="feature" type="org.eclipse.uml2.uml.Property" label="label.attributes" />
     <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
     <list name="association" type="Classifier" />    
-    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
+    <list name="ownedElement" type="org.eclipse.uml2.uml.Class" label="label.owned-elements"/>
 	<debug />
     <attribute name="targetFlow" type="Flow" />
     <attribute name="sourceFlow" type="Flow" />
