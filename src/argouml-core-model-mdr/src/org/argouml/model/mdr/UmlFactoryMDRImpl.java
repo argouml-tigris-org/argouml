@@ -403,8 +403,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for a Node to contain
         validContainmentMap.put(Node.class, 
                 new Class<?>[] { 
-                    Reception.class,
-                    Operation.class
+                    Operation.class,
+                    Reception.class
                 });
         
         // specifies valid elements for a Enumeration to contain
@@ -416,7 +416,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for a DataType to contain
         validContainmentMap.put(DataType.class, 
                 new Class<?>[] { 
-                    Operation.class 
+                    Operation.class,
+                    Reception.class
                 });
         
         // specifies valid elements for a Operation to contain
