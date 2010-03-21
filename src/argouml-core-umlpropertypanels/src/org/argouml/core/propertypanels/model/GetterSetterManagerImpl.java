@@ -65,6 +65,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("sender", new SenderGetterSetter());
         addGetterSetter("body", new MethodExpressionGetterSetter());
         addGetterSetter("ownedElement", new OwnedElementGetterSetter());
+        addGetterSetter("raisedSignal", new RaisedExceptionGetterSetter());
+        addGetterSetter("raisedException", new RaisedExceptionGetterSetter());
     }
     
     /**
@@ -655,6 +657,41 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
+
+    private class RaisedExceptionGetterSetter extends ListGetterSetter {
+        
+        /**
+         * Get all the owned elements for the namespace
+         * @param modelElement
+         * @param type
+         * @return
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         */
+        public Collection getOptions(
+                final Object modelElement,
+                final String type) {
+            return Model.getFacade().getRaisedExceptions(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        protected boolean isValidElement(
+                final Object element,
+                final String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getSignal();
+        }
+    }
     
     private class ParameterGetterSetter extends ListGetterSetter {
         

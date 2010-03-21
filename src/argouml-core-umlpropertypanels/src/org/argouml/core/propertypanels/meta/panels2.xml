@@ -600,7 +600,7 @@
     <attribute name="owner" type="Classifier" />
     <list name="parameter" type="Parameter" />
     <separator />
-    <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
+    <list name="raisedSignal" type="org.eclipse.uml2.uml.Signal" label="label.raisedsignals" />
   </panel>
   <panel name="Operation">
     <text name="name" type="Name" />
@@ -618,7 +618,7 @@
     </checkgroup>
     <optionbox name="concurrency" type="CallConcurrencyKind" />
     <separator />
-    <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
+    <list name="raisedSignal" type="org.eclipse.uml2.uml.Signal" label="label.raisedsignals" />
     <list name="method" type="Operation" />
     <textarea name="specification" type="String" />
     
