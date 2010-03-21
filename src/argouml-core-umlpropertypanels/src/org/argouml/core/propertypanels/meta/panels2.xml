@@ -619,7 +619,6 @@
     <optionbox name="concurrency" type="CallConcurrencyKind" />
     <separator />
     <list name="raisedSignal" type="org.eclipse.uml2.uml.Signal" label="label.raisedsignals" />
-    <list name="method" type="Operation" />
     <textarea name="specification" type="String" />
     
     <debug />
@@ -679,47 +678,6 @@
     <attribute name="elementImport" type="ModelElement" />        
     <attribute name="event" type="Parameter" />
     <attribute name="state" type="Parameter" />
-  </panel>
-  <panel name="Method">
-    <text name="name" type="Name" />
-    <singlerow name="owner" type="Classifier" />
-    <combo name="specification" type="Operation" />
-    <list name="dency" type="Dependency" label="label.client-dependencies" />
-    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
-    <separator />
-    <optionbox name="visibility" type="VisibilityKind" />
-    <checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-      <checkbox name="isQuery" type="Boolean" />
-      <checkbox name="ownerScope" type="ScopeKind" label="label.static" />
-    </checkgroup>
-    <separator />
-    <textarea name="body" type="ProcedureExpression" />
-    <list name="behavior" type="ModelElement" />
-    <list name="classifierRole" type="ModelElement" />
-    <list name="collaboration" type="ModelElement" />
-    <list name="collaborationInstanceSet" type="ModelElement" />
-    <!-- 
-    <list name="presentation" type="ModelElement" />
-    <list name="defaultedParameter" type="ModelElement" />
-    <list name="elementResidence" type="ModelElement" />
-    <attribute name="parameterTemplate" type="ModelElement" />
-    <list name="referenceTag" type="ModelElement" />
-    <list name="templateArgument" type="ModelElement" />
-    <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
-    <list name="elementImport" type="ModelElement" label="label.element-import" />
-    <attribute name="ownerScope" type="ScopeKind" />
-    <attribute name="owner" type="Classifier" />
-    <list name="targetFlow" type="Flow" label="label.target-flows" />
-    <list name="sourceFlow" type="Flow" label="label.source-flows" />
-    <list name="comment" type="Comment" />
-    <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" label="label.element-import" />
-    <attribute name="ownerScope" type="ScopeKind" />
-    <attribute name="owner" type="Classifier" />
-
-     -->
   </panel>
   <panel name="Generalization">
     <text name="name" type="Name" />
