@@ -350,7 +350,7 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
             ((SignalEvent) element).setSignal(signal);
             return signal;  
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException("Can't build a signal for a " + element);
     }
 
     /**

@@ -422,7 +422,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for a Operation to contain
         validContainmentMap.put(Operation.class, 
                 new Class<?>[] { 
-                    Parameter.class
+                    Parameter.class,
+                    Signal.class
                 });
         
         // specifies valid elements for an Event to contain
@@ -607,7 +608,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // TODO: Does anything actually make use of this? It can
         // cause unexpected behaviour.
         if (this.modelImpl.getFacade().isAFeature(container)
-                && elementType != metaTypes.getParameter()) {
+                && elementType != metaTypes.getParameter()
+                && elementType != metaTypes.getSignal()) {
             container = this.modelImpl.getFacade().getOwner(container);
         }
         
@@ -637,6 +639,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                         param, null);
         } else if (elementType == metaTypes.getParameter()) {
             element = getCore().buildParameter(container, null);
+        } else if (elementType == metaTypes.getSignal()) {
+            element = modelImpl.getCommonBehaviorFactory().buildSignal(container);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);
