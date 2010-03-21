@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -423,7 +423,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         validContainmentMap.put(Operation.class, 
                 new Class<?>[] { 
                     Parameter.class,
-                    Signal.class
+                    Signal.class,
+                    Method.class
                 });
         
         // specifies valid elements for an Event to contain
@@ -593,6 +594,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             return getCommonBehavior().createException();
         } else if (elementType == metaTypes.getTransition()) {
             return getStateMachines().createTransition();
+        } else if (elementType == metaTypes.getTransition()) {
+            return getStateMachines().createTransition();
         }
             
         throw new IllegalArgumentException(
@@ -609,6 +612,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // cause unexpected behaviour.
         if (this.modelImpl.getFacade().isAFeature(container)
                 && elementType != metaTypes.getParameter()
+                && elementType != metaTypes.getMethod()
                 && elementType != metaTypes.getSignal()) {
             container = this.modelImpl.getFacade().getOwner(container);
         }
@@ -641,6 +645,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             element = getCore().buildParameter(container, null);
         } else if (elementType == metaTypes.getSignal()) {
             element = modelImpl.getCommonBehaviorFactory().buildSignal(container);
+        } else if (elementType == metaTypes.getMethod()) {
+            final Operation op = (Operation) container;
+            element = getCore().buildMethod(op.getName());
+            modelImpl.getCoreHelper().addMethod(op, element);
+            modelImpl.getCoreHelper().addFeature(
+                    modelImpl.getFacade().getOwner(op), element);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);
