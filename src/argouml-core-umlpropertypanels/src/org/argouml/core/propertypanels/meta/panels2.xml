@@ -1531,7 +1531,6 @@
     <attribute name="target" type="ObjectSetExpression" />
     <attribute name="script" type="ActionExpression" />
     <separator />
-    <list name="actualArgument" type="Argument" label="label.arguments" />
     <attribute name="actionSequence" type="ActionSequence" />
     <list name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
@@ -1548,7 +1547,6 @@
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
     <list name="instantiation" type="Classifier" />
-    <list name="actualArgument" type="Argument" label="label.arguments" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1587,7 +1585,6 @@
     <textarea name="script" type="ActionExpression" />
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
-    <list name="actualArgument" type="Argument" label="label.arguments" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1626,7 +1623,6 @@
     <textarea name="script" type="ActionExpression" />
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
-    <list name="actualArgument" type="Argument" label="label.arguments" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1852,9 +1848,7 @@
     <textarea name="script" type="ActionExpression" />    
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
-	<combo name="operation" type="Operation" />    
-    <list name="actualArgument" type="Argument" label="label.arguments" />
-    
+	<combo name="operation" type="Operation" />
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
@@ -1893,8 +1887,6 @@
     <textarea name="recurrence" type="IterationExpression" />    
     <separator />
 	<list name="signal" type="Signal" />
-    <list name="actualArgument" type="Argument" label="label.arguments" />
-	
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
@@ -1955,7 +1947,6 @@
     <attribute name="recurrence" type="IterationExpression" />
     <attribute name="target" type="ObjectSetExpression" />
     <attribute name="script" type="ActionExpression" />
-    <attribute name="actualArgument" type="Argument" />
     <attribute name="actionSequence" type="ActionSequence" />
     <attribute name="stimulus" type="Action" />
     <attribute name="state" type="Action" />
@@ -2065,9 +2056,6 @@
     </checkgroup>
     <textarea name="script" type="ActionExpression" />
 	<textarea name="recurrence" type="IterationExpression" />    
-    <separator />
-    <list name="actualArgument" type="Argument" label="label.arguments" />    
-	
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
@@ -2104,9 +2092,6 @@
     </checkgroup>
     <textarea name="script" type="ActionExpression" />
     <textarea name="recurrence" type="IterationExpression" />
-    <separator />
-    <list name="actualArgument" type="Argument" label="label.arguments" />
-        
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />

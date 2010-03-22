@@ -64,8 +64,6 @@ class ListFactory implements ComponentFactory {
         if ("action".equals(propName)) {
             model = new UMLActionSequenceActionListModel(modelElement);
             list = new OldScrollList(new UMLActionSequenceActionList((UMLModelElementListModel) model));     
-        } else if ("actualArgument".equals(propName)) {
-            model = new UMLActionArgumentListModel(modelElement, propName);
         } else if ("annotatedElement".equals(propName)) {
             model = new UMLCommentAnnotatedElementListModel(modelElement);
         } else if ("association".equals(propName)) {
