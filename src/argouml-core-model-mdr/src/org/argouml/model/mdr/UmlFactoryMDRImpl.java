@@ -72,6 +72,7 @@ import org.omg.uml.behavioralelements.collaborations.InteractionInstanceSet;
 import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.commonbehavior.Action;
 import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
+import org.omg.uml.behavioralelements.commonbehavior.Argument;
 import org.omg.uml.behavioralelements.commonbehavior.AttributeLink;
 import org.omg.uml.behavioralelements.commonbehavior.CallAction;
 import org.omg.uml.behavioralelements.commonbehavior.ComponentInstance;
@@ -446,6 +447,48 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 new Class<?>[] { 
                     Message.class
                 });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(CallAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(UninterpretedAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(ReturnAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(DestroyAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(SendAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(TerminateAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(ActionSequence.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
     }
         
     public Object buildConnection(Object elementType, Object fromElement,
@@ -664,6 +707,9 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             element =
                 Model.getCollaborationsFactory()
                     .buildMessage(collaboration, container);
+        } else if (elementType == metaTypes.getArgument()) {
+            element = Model.getCommonBehaviorFactory().createArgument();
+            Model.getCommonBehaviorHelper().addActualArgument(container, element);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);

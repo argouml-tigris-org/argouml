@@ -4448,6 +4448,8 @@ class FacadeMDRImpl implements Facade {
         try {
             if (handle instanceof Binding) {
                 return ((Binding) handle).getArgument();
+            } else if (handle instanceof Action) {
+                return ((Action) handle).getActualArgument();
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
