@@ -399,6 +399,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-exception", "Exception");
         images.put("button.new-method", "Method");
         images.put("button.new-message", "Message");
+        images.put("button.new-argument", "Argument");
         images.put("button.new-template-parameter", "TemplateParameter");
     }
 
