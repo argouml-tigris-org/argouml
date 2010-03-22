@@ -2406,6 +2406,7 @@
     <list name="specialization" type="GeneralizableElement" />
     <separator />
     <list name="association" type="Classifier" />
+    <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
 
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />

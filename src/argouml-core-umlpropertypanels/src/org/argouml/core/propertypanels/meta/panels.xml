@@ -2452,6 +2452,7 @@
     <list name="specialization" type="GeneralizableElement" />
     <separator />
     <list name="association" type="Classifier" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
 
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
