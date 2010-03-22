@@ -383,6 +383,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for an Actor to contain
         validContainmentMap.put(Actor.class, 
                 new Class<?>[] { 
+                    Operation.class,
                     Reception.class
                 });
         
