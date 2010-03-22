@@ -43,7 +43,6 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 
 import org.argouml.core.propertypanels.model.GetterSetterManager;
-import org.argouml.model.Model;
 
 /**
  * Creates the XML Property panels
@@ -70,8 +69,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLClassifierAssociationEndListModel(modelElement);
         } else if ("associationRole".equals(propName)) {
             model = new UMLAssociationAssociationRoleListModel(modelElement);
-//        } else if ("attribute".equals(propName)) {
-//            model = new UMLClassAttributeListModel(modelElement);
         } else if ("availableContents".equals(propName)) {
             model = new UMLClassifierRoleAvailableContentsListModel(modelElement);
         } else if ("availableFeature".equals(propName)) {
@@ -122,14 +119,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLUseCaseExtendListModel(modelElement);
         } else if ("extended_elements".equals(propName)) {
             model = new UMLExtendedElementsListModel(modelElement);
-        } else if ("extensionPoint".equals(propName)) {
-            if (Model.getFacade().isAUseCase(modelElement)) {
-                model = new UMLUseCaseExtensionPointListModel(modelElement, propName);
-            } else {
-                model = new UMLExtendExtensionPointListModel(modelElement, propName);
-            }
-//        } else if ("feature".equals(propName)) {
-//            model = new UMLClassifierFeatureListModel(modelElement);
         } else if ("generalization".equals(propName)) {
             model = new UMLGeneralizableElementGeneralizationListModel(modelElement);
         } else if ("include".equals(propName)) {

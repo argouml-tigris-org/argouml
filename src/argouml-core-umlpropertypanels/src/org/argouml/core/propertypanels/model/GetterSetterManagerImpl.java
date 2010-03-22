@@ -70,6 +70,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("method", new MethodGetterSetter());
         addGetterSetter("message", new MessageGetterSetter());
         addGetterSetter("actualArgument", new ArgumentGetterSetter());
+        addGetterSetter("extensionPoint", new ExtensionPointGetterSetter());
     }
     
     /**
@@ -800,6 +801,42 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         public Object getMetaType() {
             return Model.getMetaTypes().getArgument();
+        }
+    }
+    
+    
+    private class ExtensionPointGetterSetter extends ListGetterSetter {
+        
+        /**
+         * Get all the extension points
+         * @param modelElement
+         * @param type
+         * @return
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         */
+        public Collection getOptions(
+                final Object modelElement,
+                final String type) {
+            return Model.getFacade().getExtensionPoints(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        protected boolean isValidElement(
+                final Object element,
+                final String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getExtensionPoint();
         }
     }
     

@@ -2404,8 +2404,7 @@
     <list name="feature" type="org.omg.uml.foundation.core.Attribute" label="label.attributes" />
     <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
     <list name="association" type="Classifier" />
-    <list name="extensionPoint" type="ExtensionPoint" label="label.extension-points" />
-	
+    <list name="extensionPoint" type="org.omg.uml.behavioralelements.usecases.ExtensionPoint" label="label.extension-points" />
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
     <attribute name="targetFlow" type="Flow" />
@@ -2528,7 +2527,7 @@
     <separator /> 
     <singlerow name="base" type="UseCase" />
     <singlerow name="extension" type="UseCase" />
-    <list name="extensionPoint" type="ExtensionPoint" label="label.extension-points" />    
+    <list name="extensionPoint" type="org.omg.uml.behavioralelements.usecases.ExtensionPoint" label="label.extension-points" />
     <separator />
     <textarea name="condition" type="BooleanExpression" />
     
