@@ -3266,7 +3266,8 @@
     <attribute name="conformingInstance" type="Instance" />
     <attribute name="message" type="ClassifierRole" />
   </panel>
-  <panel name="AssociationRole">
+  <!-- AssociationRole doesn't exist in UML2 - this is commented out until we discover if there is a replacement -->
+  <!-- panel name="AssociationRole">
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <combo name="base" type="Association" />
@@ -3288,9 +3289,9 @@
     <list name="collaborationInstanceSet" type="ModelElement" />
     <separator />
     <list name="connection" type="AssociationEnd" label="label.connections" />
-    <list name="message" type="Message" />
+    <list name="message" type="org.eclipse.uml2.uml.Message" />
     <list name="conformingLink" type="Link" />
-  </panel>
+  </panel -->
   <panel name="AssociationEndRole">
     <text name="name" type="Name" />
     <combo name="type" type="Classifier" />
@@ -3384,7 +3385,7 @@
     <combo name="namespace" type="Namespace" />
     <singlerow name="context" type="Collaboration" />
     <separator />
-    <list name="message" type="Message" />
+    <list name="message" type="org.eclipse.uml2.uml.Message" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />

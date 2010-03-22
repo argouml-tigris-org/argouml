@@ -3334,7 +3334,7 @@
     <list name="collaborationInstanceSet" type="ModelElement" />
     <separator />
     <list name="connection" type="AssociationEnd" label="label.connections" />
-    <list name="message" type="Message" />
+    <list name="message" type="org.omg.uml.behavioralelements.collaborations.Message" />
     <list name="conformingLink" type="Link" />
   </panel>
   <panel name="AssociationEndRole">
@@ -3430,7 +3430,7 @@
     <combo name="namespace" type="Namespace" />
     <singlerow name="context" type="Collaboration" />
     <separator />
-    <list name="message" type="Message" />
+    <list name="message" type="org.omg.uml.behavioralelements.collaborations.Message" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
