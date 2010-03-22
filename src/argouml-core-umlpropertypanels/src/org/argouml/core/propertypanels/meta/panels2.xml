@@ -598,15 +598,15 @@
     <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.eclipse.uml2.uml.Parameter" />
     <separator />
     <list name="raisedSignal" type="org.eclipse.uml2.uml.Signal" label="label.raisedsignals" />
   </panel>
   <panel name="Operation">
     <text name="name" type="Name" />
     <singlerow name="owner" type="Classifier" />
-    <list name="parameter" type="Parameter" />
-    <separator />    
+    <list name="parameter" type="org.eclipse.uml2.uml.Parameter" />
+    <separator />
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
@@ -2014,7 +2014,7 @@
     <list name="collaborationInstanceSet" type="ModelElement" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.eclipse.uml2.uml.Parameter" />
     <combo name="signal" type="Signal" />
     <textarea name="specification" type="String" />
   </panel>
@@ -2619,7 +2619,7 @@
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
     <list name="elementImport" type="ModelElement" label="label.element-import" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.eclipse.uml2.uml.Parameter" />
     <list name="state" type="Event" />
     <list name="transition" type="Event" />
   </panel>
@@ -2697,7 +2697,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.eclipse.uml2.uml.Parameter" />
     <list name="transition" type="Event" />    
     <separator />
     <textarea name="when" type="TimeExpression" />
@@ -2731,7 +2731,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.eclipse.uml2.uml.Parameter" />
     <list name="transition" type="Event" />
 	<separator />
 	<combo name="operation" type="Operation" />    
@@ -2765,7 +2765,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.eclipse.uml2.uml.Parameter" />
     <list name="transition" type="Event" />    
     <separator />
     <list name="signal" type="Signal" />
@@ -2877,7 +2877,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.eclipse.uml2.uml.Parameter" />
     <list name="transition" type="Event" />
     <separator />    
     <textarea name="changeExpression" type="BooleanExpression" />    
@@ -3666,7 +3666,7 @@
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.eclipse.uml2.uml.Parameter" />
 	
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
