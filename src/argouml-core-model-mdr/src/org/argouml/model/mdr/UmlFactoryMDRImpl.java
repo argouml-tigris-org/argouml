@@ -440,6 +440,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 new Class<?>[] { 
                     Parameter.class
                 });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(AssociationRole.class, 
+                new Class<?>[] { 
+                    Message.class
+                });
     }
         
     public Object buildConnection(Object elementType, Object fromElement,
@@ -653,6 +659,11 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             modelImpl.getCoreHelper().addMethod(op, element);
             modelImpl.getCoreHelper().addFeature(
                     modelImpl.getFacade().getOwner(op), element);
+        } else if (elementType == metaTypes.getMessage()) {
+            Object collaboration = Model.getFacade().getNamespace(container);
+            element =
+                Model.getCollaborationsFactory()
+                    .buildMessage(collaboration, container);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);
