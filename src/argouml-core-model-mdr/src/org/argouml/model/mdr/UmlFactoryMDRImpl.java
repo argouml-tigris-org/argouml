@@ -395,6 +395,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     Operation.class, Reception.class
                 });
         
+        // specifies valid elements for a Use Case to contain
+        validContainmentMap.put(Extend.class, 
+                new Class<?>[] { 
+                    ExtensionPoint.class
+                });
+        
         // specifies valid elements for a Component to contain
         validContainmentMap.put(Component.class, 
                 new Class<?>[] { 

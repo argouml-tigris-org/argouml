@@ -153,14 +153,19 @@ class UseCasesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public ExtensionPoint buildExtensionPoint(Object modelElement) {
-        if (!(modelElement instanceof UseCase)) {
+        final ExtensionPoint extensionPoint;
+        if (modelElement instanceof UseCase) {
+            UseCase useCase = (UseCase) modelElement;
+            extensionPoint = createExtensionPoint();
+            extensionPoint.setUseCase(useCase);
+        } else if (modelElement instanceof Extend) {
+            Extend extend = (Extend) modelElement;
+            extensionPoint = createExtensionPoint();
+            extend.getExtensionPoint().add(extensionPoint);
+        } else {
             throw new IllegalArgumentException("An extension point can only "
-                    + "be built on a use case");
+                    + "be built on a use case or an Extend");
         }
-
-        UseCase useCase = (UseCase) modelElement;
-        ExtensionPoint extensionPoint = createExtensionPoint();
-        extensionPoint.setUseCase(useCase);
 
         // For consistency with attribute and operation, give it a default
         // name and location
