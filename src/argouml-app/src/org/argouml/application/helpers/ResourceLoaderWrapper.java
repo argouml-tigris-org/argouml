@@ -7,7 +7,9 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Thomas Neustupny
+ *    Bob Tarling
+ *    
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
