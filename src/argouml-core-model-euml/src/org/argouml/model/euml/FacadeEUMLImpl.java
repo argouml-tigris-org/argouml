@@ -1261,7 +1261,7 @@ class FacadeEUMLImpl implements Facade {
 //          return ((Property) handle).gets
             return Collections.EMPTY_SET;
         } else if (handle instanceof org.eclipse.uml2.uml.Class) {
-            ((org.eclipse.uml2.uml.Class) handle).getInterfaceRealizations();
+            return ((org.eclipse.uml2.uml.Class) handle).getInterfaceRealizations();
         }
         throw new NotYetImplementedException();
 
