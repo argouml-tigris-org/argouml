@@ -158,7 +158,6 @@ import org.omg.uml.foundation.core.TemplateParameter;
 import org.omg.uml.foundation.core.UmlAssociation;
 import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.foundation.core.Usage;
-import org.omg.uml.foundation.datatypes.ParameterDirectionKindEnum;
 import org.omg.uml.modelmanagement.ElementImport;
 import org.omg.uml.modelmanagement.Subsystem;
 import org.omg.uml.modelmanagement.UmlPackage;
