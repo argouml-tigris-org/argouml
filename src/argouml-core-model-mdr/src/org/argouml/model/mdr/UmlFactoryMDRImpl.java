@@ -757,16 +757,16 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             ((Transition) container).setEffect((Action) element);
         } else if (elementType == metaTypes.getCallEvent()) {
             element = Model.getStateMachinesFactory().createCallEvent();
-            ((Transition) container).setTrigger((Event) element);
+            setNewTrigger((Transition) container, (Event) element);
         } else if (elementType == metaTypes.getChangeEvent()) {
             element = Model.getStateMachinesFactory().createChangeEvent();
-            ((Transition) container).setTrigger((Event) element);
+            setNewTrigger((Transition) container, (Event) element);
         } else if (elementType == metaTypes.getSignalEvent()) {
             element = Model.getStateMachinesFactory().createSignalEvent();
-            ((Transition) container).setTrigger((Event) element);
+            setNewTrigger((Transition) container, (Event) element);
         } else if (elementType == metaTypes.getTimeEvent()) {
             element = Model.getStateMachinesFactory().createTimeEvent();
-            ((Transition) container).setTrigger((Event) element);
+            setNewTrigger((Transition) container, (Event) element);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);
@@ -781,6 +781,19 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         
         return element;
+    }
+    
+    /**
+     * Add a newly created event to a trigger
+     * @param transition
+     * @param event
+     */
+    private void setNewTrigger(Transition transition, Event event) {
+        transition.setTrigger(event);
+        event.setName("");
+        final StateMachine statemachine = transition.getStateMachine();
+        final Namespace namespace = statemachine.getNamespace();
+        event.setNamespace(namespace);
     }
     
     public boolean isConnectionType(Object connectionType) {
