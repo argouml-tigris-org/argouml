@@ -380,7 +380,13 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-associationrole", "AssociationRole");
         images.put("button.new-attribute", "New Attribute");
         images.put("button.new-callaction", "CallAction");
+        images.put("button.new-terminateaction", "TerminateAction");
+        images.put("button.new-uninterpretedaction", "UninterpretedAction");
+        images.put("button.new-actionsequence", "ActionSequence");
+        images.put("button.new-callaction", "CallAction");
+        images.put("button.new-callevent", "CallEvent");
         images.put("button.new-callstate", "CallState");
+        images.put("button.new-changeevent", "ChangeEvent");
         images.put("button.new-choice", "Choice");
         images.put("button.new-class", "Class");
         images.put("button.new-classifierrole", "ClassifierRole");
@@ -400,6 +406,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-extend", "Extend");
         images.put("button.new-exception", "Exception");
         images.put("button.new-extensionpoint", "ExtensionPoint");
+        images.put("button.new-guard", "Guard");
         images.put("button.new-method", "Method");
         images.put("button.new-message", "Message");
         images.put("button.new-argument", "Argument");
@@ -441,12 +448,14 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-sendaction", "SendAction");
         images.put("button.new-shallowhistory", "ShallowHistory");
         images.put("button.new-signal", "Signal");
+        images.put("button.new-signalevent", "SignalEvent");
         images.put("button.new-simplestate", "SimpleState");
         images.put("button.new-stereotype", "Stereotype");
         images.put("button.new-stubstate", "StubState");
         images.put("button.new-subactivitystate", "SubactivityState");
         images.put("button.new-submachinestate", "SubmachineState");
         images.put("button.new-synchstate", "SynchState");
+        images.put("button.new-timeevent", "TimeEvent");
         images.put("button.new-tagdefinition", "TagDefinition");
         images.put("button.new-transition", "Transition");
         images.put("button.new-uniaggregation", "UniAggregation");
