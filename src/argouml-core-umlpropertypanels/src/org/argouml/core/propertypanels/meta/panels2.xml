@@ -2802,10 +2802,7 @@
     <separator />
     <singlerow name="source" type="StateVertex" />
     <singlerow name="target" type="StateVertex" />
-    <singlerow name="guard" type="Guard" />
-    <singlerow name="effect" type="Action" />
-    <singlerow name="trigger" type="Event" />
-        
+    <singlerow name="trigger" type="org.eclipse.uml2.uml.CallEvent,org.eclipse.uml2.uml.ChangeEvent,org.eclipse.uml2.uml.SignalEvent,org.eclipse.uml2.uml.TimeEvent" />
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">

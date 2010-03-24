@@ -2861,9 +2861,9 @@
     <separator />
     <singlerow name="source" type="StateVertex" />
     <singlerow name="target" type="StateVertex" />
-    <singlerow name="guard" type="Guard" />
-    <singlerow name="effect" type="Action" />
-    <singlerow name="trigger" type="Event" />
+    <singlerow name="guard" type="org.omg.uml.behavioralelements.statemachines.Guard" />
+    <singlerow name="effect" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" />
+    <singlerow name="trigger" type="org.omg.uml.behavioralelements.statemachines.CallEvent,org.omg.uml.behavioralelements.statemachines.ChangeEvent,org.omg.uml.behavioralelements.statemachines.SignalEvent,org.omg.uml.behavioralelements.statemachines.TimeEvent" />
         
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />

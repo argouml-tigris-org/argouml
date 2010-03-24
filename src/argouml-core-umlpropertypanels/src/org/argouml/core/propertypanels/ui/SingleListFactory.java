@@ -104,12 +104,6 @@ class SingleListFactory implements ComponentFactory {
             model = new UMLTransitionSourceListModel(modelElement, propName);
         } else if ("target".equals(propName)) {
             model = new UMLTransitionTargetListModel(modelElement, propName);
-        } else if ("guard".equals(propName)) {
-            model = new UMLTransitionGuardListModel(modelElement, propName);
-        } else if ("effect".equals(propName)) {
-            model = new UMLTransitionEffectListModel(modelElement, propName);
-        } else if ("trigger".equals(propName)) {
-            model = new UMLTransitionTriggerListModel(modelElement, propName);
         } else if ("transition".equals(propName)) {
             model = new UMLGuardTransitionListModel(modelElement, propName);
         } else if ("container".equals(propName)) {

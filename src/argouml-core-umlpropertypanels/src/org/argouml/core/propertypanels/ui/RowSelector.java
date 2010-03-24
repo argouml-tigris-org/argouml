@@ -83,6 +83,8 @@ import org.tigris.gef.presentation.FigTextEditor;
 import org.tigris.swidgets.FlexiGridLayout;
 import org.tigris.toolbar.ToolBar;
 import org.tigris.toolbar.ToolBarFactory;
+import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
+import org.tigris.toolbar.toolbutton.ToolButton;
 
 /**
  * A control for displaying the contents of a list model elements in a panel
@@ -298,6 +300,32 @@ class RowSelector extends JPanel
             moveDownAction = null;
             moveTopAction = null;
             moveBottomAction = null;
+            if (!readonly) {
+                // Create popup toolbutton if we have a single row
+                final ArrayList<Action> actions = new ArrayList<Action>(6);
+    
+                for (Object meta : metaTypes) {
+                    if (Model.getUmlFactory().isContainmentValid(meta, target)) {
+                        final String label =
+                            "button.new-" + Model.getMetaTypes().getName(meta).toLowerCase();
+                        final Action createAction = new ActionCreateContainedModelElement(
+                                meta,
+                                target,
+                                label);
+                        actions.add(createAction);
+                    }
+                }
+                if (!actions.isEmpty()) {
+                    PopupToolBoxButton tb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
+                    for (Action action : actions) {
+                        tb.add(action);
+                    }
+                    JPanel buttonPanel =
+                        new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
+                    buttonPanel.add(tb);
+                    add(buttonPanel, BorderLayout.WEST);
+                }
+            }
         } else {
             if (!readonly) {
         	// TODO: Lets build this into a separate buildToolbar method

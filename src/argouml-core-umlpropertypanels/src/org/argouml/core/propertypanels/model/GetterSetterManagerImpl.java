@@ -13,6 +13,7 @@
 
 package org.argouml.core.propertypanels.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -71,6 +72,9 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("message", new MessageGetterSetter());
         addGetterSetter("actualArgument", new ArgumentGetterSetter());
         addGetterSetter("extensionPoint", new ExtensionPointGetterSetter());
+        addGetterSetter("guard", new GuardGetterSetter());
+        addGetterSetter("effect", new EffectGetterSetter());
+        addGetterSetter("trigger", new TriggerGetterSetter());
     }
     
     /**
@@ -837,6 +841,117 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         public Object getMetaType() {
             return Model.getMetaTypes().getExtensionPoint();
+        }
+    }
+    
+    private class GuardGetterSetter extends ListGetterSetter {
+        
+        /**
+         * Get all the guards
+         * @param modelElement
+         * @param type
+         * @return
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         */
+        public Collection getOptions(
+                final Object modelElement,
+                final String type) {
+            final ArrayList l = new ArrayList(1);
+            l.add(Model.getFacade().getGuard(modelElement));
+            return l;
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        protected boolean isValidElement(
+                final Object element,
+                final String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getGuard();
+        }
+    }
+    
+    private class EffectGetterSetter extends ListGetterSetter {
+        
+        /**
+         * Get all the effects
+         * @param modelElement
+         * @param type
+         * @return
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         */
+        public Collection getOptions(
+                final Object modelElement,
+                final String type) {
+            final ArrayList l = new ArrayList(1);
+            l.add(Model.getFacade().getEffect(modelElement));
+            return l;
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        protected boolean isValidElement(
+                final Object element,
+                final String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getAction();
+        }
+    }
+    
+    private class TriggerGetterSetter extends ListGetterSetter {
+        
+        /**
+         * Get all the effects
+         * @param modelElement
+         * @param type
+         * @return
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         */
+        public Collection getOptions(
+                final Object modelElement,
+                final String type) {
+            final ArrayList l = new ArrayList(1);
+            l.add(Model.getFacade().getTrigger(modelElement));
+            return l;
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        protected boolean isValidElement(
+                final Object element,
+                final String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getEvent();
         }
     }
     
