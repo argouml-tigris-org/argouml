@@ -118,6 +118,7 @@ class SwingUIFactory {
         JToolBar tb = tbf.createToolBar();
         tb.add(new JLabel(metaTypeName, ResourceLoaderWrapper.lookupIconResource(metaTypeName), JLabel.LEFT));
         if (!Model.getModelManagementHelper().isReadOnly(target)) {
+            tb.add(new NavigateUpAction(target));
             tb.add(new ActionDeleteModelElements());
             // We only have this here until we have stereotypes
             // list on property panel
