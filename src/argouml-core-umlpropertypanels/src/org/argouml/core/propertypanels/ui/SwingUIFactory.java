@@ -56,6 +56,7 @@ import org.argouml.core.propertypanels.meta.PropertyMeta;
 import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.toolbar.ToolBarFactory;
@@ -117,6 +118,7 @@ class SwingUIFactory {
         JToolBar tb = tbf.createToolBar();
         tb.add(new JLabel(metaTypeName, ResourceLoaderWrapper.lookupIconResource(metaTypeName), JLabel.LEFT));
         if (!Model.getModelManagementHelper().isReadOnly(target)) {
+            tb.add(new ActionDeleteModelElements());
             // We only have this here until we have stereotypes
             // list on property panel
             tb.add(new ActionNewStereotype());
