@@ -93,11 +93,14 @@ import org.omg.uml.behavioralelements.commonbehavior.SubsystemInstance;
 import org.omg.uml.behavioralelements.commonbehavior.TerminateAction;
 import org.omg.uml.behavioralelements.commonbehavior.UmlException;
 import org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction;
+import org.omg.uml.behavioralelements.statemachines.CallEvent;
+import org.omg.uml.behavioralelements.statemachines.ChangeEvent;
 import org.omg.uml.behavioralelements.statemachines.CompositeState;
 import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.behavioralelements.statemachines.FinalState;
 import org.omg.uml.behavioralelements.statemachines.Guard;
 import org.omg.uml.behavioralelements.statemachines.Pseudostate;
+import org.omg.uml.behavioralelements.statemachines.SignalEvent;
 import org.omg.uml.behavioralelements.statemachines.SimpleState;
 import org.omg.uml.behavioralelements.statemachines.State;
 import org.omg.uml.behavioralelements.statemachines.StateMachine;
@@ -105,6 +108,7 @@ import org.omg.uml.behavioralelements.statemachines.StateVertex;
 import org.omg.uml.behavioralelements.statemachines.StubState;
 import org.omg.uml.behavioralelements.statemachines.SubmachineState;
 import org.omg.uml.behavioralelements.statemachines.SynchState;
+import org.omg.uml.behavioralelements.statemachines.TimeEvent;
 import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.behavioralelements.usecases.Actor;
 import org.omg.uml.behavioralelements.usecases.Extend;
@@ -495,8 +499,17 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 new Class<?>[] { 
                     Argument.class
                 });
-    }
         
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(Transition.class, 
+                new Class<?>[] { 
+                    Guard.class,
+                    CallAction.class, ReturnAction.class,
+                    CreateAction.class, DestroyAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                });
+    }
+    
     public Object buildConnection(Object elementType, Object fromElement,
             Object fromStyle, Object toElement, Object toStyle,
             Object unidirectional, Object namespace)
@@ -716,6 +729,44 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == metaTypes.getArgument()) {
             element = Model.getCommonBehaviorFactory().createArgument();
             Model.getCommonBehaviorHelper().addActualArgument(container, element);
+        } else if (elementType == metaTypes.getGuard()) {
+            element = Model.getStateMachinesFactory().buildGuard(container);
+        } else if (elementType == metaTypes.getCreateAction()) {
+            element = Model.getCommonBehaviorFactory().createCreateAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getCallAction()) {
+            element = Model.getCommonBehaviorFactory().createCallAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getReturnAction()) {
+            element = Model.getCommonBehaviorFactory().createReturnAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getDestroyAction()) {
+            element = Model.getCommonBehaviorFactory().createDestroyAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getSendAction()) {
+            element = Model.getCommonBehaviorFactory().createSendAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getTerminateAction()) {
+            element = Model.getCommonBehaviorFactory().createTerminateAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getUninterpretedAction()) {
+            element = Model.getCommonBehaviorFactory().createUninterpretedAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getActionSequence()) {
+            element = Model.getCommonBehaviorFactory().createActionSequence();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getCallEvent()) {
+            element = Model.getStateMachinesFactory().createCallEvent();
+            ((Transition) container).setTrigger((Event) element);
+        } else if (elementType == metaTypes.getChangeEvent()) {
+            element = Model.getStateMachinesFactory().createChangeEvent();
+            ((Transition) container).setTrigger((Event) element);
+        } else if (elementType == metaTypes.getSignalEvent()) {
+            element = Model.getStateMachinesFactory().createSignalEvent();
+            ((Transition) container).setTrigger((Event) element);
+        } else if (elementType == metaTypes.getTimeEvent()) {
+            element = Model.getStateMachinesFactory().createTimeEvent();
+            ((Transition) container).setTrigger((Event) element);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);
