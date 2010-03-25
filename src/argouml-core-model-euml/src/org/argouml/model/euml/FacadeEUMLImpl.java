@@ -621,12 +621,31 @@ class FacadeEUMLImpl implements Facade {
         }
         return ((Namespace) handle).getElementImports();
     }
-
+	
+    /**
+     * Get all the relationsships, that represent
+     * an import of this element.
+     *
+     * @param handle The imported model element
+     */
     public Collection getElementImports2(Object handle) {
         if (!(handle instanceof Element)) {
             throw new IllegalArgumentException();
         }
-        throw new NotYetImplementedException();
+	
+	Collection result = new ArrayList();
+
+	// Get all the relationships, that this model element has.
+	// and filter everything, that is not an import.
+	for( Relationship rel : ((Element)handle).getRelationships()) {
+	    if( (rel instanceof ElementImport)
+		&& ((ElementImport)rel).getImportedElement() == handle) {
+
+		result.add( rel);
+	    }
+	}
+	return result;
+        // throw new NotYetImplementedException();
     }
 
     public Collection getElementResidences(Object handle) {
