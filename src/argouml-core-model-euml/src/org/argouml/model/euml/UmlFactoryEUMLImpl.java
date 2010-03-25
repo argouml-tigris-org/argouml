@@ -355,6 +355,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = modelImpl.getCoreFactory().createParameter();
         } else if (elementType == metaTypes.getExtensionPoint()) {
             o = modelImpl.getUseCasesFactory().createExtensionPoint();
+        } else if (elementType == metaTypes.getReception()) {
+            o = modelImpl.getCommonBehaviorFactory().createReception();
         }
         if (!(o instanceof EObject)) {
             throw new IllegalArgumentException(
