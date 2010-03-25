@@ -1989,7 +1989,6 @@
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
-      <checkbox name="isQuery" type="Boolean" />
       <checkbox name="isRoot" type="Boolean" />
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
