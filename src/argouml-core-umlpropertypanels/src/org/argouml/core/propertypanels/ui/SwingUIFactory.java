@@ -119,6 +119,15 @@ class SwingUIFactory {
         tb.add(new JLabel(metaTypeName, ResourceLoaderWrapper.lookupIconResource(metaTypeName), JLabel.LEFT));
         if (!Model.getModelManagementHelper().isReadOnly(target)) {
             tb.add(new NavigateUpAction(target));
+            
+            if (Model.getFacade().isAAttribute(target)
+                || Model.getFacade().isAOperation(target)
+                || Model.getFacade().isAReception(target)
+                || Model.getFacade().isAParameter(target)) {
+                tb.add(new NavigatePreviousAction(target));
+                tb.add(new NavigateNextAction(target));
+            }
+            
             tb.add(new ActionDeleteModelElements());
             // We only have this here until we have stereotypes
             // list on property panel
