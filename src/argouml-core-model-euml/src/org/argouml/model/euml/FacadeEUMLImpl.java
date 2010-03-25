@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -1213,8 +1213,13 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getSignal(Object handle) {
-        throw new NotYetImplementedException();
-
+        if (handle instanceof SignalEvent) {
+            return ((SignalEvent) handle).getSignal();
+        }
+        if (handle instanceof Reception) {
+            return ((Reception) handle).getSignal();
+        }
+        throw new IllegalArgumentException("handle should be a SignalEvent or Reception!"); //$NON-NLS-<n>$
     }
 
     public Vertex getSource(Object handle) {
