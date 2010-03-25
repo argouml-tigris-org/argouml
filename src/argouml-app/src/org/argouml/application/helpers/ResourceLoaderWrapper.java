@@ -350,8 +350,8 @@ public final class ResourceLoaderWrapper {
         images.put("action.find", "Find...");
         images.put("action.import-sources", "Import Sources...");
         images.put("action.more-info", "More Info...");
-        images.put("action.navigate-back", "Navigate Back");
-        images.put("action.navigate-forward", "Navigate Forward");
+        images.put("action.navigate-back", "NavigateBack");
+        images.put("action.navigate-forward", "NavigateForward");
         images.put("action.navigate-up", "NavigateUp");
         images.put("action.new", "New");
         images.put("action.new-profile", "NewProfile");
