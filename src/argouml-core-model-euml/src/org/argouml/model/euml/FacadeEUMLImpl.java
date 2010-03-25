@@ -627,6 +627,8 @@ class FacadeEUMLImpl implements Facade {
      * an import of this element.
      *
      * @param handle The imported model element
+     *
+     * @return A collection of ElementImport object, that represent imports of this object.
      */
     public Collection getElementImports2(Object handle) {
         if (!(handle instanceof Element)) {
