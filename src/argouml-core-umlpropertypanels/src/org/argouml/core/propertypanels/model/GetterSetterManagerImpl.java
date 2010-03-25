@@ -75,6 +75,9 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("guard", new GuardGetterSetter());
         addGetterSetter("effect", new EffectGetterSetter());
         addGetterSetter("trigger", new TriggerGetterSetter());
+        
+        // UML2 only
+        addGetterSetter("ownedOperation", new FeatureGetterSetter());
     }
     
     /**

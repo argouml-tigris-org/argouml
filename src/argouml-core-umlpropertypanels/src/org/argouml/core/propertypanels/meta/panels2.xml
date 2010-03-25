@@ -205,8 +205,8 @@
     <list name="specialization" type="GeneralizableElement" />
     <separator />
     <list name="feature" type="org.eclipse.uml2.uml.Property" label="label.attributes" />
-    <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
-    <list name="association" type="Classifier" />    
+    <list name="ownedOperation" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
+    <list name="association" type="Classifier" />
     <list name="ownedElement" type="org.eclipse.uml2.uml.Class" label="label.owned-elements"/>
 	<debug />
     <attribute name="targetFlow" type="Flow" />
@@ -249,7 +249,7 @@
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
+    <list name="ownedOperation" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
     <debug />
     <attribute name="targetFlow" type="Flow" />
     <attribute name="sourceFlow" type="Flow" />
@@ -403,7 +403,7 @@
 	<separator />
 	<list name="association" type="Classifier" />
     <list name="feature" type="org.eclipse.uml2.uml.Property" label="label.attributes" />
-    <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
+    <list name="ownedOperation" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
 	
 	<debug />
     <attribute name="clientDependency" type="Dependency" />
@@ -731,7 +731,7 @@
     <list name="connection" type="AssociationEnd" label="label.connections" />
     <separator />
     <list name="feature" type="org.eclipse.uml2.uml.Property" label="label.attributes" />
-    <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
+    <list name="ownedOperation" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
     <list name="association" type="Classifier" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     
@@ -906,7 +906,7 @@
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
-    <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
+    <list name="ownedOperation" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
     <list name="residentElement" type="ElementResidence" label="label.residents" />
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
@@ -955,7 +955,7 @@
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
-    <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
+    <list name="ownedOperation" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
     <list name="deployedComponent" type="Component" label="label.deployedcomponents"  />
 	
 	<debug />
@@ -1153,7 +1153,7 @@
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
 	<separator />
-    <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
+    <list name="ownedOperation" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
 	<list name="literal" type="EnumerationLiteral" label="label.literals" />
 
 	<debug />
@@ -2343,7 +2343,7 @@
     <list name="include" type="Include" />
     <separator />
     <list name="feature" type="org.eclipse.uml2.uml.Property" label="label.attributes" />
-    <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
+    <list name="ownedOperation" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
     <list name="association" type="Classifier" />
     <list name="extensionPoint" type="org.eclipse.uml2.uml.ExtensionPoint" label="label.extension-points" />
 	<debug />
@@ -2390,7 +2390,7 @@
     <list name="specialization" type="GeneralizableElement" />
     <separator />
     <list name="association" type="Classifier" />
-    <list name="feature" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
+    <list name="ownedOperation" type="org.eclipse.uml2.uml.Operation,org.eclipse.uml2.uml.Reception" label="label.operations" />
 
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
