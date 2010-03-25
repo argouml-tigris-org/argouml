@@ -2167,6 +2167,12 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isQuery(Object handle) {
+        if (handle instanceof Reception) {
+            // Even though this is not relevant for UML2 we have
+            // code calling this that expects it for UML1.4
+            // and we must handle it gracefully.
+            return false;
+        }
         return ((Operation) handle).isQuery();
     }
 
