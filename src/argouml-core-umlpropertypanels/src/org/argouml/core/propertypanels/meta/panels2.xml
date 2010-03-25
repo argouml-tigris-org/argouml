@@ -1997,7 +1997,6 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
