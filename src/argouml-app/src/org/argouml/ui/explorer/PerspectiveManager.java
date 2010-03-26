@@ -389,10 +389,8 @@ public final class PerspectiveManager {
         packagePerspective.addRule(new GoStimulusToAction());
         packagePerspective.addRule(new GoClassifierToCollaboration());
         // TODO: We need a factory pattern for GoXXX classes that can determine if they are required
-        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
-            packagePerspective.addRule(new GoOperationToCollaboration());
-            packagePerspective.addRule(new GoOperationToSequenceDiagram());
-        }
+        packagePerspective.addRule(new GoOperationToCollaboration());
+        packagePerspective.addRule(new GoOperationToSequenceDiagram());
         packagePerspective.addRule(new GoModelElementToComment());
         packagePerspective.addRule(new GoCollaborationToDiagram());
         packagePerspective.addRule(new GoModelElementToTemplateParameter());
@@ -563,7 +561,9 @@ public final class PerspectiveManager {
             new GoModelToNode(), new GoNamespaceToClassifierAndPackage(),
             new GoNamespaceToDiagram(), new GoNamespaceToOwnedElements(),
             new GoNodeToResidentComponent(),
+            new GoOperationToCollaboration(),
             new GoOperationToCollaborationDiagram(),
+            new GoOperationToSequenceDiagram(),
             new GoPackageToClass(),
             new GoPackageToElementImport(),
             new GoProjectToCollaboration(), new GoProjectToDiagram(),
@@ -595,8 +595,7 @@ public final class PerspectiveManager {
         // TODO: We need a factory pattern for GoXXX classes that can determine if they are required
         PerspectiveRule[] ruleNamesArray14 = {
             // Enter here go rules only relevant for UML 1.4
-            new GoOperationToCollaboration(),
-            new GoOperationToSequenceDiagram()
+            // empty for now
         };
 
         PerspectiveRule[] ruleNamesArray2 = {
