@@ -466,17 +466,24 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection<Collaboration> getCollaborations(Object handle) {
-        if (!(handle instanceof Classifier)) {
-            throw new IllegalArgumentException();
-        }
-        Set<Collaboration> result = new HashSet<Collaboration>();
         if (handle instanceof Classifier) {
+	    Set<Collaboration> result = new HashSet<Collaboration>();
             for (CollaborationUse cu : ((Classifier) handle)
                     .getCollaborationUses()) {
                 result.add(cu.getType());
             }
+	    return result;
         }
-        return result;
+	if (handle instanceof Operation) {
+	    List<Collaboration> result = new ArrayList<Collaboration>();
+	    for( RedefinableElement re : ((Operation)handle).getRedefinedElements()) {
+		if( re instanceof Collaboration) {
+		    result.add( (Collaboration)re);
+                }
+	    }
+	    return result;
+	}
+        throw new IllegalArgumentException();
     }
 
     public Collection<Comment> getComments(Object handle) {
