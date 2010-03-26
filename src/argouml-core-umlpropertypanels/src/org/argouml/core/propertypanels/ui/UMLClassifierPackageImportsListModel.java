@@ -38,9 +38,16 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.uml.ui.AbstractActionAddModelElement2;
+import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
  * Shows the ModelElements imported in a Package.
@@ -53,7 +60,7 @@ class UMLClassifierPackageImportsListModel extends UMLModelElementListModel {
      * Constructor for UMLClassifierRoleBaseListModel.
      */
     public UMLClassifierPackageImportsListModel(Object modelElement) {
-        super("elementImport"); // This is the right event.
+        super("elementImport", modelElement, new ActionAddPackageImport(), null, new ActionRemovePackageImport()); // This is the right event.
         setTarget(modelElement);
     }
 
@@ -89,4 +96,64 @@ class UMLClassifierPackageImportsListModel extends UMLModelElementListModel {
             }
         }
     }
+    
+    private static class ActionAddPackageImport extends AbstractActionAddModelElement2 {
+
+        /**
+         * Constructor for ActionAddPackageImport.
+         */
+        public ActionAddPackageImport() {
+            super();
+        }
+
+
+        protected List getChoices() {
+            List vec = new ArrayList();
+            /* TODO: correctly implement next function 
+             * in the model subsystem for 
+             * issue 1942: */
+            vec.addAll(Model.getModelManagementHelper()
+                    .getAllPossibleImports(getTarget()));
+            return vec;
+        }
+
+
+        protected List getSelected() {
+            List vec = new ArrayList();
+            vec.addAll(Model.getFacade().getImportedElements(getTarget()));
+            return vec;
+        }
+
+
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-imported-elements");
+        }
+
+
+        @Override
+        protected void doIt(Collection selected) {
+            Object pack = getTarget();
+            Model.getModelManagementHelper().setImportedElements(pack, selected);
+        }
+    }
+    
+    private static class ActionRemovePackageImport
+	    extends AbstractActionRemoveElement {
+	    
+	    /**
+	     * Constructor for ActionRemovePackageImport.
+	     */
+	    public ActionRemovePackageImport() {
+	        super(Translator.localize("menu.popup.remove"));
+	    }
+	    
+	    /*
+	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	     */
+	    public void actionPerformed(ActionEvent e) {
+	        super.actionPerformed(e);
+	        Model.getModelManagementHelper()
+	            .removeImportedElement(getTarget(), getObjectToRemove());
+	    }
+	}
 }
