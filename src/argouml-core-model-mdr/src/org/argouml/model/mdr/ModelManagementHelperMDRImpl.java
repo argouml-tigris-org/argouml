@@ -474,7 +474,7 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException(
-                "There must be a Package and a ModelElement"); 
+                "There must be a Package and a ModelElement we got " + pack + " and " + me); 
     }
 
 
