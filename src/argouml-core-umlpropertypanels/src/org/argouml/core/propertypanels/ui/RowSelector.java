@@ -48,6 +48,8 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
@@ -126,6 +128,8 @@ class RowSelector extends JPanel
      * Identifies if the model element is a readonly modelelement
      */
     private final boolean readonly;
+    
+    private static final Set<String> EXPANDED_CONTROLS = new TreeSet<String>();
     
     static {
         // Extract the icon that is used by the tree control
@@ -437,6 +441,11 @@ class RowSelector extends JPanel
             
             getModel().addListDataListener(this);
         }
+        
+        if (EXPANDED_CONTROLS.contains(getId())) {
+        	toggleExpansion();
+        }
+        
     }
 
     /**
@@ -502,6 +511,12 @@ class RowSelector extends JPanel
      */
     private void toggleExpansion() {
         expanded = !expanded;
+        
+        if (expanded) {
+        	EXPANDED_CONTROLS.add(getId());
+        } else {
+        	EXPANDED_CONTROLS.remove(getId());
+        }
 
         setIcon();
         if (toolbar != null) {
@@ -509,8 +524,23 @@ class RowSelector extends JPanel
         }
 
         // Force the parent to redraw
-        getParent().invalidate();
-        getParent().validate();
+        Component c = getParent();
+        if (c != null) {
+            c.invalidate();
+            c.validate();
+        }
+    }
+    
+    private String getId() {
+        final String id;
+    	ListModel model = getList().getModel();
+    	if (model instanceof SimpleListModel) {
+    		SimpleListModel slm = (SimpleListModel) model;
+    		id = slm.getPropertyName() + ":" + slm.getMetaType();
+    	} else {
+    		id = model.getClass().getName();
+    	}
+    	return id;
     }
 
     /**
@@ -528,7 +558,6 @@ class RowSelector extends JPanel
      * Remove all the listeners that were added in the constructor
      */
     public void removeNotify() {
-        LOG.info("The RowSelector is being removed from a panel");
     	if (!readonly) {
             getList().removeListSelectionListener(this);
 	        getList().removeListSelectionListener(deleteAction);

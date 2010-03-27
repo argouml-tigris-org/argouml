@@ -98,7 +98,11 @@ class SimpleListModel
         if (metaTypes.size() > 0) {
             return metaTypes.get(0);
         }
-	return getterSetterManager.getMetaType(propertyName);
+        return getterSetterManager.getMetaType(propertyName);
+    }
+    
+    public String getPropertyName() {
+    	return propertyName;
     }
     
     public List getMetaTypes() {
