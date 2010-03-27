@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.model.GetterSetterManager;
+import org.argouml.kernel.Command;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
@@ -104,45 +105,66 @@ class SimpleListModel
         return metaTypes;
     }
     
+    public Command getRemoveCommand(Object objectToRemove) {
+    	return getterSetterManager.getRemoveCommand(propertyName, umlElement, objectToRemove);
+    }
+    
+    public Command getAddCommand() {
+    	return getterSetterManager.getAddCommand(propertyName, umlElement);
+    }
+    
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(final PropertyChangeEvent e) {
-        Runnable doWorkRunnable = new Runnable() {
-            public void run() {
-                try {
-                    if (e instanceof RemoveAssociationEvent) {
-                        removeElement(
-                                ((RemoveAssociationEvent) e).getChangedValue());
-                    } else if (e instanceof AddAssociationEvent) {
-                        Object newElement = ((AddAssociationEvent) e).getChangedValue();
-                        
-                        if (Model.getUmlHelper().isMovable(getMetaType())) {
-                            final Collection c =
-                                (Collection) getterSetterManager.getOptions( 
-                                    umlElement, 
-                                    propertyName, 
-                                    type);
-                            final int index =
-                                CollectionUtil.indexOf(c, newElement);
-                            if (index < 0 || index > getSize() - 1) {
-                                LOG.warn(
-                                        "Unable to add element at correct position "
-                                        + index + " added to end instead");
-                                addElement(newElement);
-                            } else {
-                                add(index, newElement);
-                            }
-                        } else {
-                            addElement(newElement);
-                        }
-                    }
-                } catch (InvalidElementException e) {
-                    LOG.debug("propertyChange accessed a deleted element ", e);
-                }
-            }  
-        };
-        SwingUtilities.invokeLater(doWorkRunnable);
+        if (e instanceof RemoveAssociationEvent
+        		|| e instanceof AddAssociationEvent) {
+	        Runnable doWorkRunnable = new Runnable() {
+	            public void run() {
+	                try {
+	                	if (getterSetterManager.isFullBuildOnly(propertyName)) {
+		                	removeAllElements();
+		                	build();
+	                	} else {
+		                    if (e instanceof RemoveAssociationEvent) {
+		                    	final Object objectToRemove =
+		                    		((RemoveAssociationEvent) e).getChangedValue();
+		                        removeElement(objectToRemove);
+		                    } else if (e instanceof AddAssociationEvent) {
+		                        Object newElement = ((AddAssociationEvent) e).getChangedValue();
+		                        
+		                        if (Model.getUmlHelper().isMovable(getMetaType())) {
+		                            final Collection c =
+		                                (Collection) getterSetterManager.getOptions( 
+		                                    umlElement, 
+		                                    propertyName, 
+		                                    type);
+		                            final int index =
+		                                CollectionUtil.indexOf(c, newElement);
+		                            if (index < 0 || index > getSize() - 1) {
+		                                LOG.warn(
+		                                        "Unable to add element at correct position "
+		                                        + index + " added to end instead");
+		                                addElement(newElement);
+		                            } else {
+		                                add(index, newElement);
+		                            }
+		                        } else {
+		                            addElement(newElement);
+		                        }
+		                    }
+	                	}
+	                } catch (InvalidElementException e) {
+	                    LOG.debug("propertyChange accessed a deleted element ", e);
+	                }
+	            }  
+	        };
+	        SwingUtilities.invokeLater(doWorkRunnable);
+        } else {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("We are listening for too much here. An event we don't need " + e);
+            }
+        }
     }
 
     /**

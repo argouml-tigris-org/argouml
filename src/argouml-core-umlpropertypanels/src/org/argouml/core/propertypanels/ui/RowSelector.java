@@ -73,6 +73,7 @@ import javax.swing.table.TableCellEditor;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Command;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -84,7 +85,6 @@ import org.tigris.swidgets.FlexiGridLayout;
 import org.tigris.toolbar.ToolBar;
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
-import org.tigris.toolbar.toolbutton.ToolButton;
 
 /**
  * A control for displaying the contents of a list model elements in a panel
@@ -95,7 +95,7 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  * @since 0.29.2
  */
 class RowSelector extends JPanel
-        implements MouseListener, ListDataListener {
+        implements MouseListener, ListDataListener, ListSelectionListener {
 
     /**
      * The logger
@@ -200,7 +200,12 @@ class RowSelector extends JPanel
      * The delete action that we must enable/disable
      */
     private final DeleteAction deleteAction;
-
+    
+    /**
+     * The remove action that we must enable/disable
+     */
+    private final Action removeAction;
+    
     /**
      * The delete action that we must enable/disable
      */
@@ -241,6 +246,7 @@ class RowSelector extends JPanel
         this.expandable = expandable;
         Object metaType = null;
         List metaTypes = null;
+        final Action addAction;
 
         if (model instanceof UMLModelElementListModel) {
             // Temporary until SimpleListModel is used for all
@@ -289,6 +295,16 @@ class RowSelector extends JPanel
 
         jscroll.setHorizontalScrollBarPolicy(
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        if (model instanceof SimpleListModel
+        		&& ((SimpleListModel) model).getAddCommand() != null) {
+	        removeAction = new RemoveAction(scroll.getList(), ((SimpleListModel) model));
+	        addAction = new AddAction(((SimpleListModel) model).getAddCommand());
+        } else {
+        	removeAction = null;
+        	addAction = null;
+        }
+        
 
         if (!expandable && !expanded) {
             jscroll.setVerticalScrollBarPolicy(
@@ -344,8 +360,16 @@ class RowSelector extends JPanel
                         actions.add(createAction);
                     }
                 }
-                deleteAction = new DeleteAction();
-                actions.add(deleteAction);
+                if (addAction != null) {
+                    actions.add(addAction);
+                }
+                if (removeAction != null) {
+                    actions.add(removeAction);
+                    deleteAction = null;
+                } else {
+                    deleteAction = new DeleteAction();
+                    actions.add(deleteAction);
+                }
 
                 if (Model.getUmlHelper().isMovable(metaType)) {
                     moveUpAction = new MoveUpAction();
@@ -385,6 +409,7 @@ class RowSelector extends JPanel
             this.addMouseListener(this);
             setIcon();
             buttonPanel.add(expander);
+            // TODO: In think this will always be true
             if (toolbar != null) {
                 toolbar.setVisible(false);
                 buttonPanel.add(toolbar);
@@ -392,7 +417,12 @@ class RowSelector extends JPanel
             add(buttonPanel, BorderLayout.WEST);
 
             if (!Model.getModelManagementHelper().isReadOnly(target)) {
-                getList().addListSelectionListener(deleteAction);
+            	if (deleteAction != null) {
+                    getList().addListSelectionListener(deleteAction);
+            	}
+            	if (removeAction != null) {
+                    getList().addListSelectionListener(this);
+            	}
                 // TODO: We should really test the model instead for this
                 // but we have no API yet.
                 // Can we just check if the collection to build the JList
@@ -500,6 +530,7 @@ class RowSelector extends JPanel
     public void removeNotify() {
         LOG.info("The RowSelector is being removed from a panel");
     	if (!readonly) {
+            getList().removeListSelectionListener(this);
 	        getList().removeListSelectionListener(deleteAction);
 	        if (moveUpAction != null) {
 	            getList().removeListSelectionListener(moveUpAction);
@@ -581,6 +612,14 @@ class RowSelector extends JPanel
 
     public void intervalRemoved(ListDataEvent e) {
     }
+    
+
+	public void valueChanged(ListSelectionEvent e) {
+		if (removeAction != null) {
+	        removeAction.setEnabled(getList().getSelectedIndex() > -1);
+		}
+	}
+    
 
     /**
      * This action deletes the model elements that are selected in the JList
@@ -828,5 +867,45 @@ class RowSelector extends JPanel
             LOG.info("Setting moved model element to " + element);
             this.element = element;
         }
+    }
+    
+    private static class AddAction extends UndoableAction {
+
+    	private Command command;
+    	
+    	public AddAction(Command command) {
+    		super("", ResourceLoaderWrapper.lookupIcon("Add"));
+    		this.command = command;
+    	}
+    	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			super.actionPerformed(e);
+			command.execute();
+		}
+    }
+    
+    private static class RemoveAction extends UndoableAction {
+
+    	private final SimpleListModel simpleListModel;
+    	private final JList list;
+    	
+    	public RemoveAction(JList list, SimpleListModel model) {
+    		super("", ResourceLoaderWrapper.lookupIcon("Remove"));
+    		this.simpleListModel = model;
+    		this.list = list;
+    	}
+    	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			super.actionPerformed(e);
+			final Object objectToRemove = list.getSelectedValue();
+			if (objectToRemove!= null) {
+				Command command = simpleListModel.getRemoveCommand(objectToRemove);
+				command.execute();
+			} else {
+				LOG.warn("No selcted object was found in the list control - we shouldn't be able to get here");
+			}
+		}
     }
 }

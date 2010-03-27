@@ -17,6 +17,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Action;
+
+import org.argouml.kernel.Command;
+
 public abstract class GetterSetterManager {
     
     /**
@@ -49,6 +53,15 @@ public abstract class GetterSetterManager {
     public abstract Object getMetaType(String propertyName);
     
     public abstract boolean isValidElement(String propertyName, String type, Object umlElement);
+    
+    public abstract Command getRemoveCommand(String propertyName, Object umlElement, Object objectToRemove);
+    
+    public abstract Command getAddCommand(String propertyName, Object umlElement);
+    
+    /** This forces component to fully rebuild when items are added and removed
+     *  Used for pragmatic purposes but not advised long term we should remove this in time
+     */
+    public abstract boolean isFullBuildOnly(String propertyName);
     
     public boolean contains(String propertyName) {
         return getterSetterByPropertyName.containsKey(propertyName);
@@ -86,6 +99,15 @@ public abstract class GetterSetterManager {
     protected abstract class ListGetterSetter extends OptionGetterSetter {
         abstract boolean isValidElement(Object modelElement, String type);
         abstract Object getMetaType();
+        Action getAddAction(Object modelElement) {
+        	return null;
+        }
+        Action getRemoveAction(Object modelElement) {
+        	return null;
+        }
+        boolean isFullBuildOnly() {
+        	return false;
+        }
     }
     
 }
