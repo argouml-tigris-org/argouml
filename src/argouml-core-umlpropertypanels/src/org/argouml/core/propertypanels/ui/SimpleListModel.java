@@ -15,14 +15,17 @@ package org.argouml.core.propertypanels.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.model.GetterSetterManager;
+import org.argouml.kernel.Command;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
@@ -47,6 +50,11 @@ class SimpleListModel
      */
     private final String type;
     
+    /**
+     * The metatypes to provide buttons to create
+     */
+    private final ArrayList metaTypes;
+    
     private final Object umlElement;
     private final String propertyName;
 
@@ -60,6 +68,20 @@ class SimpleListModel
         super();
         this.getterSetterManager = getterSetterManager;
         this.type = type;
+        metaTypes = new ArrayList(2);
+        try {
+            final StringTokenizer st = new StringTokenizer(type, ",");
+            while (st.hasMoreTokens()) {
+                String className = st.nextToken();
+                if (className.contains(".")) {
+                    metaTypes.add(Class.forName(className));
+                } else {
+                    //LOG.debug(className + " is not recognised as a class name");
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            LOG.warn("Exception building model for " + propertyName, e);
+        }
         this.propertyName = propertyName;
         this.umlElement = umlElement;
 
@@ -73,41 +95,80 @@ class SimpleListModel
     }
     
     public Object getMetaType() {
-	return getterSetterManager.getMetaType(propertyName);
+        if (metaTypes.size() > 0) {
+            return metaTypes.get(0);
+        }
+        return getterSetterManager.getMetaType(propertyName);
+    }
+    
+    public String getPropertyName() {
+    	return propertyName;
+    }
+    
+    public List getMetaTypes() {
+        return metaTypes;
+    }
+    
+    public Command getRemoveCommand(Object objectToRemove) {
+    	return getterSetterManager.getRemoveCommand(propertyName, umlElement, objectToRemove);
+    }
+    
+    public Command getAddCommand() {
+    	return getterSetterManager.getAddCommand(propertyName, umlElement);
     }
     
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(final PropertyChangeEvent e) {
-        Runnable doWorkRunnable = new Runnable() {
-            public void run() {
-                try {
-                    if (e instanceof RemoveAssociationEvent) {
-                        removeElement(
-                                ((RemoveAssociationEvent) e).getChangedValue());
-                    } else if (e instanceof AddAssociationEvent) {
-                        Object newElement = ((AddAssociationEvent) e).getChangedValue();
-                        
-                        if (Model.getUmlHelper().isMovable(getMetaType())) {
-                            final Collection c =
-                                (Collection) getterSetterManager.getOptions( 
-                                    umlElement, 
-                                    propertyName, 
-                                    type);
-                            final int index =
-                                CollectionUtil.indexOf(c, newElement);
-                            add(index, newElement);
-                        } else {
-                            addElement(newElement);
-                        }
-                    }
-                } catch (InvalidElementException e) {
-                    LOG.debug("propertyChange accessed a deleted element ", e);
-                }
-            }  
-        };
-        SwingUtilities.invokeLater(doWorkRunnable);
+        if (e instanceof RemoveAssociationEvent
+        		|| e instanceof AddAssociationEvent) {
+	        Runnable doWorkRunnable = new Runnable() {
+	            public void run() {
+	                try {
+	                	if (getterSetterManager.isFullBuildOnly(propertyName)) {
+		                	removeAllElements();
+		                	build();
+	                	} else {
+		                    if (e instanceof RemoveAssociationEvent) {
+		                    	final Object objectToRemove =
+		                    		((RemoveAssociationEvent) e).getChangedValue();
+		                        removeElement(objectToRemove);
+		                    } else if (e instanceof AddAssociationEvent) {
+		                        Object newElement = ((AddAssociationEvent) e).getChangedValue();
+		                        
+		                        if (Model.getUmlHelper().isMovable(getMetaType())) {
+		                            final Collection c =
+		                                (Collection) getterSetterManager.getOptions( 
+		                                    umlElement, 
+		                                    propertyName, 
+		                                    type);
+		                            final int index =
+		                                CollectionUtil.indexOf(c, newElement);
+		                            if (index < 0 || index > getSize() - 1) {
+		                                LOG.warn(
+		                                        "Unable to add element at correct position "
+		                                        + index + " added to end instead");
+		                                addElement(newElement);
+		                            } else {
+		                                add(index, newElement);
+		                            }
+		                        } else {
+		                            addElement(newElement);
+		                        }
+		                    }
+	                	}
+	                } catch (InvalidElementException e) {
+	                    LOG.debug("propertyChange accessed a deleted element ", e);
+	                }
+	            }  
+	        };
+	        SwingUtilities.invokeLater(doWorkRunnable);
+        } else {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("We are listening for too much here. An event we don't need " + e);
+            }
+        }
     }
 
     /**

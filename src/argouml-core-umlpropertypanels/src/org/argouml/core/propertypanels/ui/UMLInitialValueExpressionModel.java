@@ -7,7 +7,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -52,6 +53,10 @@ class UMLInitialValueExpressionModel
 
     public UMLInitialValueExpressionModel(Object target) {
         super(target, "initialValue");
+        if (!Model.getFacade().isAAttribute(target)) {
+            throw new IllegalArgumentException(
+                    "The target must be an attribute we got a " + target.getClass().getName());
+        }
     }
 
     /**
@@ -60,12 +65,7 @@ class UMLInitialValueExpressionModel
      */
     @Override
     public Object getExpression() {
-        Object target = getTarget();
-        if (target == null) {
-            return null;
-        }
-        assert Model.getFacade().isAAttribute(target);
-        return Model.getFacade().getInitialValue(target);
+        return Model.getFacade().getInitialValue(getTarget());
     }
 
     @Override
@@ -80,7 +80,6 @@ class UMLInitialValueExpressionModel
     @Override
     public void setExpression(Object expression) {
         Object target = getTarget();
-        assert Model.getFacade().isAAttribute(target);
         assert (expression == null) || Model.getFacade().isAExpression(expression);
         /* If we do not set it to null first, then we get a MDR DebugException: */
         Model.getCoreHelper().setInitialValue(target, null);

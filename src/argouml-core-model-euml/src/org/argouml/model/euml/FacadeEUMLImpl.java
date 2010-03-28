@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -466,17 +466,24 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection<Collaboration> getCollaborations(Object handle) {
-        if (!(handle instanceof Classifier)) {
-            throw new IllegalArgumentException();
-        }
-        Set<Collaboration> result = new HashSet<Collaboration>();
         if (handle instanceof Classifier) {
+	    Set<Collaboration> result = new HashSet<Collaboration>();
             for (CollaborationUse cu : ((Classifier) handle)
                     .getCollaborationUses()) {
                 result.add(cu.getType());
             }
+	    return result;
         }
-        return result;
+	if (handle instanceof Operation) {
+	    List<Collaboration> result = new ArrayList<Collaboration>();
+	    for( RedefinableElement re : ((Operation)handle).getRedefinedElements()) {
+		if( re instanceof Collaboration) {
+		    result.add( (Collaboration)re);
+                }
+	    }
+	    return result;
+	}
+        throw new IllegalArgumentException();
     }
 
     public Collection<Comment> getComments(Object handle) {
@@ -621,12 +628,33 @@ class FacadeEUMLImpl implements Facade {
         }
         return ((Namespace) handle).getElementImports();
     }
-
+	
+    /**
+     * Get all the relationsships, that represent
+     * an import of this element.
+     *
+     * @param handle The imported model element
+     *
+     * @return A collection of ElementImport object, that represent imports of this object.
+     */
     public Collection getElementImports2(Object handle) {
         if (!(handle instanceof Element)) {
             throw new IllegalArgumentException();
         }
-        throw new NotYetImplementedException();
+	
+	Collection result = new ArrayList();
+
+	// Get all the relationships, that this model element has.
+	// and filter everything, that is not an import.
+	for( Relationship rel : ((Element)handle).getRelationships()) {
+	    if( (rel instanceof ElementImport)
+		&& ((ElementImport)rel).getImportedElement() == handle) {
+
+		result.add( rel);
+	    }
+	}
+	return result;
+        // throw new NotYetImplementedException();
     }
 
     public Collection getElementResidences(Object handle) {
@@ -1119,7 +1147,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getRaisedSignals(Object handle) {
-        throw new NotYetImplementedException();
+        return getRaisedExceptions(handle);
     }
     
     public Collection getRaisedExceptions( Object handle) {
@@ -1213,8 +1241,13 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getSignal(Object handle) {
-        throw new NotYetImplementedException();
-
+        if (handle instanceof SignalEvent) {
+            return ((SignalEvent) handle).getSignal();
+        }
+        if (handle instanceof Reception) {
+            return ((Reception) handle).getSignal();
+        }
+        throw new IllegalArgumentException("handle should be a SignalEvent or Reception!"); //$NON-NLS-<n>$
     }
 
     public Vertex getSource(Object handle) {
@@ -1261,7 +1294,7 @@ class FacadeEUMLImpl implements Facade {
 //          return ((Property) handle).gets
             return Collections.EMPTY_SET;
         } else if (handle instanceof org.eclipse.uml2.uml.Class) {
-            ((org.eclipse.uml2.uml.Class) handle).getInterfaceRealizations();
+            return ((org.eclipse.uml2.uml.Class) handle).getInterfaceRealizations();
         }
         throw new NotYetImplementedException();
 
@@ -2167,6 +2200,12 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isQuery(Object handle) {
+        if (handle instanceof Reception) {
+            // Even though this is not relevant for UML2 we have
+            // code calling this that expects it for UML1.4
+            // and we must handle it gracefully.
+            return false;
+        }
         return ((Operation) handle).isQuery();
     }
 

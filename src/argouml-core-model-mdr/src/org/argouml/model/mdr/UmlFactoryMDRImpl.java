@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -72,6 +72,7 @@ import org.omg.uml.behavioralelements.collaborations.InteractionInstanceSet;
 import org.omg.uml.behavioralelements.collaborations.Message;
 import org.omg.uml.behavioralelements.commonbehavior.Action;
 import org.omg.uml.behavioralelements.commonbehavior.ActionSequence;
+import org.omg.uml.behavioralelements.commonbehavior.Argument;
 import org.omg.uml.behavioralelements.commonbehavior.AttributeLink;
 import org.omg.uml.behavioralelements.commonbehavior.CallAction;
 import org.omg.uml.behavioralelements.commonbehavior.ComponentInstance;
@@ -92,10 +93,14 @@ import org.omg.uml.behavioralelements.commonbehavior.SubsystemInstance;
 import org.omg.uml.behavioralelements.commonbehavior.TerminateAction;
 import org.omg.uml.behavioralelements.commonbehavior.UmlException;
 import org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction;
+import org.omg.uml.behavioralelements.statemachines.CallEvent;
+import org.omg.uml.behavioralelements.statemachines.ChangeEvent;
 import org.omg.uml.behavioralelements.statemachines.CompositeState;
+import org.omg.uml.behavioralelements.statemachines.Event;
 import org.omg.uml.behavioralelements.statemachines.FinalState;
 import org.omg.uml.behavioralelements.statemachines.Guard;
 import org.omg.uml.behavioralelements.statemachines.Pseudostate;
+import org.omg.uml.behavioralelements.statemachines.SignalEvent;
 import org.omg.uml.behavioralelements.statemachines.SimpleState;
 import org.omg.uml.behavioralelements.statemachines.State;
 import org.omg.uml.behavioralelements.statemachines.StateMachine;
@@ -103,6 +108,7 @@ import org.omg.uml.behavioralelements.statemachines.StateVertex;
 import org.omg.uml.behavioralelements.statemachines.StubState;
 import org.omg.uml.behavioralelements.statemachines.SubmachineState;
 import org.omg.uml.behavioralelements.statemachines.SynchState;
+import org.omg.uml.behavioralelements.statemachines.TimeEvent;
 import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.behavioralelements.usecases.Actor;
 import org.omg.uml.behavioralelements.usecases.Extend;
@@ -381,6 +387,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for an Actor to contain
         validContainmentMap.put(Actor.class, 
                 new Class<?>[] { 
+                    Operation.class,
                     Reception.class
                 });
         
@@ -391,15 +398,23 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     Operation.class, Reception.class
                 });
         
+        // specifies valid elements for a Use Case to contain
+        validContainmentMap.put(Extend.class, 
+                new Class<?>[] { 
+                    ExtensionPoint.class
+                });
+        
         // specifies valid elements for a Component to contain
         validContainmentMap.put(Component.class, 
                 new Class<?>[] { 
-                    Reception.class
+                    Reception.class,
+                    Operation.class
                 });
         
         // specifies valid elements for a Node to contain
         validContainmentMap.put(Node.class, 
                 new Class<?>[] { 
+                    Operation.class,
                     Reception.class
                 });
         
@@ -412,16 +427,88 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for a DataType to contain
         validContainmentMap.put(DataType.class, 
                 new Class<?>[] { 
-                    Operation.class 
+                    Operation.class,
+                    Reception.class
                 });
         
-        // specifies valid elements for a Attribute to contain
+        // specifies valid elements for a Operation to contain
         validContainmentMap.put(Operation.class, 
+                new Class<?>[] { 
+                    Parameter.class,
+                    Signal.class,
+                    Method.class
+                });
+        
+        // specifies valid elements for an Event to contain
+        validContainmentMap.put(Event.class, 
                 new Class<?>[] { 
                     Parameter.class
                 });
-    }
         
+        // specifies valid elements for an ObjectFlowState to contain
+        validContainmentMap.put(ObjectFlowState.class, 
+                new Class<?>[] { 
+                    Parameter.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(AssociationRole.class, 
+                new Class<?>[] { 
+                    Message.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(CallAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(UninterpretedAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(ReturnAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(DestroyAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(SendAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(TerminateAction.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(ActionSequence.class, 
+                new Class<?>[] { 
+                    Argument.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(Transition.class, 
+                new Class<?>[] { 
+                    Guard.class,
+                    CallAction.class, ReturnAction.class,
+                    CreateAction.class, DestroyAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                });
+    }
+    
     public Object buildConnection(Object elementType, Object fromElement,
             Object fromStyle, Object toElement, Object toStyle,
             Object unidirectional, Object namespace)
@@ -576,6 +663,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             return getCommonBehavior().createException();
         } else if (elementType == metaTypes.getTransition()) {
             return getStateMachines().createTransition();
+        } else if (elementType == metaTypes.getTransition()) {
+            return getStateMachines().createTransition();
         }
             
         throw new IllegalArgumentException(
@@ -588,7 +677,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         Object element = null;
         
         // if this is a feature get the owner of that feature
-        if (this.modelImpl.getFacade().isAFeature(container)) {
+        // TODO: Does anything actually make use of this? It can
+        // cause unexpected behaviour.
+        if (this.modelImpl.getFacade().isAFeature(container)
+                && elementType != metaTypes.getParameter()
+                && elementType != metaTypes.getMethod()
+                && elementType != metaTypes.getSignal()) {
             container = this.modelImpl.getFacade().getOwner(container);
         }
         
@@ -599,10 +693,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } else if (elementType == this.metaTypes.getOperation()) {
             element = getCore().buildOperation(container, null);
         } else if (elementType == this.metaTypes.getReception()) {
-            element = this.modelImpl.getCommonBehaviorFactory().
-                createReception();
-            
-            this.modelImpl.getCoreHelper().addOwnedElement(container, element);
+            element = this.modelImpl.getCommonBehaviorFactory().buildReception(container);
         } else if (elementType == this.metaTypes.getEnumerationLiteral()) {
             element = getCore().buildEnumerationLiteral(null, container);
         } else if (elementType == this.metaTypes.getExtensionPoint()) {
@@ -618,7 +709,63 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             param.setName("T"); // default parameter name
             element = 
                 modelImpl.getCoreFactory().buildTemplateParameter(container, 
-                        param, null);            
+                        param, null);
+        } else if (elementType == metaTypes.getParameter()) {
+            element = getCore().buildParameter(container, null);
+        } else if (elementType == metaTypes.getSignal()) {
+            element = modelImpl.getCommonBehaviorFactory().buildSignal(container);
+        } else if (elementType == metaTypes.getMethod()) {
+            final Operation op = (Operation) container;
+            element = getCore().buildMethod(op.getName());
+            modelImpl.getCoreHelper().addMethod(op, element);
+            modelImpl.getCoreHelper().addFeature(
+                    modelImpl.getFacade().getOwner(op), element);
+        } else if (elementType == metaTypes.getMessage()) {
+            Object collaboration = Model.getFacade().getNamespace(container);
+            element =
+                Model.getCollaborationsFactory()
+                    .buildMessage(collaboration, container);
+        } else if (elementType == metaTypes.getArgument()) {
+            element = Model.getCommonBehaviorFactory().createArgument();
+            Model.getCommonBehaviorHelper().addActualArgument(container, element);
+        } else if (elementType == metaTypes.getGuard()) {
+            element = Model.getStateMachinesFactory().buildGuard(container);
+        } else if (elementType == metaTypes.getCreateAction()) {
+            element = Model.getCommonBehaviorFactory().createCreateAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getCallAction()) {
+            element = Model.getCommonBehaviorFactory().createCallAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getReturnAction()) {
+            element = Model.getCommonBehaviorFactory().createReturnAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getDestroyAction()) {
+            element = Model.getCommonBehaviorFactory().createDestroyAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getSendAction()) {
+            element = Model.getCommonBehaviorFactory().createSendAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getTerminateAction()) {
+            element = Model.getCommonBehaviorFactory().createTerminateAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getUninterpretedAction()) {
+            element = Model.getCommonBehaviorFactory().createUninterpretedAction();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getActionSequence()) {
+            element = Model.getCommonBehaviorFactory().createActionSequence();
+            ((Transition) container).setEffect((Action) element);
+        } else if (elementType == metaTypes.getCallEvent()) {
+            element = Model.getStateMachinesFactory().createCallEvent();
+            setNewTrigger((Transition) container, (Event) element);
+        } else if (elementType == metaTypes.getChangeEvent()) {
+            element = Model.getStateMachinesFactory().createChangeEvent();
+            setNewTrigger((Transition) container, (Event) element);
+        } else if (elementType == metaTypes.getSignalEvent()) {
+            element = Model.getStateMachinesFactory().createSignalEvent();
+            setNewTrigger((Transition) container, (Event) element);
+        } else if (elementType == metaTypes.getTimeEvent()) {
+            element = Model.getStateMachinesFactory().createTimeEvent();
+            setNewTrigger((Transition) container, (Event) element);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);
@@ -633,6 +780,19 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         
         return element;
+    }
+    
+    /**
+     * Add a newly created event to a trigger
+     * @param transition
+     * @param event
+     */
+    private void setNewTrigger(Transition transition, Event event) {
+        transition.setTrigger(event);
+        event.setName("");
+        final StateMachine statemachine = transition.getStateMachine();
+        final Namespace namespace = statemachine.getNamespace();
+        event.setNamespace(namespace);
     }
     
     public boolean isConnectionType(Object connectionType) {

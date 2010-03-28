@@ -1,13 +1,15 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Thomas Neustupny
+ *    Bob Tarling
+ *    
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -348,8 +350,9 @@ public final class ResourceLoaderWrapper {
         images.put("action.find", "Find...");
         images.put("action.import-sources", "Import Sources...");
         images.put("action.more-info", "More Info...");
-        images.put("action.navigate-back", "Navigate Back");
-        images.put("action.navigate-forward", "Navigate Forward");
+        images.put("action.navigate-back", "NavigateBack");
+        images.put("action.navigate-forward", "NavigateForward");
+        images.put("action.navigate-up", "NavigateUp");
         images.put("action.new", "New");
         images.put("action.new-profile", "NewProfile");
         images.put("action.new-todo-item", "New To Do Item...");
@@ -378,7 +381,13 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-associationrole", "AssociationRole");
         images.put("button.new-attribute", "New Attribute");
         images.put("button.new-callaction", "CallAction");
+        images.put("button.new-terminateaction", "TerminateAction");
+        images.put("button.new-uninterpretedaction", "UninterpretedAction");
+        images.put("button.new-actionsequence", "ActionSequence");
+        images.put("button.new-callaction", "CallAction");
+        images.put("button.new-callevent", "CallEvent");
         images.put("button.new-callstate", "CallState");
+        images.put("button.new-changeevent", "ChangeEvent");
         images.put("button.new-choice", "Choice");
         images.put("button.new-class", "Class");
         images.put("button.new-classifierrole", "ClassifierRole");
@@ -397,6 +406,12 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-extension-point", "New Extension Point");
         images.put("button.new-extend", "Extend");
         images.put("button.new-exception", "Exception");
+        images.put("button.new-extensionpoint", "ExtensionPoint");
+        images.put("button.new-guard", "Guard");
+        images.put("button.new-method", "Method");
+        images.put("button.new-message", "Message");
+        images.put("button.new-argument", "Argument");
+        images.put("button.new-property", "Property");
         images.put("button.new-template-parameter", "TemplateParameter");
     }
 
@@ -434,12 +449,14 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-sendaction", "SendAction");
         images.put("button.new-shallowhistory", "ShallowHistory");
         images.put("button.new-signal", "Signal");
+        images.put("button.new-signalevent", "SignalEvent");
         images.put("button.new-simplestate", "SimpleState");
         images.put("button.new-stereotype", "Stereotype");
         images.put("button.new-stubstate", "StubState");
         images.put("button.new-subactivitystate", "SubactivityState");
         images.put("button.new-submachinestate", "SubmachineState");
         images.put("button.new-synchstate", "SynchState");
+        images.put("button.new-timeevent", "TimeEvent");
         images.put("button.new-tagdefinition", "TagDefinition");
         images.put("button.new-transition", "Transition");
         images.put("button.new-uniaggregation", "UniAggregation");

@@ -351,6 +351,12 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = modelImpl.getCommonBehaviorFactory().createException();
         } else if (elementType == metaTypes.getTransition()) {
             o = modelImpl.getStateMachinesFactory().createTransition();
+        } else if (elementType == metaTypes.getParameter()) {
+            o = modelImpl.getCoreFactory().createParameter();
+        } else if (elementType == metaTypes.getExtensionPoint()) {
+            o = modelImpl.getUseCasesFactory().createExtensionPoint();
+        } else if (elementType == metaTypes.getReception()) {
+            o = modelImpl.getCommonBehaviorFactory().createReception();
         }
         if (!(o instanceof EObject)) {
             throw new IllegalArgumentException(
@@ -580,6 +586,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         // specifies valid elements for an Actor to contain
         validContainmentMap.put(Actor.class, 
                 new Class<?>[] { 
+                    Operation.class,
                     Reception.class
                 });
         
@@ -590,15 +597,23 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                     Operation.class, Reception.class
                 });
         
+        // specifies valid elements for a Use Case to contain
+        validContainmentMap.put(Extend.class, 
+                new Class<?>[] { 
+                    ExtensionPoint.class
+                });
+        
         // specifies valid elements for a Component to contain
         validContainmentMap.put(Component.class, 
                 new Class<?>[] { 
+                    Operation.class,
                     Reception.class
                 });
         
         // specifies valid elements for a Node to contain
         validContainmentMap.put(Node.class, 
                 new Class<?>[] { 
+                    Operation.class,
                     Reception.class
                 });
         
@@ -611,7 +626,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         // specifies valid elements for a DataType to contain
         validContainmentMap.put(DataType.class, 
                 new Class<?>[] { 
-                    Operation.class 
+                    Operation.class,
+                    Reception.class
                 });
 
         // specifies valid elements for an Operation to contain

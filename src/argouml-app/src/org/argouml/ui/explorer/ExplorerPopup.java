@@ -114,6 +114,8 @@ public class ExplorerPopup extends JPopupMenu {
         new Object[] {
             Model.getMetaTypes().getProfile(), // needs to be the first entry
             "button.new-profile-package", // because of UML1/UML2 differences
+            Model.getMetaTypes().getParameter(),
+            "button.new-parameter",
             Model.getMetaTypes().getTemplateParameter(),
             "button.new-template-parameter",
             Model.getMetaTypes().getPackage(), 

@@ -56,9 +56,6 @@ import org.argouml.util.MyTokenizer;
 
 /**
  * Utility classes for use in diagram popup menus for stereotypes.
- * 
- * @author Bob Tarling
- *
  */
 public class StereotypeUtility {
 

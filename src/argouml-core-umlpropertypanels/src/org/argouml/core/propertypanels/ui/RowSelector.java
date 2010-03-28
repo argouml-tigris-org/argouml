@@ -47,6 +47,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
@@ -72,6 +75,7 @@ import javax.swing.table.TableCellEditor;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Command;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
@@ -82,6 +86,7 @@ import org.tigris.gef.presentation.FigTextEditor;
 import org.tigris.swidgets.FlexiGridLayout;
 import org.tigris.toolbar.ToolBar;
 import org.tigris.toolbar.ToolBarFactory;
+import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
 
 /**
  * A control for displaying the contents of a list model elements in a panel
@@ -92,7 +97,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * @since 0.29.2
  */
 class RowSelector extends JPanel
-        implements MouseListener, ListDataListener {
+        implements MouseListener, ListDataListener, ListSelectionListener {
 
     /**
      * The logger
@@ -123,6 +128,8 @@ class RowSelector extends JPanel
      * Identifies if the model element is a readonly modelelement
      */
     private final boolean readonly;
+    
+    private static final Set<String> EXPANDED_CONTROLS = new TreeSet<String>();
     
     static {
         // Extract the icon that is used by the tree control
@@ -197,7 +204,12 @@ class RowSelector extends JPanel
      * The delete action that we must enable/disable
      */
     private final DeleteAction deleteAction;
-
+    
+    /**
+     * The remove action that we must enable/disable
+     */
+    private final Action removeAction;
+    
     /**
      * The delete action that we must enable/disable
      */
@@ -237,6 +249,8 @@ class RowSelector extends JPanel
         
         this.expandable = expandable;
         Object metaType = null;
+        List metaTypes = null;
+        final Action addAction;
 
         if (model instanceof UMLModelElementListModel) {
             // Temporary until SimpleListModel is used for all
@@ -247,6 +261,7 @@ class RowSelector extends JPanel
         } else if (model instanceof org.argouml.core.propertypanels.ui.SimpleListModel) {
             target = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getUmlElement();
             metaType = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaType();
+            metaTypes = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaTypes();
             scroll = new ScrollListImpl(model, 1);
             readonly = Model.getModelManagementHelper().isReadOnly(target);
         } else {
@@ -257,11 +272,17 @@ class RowSelector extends JPanel
         
         assert (target != null);
 
-        LOG.info("Creating list for " + target);
+        if (metaTypes == null) {
+            metaTypes = new ArrayList();
+            metaTypes.add(metaType);
+        }
 
-        LOG.info("model = " + model.getClass().getName());
-        LOG.info("metatype = " + metaType);
-        LOG.info("target = " + target);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Creating list for " + target);
+            LOG.debug("model = " + model.getClass().getName());
+            LOG.debug("metatype = " + metaType);
+            LOG.debug("target = " + target);
+        }
 
         add((JComponent) scroll);
 
@@ -278,6 +299,16 @@ class RowSelector extends JPanel
 
         jscroll.setHorizontalScrollBarPolicy(
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        if (model instanceof SimpleListModel
+        		&& ((SimpleListModel) model).getAddCommand() != null) {
+	        removeAction = new RemoveAction(scroll.getList(), ((SimpleListModel) model));
+	        addAction = new AddAction(((SimpleListModel) model).getAddCommand());
+        } else {
+        	removeAction = null;
+        	addAction = null;
+        }
+        
 
         if (!expandable && !expanded) {
             jscroll.setVerticalScrollBarPolicy(
@@ -289,22 +320,60 @@ class RowSelector extends JPanel
             moveDownAction = null;
             moveTopAction = null;
             moveBottomAction = null;
+            if (!readonly) {
+                // Create popup toolbutton if we have a single row
+                final ArrayList<Action> actions = new ArrayList<Action>(6);
+    
+                for (Object meta : metaTypes) {
+                    if (Model.getUmlFactory().isContainmentValid(meta, target)) {
+                        final String label =
+                            "button.new-" + Model.getMetaTypes().getName(meta).toLowerCase();
+                        final Action createAction = new ActionCreateContainedModelElement(
+                                meta,
+                                target,
+                                label);
+                        actions.add(createAction);
+                    }
+                }
+                if (!actions.isEmpty()) {
+                    PopupToolBoxButton tb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
+                    for (Action action : actions) {
+                        tb.add(action);
+                    }
+                    JPanel buttonPanel =
+                        new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
+                    buttonPanel.add(tb);
+                    add(buttonPanel, BorderLayout.WEST);
+                }
+            }
         } else {
-        	if (!readonly) {
-        		// TODO: Lets build this into a separate buildToolbar method
+            if (!readonly) {
+        	// TODO: Lets build this into a separate buildToolbar method
         		
                 // Create actions and expander if we have multiple rows
                 final ArrayList<Action> actions = new ArrayList<Action>(6);
 
-                if (Model.getUmlFactory().isContainmentValid(metaType, target)) {
-                    final Action createAction = new ActionCreateContainedModelElement(
-                            metaType,
-                            target,
-                            "button.new-" + Model.getMetaTypes().getName(metaType).toLowerCase());
-                    actions.add(createAction);
+                for (Object meta : metaTypes) {
+                    if (Model.getUmlFactory().isContainmentValid(meta, target)) {
+                        final String label =
+                            "button.new-" + Model.getMetaTypes().getName(meta).toLowerCase();
+                        final Action createAction = new ActionCreateContainedModelElement(
+                                meta,
+                                target,
+                                label);
+                        actions.add(createAction);
+                    }
                 }
-                deleteAction = new DeleteAction();
-                actions.add(deleteAction);
+                if (addAction != null) {
+                    actions.add(addAction);
+                }
+                if (removeAction != null) {
+                    actions.add(removeAction);
+                    deleteAction = null;
+                } else {
+                    deleteAction = new DeleteAction();
+                    actions.add(deleteAction);
+                }
 
                 if (Model.getUmlHelper().isMovable(metaType)) {
                     moveUpAction = new MoveUpAction();
@@ -326,7 +395,7 @@ class RowSelector extends JPanel
                 toolbar = tbf.createToolBar();
                 toolbar.setRollover(true);
                 toolbar.setOrientation(ToolBar.VERTICAL);
-        	} else {
+            } else {
                 final ToolBarFactory tbf = new ToolBarFactory(new Object[] {});
                 toolbar = tbf.createToolBar();
                 toolbar.setRollover(true);
@@ -336,7 +405,7 @@ class RowSelector extends JPanel
                 moveTopAction = null;
                 moveBottomAction = null;
                 deleteAction = null;
-        	}
+            }
 
             JPanel buttonPanel =
                 new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
@@ -344,28 +413,39 @@ class RowSelector extends JPanel
             this.addMouseListener(this);
             setIcon();
             buttonPanel.add(expander);
+            // TODO: In think this will always be true
             if (toolbar != null) {
                 toolbar.setVisible(false);
                 buttonPanel.add(toolbar);
             }
             add(buttonPanel, BorderLayout.WEST);
 
-        	if (!Model.getModelManagementHelper().isReadOnly(target)) {
-	            getList().addListSelectionListener(deleteAction);
-	            // TODO: We should really test the model instead for this
-	            // but we have no API yet.
-	            // Can we just check if the collection to build the JList
-	            // control implements the List interface?
-	            if (Model.getUmlHelper().isMovable(metaType)) {
-	                getList().addListSelectionListener(moveUpAction);
-	                getList().addListSelectionListener(moveDownAction);
-	                getList().addListSelectionListener(moveTopAction);
-	                getList().addListSelectionListener(moveBottomAction);
-	            }
-        	}
+            if (!Model.getModelManagementHelper().isReadOnly(target)) {
+            	if (deleteAction != null) {
+                    getList().addListSelectionListener(deleteAction);
+            	}
+            	if (removeAction != null) {
+                    getList().addListSelectionListener(this);
+            	}
+                // TODO: We should really test the model instead for this
+                // but we have no API yet.
+                // Can we just check if the collection to build the JList
+                // control implements the List interface?
+                if (Model.getUmlHelper().isMovable(metaType)) {
+                    getList().addListSelectionListener(moveUpAction);
+                    getList().addListSelectionListener(moveDownAction);
+                    getList().addListSelectionListener(moveTopAction);
+                    getList().addListSelectionListener(moveBottomAction);
+                }
+            }
             
             getModel().addListDataListener(this);
         }
+        
+        if (EXPANDED_CONTROLS.contains(getId())) {
+        	toggleExpansion();
+        }
+        
     }
 
     /**
@@ -431,6 +511,12 @@ class RowSelector extends JPanel
      */
     private void toggleExpansion() {
         expanded = !expanded;
+        
+        if (expanded) {
+        	EXPANDED_CONTROLS.add(getId());
+        } else {
+        	EXPANDED_CONTROLS.remove(getId());
+        }
 
         setIcon();
         if (toolbar != null) {
@@ -438,8 +524,23 @@ class RowSelector extends JPanel
         }
 
         // Force the parent to redraw
-        getParent().invalidate();
-        getParent().validate();
+        Component c = getParent();
+        if (c != null) {
+            c.invalidate();
+            c.validate();
+        }
+    }
+    
+    private String getId() {
+        final String id;
+    	ListModel model = getList().getModel();
+    	if (model instanceof SimpleListModel) {
+    		SimpleListModel slm = (SimpleListModel) model;
+    		id = slm.getPropertyName() + ":" + slm.getMetaType();
+    	} else {
+    		id = model.getClass().getName();
+    	}
+    	return id;
     }
 
     /**
@@ -457,8 +558,8 @@ class RowSelector extends JPanel
      * Remove all the listeners that were added in the constructor
      */
     public void removeNotify() {
-        LOG.info("The RowSelector is being removed from a panel");
     	if (!readonly) {
+            getList().removeListSelectionListener(this);
 	        getList().removeListSelectionListener(deleteAction);
 	        if (moveUpAction != null) {
 	            getList().removeListSelectionListener(moveUpAction);
@@ -540,6 +641,14 @@ class RowSelector extends JPanel
 
     public void intervalRemoved(ListDataEvent e) {
     }
+    
+
+	public void valueChanged(ListSelectionEvent e) {
+		if (removeAction != null) {
+	        removeAction.setEnabled(getList().getSelectedIndex() > -1);
+		}
+	}
+    
 
     /**
      * This action deletes the model elements that are selected in the JList
@@ -787,5 +896,45 @@ class RowSelector extends JPanel
             LOG.info("Setting moved model element to " + element);
             this.element = element;
         }
+    }
+    
+    private static class AddAction extends UndoableAction {
+
+    	private Command command;
+    	
+    	public AddAction(Command command) {
+    		super("", ResourceLoaderWrapper.lookupIcon("Add"));
+    		this.command = command;
+    	}
+    	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			super.actionPerformed(e);
+			command.execute();
+		}
+    }
+    
+    private static class RemoveAction extends UndoableAction {
+
+    	private final SimpleListModel simpleListModel;
+    	private final JList list;
+    	
+    	public RemoveAction(JList list, SimpleListModel model) {
+    		super("", ResourceLoaderWrapper.lookupIcon("Remove"));
+    		this.simpleListModel = model;
+    		this.list = list;
+    	}
+    	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			super.actionPerformed(e);
+			final Object objectToRemove = list.getSelectedValue();
+			if (objectToRemove!= null) {
+				Command command = simpleListModel.getRemoveCommand(objectToRemove);
+				command.execute();
+			} else {
+				LOG.warn("No selcted object was found in the list control - we shouldn't be able to get here");
+			}
+		}
     }
 }

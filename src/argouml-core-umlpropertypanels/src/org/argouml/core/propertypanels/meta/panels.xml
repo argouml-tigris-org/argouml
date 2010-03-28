@@ -174,7 +174,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
@@ -205,9 +205,9 @@
     <list name="specialization" type="GeneralizableElement" />
     <separator />
     <list name="feature" type="org.omg.uml.foundation.core.Attribute" label="label.attributes" />
-    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
     <list name="association" type="Classifier" />    
-    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
+    <list name="ownedElement" type="org.omg.uml.foundation.core.UmlClass" label="label.owned-elements"/>
 	
 	<debug />
     <attribute name="targetFlow" type="Flow" />
@@ -250,7 +250,7 @@
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
     <debug />
     <attribute name="targetFlow" type="Flow" />
     <attribute name="sourceFlow" type="Flow" />
@@ -403,7 +403,7 @@
     <list name="specialization" type="GeneralizableElement" />
 	<separator />
 	<list name="association" type="Classifier" />
-    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
 	
 	<debug />
     <attribute name="clientDependency" type="Dependency" />
@@ -598,14 +598,14 @@
     <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <separator />
-    <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
+    <list name="raisedSignal" type="org.omg.uml.behavioralelements.commonbehavior.Signal" label="label.raisedsignals" />
   </panel>
   <panel name="Operation">
     <text name="name" type="Name" />
     <singlerow name="owner" type="Classifier" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <separator />    
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
@@ -618,8 +618,8 @@
     </checkgroup>
     <optionbox name="concurrency" type="CallConcurrencyKind" />
     <separator />
-    <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
-    <list name="method" type="Operation" />
+    <list name="raisedSignal" type="org.omg.uml.behavioralelements.commonbehavior.Signal" label="label.raisedsignals" />
+    <list name="method" type="org.omg.uml.foundation.core.Method" />
     <textarea name="specification" type="String" />
     
     <debug />
@@ -773,7 +773,7 @@
     <list name="connection" type="AssociationEnd" label="label.connections" />
     <separator />
     <list name="feature" type="org.omg.uml.foundation.core.Attribute" label="label.attributes" />
-    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
     <list name="association" type="Classifier" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     
@@ -945,9 +945,10 @@
     <separator />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
-    <separator />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
+    <separator />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
     <list name="residentElement" type="ElementResidence" label="label.residents" />
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
@@ -993,7 +994,10 @@
 	<separator />
     <list name="generalization" type="Generalization" />    
     <list name="specialization" type="GeneralizableElement" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
     <list name="deployedComponent" type="Component" label="label.deployedcomponents"  />
 	
 	<debug />
@@ -1163,7 +1167,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
@@ -1191,7 +1195,7 @@
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
 	<separator />
-    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
 	<list name="literal" type="EnumerationLiteral" label="label.literals" />
 
 	<debug />
@@ -1384,7 +1388,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
@@ -1431,7 +1435,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
@@ -1586,7 +1590,7 @@
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
     <list name="instantiation" type="Classifier" />
-    <list name="actualArgument" type="Argument" label="label.arguments" />
+    <list name="actualArgument" type="org.omg.uml.behavioralelements.commonbehavior.Argument" label="label.arguments" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1625,7 +1629,7 @@
     <textarea name="script" type="ActionExpression" />
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
-    <list name="actualArgument" type="Argument" label="label.arguments" />
+    <list name="actualArgument" type="org.omg.uml.behavioralelements.commonbehavior.Argument" label="label.arguments" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1664,7 +1668,7 @@
     <textarea name="script" type="ActionExpression" />
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
-    <list name="actualArgument" type="Argument" label="label.arguments" />
+    <list name="actualArgument" type="org.omg.uml.behavioralelements.commonbehavior.Argument" label="label.arguments" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1890,8 +1894,8 @@
     <textarea name="script" type="ActionExpression" />    
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
-	<combo name="operation" type="Operation" />    
-    <list name="actualArgument" type="Argument" label="label.arguments" />
+	<combo name="operation" type="Operation" />
+    <list name="actualArgument" type="org.omg.uml.behavioralelements.commonbehavior.Argument" label="label.arguments" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -1931,8 +1935,7 @@
     <textarea name="recurrence" type="IterationExpression" />    
     <separator />
 	<list name="signal" type="Signal" />
-    <list name="actualArgument" type="Argument" label="label.arguments" />
-	
+    <list name="actualArgument" type="org.omg.uml.behavioralelements.commonbehavior.Argument" label="label.arguments" />
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
@@ -2032,6 +2035,7 @@
   </panel>
   <panel name="Reception">
     <text name="name" type="Name" />
+    <singlerow name="owner" type="Classifier" />
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
@@ -2040,13 +2044,12 @@
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
-    <combo name="namespace" type="Namespace" />
-    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="targetFlow" type="Flow" label="label.target-flows" />
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
     <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -2059,15 +2062,15 @@
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
-    <list name="elementImport" type="ModelElement" label="label.element-import" />
+    <!--  list name="partition" type="ModelElement" / -->
+    <!--  list name="elementImport" type="ModelElement" label="label.element-import" / -->
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
-    <list name="parameter" type="Parameter" />
-    <separator />
-    <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
-    <attribute name="specification" type="String" />
-    <attribute name="signal" type="Signal" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
+    <combo name="signal" type="Signal" />
+    <textarea name="specification" type="String" />
+    <!-- separator / -->
+    <!-- list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" / -->
   </panel>
   <panel name="LinkEnd">
     <text name="name" type="Name" />
@@ -2100,7 +2103,7 @@
     <list name="qualifiedValue" type="AttributeLink" />
   </panel>
   <panel name="ReturnAction">
-    <text name="name" type="Name" />    
+    <text name="name" type="Name" />
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
       <checkbox name="isAsynchronous" type="Boolean" />
@@ -2108,8 +2111,7 @@
     <textarea name="script" type="ActionExpression" />
 	<textarea name="recurrence" type="IterationExpression" />    
     <separator />
-    <list name="actualArgument" type="Argument" label="label.arguments" />    
-	
+    <list name="actualArgument" type="org.omg.uml.behavioralelements.commonbehavior.Argument" label="label.arguments" />
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="namespace" type="Namespace" />
@@ -2147,7 +2149,7 @@
     <textarea name="script" type="ActionExpression" />
     <textarea name="recurrence" type="IterationExpression" />
     <separator />
-    <list name="actualArgument" type="Argument" label="label.arguments" />
+    <list name="actualArgument" type="org.omg.uml.behavioralelements.commonbehavior.Argument" label="label.arguments" />
         
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -2400,10 +2402,9 @@
     <list name="include" type="Include" />
     <separator />
     <list name="feature" type="org.omg.uml.foundation.core.Attribute" label="label.attributes" />
-    <list name="feature" type="org.omg.uml.foundation.core.Operation" label="label.operations" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
     <list name="association" type="Classifier" />
-    <list name="extensionPoint" type="ExtensionPoint" label="label.extension-points" />
-	
+    <list name="extensionPoint" type="org.omg.uml.behavioralelements.usecases.ExtensionPoint" label="label.extension-points" />
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
     <attribute name="targetFlow" type="Flow" />
@@ -2448,6 +2449,7 @@
     <list name="specialization" type="GeneralizableElement" />
     <separator />
     <list name="association" type="Classifier" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
 
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -2525,7 +2527,7 @@
     <separator /> 
     <singlerow name="base" type="UseCase" />
     <singlerow name="extension" type="UseCase" />
-    <list name="extensionPoint" type="ExtensionPoint" label="label.extension-points" />    
+    <list name="extensionPoint" type="org.omg.uml.behavioralelements.usecases.ExtensionPoint" label="label.extension-points" />
     <separator />
     <textarea name="condition" type="BooleanExpression" />
     
@@ -2676,7 +2678,7 @@
     <list name="collaborationInstanceSet" type="ModelElement" />
     <list name="partition" type="ModelElement" />
     <list name="elementImport" type="ModelElement" label="label.element-import" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <list name="state" type="Event" />
     <list name="transition" type="Event" />
   </panel>
@@ -2754,7 +2756,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <list name="transition" type="Event" />    
     <separator />
     <textarea name="when" type="TimeExpression" />
@@ -2788,7 +2790,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <list name="transition" type="Event" />
 	<separator />
 	<combo name="operation" type="Operation" />    
@@ -2822,7 +2824,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <list name="transition" type="Event" />    
     <separator />
     <list name="signal" type="Signal" />
@@ -2859,10 +2861,9 @@
     <separator />
     <singlerow name="source" type="StateVertex" />
     <singlerow name="target" type="StateVertex" />
-    <singlerow name="guard" type="Guard" />
-    <singlerow name="effect" type="Action" />
-    <singlerow name="trigger" type="Event" />
-        
+    <singlerow name="guard" type="org.omg.uml.behavioralelements.statemachines.Guard" />
+    <singlerow name="effect" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" />
+    <combo name="trigger" type="org.omg.uml.behavioralelements.statemachines.CallEvent,org.omg.uml.behavioralelements.statemachines.ChangeEvent,org.omg.uml.behavioralelements.statemachines.SignalEvent,org.omg.uml.behavioralelements.statemachines.TimeEvent" />
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
@@ -2934,7 +2935,7 @@
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <list name="transition" type="Event" />
     <separator />    
     <textarea name="changeExpression" type="BooleanExpression" />    
@@ -3329,7 +3330,7 @@
     <list name="collaborationInstanceSet" type="ModelElement" />
     <separator />
     <list name="connection" type="AssociationEnd" label="label.connections" />
-    <list name="message" type="Message" />
+    <list name="message" type="org.omg.uml.behavioralelements.collaborations.Message" />
     <list name="conformingLink" type="Link" />
   </panel>
   <panel name="AssociationEndRole">
@@ -3425,7 +3426,7 @@
     <combo name="namespace" type="Namespace" />
     <singlerow name="context" type="Collaboration" />
     <separator />
-    <list name="message" type="Message" />
+    <list name="message" type="org.omg.uml.behavioralelements.collaborations.Message" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -3722,7 +3723,7 @@
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
-    <list name="parameter" type="Parameter" />
+    <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
 	
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
@@ -3786,7 +3787,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
@@ -3814,8 +3815,8 @@
     <list name="generalization" type="Generalization" />    
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="elementImport" type="ModelElement" label="label.element-import" />       
+    <list name="ownedElement" type="org.omg.uml.modelmanagement.UmlPackage,org.omg.uml.foundation.core.DataType,org.omg.uml.foundation.core.Enumeration" label="label.owned-elements"/>
+    <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="clientDependency" type="Dependency" />
     <attribute name="supplierDependency" type="ModelElement" />    
     <attribute name="targetFlow" type="Flow" />
@@ -3904,7 +3905,7 @@
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Feature" />
+    <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />

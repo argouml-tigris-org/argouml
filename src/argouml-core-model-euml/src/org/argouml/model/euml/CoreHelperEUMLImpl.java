@@ -81,6 +81,8 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.Pseudostate;
+import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.RedefinableElement;
 import org.eclipse.uml2.uml.Relationship;
 import org.eclipse.uml2.uml.Stereotype;
@@ -1406,7 +1408,15 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setKind(Object handle, Object kind) {
-        throw new NotYetImplementedException();
+	if( handle instanceof Parameter && kind instanceof ParameterDirectionKind) {
+		((Parameter)handle).setDirection( (ParameterDirectionKind)kind);
+		return;
+	}
+	if( handle instanceof Pseudostate && kind instanceof PseudostateKind) {
+		((Pseudostate)handle).setKind( (PseudostateKind)kind);
+		return;
+	}
+        throw new IllegalArgumentException( "handle: " + handle + " or kind: " + kind);
     }
 
     public void setLeaf(final Object handle, final boolean isLeaf) {

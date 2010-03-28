@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -43,10 +43,6 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 
 import org.argouml.core.propertypanels.model.GetterSetterManager;
-import org.argouml.model.Model;
-import org.argouml.uml.ui.behavior.use_cases.ActionAddExtendExtensionPoint;
-import org.argouml.uml.ui.behavior.use_cases.ActionNewExtendExtensionPoint;
-import org.argouml.uml.ui.behavior.use_cases.ActionNewUseCaseExtensionPoint;
 
 /**
  * Creates the XML Property panels
@@ -67,16 +63,12 @@ class ListFactory implements ComponentFactory {
         if ("action".equals(propName)) {
             model = new UMLActionSequenceActionListModel(modelElement);
             list = new OldScrollList(new UMLActionSequenceActionList((UMLModelElementListModel) model));     
-        } else if ("actualArgument".equals(propName)) {
-            model = new UMLActionArgumentListModel(modelElement, propName);
         } else if ("annotatedElement".equals(propName)) {
             model = new UMLCommentAnnotatedElementListModel(modelElement);
         } else if ("association".equals(propName)) {
             model = new UMLClassifierAssociationEndListModel(modelElement);
         } else if ("associationRole".equals(propName)) {
             model = new UMLAssociationAssociationRoleListModel(modelElement);
-//        } else if ("attribute".equals(propName)) {
-//            model = new UMLClassAttributeListModel(modelElement);
         } else if ("availableContents".equals(propName)) {
             model = new UMLClassifierRoleAvailableContentsListModel(modelElement);
         } else if ("availableFeature".equals(propName)) {
@@ -113,8 +105,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLStateDoActivityListModel(modelElement);
             JList l = new UMLStateDoActivityList((UMLModelElementListModel) model);
             list = new OldScrollList(l);
-        } else if ("elementImport".equals(propName)) {
-            model = new UMLClassifierPackageImportsListModel(modelElement);
         } else if ("entry".equals(propName)) {
             model = new UMLStateEntryListModel(modelElement);
             JList l = new UMLStateEntryList((UMLModelElementListModel) model);
@@ -127,14 +117,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLUseCaseExtendListModel(modelElement);
         } else if ("extended_elements".equals(propName)) {
             model = new UMLExtendedElementsListModel(modelElement);
-        } else if ("extensionPoint".equals(propName)) {
-            if (Model.getFacade().isAUseCase(modelElement)) {
-                model = new UMLUseCaseExtensionPointListModel(modelElement, propName);
-            } else {
-                model = new UMLExtendExtensionPointListModel(modelElement, propName);
-            }
-//        } else if ("feature".equals(propName)) {
-//            model = new UMLClassifierFeatureListModel(modelElement);
         } else if ("generalization".equals(propName)) {
             model = new UMLGeneralizableElementGeneralizationListModel(modelElement);
         } else if ("include".equals(propName)) {
@@ -149,30 +131,14 @@ class ListFactory implements ComponentFactory {
             model = new UMLAssociationLinkListModel(modelElement);
         } else if ("literal".equals(propName)) {
             model = new UMLEnumerationLiteralsListModel(modelElement);
-        } else if ("message".equals(propName)) {
-            model = new UMLInteractionMessagesListModel(modelElement);
-        } else if ("method".equals(propName)) {
-            model = new UMLOperationMethodsListModel(modelElement);
-//        } else if ("operation".equals(propName)) {
-//            model = new UMLClassOperationListModel(modelElement);
-        } else if ("ownedElement".equals(propName)) {
-            model = new UMLNamespaceOwnedElementListModel(modelElement);
         } else if ("outgoing".equals(propName)) {
             model = new UMLStateVertexOutgoingListModel(modelElement);
-        } else if ("parameter".equals(propName)) {
-            if (Model.getFacade().isAObjectFlowState(modelElement)) {
-                model = new UMLObjectFlowStateParameterListModel(modelElement, propName);
-            } else {
-                model = new UMLClassifierParameterListModel(modelElement, propName);
-            }
         } else if ("partition".equals(propName)) {
             model = new UMLActivityGraphPartitionListModel(modelElement);
         } else if ("predecessor".equals(propName)) {
             model = new UMLMessagePredecessorListModel(modelElement);
         } else if ("qualifier".equals(propName)) {
             model = new UMLAssociationEndQualifiersListModel(modelElement);
-        } else if ("raisedSignal".equals(propName)) {
-            model = new UMLOperationRaisedSignalsListModel(modelElement);
         } else if ("reception".equals(propName)) {
             model = new UMLSignalReceptionListModel(modelElement);
         } else if ("resident".equals(propName)) {

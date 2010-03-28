@@ -474,34 +474,34 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
             throw new InvalidElementException(e);
         }
         throw new IllegalArgumentException(
-                "There must be a Package and a ModelElement"); 
+                "There must be a Package and a ModelElement we got " + pack + " and " + me); 
     }
 
 
     public void setImportedElements(Object pack, Collection imports) {
         if (pack instanceof UmlPackage) {
-            Collection eis = ((UmlPackage) pack).getElementImport();
-            Collection toRemove = new ArrayList();
+            Collection<ElementImport> currentImports =
+                ((UmlPackage) pack).getElementImport();
+            Collection<ElementImport> toRemove =
+                new ArrayList<ElementImport>();
             Collection toAdd = new ArrayList(imports);
-            Iterator i = eis.iterator();
-            while (i.hasNext()) {
-                ElementImport ei = (ElementImport) i.next();
+            for (final ElementImport ei : currentImports) {
                 if (imports.contains(ei.getImportedElement())) {
-                    toAdd.remove(ei);
+                    toAdd.remove(ei.getImportedElement());
                 } else {
                     toRemove.add(ei);
                 }
             }
-            eis.removeAll(toRemove); // Should these also be deleted?
+            currentImports.removeAll(toRemove); // Should these also be deleted?
 
             Collection toAddEIs = new ArrayList();
-            i = toAdd.iterator();
+            Iterator i = toAdd.iterator();
             while (i.hasNext()) {
                 ModelElement me = (ModelElement) i.next();
                 toAddEIs.add(modelImpl.getModelManagementFactory()
                         .buildElementImport(pack, me));
             }
-            eis.addAll(toAddEIs);
+            currentImports.addAll(toAddEIs);
             return;
         }
         throw new IllegalArgumentException(

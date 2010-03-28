@@ -42,6 +42,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -743,4 +744,8 @@ abstract class UMLComboBoxModel extends AbstractListModel
     }
     
     abstract public Action getAction();
+    
+    public List<Action> getActions() {
+        return Collections.emptyList();
+    }
 }

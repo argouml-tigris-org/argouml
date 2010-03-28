@@ -48,7 +48,10 @@ import org.argouml.i18n.Translator;
  *
  * @since Nov 6, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated in 0.30.1 by Bob Tarling
+ * Panels will be built by Panels subsystem in future
  */
+@Deprecated
 public abstract class PropPanelFeature extends PropPanelModelElement {
 
     private UMLFeatureOwnerScopeCheckBox ownerScopeCheckbox;
