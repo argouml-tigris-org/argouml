@@ -170,8 +170,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLStateMachineTransitionListModel(modelElement);
         } else if ("typedValue".equals(propName)) {
             model = new UMLTagDefinitionTypedValuesListModel(modelElement); 
-        } else if ("templateParameter".equals(propName)) {
-            model = new UMLModelElementTemplateParameterListModel(modelElement); 
         }
         
         if (model == null) {

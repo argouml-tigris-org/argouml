@@ -61,7 +61,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -92,7 +92,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -123,7 +123,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -155,7 +155,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -197,7 +197,7 @@
       <checkbox name="isAbstract" type="Boolean" />
       <checkbox name="isActive" type="Boolean" label="checkbox.active-uc" />
     </checkgroup>
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
 	<separator />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
@@ -291,7 +291,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -321,7 +321,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -397,7 +397,7 @@
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
 	<separator/>
 	<list name="generalization" type="Generalization" />    
     <list name="specialization" type="GeneralizableElement" />
@@ -446,7 +446,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -476,7 +476,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -581,7 +581,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -707,7 +707,7 @@
     <list name="referenceTag" type="ModelElement" />
     <list name="templateArgument" type="ModelElement" />
     <list name="raisedSignal" type="BehavioralFeature" label="label.raisedsignals" />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="elementImport" type="ModelElement" label="label.element-import" />
     <attribute name="ownerScope" type="ScopeKind" />
     <attribute name="owner" type="Classifier" />
@@ -914,7 +914,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1104,7 +1104,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1148,7 +1148,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1238,7 +1238,7 @@
     <attribute name="targetFlow" type="Flow" />
     <attribute name="sourceFlow" type="Flow" />
     <attribute name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1334,7 +1334,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1369,7 +1369,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1416,7 +1416,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1464,7 +1464,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1554,7 +1554,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1710,7 +1710,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1817,7 +1817,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -1858,7 +1858,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -2015,7 +2015,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -2048,7 +2048,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
@@ -2083,7 +2083,7 @@
     <list name="targetFlow" type="Flow" label="label.target-flows" />
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <attribute name="supplierDependency" type="ModelElement" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -2191,7 +2191,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -2357,7 +2357,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -2494,7 +2494,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -2663,7 +2663,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -2694,7 +2694,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -2725,7 +2725,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -3317,7 +3317,7 @@
     <list name="targetFlow" type="Flow" label="label.target-flows" />
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -3353,7 +3353,7 @@
     </checkgroup>
     <list name="specification" type="Classifier" />
     <list name="qualifier" type="Attribute" label="label.qualifiers" />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
     <list name="elementResidence" type="ModelElement" />
@@ -3465,7 +3465,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -3496,7 +3496,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -3595,7 +3595,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -3768,7 +3768,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />
@@ -3886,7 +3886,7 @@
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
     <separator />
-    <list name="templateParameter" type="TemplateParameter" label="label.template-parameters" />
+    <list name="templateParameter" type="org.omg.uml.foundation.core.TemplateParameter" label="label.template-parameters" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
     <list name="defaultedParameter" type="ModelElement" />

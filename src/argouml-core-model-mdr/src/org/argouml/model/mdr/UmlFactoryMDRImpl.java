@@ -340,17 +340,20 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
         validContainmentMap.put(ModelElement.class,
                 new Class<?>[] {
+                    TemplateParameter.class
                 });
         
         // specifies valid elements for a Model to contain 
         validContainmentMap.put(org.omg.uml.modelmanagement.Model.class,
             new Class<?>[] {
+                TemplateParameter.class,
                 ComponentInstance.class, NodeInstance.class
             });
 
         // specifies valid elements for a Package to contain
         validContainmentMap.put(UmlPackage.class, 
             new Class<?>[] { 
+                TemplateParameter.class,
                 UmlPackage.class, Actor.class,
                 UseCase.class, UmlClass.class,
                 Interface.class, Component.class,
@@ -362,6 +365,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for a class to contain
         validContainmentMap.put(UmlClass.class, 
             new Class<?>[] { 
+                TemplateParameter.class,
                 Attribute.class, Operation.class,
                 UmlClass.class, Reception.class
             });
@@ -375,18 +379,21 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for an Interface to contain
         validContainmentMap.put(Interface.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Operation.class, Reception.class
                 });
         
         // specifies valid elements for a Signal to contain
         validContainmentMap.put(Signal.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Operation.class, Attribute.class
                 });
         
         // specifies valid elements for an Actor to contain
         validContainmentMap.put(Actor.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Operation.class,
                     Reception.class
                 });
@@ -394,6 +401,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for a Use Case to contain
         validContainmentMap.put(UseCase.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     ExtensionPoint.class, Attribute.class, 
                     Operation.class, Reception.class
                 });
@@ -401,12 +409,14 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for a Use Case to contain
         validContainmentMap.put(Extend.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     ExtensionPoint.class
                 });
         
         // specifies valid elements for a Component to contain
         validContainmentMap.put(Component.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Reception.class,
                     Operation.class
                 });
@@ -414,6 +424,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for a Node to contain
         validContainmentMap.put(Node.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Operation.class,
                     Reception.class
                 });
@@ -421,12 +432,14 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for a Enumeration to contain
         validContainmentMap.put(Enumeration.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     EnumerationLiteral.class, Operation.class 
                 });
         
         // specifies valid elements for a DataType to contain
         validContainmentMap.put(DataType.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Operation.class,
                     Reception.class
                 });
@@ -434,6 +447,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for a Operation to contain
         validContainmentMap.put(Operation.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Parameter.class,
                     Signal.class,
                     Method.class
@@ -442,70 +456,88 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for an Event to contain
         validContainmentMap.put(Event.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Parameter.class
                 });
         
         // specifies valid elements for an ObjectFlowState to contain
         validContainmentMap.put(ObjectFlowState.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Parameter.class
                 });
         
         // specifies valid elements for an AssociationRole to contain
         validContainmentMap.put(AssociationRole.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Message.class
                 });
         
         // specifies valid elements for an AssociationRole to contain
         validContainmentMap.put(CallAction.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Argument.class
                 });
         
         // specifies valid elements for an AssociationRole to contain
         validContainmentMap.put(UninterpretedAction.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Argument.class
                 });
         
         // specifies valid elements for an AssociationRole to contain
         validContainmentMap.put(ReturnAction.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Argument.class
                 });
         
         // specifies valid elements for an AssociationRole to contain
         validContainmentMap.put(DestroyAction.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Argument.class
                 });
         
         // specifies valid elements for an AssociationRole to contain
         validContainmentMap.put(SendAction.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Argument.class
                 });
         
         // specifies valid elements for an AssociationRole to contain
         validContainmentMap.put(TerminateAction.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Argument.class
                 });
         
         // specifies valid elements for an AssociationRole to contain
         validContainmentMap.put(ActionSequence.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Argument.class
                 });
         
         // specifies valid elements for an AssociationRole to contain
         validContainmentMap.put(Transition.class, 
                 new Class<?>[] { 
+                    TemplateParameter.class,
                     Guard.class,
                     CallAction.class, ReturnAction.class,
                     CreateAction.class, DestroyAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
                     CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(Reception.class, 
+                new Class<?>[] { 
+                    Parameter.class,
+                    TemplateParameter.class
                 });
     }
     
