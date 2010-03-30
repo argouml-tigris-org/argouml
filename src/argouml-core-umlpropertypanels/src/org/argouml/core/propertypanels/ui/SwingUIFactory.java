@@ -123,7 +123,8 @@ class SwingUIFactory {
             if (Model.getFacade().isAAttribute(target)
                 || Model.getFacade().isAOperation(target)
                 || Model.getFacade().isAReception(target)
-                || Model.getFacade().isAParameter(target)) {
+                || Model.getFacade().isAParameter(target)
+                || Model.getFacade().isAAssociationEnd(target)) {
                 tb.add(new NavigatePreviousAction(target));
                 tb.add(new NavigateNextAction(target));
             }

@@ -84,6 +84,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("effect", new EffectGetterSetter());
         addGetterSetter("trigger", new TriggerGetterSetter());
         addGetterSetter("elementImport", new ElementImportGetterSetter());
+        addGetterSetter("templateParameter", new TemplateParameterGetterSetter());
         
         // UML2 only
         addGetterSetter("ownedOperation", new FeatureGetterSetter());
@@ -1026,6 +1027,30 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         public Object getMetaType() {
             return Model.getMetaTypes().getParameter();
+        }
+    }
+    
+    private class TemplateParameterGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            return Model.getFacade().getTemplateParameters(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getTemplateParameter();
         }
     }
     

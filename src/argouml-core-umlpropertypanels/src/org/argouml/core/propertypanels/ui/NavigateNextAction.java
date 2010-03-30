@@ -13,15 +13,7 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.awt.event.ActionEvent;
 import java.util.List;
-
-import javax.swing.AbstractAction;
-
-import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * This action changes the target to the owning model element
@@ -29,37 +21,20 @@ import org.argouml.ui.targetmanager.TargetManager;
  *
  * @author Bob Tarling
  */
-class NavigateNextAction extends AbstractAction {
+class NavigateNextAction extends NavigateSiblingAction {
 
-    final Object modelElement;
-    
-    public NavigateNextAction(Object modelElement) {
-        super(Translator.localize("action.navigate-forward"),
-                ResourceLoaderWrapper.lookupIcon("action.navigate-forward"));
-        
-        this.modelElement = modelElement;
+    public NavigateNextAction(final Object modelElement) {
+        super(modelElement, "action.navigate-forward");
     }
-    public void actionPerformed(ActionEvent arg0) {
-        final Object owner =
-            Model.getFacade().getModelElementContainer(modelElement);
-        Object newTarget = null;
-        List list = null;
-        if (Model.getFacade().isAAttribute(modelElement)) {
-            list = Model.getFacade().getAttributes(owner);
-        }
-        if (Model.getFacade().isAOperation(modelElement)
-                || Model.getFacade().isAReception(modelElement)) {
-            list = Model.getFacade().getOperationsAndReceptions(owner);
-        }
-        if (Model.getFacade().isAParameter(modelElement)) {
-            list = Model.getFacade().getParametersList(owner);
-        }
+    
+    protected Object getTargetSibling() {
+        List list = getAllSiblings();
         if (list != null) {
             final int posn = list.indexOf(modelElement);
             if (posn >= 0 && posn < list.size() - 1) {
-                newTarget = list.get(posn + 1);
-                TargetManager.getInstance().setTarget(newTarget);
+                return list.get(posn + 1);
             }
         }
+        return null;
     }
 }
