@@ -352,7 +352,20 @@ class RowSelector extends JPanel
         		
                 // Create actions and expander if we have multiple rows
                 final ArrayList<Action> actions = new ArrayList<Action>(6);
+                
+                // Create add and remove buttons if needed first
+                if (addAction != null) {
+                    actions.add(addAction);
+                }
+                if (removeAction != null) {
+                    actions.add(removeAction);
+                    deleteAction = null;
+                } else {
+                    deleteAction = new DeleteAction();
+                    actions.add(deleteAction);
+                }
 
+                // then any new buttons
                 for (Object meta : metaTypes) {
                     if (Model.getUmlFactory().isContainmentValid(meta, target)) {
                         final String label =
@@ -363,16 +376,6 @@ class RowSelector extends JPanel
                                 label);
                         actions.add(createAction);
                     }
-                }
-                if (addAction != null) {
-                    actions.add(addAction);
-                }
-                if (removeAction != null) {
-                    actions.add(removeAction);
-                    deleteAction = null;
-                } else {
-                    deleteAction = new DeleteAction();
-                    actions.add(deleteAction);
                 }
 
                 if (Model.getUmlHelper().isMovable(metaType)) {

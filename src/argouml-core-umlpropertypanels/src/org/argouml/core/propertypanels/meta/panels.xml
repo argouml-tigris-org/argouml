@@ -2746,7 +2746,7 @@
     <attribute name="entry" type="Action" />
     <separator />
     <attribute name="exit" type="Action" />
-    <list name="deferrableEvent" type="Event" label="label.deferrable" />
+    <list name="deferrableEvent" type="org.omg.uml.behavioralelements.statemachines.CallEvent,org.omg.uml.behavioralelements.statemachines.ChangeEvent,org.omg.uml.behavioralelements.statemachines.SignalEvent,org.omg.uml.behavioralelements.statemachines.TimeEvent" label="label.deferrable" />
     <list name="internalTransition" type="Transition" label="label.internal-transitions" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
@@ -3035,7 +3035,7 @@
     <list name="entry" type="Action" />
     <list name="exit" type="Action" />
     <list name="doActivity" type="Action" label="label.do-activity" />
-    <list name="deferrableEvent" type="Event" label="label.deferrable" />
+    <list name="deferrableEvent" type="org.omg.uml.behavioralelements.statemachines.CallEvent,org.omg.uml.behavioralelements.statemachines.ChangeEvent,org.omg.uml.behavioralelements.statemachines.SignalEvent,org.omg.uml.behavioralelements.statemachines.TimeEvent" label="label.deferrable" />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />    
     <list name="internalTransition" type="Transition" label="label.internal-transitions" />
@@ -3616,7 +3616,7 @@
     <attribute name="entry" type="Action" />
     <separator />
     <attribute name="exit" type="Action" />
-    <list name="deferrableEvent" type="Event" label="label.deferrable" />
+    <list name="deferrableEvent" type="org.omg.uml.behavioralelements.statemachines.CallEvent,org.omg.uml.behavioralelements.statemachines.ChangeEvent,org.omg.uml.behavioralelements.statemachines.SignalEvent,org.omg.uml.behavioralelements.statemachines.TimeEvent" label="label.deferrable" />
     <list name="internalTransition" type="Transition" label="label.internal-transitions" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
@@ -3631,7 +3631,7 @@
     <text name="name" type="Name" />
     <singlerow name="container" type="CompositeState" />
     <list name="entry" type="Action" />
-    <list name="deferrableEvent" type="Event" label="label.deferrable" />    
+    <list name="deferrableEvent" type="org.omg.uml.behavioralelements.statemachines.CallEvent,org.omg.uml.behavioralelements.statemachines.ChangeEvent,org.omg.uml.behavioralelements.statemachines.SignalEvent,org.omg.uml.behavioralelements.statemachines.TimeEvent" label="label.deferrable" />
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
@@ -3673,7 +3673,7 @@
     <text name="name" type="Name" />
     <singlerow name="container" type="CompositeState" />
     <list name="entry" type="Action" />
-    <list name="deferrableEvent" type="Event" label="label.deferrable" />
+    <list name="deferrableEvent" type="org.omg.uml.behavioralelements.statemachines.CallEvent,org.omg.uml.behavioralelements.statemachines.ChangeEvent,org.omg.uml.behavioralelements.statemachines.SignalEvent,org.omg.uml.behavioralelements.statemachines.TimeEvent" label="label.deferrable" />
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
