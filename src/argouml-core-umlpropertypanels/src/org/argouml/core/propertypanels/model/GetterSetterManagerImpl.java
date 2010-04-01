@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Command;
 import org.argouml.kernel.NonUndoableCommand;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.util.ArgoFrame;
@@ -85,6 +86,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("trigger", new TriggerGetterSetter());
         addGetterSetter("elementImport", new ElementImportGetterSetter());
         addGetterSetter("templateParameter", new TemplateParameterGetterSetter());
+        addGetterSetter("reception", new ReceptionGetterSetter());
         
         // UML2 only
         addGetterSetter("ownedOperation", new FeatureGetterSetter());
@@ -1091,14 +1093,11 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         private class AddElementImportCommand extends AddModelElementCommand {
 
-        	final Object target;
-        	
             /**
              * Constructor for ActionAddPackageImport.
              */
             public AddElementImportCommand(Object target) {
-                super();
-                this.target = target;
+                super(target);
             }
 
 
@@ -1108,14 +1107,14 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                  * in the model subsystem for 
                  * issue 1942: */
                 list.addAll(Model.getModelManagementHelper()
-                        .getAllPossibleImports(target));
+                        .getAllPossibleImports(getTarget()));
                 return list;
             }
 
 
             protected List getSelected() {
                 List list = new ArrayList();
-                list.addAll(Model.getFacade().getImportedElements(target));
+                list.addAll(Model.getFacade().getImportedElements(getTarget()));
                 return list;
             }
 
@@ -1130,7 +1129,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             	if (LOG.isInfoEnabled()) {
                 	LOG.info("Setting " + selected.size() + "imported elements");
             	}
-                Model.getModelManagementHelper().setImportedElements(target, selected);
+                Model.getModelManagementHelper().setImportedElements(getTarget(), selected);
             }
         }
         
@@ -1157,116 +1156,217 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	        return null;
     	    }
     	}
-        
-        public abstract class AddModelElementCommand extends NonUndoableCommand {
-
-            private Object target;
-            private boolean multiSelect = true;
-            private boolean exclusive = true;
-
-            /**
-             * Construct a command to add a model element to some list.
-             */
-            protected AddModelElementCommand() {
-            }
-
-            /*
-             * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-             */
-            public Object execute() {
-                UMLAddDialog dialog =
-                    new UMLAddDialog(getChoices(), getSelected(), getDialogTitle(),
-                                     isMultiSelect(),
-                                     isExclusive());
-                int result = dialog.showDialog(ArgoFrame.getFrame());
-                if (result == JOptionPane.OK_OPTION) {
-                    doIt(dialog.getSelected());
-                }
-                return null;
-            }
-            
-            /**
-             * Returns the choices the user has in the UMLAddDialog. The choices are
-             * depicted on the left side of the UMLAddDialog (sorry Arabic users) and
-             * can be moved via the buttons on the dialog to the right side. On the
-             * right side are the selected modelelements.
-             * @return List of choices
-             */
-            protected abstract List getChoices();
-
-            
-            /**
-             * The modelelements already selected BEFORE the dialog is shown.
-             * @return List of model elements
-             */
-            protected abstract List getSelected();
-
-            /**
-             * The action that has to be done by ArgoUml after the user clicks ok in the
-             * UMLAddDialog.
-             * @param selected The choices the user has selected in the UMLAddDialog
-             */
-            protected abstract void doIt(Collection selected);
-
-            /**
-             * Returns the UML model target.
-             * @return UML ModelElement
-             */
-            protected Object getTarget() {
-                return target;
-            }
-
-            /**
-             * Sets the UML model target.
-             * @param theTarget The target to set
-             */
-            public void setTarget(Object theTarget) {
-                target = theTarget;
-            }
-
-            /**
-             * Returns the title of the dialog.
-             * @return String
-             */
-            protected abstract String getDialogTitle();
-
-            /**
-             * Returns the exclusive.
-             * @return boolean
-             */
-            public boolean isExclusive() {
-                return exclusive;
-            }
-
-            /**
-             * Returns the multiSelect.
-             * @return boolean
-             */
-            public boolean isMultiSelect() {
-                return multiSelect;
-            }
-
-            /**
-             * Sets the exclusive.
-             * @param theExclusive The exclusive to set
-             */
-            public void setExclusive(boolean theExclusive) {
-                exclusive = theExclusive;
-            }
-
-            /**
-             * Sets the multiSelect.
-             * @param theMultiSelect The multiSelect to set
-             */
-            public void setMultiSelect(boolean theMultiSelect) {
-                multiSelect = theMultiSelect;
-            }
-
-        }
-        
-        
     }
     
+    private class ReceptionGetterSetter extends ListGetterSetter implements Addable, Removeable {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            return Model.getFacade().getReceptions(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+        
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getReception();
+        }
+        
+        public Command getAddCommand(Object modelElement) {
+        	return new AddCommand(modelElement);
+        }
+        
+        public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
+        	return new RemoveCommand(modelElement, objectToRemove);
+        }
+        
+        private class AddCommand extends AddModelElementCommand {
+
+            /**
+             * Constructor for ActionAddPackageImport.
+             */
+            public AddCommand(final Object target) {
+                super(target);
+            }
+
+
+            protected List getChoices() {
+                List list = new ArrayList();
+                /* TODO: correctly implement next function 
+                 * in the model subsystem for 
+                 * issue 1942: */
+                Object model =
+                    ProjectManager.getManager().getCurrentProject().getModel();
+                list.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(model, 
+                            Model.getMetaTypes().getReception()));
+                return list;
+            }
+
+
+            protected List getSelected() {
+                List list = new ArrayList();
+                list.addAll(Model.getFacade().getReceptions(getTarget()));
+                return list;
+            }
+
+
+            protected String getDialogTitle() {
+                return Translator.localize("dialog.title.add-imported-elements");
+            }
+
+
+            @Override
+            protected void doIt(Collection selected) {
+                Model.getCommonBehaviorHelper().setReception(getTarget(), selected);
+            }
+        }
+        
+        private class RemoveCommand
+    	    extends NonUndoableCommand {
+        	
+        	private final Object target;
+        	private final Object objectToRemove;
+        	
+    	    /**
+    	     * Constructor for ActionRemovePackageImport.
+    	     */
+    	    public RemoveCommand(final Object target, final Object objectToRemove) {
+    	        this.target = target;
+    	        this.objectToRemove = objectToRemove;
+    	    }
+    	    
+    	    /*
+    	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    	     */
+    	    public Object execute() {
+    	        Model.getCommonBehaviorHelper()
+    	            .removeReception(target, objectToRemove);
+    	        return null;
+    	    }
+    	}
+    }
+    
+    
+    
+    private abstract class AddModelElementCommand extends NonUndoableCommand {
+
+        private Object target;
+        private boolean multiSelect = true;
+        private boolean exclusive = true;
+
+        /**
+         * Construct a command to add a model element to some list.
+         */
+        protected AddModelElementCommand(final Object target) {
+            if (target == null) {
+            	throw new IllegalArgumentException("target expected");
+            }
+        	this.target = target;
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public Object execute() {
+            UMLAddDialog dialog =
+                new UMLAddDialog(getChoices(), getSelected(), getDialogTitle(),
+                                 isMultiSelect(),
+                                 isExclusive());
+            int result = dialog.showDialog(ArgoFrame.getFrame());
+            if (result == JOptionPane.OK_OPTION) {
+                doIt(dialog.getSelected());
+            }
+            return null;
+        }
+        
+        /**
+         * Returns the choices the user has in the UMLAddDialog. The choices are
+         * depicted on the left side of the UMLAddDialog (sorry Arabic users) and
+         * can be moved via the buttons on the dialog to the right side. On the
+         * right side are the selected modelelements.
+         * @return List of choices
+         */
+        protected abstract List getChoices();
+
+        
+        /**
+         * The modelelements already selected BEFORE the dialog is shown.
+         * @return List of model elements
+         */
+        protected abstract List getSelected();
+
+        /**
+         * The action that has to be done by ArgoUml after the user clicks ok in the
+         * UMLAddDialog.
+         * @param selected The choices the user has selected in the UMLAddDialog
+         */
+        protected abstract void doIt(Collection selected);
+
+        /**
+         * Returns the UML model target.
+         * @return UML ModelElement
+         */
+        protected Object getTarget() {
+            return target;
+        }
+
+        /**
+         * Sets the UML model target.
+         * @param theTarget The target to set
+         */
+        public void setTarget(Object theTarget) {
+            target = theTarget;
+        }
+
+        /**
+         * Returns the title of the dialog.
+         * @return String
+         */
+        protected abstract String getDialogTitle();
+
+        /**
+         * Returns the exclusive.
+         * @return boolean
+         */
+        public boolean isExclusive() {
+            return exclusive;
+        }
+
+        /**
+         * Returns the multiSelect.
+         * @return boolean
+         */
+        public boolean isMultiSelect() {
+            return multiSelect;
+        }
+
+        /**
+         * Sets the exclusive.
+         * @param theExclusive The exclusive to set
+         */
+        public void setExclusive(boolean theExclusive) {
+            exclusive = theExclusive;
+        }
+
+        /**
+         * Sets the multiSelect.
+         * @param theMultiSelect The multiSelect to set
+         */
+        public void setMultiSelect(boolean theMultiSelect) {
+            multiSelect = theMultiSelect;
+        }
+
+    }
     
     private class MethodExpressionGetterSetter extends ExpressionGetterSetter {
         
