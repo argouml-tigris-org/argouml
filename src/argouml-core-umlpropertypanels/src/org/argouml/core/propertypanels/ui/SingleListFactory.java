@@ -39,7 +39,6 @@ package org.argouml.core.propertypanels.ui;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
-
 import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.model.Model;
 
@@ -114,6 +113,10 @@ class SingleListFactory implements ComponentFactory {
             model = new UMLTemplateParameterTemplateListModel(modelElement, propName);
         } else if ("parameter".equals(propName)) {
             model = new UMLTemplateParameterParameterListModel(modelElement, propName);
+        } else if ("exit".equals(propName)) {
+            model = new UMLStateExitListModel(modelElement);
+        } else if ("doActivity".equals(propName)) {
+            model = new UMLStateDoActivityListModel(modelElement);
         }
         
         if (model == null) {

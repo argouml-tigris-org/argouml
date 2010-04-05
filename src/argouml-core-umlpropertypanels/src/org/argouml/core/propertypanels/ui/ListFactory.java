@@ -97,14 +97,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLStereotypeTagDefinitionListModel(modelElement);
         } else if ("deployedComponent".equals(propName)) {
             model = new UMLNodeDeployedComponentListModel(modelElement);
-        } else if ("doActivity".equals(propName)) {
-            model = new UMLStateDoActivityListModel(modelElement);
-            JList l = new UMLStateDoActivityList((UMLModelElementListModel) model);
-            list = new OldScrollList(l);
-        } else if ("exit".equals(propName)) {
-            model = new UMLStateExitListModel(modelElement);
-            JList l = new UMLStateExitList((UMLModelElementListModel) model);
-            list = new OldScrollList(l);
         } else if ("extend".equals(propName)) {
             model = new UMLUseCaseExtendListModel(modelElement);
         } else if ("extended_elements".equals(propName)) {

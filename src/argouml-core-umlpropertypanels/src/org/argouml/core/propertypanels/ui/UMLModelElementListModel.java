@@ -42,6 +42,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -740,5 +741,9 @@ abstract class UMLModelElementListModel
     
     public AbstractActionRemoveElement getRemoveAction() {
         return removeAction;
+    }
+    
+    public List<Action> getNewActions() {
+    	return Collections.emptyList();
     }
 }

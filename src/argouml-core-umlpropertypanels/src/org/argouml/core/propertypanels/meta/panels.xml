@@ -2891,10 +2891,10 @@
   </panel>
   <panel name="CompositeState">
     <text name="name" type="Name" />
-	<singlerow name="container" type="CompositeState" />    
+	<singlerow name="container" type="CompositeState" />
     <singlerow name="entry" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" />
-    <list name="exit" type="Action" />
-    <list name="doActivity" type="Action" label="label.do-activity" />
+    <singlerow name="exit" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" />
+    <singlerow name="doActivity" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" label="label.do-activity" />
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
@@ -3033,8 +3033,8 @@
     <text name="name" type="Name" />
     <singlerow name="container" type="CompositeState" />
     <singlerow name="entry" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" />
-    <list name="exit" type="Action" />
-    <list name="doActivity" type="Action" label="label.do-activity" />
+    <singlerow name="exit" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" />
+    <singlerow name="doActivity" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" label="label.do-activity" />
     <list name="deferrableEvent" type="org.omg.uml.behavioralelements.statemachines.CallEvent,org.omg.uml.behavioralelements.statemachines.ChangeEvent,org.omg.uml.behavioralelements.statemachines.SignalEvent,org.omg.uml.behavioralelements.statemachines.TimeEvent" label="label.deferrable" />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />    
@@ -3072,8 +3072,8 @@
     <singlerow name="container" type="CompositeState" />
     <combo name="submachine" type="StateMachine" />
     <singlerow name="entry" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" />
-    <list name="exit" type="Action" />
-    <list name="doActivity" type="Action" label="label.do-activity" />
+    <singlerow name="exit" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" />
+    <singlerow name="doActivity" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" label="label.do-activity" />
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
