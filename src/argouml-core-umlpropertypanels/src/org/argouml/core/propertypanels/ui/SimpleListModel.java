@@ -106,10 +106,6 @@ class SimpleListModel
     }
     
     public List getMetaTypes() {
-    	if (propertyName.equals("deferrableEvent")) {
-    		int x = 0;
-    		x=5;
-    	}
         return metaTypes;
     }
     

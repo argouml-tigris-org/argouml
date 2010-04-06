@@ -535,6 +535,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 });
         
         // specifies valid elements for an AssociationRole to contain
+        validContainmentMap.put(SignalEvent.class, 
+                new Class<?>[] { 
+                    Signal.class
+                });
+        
+        // specifies valid elements for an AssociationRole to contain
         validContainmentMap.put(Reception.class, 
                 new Class<?>[] { 
                     Parameter.class,
@@ -856,6 +862,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             } else if (container instanceof State) {
                 setNewDeferrableEvent((State) container, (Event) element);
             }
+        } else if (elementType == metaTypes.getSignal()) {
+            element = Model.getStateMachinesFactory().buildSignalEvent(container);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);

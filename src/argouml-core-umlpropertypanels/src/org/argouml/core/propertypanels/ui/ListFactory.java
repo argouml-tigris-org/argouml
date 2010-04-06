@@ -124,9 +124,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLContainerResidentListModel(modelElement);
         } else if ("residentElement".equals(propName)) {
             model = new UMLComponentResidentListModel(modelElement);
-        } else if ("signal".equals(propName)) {
-            model = new UMLSignalEventSignalListModel(modelElement);
-            list = new OldScrollList(new UMLSignalEventSignalList((UMLModelElementListModel) model));                    
         } else if ("specialization".equals(propName)) {
             model = new UMLGeneralizableElementSpecializationListModel(modelElement);
         } else if ("specification".equals(propName)) {

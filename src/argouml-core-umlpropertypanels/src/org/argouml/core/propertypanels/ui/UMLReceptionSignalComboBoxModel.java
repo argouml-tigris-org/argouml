@@ -39,7 +39,9 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.Action;
 
@@ -48,6 +50,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
+import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.UndoableAction;
 
 
@@ -64,7 +67,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel {
         final Object target) {
         super(propertyName, false);
         Model.getPump().addClassModelEventListener(this,
-                Model.getMetaTypes().getNamespace(), "ownedElement");
+                Model.getMetaTypes().getNamespace(), propertyName);
         setTarget(target);
     }
 
@@ -73,8 +76,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel {
      */
     protected void buildModelList() {
         Object target = getTarget();
-        if (Model.getFacade().isAReception(target)) {
-            Object rec = /*(MReception)*/ target;
+        if (Model.getFacade().isAReception(target) || Model.getFacade().isASignalEvent(target)) {
             removeAllElements();
             Project p = ProjectManager.getManager().getCurrentProject();
             Object model = p.getRoot();
@@ -82,7 +84,10 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel {
                     .getAllModelElementsOfKindWithModel(
                             model,
                             Model.getMetaTypes().getSignal()));
-            setSelectedItem(Model.getFacade().getSignal(rec));
+            setSelectedItem(Model.getFacade().getSignal(target));
+        } else {
+        	throw new IllegalStateException(
+        			"Expected a Reception or SignalEvent - got a " + target);
         }
 
     }
@@ -114,19 +119,24 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel {
      */
     public void modelChanged(UmlChangeEvent evt) {
         if (evt instanceof RemoveAssociationEvent) {
-            if ("ownedElement".equals(evt.getPropertyName())) {
-                Object o = getChangedElement(evt);
-                if (contains(o)) {
-                    if (o instanceof Collection) {
-                        removeAll((Collection) o);
-                    } else {
-                        removeElement(o);
-                    }
+            Object o = getChangedElement(evt);
+            if (contains(o)) {
+                if (o instanceof Collection) {
+                    removeAll((Collection) o);
+                } else {
+                    removeElement(o);
                 }
             }
         } else {
             super.propertyChange(evt);
         }
+    }
+    
+    public List<Action> getActions() {
+        final ArrayList<Action> actions = new ArrayList<Action>();
+        actions.add(new ActionCreateContainedModelElement(
+                Model.getMetaTypes().getSignal(), getTarget()));
+        return actions;
     }
     
     public Action getAction() {
@@ -158,10 +168,9 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel {
             Object o = getTarget();
             o = box.getSelectedItem();
             Object signal = o;
-            Object reception = getTarget();
-            if (signal != Model.getFacade().getSignal(reception)) {
+            if (signal != Model.getFacade().getSignal(getTarget())) {
                 super.actionPerformed(e);
-                Model.getCommonBehaviorHelper().setSignal(reception, signal);
+                Model.getCommonBehaviorHelper().setSignal(getTarget(), signal);
             }
         }
     }
