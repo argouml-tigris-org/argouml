@@ -531,7 +531,6 @@
     <combo name="type" type="Classifier" />
     <combo name="multiplicity" type="Multiplicity" />
     <singlerow name="owner" type="Classifier" />
-    <list name="templateParameter" type="org.eclipse.uml2.uml.TemplateParameter" label="label.template-parameters" />
     <separator />
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
