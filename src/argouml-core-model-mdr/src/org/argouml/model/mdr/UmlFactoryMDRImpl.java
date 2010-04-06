@@ -520,6 +520,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         validContainmentMap.put(ActionSequence.class, 
                 new Class<?>[] { 
                     TemplateParameter.class,
+                    CreateAction.class, DestroyAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
                     Argument.class
                 });
         
@@ -873,9 +874,13 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     
     private void setNewAction(Object container, Action action) {
         if (container instanceof Transition) {
-            ((Transition) container).setEffect((Action) action);
+            ((Transition) container).setEffect(action);
+        } else if (container instanceof State) {
+            ((State) container).setEntry(action);
+        } else if (container instanceof ActionSequence) {
+            ((ActionSequence) container).getAction().add(action);
         } else {
-            ((State) container).setEntry((Action) action);
+            throw new IllegalArgumentException("Did not expect a " + container);
         }
     }
     
