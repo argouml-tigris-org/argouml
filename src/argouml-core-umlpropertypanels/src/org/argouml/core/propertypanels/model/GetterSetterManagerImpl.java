@@ -89,6 +89,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("reception", new ReceptionGetterSetter());
         addGetterSetter("deferrableEvent", new DeferrableEventGetterSetter());
         addGetterSetter("entry", new EntryActionGetterSetter());
+        addGetterSetter("action", new ActionGetterSetter());
         
         // UML2 only
         addGetterSetter("ownedOperation", new FeatureGetterSetter());
@@ -1040,6 +1041,30 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         	final ArrayList list = new ArrayList(1);
         	list.add(Model.getFacade().getEntry(modelElement));
             return list;
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getAction();
+        }
+    }
+    
+    private class ActionGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            return Model.getFacade().getActions(modelElement);
         }
       
         public Object get(Object modelElement, String type) {

@@ -60,10 +60,7 @@ class ListFactory implements ComponentFactory {
         JComponent list = null;
         DefaultListModel model = null;
         
-        if ("action".equals(propName)) {
-            model = new UMLActionSequenceActionListModel(modelElement);
-            list = new OldScrollList(new UMLActionSequenceActionList((UMLModelElementListModel) model));     
-        } else if ("annotatedElement".equals(propName)) {
+        if ("annotatedElement".equals(propName)) {
             model = new UMLCommentAnnotatedElementListModel(modelElement);
         } else if ("association".equals(propName)) {
             model = new UMLClassifierAssociationEndListModel(modelElement);
