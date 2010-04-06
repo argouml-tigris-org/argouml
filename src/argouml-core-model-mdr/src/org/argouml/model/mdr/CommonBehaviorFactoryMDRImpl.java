@@ -330,27 +330,34 @@ class CommonBehaviorFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public Signal buildSignal(Object element) {
+        Signal signal;
+        
         if ((element instanceof BehavioralFeature)) {
-            Signal signal = buildSignalInt(element);
+            signal = buildSignalInt(element);
             BehavioralFeature bf = (BehavioralFeature) element;
             ((UmlPackage) bf.refOutermostPackage()).getCommonBehavior()
                     .getAContextRaisedSignal().add((BehavioralFeature) element,
                             signal);
-            return signal;
         } else if (element instanceof Reception) {
-            Signal signal = buildSignalInt(element);
+            signal = buildSignalInt(element);
             ((Reception) element).setSignal(signal);
-            return signal;            
         } else if (element instanceof SendAction) {
-            Signal signal = buildSignalInt(element);
+            signal = buildSignalInt(element);
             ((SendAction) element).setSignal(signal);
-            return signal;         
         } else if (element instanceof SignalEvent) {
-            Signal signal = buildSignalInt(element);
+            signal = buildSignalInt(element);
             ((SignalEvent) element).setSignal(signal);
-            return signal;  
+        } else {
+            throw new IllegalArgumentException("Can't build a signal for a " + element);
         }
-        throw new IllegalArgumentException("Can't build a signal for a " + element);
+        
+        Object namespace = element;
+        while (!Model.getFacade().isAPackage(namespace)) {
+            namespace = Model.getFacade().getModelElementContainer(namespace);
+        }
+        
+        Model.getCoreHelper().setNamespace(signal, namespace);
+        return signal;
     }
 
     /**
