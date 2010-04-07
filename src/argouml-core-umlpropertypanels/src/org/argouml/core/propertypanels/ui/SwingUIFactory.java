@@ -49,6 +49,7 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.core.propertypanels.meta.CheckBoxMeta;
 import org.argouml.core.propertypanels.meta.PanelMeta;
@@ -65,6 +66,8 @@ import org.tigris.toolbar.ToolBarFactory;
  * Creates the XML Property panels
  */
 class SwingUIFactory {
+	
+	private static final Logger LOG = Logger.getLogger(SwingUIFactory.class);
     
     public SwingUIFactory() {
         
@@ -79,31 +82,38 @@ class SwingUIFactory {
     public void createGUI (
             final Object target,
             final JPanel panel) throws Exception {
-        PanelMeta data = 
-            XMLPropPanelFactory.getInstance().getPropertyPanelsData(
-                    Model.getMetaTypes().getName(target));
-        
-        createLabel(target, panel);
-        
-        for (PropertyMeta prop : data.getProperties()) {
-            if ("text".equals(prop.getControlType())) {
-                buildTextboxPanel(panel, target, prop);
-            } else if ("combo".equals(prop.getControlType())) {
-                buildComboPanel(panel, target, prop);                
-            } else if ("checkgroup".equals(prop.getControlType())) {
-                buildCheckGroup(panel, target, prop);
-            } else if ("optionbox".equals(prop.getControlType())) {
-                buildOptionBox(panel, target, prop);
-            } else if ("singlerow".equals(prop.getControlType())) {
-                buildSingleRow(panel, target, prop);
-            } else if ("list".equals(prop.getControlType())) {                    
-                buildList(panel, target, prop);
-            } else if ("textarea".equals(prop.getControlType())) {
-                buildTextArea(panel, target, prop);
-            } else if ("separator".equals(prop.getControlType())) {
-                panel.add(LabelledLayout.getSeparator());
+            PanelMeta data = 
+                XMLPropPanelFactory.getInstance().getPropertyPanelsData(
+                        Model.getMetaTypes().getName(target));
+            
+            createLabel(target, panel);
+            
+            for (PropertyMeta prop : data.getProperties()) {
+            	try {
+                if ("text".equals(prop.getControlType())) {
+                    buildTextboxPanel(panel, target, prop);
+                } else if ("combo".equals(prop.getControlType())) {
+                    buildComboPanel(panel, target, prop);                
+                } else if ("checkgroup".equals(prop.getControlType())) {
+                    buildCheckGroup(panel, target, prop);
+                } else if ("optionbox".equals(prop.getControlType())) {
+                    buildOptionBox(panel, target, prop);
+                } else if ("singlerow".equals(prop.getControlType())) {
+                    buildSingleRow(panel, target, prop);
+                } else if ("list".equals(prop.getControlType())) {                    
+                    buildList(panel, target, prop);
+                } else if ("textarea".equals(prop.getControlType())) {
+                    buildTextArea(panel, target, prop);
+                } else if ("separator".equals(prop.getControlType())) {
+                    panel.add(LabelledLayout.getSeparator());
+                }
+            	} catch (Exception e) {
+            		throw new IllegalStateException(
+            				"Exception caught building control " + prop.getControlType()
+            				+ " for property " + prop.getName() + " on panel for "
+            				+ target, e);
+            	}
             }
-        }
     }
 
     /**
@@ -113,13 +123,24 @@ class SwingUIFactory {
      */
     private void createLabel (Object target, JPanel panel) {
         final String metaTypeName = Model.getMetaTypes().getName(target);
-        ToolBarFactory tbf = new ToolBarFactory(new Object[0]);
+        final ToolBarFactory tbf = new ToolBarFactory(new Object[0]);
         tbf.setRollover(true);
-        JToolBar tb = tbf.createToolBar();
-        tb.add(new JLabel(metaTypeName, ResourceLoaderWrapper.lookupIconResource(metaTypeName), JLabel.LEFT));
+        final JToolBar tb = tbf.createToolBar();
+        final String label;
+        
+        if (Model.getFacade().isAPseudostate(target)) {
+        	// TODO: We need some way of driving this from panel xml rather
+        	// than hard coded test
+        	Object pseudostateKind = Model.getFacade().getKind(target);
+        	label = Model.getFacade().getName(pseudostateKind);
+        } else {
+            label = metaTypeName;
+        }
+    	tb.add(new JLabel(label, ResourceLoaderWrapper.lookupIconResource(label), JLabel.LEFT));
         if (!Model.getModelManagementHelper().isReadOnly(target)) {
             tb.add(new NavigateUpAction(target));
             
+            // TODO: This should not be hard coded but should be driven from the panel xml
             if (Model.getFacade().isAAttribute(target)
                 || Model.getFacade().isAOperation(target)
                 || Model.getFacade().isAReception(target)

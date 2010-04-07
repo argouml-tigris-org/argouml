@@ -13,8 +13,11 @@
 
 package org.argouml.core.propertypanels.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.Action;
@@ -58,6 +61,8 @@ public abstract class GetterSetterManager {
     
     public abstract Command getAddCommand(String propertyName, Object umlElement);
     
+    public abstract List<Command> getAdditionalCommands(String propertyName, Object umlElement);
+    
     /** This forces component to fully rebuild when items are added and removed
      *  Used for pragmatic purposes but not advised long term we should remove this in time
      */
@@ -99,15 +104,18 @@ public abstract class GetterSetterManager {
     protected abstract class ListGetterSetter extends OptionGetterSetter {
         abstract boolean isValidElement(Object modelElement, String type);
         abstract Object getMetaType();
-        Action getAddAction(Object modelElement) {
-        	return null;
-        }
-        Action getRemoveAction(Object modelElement) {
-        	return null;
-        }
         boolean isFullBuildOnly() {
         	return false;
         }
+        /**
+         * Returns additional commands that cannot be deduced from the panel
+         * xml or other means. This is currently only used by
+         * SubvertexGetterSetter and should be removed as soon as we have some
+         * configurable way to replace.
+         * @param modelElement TODO
+         */
+        public List<Command> getAdditionalCommands(Object modelElement) {
+        	return Collections.emptyList();
+        }
     }
-    
 }

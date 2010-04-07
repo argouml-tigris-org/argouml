@@ -3824,6 +3824,9 @@ class FacadeMDRImpl implements Facade {
             if (handle instanceof ParameterDirectionKindEnum) {
                 return handle.toString().replaceAll("pdk_", "");
             }
+            if (handle instanceof PseudostateKind) {
+                return handle.toString().replaceAll("pk_", "");
+            }
             if (handle instanceof ModelElement) {
                 ModelElement me = (ModelElement) handle;
                 return me.getName();

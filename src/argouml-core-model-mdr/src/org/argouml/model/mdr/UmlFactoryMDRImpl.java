@@ -583,7 +583,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         
         // specifies valid elements for an ActionState to contain
         validContainmentMap.put(CompositeState.class, 
-                new Class<?>[] { 
+                new Class<?>[] {
+                    Pseudostate.class, SynchState.class, StubState.class, CompositeState.class, SimpleState.class, FinalState.class, SubmachineState.class,
                     CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class
                 });
         
@@ -864,6 +865,20 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             }
         } else if (elementType == metaTypes.getSignal()) {
             element = Model.getStateMachinesFactory().buildSignalEvent(container);
+        } else if (elementType == metaTypes.getPseudostate() && container instanceof CompositeState) {
+            element = Model.getStateMachinesFactory().buildPseudoState(container);
+        } else if (elementType == metaTypes.getSynchState() && container instanceof CompositeState) {
+            element = Model.getStateMachinesFactory().buildSynchState(container);
+        } else if (elementType == metaTypes.getStubState() && container instanceof CompositeState) {
+            element = Model.getStateMachinesFactory().buildStubState(container);
+        } else if (elementType == metaTypes.getCompositeState() && container instanceof CompositeState) {
+            element = Model.getStateMachinesFactory().buildCompositeState(container);
+        } else if (elementType == metaTypes.getSimpleState() && container instanceof CompositeState) {
+            element = Model.getStateMachinesFactory().buildSimpleState(container);
+        } else if (elementType == metaTypes.getFinalState() && container instanceof CompositeState) {
+            element = Model.getStateMachinesFactory().buildFinalState(container);
+        } else if (elementType == metaTypes.getSubmachineState() && container instanceof CompositeState) {
+            element = Model.getStateMachinesFactory().buildSubmachineState(container);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);

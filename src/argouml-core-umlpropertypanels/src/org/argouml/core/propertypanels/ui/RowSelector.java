@@ -74,6 +74,8 @@ import javax.swing.table.TableCellEditor;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.core.propertypanels.meta.IconIdentifiable;
+import org.argouml.core.propertypanels.meta.Named;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Command;
 import org.argouml.kernel.Project;
@@ -252,6 +254,7 @@ class RowSelector extends JPanel
         List metaTypes = null;
         final Action addAction;
         List<Action> newActions = null;
+        List<Command> additionalCommands = null;
         
         if (model instanceof UMLModelElementListModel) {
             // Temporary until SimpleListModel is used for all
@@ -265,6 +268,7 @@ class RowSelector extends JPanel
             target = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getUmlElement();
             metaType = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaType();
             metaTypes = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaTypes();
+            additionalCommands = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getAdditionalCommands();
             scroll = new ScrollListImpl(model, 1);
             readonly = Model.getModelManagementHelper().isReadOnly(target);
         } else {
@@ -343,6 +347,16 @@ class RowSelector extends JPanel
                     actions.addAll(newActions);
                 }
                 
+                if (additionalCommands != null && !additionalCommands.isEmpty()) {
+                	for (Command cmd : additionalCommands) {
+                		if (cmd instanceof IconIdentifiable && cmd instanceof Named) {
+                            actions.add(new CommandAction(cmd, ((Named)cmd).getName(), ((IconIdentifiable)cmd).getIcon()));
+                		} else {
+                            actions.add(new CommandAction(cmd));
+                		}
+                	}
+                }
+                
                 if (!actions.isEmpty()) {
                     PopupToolBoxButton tb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
                     for (Action action : actions) {
@@ -386,6 +400,16 @@ class RowSelector extends JPanel
                     }
                 }
 
+                if (additionalCommands != null && !additionalCommands.isEmpty()) {
+                	for (Command cmd : additionalCommands) {
+                		if (cmd instanceof IconIdentifiable && cmd instanceof Named) {
+                            actions.add(new CommandAction(cmd, ((Named)cmd).getName(), ((IconIdentifiable)cmd).getIcon()));
+                		} else {
+                            actions.add(new CommandAction(cmd));
+                		}
+                	}
+                }
+                
                 if (Model.getUmlHelper().isMovable(metaType)) {
                     moveUpAction = new MoveUpAction();
                     moveDownAction = new MoveDownAction();
@@ -946,6 +970,28 @@ class RowSelector extends JPanel
 			} else {
 				LOG.warn("No selcted object was found in the list control - we shouldn't be able to get here");
 			}
+		}
+    }
+    
+    private static class CommandAction extends UndoableAction {
+
+    	private final Command command;
+    	
+    	public CommandAction(Command cmd) {
+    		super("", ResourceLoaderWrapper.lookupIcon("Remove"));
+    		this.command = cmd;
+    	}
+    	
+    	public CommandAction(Command cmd, String name, Icon icon) {
+    		super(name, icon);
+    		
+    		this.command = cmd;
+    	}
+    	
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			super.actionPerformed(e);
+			command.execute();
 		}
     }
 }
