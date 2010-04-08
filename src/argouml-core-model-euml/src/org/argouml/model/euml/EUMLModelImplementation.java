@@ -1,12 +1,14 @@
-/* $Id$
- *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+// $Id$
+/*******************************************************************************
+ * Copyright (c) 2007,2009 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Tom Morris - initial implementation
+ *    Bogdan Pistol - undo support
  *    thn
  *****************************************************************************
  *
@@ -92,9 +94,13 @@ import org.eclipse.uml2.uml.resource.XMI2UMLResource;
  * them.
  * <p>
  * The implementation of this subsystem was generously sponsored by Google as
- * part of the Google Summer of Code 2007. The bulk of the implementation was
+ * part of the Google Summer of Code 2007. A large part of the implementation was
  * built by the sponsored student, Bogdan Ciprian Pistol, who was mentored by
  * Tom Morris.
+ * <p>
+ * This implementation uses ideas and code snippets from the 
+ * "org.eclipse.uml2.uml.editor.presentation" package which is part of the
+ * Eclipse UML2 plugin.
  * 
  * @author Bogdan Ciprian Pistol
  * @author Tom Morris <tfmorris@gmail.com>
@@ -250,6 +256,7 @@ public class EUMLModelImplementation implements ModelImplementation {
 
             path = path.replace('\\', '/');
             // These lines were one cause for issue 5915: (Were they needed?)
+            // TODO: Review - tfm
             //if (Character.isLetter(path.charAt(0))) {
             //    path = '/' + path;
             //}
