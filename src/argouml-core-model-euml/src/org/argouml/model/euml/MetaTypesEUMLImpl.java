@@ -1,12 +1,13 @@
-/* $Id$
- *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+// $Id$
+/*******************************************************************************
+ * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Tom Morris - initial implementation
  *    thn
  *****************************************************************************
  *
@@ -379,7 +380,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         String name = clazz.getName();
 
         // The name of the meta type is the class name (after the last .)
-        // and before the next $ or end of class name.
+        // and before the "Impl" or end of class name.
         int startName = name.lastIndexOf('.') + 1;
 
         // Eclipse UML2 implementation classes often start with "UML"
@@ -415,6 +416,8 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     public Object getObject() {
         // is used as InstanceSpecification, see UMLDeploymentDiagram
         return org.eclipse.uml2.uml.InstanceSpecification.class;
+        // TODO: what about ObjectNode?
+//        return org.eclipse.uml2.uml.ObjectNode.class;        
     }
 
     public Object getObjectFlowState() {
