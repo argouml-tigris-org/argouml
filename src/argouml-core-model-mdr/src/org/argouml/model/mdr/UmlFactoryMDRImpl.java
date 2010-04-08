@@ -572,6 +572,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         validContainmentMap.put(FinalState.class, 
                 new Class<?>[] { 
                     Transition.class,
+                    CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class
                 });
         
         // specifies valid elements for an SubactivityState to contain
