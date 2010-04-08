@@ -1,12 +1,13 @@
-/* $Id$
- *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+// $Id$
+/*******************************************************************************
+ * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Tom Morris - initial implementation
  *    thn
  *****************************************************************************
  *
@@ -42,21 +43,13 @@ package org.argouml.model.euml;
 
 import java.util.Collection;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.ExtensionMechanismsFactory;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.common.util.WrappedException;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.uml2.uml.Model;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLFactory;
-import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.resource.UMLResource;
 
 /**
  * The implementation of the ExtensionMechanismsFactory for EUML2.
@@ -64,19 +57,13 @@ import org.eclipse.uml2.uml.resource.UMLResource;
 class ExtensionMechanismsFactoryEUMLImpl implements
         ExtensionMechanismsFactory, AbstractModelFactory {
 
-    private static final Logger LOG = Logger
-            .getLogger(ExtensionMechanismsFactoryEUMLImpl.class);
-
     /**
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
+    private EditingDomain editingDomain;
 
-    /**
-     * The UML metamodel (lazily loaded singleton).
-     */
-    private static UMLPackage metamodel = null;
-    
+
     /**
      * Constructor.
      * 
@@ -86,55 +73,45 @@ class ExtensionMechanismsFactoryEUMLImpl implements
     public ExtensionMechanismsFactoryEUMLImpl(
             EUMLModelImplementation implementation) {
         modelImpl = implementation;
+        editingDomain = implementation.getEditingDomain();
     }
 
-    public Object buildStereotype(Object theModelElementObject, Object theName,
-            Object theNamespaceObject) {
-        
-        if (theModelElementObject == null || theName == null
-                || theNamespaceObject == null) {
-            throw new IllegalArgumentException(
-                    "one of the arguments is null: modelElement=" //$NON-NLS-1$
-                    + theModelElementObject
-                    + " name=" + theName //$NON-NLS-1$
-                    + " namespace=" + theNamespaceObject); //$NON-NLS-1$
-        }
-        
-        //ModelElement me = (ModelElement) theModelElementObject;
-        
-        String text = (String) theName;
-        Namespace ns = (Namespace) theNamespaceObject;
-        Stereotype stereo = (Stereotype)buildStereotype(text, ns);
-        /*
-        stereo.getBaseClass().add(modelImpl.getMetaTypes().getName(me));
-        // TODO: this doesn't look right - review - tfm
-        Stereotype stereo2 = (Stereotype) extensionHelper.getStereotype(ns,
-                stereo);
-        if (stereo2 != null) {
-            me.getStereotype().add(stereo2);
-            modelImpl.getUmlFactory().delete(stereo);
-            return stereo2;
-        }
-        stereo.setNamespace(ns);
-        me.getStereotype().add(stereo);
-        */
+    public Stereotype buildStereotype(Object element, Object name,
+            Object namespace) {
+        Stereotype stereo = buildStereotype((String) name, 
+                (Namespace) namespace);
+        // TODO: Add base classes - the following might not even be close!
+//        for (Class i : ((Element) element).getClass().getInterfaces()) {
+//            if (i instanceof umlmetaclass) {
+//                stereo.getExtendedMetaclasses().add(i);
+//            }
+//        }
         return stereo;
     }
 
-    public Object buildStereotype(Object theModelElementObject, String theName,
+    public Object buildStereotype(Object element, String name,
             Object model, Collection models) {
         // TODO: Auto-generated method stub
         return null;
     }
 
-    public Object buildStereotype(String text, Object ns) {
-        Stereotype stereo = UMLFactory.eINSTANCE.createStereotype();
-        stereo.setName(text);
-        // more checking needed?
-        if (ns instanceof Package) {
-            stereo.setPackage((Package)ns);
+    public Stereotype buildStereotype(final String name, final Object namespace) {
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Stereotype stereo = createStereotype();
+                stereo.setName(name);
+                if (namespace instanceof Package) {
+                    stereo.setPackage((Package) namespace);
+                }
+                getParams().add(stereo);
         }
-        return stereo;
+        };
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Build a stereotype");
+        editingDomain.getCommandStack().execute(cmd);
+//        cmd.setObjects(run.getParams().get(0));
+        return (Stereotype) run.getParams().get(0);
     }
 
     public Object buildTagDefinition(String name, Object stereotype, Object ns) {
@@ -148,6 +125,7 @@ class ExtensionMechanismsFactoryEUMLImpl implements
         return null;
     }
 
+    @Deprecated
     public Object buildTaggedValue(String tag, String value) {
         // TODO: Auto-generated method stub
         return null;
@@ -158,7 +136,7 @@ class ExtensionMechanismsFactoryEUMLImpl implements
         return null;
     }
 
-    public Object copyStereotype(Object source, Object ns) {
+    public Stereotype copyStereotype(Object source, Object ns) {
         // TODO: Auto-generated method stub
         return null;
     }
@@ -173,8 +151,18 @@ class ExtensionMechanismsFactoryEUMLImpl implements
 
     }
 
-    public Object createStereotype() {
-        return UMLFactory.eINSTANCE.createStereotype();
+    public Stereotype createStereotype() {
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                getParams().add(UMLFactory.eINSTANCE.createStereotype());
+            }
+        };
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create a stereotype");
+        editingDomain.getCommandStack().execute(cmd);
+//        cmd.setObjects(run.getParams().get(0));
+        return (Stereotype) run.getParams().get(0);
     }
 
     public Object createTagDefinition() {
