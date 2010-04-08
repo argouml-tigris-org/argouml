@@ -9,7 +9,38 @@
  * Contributors:
  *    Tom Morris - initial framework
  *    Bogdan Pistol - initial implementation
- *******************************************************************************/
+ *    thn
+ *    Bob Tarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+// Copyright (c) 2007,2008 Tom Morris and other contributors
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//     * Redistributions of source code must retain the above copyright
+//       notice, this list of conditions and the following disclaimer.
+//     * Redistributions in binary form must reproduce the above copyright
+//       notice, this list of conditions and the following disclaimer in the
+//       documentation and/or other materials provided with the distribution.
+//     * Neither the name of the ArgoUML Project nor the
+//       names of its contributors may be used to endorse or promote products
+//       derived from this software without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE ArgoUML PROJECT ``AS IS'' AND ANY
+// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+// DISCLAIMED. IN NO EVENT SHALL THE ArgoUML PROJECT BE LIABLE FOR ANY
+// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 package org.argouml.model.euml;
 
 import java.util.ArrayList;
@@ -37,6 +68,7 @@ import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Extend;
@@ -84,14 +116,15 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
      * A map of valid connections keyed by the connection type. The constructor
      * builds this from the data in the VALID_CONNECTIONS array
      */
-    private Map validConnectionMap = new HashMap();
+    private Map<Class<? extends Element>, List> validConnectionMap = 
+        new HashMap<Class<? extends Element>, List>();
     
     /**
      * A map of the valid model elements that are valid to be contained 
      * by other model elements.
      */
-    private HashMap<Class<?>, Class<?>[]> validContainmentMap = 
-        new HashMap<Class<?>, Class<?>[]>();
+    private HashMap<Class<? extends Element>, Class<?>[]> validContainmentMap = 
+        new HashMap<Class<? extends Element>, Class<?>[]>();
     
     /**
      * An array of valid connections, the combination of connecting class and
@@ -119,7 +152,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
      */
     // TODO: This should be built by reflection from the metamodel - tfm
     //       Update for UML 2.x metamodel if not replaced by reflection
-    private static final Object[][] VALID_CONNECTIONS = {
+    private static final Class[][] VALID_CONNECTIONS = {
         {Generalization.class,   Classifier.class, },
         {Dependency.class,       Element.class, },
         // Although Usage & Permission are Dependencies, they need to
@@ -165,7 +198,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             Object unidirectional, Object namespace)
             throws IllegalModelElementConnectionException {
 
-        IllegalModelElementConnectionException exception = new IllegalModelElementConnectionException(
+        IllegalModelElementConnectionException exception = 
+            new IllegalModelElementConnectionException(
                 "Cannot make a " + elementType.getClass().getName() //$NON-NLS-1$
                         + " between a " + fromElement.getClass().getName() //$NON-NLS-1$
                         + " and a " + toElement.getClass().getName()); //$NON-NLS-1$
@@ -350,7 +384,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         };
         modelImpl.getEditingDomain().getCommandStack().execute(
                 new ChangeCommand(
-                        modelImpl, run, "Remove from the model the element #",
+                        modelImpl, run, "Remove from the model the element #", //$NON-NLS-1$
                         elem));
     }
     
@@ -401,6 +435,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     }
     
     // TODO: Can we get this info from UML2 plugin?
+    // Perhaps collect all References in the metamodel, filter for those
+    // which represent containments and find the types on either end - tfm
     public boolean isContainmentValid(Object metaType, Object container) {
         
         // find the passed in container in validContainmentMap
@@ -458,7 +494,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         // A list of valid connections between elements, the
         // connection type first and then the elements to be connected
 
-        Object connection = null;
+        Class<Element> connection = null;
         for (int i = 0; i < VALID_CONNECTIONS.length; ++i) {
             connection = VALID_CONNECTIONS[i][0];
             List validItems = (ArrayList) validConnectionMap.get(connection);
@@ -518,15 +554,10 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                 Signal.class
             });
                 
-        // specifies valid elements for a Profile to contain
+        // valid elements for a Profile to contain
         validContainmentMap.put(Profile.class, 
             new Class<?>[] {
-                Profile.class, Package.class, Actor.class,
-                UseCase.class, org.eclipse.uml2.uml.Class.class,
-                Interface.class, Component.class,
-                Node.class, Stereotype.class,
-                Enumeration.class, DataType.class,
-                Signal.class
+                Stereotype.class, ElementImport.class, PackageImport.class
             });
                 
         // specifies valid elements for a class to contain
@@ -608,7 +639,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                     Parameter.class
                 });
 
-        // specifies valid elements for a Attribute to contain
+        // valid elements for a Stereotype to contain
         validContainmentMap.put(Stereotype.class,
                 new Class<?>[] {
                     Property.class
@@ -620,9 +651,9 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         if (resource != null) {
             modelImpl.unloadResource(resource);
         } else {
-            LOG.warn("Tried to delete null resource");
+            LOG.warn("Tried to delete null resource"); //$NON-NLS-1$
             throw new InvalidElementException(
-                    element != null ? element.toString() : "Null" );
+                    element != null ? element.toString() : "Null" ); //$NON-NLS-1$
         }
     }
 
