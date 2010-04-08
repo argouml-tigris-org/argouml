@@ -1,47 +1,23 @@
-/* $Id$
- *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+// $Id$
+/*******************************************************************************
+ * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
- *****************************************************************************
- *
- * Some portions of this file was previously release using the BSD License:
- */
-
-// Copyright (c) 2007,2008 Tom Morris and other contributors
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the project or its contributors may be used 
-//       to endorse or promote products derived from this software without
-//       specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
-// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ *    Tom Morris - initial API and implementation
+ *******************************************************************************/
 package org.argouml.model.euml;
 
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CollaborationsFactory;
+import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Collaboration;
+import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.Interaction;
+import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.UMLFactory;
 
 /**
@@ -106,15 +82,21 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
         return null;
     }
 
-    public Object buildCollaboration(Object handle) {
-        // TODO: Auto-generated method stub
-        return null;
+    // TODO: All build/create methods need Undo support - tfm
+
+    public Collaboration buildCollaboration(Object handle) {
+        Collaboration collab = createCollaboration();
+        ((Element) handle).getOwnedElements().add(collab);
+        return collab;
     }
 
-    public Object buildCollaboration(Object namespace, 
+    public Collaboration buildCollaboration(Object namespace, 
             Object representedElement) {
+        Collaboration collab = buildCollaboration(namespace);
+        Classifier cls = (Classifier) representedElement;
+
         // TODO: Auto-generated method stub
-        return null;
+        return collab;
     }
 
     public Object buildInteraction(Object handle) {
@@ -122,9 +104,9 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
         return null;
     }
 
-    public Object buildMessage(Object acollab, Object arole) {
+    public Message buildMessage(Object acollab, Object arole) {
         // TODO: Auto-generated method stub
-        return null;
+        return createMessage();
     }
 
     public Object createAssociationEndRole() {
@@ -142,7 +124,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
         return null;
     }
 
-    public Object createCollaboration() {
+    public Collaboration createCollaboration() {
         return UMLFactory.eINSTANCE.createCollaboration();
     }
 
@@ -151,7 +133,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
         return null;
     }
 
-    public Object createInteraction() {
+    public Interaction createInteraction() {
         return UMLFactory.eINSTANCE.createInteraction();
     }
 
@@ -160,7 +142,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
         return null;
     }
 
-    public Object createMessage() {
+    public Message createMessage() {
         return UMLFactory.eINSTANCE.createMessage();
     }
 
