@@ -1,12 +1,14 @@
-/* $Id$
- *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+// $Id$
+/*******************************************************************************
+ * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Tom Morris - initial framework & prototype implementation
+ *    Bogdan Pistol - initial implementation
  *    thn
  *****************************************************************************
  *
@@ -47,6 +49,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.Model;
 import org.argouml.model.NotImplementedException;
@@ -98,6 +101,8 @@ import org.eclipse.uml2.uml.VisibilityKind;
  */
 class CoreHelperEUMLImpl implements CoreHelper {
 
+    private static final Logger LOG = Logger.getLogger(CoreHelperEUMLImpl.class);
+    
     /**
      * The model implementation.
      */
@@ -432,13 +437,15 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void addRaisedException(Object handle, Object exception) {
-        if (!(handle instanceof Operation)) {
-            throw new IllegalArgumentException( "The operation must be an instance of Operation");
-        }
-        if (!(exception instanceof Type)) {
-            throw new IllegalArgumentException( "The exception must be an instance of Type");
-        }
-        (((Operation)handle).getRaisedExceptions()).add((Type)exception);
+        UMLUtil.checkArgs(new Object[] {handle, exception},
+                new Class[] {Operation.class, Type.class});
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, getRunnableClassForAddCommand(
+                                (Operation) handle,
+                                (Type) exception),
+                        "Add the Exception # to the Operation #", exception,
+                        handle));
     }
     
     public void addSourceFlow(Object handle, Object flow) {
@@ -1168,16 +1175,20 @@ class CoreHelperEUMLImpl implements CoreHelper {
         throw new NotYetImplementedException();
     }
 
-    public void removeStereotype(Object handle, Object stereo) {
-        if (!(handle instanceof Element)) {
-            throw new IllegalArgumentException(
-                    "handle must be instance of Element"); //$NON-NLS-1$
+
+    public void removeStereotype(final Object handle, final Object stereo) {
+        UMLUtil.checkArgs(new Object[] {handle, stereo},
+                new Class[] {Element.class, Stereotype.class});
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Element) handle).unapplyStereotype((Stereotype) stereo);
         }
-        if (!(stereo instanceof Stereotype)) {
-            throw new IllegalArgumentException(
-                    "stereo must be instance of Stereotype"); //$NON-NLS-1$
-        }
-        ((Element) handle).unapplyStereotype((Stereotype) stereo);
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Remove the stereotype # from the element #",
+                        stereo, handle));
     }
 
     public void removeSupplierDependency(final Object supplier,
@@ -1359,15 +1370,20 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         child, handle));
     }
 
-    public void setConcurrency(Object handle, Object concurrencyKind) {
-        if (handle instanceof Operation
-                && concurrencyKind instanceof CallConcurrencyKind) {
-            ((Operation) handle).
-                    setConcurrency((CallConcurrencyKind) concurrencyKind);
-            return;
+    public void setConcurrency(final Object handle, final Object concurrencyKind) {
+        UMLUtil.checkArgs(new Object[] {handle, concurrencyKind},
+                new Class[] {Element.class, CallConcurrencyKind.class});
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ((Operation) handle).setConcurrency((CallConcurrencyKind) concurrencyKind);
         }
-        throw new IllegalArgumentException("handle: " + handle //$NON-NLS-1$
-                + " or concurrencyKind: " + concurrencyKind); //$NON-NLS-1$
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl,
+                        run,
+                        "Set the concurrencyKind # of the element #",
+                        concurrencyKind, handle));
     }
 
     public void setConnections(Object handle, Collection ends) {
@@ -1408,6 +1424,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setKind(Object handle, Object kind) {
+        // TODO: Needs undo support
 	if( handle instanceof Parameter && kind instanceof ParameterDirectionKind) {
 		((Parameter)handle).setDirection( (ParameterDirectionKind)kind);
 		return;
@@ -1492,6 +1509,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setName(final Object handle, final String name) {
         if (!(handle instanceof NamedElement)) {
+            if (handle instanceof Generalization) {
+                LOG.warn("Attempting to set the name of a generalization "
+                        + "which is no longer a NamedElement in UML 2" + name
+                        + handle.toString());
+                return;
+            }
             throw new IllegalArgumentException(
                     "handle must be instance of NamedElement"); //$NON-NLS-1$
         }
