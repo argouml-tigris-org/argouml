@@ -1,12 +1,14 @@
-/* $Id$
- *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+// $Id$
+/*******************************************************************************
+ * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Tom Morris - initial implementation
+ *    Bogdan Pistol - undo support & UUID maps for diagrams
  *    thn
  *****************************************************************************
  *
@@ -55,11 +57,17 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.NotImplementedException;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.BasicFeatureMapEntry;
+import org.eclipse.emf.ecore.impl.EStructuralFeatureImpl.SimpleFeatureMapEntry;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.FeatureMap.Entry;
+import org.eclipse.emf.ecore.xml.type.AnyType;
+import org.eclipse.uml2.uml.Element;
 import org.xml.sax.InputSource;
 
 /**
@@ -89,20 +97,19 @@ class XmiReaderEUMLImpl implements XmiReader {
     }
 
     public int getIgnoredElementCount() {
-        // TODO: Auto-generated method stub
         return 0;
     }
 
     public String[] getIgnoredElements() {
-        // TODO: Auto-generated method stub
+        // Not needed currently for UML 2
         return new String[0];
     }
 
-    public Map getXMIUUIDToObjectMap() {
+    public Map<String, Object> getXMIUUIDToObjectMap() {
         if (resource == null) {
             throw new IllegalStateException();
         }
-        Map<String, EObject> map = new HashMap<String, EObject>();
+        Map<String, Object> map = new HashMap<String, Object>();
         Iterator<EObject> it = resource.getAllContents();
         while (it.hasNext()) {
             EObject o  = it.next();
@@ -128,14 +135,14 @@ class XmiReaderEUMLImpl implements XmiReader {
         if (name == null) {
             name = inputSource.toString();
         }
-        LOG.debug("Parsing " + name);
+        LOG.debug("Parsing " + name); //$NON-NLS-1$
         if (inputSource.getByteStream() != null) {
             is = inputSource.getByteStream();
         } else if (inputSource.getSystemId() != null) {
             try {
                 URL url = new URL(inputSource.getSystemId());
                 if (url != null) {
-                    LOG.debug("Parsing URL " + url);
+                    LOG.debug("Parsing URL " + url); //$NON-NLS-1$
                     is = url.openStream();
                     if (is != null) {
                         is = new BufferedInputStream(is);
@@ -153,6 +160,8 @@ class XmiReaderEUMLImpl implements XmiReader {
             throw new UnsupportedOperationException();
         }
 
+        // TODO: Review - priority of public ID vs system ID has been reversed
+        // from original implementation
         String id = inputSource.getPublicId();
         if (id == null) {
             id = inputSource.getSystemId();
@@ -172,6 +181,13 @@ class XmiReaderEUMLImpl implements XmiReader {
             modelImpl.getModelEventPump().stopPumpingEvents();
             r.unload();
             r.load(is, null);
+            // TODO: Some import-only UML 2 profiles trigger this - Investigate.
+//            if (!isUML2(r)) {
+//                throw new UmlException("Attempted to load non-UML 2.x file");
+//            }
+            if (isUML14(r)) {
+                throw new UmlException("Attempted to load UML 1.4 file"); //$NON-NLS-1$
+            }
         } catch (IOException e) {
             throw new UmlException(e);
         } finally {
@@ -185,14 +201,83 @@ class XmiReaderEUMLImpl implements XmiReader {
             }
         }
         resource = r;
-        LOG.debug("Parsed resource " + resource 
-                + " with " + resource.getContents().size() + " elements");
+        LOG.debug("Parsed resource " + resource  //$NON-NLS-1$
+                + " with " + resource.getContents().size() + " elements"); //$NON-NLS-1$ //$NON-NLS-2$
         return r.getContents();
     }
 
-    public boolean setIgnoredElements(String[] elementNames) {
-        // TODO: Auto-generated method stub
+    /**
+     * Test whether this is a UML2 file. Returns as soon as the first UML2
+     * element is seen.
+     * 
+     * @param r resource containing loaded UML model
+     * @return true if any of the contained objects are instances of UML2
+     *         Element.
+     */
+    private boolean isUML2(Resource r) {
+        for (EObject eobj: r.getContents()) {
+            if (eobj instanceof Element) {
+                return true;
+            }
+        }
         return false;
+    }
+    
+    /**
+     * Attempt to detect ArgoUML/NetBeans MDR style UML 1.4 XMI files. These can
+     * be loaded without complaint by EMF, but they won't do us any good.
+     * 
+     * @param r resource containing the loaded file
+     * @return true if XMI.header/XMI.metamodel contains xmi.name="UML" and
+     *         xmi.version="1.4"
+     */
+    private boolean isUML14(Resource r) {
+        for (EObject eobj : r.getContents()) {
+            if ("XMI.header".equals(eobj.eClass().getName())) { //$NON-NLS-1$
+                for (Entry e1 : ((AnyType) eobj).getMixed()) {
+                    if (e1 instanceof BasicFeatureMapEntry) {
+                        BasicFeatureMapEntry x1 = (BasicFeatureMapEntry) e1;
+                        String n1 = x1.getEStructuralFeature().getName();
+                        if ("XMI.metamodel".equals(n1)) { //$NON-NLS-1$
+                            AnyType v = (AnyType) x1.getValue();
+                            for (Entry e2 : v.getAnyAttribute()) {
+                                if (e2 instanceof SimpleFeatureMapEntry) {
+                                    SimpleFeatureMapEntry x = (SimpleFeatureMapEntry) e2;
+                                    String n = x.getEStructuralFeature().getName();
+                                    if ("xmi.name".equals(n)) { //$NON-NLS-1$
+                                        if (!("UML".equals((String) x.getValue()))) { //$NON-NLS-1$
+                                            LOG.warn("Tried to parse XMI file with "
+                                                            + "XMI.header/XMI.metamodel/xmi.name = "
+                                                            + (String) x.getValue());
+                                            return false;
+                                        }
+                                    } else if ("xmi.version".equals(n)) { //$NON-NLS-1$
+                                        String version = (String) x.getValue();
+                                        if (version != null
+                                                && version.startsWith("1.4")) { //$NON-NLS-1$
+                                            LOG.debug("Tried to parse XMI file with "
+                                                    + "XMI.header/XMI.metamodel/xmi.version = "
+                                                    + version);
+                                            return true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean setIgnoredElements(String[] elementNames) {
+        if (elementNames == null) {
+            return true;
+        }
+        throw new NotImplementedException("setIgnoredElements not implemented for UML 2.x");
+        // TODO: Silently ignore instead?
+//        return false;
     }
 
     public String getTagName() {
