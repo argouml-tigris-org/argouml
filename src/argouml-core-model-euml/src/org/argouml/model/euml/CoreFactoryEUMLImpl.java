@@ -1,12 +1,14 @@
-/* $Id$
- *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+// $Id$
+/*******************************************************************************
+ * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Tom Morris - initial implementation
+ *    Bogdan Pistol - undo support & large piece of initial implementation
  *    bobtarling
  *****************************************************************************
  *
@@ -882,6 +884,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 if (name != null) {
                     operation.setName(name);
                 } else {
+                    // TODO: Remove?  Can't be localized
                     operation.setName("newOperation");
                 }
                 getParams().add(operation);
@@ -912,6 +915,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             public void run() {
                 Parameter param = createParameter();
                 param.setType((Type) type);
+                // TODO: Remove?  Can't be localized
                 param.setName("arg" +
                     ((BehavioralFeature) o).getOwnedParameters().size());
                 ((BehavioralFeature) o).getOwnedParameters().add(param);
@@ -1064,7 +1068,17 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Association createAssociation(Object extent) {
-        return UMLFactory.eINSTANCE.createAssociation();
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                getParams().add(UMLFactory.eINSTANCE.createAssociation());
+            }
+        };
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create an association");
+        editingDomain.getCommandStack().execute(cmd);
+//        cmd.setObjects(run.getParams().get(0));
+        return (Association) run.getParams().get(0);
     }
     
     public AssociationClass createAssociationClass() {
