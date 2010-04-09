@@ -83,21 +83,14 @@ public class TestProjectWithProfiles extends TestCase {
     /*
      * @see junit.framework.TestCase#setUp()
      */
-    @SuppressWarnings("unchecked")
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeMDR();
         new InitProfileSubsystem().init();
         
-        if (ApplicationVersion.getVersion() == null) {
-            Class argoVersionClass = 
-                Class.forName("org.argouml.application.ArgoVersion");
-            Method initMethod = argoVersionClass.getDeclaredMethod("init");
-            initMethod.setAccessible(true);
-            initMethod.invoke(null);
-            assertNotNull(ApplicationVersion.getVersion());
-        }
+        initAppVersion();
+        assertNotNull(ApplicationVersion.getVersion());
         String testCaseDirNamePrefix = getClass().getPackage().getName();
         testCaseDir = FileHelper.setUpDir4Test(testCaseDirNamePrefix);
     }
@@ -200,9 +193,7 @@ public class TestProjectWithProfiles extends TestCase {
         // save the project into a new file
         File file = getFileInTestDir(
                 "testRemoveProfileWithModelThatRefersToProfile.zargo");
-        AbstractFilePersister persister = getProjectPersister(file);
-        project.setVersion(ApplicationVersion.getVersion());
-        persister.save(project, file);
+        AbstractFilePersister persister = saveProject(project, file);
         project.remove();
         
         // reopen the project and assert that the MetaProfile isn't part of 
@@ -294,9 +285,7 @@ public class TestProjectWithProfiles extends TestCase {
         // save the project
         File file = getFileInTestDir(
             "testProjectWithUserDefinedProfilePersistency.zargo");
-        AbstractFilePersister persister = getProjectPersister(file);
-        project.setVersion(ApplicationVersion.getVersion());
-        persister.save(project, file);
+        AbstractFilePersister persister = saveProject(project, file);
         project.remove();
         
         // load the project
@@ -368,9 +357,7 @@ public class TestProjectWithProfiles extends TestCase {
         Model.getCoreHelper().addStereotype(fooClass, stStereotype);
         // save the project
         File file = getFileInTestDir(testName + ".zargo");
-        AbstractFilePersister persister = getProjectPersister(file);
-        project.setVersion(ApplicationVersion.getVersion());
-        persister.save(project, file);
+        AbstractFilePersister persister = saveProject(project, file);
         // remove the user defined profile and the directory where it is
         profileManager.removeProfile(userDefinedProfile);
         profileManager.removeSearchPathDirectory(testCaseDir.getAbsolutePath());
@@ -390,11 +377,55 @@ public class TestProjectWithProfiles extends TestCase {
         }
     }
 
-    private AbstractFilePersister getProjectPersister(File file) {
+    /**
+     * @param project the ArgoUML {@link Project} to save in file.
+     * @param file the {@link File} in which an ArgoUML {@link Project} will
+     * be persisted.
+     * @return the persister used and usable for file.
+     * @throws SaveException if saving the file goes wrong.
+     * @throws InterruptedException if an interrupt occurs while saving.
+     * TODO: move this to an helper class.
+     */
+    public static AbstractFilePersister saveProject(Project project, File file)
+        throws SaveException, InterruptedException {
+        AbstractFilePersister persister = getProjectPersister(file);
+        project.setVersion(ApplicationVersion.getVersion());
+        persister.save(project, file);
+        return persister;
+    }
+
+    /**
+     * Get an {@link AbstractFilePersister} for file.
+     *
+     * @param file the {@link File} in which an ArgoUML {@link Project} will
+     * be persisted.
+     * @return the appropriate persister for file or null if the file's
+     * extension doesn't match a supported persister.
+     * TODO: move this to an helper class.
+     */
+    public static AbstractFilePersister getProjectPersister(File file) {
         AbstractFilePersister persister = 
             PersistenceManager.getInstance().getPersisterFromFileName(
-                    file.getAbsolutePath());
+                file.getAbsolutePath());
         return persister;
+    }
+
+    /**
+     * Initialize the ArgoUML application version, so that
+     * {@link ApplicationVersion#getVersion()} doesn't return null.
+     *
+     * @throws Exception if something goes wrong...
+     * TODO: move this to an helper class.
+     */
+    @SuppressWarnings("unchecked")
+    public static void initAppVersion() throws Exception {
+        if (ApplicationVersion.getVersion() == null) {
+            Class argoVersionClass = 
+                Class.forName("org.argouml.application.ArgoVersion");
+            Method initMethod = argoVersionClass.getDeclaredMethod("init");
+            initMethod.setAccessible(true);
+            initMethod.invoke(null);
+        }
     }
 
     private File createUserProfileFile(File directory, String filename)

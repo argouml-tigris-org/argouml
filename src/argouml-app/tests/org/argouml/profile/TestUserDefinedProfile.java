@@ -117,7 +117,7 @@ public class TestUserDefinedProfile extends TestCase {
 
         // create profile model
         ProfileMother profileMother = new ProfileMother();
-        Object model = profileMother.createSimpleProfileModel();
+        Object model = profileMother.createSimpleProfileModel("displayName");
         // save the profile into a xmi file
         File profileFile = new File(testDir, "testLoadingConstructor.xmi");
         profileMother.saveProfileModel(model, profileFile);

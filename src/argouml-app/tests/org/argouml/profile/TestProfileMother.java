@@ -239,4 +239,24 @@ public class TestProfileMother extends TestCase {
         File dependentFile = profilesFiles.get(1);
         assertStringInLineOfFile("", baseFile.getName(), dependentFile);
     }
+
+    /**
+     * Test {@link ProfileMother#createUnloadedSimpleProfile()}.
+     *
+     * @throws IOException when file IO goes wrong...
+     * @throws UmlException when UML manipulation goes wrong...
+     */
+    public void testCreateUnloadedSimpleProfile() throws IOException,
+            UmlException {
+        File profileFile = mother.createUnloadedSimpleProfile();
+        profileFile.deleteOnExit();
+        assertTrue("It doesn't exist or isn't a file.",
+            profileFile.exists() && profileFile.isFile());
+        XmiReader xmiReader = Model.getXmiReader();
+        InputSource inputSource = new InputSource(
+            profileFile.toURI().toURL().toExternalForm());
+        Collection topModelElements = xmiReader.parse(inputSource, true);
+        assertEquals("Unexpected number of top model elements.",
+            1, topModelElements.size());
+    }
 }

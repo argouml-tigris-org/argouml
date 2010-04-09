@@ -61,6 +61,7 @@ import junit.framework.TestCase;
 import org.apache.log4j.Logger;
 
 import org.argouml.FileHelper;
+import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
@@ -104,8 +105,24 @@ public class ProfileMother {
      * "st" the example stereotype name.
      */
     public static final String STEREOTYPE_NAME_ST = "st";
-    
-    private final String DEFAULT_SIMPLE_PROFILE_NAME = "SimpleProfile";
+
+    /**
+     * "SimpleProfile" is the name of the SimpleProfile which ProfileMother
+     * uses for the most basic profile being used.
+     */
+    public static final String DEFAULT_SIMPLE_PROFILE_NAME = "SimpleProfile";
+
+    /**
+     * ".xmi" is the default profile file extension.
+     */
+    public static final String XMI_FILE_EXTENSION = ".xmi";
+
+    /**
+     * "TagDef" is the name of the Tag Definition applicable to model elements
+     * to which the stereotype named {@link ProfileMother#STEREOTYPE_NAME_ST}
+     * of SimpleProfile was applied.
+     */
+    public static final String TAG_DEFINITION_NAME_TD = "TagDef";
 
     /**
      * Create a simple profile model with name {@link ProfileMother#DEFAULT_SIMPLE_PROFILE_NAME}
@@ -127,11 +144,16 @@ public class ProfileMother {
      * @return the profile model.
      */
     public Object createSimpleProfileModel(String profileName) {
+        // TODO: should it remove the leftovers from other tests?
+//        cleanAllExtents();
+//        assert getFacade().getRootElements().size() == 0;
         Object model = getModelManagementFactory().createProfile();
         Object fooClass = Model.getCoreFactory().buildClass("foo", model);
-        getExtensionMechanismsFactory().buildStereotype(fooClass, 
-                STEREOTYPE_NAME_ST, model);
+        Object stereotype = getExtensionMechanismsFactory().buildStereotype(fooClass,
+            STEREOTYPE_NAME_ST, model);
         getCoreHelper().setName(model, profileName);
+        getExtensionMechanismsFactory().buildTagDefinition(
+            TAG_DEFINITION_NAME_TD, stereotype, null);
         return model;
     }
 
@@ -148,7 +170,7 @@ public class ProfileMother {
         }
         return null;
     }
-    
+
     private Object umlProfileModel;
 
     Object getUmlProfileModel() {
@@ -178,9 +200,10 @@ public class ProfileMother {
      */
     public void saveProfileModel(Object model, File file) throws IOException {
         FileOutputStream fileOut = new FileOutputStream(file);
+//        cleanAllExtentsBut(model); // TODO: why is this causing a crash?!?
         try {
             XmiWriter xmiWriter = Model.getXmiWriter(model, fileOut, "x(" 
-                    + UmlFilePersister.PERSISTENCE_VERSION + ")");
+                + UmlFilePersister.PERSISTENCE_VERSION + ")");
             xmiWriter.write();
             fileOut.flush();
         } catch (Exception e) {
@@ -189,6 +212,24 @@ public class ProfileMother {
             throw new IOException(msg);
         } finally {
             fileOut.close();
+        }
+    }
+
+    public static void cleanAllExtents() {
+        cleanAllExtentsBut(null);
+    }
+
+    public static void cleanAllExtentsBut(Object extentNotToClean) {
+        // remove leftovers from other tests
+        Collection rootElements = Model.getFacade().getRootElements();
+        for (Object rootElement : rootElements) {
+            if (extentNotToClean != rootElement) {
+                try {
+                    Model.getUmlFactory().deleteExtent(rootElement);
+                } catch (InvalidElementException e) {
+                    // ignored
+                }
+            }
         }
     }
 
@@ -233,7 +274,7 @@ public class ProfileMother {
         dependencyCreator.create(profileFromWhichDependsModel,
             dependentProfile);
         File dependentProfileFile = File.createTempFile(
-            dependentProfileFilenamePrefix, ".xmi", profilesDir);
+            dependentProfileFilenamePrefix, XMI_FILE_EXTENSION, profilesDir);
         saveProfileModel(dependentProfile, dependentProfileFile);
         Model.getUmlFactory().deleteExtent(dependentProfile);
         xmiReader.removeSearchPath(profileFromWhichDependsFile.getParent());
@@ -253,7 +294,7 @@ public class ProfileMother {
             throws IOException, UmlException {
         File profilesDir = FileHelper.createTempDirectory();
         final File baseFile = File.createTempFile(
-            "baseProfile", ".xmi", profilesDir);
+            "baseProfile", XMI_FILE_EXTENSION, profilesDir);
         Object model = createSimpleProfileModel();
         saveProfileModel(model, baseFile);
         Model.getUmlFactory().deleteExtent(model);
@@ -300,13 +341,13 @@ public class ProfileMother {
         // ensure that model subsystem implementation doesn't remember the
         // profiles by changing their names and directories
         baseProfileFile = FileHelper.moveFileToNewTempDirectory(
-            baseProfileFile, "new-base-profile", ".xmi",
+            baseProfileFile, "new-base-profile", XMI_FILE_EXTENSION,
             ProfileMother.class.getCanonicalName());
         File dependentProfileFile = profileFiles.get(1);
         replaceStringInFile(dependentProfileFile, baseProfileFileName,
             baseProfileFile.getName());
         dependentProfileFile = FileHelper.moveFileToNewTempDirectory(
-            dependentProfileFile, "new-dependent-profile", ".xmi",
+            dependentProfileFile, "new-dependent-profile", XMI_FILE_EXTENSION,
             ProfileMother.class.getCanonicalName());
         profileFiles.clear();
         profileFiles.add(baseProfileFile);
@@ -352,5 +393,45 @@ public class ProfileMother {
                 }
             }
         }
+    }
+
+    /**
+     * Create the SimpleProfile (see
+     * {@link ProfileMother#createSimpleProfileModel()}) in a way that it isn't
+     * neither loaded in the model neither remembered by it. The file name has
+     * the prefix {@link ProfileMother#DEFAULT_SIMPLE_PROFILE_NAME} and the
+     * extension {@link ProfileMother#XMI_FILE_EXTENSION}.
+     *
+     * @return the {@link File} where the profile was stored.
+     * @throws IOException
+     */
+    public File createUnloadedSimpleProfile() throws IOException {
+        return createUnloadedSimpleProfile(DEFAULT_SIMPLE_PROFILE_NAME);
+    }
+
+    /**
+     * Create the SimpleProfile (see
+     * {@link ProfileMother#createSimpleProfileModel()}) in a way that it isn't
+     * neither loaded in the model neither remembered by it. The file name has
+     * the prefix profileName and the
+     * extension {@link ProfileMother#XMI_FILE_EXTENSION}.
+     *
+     * @param profileName the name of the profile and the prefix of the
+     *        profile file name.
+     * @return the {@link File} where the profile was stored.
+     * @throws IOException
+     */
+    public File createUnloadedSimpleProfile(String profileName)
+            throws IOException {
+        Object model = createSimpleProfileModel(profileName);
+        File profileFile = File.createTempFile(profileName,
+            XMI_FILE_EXTENSION);
+        saveProfileModel(model, profileFile);
+        Model.getUmlFactory().deleteExtent(model);
+        File newProfileFile = File.createTempFile(profileName,
+            XMI_FILE_EXTENSION);
+        newProfileFile.delete();
+        profileFile.renameTo(newProfileFile);
+        return newProfileFile;
     }
 }
