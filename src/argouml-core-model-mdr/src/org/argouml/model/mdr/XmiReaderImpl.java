@@ -1,12 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2005,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Bob Tarling
+ *    Tom Morris
  *    euluis
  *****************************************************************************
  *
@@ -45,7 +47,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -221,9 +222,14 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
 
             try {
                 String systemId = inputSource.getSystemId();
-                File file = copySource(inputSource);
-                systemId = file.toURI().toURL().toExternalForm();
-                inputSource = new InputSource(systemId);
+                // If we've got a streaming input, copy it to make sure we'll
+                // be able to rewind it if necessary
+                if (inputSource.getByteStream() != null
+                        || inputSource.getCharacterStream() != null) {
+                    File file = copySource(inputSource);
+                    systemId = file.toURI().toURL().toExternalForm();
+                    inputSource = new InputSource(systemId);
+                }
                 MDRepository repository = modelImpl.getRepository();
                 
                 // Use a transaction to avoid the performance penalty (3x) of 
@@ -321,19 +327,6 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         return newElements;
     }
 
-    
-    private void deleteElements(Collection<RefObject> elements) {
-        Collection<RefObject> toDelete = new ArrayList<RefObject>(elements);
-        for (RefObject refObject : toDelete) {
-            try {
-                refObject.refDelete();
-            } catch (InvalidObjectException e) {
-                // Just continue.  We tried to delete something 
-                // twice, probably because it was contained in 
-                // another element that we already deleted.
-            }
-        }
-    }
 
     private Collection<RefObject> convertAndLoadUml13(String systemId,
             RefPackage extent, XMIReader xmiReader, InputSource input)
