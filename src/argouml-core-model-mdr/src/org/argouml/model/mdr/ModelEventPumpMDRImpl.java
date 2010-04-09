@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2005,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -836,8 +836,10 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
         boolean added = names.get(typeName).add(propertyName);
         if (LOG.isDebugEnabled()) {
             if (!added) {
-                LOG.debug("Duplicate property name found - " + typeName + ":"
-                        + propertyName);
+                // Because we map both ends of an association we'll see many
+                // names twice
+//                LOG.debug("Duplicate property name found - " + typeName + ":"
+//                        + propertyName);
             } else {
                 LOG.debug("Added property name - " + typeName + ":"
                         + propertyName);
