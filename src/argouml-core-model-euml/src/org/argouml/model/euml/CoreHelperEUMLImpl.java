@@ -10,34 +10,7 @@
  *    Tom Morris - initial framework & prototype implementation
  *    Bogdan Pistol - initial implementation
  *    thn
- *****************************************************************************
- *
- * Some portions of this file was previously release using the BSD License:
- */
-
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the project or its contributors may be used 
-//       to endorse or promote products derived from this software without
-//       specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
-// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *****************************************************************************/
 
 package org.argouml.model.euml;
 
@@ -279,7 +252,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 editingDomain, owner, null, element, index);
         if (cmd == null || !cmd.canExecute()) {
             throw new UnsupportedOperationException(
-                    "The element " + element + " cannot be added to the element " + owner); //$NON-NLS-1$//$NON-NLS-2$
+                    "The element " + element  //$NON-NLS-1$
+                    + " cannot be added to the element " + owner); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -390,7 +364,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void addOwnedElement(Object handle, Object me) {
-        addOwnedElement(handle, me, "Add the owned element # to the owner #", me, handle);
+        addOwnedElement(handle, me, "Add the owned element # to the owner #", 
+                me, handle);
     }
 
     public void addParameter(Object handle, int index, Object parameter) {
@@ -536,36 +511,42 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public Collection getAllBehavioralFeatures(Object element) {
-        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(element, BehavioralFeature.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(
+                element, BehavioralFeature.class);
     }
 
     public Collection getAllClasses(Object ns) {
-        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, org.eclipse.uml2.uml.Class.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(
+                ns, org.eclipse.uml2.uml.Class.class);
     }
 
     public Collection getAllClassifiers(Object namespace) {
-        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(namespace, Classifier.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(
+                namespace, Classifier.class);
     }
 
     public Collection getAllComponents(Object ns) {
-        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, org.eclipse.uml2.uml.Component.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(
+                ns, org.eclipse.uml2.uml.Component.class);
     }
 
     public Collection getAllDataTypes(Object ns) {
-        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, DataType.class);
-    }
-    
-    public Collection getAllInterfaces(Object ns) {
-        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, Interface.class);
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(
+                ns, DataType.class);
     }
 
-    public Collection getAllMetaDatatypeNames() {
+    public Collection getAllInterfaces(Object ns) {
+        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(
+                ns, Interface.class);
+    }
+
+    public Collection<String> getAllMetaDatatypeNames() {
         // TODO: not implemented
         return Collections.emptySet();
     }
     
-    public Collection getAllMetatypeNames() {
-        Collection result = new ArrayList();
+    public Collection<String> getAllMetatypeNames() {
+        Collection<String> result = new ArrayList<String>();
         for (Field f : UMLPackage.Literals.class.getDeclaredFields()) {
             Object o;
             try {
@@ -649,12 +630,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return result;
     }
 
-    public Collection getAssociatedClassifiers(Object aclassifier) {
+    public Collection<Classifier> getAssociatedClassifiers(Object aclassifier) {
         if (!(aclassifier instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "aclassifier must be instance of Classifier"); //$NON-NLS-1$
         }
-        Collection result = new ArrayList();
+        Collection<Classifier> result = new ArrayList<Classifier>();
         for (Association a : ((Classifier) aclassifier).getAssociations()) {
             for (Type t : a.getEndTypes()) {
                 if (t != aclassifier && t instanceof Classifier) {
@@ -665,7 +646,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return result;
     }
 
-    public Object getAssociationEnd(Object type, Object assoc) {
+    public Property getAssociationEnd(Object type, Object assoc) {
         if (!(type instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "type must be instance of Classifier"); //$NON-NLS-1$
@@ -677,18 +658,18 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return ((Association) assoc).getMemberEnd(null, (Classifier) type);
     }
 
-    public Collection getAssociations(Object from, Object to) {
+    public Collection<Association> getAssociations(Object from, Object to) {
         // TODO: The javadoc specifies that null should be returned if 'from' or
         // 'to' are null or if there are no associations between them. We should
         // return an empty collection instead and the javadoc should be changed.
         if (from == null || to == null) {
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
         }
         if (!(from instanceof Classifier) || !(to instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "'from' and 'to' must be instances of Classifier"); //$NON-NLS-1$
         }
-        Collection result = new ArrayList();
+        Collection<Association> result = new ArrayList<Association>();
         for (Association a : ((Classifier) from).getAssociations()) {
             if (((Classifier) to).getAssociations().contains(a)) {
                 result.add(a);
@@ -761,12 +742,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return results;
     }
 
-    public Collection getDependencies(Object supplierObj, Object clientObj) {
+    public Collection<Dependency> getDependencies(Object supplierObj, Object clientObj) {
         if (!(supplierObj instanceof NamedElement) || !(clientObj instanceof NamedElement)) {
             throw new IllegalArgumentException(
                     "supplierObj and clientObj must be instances of NamedElement"); //$NON-NLS-1$
         }
-        Collection result = new ArrayList();
+        Collection<Dependency>  result = new ArrayList<Dependency> ();
         for (Dependency d : ((NamedElement) clientObj).getClientDependencies()) {
             if (d.getSuppliers().contains(supplierObj)) {
                 result.add(d);
@@ -775,7 +756,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return result;
     }
 
-    public Collection getExtendedClassifiers(Object element) {
+    public Collection<Classifier> getExtendedClassifiers(Object element) {
         // TODO: Does CoreHelper#getExtendedClassifiers(Object element) means
         // all parents (direct and indirect) or only the direct parents?
         if (!(element instanceof Classifier)) {
@@ -817,7 +798,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return result;
     }
 
-    public Object getFirstSharedNamespace(Object ns1, Object ns2) {
+    public Namespace getFirstSharedNamespace(Object ns1, Object ns2) {
         if (!(ns1 instanceof Namespace) || !(ns2 instanceof Namespace)) {
             throw new IllegalArgumentException(
                     "ns1 and ns2 must be instances of Namespace"); //$NON-NLS-1$
@@ -848,7 +829,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         throw new NotYetImplementedException();
     }
 
-    public Object getGeneralization(Object achild, Object aparent) {
+    public Generalization getGeneralization(Object achild, Object aparent) {
         if (!(achild instanceof Classifier) 
                 || !(aparent instanceof Classifier)) {
             throw new IllegalArgumentException(
@@ -858,7 +839,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return ((Classifier) achild).getGeneralization((Classifier) aparent);
     }
 
-    public Collection getOperationsInh(Object classifier) {
+    public Collection<Operation> getOperationsInh(Object classifier) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "'classifier' must be instance of Classifier"); //$NON-NLS-1$
@@ -866,7 +847,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return ((Classifier) classifier).getAllOperations();
     }
 
-    public Collection getRealizedInterfaces(Object cls) {
+    public Collection<Interface> getRealizedInterfaces(Object cls) {
         if (!(cls instanceof org.eclipse.uml2.uml.Class)) {
             throw new IllegalArgumentException(
                     "'cls' must be instance of UML2 Class"); //$NON-NLS-1$
@@ -1010,7 +991,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return results;
     }
 
-    public Collection getSupertypes(Object generalizableElement) {
+    public Collection<Classifier> getSupertypes(Object generalizableElement) {
         if (!(generalizableElement instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "'generalizableElement' must be instance of Classifier"); //$NON-NLS-1$
@@ -1342,7 +1323,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         ((Comment) handle).setBody(body);
     }
 
-    @SuppressWarnings("deprecation")
+    @Deprecated
     public void setChangeability(Object handle, Object ck) {
         throw new NotImplementedException();
     }
@@ -1425,7 +1406,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setKind(Object handle, Object kind) {
         // TODO: Needs undo support
-	if( handle instanceof Parameter && kind instanceof ParameterDirectionKind) {
+	if( handle instanceof Parameter 
+	        && kind instanceof ParameterDirectionKind) {
 		((Parameter)handle).setDirection( (ParameterDirectionKind)kind);
 		return;
 	}
@@ -1433,7 +1415,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
 		((Pseudostate)handle).setKind( (PseudostateKind)kind);
 		return;
 	}
-        throw new IllegalArgumentException( "handle: " + handle + " or kind: " + kind);
+        throw new IllegalArgumentException( "handle: " + handle  //$NON-NLS-1$
+                + " or kind: " + kind); //$NON-NLS-1$
     }
 
     public void setLeaf(final Object handle, final boolean isLeaf) {
@@ -1466,30 +1449,26 @@ class CoreHelperEUMLImpl implements CoreHelper {
         if (arg instanceof String) {
             String s = (String) arg;
             int lower = 1, upper = 1;
-            
-            try {
-                if ("*".equals(s.trim())) {
-                    lower = 0;
-                    upper = -1;
-                } else if (s.contains("..")) {
-                    String[] pieces = s.trim().split("\\.\\.");
-                    if (pieces.length > 2) {
-                        throw new IllegalArgumentException((String) arg);
-                    }
-                    lower = Integer.parseInt(pieces[0]);
-                    if ("*".equals(pieces[1])) {
-                        upper = -1;
-                    } else {
-                        upper = Integer.parseInt(pieces[1]);
-                    }
-                } else { 
-                    lower = Integer.parseInt(s);
-                    upper = lower;
+
+            if ("*".equals(s.trim())) { //$NON-NLS-1$
+                lower = 0;
+                upper = -1;
+            } else if (s.contains("..")) { //$NON-NLS-1$
+                String[] pieces = s.trim().split("\\.\\."); //$NON-NLS-1$
+                if (pieces.length > 2) {
+                    throw new IllegalArgumentException((String) arg);
                 }
-            } catch (NumberFormatException e) {
-                // TODO: lower..upper
-                throw new NotYetImplementedException();
+                lower = Integer.parseInt(pieces[0]);
+                if ("*".equals(pieces[1])) { //$NON-NLS-1$
+                    upper = -1;
+                } else {
+                    upper = Integer.parseInt(pieces[1]);
+                }
+            } else { 
+                lower = Integer.parseInt(s);
+                upper = lower;
             }
+            
             final int lower_ = lower, upper_ = upper;
             RunnableClass run = new RunnableClass() {
                 public void run() {
@@ -1714,11 +1693,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         isStatic, feature));
     }
 
+    @Deprecated
     public void setTaggedValue(Object handle, String tag, String value) {
         throw new NotYetImplementedException();
     }
 
-    @SuppressWarnings("deprecation")
+    @Deprecated
     public void setTargetScope(Object handle, Object targetScope) {
         // Don't implement - deprecated method in interface.
         throw new NotImplementedException();
