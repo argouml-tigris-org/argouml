@@ -148,7 +148,7 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
         return getSelectedItem();
     }
 
-    private Collection getApplicableTagDefinitions(Object element) {
+    Collection getApplicableTagDefinitions(Object element) {
         Set<List<String>> paths = new HashSet<List<String>>();
         Set<Object> availableTagDefs = 
             new TreeSet<Object>(new PathComparator());
