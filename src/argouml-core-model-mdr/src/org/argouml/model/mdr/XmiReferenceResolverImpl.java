@@ -425,10 +425,12 @@ class XmiReferenceResolverImpl extends XmiContext {
         if (baseDir.exists() && baseDir.isDirectory()) {
             dirs.add(baseDir);
             File[] files = baseDir.listFiles();
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    dirs.add(file);
-                    dirs.addAll(findAllInternalDirectories(file));
+            if (files != null) { // API says not possible, but it happens
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        dirs.add(file);
+                        dirs.addAll(findAllInternalDirectories(file));
+                    }
                 }
             }
         }
