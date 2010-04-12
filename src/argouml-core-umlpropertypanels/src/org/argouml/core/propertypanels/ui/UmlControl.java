@@ -55,7 +55,8 @@ class UmlControl extends JPanel {
 		final ToolButton tb;
     	if (actions.size() == 1) {
     		tb = new ToolButton(actions.get(0));
-    		tb.setHideActionText(true);
+    		// TODO: Following is only in Java 6 and later
+//    		tb.setHideActionText(true);
     	} else {
             PopupToolBoxButton ptb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
             for (Action action : actions) {
