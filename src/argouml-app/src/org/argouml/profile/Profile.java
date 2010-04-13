@@ -1,13 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2007,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    maurelio1234 - Initial implementation
+ *    Tom Morris
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,17 +39,23 @@
 
 package org.argouml.profile;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.cognitive.Critic;
 
 /**
- * Abstract class representing a Profile. It contains default types and
+ * Abstract class representing an ArgoUML Profile. It contains default types and
  * presentation characteristics that can be tailored to various modeling
  * environments.
+ * <p>
+ * An ArgoUML Profile consists of:<ul>
+ * <li>a UML profile (a special type of UML Model)
+ * <li>a set of ArgoUML Critics
+ * <li>a set of default types for parameters, etc
+ * <li>presentation characteristics for ...
  * 
  * @author maurelio1234
  */
@@ -143,9 +150,21 @@ public abstract class Profile {
      * @throws ProfileException if failed to get profile.
      */
     public Collection getProfilePackages() throws ProfileException {
-        return new ArrayList();
+        return Collections.emptyList();
     }
 
+    /**
+     * Get just those top level profile packages which have been loaded into the
+     * model repository. Primarily for internal use. Applications should use
+     * {@link #getProfilePackages()}.
+     * 
+     * @return collection of top level UML profile packages.
+     * @throws ProfileException if failed to get profile.
+     */
+    public Collection getLoadedPackages() throws ProfileException {
+        return getProfilePackages();
+    }
+    
     /**
      * @return the display name
      */
