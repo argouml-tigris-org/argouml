@@ -39,6 +39,7 @@
 package org.argouml.ui;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import junit.framework.TestCase;
 
@@ -98,7 +99,18 @@ public class TestDetailsPane extends TestCase {
     /**
      * Test setting a target.
      */
-    public void testTargetSet() {
+    public void testTargetSet() throws Exception {
+        // Make sure this test happens on the AWT event thread
+        SwingUtilities.invokeAndWait(new Runnable() {
+            public void run() {
+                intTestTargetSet();
+            }});
+    }
+    
+    /**
+     * Test setting a target.
+     */
+    public void intTestTargetSet() {
         DetailsPane pane = new DetailsPane("South", Horizontal.getInstance());
         for (AbstractArgoJPanel tab : new InitUmlUI().getDetailsTabs()) {
             pane.addTab(tab, false);
