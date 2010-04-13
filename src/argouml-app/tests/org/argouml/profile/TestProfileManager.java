@@ -85,14 +85,6 @@ public class TestProfileManager extends TestCase {
     }
 
     /**
-     * Test the {@link ProfileManager#registerProfile(Profile)} method.
-     */
-    public void testRegisterProfile() {
-        manager.registerProfile(mockProfile);
-        assertTrue(manager.getRegisteredProfiles().contains(mockProfile));
-    }
-    
-    /**
      * Test the {@link ProfileManager#removeProfile(Profile)} method.
      */
     public void testRemoveProfile() {
@@ -132,6 +124,7 @@ public class TestProfileManager extends TestCase {
         assertEquals(initialDefaultProfiles.size(), 
                 manager.getDefaultProfiles().size());
         assertFalse(manager.getDefaultProfiles().contains(mockProfile));
+        manager.removeProfile(mockProfile);
     }
     
     /**

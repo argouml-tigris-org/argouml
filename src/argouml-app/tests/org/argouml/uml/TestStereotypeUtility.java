@@ -53,7 +53,7 @@ public class TestStereotypeUtility extends TestCase {
         if (proj != null) {
             ProjectManager.getManager().removeProject(proj);
         }
-//        ProfileFacade.reset();
+        ProfileFacade.reset();
         super.tearDown();
     }
 

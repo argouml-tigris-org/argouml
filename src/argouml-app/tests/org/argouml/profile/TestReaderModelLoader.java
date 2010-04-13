@@ -47,6 +47,7 @@ import java.util.Collection;
 
 import org.argouml.FileHelper;
 import org.argouml.model.InitializeModel;
+import org.argouml.model.Model;
 
 import junit.framework.TestCase;
 
@@ -84,5 +85,7 @@ public class TestReaderModelLoader extends TestCase {
             loadModel(profileReference);
         assertNotNull(models);
         assertTrue(models.size() >= 1);
+        Model.getUmlFactory().deleteExtent(models.iterator().next());
     }
+    
 }

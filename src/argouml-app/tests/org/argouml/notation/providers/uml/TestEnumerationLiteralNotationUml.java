@@ -45,10 +45,12 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.NotationSettings;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -73,12 +75,24 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
         (new InitProfileSubsystem()).init();
         (new InitNotation()).init();
         (new InitNotationUml()).init();
+        ProjectManager.getManager().setCurrentProject(
+                ProjectManager.getManager().makeEmptyProject());
+       
         Object model =
             Model.getModelManagementFactory().createModel();
         aEnumeration = Model.getCoreFactory().buildEnumeration("", model);
         aLiteral = Model.getCoreFactory().createEnumerationLiteral();
         Model.getCoreHelper().addLiteral(aEnumeration, 0, aLiteral);
         npSettings = new NotationSettings();
+    }
+    
+
+    @Override
+    protected void tearDown() throws Exception {
+        ProjectManager.getManager().removeProject(
+                ProjectManager.getManager().getCurrentProject());
+        ProfileFacade.reset();
+        super.tearDown();
     }
     
     /**
@@ -108,7 +122,7 @@ public class TestEnumerationLiteralNotationUml extends TestCase {
         checkName(aLiteral, "name;<<s2>>nameX", "name");
         checkLiterals(4, 
                 new String[] {"name", "nameX", "name4", "create second one"});
-        checkName(aLiteral, "µôèéà€ü$", "µôèéà€ü$");
+        checkName(aLiteral, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½$", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½$");
         checkName(aLiteral, "name;", "name");
         checkName(aLiteral, " \u00AB stereotype \u00BB name3", "name3");
         checkName(aLiteral, "name;\u00ABstereotype\u00BBname", "name");

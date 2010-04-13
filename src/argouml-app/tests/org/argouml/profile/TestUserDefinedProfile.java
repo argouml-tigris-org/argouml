@@ -83,6 +83,7 @@ public class TestUserDefinedProfile extends TestCase {
 
     @Override
     protected void tearDown() throws Exception {
+        ProfileFacade.reset();
         FileHelper.delete(testDir);
         super.tearDown();
     }
@@ -104,6 +105,7 @@ public class TestUserDefinedProfile extends TestCase {
         Profile profile = new UserDefinedProfile(profileFile,
             ProfileFacade.getManager());
         assertEquals(profileName, profile.getDisplayName());
+        ProfileFacade.getManager().removeProfile(profile);
     }
 
     /**
@@ -135,5 +137,6 @@ public class TestUserDefinedProfile extends TestCase {
         assertEquals(profile.getDisplayName(), "displayName");
         assertTrue(profile.getDependencies().contains(pm.getUMLProfile()));
         assertTrue(profile.getCritics().contains(critic));
+        ProfileFacade.getManager().removeProfile(profile);
     }
 }

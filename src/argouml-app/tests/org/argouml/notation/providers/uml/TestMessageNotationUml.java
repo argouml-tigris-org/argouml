@@ -43,11 +43,13 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.NotationSettings;
 import org.argouml.notation.SDNotationSettings;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -87,7 +89,6 @@ public class TestMessageNotationUml extends TestCase {
     public void setUp() throws Exception {
 	super.setUp();
         InitializeModel.initializeDefault();
-//        new InitProfileSubsystem().init();
         assertTrue("Model subsystem init failed.", Model.isInitiated());
         (new InitProfileSubsystem()).init();
         (new InitNotation()).init();
@@ -96,6 +97,15 @@ public class TestMessageNotationUml extends TestCase {
         npSettings = new SDNotationSettings();
     }
 
+    
+    @Override
+    protected void tearDown() throws Exception {
+        ProjectManager.getManager().removeProject(
+                ProjectManager.getManager().getCurrentProject());
+        ProfileFacade.reset();
+        super.tearDown();
+    }
+    
     private void setupModel1() {
         pack = Model.getModelManagementFactory().buildPackage("p1");
         coll = Model.getCollaborationsFactory().buildCollaboration(pack);

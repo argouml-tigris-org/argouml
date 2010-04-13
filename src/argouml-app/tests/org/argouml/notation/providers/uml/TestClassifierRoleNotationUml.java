@@ -44,8 +44,10 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -80,6 +82,15 @@ public class TestClassifierRoleNotationUml extends TestCase {
 	super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+    }
+    
+
+    @Override
+    protected void tearDown() throws Exception {
+        ProjectManager.getManager().removeProject(
+                ProjectManager.getManager().getCurrentProject());
+        ProfileFacade.reset();
+        super.tearDown();
     }
 
     /**

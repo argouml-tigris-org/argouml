@@ -45,6 +45,7 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -110,11 +111,12 @@ public class TestModelEventPump extends TestCase {
      */
     @Override
     protected void tearDown() throws Exception {
-        super.tearDown();
+        ProfileFacade.reset();
         if (elem != null) {
             Model.getUmlFactory().delete(elem);
         }
         listener = null;
+        super.tearDown();
     }
 
     /**
