@@ -38,7 +38,9 @@
 
 package org.argouml.profile;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.model.InvalidElementException;
 
 /**
  * The <a href="http://en.wikipedia.org/wiki/Facade_pattern">Facade</a> of the 
@@ -50,6 +52,8 @@ import org.argouml.kernel.ProfileConfiguration;
  * @since 0.25.4
  */
 public class ProfileFacade {
+    
+    private static final Logger LOG = Logger.getLogger(ProfileFacade.class);
 
     /**
      * Register a profile in the {@link ProfileManager}.
@@ -89,7 +93,11 @@ public class ProfileFacade {
         manager = profileManager;
     }
 
-    static void reset() {
+    /**
+     * Reset profile subsystem to initial state (primarily for testing).
+     */
+    public static void reset() {
+//        removeAllProfiles();
         manager = null;
     }
 
