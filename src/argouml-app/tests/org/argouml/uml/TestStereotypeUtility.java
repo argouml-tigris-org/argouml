@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import junit.framework.TestCase;
+
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
@@ -26,8 +28,6 @@ import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.ProfileMother;
 import org.argouml.profile.UserDefinedProfile;
 import org.argouml.profile.init.InitProfileSubsystem;
-
-import junit.framework.TestCase;
 
 /**
  * Integration tests for {@link StereotypeUtility} class.
@@ -53,6 +53,7 @@ public class TestStereotypeUtility extends TestCase {
         if (proj != null) {
             ProjectManager.getManager().removeProject(proj);
         }
+        ProfileFacade.reset();
         super.tearDown();
     }
 
@@ -96,6 +97,7 @@ public class TestStereotypeUtility extends TestCase {
             profileStereotype);
         Model.getCoreHelper().addStereotype(aClass, profileStereotype);
         // FIXME: fails here.
+        // The current behavior appears intentional (ie the test is wrong) - tfm
 //        assertNull("The profile stereotype named \""
 //            + ProfileMother.STEREOTYPE_NAME_ST + "\" shouldn't be found.",
 //            findModelElementFromNamespace(
