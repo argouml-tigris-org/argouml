@@ -88,8 +88,6 @@ import org.tigris.gef.presentation.FigTextEditor;
 import org.tigris.swidgets.FlexiGridLayout;
 import org.tigris.toolbar.ToolBar;
 import org.tigris.toolbar.ToolBarFactory;
-import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
-import org.tigris.toolbar.toolbutton.ToolButton;
 
 /**
  * A control for displaying the contents of a list model elements in a panel
