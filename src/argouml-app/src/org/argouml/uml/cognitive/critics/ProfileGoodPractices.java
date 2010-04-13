@@ -52,16 +52,20 @@ import org.argouml.profile.Profile;
  */
 public class ProfileGoodPractices extends Profile {
 
-    private Set<Critic>  critics = new HashSet<Critic>();
+    private Set<Critic>  critics = null;
 
     private CrMissingClassName crMissingClassName = new CrMissingClassName();
-    
+
     /**
      * Default Constructor 
      */
     public ProfileGoodPractices() {
-        
+        super();
+    }
+
+    private void loadCritics() {
         // general
+        critics = new HashSet<Critic>();
         critics.add(new CrEmptyPackage());
         critics.add(new CrNodesOverlap());
         critics.add(new CrZeroLengthEdge());
@@ -85,13 +89,20 @@ public class ProfileGoodPractices extends Profile {
     }
     
     @Override
+    public Set<Critic> getCritics() {
+        if (critics == null ) {
+            loadCritics();
+        }
+        return super.getCritics();
+    }
+    
+    @Override
     public String getDisplayName() {
         return "Critics for Good Practices";
     }
 
-   /*
-    * @see org.argouml.profile.Profile#getProfileIdentifier()
-    */
+
+    @Override
     public String getProfileIdentifier() {
         return "GoodPractices";
     }
