@@ -76,7 +76,7 @@ public class TestProfileFacade extends TestCase {
      */
     public void testGetManagerBeforeInitialisationThrows() {
         manager.getRegisteredProfiles();
-        managerCtrl.setReturnValue(Collections.emptySet());
+        managerCtrl.setReturnValue(Collections.emptyList());
         managerCtrl.replay();
         
         ProfileFacade.reset();
@@ -96,7 +96,7 @@ public class TestProfileFacade extends TestCase {
 
         // Called during teardown
         manager.getRegisteredProfiles();
-        managerCtrl.setReturnValue(Collections.emptySet());
+        managerCtrl.setReturnValue(Collections.emptyList());
 
         managerCtrl.replay();
         
@@ -111,7 +111,7 @@ public class TestProfileFacade extends TestCase {
 
         // Called during teardown
         manager.getRegisteredProfiles();
-        managerCtrl.setReturnValue(Collections.emptySet());
+        managerCtrl.setReturnValue(Collections.emptyList());
 
         managerCtrl.replay();
         
