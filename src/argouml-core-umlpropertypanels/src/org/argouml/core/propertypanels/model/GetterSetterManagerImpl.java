@@ -88,6 +88,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("templateParameter", new TemplateParameterGetterSetter());
         addGetterSetter("reception", new ReceptionGetterSetter());
         addGetterSetter("deferrableEvent", new DeferrableEventGetterSetter());
+        addGetterSetter("entry", new EntryActionGetterSetter());
         
         // UML2 only
         addGetterSetter("ownedOperation", new FeatureGetterSetter());
@@ -1030,6 +1031,32 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         public Object getMetaType() {
             return Model.getMetaTypes().getParameter();
+        }
+    }
+    
+    private class EntryActionGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, String type) {
+        	final ArrayList list = new ArrayList(1);
+        	list.add(Model.getFacade().getEntry(modelElement));
+            return list;
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getAction();
         }
     }
     

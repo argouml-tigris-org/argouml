@@ -549,25 +549,35 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for an CallState to contain
         validContainmentMap.put(CallState.class, 
                 new Class<?>[] { 
+                    CallAction.class,
                     CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
                 });
         
         // specifies valid elements for an SimpleState to contain
         validContainmentMap.put(SimpleState.class, 
                 new Class<?>[] { 
+                    CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
                     CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
                 });
         
         // specifies valid elements for an SubactivityState to contain
         validContainmentMap.put(SubactivityState.class, 
                 new Class<?>[] { 
+                    CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
                     CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
                 });
         
         // specifies valid elements for an ActionState to contain
         validContainmentMap.put(ActionState.class, 
                 new Class<?>[] { 
+                    CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
                     CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                });
+        
+        // specifies valid elements for an ActionState to contain
+        validContainmentMap.put(CompositeState.class, 
+                new Class<?>[] { 
+                    CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class
                 });
         
     }
@@ -795,28 +805,28 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             element = Model.getStateMachinesFactory().buildGuard(container);
         } else if (elementType == metaTypes.getCreateAction()) {
             element = Model.getCommonBehaviorFactory().createCreateAction();
-            ((Transition) container).setEffect((Action) element);
+            setNewAction(container, (Action) element);
         } else if (elementType == metaTypes.getCallAction()) {
             element = Model.getCommonBehaviorFactory().createCallAction();
-            ((Transition) container).setEffect((Action) element);
+            setNewAction(container, (Action) element);
         } else if (elementType == metaTypes.getReturnAction()) {
             element = Model.getCommonBehaviorFactory().createReturnAction();
-            ((Transition) container).setEffect((Action) element);
+            setNewAction(container, (Action) element);
         } else if (elementType == metaTypes.getDestroyAction()) {
             element = Model.getCommonBehaviorFactory().createDestroyAction();
-            ((Transition) container).setEffect((Action) element);
+            setNewAction(container, (Action) element);
         } else if (elementType == metaTypes.getSendAction()) {
             element = Model.getCommonBehaviorFactory().createSendAction();
-            ((Transition) container).setEffect((Action) element);
+            setNewAction(container, (Action) element);
         } else if (elementType == metaTypes.getTerminateAction()) {
             element = Model.getCommonBehaviorFactory().createTerminateAction();
-            ((Transition) container).setEffect((Action) element);
+            setNewAction(container, (Action) element);
         } else if (elementType == metaTypes.getUninterpretedAction()) {
             element = Model.getCommonBehaviorFactory().createUninterpretedAction();
-            ((Transition) container).setEffect((Action) element);
+            setNewAction(container, (Action) element);
         } else if (elementType == metaTypes.getActionSequence()) {
             element = Model.getCommonBehaviorFactory().createActionSequence();
-            ((Transition) container).setEffect((Action) element);
+            setNewAction(container, (Action) element);
         } else if (elementType == metaTypes.getCallEvent()) {
             element = Model.getStateMachinesFactory().createCallEvent();
             if (container instanceof Transition) {
@@ -859,6 +869,14 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         
         return element;
+    }
+    
+    private void setNewAction(Object container, Action action) {
+        if (container instanceof Transition) {
+            ((Transition) container).setEffect((Action) action);
+        } else {
+            ((State) container).setEntry((Action) action);
+        }
     }
     
     /**

@@ -101,10 +101,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLStateDoActivityListModel(modelElement);
             JList l = new UMLStateDoActivityList((UMLModelElementListModel) model);
             list = new OldScrollList(l);
-        } else if ("entry".equals(propName)) {
-            model = new UMLStateEntryListModel(modelElement);
-            JList l = new UMLStateEntryList((UMLModelElementListModel) model);
-            list = new OldScrollList(l);
         } else if ("exit".equals(propName)) {
             model = new UMLStateExitListModel(modelElement);
             JList l = new UMLStateExitList((UMLModelElementListModel) model);
