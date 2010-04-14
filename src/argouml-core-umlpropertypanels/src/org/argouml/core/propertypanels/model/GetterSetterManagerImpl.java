@@ -87,6 +87,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("elementImport", new ElementImportGetterSetter());
         addGetterSetter("templateParameter", new TemplateParameterGetterSetter());
         addGetterSetter("reception", new ReceptionGetterSetter());
+        addGetterSetter("deferrableEvent", new DeferrableEventGetterSetter());
         
         // UML2 only
         addGetterSetter("ownedOperation", new FeatureGetterSetter());
@@ -1157,6 +1158,116 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	    }
     	}
     }
+    
+    private class DeferrableEventGetterSetter extends ListGetterSetter implements Addable, Removeable {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            return Model.getFacade().getDeferrableEvents(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+        
+        public boolean isFullBuildOnly() {
+        	return false;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getEvent();
+        }
+        
+        public Command getAddCommand(Object modelElement) {
+        	return new AddCommand(modelElement);
+        }
+        
+        public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
+        	return new RemoveCommand(modelElement, objectToRemove);
+        }
+        
+        private class AddCommand extends AddModelElementCommand {
+
+            /**
+             * Constructor for ActionAddPackageImport.
+             */
+            public AddCommand(Object target) {
+                super(target);
+            }
+
+
+            protected List getChoices() {
+                List list = new ArrayList();
+                list.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
+                        Model.getFacade().getRoot(getTarget()),
+                        Model.getMetaTypes().getEvent()));
+                return list;
+            }
+
+
+            protected List getSelected() {
+                List list = new ArrayList();
+                list.addAll(Model.getFacade().getDeferrableEvents(getTarget()));
+                return list;
+            }
+
+
+            protected String getDialogTitle() {
+                return Translator.localize("dialog.title.add-events");
+            }
+
+
+            @Override
+            protected void doIt(Collection selected) {
+                Object state = getTarget();
+                assert (Model.getFacade().isAState(state));
+                
+                Collection oldOnes = new ArrayList(Model.getFacade()
+                        .getDeferrableEvents(state));
+                Collection toBeRemoved = new ArrayList(oldOnes);
+                for (Object o : selected) {
+                    if (oldOnes.contains(o)) {
+                        toBeRemoved.remove(o);
+                    } else {
+                        Model.getStateMachinesHelper().addDeferrableEvent(state, o);
+                    }
+                }
+                for (Object o : toBeRemoved) {
+                    Model.getStateMachinesHelper().removeDeferrableEvent(state, o);
+                }
+            }
+        }
+        
+        private class RemoveCommand extends NonUndoableCommand {
+        	
+        	private final Object target;
+        	private final Object objectToRemove;
+        	
+    	    public RemoveCommand(final Object target, final Object objectToRemove) {
+    	        this.target = target;
+    	        this.objectToRemove = objectToRemove;
+    	    }
+    	    
+    	    /*
+    	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    	     */
+    	    public Object execute() {
+    	        Model.getStateMachinesHelper()
+    	            .removeDeferrableEvent(target, objectToRemove);
+    	        return null;
+    	    }
+    	}
+    }
+    
+    
     
     private class ReceptionGetterSetter extends ListGetterSetter implements Addable, Removeable {
         

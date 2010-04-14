@@ -93,10 +93,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLPartitionContentListModel(modelElement);
         } else if ("context".equals(propName)) {
             model = new UMLSignalContextListModel(modelElement);
-        } else if ("deferrableEvent".equals(propName)) {
-            model = new UMLStateDeferrableEventListModel(modelElement);
-            JList l = new UMLStateDeferrableEventList((UMLModelElementListModel) model);
-            list = new OldScrollList(l);                    
         } else if ("definedTag".equals(propName)) {
             model = new UMLStereotypeTagDefinitionListModel(modelElement);
         } else if ("deployedComponent".equals(propName)) {

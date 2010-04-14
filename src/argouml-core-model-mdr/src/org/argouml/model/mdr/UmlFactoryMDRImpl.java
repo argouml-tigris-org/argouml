@@ -539,6 +539,37 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                     Parameter.class,
                     TemplateParameter.class
                 });
+        
+        // specifies valid elements for an State to contain
+        validContainmentMap.put(State.class, 
+                new Class<?>[] { 
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                });
+        
+        // specifies valid elements for an CallState to contain
+        validContainmentMap.put(CallState.class, 
+                new Class<?>[] { 
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                });
+        
+        // specifies valid elements for an SimpleState to contain
+        validContainmentMap.put(SimpleState.class, 
+                new Class<?>[] { 
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                });
+        
+        // specifies valid elements for an SubactivityState to contain
+        validContainmentMap.put(SubactivityState.class, 
+                new Class<?>[] { 
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                });
+        
+        // specifies valid elements for an ActionState to contain
+        validContainmentMap.put(ActionState.class, 
+                new Class<?>[] { 
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                });
+        
     }
     
     public Object buildConnection(Object elementType, Object fromElement,
@@ -788,16 +819,32 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             ((Transition) container).setEffect((Action) element);
         } else if (elementType == metaTypes.getCallEvent()) {
             element = Model.getStateMachinesFactory().createCallEvent();
-            setNewTrigger((Transition) container, (Event) element);
+            if (container instanceof Transition) {
+                setNewTrigger((Transition) container, (Event) element);
+            } else if (container instanceof State) {
+                setNewDeferrableEvent((State) container, (Event) element);
+            }
         } else if (elementType == metaTypes.getChangeEvent()) {
             element = Model.getStateMachinesFactory().createChangeEvent();
-            setNewTrigger((Transition) container, (Event) element);
+            if (container instanceof Transition) {
+                setNewTrigger((Transition) container, (Event) element);
+            } else if (container instanceof State) {
+                setNewDeferrableEvent((State) container, (Event) element);
+            }
         } else if (elementType == metaTypes.getSignalEvent()) {
             element = Model.getStateMachinesFactory().createSignalEvent();
-            setNewTrigger((Transition) container, (Event) element);
+            if (container instanceof Transition) {
+                setNewTrigger((Transition) container, (Event) element);
+            } else if (container instanceof State) {
+                setNewDeferrableEvent((State) container, (Event) element);
+            }
         } else if (elementType == metaTypes.getTimeEvent()) {
             element = Model.getStateMachinesFactory().createTimeEvent();
-            setNewTrigger((Transition) container, (Event) element);
+            if (container instanceof Transition) {
+                setNewTrigger((Transition) container, (Event) element);
+            } else if (container instanceof State) {
+                setNewDeferrableEvent((State) container, (Event) element);
+            }
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);
@@ -825,6 +872,22 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         final StateMachine statemachine = transition.getStateMachine();
         final Namespace namespace = statemachine.getNamespace();
         event.setNamespace(namespace);
+    }
+    
+    /**
+     * Add a newly created event to a trigger
+     * @param transition
+     * @param event
+     */
+    private void setNewDeferrableEvent(final State state, final Event event) {
+        ((State) state).getDeferrableEvent().add((Event) event);
+        event.setName("");
+        Object parent = state;
+        do {
+            parent = ((RefObject) parent).refImmediateComposite();
+        } while (!(parent instanceof Namespace));
+        
+        event.setNamespace((Namespace) parent);
     }
     
     public boolean isConnectionType(Object connectionType) {

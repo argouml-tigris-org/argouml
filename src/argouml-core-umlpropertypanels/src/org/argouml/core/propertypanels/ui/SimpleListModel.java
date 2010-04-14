@@ -68,7 +68,7 @@ class SimpleListModel
         super();
         this.getterSetterManager = getterSetterManager;
         this.type = type;
-        metaTypes = new ArrayList(2);
+        metaTypes = new ArrayList(4);
         try {
             final StringTokenizer st = new StringTokenizer(type, ",");
             while (st.hasMoreTokens()) {
@@ -106,6 +106,10 @@ class SimpleListModel
     }
     
     public List getMetaTypes() {
+    	if (propertyName.equals("deferrableEvent")) {
+    		int x = 0;
+    		x=5;
+    	}
         return metaTypes;
     }
     
