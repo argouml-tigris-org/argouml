@@ -38,7 +38,17 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.Action;
+
+import org.apache.log4j.Logger;
+import org.argouml.core.propertypanels.ui.UMLStateExitListModel.ActionCreateContainedExitAction;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -46,7 +56,21 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author jaap.branderhorst@xs4all.nl
  */
 class UMLStateDoActivityListModel extends UMLModelElementListModel {
+	
+	private static final Logger LOG = Logger.getLogger(UMLStateExitListModel.class);
 
+    private final Object[] metaTypes = new Object[] {
+            Model.getMetaTypes().getCallAction(),
+            Model.getMetaTypes().getCreateAction(),
+            Model.getMetaTypes().getDestroyAction(),
+            Model.getMetaTypes().getReturnAction(),
+            Model.getMetaTypes().getSendAction(),
+            Model.getMetaTypes().getTerminateAction(),
+            Model.getMetaTypes().getUninterpretedAction(),
+            Model.getMetaTypes().getActionSequence()
+        };
+    	
+	
     /**
      * Constructor for UMLStateDoActivityListModel.
      */
@@ -71,5 +95,89 @@ class UMLStateDoActivityListModel extends UMLModelElementListModel {
         return element == Model.getFacade().getDoActivity(getTarget());
     }
 
+    public List<Action> getNewActions() {
+    	ArrayList<Action> newActions = new ArrayList<Action>();
+    	for (Object meta : metaTypes) {
+            final String label =
+                "button.new-" + Model.getMetaTypes().getName(meta).toLowerCase();
+            final Action createAction = new ActionCreateContainedExitAction(
+                    meta,
+                    getTarget(),
+                    label);
+            newActions.add(createAction);
+    	}
+    	return newActions;
+    }
+    
+    
+    /**
+     * An action to create a model element to be contained by the 
+     * target model element.
+     *
+     * @author Scott Roberts
+     */
+    public class ActionCreateContainedExitAction
+                extends AbstractActionNewModelElement {
 
+        private Object metaType; 
+
+        /**
+         * Construct the action.
+         * 
+         * @param theMetaType the element to be created
+         * @param target the container that will own the new element
+         */
+        public ActionCreateContainedExitAction(
+                Object theMetaType, 
+                Object target) {
+            this(theMetaType, target,
+                    "button.new-"
+                    + Model.getMetaTypes().getName(theMetaType).toLowerCase());
+        }
+        
+        
+        /**
+         * Construct the action.
+         * 
+         * @param theMetaType the element to be created
+         * @param target the container that will own the new element
+         * @param menuDescr the description for the menu item label.
+         */
+        public ActionCreateContainedExitAction(
+                Object theMetaType, 
+                Object target,
+                String menuDescr) {
+            super(menuDescr);
+            
+            metaType = theMetaType;
+            
+            setTarget(target);
+        }
+
+        public void actionPerformed(ActionEvent e) {            
+            Object t = getTarget();
+            Object action = null;
+            if (Model.getMetaTypes().getCallAction() == metaType) {
+                action = Model.getCommonBehaviorFactory().createCallAction();
+            } else if (Model.getMetaTypes().getCreateAction() == metaType) {
+                action = Model.getCommonBehaviorFactory().createCreateAction();
+            } else if (Model.getMetaTypes().getReturnAction() == metaType) {
+                action = Model.getCommonBehaviorFactory().createReturnAction();
+            } else if (Model.getMetaTypes().getDestroyAction() == metaType) {
+                action = Model.getCommonBehaviorFactory().createDestroyAction();
+            } else if (Model.getMetaTypes().getSendAction() == metaType) {
+                action = Model.getCommonBehaviorFactory().createSendAction();
+            } else if (Model.getMetaTypes().getTerminateAction() == metaType) {
+                action = Model.getCommonBehaviorFactory().createTerminateAction();
+            } else if (Model.getMetaTypes().getUninterpretedAction() == metaType) {
+                action = Model.getCommonBehaviorFactory().createUninterpretedAction();
+            } else if (Model.getMetaTypes().getActionSequence() == metaType) {
+                action = Model.getCommonBehaviorFactory().createActionSequence();
+            } else {
+            	throw new IllegalStateException(metaType + " not recognised as an Action");
+            }
+            Model.getStateMachinesHelper().setDoActivity(t, action);
+            TargetManager.getInstance().setTarget(action);
+        }
+    }
 }

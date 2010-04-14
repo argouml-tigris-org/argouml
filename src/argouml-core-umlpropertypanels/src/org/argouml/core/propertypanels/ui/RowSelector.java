@@ -251,13 +251,16 @@ class RowSelector extends JPanel
         Object metaType = null;
         List metaTypes = null;
         final Action addAction;
-
+        List<Action> newActions = null;
+        
         if (model instanceof UMLModelElementListModel) {
             // Temporary until SimpleListModel is used for all
             target = ((UMLModelElementListModel) model).getTarget();
             metaType = ((UMLModelElementListModel) model).getMetaType();
             scroll = new OldScrollList(model, 1);
             readonly = Model.getModelManagementHelper().isReadOnly(target);
+            metaTypes = null;
+            newActions = ((UMLModelElementListModel) model).getNewActions();
         } else if (model instanceof org.argouml.core.propertypanels.ui.SimpleListModel) {
             target = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getUmlElement();
             metaType = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaType();
@@ -335,6 +338,11 @@ class RowSelector extends JPanel
                         actions.add(createAction);
                     }
                 }
+                
+                if (newActions != null) {
+                    actions.addAll(newActions);
+                }
+                
                 if (!actions.isEmpty()) {
                     PopupToolBoxButton tb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
                     for (Action action : actions) {
