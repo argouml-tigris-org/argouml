@@ -284,6 +284,9 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
             InstanceEvent ie = (InstanceEvent) mdrEvent;
             events.add(new DeleteInstanceEvent(ie.getSource(),
                     "remove", null, null, mdrEvent));
+            // Clean up index entries
+            String mofid = ((InstanceEvent)mdrEvent).getInstance().refMofId();
+            modelImpl.removeElement(mofid);
         } else if (mdrEvent instanceof AssociationEvent) {
             AssociationEvent ae = (AssociationEvent) mdrEvent;
             if (ae.isOfType(AssociationEvent.EVENT_ASSOCIATION_ADD)) {

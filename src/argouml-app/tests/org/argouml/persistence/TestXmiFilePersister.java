@@ -156,7 +156,6 @@ public class TestXmiFilePersister extends TestCase {
         
         persister = new XmiFilePersister();
         project = persister.doLoad(file);
-        ProjectManager.getManager().setCurrentProject(project);
         
         Object attType = checkFoo(project.findType("Foo", false));
 
