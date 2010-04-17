@@ -1476,6 +1476,14 @@ class CoreHelperEUMLImpl implements CoreHelper {
             final int lower_ = lower, upper_ = upper;
             RunnableClass run = new RunnableClass() {
                 public void run() {
+                    // TODO: We currently delete the old values before setting
+                    // to something new. This is a workaround to issue 6056.
+                    // We should consider giving an API to get the lower and
+                    // upper values so that controls can listen directly to
+                    // those rather than the element containing those values.
+                    ((MultiplicityElement) handle).setLowerValue(null);
+                    ((MultiplicityElement) handle).setUpperValue(null);
+                    //
                     ((MultiplicityElement) handle).setLower(lower_);
                     ((MultiplicityElement) handle).setUpper(upper_);
                 }
