@@ -52,11 +52,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.swidgets.FlexiGridLayout;
+import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
+import org.tigris.toolbar.toolbutton.ToolButton;
 
 /**
  * This class implements a panel that adds a navigation button to the right of
@@ -65,7 +68,7 @@ import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
  * @author Curt Arnold
  * @since 0.9
  */
-public class UMLComboBoxNavigator extends JPanel implements ActionListener,
+public class UMLComboBoxNavigator extends UmlControl implements ActionListener,
         ItemListener {
 
     private static ImageIcon icon = ResourceLoaderWrapper
@@ -101,14 +104,26 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener,
         if (model instanceof UMLComboBoxModel) {
             final List<Action> actions = ((UMLComboBoxModel) model).getActions();
             if (!actions.isEmpty()) {
-                PopupToolBoxButton tb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
-                for (Action action : actions) {
-                    tb.add(action);
-                }
-                JPanel buttonPanel =
-                    new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
-                buttonPanel.add(tb);
+                final JPanel buttonPanel =
+                	createSingleButtonPanel(actions);
+//                    new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
+//        		final ToolButton tb;
+//            	if (actions.size() == 1) {
+//            		tb = new ToolButton(actions.get(0));
+//            	} else {
+//                    PopupToolBoxButton ptb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
+//                    for (Action action : actions) {
+//                        ptb.add(action);
+//                    }
+//                    tb = ptb;
+//            	}
+//                final ToolBarFactory tbf = new ToolBarFactory(new Object[] {});
+//                JToolBar toolbar = tbf.createToolBar();
+//                toolbar.setRollover(true);
+//        		toolbar.add(tb);
+//                buttonPanel.add(toolbar);
                 add(buttonPanel, BorderLayout.WEST);
+                
             }
         }
         Object item = theComboBox.getSelectedItem();

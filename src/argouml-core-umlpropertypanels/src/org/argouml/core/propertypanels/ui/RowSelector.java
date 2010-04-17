@@ -89,6 +89,7 @@ import org.tigris.swidgets.FlexiGridLayout;
 import org.tigris.toolbar.ToolBar;
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
+import org.tigris.toolbar.toolbutton.ToolButton;
 
 /**
  * A control for displaying the contents of a list model elements in a panel
@@ -98,7 +99,7 @@ import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
  * @author Bob Tarling
  * @since 0.29.2
  */
-class RowSelector extends JPanel
+class RowSelector extends UmlControl
         implements MouseListener, ListDataListener, ListSelectionListener {
 
     /**
@@ -358,13 +359,25 @@ class RowSelector extends JPanel
                 }
                 
                 if (!actions.isEmpty()) {
-                    PopupToolBoxButton tb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
-                    for (Action action : actions) {
-                        tb.add(action);
-                    }
-                    JPanel buttonPanel =
-                        new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
-                    buttonPanel.add(tb);
+                    final JPanel buttonPanel =
+                    	createSingleButtonPanel(actions);
+                    	
+//                        new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
+//            		final ToolButton tb;
+//                	if (actions.size() == 1) {
+//                		tb = new ToolButton(actions.get(0));
+//                	} else {
+//                        PopupToolBoxButton ptb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
+//                        for (Action action : actions) {
+//                            ptb.add(action);
+//                        }
+//                        tb = ptb;
+//                	}
+//                    final ToolBarFactory tbf = new ToolBarFactory(new Object[] {});
+//                    JToolBar toolbar = tbf.createToolBar();
+//                    toolbar.setRollover(true);
+//            		toolbar.add(tb);
+//                    buttonPanel.add(toolbar);
                     add(buttonPanel, BorderLayout.WEST);
                 }
             }
