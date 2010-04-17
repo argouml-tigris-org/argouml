@@ -40,7 +40,6 @@ package org.argouml.core.propertypanels.ui;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
-import javax.swing.JList;
 
 import org.argouml.core.propertypanels.model.GetterSetterManager;
 
@@ -130,10 +129,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLAssociationEndSpecificationListModel(modelElement);
         } else if ("submachineState".equals(propName)) {
             model = new UMLStateMachineSubmachineStateListModel(modelElement);
-        } else if ("subvertex".equals(propName)) {
-            model = new UMLCompositeStateSubvertexListModel(modelElement);
-            JList l = new UMLCompositeStateSubvertexList((UMLModelElementListModel) model);
-            list = new OldScrollList(l);
         } else if ("supplier".equals(propName)) {
             model = new UMLDependencySupplierListModel(modelElement);
         } else if ("supplierDependency".equals(propName)) {

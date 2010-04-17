@@ -20,14 +20,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.core.propertypanels.meta.IconIdentifiable;
+import org.argouml.core.propertypanels.meta.Named;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Command;
 import org.argouml.kernel.NonUndoableCommand;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.util.ArgoFrame;
 
@@ -90,6 +95,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("deferrableEvent", new DeferrableEventGetterSetter());
         addGetterSetter("entry", new EntryActionGetterSetter());
         addGetterSetter("action", new ActionGetterSetter());
+        addGetterSetter("subvertex", new SubvertexGetterSetter());
         
         // UML2 only
         addGetterSetter("ownedOperation", new FeatureGetterSetter());
@@ -191,6 +197,15 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof Addable) {
             return ((Addable) bgs).getAddCommand(umlElement);
+        }
+		return null;
+	}
+
+	@Override
+	public List<Command> getAdditionalCommands(String propertyName, Object umlElement) {
+        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        if (bgs instanceof ListGetterSetter) {
+            return ((ListGetterSetter) bgs).getAdditionalCommands(umlElement);
         }
 		return null;
 	}
@@ -1082,6 +1097,114 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         public Object getMetaType() {
             return Model.getMetaTypes().getAction();
+        }
+    }
+
+    private class SubvertexGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            return Model.getFacade().getSubvertices(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getState();
+        }
+        
+        /**
+         * Returns additional commands that cannot be deduced from the panel
+         * xml or other means. This is currently only used by
+         * SubvertexGetterSetter and should be removed as soon as we have some
+         * configurable way to replace.
+         */
+        public List<Command> getAdditionalCommands(Object modelElement) {
+        	final List<Command> commands = new ArrayList<Command>(6);
+        	commands.add(new NewPseudoStateCommand(
+        			modelElement, Model.getPseudostateKind().getFork()));
+        	commands.add(new NewPseudoStateCommand(
+        			modelElement, Model.getPseudostateKind().getJoin()));
+        	commands.add(new NewPseudoStateCommand(
+        			modelElement, Model.getPseudostateKind().getChoice()));
+        	commands.add(new NewPseudoStateCommand(
+        			modelElement, Model.getPseudostateKind().getDeepHistory()));
+        	commands.add(new NewPseudoStateCommand(
+        			modelElement, Model.getPseudostateKind().getShallowHistory()));
+        	commands.add(new NewPseudoStateCommand(
+        			modelElement, Model.getPseudostateKind().getInitial()));
+        	commands.add(new NewPseudoStateCommand(
+        			modelElement, Model.getPseudostateKind().getJunction()));
+        	return commands;
+        }
+        
+        private class NewPseudoStateCommand extends NonUndoableCommand implements IconIdentifiable, Named {
+
+        	private final String label;
+        	private final Object kind;
+        	private final Icon icon;
+        	private final Object target;
+        	
+        	/**
+        	 * A Command to create a new pseudostate inside some target model
+        	 * element.
+        	 * @param target the target model element the pseudo state should
+        	 * belong to
+        	 * @param kind the required kind of pseudostate
+        	 */
+        	NewPseudoStateCommand(Object target, Object kind) {
+        		this.target = target;
+        		this.kind = kind;
+                if (kind == Model.getPseudostateKind().getFork()) {
+                    label = Translator.localize("label.pseudostate.fork");
+                } else if (kind == Model.getPseudostateKind().getJoin()) {
+                    label = Translator.localize("label.pseudostate.join");
+                } else if (kind == Model.getPseudostateKind().getChoice()) {
+                	label = Translator.localize("label.pseudostate.choice");
+                } else if (kind == Model.getPseudostateKind().getDeepHistory()) {
+                	label = Translator.localize("label.pseudostate.deephistory");
+                } else if (kind == Model.getPseudostateKind().getShallowHistory()) {
+                	label = Translator.localize("label.pseudostate.shallowhistory");
+                } else if (kind == Model.getPseudostateKind().getInitial()) {
+                	label = Translator.localize("label.pseudostate.initial");
+                } else if (kind == Model.getPseudostateKind().getJunction()) {
+                	label = Translator.localize("label.pseudostate.junction");
+                } else {
+                	throw new IllegalArgumentException(
+                			kind + " is not a known PseudostateKind");
+                }
+                icon = ResourceLoaderWrapper.lookupIcon(
+                		Model.getFacade().getName(kind));
+            }
+        	
+			@Override
+			public Object execute() {
+                final Object ps =
+                    Model.getStateMachinesFactory().buildPseudoState(target);
+                if (kind != null) {
+                    Model.getCoreHelper().setKind(ps, kind);
+                }                	
+                TargetManager.getInstance().setTarget(ps);
+				return null;
+			}
+        	
+			public Icon getIcon() {
+				return icon;
+			}
+        	
+			public String getName() {
+				return label;
+			}
         }
     }
     

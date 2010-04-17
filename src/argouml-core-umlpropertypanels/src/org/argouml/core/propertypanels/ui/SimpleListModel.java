@@ -117,6 +117,10 @@ class SimpleListModel
     	return getterSetterManager.getAddCommand(propertyName, umlElement);
     }
     
+    public List<Command> getAdditionalCommands() {
+    	return getterSetterManager.getAdditionalCommands(propertyName, umlElement);
+    }
+    
     /*
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
