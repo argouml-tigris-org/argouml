@@ -254,7 +254,7 @@ class RowSelector extends JPanel
         List metaTypes = null;
         final Action addAction;
         List<Action> newActions = null;
-        List<Command> additionalCommands = null;
+        List<Command> additionalNewCommands = null;
         
         if (model instanceof UMLModelElementListModel) {
             // Temporary until SimpleListModel is used for all
@@ -268,7 +268,7 @@ class RowSelector extends JPanel
             target = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getUmlElement();
             metaType = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaType();
             metaTypes = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaTypes();
-            additionalCommands = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getAdditionalCommands();
+            additionalNewCommands = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getAdditionalCommands();
             scroll = new ScrollListImpl(model, 1);
             readonly = Model.getModelManagementHelper().isReadOnly(target);
         } else {
@@ -347,8 +347,8 @@ class RowSelector extends JPanel
                     actions.addAll(newActions);
                 }
                 
-                if (additionalCommands != null && !additionalCommands.isEmpty()) {
-                	for (Command cmd : additionalCommands) {
+                if (additionalNewCommands != null && !additionalNewCommands.isEmpty()) {
+                	for (Command cmd : additionalNewCommands) {
                 		if (cmd instanceof IconIdentifiable && cmd instanceof Named) {
                             actions.add(new CommandAction(cmd, ((Named)cmd).getName(), ((IconIdentifiable)cmd).getIcon()));
                 		} else {
@@ -373,7 +373,7 @@ class RowSelector extends JPanel
         	// TODO: Lets build this into a separate buildToolbar method
         		
                 // Create actions and expander if we have multiple rows
-                final ArrayList<Action> actions = new ArrayList<Action>(6);
+                final ArrayList actions = new ArrayList(6);
                 
                 // Create add and remove buttons if needed first
                 if (addAction != null) {
@@ -388,6 +388,7 @@ class RowSelector extends JPanel
                 }
 
                 // then any new buttons
+                List<Action> createActions = new ArrayList<Action>();
                 for (Object meta : metaTypes) {
                     if (Model.getUmlFactory().isContainmentValid(meta, target)) {
                         final String label =
@@ -396,36 +397,46 @@ class RowSelector extends JPanel
                                 meta,
                                 target,
                                 label);
-                        actions.add(createAction);
+                        createActions.add(createAction);
                     }
                 }
 
-                if (additionalCommands != null && !additionalCommands.isEmpty()) {
-                	for (Command cmd : additionalCommands) {
+                if (additionalNewCommands != null && !additionalNewCommands.isEmpty()) {
+                	for (Command cmd : additionalNewCommands) {
                 		if (cmd instanceof IconIdentifiable && cmd instanceof Named) {
-                            actions.add(new CommandAction(cmd, ((Named)cmd).getName(), ((IconIdentifiable)cmd).getIcon()));
+                            createActions.add(new CommandAction(cmd, ((Named)cmd).getName(), ((IconIdentifiable)cmd).getIcon()));
                 		} else {
-                            actions.add(new CommandAction(cmd));
+                			createActions.add(new CommandAction(cmd));
                 		}
                 	}
                 }
                 
+                if (createActions.size() > 2) {
+                	actions.add(createActions.toArray());
+                } else {
+                    actions.addAll(createActions);
+                }
+                
+                List<Action> navigateActions = new ArrayList<Action>();
                 if (Model.getUmlHelper().isMovable(metaType)) {
                     moveUpAction = new MoveUpAction();
                     moveDownAction = new MoveDownAction();
                     moveTopAction = new MoveTopAction();
                     moveBottomAction = new MoveBottomAction();
-                    actions.add(moveUpAction);
-                    actions.add(moveDownAction);
-                    actions.add(moveTopAction);
-                    actions.add(moveBottomAction);
+                    navigateActions.add(moveUpAction);
+                    navigateActions.add(moveDownAction);
+                    navigateActions.add(moveTopAction);
+                    navigateActions.add(moveBottomAction);
                 } else {
                     moveUpAction = null;
                     moveDownAction = null;
                     moveTopAction = null;
                     moveBottomAction = null;
                 }
+                actions.addAll(navigateActions);
 
+                Object[] actionsArray = actions.toArray();
+                
                 final ToolBarFactory tbf = new ToolBarFactory(actions);
                 toolbar = tbf.createToolBar();
                 toolbar.setRollover(true);
