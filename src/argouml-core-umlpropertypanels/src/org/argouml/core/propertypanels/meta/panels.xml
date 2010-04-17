@@ -1966,8 +1966,7 @@
   </panel>
   <panel name="ActionSequence">
     <text name="name" type="Name" />
-    <list name="action" type="Action" />
-    
+    <list name="action" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" />
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
