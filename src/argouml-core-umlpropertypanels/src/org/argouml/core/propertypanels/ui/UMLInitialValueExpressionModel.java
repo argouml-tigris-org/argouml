@@ -49,14 +49,8 @@ import org.argouml.model.Model;
 class UMLInitialValueExpressionModel
     extends UMLExpressionModel {
 
-
-
     public UMLInitialValueExpressionModel(Object target) {
         super(target, "initialValue");
-        if (!Model.getFacade().isAAttribute(target)) {
-            throw new IllegalArgumentException(
-                    "The target must be an attribute we got a " + target.getClass().getName());
-        }
     }
 
     /**
