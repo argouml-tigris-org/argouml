@@ -563,13 +563,22 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for an SimpleState to contain
         validContainmentMap.put(SimpleState.class, 
                 new Class<?>[] { 
+                    Transition.class,
                     CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
                     CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                });
+        
+        // specifies valid elements for an SimpleState to contain
+        validContainmentMap.put(FinalState.class, 
+                new Class<?>[] { 
+                    Transition.class,
+                    CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class
                 });
         
         // specifies valid elements for an SubactivityState to contain
         validContainmentMap.put(SubactivityState.class, 
                 new Class<?>[] { 
+                    Transition.class,
                     CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
                     CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
                 });
@@ -584,6 +593,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for an ActionState to contain
         validContainmentMap.put(CompositeState.class, 
                 new Class<?>[] {
+                    Transition.class,
                     Pseudostate.class, SynchState.class, StubState.class, CompositeState.class, SimpleState.class, FinalState.class, SubmachineState.class,
                     CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class
                 });
@@ -879,6 +889,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             element = Model.getStateMachinesFactory().buildFinalState(container);
         } else if (elementType == metaTypes.getSubmachineState() && container instanceof CompositeState) {
             element = Model.getStateMachinesFactory().buildSubmachineState(container);
+        } else if (elementType == metaTypes.getTransition() && container instanceof State) {
+            element = Model.getStateMachinesFactory().buildInternalTransition(container);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);

@@ -2746,7 +2746,7 @@
     <separator />
     <attribute name="exit" type="Action" />
     <list name="deferrableEvent" type="org.omg.uml.behavioralelements.statemachines.CallEvent,org.omg.uml.behavioralelements.statemachines.ChangeEvent,org.omg.uml.behavioralelements.statemachines.SignalEvent,org.omg.uml.behavioralelements.statemachines.TimeEvent" label="label.deferrable" />
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
+    <list name="internalTransition" type="org.omg.uml.behavioralelements.statemachines.Transition" label="label.internal-transitions" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
     <list name="classifierInState" type="State" label="label.instate" />
@@ -2897,7 +2897,7 @@
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
+    <list name="internalTransition" type="org.omg.uml.behavioralelements.statemachines.Transition" label="label.internal-transitions" />
 	<separator />
     <list name="subvertex" type="org.omg.uml.behavioralelements.statemachines.SynchState,org.omg.uml.behavioralelements.statemachines.StubState,org.omg.uml.behavioralelements.statemachines.CompositeState,org.omg.uml.behavioralelements.statemachines.SimpleState,org.omg.uml.behavioralelements.statemachines.FinalState,org.omg.uml.behavioralelements.statemachines.SubmachineState" />
     <debug />
@@ -3035,7 +3035,7 @@
     <singlerow name="doActivity" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" label="label.do-activity" />
     <separator />
     <list name="deferrableEvent" type="org.omg.uml.behavioralelements.statemachines.CallEvent,org.omg.uml.behavioralelements.statemachines.ChangeEvent,org.omg.uml.behavioralelements.statemachines.SignalEvent,org.omg.uml.behavioralelements.statemachines.TimeEvent" label="label.deferrable" />
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
+    <list name="internalTransition" type="org.omg.uml.behavioralelements.statemachines.Transition" label="label.internal-transitions" />
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />    
@@ -3077,7 +3077,7 @@
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />    
+    <list name="internalTransition" type="org.omg.uml.behavioralelements.statemachines.Transition" label="label.internal-transitions" />
     <separator />    
     <list name="subvertex" type="org.omg.uml.behavioralelements.statemachines.SynchState,org.omg.uml.behavioralelements.statemachines.StubState,org.omg.uml.behavioralelements.statemachines.CompositeState,org.omg.uml.behavioralelements.statemachines.SimpleState,org.omg.uml.behavioralelements.statemachines.FinalState,org.omg.uml.behavioralelements.statemachines.SubmachineState" />
     
@@ -3180,10 +3180,10 @@
     <text name="name" type="Name" />
     <singlerow name="container" type="CompositeState" />
     <singlerow name="entry" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" />
-    <list name="doActivity" type="Action" label="label.do-activity" />
+    <singlerow name="doActivity" type="org.omg.uml.behavioralelements.commonbehavior.CallAction,org.omg.uml.behavioralelements.commonbehavior.CreateAction,org.omg.uml.behavioralelements.commonbehavior.DestroyAction,org.omg.uml.behavioralelements.commonbehavior.ReturnAction,org.omg.uml.behavioralelements.commonbehavior.SendAction,org.omg.uml.behavioralelements.commonbehavior.TerminateAction,org.omg.uml.behavioralelements.commonbehavior.UninterpretedAction,org.omg.uml.behavioralelements.commonbehavior.ActionSequence" label="label.do-activity" />
     <separator />
     <list name="incoming" type="Transition" />
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
+    <list name="internalTransition" type="org.omg.uml.behavioralelements.statemachines.Transition" label="label.internal-transitions" />
   
   	<debug />
     <attribute name="outgoing" type="Transition" />    
@@ -3617,7 +3617,7 @@
     <separator />
     <attribute name="exit" type="Action" />
     <list name="deferrableEvent" type="org.omg.uml.behavioralelements.statemachines.CallEvent,org.omg.uml.behavioralelements.statemachines.ChangeEvent,org.omg.uml.behavioralelements.statemachines.SignalEvent,org.omg.uml.behavioralelements.statemachines.TimeEvent" label="label.deferrable" />
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
+    <list name="internalTransition" type="org.omg.uml.behavioralelements.statemachines.Transition" label="label.internal-transitions" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
     <list name="classifierInState" type="State" label="label.classifier-in-state" />

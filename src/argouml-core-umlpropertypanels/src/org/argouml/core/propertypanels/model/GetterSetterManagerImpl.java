@@ -96,6 +96,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("entry", new EntryActionGetterSetter());
         addGetterSetter("action", new ActionGetterSetter());
         addGetterSetter("subvertex", new SubvertexGetterSetter());
+        addGetterSetter("internalTransition", new InternalTransitionGetterSetter());
         
         // UML2 only
         addGetterSetter("ownedOperation", new FeatureGetterSetter());
@@ -1719,6 +1720,30 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         public Object getMetaType() {
             return Model.getMetaTypes().getAttribute();
+        }
+    }
+    private class InternalTransitionGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            return Model.getFacade().getInternalTransitions(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, String type) {
+          
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getTransition();
         }
     }
 }

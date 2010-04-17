@@ -105,8 +105,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLStateVertexIncomingListModel(modelElement);
         } else if ("instantiation".equals(propName)) {
             model = new UMLCreateActionClassifierListModel(modelElement);
-        } else if ("internalTransition".equals(propName)) {
-            model = new UMLStateInternalTransitionListModel(modelElement);
         } else if ("link".equals(propName)) {
             model = new UMLAssociationLinkListModel(modelElement);
         } else if ("literal".equals(propName)) {
