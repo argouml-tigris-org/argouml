@@ -1,12 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2007-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Marcos Aur�lio - Design and initial implementation
  *    thn
  *    euluis
  *****************************************************************************
@@ -344,17 +345,16 @@ public class SettingsTabProfile extends JPanel implements
                 .getModel());
 
         if (arg0.getSource() == addButton) {
-            if (availableList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelAvl
-                        .getElementAt(availableList.getSelectedIndex());
+            Object[] selections = availableList.getSelectedValues();
+            for (Object s : selections) {
+                Profile selected = (Profile) s;
                 modelUsd.addElement(selected);
                 modelAvl.removeElement(selected);
             }
         } else if (arg0.getSource() == removeButton) {
-            if (defaultList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelUsd.getElementAt(defaultList
-                        .getSelectedIndex());
-                
+            Object[] selections = defaultList.getSelectedValues();
+            for (Object s : selections) {
+                Profile selected = (Profile) s;
                 if (selected == ProfileFacade.getManager().getUMLProfile()
                         && Model.getFacade().getUmlVersion().charAt(0) != '1') {
                     JOptionPane.showMessageDialog(this, Translator
@@ -392,10 +392,9 @@ public class SettingsTabProfile extends JPanel implements
         } else if (arg0.getSource() == removeDirectory) {
             MutableComboBoxModel model = 
                 ((MutableComboBoxModel) directoryList.getModel()); 
-            int[] indices = directoryList.getSelectedIndices(); 
-            for (int i = indices.length-1; i >=0; i--) {
-                int idx = indices[i];
-                model.removeElementAt(idx);
+            Object[] selections = directoryList.getSelectedValues();
+            for (Object o : selections) {
+                model.removeElement(o);
             }
         } else if (arg0.getSource() == refreshProfiles) {
             boolean refresh = JOptionPane.showConfirmDialog(this, Translator
