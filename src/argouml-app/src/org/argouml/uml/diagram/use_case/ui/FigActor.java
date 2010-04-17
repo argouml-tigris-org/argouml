@@ -287,10 +287,14 @@ public class FigActor extends FigNodeModelElement {
                           ((FigLine) getFigAt(LEFT_LEG_POSN)).getY2()));
         ret.add(new Point(((FigLine) getFigAt(RIGHT_LEG_POSN)).getX2(),
                           ((FigLine) getFigAt(RIGHT_LEG_POSN)).getY2()));
+        ret.add(new Point(((FigLine) getFigAt(RIGHT_LEG_POSN)).getX2(),
+                          ((FigLine) getFigAt(RIGHT_LEG_POSN)).getY2() + getNameFig().getHeight()));
         ret.add(new Point(((FigLine) getFigAt(ARMS_POSN)).getX1(),
                           ((FigLine) getFigAt(ARMS_POSN)).getY1()));
         ret.add(new Point(((FigLine) getFigAt(ARMS_POSN)).getX2(),
                           ((FigLine) getFigAt(ARMS_POSN)).getY2()));
+        ret.add(new Point(((FigLine) getFigAt(LEFT_LEG_POSN)).getX2(),
+                          ((FigLine) getFigAt(LEFT_LEG_POSN)).getY2() + getNameFig().getHeight()));
         return ret;
     }
 
