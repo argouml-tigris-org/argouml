@@ -16,6 +16,7 @@
 package org.argouml.model.euml;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -627,6 +628,11 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             throw new InvalidElementException(
                     element != null ? element.toString() : "Null" ); //$NON-NLS-1$
         }
+    }
+
+    public Collection getExtentPackages(String extentName) {
+        // TODO: Auto-generated method stub
+        return null;
     }
 
 }

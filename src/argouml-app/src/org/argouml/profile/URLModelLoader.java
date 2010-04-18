@@ -58,10 +58,15 @@ import org.xml.sax.InputSource;
 public class URLModelLoader implements ProfileModelLoader {
 
     /**
+     * Load a profile from a URL.  If a profile with the same public ID has 
+     * already been loaded, its contents are returned instead of loading the
+     * new profile.
+     * 
      * @param url the url/system id to load
      * @param publicId the publicId for which the model will be known - must be
      *                equal in different machines in order to be possible to
-     *                load the model.
+     *                load the model.  If a profile with this public ID has 
+     *                already been loaded, it is returned instead.
      * @return a collection of top level elements in the profile (usually a
      *         single package stereotyped <<profile>>
      * @throws ProfileException if the XMIReader couldn't read the profile
@@ -71,29 +76,33 @@ public class URLModelLoader implements ProfileModelLoader {
         if (url == null) {
             throw new ProfileException("Null profile URL");
         }
-        ZipInputStream zis = null;
-        try {
-            Collection elements = null;
-            XmiReader xmiReader = Model.getXmiReader();
-            if (url.getPath().toLowerCase().endsWith(".zip")) {
-                zis = new ZipInputStream(url.openStream());
-                ZipEntry entry = zis.getNextEntry();
-                // TODO: check if it's OK to just get the first zip entry
-                // since the zip file should contain only one xmi file - thn
-                if (entry != null) {
-                    url = makeZipEntryUrl(url, entry.getName());
+        
+        Collection elements = 
+            Model.getUmlFactory().getExtentPackages(publicId.toExternalForm());
+        if (elements == null) {
+            ZipInputStream zis = null;
+            try {
+                XmiReader xmiReader = Model.getXmiReader();
+                if (url.getPath().toLowerCase().endsWith(".zip")) {
+                    zis = new ZipInputStream(url.openStream());
+                    ZipEntry entry = zis.getNextEntry();
+                    // TODO: check if it's OK to just get the first zip entry
+                    // since the zip file should contain only one xmi file - thn
+                    if (entry != null) {
+                        url = makeZipEntryUrl(url, entry.getName());
+                    }
+                    zis.close();
                 }
-                zis.close();
+                InputSource inputSource = new InputSource(url.toExternalForm());
+                inputSource.setPublicId(publicId.toString());
+                elements = xmiReader.parse(inputSource, true);
+            } catch (UmlException e) {
+                throw new ProfileException("Error loading profile XMI file ", e);
+            } catch (IOException e) {
+                throw new ProfileException("I/O error loading profile XMI ", e);
             }
-            InputSource inputSource = new InputSource(url.toExternalForm());
-            inputSource.setPublicId(publicId.toString());
-            elements = xmiReader.parse(inputSource, true);
-            return elements;
-        } catch (UmlException e) {
-            throw new ProfileException("Error loading profile XMI file ", e);
-        } catch (IOException e) {
-            throw new ProfileException("I/O error loading profile XMI ", e);
         }
+        return elements;
     }
 
     /**

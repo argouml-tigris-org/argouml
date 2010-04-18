@@ -348,6 +348,10 @@ public class MDRModelImplementation implements ModelImplementation {
         return Collections.unmodifiableSet(extents.keySet());
     }
     
+    public UmlPackage getExtent(String name) {
+        return (UmlPackage) repository.getExtent(name);
+    }
+    
     boolean isReadOnly(Object extent) {
         synchronized (extents) {
             Extent result = extents.get(extent);
