@@ -974,7 +974,7 @@ public final class ProjectBrowser
      * If a save is required then prompt the user if they wish to,
      * save and exit, exit without saving or cancel the exit operation.
      */
-    public void tryExit() {
+    public boolean tryExit() {
         LOG.info("Trying to exit the application");
         if (saveAction != null && saveAction.isEnabled()) {
             LOG.info("A save is needed - prompting the user");
@@ -997,14 +997,15 @@ public final class ProjectBrowser
                         && ProjectManager.getManager().getCurrentProject()
                                 .getURI() != null,
                                 false, true);
-                return;
+                return false;
             } else if (response == JOptionPane.CANCEL_OPTION) {
                 LOG.info("The user cancelled the save dialog");
-                return;
+                return false;
             }
         }
         LOG.info("We will now exit");
         exit();
+        return true;
     }
     
     
