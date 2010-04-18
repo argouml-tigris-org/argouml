@@ -40,6 +40,8 @@
 package org.argouml.model.mdr;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
@@ -97,8 +99,9 @@ public class TestReadCompressedFilesAndHref extends
         LOG.info("Begin " + testName + "()");
         XmiReaderImpl reader = new XmiReaderImpl(modelImplementation);
         if (profilesPath != null) {
-            String file = getClass().getResource(profilesPath).getFile();
-            reader.addSearchPath(file);
+            String path = getClass().getResource(profilesPath).getPath();
+            File file = new File(path);
+            setProfilePathSubdirs(reader, file);
         }
         try {
             InputSource inputSource = new InputSource(
@@ -110,5 +113,26 @@ public class TestReadCompressedFilesAndHref extends
             fail("Exception while loading model: " + e.getMessage());
         }
         assertTrue(modelPath + " model is loaded", true);
+    }
+    
+    private void setProfilePathSubdirs(XmiReaderImpl reader, File directory) {
+        Collection<File> dirs = new ArrayList<File>();
+        collectSubdirs(directory, dirs);
+
+        for (File dir : dirs) {
+            reader.addSearchPath(dir.getAbsolutePath());
+        }
+    }
+    
+    private void collectSubdirs(File file, Collection<File> subdirs) {
+        subdirs.add(file);
+        File[] files = file.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isDirectory() & !f.isHidden()) {
+                    collectSubdirs(f, subdirs);
+                }
+            }
+        }
     }
 }

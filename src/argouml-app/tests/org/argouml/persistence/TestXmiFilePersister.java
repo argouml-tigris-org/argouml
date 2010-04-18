@@ -49,6 +49,7 @@ import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.model.XmiReferenceException;
 import org.argouml.profile.ProfileFacade;
+import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
  * Testclass for the XMIReader. Placeholder for all saving/loading tests
@@ -75,11 +76,14 @@ public class TestXmiFilePersister extends TestCase {
         if (!Model.isInitiated()) {
             InitializeModel.initializeMDR();
         }
-//        new InitProfileSubsystem().init();
-        // TODO: Why is this necessary? - tfm
-        // Always force reinitialization of Profile subsystem
-        ProfileFacade.setManager(
-                new org.argouml.profile.internal.ProfileManagerImpl());
+        new InitProfileSubsystem().init();
+    }
+    
+
+    @Override
+    protected void tearDown() throws Exception {
+        ProfileFacade.reset();
+        super.tearDown();
     }
 
     /**
@@ -152,7 +156,6 @@ public class TestXmiFilePersister extends TestCase {
         
         persister = new XmiFilePersister();
         project = persister.doLoad(file);
-        ProjectManager.getManager().setCurrentProject(project);
         
         Object attType = checkFoo(project.findType("Foo", false));
 
@@ -178,6 +181,7 @@ public class TestXmiFilePersister extends TestCase {
      * @throws Exception if loading project fails
      */
     public void testLoadProject() throws Exception {
+        testSave(); // Create file
         File file = new File("test.xmi");
 
         XmiFilePersister persister = new XmiFilePersister();

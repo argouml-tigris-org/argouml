@@ -38,6 +38,7 @@
 
 package org.argouml.model;
 
+import java.util.Collection;
 
 /**
  * The interface for the UmlFactory.
@@ -174,4 +175,14 @@ public interface UmlFactory {
      */
     boolean isRemoved(Object o);
 
+    /**
+     * Get the top level packages (typically just a single Model) for the given
+     * extent if it is loaded. Returns null if the extent doesn't exist and an
+     * empty collection if it exists, but contains no packages.
+     * 
+     * @param extentName the extent name (typically the public ID or URL of the
+     *            file which is used for references)
+     * @return a collection of packages if the extent exists, otherwise null
+     */
+    Collection getExtentPackages(String extentName);
 }

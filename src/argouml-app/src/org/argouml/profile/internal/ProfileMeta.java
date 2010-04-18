@@ -1,12 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2008,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    maas - Initial implementation
  *    tfmorris
  *****************************************************************************
  *
@@ -41,9 +42,11 @@ package org.argouml.profile.internal;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
@@ -64,9 +67,14 @@ import org.argouml.profile.internal.ocl.InvalidOclException;
  */
 public class ProfileMeta extends Profile {
 
+    private static final Logger LOG = Logger.getLogger(ProfileMeta.class);
+    
     private static final String PROFILE_FILE = "metaprofile.xmi";
-
-    private Collection model;
+    private ProfileReference profileReference = null;
+    
+    private Collection model = null;
+    
+    Set<Critic> critics = null;
 
     /**
      * Creates a new instance of this profile
@@ -75,26 +83,34 @@ public class ProfileMeta extends Profile {
      */
     @SuppressWarnings("unchecked")
     public ProfileMeta() throws ProfileException {
-        ProfileModelLoader profileModelLoader = new ResourceModelLoader();
-        ProfileReference profileReference = null;
+        super();
         try {
             profileReference = new CoreProfileReference(PROFILE_FILE);
         } catch (MalformedURLException e) {
             throw new ProfileException(
                     "Exception while creating profile reference.", e);
         }
-        model = profileModelLoader.loadModel(profileReference);
+    }
 
+    private Collection getModel() {
         if (model == null) {
-            model = new ArrayList();
-            model.add(Model.getModelManagementFactory().createModel());
-        }
+            ProfileModelLoader profileModelLoader = new ResourceModelLoader();
+            try {
+                model = profileModelLoader.loadModel(profileReference);
+            } catch (ProfileException e) {
+                LOG.error("Exception loading metaprofile " + PROFILE_FILE, e);
+            }
 
-        loadWellFormednessRules();
+            if (model == null) {
+                model = new ArrayList();
+                model.add(Model.getModelManagementFactory().createModel());
+            }
+        }
+        return model;
     }
 
     private void loadWellFormednessRules() {
-        Set<Critic> critics = new HashSet<Critic>();
+        critics = new HashSet<Critic>();
                 
         try {
             critics.add(new CrOCL("context ModelElement inv: "
@@ -158,7 +174,25 @@ public class ProfileMeta extends Profile {
 
     @Override
     public Collection getProfilePackages() throws ProfileException {
-        return model;
+        return Collections.unmodifiableCollection(getModel());
     }
 
+
+    @Override
+    public Collection<Object> getLoadedPackages() {
+        if (model == null) {
+            return Collections.emptyList();
+        } else {
+            return Collections.unmodifiableCollection(model);
+        }
+    }
+    
+    @Override
+    public Set<Critic> getCritics() {
+        if (critics == null) {
+            loadWellFormednessRules();
+        }
+        return super.getCritics();
+    }
+    
 }

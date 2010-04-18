@@ -104,7 +104,7 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     
     public Collection<Stereotype> getStereotypes(Object ns) {
         if (!(ns instanceof Namespace)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("A namespace was expected we got " + ns);
         }
         
         List<Stereotype> l = new ArrayList<Stereotype>();

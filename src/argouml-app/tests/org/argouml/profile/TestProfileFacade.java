@@ -38,9 +38,11 @@
 
 package org.argouml.profile;
 
-import org.easymock.MockControl;
+import java.util.Collections;
 
 import junit.framework.TestCase;
+
+import org.easymock.MockControl;
 
 /**
  *
@@ -65,6 +67,7 @@ public class TestProfileFacade extends TestCase {
     @Override
     protected void tearDown() throws Exception {
         ProfileFacade.reset();
+        managerCtrl.verify();
         super.tearDown();
     }
 
@@ -72,6 +75,10 @@ public class TestProfileFacade extends TestCase {
      * Test {@link ProfileFacade#getManager()} before initialization.
      */
     public void testGetManagerBeforeInitialisationThrows() {
+        manager.getRegisteredProfiles();
+        managerCtrl.setReturnValue(Collections.emptyList());
+        managerCtrl.replay();
+        
         ProfileFacade.reset();
         try {
             ProfileFacade.getManager();
@@ -86,10 +93,14 @@ public class TestProfileFacade extends TestCase {
      */
     public void testRegister() {
         manager.registerProfile(null);
+
+        // Called during teardown
+        manager.getRegisteredProfiles();
+        managerCtrl.setReturnValue(Collections.emptyList());
+
         managerCtrl.replay();
         
         ProfileFacade.register(null);
-        managerCtrl.verify();
     }
 
     /**
@@ -97,9 +108,13 @@ public class TestProfileFacade extends TestCase {
      */
     public void testRemove() {
         manager.removeProfile(null);
+
+        // Called during teardown
+        manager.getRegisteredProfiles();
+        managerCtrl.setReturnValue(Collections.emptyList());
+
         managerCtrl.replay();
         
         ProfileFacade.remove((Profile) null);
-        managerCtrl.verify();
     }
 }

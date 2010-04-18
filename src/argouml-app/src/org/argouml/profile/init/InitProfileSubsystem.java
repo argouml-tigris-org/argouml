@@ -60,6 +60,7 @@ public class InitProfileSubsystem {
 //            ProfileFacade.setManager(
 //                    new org.argouml.profile.internal.ProfileManagerImpl());
 //        }
+        ProfileFacade.reset();
         ProfileFacade.setManager(
                 new org.argouml.profile.internal.ProfileManagerImpl());
 

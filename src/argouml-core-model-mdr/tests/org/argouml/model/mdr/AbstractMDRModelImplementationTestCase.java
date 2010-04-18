@@ -82,8 +82,9 @@ public abstract class AbstractMDRModelImplementationTestCase extends TestCase {
     
     protected void setUp() throws Exception {
         super.setUp();
-        if (!initialized)
+        if (!initialized) {
             init();
+        }
     }
 
 }

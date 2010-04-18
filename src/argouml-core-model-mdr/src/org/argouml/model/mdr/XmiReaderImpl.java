@@ -1,12 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2005,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Bob Tarling
+ *    Tom Morris
  *    euluis
  *****************************************************************************
  *
@@ -45,7 +47,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -147,9 +148,9 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         
         Collection<RefObject> newElements = Collections.emptyList();
 
-        String extentBase = inputSource.getSystemId();
+        String extentBase = inputSource.getPublicId();
         if (extentBase == null) {
-            extentBase = inputSource.getPublicId();
+            extentBase = inputSource.getSystemId();
         }
         if (extentBase == null) {
             extentBase = MDRModelImplementation.MODEL_EXTENT_NAME;
@@ -177,11 +178,29 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
             config.setUnknownElementsListener(this);
             config.setUnknownElementsIgnored(true);
 
+            String pId = inputSource.getPublicId();
+            String sId = modelImpl.getPublic2SystemIds().get(pId);
+            if (sId != null) {
+                if (sId.equals(inputSource.getSystemId())) {
+                    LOG.info("Attempt to reread profile - ignoring - "
+                            + "publicId = \"" + pId + "\";  systemId = \""
+                            + sId + "\".");
+                    return Collections.emptySet();
+                } else {
+                    throw new UmlException("Profile with the duplicate publicId "
+                            + "is being loaded! publicId = \"" + pId
+                            + "\"; existing systemId = \""
+                            + modelImpl.getPublic2SystemIds().get(pId)
+                            + "\"; new systemId = \"" + sId + "\".");
+                }
+            }
             resolver = new XmiReferenceResolverImpl(new RefPackage[] {extent},
                     config, modelImpl.getObjectToId(), 
-                    modelImpl.getPublic2SystemIds(), modelImpl.getSearchPath(), 
+                    modelImpl.getPublic2SystemIds(), modelImpl.getIdToObject(), 
+                    modelImpl.getSearchPath(), 
                     readOnly, 
-                    inputSource.getPublicId(), inputSource.getSystemId());
+                    inputSource.getPublicId(), inputSource.getSystemId(),
+                    modelImpl);
             config.setReferenceResolver(resolver);
             config.setHeaderConsumer(this);
             
@@ -221,9 +240,16 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
 
             try {
                 String systemId = inputSource.getSystemId();
-                File file = copySource(inputSource);
-                systemId = file.toURI().toURL().toExternalForm();
-                inputSource = new InputSource(systemId);
+                // If we've got a streaming input, copy it to make sure we'll
+                // be able to rewind it if necessary
+                if (inputSource.getByteStream() != null
+                        || inputSource.getCharacterStream() != null) {
+                    File file = copySource(inputSource);
+                    systemId = file.toURI().toURL().toExternalForm();
+                    String publicId = inputSource.getPublicId();
+                    inputSource = new InputSource(systemId);
+                    inputSource.setPublicId(publicId);                    
+                }
                 MDRepository repository = modelImpl.getRepository();
                 
                 // Use a transaction to avoid the performance penalty (3x) of 
@@ -321,19 +347,6 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         return newElements;
     }
 
-    
-    private void deleteElements(Collection<RefObject> elements) {
-        Collection<RefObject> toDelete = new ArrayList<RefObject>(elements);
-        for (RefObject refObject : toDelete) {
-            try {
-                refObject.refDelete();
-            } catch (InvalidObjectException e) {
-                // Just continue.  We tried to delete something 
-                // twice, probably because it was contained in 
-                // another element that we already deleted.
-            }
-        }
-    }
 
     private Collection<RefObject> convertAndLoadUml13(String systemId,
             RefPackage extent, XMIReader xmiReader, InputSource input)
@@ -350,6 +363,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         // InputSource xformedInput = chainedTransform(transformFiles, pIs);
         InputSource xformedInput = serialTransform(transformFiles,
                 input);
+        xformedInput.setPublicId(input.getPublicId());
         return xmiReader.read(xformedInput.getByteStream(), xformedInput
                 .getSystemId(), extent);
     }
@@ -475,6 +489,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 myInput =
                     new SAXSource(new InputSource(new FileInputStream(
                         tmpOutFile)));
+                myInput.setSystemId(tmpOutFile.toURI().toURL().toExternalForm());
             }
             return myInput.getInputSource();
         } catch (IOException e) {

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    euluis
+ *    Tom Morris
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -60,12 +61,10 @@ import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiWriter;
-import org.argouml.profile.CoreProfileReference;
 import org.argouml.profile.FileModelLoader;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
-import org.argouml.profile.ProfileModelLoader;
-import org.argouml.profile.ResourceModelLoader;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.UserProfileReference;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.profile.internal.ProfileUML;
@@ -86,6 +85,12 @@ public class TestProfileConfigurationFilePersister extends TestCase {
         new InitProfileSubsystem().init();
     }
 
+    @Override
+    protected void tearDown() throws Exception {
+        ProfileFacade.reset();
+        super.tearDown();
+    }
+    
     /**
      * Tests whether XmiWriterMDRImpl fails to write a profile 
      * (i.e., the file will contain no model) previously loaded from a file.
@@ -101,10 +106,8 @@ public class TestProfileConfigurationFilePersister extends TestCase {
         throws ProfileException, FileNotFoundException, IOException, 
         UmlException {
         
-        ProfileModelLoader loader = new ResourceModelLoader();
-        Collection models = loader.loadModel(
-                new CoreProfileReference("default-uml14.xmi"));
-        Object umlModel = models.iterator().next();
+        Object umlModel = ProfileFacade.getManager().getUMLProfile()
+                .getProfilePackages().iterator().next();
         final String umlModelName = Model.getFacade().getName(umlModel);
         assertNotNull(umlModelName);
         File tempFile = File.createTempFile(umlModelName, ".xmi");

@@ -302,7 +302,7 @@ public class ProfileManagerImpl implements ProfileManager {
             defaultProfiles.remove(p);
         }
         try {
-            Collection packages = p.getProfilePackages();
+            Collection packages = p.getLoadedPackages();
             if (packages != null && !packages.isEmpty()) {
                 // We assume profile is contained in a single extent
                 Model.getUmlFactory().deleteExtent(packages.iterator().next());

@@ -1,0 +1,23 @@
+#
+# add -Dlog4j.configuration=org/argouml/resource/full_console.lcf
+# to the command line to use this log4j configuration
+#
+log4j.rootCategory=WARN, FULL
+#
+log4j.category.org.argouml=DEBUG
+log4j.category.org.argouml.application.security=INFO
+log4j.category.org.argouml.cognitive=WARN
+log4j.category.org.argouml.uml.cognitive=WARN
+# Model events
+log4j.category.org.argouml.model.mdr=DEBUG
+# Populating stereotype compartment
+log4j.category.org.argouml.uml.diagram.ui=INFO
+# Ignore HREF that's already set
+log4j.category.org.argouml.persistence.PGMLStackParser=INFO
+# Starting interaction
+log4j.category.org.argouml.kernel.DefaultUndoManager=INFO
+#
+log4j.appender.FULL=org.apache.log4j.ConsoleAppender
+log4j.appender.FULL.layout=org.apache.log4j.PatternLayout
+log4j.appender.FULL.layout.ConversionPattern=%r %5p [%t] %m (%F:%L)%n
+log4j.appender.FULL.Threshold=DEBUG

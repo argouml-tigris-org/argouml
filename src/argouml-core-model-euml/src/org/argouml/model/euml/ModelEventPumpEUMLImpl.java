@@ -1,42 +1,14 @@
-/* $Id$
- *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+// $Id$
+/*******************************************************************************
+ * Copyright (c) 2007,2010 Bogdan Pistol and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
- *****************************************************************************
- *
- * Some portions of this file was previously release using the BSD License:
- */
-
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the project or its contributors may be used 
-//       to endorse or promote products derived from this software without
-//       specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
-// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+ *    Bogdan Pistol - initial implementation
+ *******************************************************************************/
 package org.argouml.model.euml;
 
 import java.beans.PropertyChangeEvent;
@@ -57,7 +29,6 @@ import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
-import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.Notification;
@@ -76,6 +47,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     /**
      * A list of model elements that when removed should not create delete
      * events. See issue 
+
      */
     final private List<Property> deleteEventIgnoreList =
         new ArrayList<Property>();
@@ -325,10 +297,6 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                 + " New: " + newValue //$NON-NLS-1$
                 + " From: " + notification.getNotifier()); //$NON-NLS-1$
         
-        if (featureName.equals("navigableOwnedEnd")) { //$NON-NLS-1$
-            featureName = "navigableOwnedEnd"; //$NON-NLS-1$
-        }
-        
         class EventAndListeners {
             public EventAndListeners(PropertyChangeEvent e,
                     List<PropertyChangeListener> l) {
@@ -452,11 +420,12 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     }
     
     /**
-     * Determine of we should create a delete event for the given property
+     * Determine if we should create a delete event for the given property
      * when EMF tells us it has been removed. This is currently used to
      * work around the problem discussed in issue 5853.
+     * 
      * @param element
-     * @return
+     * @return true if 
      */
     private boolean isDeleteEventRequired(
             final Object element) {
@@ -471,6 +440,12 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         return true;
     }
     
+    /**
+     * Add Element to list which will cause the next delete event to
+     * be ignored.
+     * 
+     * @param property
+     */
     void addElementForDeleteEventIgnore(Property property) {
         synchronized (deleteEventIgnoreList) {
             deleteEventIgnoreList.add(property);

@@ -52,7 +52,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.CustomSeparator;
 import org.argouml.util.MyTokenizer;

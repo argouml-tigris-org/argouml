@@ -1,13 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2007,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    maurelio1234 - initial implementation
+ *    Tom Morris
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,7 +39,9 @@
 
 package org.argouml.profile;
 
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.model.InvalidElementException;
 
 /**
  * The <a href="http://en.wikipedia.org/wiki/Facade_pattern">Facade</a> of the 
@@ -50,6 +53,8 @@ import org.argouml.kernel.ProfileConfiguration;
  * @since 0.25.4
  */
 public class ProfileFacade {
+    
+    private static final Logger LOG = Logger.getLogger(ProfileFacade.class);
 
     /**
      * Register a profile in the {@link ProfileManager}.
@@ -89,7 +94,28 @@ public class ProfileFacade {
         manager = profileManager;
     }
 
-    static void reset() {
+    /**
+     * Remove all registered profiles.
+     */
+    static void removeAllProfiles() {
+        if (manager != null) {
+            Profile[] profiles = manager.getRegisteredProfiles().toArray(
+                    new Profile[0]);
+            for (Profile p : profiles) {
+                try {
+                    manager.removeProfile(p);
+                } catch (InvalidElementException e) {
+                    LOG.debug("Attempted to delete extent twice in removeAllProfiles " + p);
+                }
+            }
+        }
+    }
+    
+    /**
+     * Reset profile subsystem to initial state (primarily for testing).
+     */
+    public static void reset() {
+        removeAllProfiles();
         manager = null;
     }
 

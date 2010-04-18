@@ -43,18 +43,23 @@ import java.util.Collection;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
- * 
- * @author euluis
+ * Automated integration tests that guarantee that the default profiles work.
+ * @author Luis Sergio Oliveira (euluis)
  * @since 0.20
- * @version 0.00
  */
 public class TestProfileDefault extends TestCase {
+
+    private Project proj;
 
     /**
      * The constructor.
@@ -75,18 +80,31 @@ public class TestProfileDefault extends TestCase {
         new InitProfileSubsystem().init();
     }
 
+    @Override
+    protected void tearDown() throws Exception {
+        if (proj != null) {
+            ProjectManager.getManager().removeProject(proj);
+        }
+        super.tearDown();
+    }
     /**
      * Test whether we can load default profile.
+     * @throws ProfileException if {@link Profile} operations throw.
      */
-    public void testLoadProfileModel() {
-        // TODO: This depends on the profile configuration of the user running
-        // the test.  It needs to be made independent of that.
-        ProfileConfiguration config = ProjectManager.getManager()
-                .getCurrentProject().getProfileConfiguration();
+    public void testLoadProfileModel() throws ProfileException {
+        proj = ProjectManager.getManager().makeEmptyProject();
+        ProfileConfiguration config = proj.getProfileConfiguration();
         assertNotNull("Can't load profile configuration", config);
+        Profile umlProfile = ProfileFacade.getManager().getUMLProfile();
+        assertNotNull(umlProfile);
+        assertTrue(!umlProfile.getProfilePackages().isEmpty());
+        Object model = proj.getUserDefinedModelList().iterator().next();
+        if (!config.getProfiles().contains(umlProfile)) {
+            config.addProfile(umlProfile, model);
+        }
         Collection stereos = config.findAllStereotypesForModelElement(Model
-                .getCoreFactory().createClass());
+            .getCoreFactory().createClass());
         assertTrue("No stereotypes found in default profiles", 
-                stereos.size() > 0);
+            stereos.size() > 0);
     }
 }

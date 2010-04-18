@@ -47,6 +47,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -89,6 +90,15 @@ public class TestStateBodyNotationUml extends TestCase {
             Model.getStateMachinesFactory().buildCompositeState(top);
     }
 
+
+    @Override
+    protected void tearDown() throws Exception {
+        ProjectManager.getManager().removeProject(
+                ProjectManager.getManager().getCurrentProject());
+        ProfileFacade.reset();
+        super.tearDown();
+    }
+    
     /**
      * Test the parseStateBody() method: succesful creation.
      */

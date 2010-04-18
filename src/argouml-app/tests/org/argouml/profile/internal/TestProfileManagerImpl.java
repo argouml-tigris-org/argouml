@@ -47,7 +47,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Vector;
 
 import junit.framework.TestCase;
 
@@ -55,6 +54,7 @@ import org.argouml.model.InitializeModel;
 import org.argouml.model.UmlException;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.ProfileManager;
 import org.argouml.profile.ProfileMother;
 import org.argouml.uml.cognitive.critics.ProfileGoodPractices;
@@ -73,8 +73,16 @@ public class TestProfileManagerImpl extends TestCase {
         super.setUp();
         InitializeModel.initializeDefault();
         manager = new ProfileManagerImpl();
+        ProfileFacade.setManager(manager);
     }
 
+
+    @Override
+    protected void tearDown() throws Exception {
+        ProfileFacade.reset();
+        super.tearDown();
+    }
+    
     /**
      * test profile manager 
      */
@@ -129,7 +137,7 @@ public class TestProfileManagerImpl extends TestCase {
 
             @Override
             public Collection getProfilePackages() throws ProfileException {
-                return new Vector();
+                return Collections.emptyList();
             }
             
         };
@@ -164,12 +172,16 @@ public class TestProfileManagerImpl extends TestCase {
         Collections.reverse(profileFiles);
         
         ProfileManagerImpl managerImpl = (ProfileManagerImpl) manager;
+        manager.addSearchPathDirectory(profileFiles.get(0).getParent());
+        manager.addSearchPathDirectory(profileFiles.get(1).getParent());
         managerImpl.loadProfiles(profileFiles);
         
         List<Profile> registeredProfilesAfter =
             manager.getRegisteredProfiles();
         assertEquals("Now we should have two more registered profiles.",
             numRegisteredBefore + 2, registeredProfilesAfter.size());
+        manager.removeSearchPathDirectory(profileFiles.get(0).getParent());
+        manager.removeSearchPathDirectory(profileFiles.get(1).getParent());
     }
 
     /**
@@ -196,15 +208,16 @@ public class TestProfileManagerImpl extends TestCase {
         dependentProfileList.add(dependentProfileFile);
         
         ProfileManagerImpl managerImpl = (ProfileManagerImpl) manager;
+        manager.addSearchPathDirectory(baseProfileFile.getParent());
         managerImpl.loadProfiles(dependentProfileList);
-        assertEquals("We should have exaclty the same number of registered "
-            + "profiles as in the begining.",
-            numRegisteredBefore, manager.getRegisteredProfiles().size());
+        assertEquals("We should have one more registered profiles as in the beginning.",
+            numRegisteredBefore + 1, manager.getRegisteredProfiles().size());
         
         ArrayList<File> baseProfileList = new ArrayList<File>();
         baseProfileList.add(baseProfileFile);
         managerImpl.loadProfiles(baseProfileList);
         assertEquals("Now we should have two more registered profiles.",
             numRegisteredBefore + 2, manager.getRegisteredProfiles().size());
+        manager.removeSearchPathDirectory(baseProfileFile.getParent());
     }
 }

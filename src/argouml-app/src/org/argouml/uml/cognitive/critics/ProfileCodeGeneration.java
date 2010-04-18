@@ -53,7 +53,7 @@ import org.argouml.profile.Profile;
  */
 public class ProfileCodeGeneration extends Profile {
 
-    private Set<Critic>  critics = new HashSet<Critic>();
+    private Set<Critic>  critics = null;
 
     private static Critic crMissingClassName;
     
@@ -86,9 +86,14 @@ public class ProfileCodeGeneration extends Profile {
      * @param profileGoodPractices the instance of the required profile 
      */
     public ProfileCodeGeneration(ProfileGoodPractices profileGoodPractices) {
-        
         crMissingClassName = profileGoodPractices.getCrMissingClassName();
+        addProfileDependency("GoodPractices");
+    }
 
+    private void loadCritics() {
+
+        critics = new HashSet<Critic>();
+        
         crCompoundConstructorNeeded = new CompoundCritic(
                 crMissingClassName, new CrConstructorNeeded());
 
@@ -133,8 +138,14 @@ public class ProfileCodeGeneration extends Profile {
         critics.add(noTrans2);                                  
         
         this.setCritics(critics);
-        
-        addProfileDependency("GoodPractices");
+    }
+    
+    @Override
+    public Set<Critic> getCritics() {
+        if (critics == null) {
+            loadCritics();
+        }
+        return super.getCritics();
     }
     
     @Override

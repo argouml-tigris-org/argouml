@@ -50,24 +50,25 @@ class UmlControl extends JPanel {
 	 * @return the panel containing the actions required.
 	 */
 	protected JPanel createSingleButtonPanel(List<Action> actions) {
-        JPanel buttonPanel =
+        final JPanel buttonPanel =
             new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
-		final ToolButton tb;
+		final JToolBar toolbar;
     	if (actions.size() == 1) {
-    		tb = new ToolButton(actions.get(0));
-    		// TODO: Following is only in Java 6 and later
-//    		tb.setHideActionText(true);
+    		final ToolButton tb = new ToolButton(actions.get(0));
+            final ToolBarFactory tbf = new ToolBarFactory(actions);
+            toolbar = tbf.createToolBar();
+            toolbar.setRollover(true);
     	} else {
-            PopupToolBoxButton ptb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
+    		final PopupToolBoxButton ptb =
+    			new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
             for (Action action : actions) {
                 ptb.add(action);
             }
-            tb = ptb;
+            final ToolBarFactory tbf = new ToolBarFactory(new Object[] {});
+            toolbar = tbf.createToolBar();
+            toolbar.setRollover(true);
+    		toolbar.add(ptb);
     	}
-        final ToolBarFactory tbf = new ToolBarFactory(new Object[] {});
-        JToolBar toolbar = tbf.createToolBar();
-        toolbar.setRollover(true);
-		toolbar.add(tb);
 		buttonPanel.add(toolbar);
         return buttonPanel;
 	}

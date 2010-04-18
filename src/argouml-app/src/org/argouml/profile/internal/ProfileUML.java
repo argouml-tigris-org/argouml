@@ -1,13 +1,15 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2008,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    maurelio1234 - Initial implementation
  *    thn
+ *    Tom Morris - lazy loading
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -41,9 +43,11 @@ package org.argouml.profile.internal;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Critic;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
@@ -98,6 +102,8 @@ import org.argouml.uml.cognitive.critics.CrOppEndVsAttr;
  */
 public class ProfileUML extends Profile {
     
+    private static final Logger LOG = Logger.getLogger(ProfileUML.class);
+    
     private static final String PROFILE_UML14_FILE = "default-uml14.xmi";
     private static final String PROFILE_UML22_FILE = "default-uml22.xmi";
 
@@ -107,7 +113,11 @@ public class ProfileUML extends Profile {
     private FormatingStrategy formatingStrategy;
     private ProfileModelLoader profileModelLoader;
     private Collection model;
-        
+    
+    private Set<Critic> critics = null;
+
+    private ProfileReference profileReference = null;
+
     /**
      * Construct a Profile for UML modeling. 
      * @throws ProfileException 
@@ -115,8 +125,6 @@ public class ProfileUML extends Profile {
     @SuppressWarnings("unchecked")
     ProfileUML() throws ProfileException {
         formatingStrategy = new FormatingStrategyUML();
-        profileModelLoader = new ResourceModelLoader();
-        ProfileReference profileReference = null;
         try {
             if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
                 profileReference =
@@ -131,22 +139,31 @@ public class ProfileUML extends Profile {
             throw new ProfileException(
                 "Exception while creating profile reference.", e);
         }
-        model = profileModelLoader.loadModel(profileReference);
+    }
 
+    private Collection getModel() {
         if (model == null) {
-            model = new ArrayList();
-            model.add(Model.getModelManagementFactory().createProfile());
+            profileModelLoader = new ResourceModelLoader();
+            try {
+                model = profileModelLoader.loadModel(profileReference);
+           } catch (ProfileException e) {
+                LOG.error("Error loading UML profile", e);
+            }
+
+            if (model == null) {
+                model = new ArrayList();
+                model.add(Model.getModelManagementFactory().createProfile());
+            }
+
+            for (Object p : model) {
+                Model.getExtensionMechanismsHelper().makeProfileApplicable(p);
+            }
         }
-        
-        for (Object p : model) {
-            Model.getExtensionMechanismsHelper().makeProfileApplicable(p);
-        }
-        
-        loadWellFormednessRules();
+        return model;
     }
 
     private void loadWellFormednessRules() {
-        Set<Critic> critics = new HashSet<Critic>();
+        critics = new HashSet<Critic>();
         
         critics.add(new CrAssocNameConflict());
         critics.add(new CrAttrNameConflict());
@@ -456,14 +473,32 @@ public class ProfileUML extends Profile {
 
 
     @Override
+    public Set<Critic> getCritics() {
+        if (critics == null) {
+            loadWellFormednessRules();
+        }
+        return super.getCritics();
+    }
+    
+    @Override
     public Collection getProfilePackages() {
-        return model;
+        return Collections.unmodifiableCollection(getModel());
     }
     
 
     @Override
+    public Collection<Object> getLoadedPackages() {
+        if (model == null) {
+            return Collections.emptyList();
+        } else {
+            return Collections.unmodifiableCollection(model);
+        }
+    }
+
+    @Override
     public DefaultTypeStrategy getDefaultTypeStrategy() {
         return new DefaultTypeStrategy() {
+            private Collection model = getModel();
             public Object getDefaultAttributeType() {
                 return ModelUtils.findTypeInModel("Integer", model.iterator()
                         .next());

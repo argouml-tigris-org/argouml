@@ -20,10 +20,21 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.ManifestBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.SchemaBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>de.mvmsoft.checkclipse.CheckclipseNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>com.atlassw.tools.eclipse.checkstyle.CheckstyleNature</nature>
+		<nature>org.eclipse.pde.PluginNature</nature>
 	</natures>
 </projectDescription>

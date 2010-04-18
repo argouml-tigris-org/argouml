@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -53,6 +53,7 @@ import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
 import org.argouml.notation.providers.java.InitNotationJava;
 import org.argouml.notation.providers.uml.InitNotationUml;
+import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.uml.diagram.activity.ui.InitActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.InitCollaborationDiagram;
@@ -81,6 +82,13 @@ public class TestZargoFilePersister extends TestCase {
         (new InitClassDiagram()).init();
         (new InitUseCaseDiagram()).init();
         (new InitProfileSubsystem()).init();
+    }
+    
+
+    @Override
+    protected void tearDown() throws Exception {
+        ProfileFacade.reset();
+        super.tearDown();
     }
 
     /**

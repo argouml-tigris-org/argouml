@@ -1,53 +1,23 @@
-/* $Id$
- *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+// $Id$
+/*******************************************************************************
+ * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Tom Morris - initial implementation
+ *    Bogdan Pistol - undo support
  *    thn
- *****************************************************************************
- *
- * Some portions of this file was previously release using the BSD License:
- */
-
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the project or its contributors may be used 
-//       to endorse or promote products derived from this software without
-//       specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
-// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-/*
+ *    
  * This implementation uses ideas and code snippets from the 
  * "org.eclipse.uml2.uml.editor.presentation" package.
  * 
  * The package "org.eclipse.uml2.uml.editor.presentation" is part of the
  * Eclipse UML2 plugin and it is available under the terms of 
  * the Eclipse Public License v1.0.
- * 
- * The Eclipse Public License v1.0 is available at 
- * http://www.eclipse.org/legal/epl-v10.html.
- */
+ *****************************************************************************/
 
 package org.argouml.model.euml;
 
@@ -92,9 +62,13 @@ import org.eclipse.uml2.uml.resource.XMI2UMLResource;
  * them.
  * <p>
  * The implementation of this subsystem was generously sponsored by Google as
- * part of the Google Summer of Code 2007. The bulk of the implementation was
+ * part of the Google Summer of Code 2007. A large part of the implementation was
  * built by the sponsored student, Bogdan Ciprian Pistol, who was mentored by
  * Tom Morris.
+ * <p>
+ * This implementation uses ideas and code snippets from the 
+ * "org.eclipse.uml2.uml.editor.presentation" package which is part of the
+ * Eclipse UML2 plugin.
  * 
  * @author Bogdan Ciprian Pistol
  * @author Tom Morris <tfmorris@gmail.com>
@@ -250,6 +224,7 @@ public class EUMLModelImplementation implements ModelImplementation {
 
             path = path.replace('\\', '/');
             // These lines were one cause for issue 5915: (Were they needed?)
+            // TODO: Review - tfm
             //if (Character.isLetter(path.charAt(0))) {
             //    path = '/' + path;
             //}

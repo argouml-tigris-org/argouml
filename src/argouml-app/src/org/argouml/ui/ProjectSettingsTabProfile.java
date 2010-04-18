@@ -1,12 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2007-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Marcos Aurelio - design and initial implementation
  *    thn
  *    euluis
  *****************************************************************************
@@ -48,6 +49,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -244,6 +246,7 @@ public class ProjectSettingsTabProfile extends JPanel implements
     private JList createProfileList() {
         JList list = new JList();
         list.setMinimumSize(new Dimension(50, 50));
+        // TODO: Add double click listener 
         return list;
     }
     private void refreshLists() {
@@ -282,9 +285,9 @@ public class ProjectSettingsTabProfile extends JPanel implements
             ((MutableComboBoxModel) usedList.getModel());
 
         if (arg0.getSource() == addButton) {
-            if (availableList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelAvailable
-                        .getElementAt(availableList.getSelectedIndex());
+            Object[] selections = availableList.getSelectedValues();
+            for (Object s : selections) {
+                Profile selected = (Profile) s;
                 modelUsed.addElement(selected);
                 modelAvailable.removeElement(selected);
 
@@ -294,11 +297,10 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 }
             }
         } else if (arg0.getSource() == removeButton) {
-            if (usedList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelUsed.getElementAt(usedList
-                        .getSelectedIndex());
-
-                List<Profile> dependents = getActiveDependents(selected);
+            Object[] selections = usedList.getSelectedValues();
+            for (Object s : selections) {
+                Profile selected = (Profile) s;
+                Collection<Profile> dependents = getActiveDependents(selected);
                 boolean remove = true;
 
                 if (!dependents.isEmpty()) {
@@ -340,9 +342,9 @@ public class ProjectSettingsTabProfile extends JPanel implements
                 }
             }
         } else if (arg0.getSource() == unregisterProfile) {
-            if (availableList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelAvailable
-                        .getElementAt(availableList.getSelectedIndex());
+            Object[] selections = availableList.getSelectedValues();
+            for (Object s : selections) {
+                Profile selected = (Profile) s;
                 if (selected instanceof UserDefinedProfile) {
                     ProfileFacade.getManager().removeProfile(selected);
                     modelAvailable.removeElement(selected);

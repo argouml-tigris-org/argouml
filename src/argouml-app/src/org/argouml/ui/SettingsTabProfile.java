@@ -1,12 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2007-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Marcos Aur�lio - Design and initial implementation
  *    thn
  *    euluis
  *****************************************************************************
@@ -49,6 +50,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -343,17 +345,16 @@ public class SettingsTabProfile extends JPanel implements
                 .getModel());
 
         if (arg0.getSource() == addButton) {
-            if (availableList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelAvl
-                        .getElementAt(availableList.getSelectedIndex());
+            Object[] selections = availableList.getSelectedValues();
+            for (Object s : selections) {
+                Profile selected = (Profile) s;
                 modelUsd.addElement(selected);
                 modelAvl.removeElement(selected);
             }
         } else if (arg0.getSource() == removeButton) {
-            if (defaultList.getSelectedIndex() != -1) {
-                Profile selected = (Profile) modelUsd.getElementAt(defaultList
-                        .getSelectedIndex());
-                
+            Object[] selections = defaultList.getSelectedValues();
+            for (Object s : selections) {
+                Profile selected = (Profile) s;
                 if (selected == ProfileFacade.getManager().getUMLProfile()
                         && Model.getFacade().getUmlVersion().charAt(0) != '1') {
                     JOptionPane.showMessageDialog(this, Translator
@@ -389,10 +390,11 @@ public class SettingsTabProfile extends JPanel implements
             }
 
         } else if (arg0.getSource() == removeDirectory) {
-            if (directoryList.getSelectedIndex() != -1) {
-                int idx = directoryList.getSelectedIndex();
-                ((MutableComboBoxModel) directoryList.getModel())
-                        .removeElementAt(idx);
+            MutableComboBoxModel model = 
+                ((MutableComboBoxModel) directoryList.getModel()); 
+            Object[] selections = directoryList.getSelectedValues();
+            for (Object o : selections) {
+                model.removeElement(o);
             }
         } else if (arg0.getSource() == refreshProfiles) {
             boolean refresh = JOptionPane.showConfirmDialog(this, Translator
@@ -424,16 +426,32 @@ public class SettingsTabProfile extends JPanel implements
             if (ret == JFileChooser.APPROVE_OPTION) {
                 File file = fileChooser.getSelectedFile();
 
-                String path = file.getAbsolutePath();
-
-                ((MutableComboBoxModel) directoryList.getModel())
-                        .addElement(path);
+                // find and add all subdirectories
+                Collection<File> dirs = new ArrayList<File>();
+                collectSubdirs(file, dirs);
+                
+                MutableComboBoxModel cbModel = 
+                    ((MutableComboBoxModel) directoryList.getModel());
+                for (File dir : dirs) {
+                    cbModel.addElement(dir.getAbsolutePath());
+                }
             }
-
         }
 
         availableList.validate();
         defaultList.validate();
+    }
+
+    private void collectSubdirs(File file, Collection<File> subdirs) {
+        subdirs.add(file);
+        File[] files = file.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isDirectory() & !f.isHidden()) {
+                    collectSubdirs(f, subdirs);
+                }
+            }
+        }
     }
 
     /**
@@ -452,9 +470,6 @@ public class SettingsTabProfile extends JPanel implements
         return this;
     }
 
-
-
-
     public void handleResetToDefault() {
         if (!initialized) {
             buildPanel();
@@ -463,7 +478,6 @@ public class SettingsTabProfile extends JPanel implements
     }
 
     public void handleSettingsTabCancel() {
-
     }
 
     public void handleSettingsTabRefresh() {

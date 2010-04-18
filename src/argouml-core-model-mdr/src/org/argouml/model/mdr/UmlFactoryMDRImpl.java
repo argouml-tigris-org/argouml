@@ -39,6 +39,7 @@
 package org.argouml.model.mdr;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -1616,6 +1617,14 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
+    }
+    
+    public Collection getExtentPackages(String name) {
+        org.omg.uml.UmlPackage pkg = modelImpl.getExtent(name);
+        if (pkg == null) {
+            return null;
+        }
+        return pkg.getModelManagement().getUmlPackage().refAllOfType();
     }
 
 }

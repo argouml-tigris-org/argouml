@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2005,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -52,6 +52,7 @@ import java.util.Map;
 import javax.jmi.model.ModelPackage;
 import javax.jmi.model.MofPackage;
 import javax.jmi.reflect.InvalidObjectException;
+import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.xmi.MalformedXMIException;
 
@@ -191,6 +192,12 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     private Map<String, String> public2SystemIds = 
         Collections.synchronizedMap(new HashMap<String, String>());
+    
+    /**
+     * Index of objects keyed by system ID, then xmi.id within that file
+     */
+    private Map<String, Map<String, Object>> idToObject = 
+        Collections.synchronizedMap(new HashMap<String, Map<String, Object>>());
 
     private List<String> searchDirs = new ArrayList<String>();
     
@@ -198,9 +205,32 @@ public class MDRModelImplementation implements ModelImplementation {
     /**
      * Set of extents and their read-only status. 
      */
-    private Map<UmlPackage, Boolean> extents = 
-        new HashMap<UmlPackage, Boolean>(10, (float) .5);
+    private Map<UmlPackage, Extent> extents = 
+        new HashMap<UmlPackage, Extent>(10, (float) .5);
 
+    private class Extent {
+        int refCount = 0;
+        boolean readOnly = false;
+        String name;
+        
+        Extent(String name, boolean readOnly) {
+            this.name = name;
+            this.readOnly = readOnly;
+        }
+        
+        int getRefCount() {
+            return refCount;
+        }
+        
+        synchronized int decrementCount() {
+            return refCount--;
+        }
+        
+        synchronized int incrementCount() {
+            return refCount++;
+        }
+    }
+    
     /**
      * @return Returns the root UML Factory package for user model.
      * @deprecated for 0.26. Use RefObject.refOutermostPackage instead if at all
@@ -222,8 +252,8 @@ public class MDRModelImplementation implements ModelImplementation {
             synchronized (extents) {
                 UmlPackage extent = (UmlPackage) getRepository().createExtent(
                         name, getMofPackage());
-                extents.put(extent, Boolean.valueOf(readOnly));
-
+                extents.put(extent, new Extent(name,readOnly));
+                
                 if (!readOnly) {
                     // TODO: This will need to change when we support multiple
                     // user models.
@@ -252,6 +282,22 @@ public class MDRModelImplementation implements ModelImplementation {
         }
     }
 
+
+    /**
+     * Delete all extents except those for the UML metamodel and the 
+     * meta-meta model (ie MOF).
+     */
+    private void cleanExtents() {
+        String[] names = repository.getExtentNames();
+        for (String n : names) {
+            if (!MOF_EXTENT_NAME.equals(n) && !"MOF".equals(n)) {
+                RefPackage extent = repository.getExtent(n);
+                extent.refDelete();
+                LOG.debug("Deleting extent " + n);
+            }
+        }
+    }
+    
     void deleteExtent(UmlPackage extent) {
         synchronized (extents) {
             if (umlPackage.equals(extent)) {
@@ -267,8 +313,34 @@ public class MDRModelImplementation implements ModelImplementation {
 
     private void deleteExtentUnchecked(UmlPackage extent) {
         synchronized (extents) {
-            extents.remove(extent);
-            extent.refDelete();
+            Extent e = extents.get(extent);
+            if (e == null) {
+                LOG.warn("No listing for extent " + extent);
+                extent.refDelete();
+            } else {
+                if (e.decrementCount() == 0) {
+
+                    String name = extents.remove(extent).name;
+                    if (public2SystemIds.remove(name) == null) {
+                        if (!"model extent".equals(name)) {
+                            LOG.warn("No system id found for extent "
+                                    + (name == null ? "" : name) + " : "
+                                    + extent);
+                        }
+                    }
+                    if (idToObject.remove(name) == null) {
+                        if (!"model extent".equals(name)) {
+                            LOG.warn("No ID map found for extent "
+                                    + (name == null ? "" : name) + " : "
+                                    + extent);
+                        }
+                    }
+                    // TODO: Need to clean up objectToId
+                    // (can we do it based on modelelement delete
+                    // notifications?)
+                    extent.refDelete();
+                }
+            }
         }
     }
     
@@ -276,14 +348,18 @@ public class MDRModelImplementation implements ModelImplementation {
         return Collections.unmodifiableSet(extents.keySet());
     }
     
+    public UmlPackage getExtent(String name) {
+        return (UmlPackage) repository.getExtent(name);
+    }
+    
     boolean isReadOnly(Object extent) {
         synchronized (extents) {
-            Boolean result = extents.get(extent);
+            Extent result = extents.get(extent);
             if (result == null) {
-                LOG.warn("Unable to find extent " + extent);
+//                LOG.warn("Unable to find extent " + extent);
                 return false;
-            }
-            return result.booleanValue();
+            } 
+            return result.readOnly;
         }
     }
     
@@ -347,6 +423,7 @@ public class MDRModelImplementation implements ModelImplementation {
     public MDRModelImplementation() throws UmlException {
         this(getDefaultRepository());
 
+        cleanExtents();
         createDefaultExtent();
         if (umlPackage == null) {
             throw new UmlException("Could not create UML extent");
@@ -774,14 +851,55 @@ public class MDRModelImplementation implements ModelImplementation {
     }
 
     /**
-     * Return the Object to ID Map.
+     * Return map of MOF ID to XmiReference (system id + xmi.id).
      *
      * @return the map
      */
-    protected Map<String, XmiReference> getObjectToId() {
+    Map<String, XmiReference> getObjectToId() {
         return objectToId;
     }
+
+    /**
+     * Return map of maps keyed first by system id, then xmi.id with object as
+     * value.
+     * 
+     * @return the map
+     */
+    Map<String, Map<String, Object>> getIdToObject() {
+        return idToObject;
+    }
     
+    /**
+     * Remove an element from indexes mapping it back to its original xmi.id.
+     * 
+     * @param mofId MOF ID of element to be removed from indexes
+     * @return false if no index entries were removed
+     */
+    boolean removeElement(String mofId) {
+        XmiReference xref = objectToId.remove(mofId);
+        if (xref != null) {
+            Map<String,Object> m = idToObject.get(xref.getSystemId());
+            if (m != null) {
+                Object o = m.remove(xref.getXmiId());
+                if (o != null) {
+                    if (!mofId.equals(((RefObject) o).refMofId())) {
+                        LOG.error("Internal index inconsistency for mof ID " 
+                                + mofId + " (got " + ((RefObject) o).refMofId());
+                    }
+                    return true;
+                }
+            }
+        }
+        // Elements created after file load won't have index entries
+        LOG.debug("Failed to remove index entries for mof ID " + mofId);
+        return false;
+    }
+    
+    /**
+     * Return map of MOF ID to XmiReference (system id + xmi.id).
+     *
+     * @return the map
+     */
     Map<String, String> getPublic2SystemIds() {
         return public2SystemIds;
     }

@@ -75,6 +75,11 @@ public class TestProfileMother extends TestCase {
         mother = new ProfileMother();
     }
     
+    protected void tearDown() throws Exception {
+        ProfileFacade.reset();
+        super.tearDown();
+    }
+    
     /**
      * Test the creation of a profile model.
      */
@@ -85,6 +90,7 @@ public class TestProfileMother extends TestCase {
         assertEquals(1, profileStereotypes.size());
         assertEquals(ProfileMother.STEREOTYPE_NAME_PROFILE, 
             getFacade().getName(profileStereotypes.iterator().next()));
+        Model.getUmlFactory().delete(model);
     }
     
     /**
@@ -110,6 +116,7 @@ public class TestProfileMother extends TestCase {
         assertNotNull("\"st\" stereotype not found in model.", st);
         assertTrue(Model.getExtensionMechanismsHelper().isStereotype(st, 
             ProfileMother.STEREOTYPE_NAME_ST, "Class"));
+        Model.getUmlFactory().delete(model);
     }
     
     /**
@@ -123,6 +130,7 @@ public class TestProfileMother extends TestCase {
         mother.saveProfileModel(model, file);
         assertTrue("The file to where the file was supposed to be saved " 
             + "doesn't exist.", file.exists());
+        Model.getUmlFactory().delete(model);
     }
     
     /**
@@ -157,6 +165,11 @@ public class TestProfileMother extends TestCase {
             + "from which the dependent profile depends must occur in the "
             + "file.",
             file.getName(), dependentProfileFile);
+        // Clean up our two models and the extent that we read profile in to
+        Model.getUmlFactory().delete(model);
+        Model.getUmlFactory().delete(model2);
+        Model.getUmlFactory().deleteExtent(
+                simpleModelTopElements.iterator().next());
     }
     
     /**
@@ -205,6 +218,10 @@ public class TestProfileMother extends TestCase {
             true);
         assertEquals("There should exist only one top level element.",
             1, dependentProfileModelTopElements.size());
+        // Clean up our model and the extent that we read profile in to
+        Model.getUmlFactory().delete(model);
+        Model.getUmlFactory().deleteExtent(
+                dependentProfileModelTopElements.iterator().next());
     }
 
     private void assertStringInLineOfFile(String failureMsg, String str,
@@ -238,5 +255,26 @@ public class TestProfileMother extends TestCase {
         File baseFile = profilesFiles.get(0);
         File dependentFile = profilesFiles.get(1);
         assertStringInLineOfFile("", baseFile.getName(), dependentFile);
+    }
+
+    /**
+     * Test {@link ProfileMother#createUnloadedSimpleProfile()}.
+     *
+     * @throws IOException when file IO goes wrong...
+     * @throws UmlException when UML manipulation goes wrong...
+     */
+    public void testCreateUnloadedSimpleProfile() throws IOException,
+            UmlException {
+        File profileFile = mother.createUnloadedSimpleProfile();
+        profileFile.deleteOnExit();
+        assertTrue("It doesn't exist or isn't a file.",
+            profileFile.exists() && profileFile.isFile());
+        XmiReader xmiReader = Model.getXmiReader();
+        InputSource inputSource = new InputSource(
+            profileFile.toURI().toURL().toExternalForm());
+        Collection topModelElements = xmiReader.parse(inputSource, true);
+        assertEquals("Unexpected number of top model elements.",
+            1, topModelElements.size());
+        Model.getUmlFactory().deleteExtent(topModelElements.iterator().next());
     }
 }

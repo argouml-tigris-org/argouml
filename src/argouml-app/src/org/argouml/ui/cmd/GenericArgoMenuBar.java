@@ -1174,9 +1174,9 @@ public class GenericArgoMenuBar extends JMenuBar implements
     /**
      * Internal use only.  Do not use.
      */
-    public void macQuit() {
+    public boolean macQuit() {
         LOG.info("Quit has been chosen on a Mac");
-        exitAction.actionPerformed(null);
+        return ProjectBrowser.getInstance().tryExit();
     }
     
     /**

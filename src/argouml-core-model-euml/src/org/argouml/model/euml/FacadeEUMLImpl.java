@@ -1,41 +1,17 @@
-/* $Id$
- *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+// $Id$
+/*******************************************************************************
+ * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
+ *    Tom Morris - initial implementation
+ *    Bogdan Pistol - initial implementation
  *    Bob Tarling
- *****************************************************************************
- *
- * Some portions of this file was previously release using the BSD License:
- */
-
-// All rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-//     * Redistributions of source code must retain the above copyright
-//       notice, this list of conditions and the following disclaimer.
-//     * Redistributions in binary form must reproduce the above copyright
-//       notice, this list of conditions and the following disclaimer in the
-//       documentation and/or other materials provided with the distribution.
-//     * Neither the name of the project or its contributors may be used 
-//       to endorse or promote products derived from this software without
-//       specific prior written permission.
-//
-// THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS ``AS IS'' AND ANY
-// EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-// DISCLAIMED. IN NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY
-// DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-// (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-// LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-// ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-// SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ *****************************************************************************/
 
 package org.argouml.model.euml;
 
@@ -49,11 +25,15 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Action;
 import org.eclipse.uml2.uml.ActivityPartition;
@@ -134,10 +114,12 @@ import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.StructuralFeature;
 import org.eclipse.uml2.uml.TemplateBinding;
 import org.eclipse.uml2.uml.TemplateParameter;
+import org.eclipse.uml2.uml.TemplateParameterSubstitution;
 import org.eclipse.uml2.uml.TemplateableElement;
 import org.eclipse.uml2.uml.TimeEvent;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Trigger;
+import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.TypedElement;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.Usage;
@@ -145,6 +127,7 @@ import org.eclipse.uml2.uml.UseCase;
 import org.eclipse.uml2.uml.ValueSpecification;
 import org.eclipse.uml2.uml.Vertex;
 import org.eclipse.uml2.uml.VisibilityKind;
+import org.eclipse.uml2.uml.resource.UMLResource;
 
 
 /**
@@ -277,12 +260,12 @@ class FacadeEUMLImpl implements Facade {
         return null;
     }
 
-    public Collection getAssociationEnds(Object handle) {
+    public Collection<Property> getAssociationEnds(Object handle) {
         if (!(handle instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "handle must be instance of Classifier"); //$NON-NLS-1$
         }
-        Collection result = new ArrayList();
+        Collection<Property> result = new ArrayList<Property>();
         for (Property p : ((Classifier) handle).getAttributes()) {
             if (p.getAssociation() != null) {
                 result.add(p);
@@ -295,7 +278,7 @@ class FacadeEUMLImpl implements Facade {
         // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
         // AssociationEndRole have been replaced by the internal 
         // structure of the Collaboration
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     public List<Property> getAttributes(Object handle) {
@@ -319,26 +302,19 @@ class FacadeEUMLImpl implements Facade {
         if (handle instanceof Extend) {
             return ((Extend) handle).getExtendedCase();
         } else if (handle instanceof Include) {
-            return ((Include) handle).getAddition();
+            return ((Include) handle).getIncludingCase();
         }
         throw new NotYetImplementedException();
     }
 
     public Collection<String> getBaseClasses(Object handle) {
-        if (isAStereotype(handle)) {
-            // TODO: it's an implementation, but is it correct? - thn
-            EList<Class> eList =
-                ((Stereotype) handle).getAllExtendedMetaclasses();
-            ArrayList<String> list = new ArrayList<String>();
-            Iterator iter = eList.iterator();
-            while (iter.hasNext()) {
-                list.add(((Class) iter.next()).getName());
+        Collection<String> result = new ArrayList<String>();
+        for (org.eclipse.uml2.uml.Class metaclass 
+                : ((Stereotype) handle).getAllExtendedMetaclasses()) {
+            result.add(metaclass.getName());
             }
-            return list;
+        return result;
         }
-        throw new IllegalArgumentException(
-                "handle must be instance of Stereotype"); //$NON-NLS-1$
-    }
 
     public Collection getBases(Object handle) {
         throw new NotYetImplementedException();
@@ -346,16 +322,12 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getBehavioralFeature(Object handle) {
-        if (!(handle instanceof Parameter)) {
-            throw new IllegalArgumentException(
-                    "handle must be instance of Parameter"); //$NON-NLS-1$
-        }
         return ((Parameter) handle).getOperation();
     }
 
     public Collection getBehaviors(Object handle) {
         // TODO:
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     public Object getBinding(Object handle) {
@@ -418,10 +390,6 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getSpecific(Object handle) {
-        if (!(handle instanceof Generalization)) {
-            throw new IllegalArgumentException(
-                    "handle must be instance of Generalization"); //$NON-NLS-1$
-        }
         return ((Generalization) handle).getSpecific();
     }
     
@@ -430,15 +398,14 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getClassifier(Object handle) {
-        Property prop = (Property) handle;
-        return prop.getType();
+        return ((Property) handle).getType();
     }
 
     public Collection getClassifierRoles(Object handle) {
         // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
         // AssociationEndRole have been replaced by the internal 
         // structure of the Collaboration
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     public Collection getClassifiers(Object handle) {
@@ -654,7 +621,6 @@ class FacadeEUMLImpl implements Facade {
 	    }
 	}
 	return result;
-        // throw new NotYetImplementedException();
     }
 
     public Collection getElementResidences(Object handle) {
@@ -683,9 +649,12 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getExtendedElements(Object handle) {
+//        public Collection<Element> getExtendedElements(Object handle) {
         if (!(handle instanceof Stereotype)) {
             throw new IllegalArgumentException();
         }
+        
+        // TODO: Is this returning extended elements or base classes?
         EList<Class> eList = ((Stereotype) handle).getExtendedMetaclasses();
         ArrayList<Class> list = new ArrayList<Class>();
         Iterator iter = eList.iterator();
@@ -693,6 +662,17 @@ class FacadeEUMLImpl implements Facade {
             list.add((Class) iter.next());
         }
         return list;
+        
+        // TODO: Untested alternative to investigate
+//        Collection<Element> result = new ArrayList<Element>();
+//        TreeIterator it = modelImpl.getEditingDomain().getResourceSet().getAllContents();
+//        while (it.hasNext()) {
+//            Object o = it.next();
+//            if (handle.getClass().isAssignableFrom(o.getClass())) {
+//                result.add((Element) o);
+//            }
+//        }
+//        return result;
     }
 
     public Collection getExtenders(Object handle) {
@@ -704,8 +684,22 @@ class FacadeEUMLImpl implements Facade {
         if (handle instanceof UseCase) {
             return ((UseCase) handle).getExtends();
         } else if (handle instanceof ExtensionPoint) {
-            // TODO:
-            throw new NotYetImplementedException();
+            ExtensionPoint ep = (ExtensionPoint) handle;
+            Collection<Extend> result = new ArrayList<Extend>();
+            // Can't be done in the general case of federated repositories, 
+            // but at least get what we can find for the current resource set
+            TreeIterator<Notifier> ti = 
+                ep.eResource().getResourceSet().getAllContents();            
+            while (ti.hasNext()) {
+                Notifier elem = ti.next();
+                if (elem instanceof Extend) {
+                    Extend extend = (Extend) elem;
+                    if (extend.getExtensionLocations().contains(ep)) {
+                        result.add(extend);
+                    }
+                }
+            }
+            return result;
         }
         throw new IllegalArgumentException();
     }
@@ -820,7 +814,7 @@ class FacadeEUMLImpl implements Facade {
     public Collection getInstances(Object handle) {
         // TODO: InstanceSpecification -> Classifier association isn't
         // navigable in this direction
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     public Object getInteraction(Object handle) {
@@ -862,12 +856,12 @@ class FacadeEUMLImpl implements Facade {
 
     public Collection getLinks(Object handle) {
         // TODO: no Links in UML 2
-        return Collections.EMPTY_SET;
+        return Collections.emptySet();
     }
 
     public String getLocation(Object handle) {
         // TODO: Removed from UML2
-        return "";
+        return ""; //$NON-NLS-1$
     }
 
     public int getLower(Object handle) {
@@ -889,26 +883,31 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
-    public Object getInnerContainingModel(Object handle) {
+    public Element getInnerContainingModel(Object handle) {
         if (!(handle instanceof Element)) {
             throw new IllegalArgumentException();
         }
-        return ((Element) handle).getModel();        
+        // TODO: What is the behavior of this in the case of nested models?
+        Element result = ((Element) handle).getModel();
+        if (result == null) {
+            result = getOutermostOwner((Element) handle);
+        }
+        return result;
     }
     
-    public Object getRoot(Object handle) {
+    private Element getOutermostOwner(Element element) {
+        Element result = element;
+        while (result.getOwner() != null) {
+            result = result.getOwner();
+        }
+        return result;
+    }
+    
+    public Element getRoot(Object handle) {
         if (!(handle instanceof Element)) {
             throw new IllegalArgumentException();
         }
-        Object root = ((Element) handle).getModel();
-        if (root == null) {
-            // root is not a model, so we climb up the owners
-            root = handle;
-            while (((Element) root).getOwner() != null) {
-                root = ((Element) root).getOwner();
-            }
-        }
-        return root;
+        return getOutermostOwner((Element) handle);
     }
 
     public Object getModelElement(Object handle) {
@@ -962,11 +961,10 @@ class FacadeEUMLImpl implements Facade {
         } else {
             // TODO: Some elements such as Generalization are
             // no longer named.  For a transitional period we'll
-            // return a String to debug can continue, but the
+            // return a String so debug can continue, but the
             // calling code should probably be fixed. - tfm 20070607
-            return handle.toString();
+            return getUMLClassName(handle) + " <not nameable>";
         }
-//        throw new IllegalArgumentException();
     }
 
     public Object getNamespace(Object handle) {
@@ -1045,11 +1043,11 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
-    public Collection getOtherAssociationEnds(Object handle) {
+    public Collection<Property> getOtherAssociationEnds(Object handle) {
         if (!isAAssociationEnd(handle)) {
             throw new IllegalArgumentException();
         }
-        List l = new ArrayList(
+        Collection<Property> l = new ArrayList<Property>(
                 ((Property) handle).getAssociation().getMemberEnds());
         l.remove(handle);
         return l;
@@ -1262,7 +1260,10 @@ class FacadeEUMLImpl implements Facade {
 
     }
 
-    public Collection getSources(Object handle) {
+    public Collection getSources(Object element) {
+        if (element instanceof DirectedRelationship) {
+            return ((DirectedRelationship) element).getSources();
+        }
         throw new NotYetImplementedException();
 
     }
@@ -1292,7 +1293,7 @@ class FacadeEUMLImpl implements Facade {
         if (handle instanceof Property) {
             // TODO: unimplemented
 //          return ((Property) handle).gets
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         } else if (handle instanceof org.eclipse.uml2.uml.Class) {
             return ((org.eclipse.uml2.uml.Class) handle).getInterfaceRealizations();
         }
@@ -1304,7 +1305,7 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
-    public Object getStateMachine(Object handle) {
+    public StateMachine getStateMachine(Object handle) {
         if (handle instanceof Pseudostate) {
             return ((Pseudostate) handle).getStateMachine();
         } else if (handle instanceof Region) {
@@ -1317,10 +1318,7 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
-    public Collection getStereotypes(Object handle) {
-        if (!(handle instanceof Element)) {
-            throw new IllegalArgumentException();
-        }
+    public Collection<Stereotype> getStereotypes(Object handle) {
         return ((Element) handle).getAppliedStereotypes();
     }
 
@@ -1381,7 +1379,7 @@ class FacadeEUMLImpl implements Facade {
 
     }
 
-    public Collection getTagDefinitions(Object handle) {
+    public Collection<Property> getTagDefinitions(Object handle) {
         if (!(handle instanceof Stereotype)) {
             throw new IllegalArgumentException();
         }
@@ -1708,7 +1706,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isACreateAction(Object handle) {
-        // Double check - tfm
+        // TODO: Double check - tfm
         return handle instanceof CreateObjectAction;
     }
 
@@ -2051,7 +2049,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isATemplateArgument(Object handle) {
-        throw new NotYetImplementedException();
+        // TODO: Not exact, but close
+        return handle instanceof TemplateParameterSubstitution;
     }
 
     public boolean isATemplateParameter(Object handle) {
@@ -2234,10 +2233,13 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isStereotype(Object handle, String stereotypename) {
-        throw new NotYetImplementedException();
+        return ((Element) handle).getAppliedStereotype(stereotypename) != null;
     }
 
     public boolean isSynch(Object handle) {
+        if (handle instanceof CallAction) {
+            return ((CallAction) handle).isSynchronous();
+        }
         throw new NotYetImplementedException();
     }
 
@@ -2279,7 +2281,7 @@ class FacadeEUMLImpl implements Facade {
         Namespace ns = (Namespace) handle;
 
         for (;;) {
-            int idx = sb.indexOf("::");
+            int idx = sb.indexOf("::"); //$NON-NLS-1$
 
             if (idx != -1) {
                 NamedElement subspace = getElementByName(ns, sb.substring(
@@ -2336,19 +2338,42 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String[] getMetatypeNames() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
+        Resource resource = modelImpl
+                .getEditingDomain()
+                .getResourceSet()
+                .getResource(URI.createURI(UMLResource.UML_METAMODEL_URI), true);
+        
+        Model metamodel = (Model) EcoreUtil.getObjectByType(resource
+                .getContents(), UMLPackage.Literals.PACKAGE);
+        
+        List<String> result = new ArrayList<String>();
+        for (Type t : metamodel.getOwnedTypes()) {
+            result.add(t.getName());
+        }
+        return result.toArray(new String[0]);
     }
 
     public boolean isA(String metatypeName, Object element) {
         return getUMLClassName(element).equals(metatypeName);
     }
 
-    public Collection getTargets(Object handle) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
+    Namespace getImportingNamespace(Object element) {
+        if (element instanceof PackageImport) {
+            return ((PackageImport) element).getImportingNamespace();
+        } else if (element instanceof ElementImport) {
+            return ((ElementImport) element).getImportingNamespace();
+        }
+        throw new IllegalArgumentException("Element must be one of PackageImport or ElementImport");
+    }
+    
+    org.eclipse.uml2.uml.Package getImportedPackage(Object element) {
+        return ((PackageImport) element).getImportedPackage();
     }
 
+    public Collection<Element> getTargets(Object element) {
+        return ((DirectedRelationship) element).getTargets();
+    }
+    
     public boolean isADirectedRelationship(Object handle) {
         return handle instanceof DirectedRelationship;
     }
