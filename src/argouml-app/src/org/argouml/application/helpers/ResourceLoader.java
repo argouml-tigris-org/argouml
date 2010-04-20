@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Luis Sergio Oliveira (euluis)
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,6 +39,7 @@
 
 package org.argouml.application.helpers;
 
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -92,7 +94,8 @@ class ResourceLoader {
      *            A description for the ImageIcon.
      * @param loader
      *            The class loader that should be used for loading the resource.
-     * @return ImageIcon for the given name, null if no image could be found.
+     * @return ImageIcon for the given name, null if no image could be found or
+     *            if java is running in a headless environment.
      */
     public static ImageIcon lookupIconResource(String resource, String desc,
             ClassLoader loader) {
@@ -104,7 +107,7 @@ class ResourceLoader {
         ImageIcon res = null;
         java.net.URL imgURL = lookupIconUrl(resource, loader);
 
-        if (imgURL != null) {
+        if (imgURL != null && !GraphicsEnvironment.isHeadless()) {
             res = new ImageIcon(imgURL, desc);
             synchronized (resourceCache) {
                 resourceCache.put(resource, res);
