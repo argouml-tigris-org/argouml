@@ -8,7 +8,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.change_2.5.0.v200906151043.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.change.edit_2.5.0.v200906151043.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.edit_2.5.0.v200906151043.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.xmi_2.5.0.v200906151043.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.ecore.xmi_2.5.0.v200906151043.jar" sourcepath="lib/emf/org.eclipse.emf.ecore.xmi.source_2.5.0.v200906151043.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.edit_2.5.0.v200906151043.jar" sourcepath="lib/emf/org.eclipse.emf.edit.source_2.5.0.v200906151043.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.mapping_2.5.0.v200906151043.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/emf/org.eclipse.emf.mapping.ecore2xml_2.5.0.v200906151043.jar"/>
