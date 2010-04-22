@@ -78,6 +78,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("parameter", new ParameterGetterSetter());
         addGetterSetter("receiver", new ReceiverGetterSetter());
         addGetterSetter("sender", new SenderGetterSetter());
+        addGetterSetter("literal", new LiteralGetterSetter());
         addGetterSetter("body", new MethodExpressionGetterSetter());
         addGetterSetter("ownedElement", new OwnedElementGetterSetter());
         addGetterSetter("raisedSignal", new RaisedExceptionGetterSetter());
@@ -1695,6 +1696,31 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         public Object getMetaType() {
             return Model.getMetaTypes().getAttribute();
+        }
+    }
+    
+    private class LiteralGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            return Model.getFacade().getEnumerationLiterals(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, String type) {
+          
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getEnumerationLiteral();
         }
     }
     

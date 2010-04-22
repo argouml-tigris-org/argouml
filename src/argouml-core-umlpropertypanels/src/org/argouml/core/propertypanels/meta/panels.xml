@@ -1196,7 +1196,7 @@
     <list name="specialization" type="GeneralizableElement" />
 	<separator />
     <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
-	<list name="literal" type="EnumerationLiteral" label="label.literals" />
+	<list name="literal" type="org.omg.uml.foundation.core.EnumerationLiteral" label="label.literals" />
 
 	<debug />
     <attribute name="targetFlow" type="Flow" />
