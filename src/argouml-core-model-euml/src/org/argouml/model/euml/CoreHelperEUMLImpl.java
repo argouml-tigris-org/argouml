@@ -1514,6 +1514,19 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 } else {
                     upper = Integer.parseInt(pieces[1]);
                 }
+            } else if (s.contains("_")) { //$NON-NLS-1$
+                // also parse 1_* or 0_N etc.
+                String[] pieces = s.trim().split("_"); //$NON-NLS-1$
+                if (pieces.length > 2) {
+                    throw new IllegalArgumentException((String) arg);
+                }
+                lower = Integer.parseInt(pieces[0]);
+                if ("*".equals(pieces[1]) //$NON-NLS-1$
+                     || "N".equals(pieces[1])) { //$NON-NLS-1$
+                    upper = -1;
+                } else {
+                    upper = Integer.parseInt(pieces[1]);
+                }
             } else { 
                 lower = Integer.parseInt(s);
                 upper = lower;
