@@ -30,6 +30,7 @@ import org.argouml.core.propertypanels.meta.Named;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Command;
 import org.argouml.kernel.NonUndoableCommand;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -98,6 +99,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("action", new ActionGetterSetter());
         addGetterSetter("subvertex", new SubvertexGetterSetter());
         addGetterSetter("internalTransition", new InternalTransitionGetterSetter());
+        addGetterSetter("classifier", new ClassifierGetterSetter());
         
         // UML2 only
         addGetterSetter("ownedOperation", new FeatureGetterSetter());
@@ -1771,5 +1773,102 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public Object getMetaType() {
             return Model.getMetaTypes().getTransition();
         }
+    }
+    
+
+    private class ClassifierGetterSetter extends ListGetterSetter implements Addable, Removeable {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            return Model.getFacade().getClassifiers(modelElement);
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getClassifier();
+        }
+
+        public Command getAddCommand(Object modelElement) {
+    	return new AddCommand(modelElement);
+    }
+    
+    public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
+    	return new RemoveCommand(modelElement, objectToRemove);
+    }
+    
+    private class AddCommand extends AddModelElementCommand {
+
+        /**
+         * Constructor for ActionAddPackageImport.
+         */
+        public AddCommand(Object target) {
+            super(target);
+        }
+
+
+        protected List getChoices() {
+            List list = new ArrayList();
+            
+            Project p = ProjectManager.getManager().getCurrentProject();
+            Object model = p.getRoot();
+            list.addAll(Model.getModelManagementHelper()
+                    .getAllModelElementsOfKindWithModel(model, Model.getMetaTypes().getClassifier()));
+            
+            return list;
+        }
+
+
+        protected List getSelected() {
+            List list = new ArrayList();
+            list.addAll(Model.getFacade().getClassifiers(getTarget()));
+            return list;
+        }
+
+
+        protected String getDialogTitle() {
+            return Translator.localize("dialog.title.add-specifications");
+        }
+
+
+        @Override
+        protected void doIt(Collection selected) {
+       	    Model.getCommonBehaviorHelper().setClassifiers(getTarget(), selected);
+        }
+    }
+    
+    private class RemoveCommand
+	    extends NonUndoableCommand {
+    	
+    	private final Object target;
+    	private final Object objectToRemove;
+    	
+	    /**
+	     * Constructor for ActionRemovePackageImport.
+	     */
+	    public RemoveCommand(final Object target, final Object objectToRemove) {
+	        this.target = target;
+	        this.objectToRemove = objectToRemove;
+	    }
+	    
+	    /*
+	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	     */
+	    public Object execute() {
+	        Model.getCommonBehaviorHelper()
+	            .removeClassifier(target, objectToRemove);
+	        return null;
+	    }
+	}
     }
 }
