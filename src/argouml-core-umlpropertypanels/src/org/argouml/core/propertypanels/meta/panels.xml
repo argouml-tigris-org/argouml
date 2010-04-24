@@ -1297,8 +1297,8 @@
     <combo name="multiplicity" type="Multiplicity" />
     <optionbox name="visibility" type="VisibilityKind" />
     <separator />
-    <combo name="tagType" type="Name" />
-	<list name="typedValue" type="TagDefinition" />
+    <combo name="tagType" type="Name" label="label.type"/>
+	<list name="typedValue" type="TagDefinition" label="label.tagged-values" />
 	
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />
