@@ -33,6 +33,8 @@ import org.argouml.kernel.NonUndoableCommand;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.profile.Profile;
+import org.argouml.profile.ProfileException;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.util.ArgoFrame;
@@ -1816,18 +1818,33 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             super(target);
         }
 
-
         protected List getChoices() {
             List list = new ArrayList();
             
+            // Get all classifiers in our model
+            // TODO: We need the property panels to have some reference to the
+            // project they belong to instead of using deprecated functionality
             Project p = ProjectManager.getManager().getCurrentProject();
             Object model = p.getRoot();
             list.addAll(Model.getModelManagementHelper()
                     .getAllModelElementsOfKindWithModel(model, Model.getMetaTypes().getClassifier()));
             
+            // Get all classifiers in all top level packages of all profiles
+            for (Profile profile : p.getProfileConfiguration().getProfiles()) {
+        	try {
+		    for (Object topPackage : profile.getProfilePackages()) {
+		            list.addAll(Model.getModelManagementHelper()
+		                    .getAllModelElementsOfKindWithModel(topPackage,
+		                	    Model.getMetaTypes().getClassifier()));
+		    }
+		} catch (ProfileException e) {
+		    // TODO: We need to rethrow this as some other exception
+		    // type but that is too much change for the moment.
+		    LOG.error("Exception", e);
+		}
+            }
             return list;
         }
-
 
         protected List getSelected() {
             List list = new ArrayList();
