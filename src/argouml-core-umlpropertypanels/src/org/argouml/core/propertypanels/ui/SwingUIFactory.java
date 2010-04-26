@@ -444,8 +444,14 @@ class SwingUIFactory {
                             "label.represented-operation.navigate.tooltip"),
                     combo);
         } else if ("context".equals(prop.getName())) {
-            final UMLComboBoxModel model = 
-                new UMLStateMachineContextComboBoxModel(propertyName, target);
+            final UMLComboBoxModel model;
+            if (Model.getFacade().isAActivityGraph(target)) {
+                model = 
+                    new UMLActivityGraphContextComboBoxModel(propertyName, target);
+            } else {
+                model = 
+                    new UMLStateMachineContextComboBoxModel(propertyName, target);
+            }
             UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "label.context.navigate.tooltip"),
