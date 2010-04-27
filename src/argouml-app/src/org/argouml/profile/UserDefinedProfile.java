@@ -87,6 +87,7 @@ public class UserDefinedProfile extends Profile {
     private File modelFile;
 
     private Collection profilePackages = null;
+    private Object packageLock = new Object();
 
     private UserDefinedFigNodeStrategy figNodeStrategy 
         = new UserDefinedFigNodeStrategy();
@@ -310,17 +311,22 @@ public class UserDefinedProfile extends Profile {
      *        dependencies
      */
     private void loadModel() {
-        if (profilePackages == null) {
-            try {
-                if (modelFile != null) {
-                    profilePackages = new FileModelLoader().loadModel(reference);
-                } else {
-                    profilePackages = new URLModelLoader().loadModel(reference);                    
+        synchronized (packageLock) {
+            if (profilePackages == null) {
+                try {
+                    if (modelFile != null) {
+                        profilePackages = new FileModelLoader()
+                                .loadModel(reference);
+                    } else {
+                        profilePackages = new URLModelLoader()
+                                .loadModel(reference);
+                    }
+                } catch (ProfileException e1) {
+                    LOG.error("Exception loading profile "
+                            + reference.getPath(), e1);
+                    profilePackages = Collections.emptySet();
+                    return;
                 }
-            } catch (ProfileException e1) {
-                LOG.error("Exception loading profile " + reference.getPath(), 
-                        e1);
-                return;
             }
 
             Collection packagesInProfile = filterPackages(profilePackages);

@@ -1196,7 +1196,7 @@
     <list name="specialization" type="GeneralizableElement" />
 	<separator />
     <list name="feature" type="org.omg.uml.foundation.core.Operation,org.omg.uml.behavioralelements.commonbehavior.Reception" label="label.operations" />
-	<list name="literal" type="EnumerationLiteral" label="label.literals" />
+	<list name="literal" type="org.omg.uml.foundation.core.EnumerationLiteral" label="label.literals" />
 
 	<debug />
     <attribute name="targetFlow" type="Flow" />
@@ -1297,8 +1297,8 @@
     <combo name="multiplicity" type="Multiplicity" />
     <optionbox name="visibility" type="VisibilityKind" />
     <separator />
-    <combo name="tagType" type="Name" />
-	<list name="typedValue" type="TagDefinition" />
+    <combo name="tagType" type="Name" label="label.type"/>
+	<list name="typedValue" type="TagDefinition" label="label.tagged-values" />
 	
     <attribute name="modifiers">
       <attribute name="isSpecification" type="Boolean" />

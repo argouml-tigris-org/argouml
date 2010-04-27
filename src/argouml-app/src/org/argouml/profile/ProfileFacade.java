@@ -105,7 +105,7 @@ public class ProfileFacade {
                 try {
                     manager.removeProfile(p);
                 } catch (InvalidElementException e) {
-                    LOG.debug("Attempted to delete extent twice in removeAllProfiles " + p);
+                    LOG.debug("Attempted to delete extent twice in removeAllProfiles ");
                 }
             }
         }

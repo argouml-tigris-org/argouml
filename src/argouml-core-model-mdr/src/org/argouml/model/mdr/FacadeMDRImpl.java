@@ -2130,18 +2130,18 @@ class FacadeMDRImpl implements Facade {
             if (handle instanceof StructuralFeature) {
                 StructuralFeature sf = (StructuralFeature) handle;
                 return sf.getMultiplicity();
-            }
-            if (handle instanceof TagDefinition) {
+            } else if (handle instanceof TagDefinition) {
                 TagDefinition td = (TagDefinition) handle;
                 return td.getMultiplicity();
-            }
-            if (handle instanceof ClassifierRole) {
+            } else if (handle instanceof ClassifierRole) {
                 ClassifierRole cr = (ClassifierRole) handle;
                 return cr.getMultiplicity();
-            }
-            if (handle instanceof AssociationEnd) {
+            } else if (handle instanceof AssociationEnd) {
                 AssociationEnd ae = (AssociationEnd) handle;
                 return ae.getMultiplicity();
+            } else if (handle instanceof AssociationRole) {
+                AssociationRole ar = (AssociationRole) handle;
+                return ar.getMultiplicity();
             }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);

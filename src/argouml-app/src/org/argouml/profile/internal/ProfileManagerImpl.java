@@ -279,21 +279,28 @@ public class ProfileManagerImpl implements ProfileManager {
      * from the configuration.
      */
     private boolean registerProfileInternal(Profile p) {
-        boolean loadDefaultProfilesFromConfiguration = false;
-        if (p != null && !profiles.contains(p)) {
-            if (p instanceof UserDefinedProfile
-                    || getProfileForClass(p.getClass().getName()) == null) {
-                loadDefaultProfilesFromConfiguration = true;
-                profiles.add(p);
-                for (Critic critic : p.getCritics()) {
-                    for (Object meta : critic.getCriticizedDesignMaterials()) {
-                        Agency.register(critic, meta);
+        
+        try {
+            boolean loadDefaultProfilesFromConfiguration = false;
+            if (p != null && !profiles.contains(p)) {
+                if (p instanceof UserDefinedProfile
+                        || getProfileForClass(p.getClass().getName()) == null) {
+                    loadDefaultProfilesFromConfiguration = true;
+                    profiles.add(p);
+                    for (Critic critic : p.getCritics()) {
+                        for (Object meta : critic.getCriticizedDesignMaterials()) {
+                            Agency.register(critic, meta);
+                        }
+                        critic.setEnabled(false);
                     }
-                    critic.setEnabled(false);
                 }
             }
+            return loadDefaultProfilesFromConfiguration;
+        } catch (RuntimeException e) {
+            // TODO: Better if we wrap in a ProfileException and throw that
+            LOG.error("Error registering profile " + p.getDisplayName());
+            throw e;
         }
-        return loadDefaultProfilesFromConfiguration;
     }
 
     public void removeProfile(Profile p) {

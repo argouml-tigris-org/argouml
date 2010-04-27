@@ -53,6 +53,7 @@ import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
+import org.eclipse.uml2.uml.OpaqueBehavior;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
@@ -65,6 +66,7 @@ import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.StructuralFeature;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.TypedElement;
+import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.ValueSpecification;
 import org.eclipse.uml2.uml.VisibilityKind;
@@ -1313,14 +1315,62 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setBody(Object handle, Object expr) {
-        throw new NotYetImplementedException();
+	throw new NotYetImplementedException();
     }
 
     public void setBody(Object handle, String body) {
-        if (!(handle instanceof Comment)) {
-            throw new IllegalArgumentException();
-        }
-        ((Comment) handle).setBody(body);
+        
+	if( handle instanceof Comment) {
+	    ((Comment) handle).setBody(body);
+	    return;
+	}
+
+	if( handle instanceof Operation) {
+
+	    // We need a method (operation implementation) to store the method body.
+	    OpaqueBehavior methodImpl = null;
+
+	    // Maybe this operation already has a method, that fits our purpose?
+	    // In this case, try to reuse it, instead of creating a new implementation.
+	    for( Behavior impl : ((Operation)handle).getMethods()) {
+		if( impl instanceof OpaqueBehavior) {
+		    methodImpl = (OpaqueBehavior)impl;
+		    break;
+		}
+	    }
+
+	    // Check, if we have to create a new implementation.
+	    if( methodImpl == null) {
+		methodImpl = UMLFactory.eINSTANCE.createOpaqueBehavior();	// Create a new implementation.
+		methodImpl.setSpecification( (Operation)handle);		// And set the specification to the current operation.
+		((Operation)handle).getMethods().add( methodImpl);  		// Add it to the operation's methods.
+	    }
+
+	    // Look, if there's already a java implementation
+	    if( methodImpl.isSetLanguages()) {
+		int bodyIndex = 0;
+
+		// Search for our current target language.
+		for( String language : methodImpl.getLanguages()) {
+		    if( "java".equals( language)) {
+
+			// Try to get the corresponding body and set it to the current body
+			// This _should_ work, if all the bodies were stored with their corresponding languages.
+			methodImpl.getBodies().set( bodyIndex, body);
+			return;		// Job done.
+		    }
+		    bodyIndex++;
+		}
+	    }
+  
+	    // It seems, there was no implementation of our current target language, so we just add one.
+	    methodImpl.getLanguages().add( "java");
+	    methodImpl.getBodies().add( body);
+	    return;
+	}
+
+	// We cannot set the body of this model element type.
+	throw new IllegalArgumentException();
     }
 
     @Deprecated
@@ -1460,6 +1510,19 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 }
                 lower = Integer.parseInt(pieces[0]);
                 if ("*".equals(pieces[1])) { //$NON-NLS-1$
+                    upper = -1;
+                } else {
+                    upper = Integer.parseInt(pieces[1]);
+                }
+            } else if (s.contains("_")) { //$NON-NLS-1$
+                // also parse 1_* or 0_N etc.
+                String[] pieces = s.trim().split("_"); //$NON-NLS-1$
+                if (pieces.length > 2) {
+                    throw new IllegalArgumentException((String) arg);
+                }
+                lower = Integer.parseInt(pieces[0]);
+                if ("*".equals(pieces[1]) //$NON-NLS-1$
+                     || "N".equals(pieces[1])) { //$NON-NLS-1$
                     upper = -1;
                 } else {
                     upper = Integer.parseInt(pieces[1]);

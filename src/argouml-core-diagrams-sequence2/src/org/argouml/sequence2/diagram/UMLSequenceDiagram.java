@@ -348,7 +348,7 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
         super.postLoad();
         
         final Facade facade = Model.getFacade();                   
-        
+        LOG.info("doing postLoad on " + getName());
         // See issue 5811. We have collaborationroles, associationroles
         // and messages and actions saved to the incorrect interaction and
         // and collaboration. If we detect this circumstance at load then
@@ -372,6 +372,7 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
             for (final Fig f : getLayer().getContents()) {
                 if (f instanceof FigMessage) {
                     final Object message = f.getOwner();
+                    LOG.info("Checking message " + f.getOwner());
                     final Object interaction = facade.getInteraction(message);
                     final Object context = facade.getContext(interaction);
                     final Object action = facade.getAction(message);
@@ -416,12 +417,6 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
                                 Model.getCoreHelper().setNamespace(
                                         assRole, collaboration);
                             }
-                        }
-                        
-                        if (facade.getOwnedElements(namespace).isEmpty()) {
-                            LOG.warn("Deleting empty collaboration "
-                                    + collaboration);
-                            Model.getUmlFactory().delete(collaboration);
                         }
                     }
                 }

@@ -7,13 +7,12 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    euluis
+ *    Luis Sergio Oliveira (euluis)
  *****************************************************************************
  */
 
 package org.argouml.profile.internal;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Collection;
@@ -60,12 +59,14 @@ class DependencyResolver<T> {
         if (unresolvedItems.isEmpty()) {
             return;
         }
-        final Collection<T> items = Collections.unmodifiableCollection(
-            new ArrayList<T>());
+        final Collection<T> items = Collections.emptyList();
         resolve(items);
     }
 
     /**
+     * Attempt to resolve the dependencies of the items already handed over to
+     * the resolver instance and the additional items handed over now.
+     *
      * @param items additional items to resolve.
      */
     void resolve(Collection<T> items) {

@@ -2936,32 +2936,32 @@ class CoreHelperMDRImpl implements CoreHelper {
 
         if (arg == null || arg instanceof Multiplicity) {
             Multiplicity mult = (Multiplicity) arg;
-
+            Multiplicity previousMult =
+                (Multiplicity) Model.getFacade().getMultiplicity(handle);
             if (handle instanceof AssociationRole) {
                 ((AssociationRole) handle).setMultiplicity(mult);
-                return;
-            }
-            if (handle instanceof ClassifierRole) {
+            } else if (handle instanceof ClassifierRole) {
                 ((ClassifierRole) handle).setMultiplicity(mult);
-                return;
-            }
-            if (handle instanceof StructuralFeature) {
+            } else if (handle instanceof StructuralFeature) {
                 ((StructuralFeature) handle).setMultiplicity(mult);
-                return;
-            }
-            if (handle instanceof AssociationEnd) {
-                LOG.debug("Setting association end mult to " + mult);
+            } else if (handle instanceof AssociationEnd) {
                 ((AssociationEnd) handle).setMultiplicity(mult);
-                return;
-            }
-            if (handle instanceof TagDefinition) {
+            } else if (handle instanceof TagDefinition) {
                 ((TagDefinition) handle).setMultiplicity(mult);
-                return;
             }
+            if (previousMult != null &&
+                    Model.getFacade().getModelElementContainer(previousMult)
+                    == null) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("Previous multiplicity of " + handle + " will be deleted." + mult);
+                }
+                Model.getUmlFactory().delete(previousMult);
+            }
+            return;
+        } else {
+            throw new IllegalArgumentException("handle: " + handle + " or arg: "
+                    + arg);
         }
-
-        throw new IllegalArgumentException("handle: " + handle + " or arg: "
-                + arg);
     }
 
 

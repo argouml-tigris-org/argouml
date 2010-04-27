@@ -129,15 +129,27 @@ public final class Model {
      */
     public static void setImplementation(ModelImplementation newImpl) {
         impl = newImpl;
-        activityGraphsHelper = impl.getActivityGraphsHelper();
-        collaborationsHelper = impl.getCollaborationsHelper();
-        commonBehaviorHelper = impl.getCommonBehaviorHelper();
-        coreHelper = impl.getCoreHelper();
-        dataTypesHelper = impl.getDataTypesHelper();
-        extensionMechanismsHelper = impl.getExtensionMechanismsHelper();
-        stateMachinesHelper = impl.getStateMachinesHelper();
-        umlHelper = impl.getUmlHelper();
-        useCasesHelper = impl.getUseCasesHelper();
+        if (impl == null) {
+            activityGraphsHelper = null;
+            collaborationsHelper = null;
+            commonBehaviorHelper = null;
+            coreHelper = null;
+            dataTypesHelper = null;
+            extensionMechanismsHelper = null;
+            stateMachinesHelper = null;
+            umlHelper = null;
+            useCasesHelper = null;            
+        } else {
+            activityGraphsHelper = impl.getActivityGraphsHelper();
+            collaborationsHelper = impl.getCollaborationsHelper();
+            commonBehaviorHelper = impl.getCommonBehaviorHelper();
+            coreHelper = impl.getCoreHelper();
+            dataTypesHelper = impl.getDataTypesHelper();
+            extensionMechanismsHelper = impl.getExtensionMechanismsHelper();
+            stateMachinesHelper = impl.getStateMachinesHelper();
+            umlHelper = impl.getUmlHelper();
+            useCasesHelper = impl.getUseCasesHelper();
+        }
     }
 
     /**

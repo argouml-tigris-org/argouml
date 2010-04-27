@@ -71,10 +71,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLClassifierRoleAvailableFeaturesListModel(modelElement);
         } else if ("base".equals(propName)) {
             model = new UMLClassifierRoleBaseListModel(modelElement);
-        } else if ("baseClass".equals(propName)) {
-            model = new UMLStereotypeBaseClassListModel(modelElement);
-        } else if ("classifier".equals(propName)) {
-            model = new UMLInstanceClassifierListModel(modelElement);
         } else if ("classifierInState".equals(propName)) {
             model = new UMLOFSStateListModel(modelElement);
         } else if ("client".equals(propName)) {
@@ -107,8 +103,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLCreateActionClassifierListModel(modelElement);
         } else if ("link".equals(propName)) {
             model = new UMLAssociationLinkListModel(modelElement);
-        } else if ("literal".equals(propName)) {
-            model = new UMLEnumerationLiteralsListModel(modelElement);
         } else if ("outgoing".equals(propName)) {
             model = new UMLStateVertexOutgoingListModel(modelElement);
         } else if ("partition".equals(propName)) {

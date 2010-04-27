@@ -87,6 +87,7 @@ import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.ObjectFlow;
 import org.eclipse.uml2.uml.ObjectNode;
+import org.eclipse.uml2.uml.OpaqueBehavior;
 import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.OutputPin;
@@ -344,7 +345,22 @@ class FacadeEUMLImpl implements Facade {
         } else if (handle instanceof ValueSpecification) {
             return getValueSpecification((ValueSpecification) handle);
         } else if (handle instanceof Operation) {
-            throw new NotYetImplementedException();
+	    
+	    // Get the implementations of this operations and look for an OpaqueBehavior.
+	    for( Behavior impl : ((Operation)handle).getMethods()) {
+		if( impl instanceof OpaqueBehavior) {
+		    if( ((OpaqueBehavior)impl).isSetLanguages()) {
+			int bodyIndex = 0;
+			for( String targetLanguage : ((OpaqueBehavior)impl).getLanguages()) {
+			    if( "java".equals( targetLanguage)) {
+				return ((OpaqueBehavior)impl).getBodies().get( bodyIndex);
+			    }
+			    bodyIndex++;
+			}
+		    }
+		}
+	    }
+	    return null;  // No body found.
         }
         throw new IllegalArgumentException(
                 "Unsupported argument type - must be Comment, Constraint," +
