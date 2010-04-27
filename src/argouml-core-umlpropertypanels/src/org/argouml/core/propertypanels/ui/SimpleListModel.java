@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.kernel.Command;
 import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
@@ -170,6 +171,15 @@ class SimpleListModel
 	            }  
 	        };
 	        SwingUtilities.invokeLater(doWorkRunnable);
+        } else if (e.getPropertyName().equals("baseClass")
+        	&& e.getPropertyName().equals(propertyName)
+        	&& e instanceof AttributeChangeEvent) {
+            // TODO: We have some quirk that the a baseClass addition or
+            // removal from a steroetype comes back as an AttributeChangeEvent
+            // rather than an AssociationChangeEvent. This needs further
+            // investigation to see if this can be made consistent.
+       	    removeAllElements();
+            build();
         } else {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("We are listening for too much here. An event we don't need " + e);

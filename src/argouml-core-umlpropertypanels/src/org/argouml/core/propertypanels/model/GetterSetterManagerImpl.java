@@ -17,7 +17,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.swing.Icon;
@@ -102,6 +105,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("subvertex", new SubvertexGetterSetter());
         addGetterSetter("internalTransition", new InternalTransitionGetterSetter());
         addGetterSetter("classifier", new ClassifierGetterSetter());
+        addGetterSetter("baseClass", new BaseClassGetterSetter());
         
         // UML2 only
         addGetterSetter("ownedOperation", new FeatureGetterSetter());
@@ -1802,73 +1806,73 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
 
         public Command getAddCommand(Object modelElement) {
-    	return new AddCommand(modelElement);
-    }
-    
-    public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
-    	return new RemoveCommand(modelElement, objectToRemove);
-    }
-    
-    private class AddCommand extends AddModelElementCommand {
-
-        /**
-         * Constructor for ActionAddPackageImport.
-         */
-        public AddCommand(Object target) {
-            super(target);
+            return new AddCommand(modelElement);
         }
+    
+        public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
+    	    return new RemoveCommand(modelElement, objectToRemove);
+        }
+    
+        private class AddCommand extends AddModelElementCommand {
 
-        protected List getChoices() {
-            List list = new ArrayList();
-            
-            // Get all classifiers in our model
-            // TODO: We need the property panels to have some reference to the
-            // project they belong to instead of using deprecated functionality
-            Project p = ProjectManager.getManager().getCurrentProject();
-            Object model = p.getRoot();
-            list.addAll(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKindWithModel(model, Model.getMetaTypes().getClassifier()));
-            
-            // Get all classifiers in all top level packages of all profiles
-            for (Profile profile : p.getProfileConfiguration().getProfiles()) {
-        	try {
-		    for (Object topPackage : profile.getProfilePackages()) {
-		            list.addAll(Model.getModelManagementHelper()
-		                    .getAllModelElementsOfKindWithModel(topPackage,
-		                	    Model.getMetaTypes().getClassifier()));
-		    }
-		} catch (ProfileException e) {
-		    // TODO: We need to rethrow this as some other exception
-		    // type but that is too much change for the moment.
-		    LOG.error("Exception", e);
-		}
+            /**
+             * Constructor for ActionAddPackageImport.
+             */
+            public AddCommand(Object target) {
+                super(target);
             }
-            return list;
-        }
-
-        protected List getSelected() {
-            List list = new ArrayList();
-            list.addAll(Model.getFacade().getClassifiers(getTarget()));
-            return list;
-        }
-
-
-        protected String getDialogTitle() {
-            return Translator.localize("dialog.title.add-specifications");
-        }
-
-
-        @Override
-        protected void doIt(Collection selected) {
-       	    Model.getCommonBehaviorHelper().setClassifiers(getTarget(), selected);
-        }
-    }
     
-    private class RemoveCommand
+            protected List getChoices() {
+                List list = new ArrayList();
+                
+                // Get all classifiers in our model
+                // TODO: We need the property panels to have some reference to the
+                // project they belong to instead of using deprecated functionality
+                Project p = ProjectManager.getManager().getCurrentProject();
+                Object model = p.getRoot();
+                list.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKindWithModel(model, Model.getMetaTypes().getClassifier()));
+                
+                // Get all classifiers in all top level packages of all profiles
+                for (Profile profile : p.getProfileConfiguration().getProfiles()) {
+            	try {
+    		    for (Object topPackage : profile.getProfilePackages()) {
+    		            list.addAll(Model.getModelManagementHelper()
+    		                    .getAllModelElementsOfKindWithModel(topPackage,
+    		                	    Model.getMetaTypes().getClassifier()));
+    		    }
+    		} catch (ProfileException e) {
+    		    // TODO: We need to rethrow this as some other exception
+    		    // type but that is too much change for the moment.
+    		    LOG.error("Exception", e);
+    		}
+                }
+                return list;
+            }
+    
+            protected List getSelected() {
+                List list = new ArrayList();
+                list.addAll(Model.getFacade().getClassifiers(getTarget()));
+                return list;
+            }
+    
+    
+            protected String getDialogTitle() {
+                return Translator.localize("dialog.title.add-specifications");
+            }
+    
+    
+            @Override
+            protected void doIt(Collection selected) {
+           	    Model.getCommonBehaviorHelper().setClassifiers(getTarget(), selected);
+            }
+        }
+    
+        private class RemoveCommand
 	    extends NonUndoableCommand {
     	
-    	private final Object target;
-    	private final Object objectToRemove;
+            private final Object target;
+            private final Object objectToRemove;
     	
 	    /**
 	     * Constructor for ActionRemovePackageImport.
@@ -1884,6 +1888,141 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 	    public Object execute() {
 	        Model.getCommonBehaviorHelper()
 	            .removeClassifier(target, objectToRemove);
+	        return null;
+	    }
+	}
+    }
+    
+    private class BaseClassGetterSetter extends ListGetterSetter implements Addable, Removeable {
+        
+        public Collection getOptions(Object modelElement, String type) {
+            LinkedList<String> list = new LinkedList<String>(
+                    Model.getFacade().getBaseClasses(modelElement));
+            Collections.sort(list);
+            return list;
+        }
+      
+        public Object get(Object modelElement, String type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, String type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Class.class;
+        }
+
+        public Command getAddCommand(Object modelElement) {
+            return new AddCommand(modelElement);
+        }
+    
+        public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
+    	    return new RemoveCommand(modelElement, objectToRemove);
+        }
+    
+        private class AddCommand extends AddModelElementCommand {
+
+            final private List<String> metaClasses;
+            
+            /**
+             * Constructor for ActionAddPackageImport.
+             */
+            public AddCommand(Object target) {
+                super(target);
+                metaClasses = initMetaClasses();
+            }
+            
+            /**
+             * Initialize the meta-classes list. <p>
+             * 
+             * All this code is necessary to be independent of 
+             * model repository implementation, 
+             * i.e. to ensure that we have a 
+             * sorted list of strings.
+             */
+            private List<String> initMetaClasses() {
+                Collection<String> tmpMetaClasses = 
+                    Model.getCoreHelper().getAllMetatypeNames();
+                List<String> metaClasses;
+                if (tmpMetaClasses instanceof List) {
+                    metaClasses = (List<String>) tmpMetaClasses;
+                } else {
+                    metaClasses = new LinkedList<String>(tmpMetaClasses);
+                }
+                try {
+                    Collections.sort(metaClasses);
+                } catch (UnsupportedOperationException e) {
+                    // We got passed an unmodifiable List.  Copy it and sort the result
+                    metaClasses = new LinkedList<String>(tmpMetaClasses);
+                    Collections.sort(metaClasses);
+                }
+                
+                return metaClasses;
+            }
+            
+            protected List getChoices() {
+        	return Collections.unmodifiableList(metaClasses);
+            }
+    
+            protected List getSelected() {
+                LinkedList<String> list = new LinkedList<String>(
+                        Model.getFacade().getBaseClasses(getTarget()));
+                Collections.sort(list);
+                return list;
+            }
+    
+    
+            protected String getDialogTitle() {
+                return Translator.localize("dialog.title.add-baseclasses");
+            }
+    
+    
+            @Override
+            protected void doIt(Collection selected) {
+                Object stereo = getTarget();
+                Set<Object> oldSet = new HashSet<Object>(getSelected());
+                Set toBeRemoved = new HashSet<Object>(oldSet);
+
+                for (Object o : selected) {
+                    if (oldSet.contains(o)) {
+                        toBeRemoved.remove(o);
+                    } else {
+                        Model.getExtensionMechanismsHelper()
+                                .addBaseClass(stereo, o);
+                    }
+                }
+                for (Object o : toBeRemoved) {
+                    Model.getExtensionMechanismsHelper().removeBaseClass(stereo, o);
+                }
+            }
+        }
+    
+        private class RemoveCommand
+	    extends NonUndoableCommand {
+    	
+            private final Object target;
+            private final Object objectToRemove;
+    	
+	    /**
+	     * Constructor for RemoveCommand.
+	     */
+	    public RemoveCommand(final Object target, final Object objectToRemove) {
+	        this.target = target;
+	        this.objectToRemove = objectToRemove;
+	    }
+	    
+	    /*
+	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	     */
+	    public Object execute() {
+                Model.getExtensionMechanismsHelper().removeBaseClass(target, objectToRemove);
 	        return null;
 	    }
 	}
