@@ -2957,10 +2957,11 @@ class CoreHelperMDRImpl implements CoreHelper {
                 }
                 Model.getUmlFactory().delete(previousMult);
             }
+            return;
+        } else {
+            throw new IllegalArgumentException("handle: " + handle + " or arg: "
+                    + arg);
         }
-
-        throw new IllegalArgumentException("handle: " + handle + " or arg: "
-                + arg);
     }
 
 
