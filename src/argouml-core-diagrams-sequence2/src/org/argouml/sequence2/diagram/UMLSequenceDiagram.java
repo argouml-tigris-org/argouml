@@ -383,20 +383,6 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
                         collabHelper.addMessage(correctInteraction, message);
                         Model.getCoreHelper().setNamespace(
                                 action, collaboration);
-                        // If this leaves the interaction empty then
-                        // delete it.
-                        if (facade.getMessages(interaction).isEmpty()) {
-                            LOG.warn("Deleting empty interaction "
-                                    + interaction);
-                            Model.getUmlFactory().delete(interaction);
-                            // If that in turn leaves the collaboration empty
-                            // then delete that also.
-                            if (context != null && facade.getOwnedElements(context).isEmpty()) {
-                                LOG.warn("Deleting empty collaboration "
-                                        + context);
-                                Model.getUmlFactory().delete(context);
-                            }
-                        }
                     }
                 } else if (f instanceof FigClassifierRole) {
                     final Object cr = f.getOwner();
