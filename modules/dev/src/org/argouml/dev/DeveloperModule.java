@@ -55,7 +55,6 @@ import org.argouml.ui.AboutBox;
 import org.argouml.ui.ContextActionFactoryManager;
 import org.argouml.ui.DetailsPane;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.undo.UndoManager;
 
 /**
@@ -80,7 +79,6 @@ public final class DeveloperModule implements ModuleInterface {
      * This is creatable from the module loader.
      */
     public DeveloperModule() {
-        TabProps.replace = false;
     }
 
     ////////////////////////////////////////////////////////////////
