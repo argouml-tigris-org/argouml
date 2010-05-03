@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<metamodel>
+<!-- The classes section lists all the model element types and allocates them 
+a name that can be used as an identifier rather than using the fully qualified
+name
+ -->
+<classes>
+  <class name="Expression">org.eclipse.uml2.uml.Expression</class>
+  <class name="TimeExpression">org.eclipse.uml2.uml.TimeExpression</class>
+  <class name="Element">org.eclipse.uml2.uml.Element</class>
+  <class name="Namespace">org.eclipse.uml2.uml.Namespace</class>
+  <class name="Classifier">org.eclipse.uml2.uml.Classifier</class>
+  <class name="Class">org.eclipse.uml2.uml.Class</class>
+  <class name="DataType">org.eclipse.uml2.uml.DataType</class>
+  <class name="Feature">org.eclipse.uml2.uml.Feature</class>
+  <class name="StructuralFeature">org.eclipse.uml2.uml.StructuralFeature</class>
+  <class name="Interface">org.eclipse.uml2.uml.Interface</class>
+  <class name="Constraint">org.eclipse.uml2.uml.Constraint</class>
+  <class name="Relationship">org.eclipse.uml2.uml.Relationship</class>
+  <class name="Association">org.eclipse.uml2.uml.Association</class>
+  <class name="Property">org.eclipse.uml2.uml.Property</class>
+  <class name="BehavioralFeature">org.eclipse.uml2.uml.BehavioralFeature</class>
+  <class name="Operation">org.eclipse.uml2.uml.Operation</class>
+  <class name="Parameter">org.eclipse.uml2.uml.Parameter</class>
+  <class name="Generalization">org.eclipse.uml2.uml.Generalization</class>
+  <class name="AssociationClass">org.eclipse.uml2.uml.AssociationClass</class>
+  <class name="Dependency">org.eclipse.uml2.uml.Dependency</class>
+  <class name="Usage">org.eclipse.uml2.uml.Usage</class>
+  <class name="Component">org.eclipse.uml2.uml.Component</class>
+  <class name="Node">org.eclipse.uml2.uml.Node</class>
+  <class name="Comment">org.eclipse.uml2.uml.Comment</class>
+  <class name="Enumeration">org.eclipse.uml2.uml.Enumeration</class>
+  <class name="EnumerationLiteral">org.eclipse.uml2.uml.EnumerationLiteral</class>
+  <class name="Stereotype">org.eclipse.uml2.uml.Stereotype</class>
+  <class name="Artifact">org.eclipse.uml2.uml.Artifact</class>
+  <class name="Signal">org.eclipse.uml2.uml.Signal</class>
+  <class name="Action">org.eclipse.uml2.uml.Action</class>
+  <class name="CallAction">org.eclipse.uml2.uml.CallAction</class>
+  <class name="Reception">org.eclipse.uml2.uml.Reception</class>
+  <class name="UseCase">org.eclipse.uml2.uml.UseCase</class>
+  <class name="Actor">org.eclipse.uml2.uml.Actor</class>
+  <class name="Extend">org.eclipse.uml2.uml.Extend</class>
+  <class name="Include">org.eclipse.uml2.uml.Include</class>
+  <class name="ExtensionPoint">org.eclipse.uml2.uml.ExtensionPoint</class>
+  <class name="StateMachine">org.eclipse.uml2.uml.StateMachine</class>
+  <class name="Event">org.eclipse.uml2.uml.Event</class>
+  <class name="State">org.eclipse.uml2.uml.State</class>
+  <class name="TimeEvent">org.eclipse.uml2.uml.TimeEvent</class>
+  <class name="CallEvent">org.eclipse.uml2.uml.CallEvent</class>
+  <class name="SignalEvent">org.eclipse.uml2.uml.SignalEvent</class>
+  <class name="Transition">org.eclipse.uml2.uml.Transition</class>
+  <class name="ChangeEvent">org.eclipse.uml2.uml.ChangeEvent</class>
+  <class name="Pseudostate">org.eclipse.uml2.uml.Pseudostate</class>
+  <class name="FinalState">org.eclipse.uml2.uml.FinalState</class>
+  <class name="Collaboration">org.eclipse.uml2.uml.Collaboration</class>
+  <class name="Message">org.eclipse.uml2.uml.Message</class>
+  <class name="Interaction">org.eclipse.uml2.uml.Interaction</class>
+  <class name="Package">org.eclipse.uml2.uml.Package</class>
+  <class name="Model">org.eclipse.uml2.uml.Model</class>
+</classes>
+</metamodel>
