@@ -83,8 +83,6 @@ public class TabProps
      */
     private static final Logger LOG = Logger.getLogger(TabProps.class);
     
-    private static boolean cachePanels = false;
-
     private JPanel blankPanel = new JPanel();
     private Hashtable<Class, JPanel> panels = 
         new Hashtable<Class, JPanel>();
@@ -97,11 +95,6 @@ public class TabProps
     private JPanel currentPanel;
     
     private Object target;
-
-    /**
-     * @deprecated this is only temporary for dev phase of 0.29
-     */
-    public static boolean replace = true;
 
     /**
      * The list with targetlisteners, these are the property panels
@@ -262,26 +255,7 @@ public class TabProps
     private JPanel findPanelFor(Object trgt) {
         // TODO: No test coverage for this or createPropPanel? - tfm
         
-        /* 1st attempt: get a panel that we created before: */
-        JPanel panel;
-        if (cachePanels) {
-            // TODO: Once XML Property panels are live we should no longer be
-            // caching panels, this code and the panels HashTable can go.
-            panel = panels.get(trgt.getClass());
-            if (panel != null) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Getting prop panel for: "
-                            + trgt.getClass().getName()
-                            + ", " + "found (in cache?) " + panel);
-                }
-                return panel;
-            }
-        }
-
-        /* 2nd attempt: If we didn't find the panel then
-         * use the factory to create a new one
-	 */
-        panel = createPropPanel(trgt);
+        JPanel panel = createPropPanel(trgt);
         if (panel != null) {
             LOG.debug("Factory created " + panel.getClass().getName()
                     + " for " + trgt.getClass().getName());
@@ -455,15 +429,4 @@ public class TabProps
             }
         }
     }
-    
-    /**
-     * This method is introduced as deprecated it should be removed from the
-     * code before release 0.30. It is currently used by the
-     * XML Property Panel module only and should not be used elsewhere.
-     */
-    @Deprecated
-    public static void disableCache() {
-        cachePanels = false;
-    }
-    
 } /* end class TabProps */
