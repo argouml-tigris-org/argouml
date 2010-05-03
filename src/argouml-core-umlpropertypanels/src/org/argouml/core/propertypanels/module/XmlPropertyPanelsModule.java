@@ -53,11 +53,7 @@ import org.argouml.uml.ui.TabProps;
  *
  * @author penyaskito
  */
-public class XmlPropertyPanelsModule 
-    implements ModuleInterface {
-    // TODO: Uncomment this and replace above line to see old and new panel
-    // together
-//  implements ModuleInterface, DetailsTabProvider {
+public class XmlPropertyPanelsModule implements ModuleInterface {
 
     /**
      * The logger
@@ -68,27 +64,15 @@ public class XmlPropertyPanelsModule
     private TempTabPage tempPanel;
     
     public boolean enable() { 
-        
-//        if (TabProps.replace) {
-            /* Set up the property panels for UML elements: */
-            try {
-                TabProps.disableCache();
-                PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
-                PropPanelFactoryManager.addPropPanelFactory(elementFactory);
-                return true;
-            } catch (Exception e) {
-                LOG.error("Exception caught", e);
-                return false;
-            }
-//        } else {
-//            DetailsPane detailsPane = (DetailsPane) ProjectBrowser.getInstance().getDetailsPane();
-//            tempPanel = new TempTabPage();
-//            detailsPane.addTab(tempPanel, true);
-//            
-//            TempListener listener = new TempListener(tempPanel);
-//            TargetManager.getInstance().addTargetListener(listener);
-//            return true;
-//        }
+        try {
+            TabProps.disableCache();
+            PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
+            PropPanelFactoryManager.addPropPanelFactory(elementFactory);
+            return true;
+        } catch (Exception e) {
+            LOG.error("Exception caught", e);
+            return false;
+        }
     }
 
     public boolean disable() {
