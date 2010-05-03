@@ -83,7 +83,7 @@ public class XmlPropertyPanelsModule implements ModuleInterface {
     public String getInfo(int type) {
         switch (type) {
         case AUTHOR:
-            return "Christian Lopez Espinola";
+            return "ArgoUML Team";
         case DESCRIPTION:
             return "Module for adding property panels based on XML";
         case DOWNLOADSITE:
