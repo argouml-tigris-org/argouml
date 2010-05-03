@@ -41,12 +41,8 @@ package org.argouml.core.propertypanels.module;
 import org.apache.log4j.Logger;
 import org.argouml.core.propertypanels.ui.XMLPropPanelFactory;
 import org.argouml.moduleloader.ModuleInterface;
-import org.argouml.ui.DetailsPane;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelFactory;
 import org.argouml.uml.ui.PropPanelFactoryManager;
-import org.argouml.uml.ui.TabProps;
 
 /**
  * Defines the XMLPropertyPanels module
@@ -61,11 +57,8 @@ public class XmlPropertyPanelsModule implements ModuleInterface {
     private static final Logger LOG =
         Logger.getLogger(XmlPropertyPanelsModule.class);
     
-    private TempTabPage tempPanel;
-    
     public boolean enable() { 
         try {
-            TabProps.disableCache();
             PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
             PropPanelFactoryManager.addPropPanelFactory(elementFactory);
             return true;
@@ -76,20 +69,14 @@ public class XmlPropertyPanelsModule implements ModuleInterface {
     }
 
     public boolean disable() {
-        if (TabProps.replace) {
-            /* Set up the property panels for UML elements: */
-            try {
-                PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
-                PropPanelFactoryManager.removePropPanelFactory(elementFactory);
-                return true;
-            } catch (Exception e) {
-                LOG.error("Exception caught", e);
-                return false;
-            }
-        } else {
-            DetailsPane detailsPane = (DetailsPane) ProjectBrowser.getInstance().getDetailsPane();
-            detailsPane.removeTab(tempPanel);
+        /* Set up the property panels for UML elements: */
+        try {
+            PropPanelFactory elementFactory = XMLPropPanelFactory.getInstance();
+            PropPanelFactoryManager.removePropPanelFactory(elementFactory);
             return true;
+        } catch (Exception e) {
+            LOG.error("Exception caught", e);
+            return false;
         }
     }
 
@@ -111,5 +98,4 @@ public class XmlPropertyPanelsModule implements ModuleInterface {
     public String getName() {        
         return "Xml Property Panels Module";
     }
-
 }
