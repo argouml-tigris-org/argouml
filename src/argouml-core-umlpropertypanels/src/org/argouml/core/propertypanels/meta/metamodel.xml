@@ -326,7 +326,7 @@ The combination of the above allows the GUI to distinguish between
     <separator />
     <list name="specialization" type="GeneralizableElement" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
-    <list name="feature" type="Operation,Reception" type="Operation,Reception" />
+    <list name="feature" type="Operation,Reception" new="true" />
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
