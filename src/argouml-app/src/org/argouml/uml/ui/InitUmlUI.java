@@ -73,10 +73,7 @@ public class InitUmlUI implements InitSubsystem {
         result.add(new TabSrc());
         result.add(new TabConstraints());
         result.add(new TabStereotype());
-        // Add the tagged values for UML 1.x
-        if( Model.getFacade().getUmlVersion().charAt(0) == '1') {
-            result.add(new TabTaggedValues());
-        }
+        result.add(new TabTaggedValues());
         return result;
     }
 

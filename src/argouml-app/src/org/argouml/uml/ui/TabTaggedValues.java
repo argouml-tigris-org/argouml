@@ -109,11 +109,15 @@ public class TabTaggedValues extends AbstractArgoJPanel
         buttonPanel.setName(getTitle());
         buttonPanel.setFloatable(false);
 
-        JButton b = new JButton();
-        buttonPanel.add(b);
-        b.setAction(new ActionNewTagDefinition());
-        b.setText("");
-        b.setFocusable(false);
+        JButton b = null;
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            // in UML2, a td is a property of a stereotype in a profile
+            b = new JButton();
+            buttonPanel.add(b);
+            b.setAction(new ActionNewTagDefinition());
+            b.setText("");
+            b.setFocusable(false);
+        }
 
         b = new JButton();
         buttonPanel.add(b);
