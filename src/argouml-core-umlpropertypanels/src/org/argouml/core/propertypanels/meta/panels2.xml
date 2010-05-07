@@ -3794,6 +3794,41 @@
     <attribute name="collaborationInstanceSet" type="ModelElement" />
     <attribute name="partition" type="ModelElement" />
   </panel>
+  <panel name="Profile">
+    <text name="name" type="Name" />
+    <combo name="namespace" type="Namespace" />
+    <optionbox name="visibility" type="VisibilityKind" />
+    <checkgroup name="modifiers">
+      <checkbox name="isSpecification" type="Boolean" />
+      <checkbox name="isRoot" type="Boolean" />
+      <checkbox name="isLeaf" type="Boolean" />
+      <checkbox name="isAbstract" type="Boolean" />
+    </checkgroup>
+    <list name="templateParameter" type="org.eclipse.uml2.uml.TemplateParameter" label="label.template-parameters" />
+	<separator />
+    <list name="generalization" type="Generalization" />
+    <list name="specialization" type="GeneralizableElement" />
+	<separator />
+    <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
+	<list name="elementImport" type="ModelElement" label="label.element-import" />
+	    
+    <attribute name="clientDependency" type="Dependency" />
+    <attribute name="targetFlow" type="Flow" />
+    <attribute name="sourceFlow" type="Flow" />
+    <attribute name="comment" type="Comment" />
+    <attribute name="supplierDependency" type="ModelElement" />
+    <attribute name="presentation" type="ModelElement" />
+    <attribute name="defaultedParameter" type="ModelElement" />
+    <attribute name="elementResidence" type="ModelElement" />
+    <attribute name="parameterTemplate" type="ModelElement" />
+    <attribute name="referenceTag" type="ModelElement" />
+    <attribute name="templateArgument" type="ModelElement" />
+    <attribute name="behavior" type="ModelElement" />
+    <attribute name="classifierRole" type="ModelElement" />
+    <attribute name="collaboration" type="ModelElement" />
+    <attribute name="collaborationInstanceSet" type="ModelElement" />
+    <attribute name="partition" type="ModelElement" />
+  </panel>
   <panel name="Subsystem">
     <text name="name" type="Name" />
     <optionbox name="visibility" type="VisibilityKind" />
