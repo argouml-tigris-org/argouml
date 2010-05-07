@@ -164,6 +164,13 @@ class ModelMemberFilePersister extends MemberFilePersister
 
         ProjectMemberModel pmm = (ProjectMemberModel) member;
         Object model = pmm.getModel();
+        // Next time I make such a change, I should better comment it: (thn)
+        /*
+        if (Model.getFacade().getUmlVersion().charAt(0) == '2' &&
+            Model.getFacade().isAProfile(model)) {
+            Model.getExtensionMechanismsHelper().makeProfileApplicable(model);
+        }
+        */
 
         try {
             XmiWriter xmiWriter = 
@@ -290,6 +297,7 @@ class ModelMemberFilePersister extends MemberFilePersister
                             curModel = current;
                         }
                     }
+                    // TODO: add stereotype application (eCore AnyType?)
                 }
             }
             uUIDRefs = 
