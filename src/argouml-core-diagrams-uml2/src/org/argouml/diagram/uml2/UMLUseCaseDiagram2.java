@@ -38,7 +38,6 @@
 
 package org.argouml.diagram.uml2;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
@@ -75,7 +74,8 @@ import org.tigris.gef.presentation.FigNode;
  */
 class UMLUseCaseDiagram2 extends UMLStructureDiagram2 {
 
-    private static final Logger LOG = Logger.getLogger(UMLUseCaseDiagram2.class);
+    private static final Logger LOG =
+        Logger.getLogger(UMLUseCaseDiagram2.class);
 
     // Actions specific to the use case diagram toolbar
 

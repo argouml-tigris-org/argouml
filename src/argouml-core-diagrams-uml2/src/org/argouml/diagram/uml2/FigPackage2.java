@@ -38,46 +38,10 @@
 
 package org.argouml.diagram.uml2;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.util.List;
-import java.util.Vector;
 
-import javax.swing.JOptionPane;
-
-import org.apache.log4j.Logger;
-import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.explorer.ExplorerEventAdaptor;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.StereotypeContainer;
-import org.argouml.uml.diagram.VisibilityContainer;
-import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
-import org.argouml.uml.diagram.ui.ArgoFig;
-import org.argouml.uml.diagram.ui.ArgoFigText;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Geometry;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigRect;
-import org.tigris.gef.presentation.FigText;
-import org.tigris.gef.undo.UndoableAction;
 
 /**
  * Class to display graphics for a UML package in a class diagram,

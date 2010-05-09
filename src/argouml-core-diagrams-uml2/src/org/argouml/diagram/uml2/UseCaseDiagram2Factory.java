@@ -75,8 +75,9 @@ class UseCaseDiagram2Factory implements DiagramFactoryInterface2 {
             try {
                 diagram.setName(name);
             } catch (PropertyVetoException e) {            
-                LOG.error("Cannot set the name " + name + 
-                        " to the diagram just created: "+ diagram.getName(), e);
+                LOG.error("Cannot set the name " + name
+                        + " to the diagram just created: " + diagram.getName(),
+                        e);
             }
         }
         return diagram;  

@@ -38,25 +38,8 @@
 
 package org.argouml.diagram.uml2;
 
-import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-import org.apache.log4j.Logger;
-import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.model.Model;
-import org.argouml.model.RemoveAssociationEvent;
-import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-import org.argouml.uml.diagram.ui.ArgoFig;
-import org.argouml.uml.diagram.ui.ArgoFigUtil;
-import org.argouml.util.IItemUID;
-import org.argouml.util.ItemUID;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdgePoly;
-import org.tigris.gef.presentation.FigNode;
 
 /**
  * Class to display a UML note connection to a annotated model element.

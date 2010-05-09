@@ -38,8 +38,6 @@
 
 package org.argouml.diagram.uml2;
 
-import java.awt.Color;
-
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigDependency;
 

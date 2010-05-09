@@ -40,8 +40,6 @@ package org.argouml.diagram.uml2;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigAbstraction;
-import org.tigris.gef.presentation.ArrowHead;
-import org.tigris.gef.presentation.ArrowHeadTriangle;
 
 /**
  * Fig representing a UML Abstraction.
