@@ -423,8 +423,7 @@ class SwingUIFactory {
                 final UMLComboBoxModel model = 
                     new UMLCallActionOperationComboBoxModel(propertyName, target);
                 UMLComboBox operationComboBox =
-                    new UMLCallActionOperationComboBox(model,
-                            model.getAction());
+                    new UMLCallActionOperationComboBox(model);
                 comp = new UMLComboBoxNavigator(
                         Translator.localize("label.operation.navigate.tooltip"),
                         operationComboBox);

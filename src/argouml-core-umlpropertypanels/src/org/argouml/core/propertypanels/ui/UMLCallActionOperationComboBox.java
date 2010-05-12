@@ -48,7 +48,7 @@ class UMLCallActionOperationComboBox
      *
      * @param arg0 the model
      */
-    public UMLCallActionOperationComboBox(UMLComboBoxModel arg0, Action action) {
+    public UMLCallActionOperationComboBox(UMLComboBoxModel arg0) {
         super(arg0);
         setEditable(false);
     }
