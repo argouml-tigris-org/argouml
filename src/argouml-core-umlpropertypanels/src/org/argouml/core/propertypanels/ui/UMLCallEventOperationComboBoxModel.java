@@ -70,23 +70,24 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
         Collection ops = new ArrayList();
         if (Model.getFacade().isACallEvent(target)) {
             Object ns = Model.getFacade().getNamespace(target);
-            if (Model.getFacade().isANamespace(ns)) {
-                Collection classifiers =
-                    Model.getModelManagementHelper().getAllModelElementsOfKind(
-                            ns,
-                            Model.getMetaTypes().getClassifier());
-                for (Object classifier : classifiers) {
-                    ops.addAll(Model.getFacade().getOperations(classifier));
-                }
-                
-                // TODO: getAllModelElementsOfKind should probably do this
-                // processing of imported elements automatically
-                for (Object importedElem : Model.getModelManagementHelper()
-                        .getAllImportedElements(ns)) {
-                    if (Model.getFacade().isAClassifier(importedElem)) {
-                        ops.addAll(Model.getFacade()
-                                .getOperations(importedElem));
-                    }
+            if (Model.getFacade().isAClassifier(ns)) {
+                ns = Model.getFacade().getNamespace(ns);
+            }
+            Collection classifiers =
+                Model.getModelManagementHelper().getAllModelElementsOfKind(
+                        ns,
+                        Model.getMetaTypes().getClassifier());
+            for (Object classifier : classifiers) {
+                ops.addAll(Model.getFacade().getOperations(classifier));
+            }
+            
+            // TODO: getAllModelElementsOfKind should probably do this
+            // processing of imported elements automatically
+            for (Object importedElem : Model.getModelManagementHelper()
+                    .getAllImportedElements(ns)) {
+                if (Model.getFacade().isAClassifier(importedElem)) {
+                    ops.addAll(Model.getFacade()
+                            .getOperations(importedElem));
                 }
             }
         }
