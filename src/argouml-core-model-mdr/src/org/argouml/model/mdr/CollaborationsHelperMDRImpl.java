@@ -350,13 +350,13 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             throw new IllegalArgumentException("In addBase: either the role "
                     + "or the base is null");
         }
-        // TODO: This check probably belongs in a critic instead of here since
-        // the rule can be violated later if the names are cleared
-        if (!isNamedOrUnique(role, base)) {
-            throw new IllegalArgumentException("In addBase: base is "
-                    + "already part of " + "another role and "
-                    + "role does not have " + "a name");
-        }
+//        // TODO: This check probably belongs in a critic instead of here since
+//        // the rule can be violated later if the names are cleared
+//        if (!isNamedOrUnique(role, base)) {
+//            throw new IllegalArgumentException("In addBase: base is "
+//                    + "already part of " + "another role and "
+//                    + "role does not have " + "a name");
+//        }
         role.getBase().add(base);
         if (modelImpl.getFacade().getBases(role).size() == 1) {
             role.getAvailableContents().clear();
