@@ -51,10 +51,10 @@ import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.core.propertypanels.meta.CheckBoxMeta;
-import org.argouml.core.propertypanels.meta.PanelMeta;
-import org.argouml.core.propertypanels.meta.PropertyMeta;
+import org.argouml.core.propertypanels.model.CheckBoxData;
+import org.argouml.core.propertypanels.model.ControlData;
 import org.argouml.core.propertypanels.model.GetterSetterManager;
+import org.argouml.core.propertypanels.model.PanelData;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteModelElements;
@@ -82,14 +82,14 @@ class SwingUIFactory {
     public void createGUI (
             final Object target,
             final JPanel panel) throws Exception {
-            PanelMeta data = 
-                XMLPropPanelFactory.getInstance().getPropertyPanelsData(
-                        Model.getMetaTypes().getName(target));
+        PanelData data = 
+            XMLPropPanelFactory.getInstance().getPropertyPanelsData(
+              	target.getClass());
             
-            createLabel(target, panel);
+        createLabel(target, panel);
             
-            for (PropertyMeta prop : data.getProperties()) {
-            	try {
+        for (ControlData prop : data.getProperties()) {
+            try {
                 if ("text".equals(prop.getControlType())) {
                     buildTextboxPanel(panel, target, prop);
                 } else if ("combo".equals(prop.getControlType())) {
@@ -107,13 +107,13 @@ class SwingUIFactory {
                 } else if ("separator".equals(prop.getControlType())) {
                     panel.add(LabelledLayout.getSeparator());
                 }
-            	} catch (Exception e) {
-            		throw new IllegalStateException(
-            				"Exception caught building control " + prop.getControlType()
-            				+ " for property " + prop.getName() + " on panel for "
-            				+ target, e);
-            	}
+            } catch (Exception e) {
+                throw new IllegalStateException(
+            		"Exception caught building control " + prop.getControlType()
+            		+ " for property " + prop.getName() + " on panel for "
+            		+ target, e);
             }
+        }
     }
 
     /**
@@ -161,7 +161,7 @@ class SwingUIFactory {
     private void buildTextArea(
             final JPanel panel,
             final Object target, 
-            final PropertyMeta prop) {
+            final ControlData prop) {
         
         // TODO: Why do we need this as well as control? Why is it
         // instantiated when its not always needed.
@@ -242,7 +242,7 @@ class SwingUIFactory {
 
             if (getterSetter.contains(propertyName)) {
                 ExpressionModel model =
-                	new ExpressionModel(propertyName, prop.getType(), target, getterSetter);
+                	new ExpressionModel(propertyName, prop.getTypes().get(0), target, getterSetter);
                 final JTextField languageField = 
                     new ExpressionLanguageField(model);
                 addControl(
@@ -256,11 +256,11 @@ class SwingUIFactory {
     }
 
     private void buildSingleRow(JPanel panel, Object target,
-            PropertyMeta prop) {
+            ControlData prop) {
         
         final SingleListFactory factory = new SingleListFactory();
         final JComponent pane =
-            factory.createComponent(target, prop.getName(), prop.getType());
+            factory.createComponent(target, prop.getName(), prop.getTypes());
         
         if (pane != null) {
             addControl(panel, Translator.localize(prop.getLabel()), pane, target);
@@ -269,11 +269,11 @@ class SwingUIFactory {
 
     private void buildList(
             final JPanel panel, Object target, 
-            final PropertyMeta prop) {
+            final ControlData prop) {
         
         final ListFactory factory = new ListFactory();
         final JComponent list =
-            factory.createComponent(target, prop.getName(), prop.getType());
+            factory.createComponent(target, prop.getName(), prop.getTypes());
 
         if (list != null) {
             addControl(panel, Translator.localize(prop.getLabel()), list, target);
@@ -287,7 +287,7 @@ class SwingUIFactory {
      * @return a radio button panel with the options 
      */
     private void buildOptionBox(JPanel panel, Object target,
-            PropertyMeta prop) {
+            ControlData prop) {
         
         final String propertyName = prop.getName();
 
@@ -309,14 +309,16 @@ class SwingUIFactory {
      *        of the checkboxes.
      * @return a panel that contains the checkboxes 
      */
-    private void buildCheckGroup(JPanel panel, Object target,
-            PropertyMeta prop) {
+    private void buildCheckGroup(
+	    final JPanel panel,
+	    final Object target,
+            final ControlData prop) {
         JPanel p = new JPanel(new GridLayout2());
         TitledBorder border = new TitledBorder(prop.getName());        
         p.setBorder(border);
         
         if ("modifiers".equals(prop.getName())) {  
-            for (CheckBoxMeta data : prop.getCheckboxes()) {
+            for (CheckBoxData data : prop.getCheckboxes()) {
                 buildCheckBox(p, target, data);
             }                            
         }
@@ -326,7 +328,7 @@ class SwingUIFactory {
     private void buildCheckBox(
             final JPanel panel,
             final Object target,
-            final CheckBoxMeta prop) {
+            final CheckBoxData prop) {
         
         final String propertyName = prop.getName();
         
@@ -356,7 +358,7 @@ class SwingUIFactory {
     private void buildComboPanel(
             final JPanel panel,
             final Object target,
-            final PropertyMeta prop) {
+            final ControlData prop) {
         
         JComponent comp = null;
         
@@ -539,13 +541,13 @@ class SwingUIFactory {
      *        of the options.
      */
     private void buildTextboxPanel(JPanel panel, Object target,
-            PropertyMeta prop) {
+            ControlData prop) {
        
         UMLPlainTextDocument document = null;
         if ("name".equals(prop.getName())) {
             if (Model.getFacade().isATemplateParameter(target)) {
                 target = Model.getFacade().getParameter(target);
-            } 
+            }
             document = new UMLModelElementNameDocument(prop.getName(), target);
         } else if ("discriminator".equals(prop.getName())) {
             document = new UMLDiscriminatorNameDocument(prop.getName(), target);

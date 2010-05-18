@@ -37,6 +37,8 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.List;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import org.argouml.core.propertypanels.model.GetterSetterManager;
@@ -51,7 +53,7 @@ class SingleListFactory implements ComponentFactory {
     public JComponent createComponent(
             final Object modelElement,
             final String propName,
-            final String type) {
+            final List<Class<?>> types) {
         
         DefaultListModel model = null;
         
@@ -121,9 +123,9 @@ class SingleListFactory implements ComponentFactory {
         
         if (model == null) {
             final GetterSetterManager getterSetterManager =
-                GetterSetterManager.getGetterSetter(type);
+                GetterSetterManager.getGetterSetter(types.get(0));
             if (getterSetterManager.contains(propName)) {
-                model = new SimpleListModel(propName, type, modelElement, getterSetterManager);
+                model = new SimpleListModel(propName, types, modelElement, getterSetterManager);
             }
         }
         

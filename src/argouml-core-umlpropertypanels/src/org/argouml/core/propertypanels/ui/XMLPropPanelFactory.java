@@ -38,17 +38,11 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.io.InputStream;
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.argouml.core.propertypanels.meta.PanelMeta;
-import org.argouml.core.propertypanels.meta.PanelMetaCache;
+import org.argouml.core.propertypanels.model.MetaDataCache;
+import org.argouml.core.propertypanels.model.PanelData;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.PropPanelFactory;
@@ -62,8 +56,10 @@ public class XMLPropPanelFactory implements PropPanelFactory {
     private static final Logger LOG =
         Logger.getLogger(XMLPropPanelFactory.class);
     
-    private final PanelMetaCache cache =
-        new PanelMetaCache();
+    /**
+     * new cache
+     */
+    private final MetaDataCache metaDataCache = new MetaDataCache();
     
     private static XMLPropPanelFactory instance;
     
@@ -113,8 +109,8 @@ public class XMLPropPanelFactory implements PropPanelFactory {
         }        
     }
     
-    public PanelMeta getPropertyPanelsData (String forType) {
-        return cache.get(forType);
+    public PanelData getPropertyPanelsData (Class<?> clazz) {
+        return metaDataCache.get(clazz);
     }
     
     /**

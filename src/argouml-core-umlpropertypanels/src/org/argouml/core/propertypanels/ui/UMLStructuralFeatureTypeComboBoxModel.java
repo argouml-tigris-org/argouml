@@ -214,7 +214,6 @@ class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
             oldClassifier = Model.getFacade().getType(feature);
             
             Object selectedClassifier = box.getSelectedItem();
-            System.out.println("The selected classifier is " + selectedClassifier);
             
             final Object newClassifier;
             if (Model.getFacade().isAElement(selectedClassifier)) {
@@ -224,7 +223,6 @@ class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
             }
             
             if (newClassifier != oldClassifier) {
-                System.out.println("Setting the type to " + newClassifier);
                 Model.getCoreHelper().setType(feature, newClassifier);
             }
         }

@@ -75,7 +75,7 @@ class ExpressionModel implements PropertyChangeListener {
 
     private final GetterSetterManager getterSetterManager;
     
-    private final String type;
+    private final Class<?> type;
     
     private static final String EMPTYSTRING = "";
 
@@ -89,15 +89,9 @@ class ExpressionModel implements PropertyChangeListener {
      */
     protected transient ChangeEvent changeEvent = null;
 
-    /**
-     * The constructor.
-     *
-     * @param target the UML element
-     * @param name the name of the property
-     */
     public ExpressionModel(
             final String propertyName,
-            final String type,
+            final Class<?> type,
             final Object umlElement,
             final GetterSetterManager getterSetterManager) {
         this.target = umlElement;
@@ -106,6 +100,7 @@ class ExpressionModel implements PropertyChangeListener {
         this.type = type;
         addModelEventListener();
     }
+    
 
     public void addModelEventListener() {
         Model.getPump().addModelEventListener(this, target, propertyName);

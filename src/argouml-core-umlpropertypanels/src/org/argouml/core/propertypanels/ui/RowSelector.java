@@ -72,8 +72,8 @@ import javax.swing.table.TableCellEditor;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.core.propertypanels.meta.IconIdentifiable;
-import org.argouml.core.propertypanels.meta.Named;
+import org.argouml.core.propertypanels.model.IconIdentifiable;
+import org.argouml.core.propertypanels.model.Named;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Command;
 import org.argouml.kernel.Project;
@@ -345,35 +345,19 @@ class RowSelector extends UmlControl
                 }
                 
                 if (additionalNewCommands != null && !additionalNewCommands.isEmpty()) {
-                	for (Command cmd : additionalNewCommands) {
-                		if (cmd instanceof IconIdentifiable && cmd instanceof Named) {
+                    for (Command cmd : additionalNewCommands) {
+        		if (cmd instanceof IconIdentifiable && cmd instanceof Named) {
                             actions.add(new CommandAction(cmd, ((Named)cmd).getName(), ((IconIdentifiable)cmd).getIcon()));
-                		} else {
+        		} else {
                             actions.add(new CommandAction(cmd));
-                		}
-                	}
+        		}
+                    }
                 }
                 
                 if (!actions.isEmpty()) {
                     final JPanel buttonPanel =
                     	createSingleButtonPanel(actions);
                     	
-//                        new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
-//            		final ToolButton tb;
-//                	if (actions.size() == 1) {
-//                		tb = new ToolButton(actions.get(0));
-//                	} else {
-//                        PopupToolBoxButton ptb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
-//                        for (Action action : actions) {
-//                            ptb.add(action);
-//                        }
-//                        tb = ptb;
-//                	}
-//                    final ToolBarFactory tbf = new ToolBarFactory(new Object[] {});
-//                    JToolBar toolbar = tbf.createToolBar();
-//                    toolbar.setRollover(true);
-//            		toolbar.add(tb);
-//                    buttonPanel.add(toolbar);
                     add(buttonPanel, BorderLayout.WEST);
                 }
             }

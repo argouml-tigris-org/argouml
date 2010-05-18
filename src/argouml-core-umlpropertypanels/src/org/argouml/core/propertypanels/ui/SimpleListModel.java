@@ -47,14 +47,9 @@ class SimpleListModel
     private static final Logger LOG = Logger.getLogger(SimpleListModel.class);
     
     /**
-     * A string indicator of the type of model element this control is to hold
-     */
-    private final String type;
-    
-    /**
      * The metatypes to provide buttons to create
      */
-    private final ArrayList metaTypes;
+    private final List<Class<?>> metaTypes;
     
     private final Object umlElement;
     private final String propertyName;
@@ -63,26 +58,12 @@ class SimpleListModel
     
     SimpleListModel(
             final String propertyName,
-            final String type,
+            final List<Class<?>> types,
             final Object umlElement,
             final GetterSetterManager getterSetterManager) {
         super();
         this.getterSetterManager = getterSetterManager;
-        this.type = type;
-        metaTypes = new ArrayList(4);
-        try {
-            final StringTokenizer st = new StringTokenizer(type, ",");
-            while (st.hasMoreTokens()) {
-                String className = st.nextToken();
-                if (className.contains(".")) {
-                    metaTypes.add(Class.forName(className));
-                } else {
-                    //LOG.debug(className + " is not recognised as a class name");
-                }
-            }
-        } catch (ClassNotFoundException e) {
-            LOG.warn("Exception building model for " + propertyName, e);
-        }
+        metaTypes = types;
         this.propertyName = propertyName;
         this.umlElement = umlElement;
 
@@ -148,7 +129,7 @@ class SimpleListModel
 			                        (Collection) getterSetterManager.getOptions( 
 			                            umlElement, 
 			                            propertyName, 
-			                            type);
+			                            metaTypes.get(0));
 			                    final int index =
 			                        CollectionUtil.indexOf(c, newElement);
 			                    if (index < 0 || index > getSize() - 1) {
@@ -192,10 +173,12 @@ class SimpleListModel
      */
     private void build() {
         try {
+            final Class<?> metaType = metaTypes.get(0);
+            LOG.info("Getting options for " + umlElement + " " + propertyName + " " + metaType);
             final Collection c = (Collection) getterSetterManager.getOptions( 
                     umlElement, 
                     propertyName, 
-                    type);
+                    metaType);
             for (Object o : c) {
                 addElement(o);
             }

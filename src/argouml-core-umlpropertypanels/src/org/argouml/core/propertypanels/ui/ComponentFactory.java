@@ -38,6 +38,8 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.List;
+
 import javax.swing.JComponent;
 
 /**
@@ -56,5 +58,5 @@ interface ComponentFactory {
     JComponent createComponent(
             final Object modelElement,
             final String propName,
-            final String type);
+            final List<Class<?>> types);
 }
