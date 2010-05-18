@@ -43,19 +43,18 @@ public abstract class GetterSetterManager {
     /**
      * Get a UML property by property name
      * @param umlElement the element from which a property must be return
-     * @param value the new property value
      * @param propertyName the property name
      * @return the UML element or property
      */
-    public abstract Object get(Object umlElement, String propertyName, String type);
+    public abstract Object get(Object umlElement, String propertyName, Class<?> type);
     
     public abstract Object create(String propertyName, String language, String body);
 
-    public abstract Collection getOptions(Object umlElement, String propertyName, String type);
+    public abstract Collection getOptions(Object umlElement, String propertyName, Class<?> type);
     
     public abstract Object getMetaType(String propertyName);
     
-    public abstract boolean isValidElement(String propertyName, String type, Object umlElement);
+    public abstract boolean isValidElement(String propertyName, Class<?> type, Object umlElement);
     
     public abstract Command getRemoveCommand(String propertyName, Object umlElement, Object objectToRemove);
     
@@ -72,13 +71,13 @@ public abstract class GetterSetterManager {
         return getterSetterByPropertyName.containsKey(propertyName);
     }
     
-    public static GetterSetterManager getGetterSetter(String type) {
+    public static GetterSetterManager getGetterSetter(Class<?> type) {
         return new GetterSetterManagerImpl(type);
     }
     
     protected abstract class BaseGetterSetter {
         
-        abstract Object get(Object modelElement, String type);
+        abstract Object get(Object modelElement, Class<?> type);
         abstract void set(Object modelElement, Object value);
     }
     
@@ -95,14 +94,14 @@ public abstract class GetterSetterManager {
             this.options = options;
         }
 
-        protected Collection getOptions(Object modelElement, String type) {
+        protected Collection getOptions(Object modelElement, Class<?> type) {
             return options;
         }
     }
     
     
     protected abstract class ListGetterSetter extends OptionGetterSetter {
-        abstract boolean isValidElement(Object modelElement, String type);
+        abstract boolean isValidElement(Object modelElement, Class<?> type);
         abstract Object getMetaType();
         boolean isFullBuildOnly() {
         	return false;
