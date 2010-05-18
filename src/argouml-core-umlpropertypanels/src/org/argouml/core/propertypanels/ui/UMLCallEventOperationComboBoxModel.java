@@ -38,12 +38,14 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.Action;
 
 import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
 
 class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
     
@@ -117,6 +119,35 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
     }
     
     public Action getAction() {
-        return null;
+        return new SetAction();
     }
+    
+    private class SetAction extends UndoableAction {
+
+        /**
+         * The constructor.
+         */
+        public SetAction() {
+            super("");
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            final Object source = e.getSource();
+            if (source instanceof UMLComboBox) {
+                final Object selected = ((UMLComboBox) source).getSelectedItem();
+                final Object target = ((UMLComboBox) source).getTarget();
+                if (Model.getFacade().isACallEvent(target) 
+                    && Model.getFacade().isAOperation(selected)) {
+                    if (Model.getFacade().getOperation(target) != selected) {
+                        Model.getCommonBehaviorHelper().setOperation(
+                                target, selected);
+                    }
+                }
+            }
+        }
+    }    
 }
