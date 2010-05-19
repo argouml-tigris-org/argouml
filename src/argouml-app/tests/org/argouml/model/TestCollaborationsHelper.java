@@ -157,12 +157,6 @@ public class TestCollaborationsHelper extends TestCase {
         Object role2 =
             Model.getCollaborationsFactory().buildClassifierRole(collab);
         Model.getCollaborationsHelper().addBase(role1, class1);
-        try {
-            Model.getCollaborationsHelper().addBase(role2, class1);
-            fail("addBase for second unnamed classifier role didn't fail");
-        } catch (IllegalArgumentException e) {
-            // expected case
-        }
         Model.getCoreHelper().setName(role1, "role1");
         Model.getCoreHelper().setName(role2, "role2");
         // This should work now that they both have names
