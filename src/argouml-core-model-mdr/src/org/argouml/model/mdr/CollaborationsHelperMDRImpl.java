@@ -350,13 +350,6 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
             throw new IllegalArgumentException("In addBase: either the role "
                     + "or the base is null");
         }
-//        // TODO: This check probably belongs in a critic instead of here since
-//        // the rule can be violated later if the names are cleared
-//        if (!isNamedOrUnique(role, base)) {
-//            throw new IllegalArgumentException("In addBase: base is "
-//                    + "already part of " + "another role and "
-//                    + "role does not have " + "a name");
-//        }
         role.getBase().add(base);
         if (modelImpl.getFacade().getBases(role).size() == 1) {
             role.getAvailableContents().clear();
@@ -375,70 +368,6 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
                 }
             }
         }
-    }
-
-    // Collaboration UML 1.4 section WFR 2.10.3.4 #3
-    //    [3] If a ClassifierRole or an AssociationRole does not have a name, 
-    //    then it should be the only one with a particular base.
-    
-    //    self.allContents->forAll ( p |
-    //      (p.oclIsKindOf (ClassifierRole) implies
-    //        p.name = '' implies
-    //          self.allContents->forAll ( q |
-    //            q.oclIsKindOf(ClassifierRole) implies
-    //              (p.oclAsType(ClassifierRole).base =
-    //                q.oclAsType(ClassifierRole).base implies
-    //                  p = q) ) )
-    //    and
-    //    [see below for AssociationRole]
-    //    )
-    private boolean isNamedOrUnique(ClassifierRole role, Classifier base) {
-        Collection<ClassifierRole> roles = ((org.omg.uml.UmlPackage) (base)
-                .refOutermostPackage()).getCollaborations()
-                .getAClassifierRoleBase().getClassifierRole(base);
-        if (roles.isEmpty()) {
-            return true;
-        }
-        if (role.getName() == null || role.getName().equals("")) {
-            return false;
-        }
-        for (ClassifierRole cr : roles) {
-            if (cr.getName() == null || cr.getName().equals("")) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    // Collaboration WFR UML 1.4 section 2.10.3.4 #3
-    //    [3] If a ClassifierRole or an AssociationRole does not have a name, 
-    //    then it should be the only one with a particular base.
-    // [...]
-    //    and
-    //      (p.oclIsKindOf (AssociationRole) implies
-    //        p.name = '' implies
-    //          self.allContents->forAll ( q |
-    //            q.oclIsKindOf(AssociationRole) implies
-    //              (p.oclAsType(AssociationRole).base =
-    //                q.oclAsType(AssociationRole).base implies
-    //                  p = q) ) )
-    //    )
-    private boolean isNamedOrUnique(AssociationRole role, UmlAssociation base) {
-        Collection<AssociationRole> roles = ((org.omg.uml.UmlPackage) (base)
-                .refOutermostPackage()).getCollaborations()
-                .getABaseAssociationRole().getAssociationRole(base);
-        if (roles.isEmpty()) {
-            return true;
-        }
-        if (role.getName() == null || role.getName().equals("")) {
-            return false;
-        }
-        for (AssociationRole ar : roles) {
-            if (ar.getName() == null || ar.getName().equals("")) {
-                return false;
-            }
-        }
-        return true;
     }
 
     public void setBases(Object role, Collection bases) {
