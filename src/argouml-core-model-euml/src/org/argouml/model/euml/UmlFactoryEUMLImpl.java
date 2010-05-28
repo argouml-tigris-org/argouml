@@ -268,8 +268,6 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         } else if (elementType == metaTypes.getInstance()) {
             throw new IllegalArgumentException(
                     "Attempt to instantiate abstract type"); //$NON-NLS-1$
-        } else if (elementType == metaTypes.getSubsystem()) {
-            o = modelImpl.getModelManagementFactory().createSubsystem();
         } else if (elementType == metaTypes.getCallState()) {
             o = modelImpl.getActivityGraphsFactory().createCallState();
         } else if (elementType == metaTypes.getSimpleState()) {
@@ -336,6 +334,10 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = modelImpl.getUseCasesFactory().createExtensionPoint();
         } else if (elementType == metaTypes.getReception()) {
             o = modelImpl.getCommonBehaviorFactory().createReception();
+        } else if (elementType == metaTypes.getSubsystem()) {
+            // in UML2 subsystem is a Component with <<subsystem>> stereotype
+            // so this must occur after the metaTypes.getComponent() case
+            o = modelImpl.getModelManagementFactory().createSubsystem();
         }
         if (!(o instanceof EObject)) {
             throw new IllegalArgumentException(
