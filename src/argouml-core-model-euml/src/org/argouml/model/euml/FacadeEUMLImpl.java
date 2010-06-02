@@ -253,8 +253,8 @@ class FacadeEUMLImpl implements Facade {
             throw new IllegalArgumentException(
                     "association must be Association"); //$NON-NLS-1$
         }
-        for (Property p : UMLUtil.getOwnedAttributes((Classifier) classifier)) {
-            if (p.getAssociation() == association) {
+        for (Property p : ((Association) association).getOwnedEnds()) {
+            if (p.getType() == classifier && p.getAssociation() == association) {
                 return p;
             }
         }
@@ -312,10 +312,12 @@ class FacadeEUMLImpl implements Facade {
         Collection<String> result = new ArrayList<String>();
         for (org.eclipse.uml2.uml.Class metaclass 
                 : ((Stereotype) handle).getAllExtendedMetaclasses()) {
-            result.add(metaclass.getName());
+            if (metaclass.getName() != null) {
+                result.add(metaclass.getName());
             }
-        return result;
         }
+        return result;
+    }
 
     public Collection getBases(Object handle) {
         throw new NotYetImplementedException();
