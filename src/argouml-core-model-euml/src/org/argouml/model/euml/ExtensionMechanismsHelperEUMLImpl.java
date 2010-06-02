@@ -235,7 +235,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
             return false;
         }
         for (Class c : st.getAllExtendedMetaclasses()) {
-            if (c.getName().equals(name)) {
+            if (c.getName().equals(base)) {
                 return true;
             }
         }
