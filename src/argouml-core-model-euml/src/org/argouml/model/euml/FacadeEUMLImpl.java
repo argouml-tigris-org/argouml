@@ -363,6 +363,13 @@ class FacadeEUMLImpl implements Facade {
 		}
 	    }
 	    return null;  // No body found.
+        } else if (handle instanceof OpaqueBehavior) {
+            String ret = null;
+            if (((OpaqueBehavior) handle).getBodies() != null &&
+                    !((OpaqueBehavior) handle).getBodies().isEmpty()) {
+                ret = ((OpaqueBehavior) handle).getBodies().get(0);
+            }
+            return ret;
         }
         throw new IllegalArgumentException(
                 "Unsupported argument type - must be Comment, Constraint," +
