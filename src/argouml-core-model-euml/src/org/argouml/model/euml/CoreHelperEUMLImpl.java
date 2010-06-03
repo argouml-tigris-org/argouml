@@ -326,9 +326,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void addMethod(final Object handle, final Object method) {
-        // In UML2.x there is no metaclass named Method, but we could use the
+        // In UML2.x there is no metaclass named Method, but we use the
         // 'method' association of BehavioralFeature
-        // TODO: It's OK like this?
         if (!(handle instanceof BehavioralFeature)) {
             throw new IllegalArgumentException(
                     "The handle must be instance of BehavioralFeature"); //$NON-NLS-1$
@@ -1315,7 +1314,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setBody(Object handle, Object expr) {
-	throw new NotYetImplementedException();
+        // must not be used in UML2; we model a method as a
+        // OpaqueBehavior object that already has a body, so there is no need
+        // to have an intermediate expression object
+        throw new NotImplementedException();
     }
 
     public void setBody(Object handle, String body) {

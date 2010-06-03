@@ -43,6 +43,7 @@ import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
+import org.eclipse.uml2.uml.OpaqueBehavior;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
@@ -828,8 +829,10 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
     }
 
     public Object buildMethod(String name) {
-        // TODO: Is this removed from UML2 ?
-        throw new NotImplementedException();
+        // in UML2, we model a method as a Behavior (initially OpaqueBehavior)
+        OpaqueBehavior method = UMLFactory.eINSTANCE.createOpaqueBehavior();
+        method.setName(name);
+        return method;
     }
 
     public Operation buildOperation(Object classifier, Object returnType) {

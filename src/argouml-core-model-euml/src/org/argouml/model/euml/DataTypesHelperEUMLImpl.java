@@ -16,6 +16,7 @@ import java.util.List;
 import org.argouml.model.DataTypesHelper;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.uml2.uml.MultiplicityElement;
+import org.eclipse.uml2.uml.OpaqueBehavior;
 import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.PseudostateKind;
 
@@ -99,7 +100,15 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
     }
     
     public Object setBody(Object handle, String body) {
-        List<String> bodies = ((OpaqueExpression) handle).getBodies();
+        List<String> bodies = null;
+        if (handle instanceof OpaqueExpression) {
+            bodies = ((OpaqueExpression) handle).getBodies();
+        } else if (handle instanceof OpaqueBehavior) {
+            bodies = ((OpaqueBehavior) handle).getBodies();
+        } else {
+            throw new IllegalArgumentException(
+                    "handle must be instance of OpaqueExpression or OpaqueBehavior"); //$NON-NLS-1$
+        }
         // TODO: Support more than one body/language
         if (bodies.size() > 1) {
             throw new IllegalStateException("Only one body/lang supported"); //$NON-NLS-1$
@@ -110,7 +119,15 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
     }
 
     public Object setLanguage(Object handle, String language) {
-        List<String> langs = ((OpaqueExpression) handle).getLanguages();
+        List<String> langs = null;
+        if (handle instanceof OpaqueExpression) {
+            langs = ((OpaqueExpression) handle).getLanguages();
+        } else if (handle instanceof OpaqueBehavior) {
+            langs = ((OpaqueBehavior) handle).getLanguages();
+        } else {
+            throw new IllegalArgumentException(
+                    "handle must be instance of OpaqueExpression or OpaqueBehavior"); //$NON-NLS-1$
+        }
         // TODO: Support more than one body/language
         if (langs.size() > 1) {
             throw new IllegalStateException("Only one body/lang supported"); //$NON-NLS-1$
