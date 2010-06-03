@@ -22,6 +22,7 @@ name
   <class name="BehavioralFeature">org.eclipse.uml2.uml.BehavioralFeature</class>
   <class name="Operation">org.eclipse.uml2.uml.Operation</class>
   <class name="Parameter">org.eclipse.uml2.uml.Parameter</class>
+  <class name="OpaqueBehavior">org.eclipse.uml2.uml.OpaqueBehavior</class>
   <class name="Generalization">org.eclipse.uml2.uml.Generalization</class>
   <class name="AssociationClass">org.eclipse.uml2.uml.AssociationClass</class>
   <class name="Dependency">org.eclipse.uml2.uml.Dependency</class>
@@ -731,6 +732,33 @@ name
     <attribute name="elementImport" type="ModelElement" />        
     <attribute name="event" type="Parameter" />
     <attribute name="state" type="Parameter" />
+  </panel>
+  <panel name="OpaqueBehavior">
+    <text name="name" type="Name" />
+    <singlerow name="owner" type="Classifier" />
+    <combo name="specification" type="Operation" />
+    <!-- 
+    <list name="dency" type="Dependency" label="label.client-dependencies" />
+    <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
+    <separator />
+    <optionbox name="visibility" type="VisibilityKind" />
+    <checkgroup name="modifiers">
+      <checkbox name="isSpecification" type="Boolean" />
+      <checkbox name="isRoot" type="Boolean" />
+      <checkbox name="isLeaf" type="Boolean" />
+      <checkbox name="isAbstract" type="Boolean" />
+      <checkbox name="isActive" type="Boolean" label="checkbox.active-uc" />
+    </checkgroup>
+    -->
+    <separator />
+    <text name="language" type="Name" />
+    <textarea name="body" type="String" />
+    <!-- 
+    <list name="behavior" type="ModelElement" />
+    <list name="classifierRole" type="ModelElement" />
+    <list name="collaboration" type="ModelElement" />
+    <list name="collaborationInstanceSet" type="ModelElement" />
+    -->
   </panel>
   <panel name="Generalization">
     <text name="name" type="Name" />
