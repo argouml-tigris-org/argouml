@@ -975,8 +975,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public Object getSpecification(Object object) {
-        // In UML2 the metaclass Method does not exists
-        throw new NotYetImplementedException();
+        if (!(object instanceof Behavior)) {
+            throw new IllegalArgumentException(
+                    "'object' must be instance of Behavior"); //$NON-NLS-1$
+        }
+        return ((Behavior) object).getSpecification();
     }
 
     public Collection<Element> getSubtypes(Object cls) {
