@@ -673,6 +673,14 @@
     <attribute name="event" type="Parameter" />
     <attribute name="state" type="Parameter" />
   </panel>
+  <panel name="OpaqueBehavior">
+    <text name="name" type="Name" />
+    <singlerow name="owner" type="Classifier" />
+    <combo name="specification" type="Operation" />
+    <separator />
+    <text name="language" type="Name" />
+    <textarea name="body" type="String" />
+  </panel>
   <panel name="Generalization">
     <text name="name" type="Name" />
     <text name="discriminator" type="Name" />
