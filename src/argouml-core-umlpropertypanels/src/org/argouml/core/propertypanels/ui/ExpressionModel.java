@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Bob Tarling
+ *    Thomas Neustupny
  *******************************************************************************
  */
 
@@ -49,7 +50,8 @@ import org.argouml.core.propertypanels.model.GetterSetterManager;
 import org.argouml.model.Model;
 
 /**
- * The model for Expressions.
+ * The model for entities with body and language attributes (Expression in
+ * UML1, OpaqueExpression/OpaqueBehavior in UML2).
  * The target is the UML element to which this Expression is attached.
  *
  * The ChangeEvent/ChangeListener handling is inspired by
@@ -57,7 +59,7 @@ import org.argouml.model.Model;
  * It listens to UML model changes not caused by us,
  * which need to trigger an update of the UI rendering.
  *
- * @author mkl, penyaskito, mvw
+ * @author mkl, penyaskito, mvw, thn
  */
 class ExpressionModel implements PropertyChangeListener {
 
@@ -126,7 +128,14 @@ class ExpressionModel implements PropertyChangeListener {
      * @return the expression
      */
     public Object getExpression() {
-        return getterSetterManager.get(target, propertyName, type);
+        Object expression = null;
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            expression = getterSetterManager.get(target, propertyName, type);
+        } else {
+            // in UML2, the target is already the "expression" (Opaque...)
+            expression = target;
+        }
+        return expression;
     }
 
     /**
@@ -147,7 +156,7 @@ class ExpressionModel implements PropertyChangeListener {
      * @return the language of the expression
      */
     public String getLanguage() {
-	Object expression = getExpression();
+        Object expression = getExpression();
         if (expression == null) {
             return EMPTYSTRING;
         }
@@ -223,22 +232,28 @@ class ExpressionModel implements PropertyChangeListener {
      * @param body the body text of the expression
      */
     private void setExpression(String lang, String body) {
-
-        // Expressions are DataTypes, not independent model elements
-        // be careful not to reuse them
-	final Object currentExpression = getExpression();
-        removeModelEventListener();
-	if (currentExpression != null) {
-	    Model.getUmlFactory().delete(currentExpression);
-	}
-        final Object newExpression;
-	if (lang.length() == 0 && body.length()==0) {
-	    newExpression = null;
+	if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            // Expressions are DataTypes, not independent model elements
+            // be careful not to reuse them
+            final Object currentExpression = getExpression();
+            removeModelEventListener();
+            if (currentExpression != null) {
+                Model.getUmlFactory().delete(currentExpression);
+            }
+            final Object newExpression;
+            if (lang.length() == 0 && body.length()==0) {
+                newExpression = null;
+            } else {
+                newExpression = newExpression(lang, body);
+            }
+            setExpression(newExpression);
+            addModelEventListener();
 	} else {
-	    newExpression = newExpression(lang, body);
+	    // reuse Opaque..., just set it's attributes
+	    Object expression = getExpression();
+	    Model.getDataTypesHelper().setBody(expression, body);
+	    Model.getDataTypesHelper().setLanguage(expression, lang);
 	}
-	setExpression(newExpression);
-        addModelEventListener();
     }
 
     /**
