@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Tom Morris - initial implementation
+ *    Thomas Neustupny
  *******************************************************************************/
 package org.argouml.model.euml;
 
@@ -68,19 +69,29 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
     }
 
     public String getBody(Object handle) {
-        EList<String> bodies = ((OpaqueExpression) handle).getBodies();
-        if (bodies.size() < 1) {
-            return null;
+        EList<String> bodies = null;
+        if (handle instanceof OpaqueExpression) {
+            bodies = ((OpaqueExpression) handle).getBodies();
+        } else if (handle instanceof OpaqueBehavior) {
+            bodies = ((OpaqueBehavior) handle).getBodies();
+        } else {
+            throw new IllegalArgumentException(
+                    "handle must be instance of OpaqueExpression or OpaqueBehavior"); //$NON-NLS-1$
         }
-        return bodies.get(0);
+        return (bodies.size() < 1) ? null : bodies.get(0);
     }
 
     public String getLanguage(Object handle) {
-        EList<String> languages = ((OpaqueExpression) handle).getLanguages();
-        if (languages.size() < 1) {
-            return null;
+        EList<String> langs = null;
+        if (handle instanceof OpaqueExpression) {
+            langs = ((OpaqueExpression) handle).getLanguages();
+        } else if (handle instanceof OpaqueBehavior) {
+            langs = ((OpaqueBehavior) handle).getLanguages();
+        } else {
+            throw new IllegalArgumentException(
+                    "handle must be instance of OpaqueExpression or OpaqueBehavior"); //$NON-NLS-1$
         }
-        return languages.get(0);
+        return (langs.size() < 1) ? null : langs.get(0);
     }
 
     public String multiplicityToString(Object multiplicity) {
