@@ -674,6 +674,7 @@ name
     <optionbox name="concurrency" type="CallConcurrencyKind" />
     <separator />
     <list name="raisedSignal" type="Signal" new="true" label="label.raisedsignals" />
+    <list name="method" type="Method" new="true" />
     <textarea name="specification" type="String" />
     
     <debug />
