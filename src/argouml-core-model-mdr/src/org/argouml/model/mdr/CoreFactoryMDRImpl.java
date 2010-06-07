@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -50,6 +51,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.ModelCommand;
 import org.argouml.model.ModelManagementHelper;
+import org.argouml.model.NotImplementedException;
 import org.omg.uml.behavioralelements.activitygraphs.ObjectFlowState;
 import org.omg.uml.behavioralelements.commonbehavior.Reception;
 import org.omg.uml.behavioralelements.commonbehavior.Signal;
@@ -1039,6 +1041,9 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return gen;
     }
 
+    public Object buildManifestation(Object utilizedElement) {
+        throw new NotImplementedException( "UML 1.4 has no manifestations");
+    }
 
     public Method buildMethod(String name) {
         Method method = createMethod();

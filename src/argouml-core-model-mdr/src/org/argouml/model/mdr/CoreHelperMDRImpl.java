@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -252,6 +252,9 @@ class CoreHelperMDRImpl implements CoreHelper {
         return result;
     }
 
+    public Collection<Object> getUtilizedElements(Object artifact) {
+        throw new NotImplementedException("UML 1.4 artifacts have no manifestations with utilized elements");
+    }
 
     public Collection<AssociationEnd> getAssociateEndsInh(Object classifier1) {
         if (!(classifier1 instanceof Classifier)) {
@@ -2347,6 +2350,9 @@ class CoreHelperMDRImpl implements CoreHelper {
                 + link);
     }
 
+    public void addManifestation(Object handle, Object manifestation) {
+        throw new NotImplementedException( "UML 1.4 has no manifestations");
+    }
 
     public void addMethod(Object handle, Object m) {
         if (handle instanceof Operation && m instanceof Method) {

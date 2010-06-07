@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -454,6 +454,11 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
 
     public void addLink(Object handle, Object link) {
         super.addLink(handle, link);
+        Model.execute(new DummyModelCommand());
+    }
+
+    public void addManifestation(Object handle, Object m) {
+        super.addManifestation(handle, m);
         Model.execute(new DummyModelCommand());
     }
 
