@@ -10,6 +10,7 @@
  *    Tom Morris - initial implementation
  *    Bogdan Pistol - undo support & large piece of initial implementation
  *    bobtarling
+ *    Thomas Neustupny
  *****************************************************************************/
 
 package org.argouml.model.euml;
@@ -39,6 +40,7 @@ import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.InterfaceRealization;
+import org.eclipse.uml2.uml.Manifestation;
 import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
@@ -46,6 +48,7 @@ import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.OpaqueBehavior;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.PackageImport;
+import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
@@ -826,6 +829,17 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         cmd.setObjects(run.getParams().get(0), owner);
 
         return (Interface) run.getParams().get(0);
+    }
+
+    public Object buildManifestation(Object utilizedElement) {
+        if (!(utilizedElement instanceof PackageableElement)) {
+            throw new IllegalArgumentException(
+                    "The utilized element must be an instance of PackageableElement."); //$NON-NLS-1$
+        }
+        Manifestation m = UMLFactory.eINSTANCE.createManifestation();
+        m.setName(((PackageableElement) utilizedElement).getName() + " manifestation");
+        m.setUtilizedElement((PackageableElement) utilizedElement);
+        return m;
     }
 
     public Object buildMethod(String name) {

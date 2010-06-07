@@ -9,7 +9,7 @@
  * Contributors:
  *    Tom Morris - initial framework & prototype implementation
  *    Bogdan Pistol - initial implementation
- *    thn
+ *    Thomas Neustupny
  *****************************************************************************/
 
 package org.argouml.model.euml;
@@ -33,6 +33,7 @@ import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.command.RemoveCommand;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.uml2.uml.AggregationKind;
+import org.eclipse.uml2.uml.Artifact;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.BehavioralFeature;
@@ -49,12 +50,14 @@ import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Feature;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.Manifestation;
 import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.OpaqueBehavior;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.Property;
@@ -323,6 +326,19 @@ class CoreHelperEUMLImpl implements CoreHelper {
                                 (EnumerationLiteral) literal),
                         "Add the EnumerationLiteral # to the Enumeration #",
                         literal, handle));
+    }
+
+    public void addManifestation(Object handle, Object manifestation) {
+        if (!(handle instanceof Artifact)) {
+            throw new IllegalArgumentException(
+                    "The handle must be instance of Artifact"); //$NON-NLS-1$
+        }
+        if (!(manifestation instanceof Manifestation)) {
+            throw new IllegalArgumentException(
+                    "The manifestation must be instance of Manifestation"); //$NON-NLS-1$
+        }
+        ((Artifact) handle).getManifestations()
+                .add((Manifestation) manifestation);
     }
 
     public void addMethod(final Object handle, final Object method) {
@@ -838,6 +854,21 @@ class CoreHelperEUMLImpl implements CoreHelper {
                     + "be instances of Classifier"); //$NON-NLS-1$
         }
         return ((Classifier) achild).getGeneralization((Classifier) aparent);
+    }
+
+    public Collection<PackageableElement> getUtilizedElements(Object artifact) {
+        if (!(artifact instanceof Artifact)) {
+            throw new IllegalArgumentException(
+                    "'artifact' must be instance of Artifact"); //$NON-NLS-1$
+        }
+        Collection<PackageableElement> c = new ArrayList<PackageableElement>();
+        for (Manifestation m : ((Artifact) artifact).getManifestations()) {
+            PackageableElement pe = m.getUtilizedElement();
+            if (pe != null) {
+                c.add(pe);
+            }
+        }
+        return c;
     }
 
     public Collection<Operation> getOperationsInh(Object classifier) {
