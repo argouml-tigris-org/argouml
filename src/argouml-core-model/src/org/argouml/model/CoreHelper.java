@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Thomas Neustupny
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -78,6 +78,13 @@ public interface CoreHelper {
      */
     Collection getSupertypes(Object generalizableElement);
 
+    /**
+     * Return all utilized element of the manifestations of a given artifact.
+     *
+     * @param artifact the artifact you want to have the utilized elements for
+     * @return a collection of the manifestations
+     */
+    Collection getUtilizedElements(Object artifact);
 
     /**
      * Return all AssociationEnds of a given Classifier plus all 
@@ -711,6 +718,14 @@ public interface CoreHelper {
      * @param link Link
      */
     void addLink(Object handle, Object link);
+
+    /**
+     * Add a manifestation to an artifact.
+     *
+     * @param handle is the artifact
+     * @param manifestation is the manifestation
+     */
+    void addManifestation(Object handle, Object manifestation);
 
     /**
      * Add a method to an Operation and copy the values of the Operation's

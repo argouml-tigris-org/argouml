@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Thomas Neustupny
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -91,6 +92,10 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
 
     public Collection getSupertypes(Object generalizableElement) {
         return impl.getSupertypes(generalizableElement);
+    }
+
+    public Collection getUtilizedElements(Object artifact) {
+        return impl.getUtilizedElements(artifact);
     }
 
     public Collection getAssociateEndsInh(Object classifier1) {
@@ -369,6 +374,10 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
 
     public void addLink(Object handle, Object link) {
         impl.addLink(handle, link);
+    }
+
+    public void addManifestation(Object handle, Object m) {
+        impl.addManifestation(handle, m);
     }
 
     public void addMethod(Object handle, Object m) {

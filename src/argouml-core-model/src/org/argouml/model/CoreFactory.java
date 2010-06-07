@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Thomas Neustupny
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -637,6 +638,17 @@ public interface CoreFactory extends Factory {
      * @return Generalization
      */
     Object buildGeneralization(Object child, Object parent);
+
+
+    /**
+     * Builds a manifestation of an element for an artifact.
+     *
+     * @param utilizedElement is the packageable element
+     * @return manifestation
+     * TODO: This needs an extra parameter to specify the model/extent where
+     * the new element should be created.
+     */
+    Object buildManifestation(Object utilizedElement);
 
 
     /**
