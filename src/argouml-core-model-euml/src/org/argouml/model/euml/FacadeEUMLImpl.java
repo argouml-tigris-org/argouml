@@ -540,7 +540,20 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getConstraints(Object handle) {
-        throw new NotYetImplementedException();
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Element"); //$NON-NLS-1$
+        }
+        ArrayList<Constraint> result = new ArrayList<Constraint>();
+        Namespace ns = ((Element) handle).getNearestPackage();
+        if (ns != null) {
+            for (Constraint c : ns.getOwnedRules()) {
+                if (c.getConstrainedElements().contains(handle)) {
+                    result.add(c);
+                }
+            }
+        }
+        return result;
     }
 
     public Object getContainer(Object handle) {
