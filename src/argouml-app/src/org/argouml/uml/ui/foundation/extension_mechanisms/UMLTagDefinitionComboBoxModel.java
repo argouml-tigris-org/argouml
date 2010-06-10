@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -154,26 +155,33 @@ public class UMLTagDefinitionComboBoxModel  extends UMLComboBoxModel2 {
             new TreeSet<Object>(new PathComparator());
         Collection stereotypes = Model.getFacade().getStereotypes(element);
         Project project = ProjectManager.getManager().getCurrentProject();
-        for (Object model : project.getModels()) {
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            for (Object model : project.getModels()) {
+                // TODO: Won't our use of PathComparator take care of uniqueness?
+                addAllUniqueModelElementsFrom(availableTagDefs, paths,
+                        Model.getModelManagementHelper().getAllModelElementsOfKind(
+                                model,
+                                Model.getMetaTypes().getTagDefinition()));
+            }
             // TODO: Won't our use of PathComparator take care of uniqueness?
-            addAllUniqueModelElementsFrom(availableTagDefs, paths,
-                    Model.getModelManagementHelper().getAllModelElementsOfKind(
-                            model,
+            addAllUniqueModelElementsFrom(availableTagDefs, paths, project
+                    .getProfileConfiguration().findByMetaType(
                             Model.getMetaTypes().getTagDefinition()));
-        }
-        // TODO: Won't our use of PathComparator take care of uniqueness?
-        addAllUniqueModelElementsFrom(availableTagDefs, paths, project
-                .getProfileConfiguration().findByMetaType(
-                        Model.getMetaTypes().getTagDefinition()));
-                        
-        List notValids = new ArrayList();
-        for (Object tagDef : availableTagDefs) {
-            Object owner = Model.getFacade().getOwner(tagDef);
-            if (owner != null && !stereotypes.contains(owner)) {
-                notValids.add(tagDef);
+                            
+            List notValids = new ArrayList();
+            for (Object tagDef : availableTagDefs) {
+                Object owner = Model.getFacade().getOwner(tagDef);
+                if (owner != null && !stereotypes.contains(owner)) {
+                    notValids.add(tagDef);
+                }
+            }
+            availableTagDefs.removeAll(notValids);
+        } else {
+            // since UML2 it's easier: TDs only via stereotypes
+            for (Object st : stereotypes) {
+                availableTagDefs.addAll(Model.getFacade().getAttributes(st));
             }
         }
-        availableTagDefs.removeAll(notValids);
         return availableTagDefs;
     }
 
