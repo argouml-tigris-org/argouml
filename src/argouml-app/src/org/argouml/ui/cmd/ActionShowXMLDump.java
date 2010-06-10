@@ -94,7 +94,7 @@ public class ActionShowXMLDump extends AbstractAction {
 
 	pw.getContentPane().add(new JScrollPane(a));
 
-	pw.setSize(400, 500);
+	pw.setSize(1000, 500);
 
 	pw.setLocationRelativeTo(ArgoFrame.getFrame());
         
