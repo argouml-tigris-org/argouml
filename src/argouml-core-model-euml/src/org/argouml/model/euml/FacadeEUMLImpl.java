@@ -370,6 +370,9 @@ class FacadeEUMLImpl implements Facade {
                 ret = ((OpaqueBehavior) handle).getBodies().get(0);
             }
             return ret;
+        } else if (handle instanceof String) {
+            // oops we already have the body
+            return handle;
         }
         throw new IllegalArgumentException(
                 "Unsupported argument type - must be Comment, Constraint," +
@@ -1425,8 +1428,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getTagOfTag(Object handle) {
-        throw new NotYetImplementedException();
-
+        // TODO: not implemented
+        return null;
     }
 
     public Object getTaggedValue(Object handle, String name) {
@@ -1435,15 +1438,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getTaggedValueValue(Object handle, String name) {
-        throw new NotYetImplementedException();
+        // TODO: not implemented
+        return null;
     }
 
     public Iterator getTaggedValues(Object handle) {
-        throw new NotYetImplementedException();
+        return Collections.emptySet().iterator();
     }
 
     public Collection getTaggedValuesCollection(Object handle) {
-        throw new NotYetImplementedException();
+        return new ArrayList();
     }
 
     public Vertex getTarget(Object handle) {
