@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -56,7 +56,7 @@ import org.argouml.notation.providers.TransitionNotation;
 /**
  * UML Notation for the text shown next to a Transition.
  *
- * @author mvw@tigris.org
+ * @author mvw
  */
 public class TransitionNotationUml extends TransitionNotation {
 
@@ -92,8 +92,7 @@ public class TransitionNotationUml extends TransitionNotation {
      *    "event-signature [guard-condition] / action-expression".
      * </pre>
      *
-     * If the last character of this line
-     * is a ";", then it is ignored.<p>
+     * A ";" is not interpreted as having any special meaning. <p>
      *
      * The "event-signature" may be one of the 4
      * formats:<ul>
@@ -108,13 +107,15 @@ public class TransitionNotationUml extends TransitionNotation {
      * both may have parameters between ().
      * For simplicity and user-friendliness, we chose for this distinction.
      * If a user wants parameters for a SignalEvent,
-     * then he may add them in the properties panels, but not on the diagram.<p>
+     * then he may add them in the properties panels, but not on the diagram.
+     * <p>
      *
      * An alternative solution would be to create a CallEvent by default,
      * and when editing an existing event, do not change the type.<p>
      *
      * TODO: This function fails when the event-signature contains a "["
-     * or a "/".
+     * or a "/". See issue 5983 for other cases that were 
+     * a problem in the past.
      *
      * @param trans the transition object to which this string applies
      * @param s     the string to be parsed
@@ -130,46 +131,29 @@ public class TransitionNotationUml extends TransitionNotation {
         int c = s.indexOf("/");
         if (((a < 0) && (b >= 0)) || ((b < 0) && (a >= 0)) || (b < a)) {
             String msg = "parsing.error.transition.no-matching-square-brackets";
-            throw new ParseException(Translator.localize(msg),
-                    0);
+            throw new ParseException(Translator.localize(msg), 0);
         }
         if ((c >= 0) && (c < b)) {
             String msg = "parsing.error.transition.found-bracket-instead-slash";
-            throw new ParseException(Translator.localize(msg),
-                    0);
+            throw new ParseException(Translator.localize(msg), 0);
         }
 
-        StringTokenizer tokenizer = new StringTokenizer(s, "[/");
-        String eventSignature = null;
-        String guardCondition = null;
-        String actionExpression = null;
-        while (tokenizer.hasMoreTokens()) {
-            String nextToken = tokenizer.nextToken().trim();
-            if (nextToken.endsWith("]")) {
-                guardCondition = nextToken.substring(0, nextToken.length() - 1);
-            } else {
-                if (s.startsWith(nextToken)) {
-                    eventSignature = nextToken;
-                } else {
-                    if (s.endsWith(nextToken)) {
-                        actionExpression = nextToken;
-                    }
-                }
+        String[] s1 = s.trim().split("/", 2);
+        String eg = s1[0].trim();
+        String[] s2 = eg.split("\\[", 2);
+        
+        if (s1[1].trim().length() > 0) {
+            parseEffect(trans, s1[1].trim()); 
+        }
+        if (s2[0].trim().length() > 0) {
+            parseTrigger(trans, s2[0].trim());
+        }
+        if (s2[1].trim().endsWith("]")) {
+            String g = s2[1].trim();
+            g = g.substring(0, g.length() - 1).trim();
+            if (g.length() > 0) {
+                parseGuard(trans, g);
             }
-        }
-
-        if (eventSignature != null) {
-            // parseEventSignature(trans, eventSignature);
-            parseTrigger(trans, eventSignature);
-        }
-
-        if (guardCondition != null) {
-            parseGuard(trans,
-                    guardCondition.substring(guardCondition.indexOf('[') + 1));
-        }
-
-        if (actionExpression != null) {
-            parseEffect(trans, actionExpression.trim());
         }
         return trans;
     }
