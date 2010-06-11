@@ -142,17 +142,21 @@ public class TransitionNotationUml extends TransitionNotation {
         String eg = s1[0].trim();
         String[] s2 = eg.split("\\[", 2);
         
-        if (s1[1].trim().length() > 0) {
-            parseEffect(trans, s1[1].trim()); 
+        if (s1.length > 1)  {
+            if (s1[1].trim().length() > 0) {
+                parseEffect(trans, s1[1].trim()); 
+            }
         }
         if (s2[0].trim().length() > 0) {
             parseTrigger(trans, s2[0].trim());
         }
-        if (s2[1].trim().endsWith("]")) {
-            String g = s2[1].trim();
-            g = g.substring(0, g.length() - 1).trim();
-            if (g.length() > 0) {
-                parseGuard(trans, g);
+        if (s2.length > 1)  {
+            if (s2[1].trim().endsWith("]")) {
+                String g = s2[1].trim();
+                g = g.substring(0, g.length() - 1).trim();
+                if (g.length() > 0) {
+                    parseGuard(trans, g);
+                }
             }
         }
         return trans;

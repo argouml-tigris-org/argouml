@@ -203,6 +203,9 @@ public class TestTransitionNotationUml extends TestCase {
         checkGenerateRoundTrip(aState, "t(a : int = 3, b : double = 4.0)");
         checkGenerateRoundTrip(aState, " / effect(a:2,r=6)");
         checkGenerateRoundTrip(aState, "trigger [guard] / eff1; eff2; eff3");
+        /* Issue 5983: */
+        checkGenerateRoundTrip(aState, "ev1 [i==1] / printf(\"got [i==1\");");
+        checkGenerateRoundTrip(aState, "ev1 [i==1] / printf(\"got [i==1]\");");
     }
 
     private void checkGenerateRoundTrip(Object st, String text) {
