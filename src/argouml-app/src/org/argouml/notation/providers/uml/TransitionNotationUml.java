@@ -133,7 +133,7 @@ public class TransitionNotationUml extends TransitionNotation {
             String msg = "parsing.error.transition.no-matching-square-brackets";
             throw new ParseException(Translator.localize(msg), 0);
         }
-        if ((c >= 0) && (c < b)) {
+        if ((c >= 0) && (c < b) && (c > a) && (a > 0)) {
             String msg = "parsing.error.transition.found-bracket-instead-slash";
             throw new ParseException(Translator.localize(msg), 0);
         }
@@ -142,11 +142,6 @@ public class TransitionNotationUml extends TransitionNotation {
         String eg = s1[0].trim();
         String[] s2 = eg.split("\\[", 2);
         
-        if (s1.length > 1)  {
-            if (s1[1].trim().length() > 0) {
-                parseEffect(trans, s1[1].trim()); 
-            }
-        }
         if (s2[0].trim().length() > 0) {
             parseTrigger(trans, s2[0].trim());
         }
@@ -157,6 +152,11 @@ public class TransitionNotationUml extends TransitionNotation {
                 if (g.length() > 0) {
                     parseGuard(trans, g);
                 }
+            }
+        }
+        if (s1.length > 1)  {
+            if (s1[1].trim().length() > 0) {
+                parseEffect(trans, s1[1].trim()); 
             }
         }
         return trans;

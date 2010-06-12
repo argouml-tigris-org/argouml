@@ -116,6 +116,10 @@ public class TestTransitionNotationUml extends TestCase {
         checkGenerated(aState, "[]/", false, false, false, false);
         checkGenerated(aState, "[ guard ]", false, true, false, false);
         checkGenerated(aState, "trigger()/", true, false, false, false);
+        checkGenerated(aState, "tr/i[gg]er", true, false, true, false);
+        // Inspired by issue 5983:
+        checkGenerated(aState, "ev1 / printf(\"got [i==1]\");", true, false, 
+                true, false);
     }
 
     /**
@@ -130,7 +134,6 @@ public class TestTransitionNotationUml extends TestCase {
         checkGenerated(aState, "trigger(/)", false, false, false, true);
         checkGenerated(aState, "tr]jhgf[ijh", false, false, false, true);
         checkGenerated(aState, "tr]/e", false, false, false, true);
-        checkGenerated(aState, "tr/i[gg]er", false, false, false, true);
         checkGenerated(aState, "tri[g/g]er", false, false, false, true);
     }
 
