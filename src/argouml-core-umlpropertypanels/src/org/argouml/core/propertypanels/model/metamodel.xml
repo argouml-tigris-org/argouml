@@ -3053,6 +3053,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="internalTransition" type="Transition" label="label.internal-transitions" new="true" />
 	<separator />
     <list name="subvertex" type="SynchState,StubState,CompositeState,SimpleState,FinalState,SubmachineState" new="true" />
+    <list name="deferrableEvent" type="CallEvent,ChangeEvent,SignalEvent,TimeEvent" label="label.deferrable" new="true" />
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">

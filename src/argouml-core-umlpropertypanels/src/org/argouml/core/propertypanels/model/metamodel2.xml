@@ -2896,6 +2896,7 @@ name
     <list name="internalTransition" type="Transition" label="label.internal-transitions" />
 	<separator />
     <list name="subvertex" type="StateVertex" />
+    <list name="deferrableEvent" type="Event" label="label.deferrable" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
