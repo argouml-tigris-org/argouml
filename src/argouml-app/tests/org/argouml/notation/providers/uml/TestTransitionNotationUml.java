@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    mvw
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -95,6 +96,64 @@ public class TestTransitionNotationUml extends TestCase {
                 ProjectManager.getManager().getCurrentProject());
         ProfileFacade.reset();
         super.tearDown();
+    }
+    
+    /**
+     * Test the reuse of events when a transition notation is parsed. 
+     * See issue 5988.
+     */
+    public void testParseEventsReuse() {
+        // reuse signal event:
+        Object t1s = checkGenerated(aState, "trigger1[guard]/effect", 
+                true, true, true, false);
+        Object t2s = checkGenerated(aState, "trigger1[guard]/effect", 
+                true, true, true, false);
+        Object t3s = checkGenerated(aState, "trigger2[guard]/effect", 
+                true, true, true, false);
+        Object trigger1s = Model.getFacade().getTrigger(t1s);
+        Object trigger2s = Model.getFacade().getTrigger(t2s);
+        Object trigger3s = Model.getFacade().getTrigger(t3s);
+        assertTrue("No reuse of a signal event.", trigger1s == trigger2s);
+        assertTrue("Unexpected reuse of a signal event.",  trigger1s != trigger3s);
+        
+        // reuse call event:
+        Object t1c = checkGenerated(aState, "trigger1()[guard]/effect", 
+                true, true, true, false);
+        Object t2c = checkGenerated(aState, "trigger1()[guard]/effect", 
+                true, true, true, false);
+        Object t3c = checkGenerated(aState, "trigger2()[guard]/effect", 
+                true, true, true, false);
+        Object trigger1c = Model.getFacade().getTrigger(t1c);
+        Object trigger2c = Model.getFacade().getTrigger(t2c);
+        Object trigger3c = Model.getFacade().getTrigger(t3c);
+        assertTrue("No reuse of a call event.", trigger1c == trigger2c);
+        assertTrue("Unexpected reuse of a call event.", trigger1c != trigger3c);
+        
+        // reuse time event:
+        Object t1t = checkGenerated(aState, "after(1s)[guard]/effect", 
+                true, true, true, false);
+        Object t2t = checkGenerated(aState, "after(1s)[guard]/effect", 
+                true, true, true, false);
+        Object t3t = checkGenerated(aState, "after(2s)[guard]/effect", 
+                true, true, true, false);
+        Object trigger1t = Model.getFacade().getTrigger(t1t);
+        Object trigger2t = Model.getFacade().getTrigger(t2t);
+        Object trigger3t = Model.getFacade().getTrigger(t3t);
+        assertTrue("No reuse of a time event.", trigger1t == trigger2t);
+        assertTrue("Unexpected reuse of a time event.", trigger1t != trigger3t);
+        
+        // reuse change event:
+        Object t1g = checkGenerated(aState, "when(condition1)[guard]/effect", 
+                true, true, true, false);
+        Object t2g = checkGenerated(aState, "when(condition1)[guard]/effect", 
+                true, true, true, false);
+        Object t3g = checkGenerated(aState, "when(condition2)[guard]/effect", 
+                true, true, true, false);
+        Object trigger1g = Model.getFacade().getTrigger(t1g);
+        Object trigger2g = Model.getFacade().getTrigger(t2g);
+        Object trigger3g = Model.getFacade().getTrigger(t3g);
+        assertTrue("No reuse of a change event.", trigger1g == trigger2g);
+        assertTrue("Unexpected reuse of a change event.", trigger1g != trigger3g);
     }
 
     /**

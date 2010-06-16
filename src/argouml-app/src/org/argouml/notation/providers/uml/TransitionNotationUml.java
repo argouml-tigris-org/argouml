@@ -215,7 +215,7 @@ public class TransitionNotationUml extends TransitionNotation {
          * 3. A trigger is not given. None exists yet.
          * 4. The name of the trigger was present, but is removed.
          * The reaction in these cases should be:
-         * 1. Create a new trigger, name it, and hook it to the transition.
+         * 1. Find the referred trigger (issue 5988) or create a new one, and hook it to the transition.
          * 2. Rename the trigger.
          * 3. Nop.
          * 4. Unhook and erase the existing trigger.
@@ -228,17 +228,17 @@ public class TransitionNotationUml extends TransitionNotation {
                 .findNamespaceForEvent(trans, null);
         StateMachinesFactory sMFactory =
                 Model.getStateMachinesFactory();
-        boolean createdEvent = false;
+        boolean weHaveAnEvent = false;
         if (trigger.length() > 0) {
             // case 1 and 2
             if (evt == null) {
                 // case 1
                 if (timeEvent) { // after(...)
-                    evt = sMFactory.buildTimeEvent(s, ns);
+                    evt = findOrBuildTimeEvent(s, ns);
                     /* Do not set the name. */
                 }
                 if (changeEvent) { // when(...)
-                    evt = sMFactory.buildChangeEvent(s, ns);
+                    evt = findOrBuildChangeEvent(s, ns);
                     /* Do not set the name. */
                 }
                 if (callEvent) { // operation(paramlist)
@@ -246,27 +246,38 @@ public class TransitionNotationUml extends TransitionNotation {
                         trigger.indexOf("(") > 0
                         ? trigger.substring(0, trigger.indexOf("(")).trim()
                         : trigger;
-                    evt = sMFactory.buildCallEvent(trans, triggerName, ns);
-                    // and parse the parameter list
-                    NotationUtilityUml.parseParamList(evt, s, 0);
+                    /* This case is a bit different, because of the parameters. 
+                     * If the event already exists, the parameters are ignored. */
+                    evt = findCallEvent(triggerName, ns);
+                    if (evt == null) {
+                        evt = sMFactory.buildCallEvent(trans, triggerName, ns);
+                        // and parse the parameter list
+                        NotationUtilityUml.parseParamList(evt, s, 0);
+                    }
                 }
                 if (signalEvent) { // signalname
-                    evt = sMFactory.buildSignalEvent(trigger, ns);
+                    evt = findOrBuildSignalEvent(trigger, ns);
                 }
-                createdEvent = true;
+                weHaveAnEvent = true;
             } else {
                 // case 2
                 if (timeEvent) {
                     if (Model.getFacade().isATimeEvent(evt)) {
                         /* Just change the time expression */
                         Object timeExpr = Model.getFacade().getWhen(evt);
-                        Model.getDataTypesHelper().setBody(timeExpr, s);
+                        if (timeExpr == null) {
+                            // we have an event without expression
+                            timeExpr = Model.getDataTypesFactory().createTimeExpression("", s);
+                            Model.getStateMachinesHelper().setWhen(evt, timeExpr);
+                        } else {
+                            Model.getDataTypesHelper().setBody(timeExpr, s);
+                        }
                     } else {
                         /* It's a time-event now,
                          * but was of another type before! */
                         delete(evt); /* TODO: What if used elsewhere? */
                         evt = sMFactory.buildTimeEvent(s, ns);
-                        createdEvent = true;
+                        weHaveAnEvent = true;
                     }
                 }
                 if (changeEvent) {
@@ -288,7 +299,7 @@ public class TransitionNotationUml extends TransitionNotation {
                          * but the model contains another type! */
                         delete(evt); /* TODO: What if used elsewhere? */
                         evt = sMFactory.buildChangeEvent(s, ns);
-                        createdEvent = true;
+                        weHaveAnEvent = true;
                     }
                 }
                 if (callEvent) {
@@ -308,7 +319,7 @@ public class TransitionNotationUml extends TransitionNotation {
                         evt = sMFactory.buildCallEvent(trans, trigger, ns);
                         // and parse the parameter list
                         NotationUtilityUml.parseParamList(evt, s, 0);
-                        createdEvent = true;
+                        weHaveAnEvent = true;
                     }
                 }
                 if (signalEvent) {
@@ -321,11 +332,11 @@ public class TransitionNotationUml extends TransitionNotation {
                     } else {
                         delete(evt); /* TODO: What if used elsewhere? */
                         evt = sMFactory.buildSignalEvent(trigger, ns);
-                        createdEvent = true;
+                        weHaveAnEvent = true;
                     }
                 }
             }
-            if (createdEvent && (evt != null)) {
+            if (weHaveAnEvent && (evt != null)) {
                 Model.getStateMachinesHelper().setEventAsTrigger(trans, evt);
             }
         } else {
@@ -337,6 +348,93 @@ public class TransitionNotationUml extends TransitionNotation {
                 delete(evt); // erase it
             }
         }
+    }
+    
+    protected Object findOrBuildSignalEvent(String trigger, Object ns) {
+        StateMachinesFactory sMFactory = Model.getStateMachinesFactory();
+        if ((trigger == null) || ("".equals(trigger.trim()))) {
+            return sMFactory.buildSignalEvent(trigger, ns);
+        }
+        Object result = null;
+        Object type = Model.getMetaTypes().getSignalEvent();
+        Collection events = Model.getModelManagementHelper()
+            .getAllModelElementsOfKind(ns, type);
+        for (Object event : events) {
+            if (trigger.equals(Model.getFacade().getName(event))) {
+                result = event;
+                break;
+            }
+        }
+        if (result == null) {
+            result = sMFactory.buildSignalEvent(trigger, ns);
+        }
+        return result;
+    }
+    
+    protected Object findOrBuildTimeEvent(String timeexpr, Object ns) {
+        StateMachinesFactory sMFactory = Model.getStateMachinesFactory();
+        if ((timeexpr == null) || ("".equals(timeexpr.trim()))) {
+            return sMFactory.buildTimeEvent(timeexpr, ns);
+        }
+        Object result = null;
+        Object type = Model.getMetaTypes().getTimeEvent();
+        Collection events = Model.getModelManagementHelper()
+            .getAllModelElementsOfKind(ns, type);
+        for (Object event : events) {
+            Object expression = Model.getFacade().getExpression(event);
+            if (expression != null) {
+                if (timeexpr.equals(Model.getFacade().getBody(expression))) {
+                    result = event;
+                    break;
+                }
+            }
+        }
+        if (result == null) {
+            result = sMFactory.buildTimeEvent(timeexpr, ns);
+        }
+        return result;
+    }
+    
+    protected Object findOrBuildChangeEvent(String changeexpr, Object ns) {
+        StateMachinesFactory sMFactory = Model.getStateMachinesFactory();
+        if ((changeexpr == null) || ("".equals(changeexpr.trim()))) {
+            return sMFactory.buildChangeEvent(changeexpr, ns);
+        }
+        Object result = null;
+        Object type = Model.getMetaTypes().getChangeEvent();
+        Collection events = Model.getModelManagementHelper()
+            .getAllModelElementsOfKind(ns, type);
+        for (Object event : events) {
+            Object expression = Model.getFacade().getExpression(event);
+            if (expression != null) {
+                if (changeexpr.equals(Model.getFacade().getBody(expression))) {
+                    result = event;
+                    break;
+                }
+            }
+        }
+        if (result == null) {
+            result = sMFactory.buildChangeEvent(changeexpr, ns);
+        }
+        return result;
+    }
+    
+    protected Object findCallEvent(String callexpr, Object ns) {
+        if ((callexpr == null) || ("".equals(callexpr.trim()))) {
+            return null;
+        }
+        Object result = null;
+        Object type = Model.getMetaTypes().getCallEvent();
+        Collection events = Model.getModelManagementHelper()
+            .getAllModelElementsOfKind(ns, type);
+        for (Object event : events) {
+            if (callexpr.equals(Model.getFacade().getName(event))) {
+                /* Do not check if the parameters match. */
+                result = event;
+                break;
+            }
+        }
+        return result;
     }
 
     /**
