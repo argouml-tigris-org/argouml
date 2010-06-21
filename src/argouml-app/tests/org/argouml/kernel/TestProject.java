@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+  *   mvw
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -238,7 +239,12 @@ public class TestProject extends TestCase {
 
     /**
      * Test deleting a class that contains a Statechart diagram.
-     * The diagram should be deleted, too.
+     * According WFR 2 for a class: 
+     * a class should not contain a statemachine.
+     * Hence, we are testing an abnormal situation.
+     * But anyhow, deleting a class should cause deletion 
+     * of everything in its namespace.
+     * Since the statemachine is deleted, the diagram should be deleted, too.
      */
     public void testDeleteClassWithStateDiagram() {
         Project p = ProjectManager.getManager().getOpenProjects().get(0);
@@ -256,6 +262,8 @@ public class TestProject extends TestCase {
         // try with Statediagram
         Object machine =
             Model.getStateMachinesFactory().buildStateMachine(aClass);
+        /* Put the statemachine in the namespace of the class: */
+        Model.getCoreHelper().setNamespace(machine, aClass);
         UMLStateDiagram d =
             new UMLStateDiagram(
                     Model.getFacade().getNamespace(machine),

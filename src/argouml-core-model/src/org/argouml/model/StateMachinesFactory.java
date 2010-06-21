@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -153,7 +153,8 @@ public interface StateMachinesFactory extends Factory {
     Object buildCompositeStateOnStateMachine(Object statemachine);
 
     /**
-     * Builds a state machine owned by the given context.
+     * Builds a state machine with the given context, in the namespace 
+     * containing the context.
      *
      * @param oContext the given context
      * @return MStateMachine the newly build statemachine

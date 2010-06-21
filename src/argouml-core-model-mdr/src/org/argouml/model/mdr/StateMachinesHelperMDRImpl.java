@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    mvw
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -41,6 +42,7 @@ package org.argouml.model.mdr;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.jmi.reflect.InvalidObjectException;
 
@@ -63,11 +65,14 @@ import org.omg.uml.behavioralelements.statemachines.TimeEvent;
 import org.omg.uml.behavioralelements.statemachines.Transition;
 import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
+import org.omg.uml.foundation.core.Feature;
 import org.omg.uml.foundation.core.ModelElement;
+import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.datatypes.BooleanExpression;
 import org.omg.uml.foundation.datatypes.Expression;
 import org.omg.uml.foundation.datatypes.TimeExpression;
+import org.omg.uml.modelmanagement.UmlPackage;
 
 /**
  * The State Machines Helper Implementation for MDR.
@@ -262,14 +267,58 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         }
         try {
             Object sm = getStateMachine(trans);
-            Object ns = Model.getFacade().getNamespace(sm);
-            if (ns instanceof Classifier) {
-                Collection<Operation> operations = 
-                    Model.getFacade().getOperations(ns);
-                for (Operation op : operations) {
-                    String on = ((ModelElement) op).getName();
-                    if (on.equals(opname)) {
-                        return op;
+            Object context = Model.getFacade().getContext(sm);
+            Classifier classifier = null;
+            if (context instanceof Classifier) {
+                classifier = (Classifier) context;
+            }
+            if (context instanceof BehavioralFeature) {
+                classifier = ((BehavioralFeature) context).getOwner();
+            }
+            if (classifier != null) {
+                List<Feature> features = classifier.getFeature();
+                for (Feature f : features) {
+                    if (f instanceof Operation) {
+                        String on = f.getName();
+                        if (on.equals(opname)) {
+                            return f;
+                        }   
+                    }
+                }
+            }
+            Namespace pack = null;
+            if (context instanceof UmlPackage) {
+                /* according WFR: in case of ActivityGraph only. */
+                pack = (Namespace) context;
+            } else {
+                if (classifier != null) {
+                    Namespace parent = null;
+                    parent = classifier.getNamespace();
+                    while (parent instanceof Classifier) {
+                        if (parent.getNamespace() == null) {
+                            break;
+                        }
+                        parent = parent.getNamespace();
+                    }
+                    if (parent != null) {
+                        pack = parent;
+                    }
+                }
+            }
+            if (pack != null) {
+                Collection<ModelElement> mes = pack.getOwnedElement();
+                for (ModelElement me : mes) {
+                    if (me instanceof Classifier) {
+                        Classifier classifier2 = (Classifier) me;
+                        List<Feature> features = classifier2.getFeature();
+                        for (Feature f : features) {
+                            if (f instanceof Operation) {
+                                String on = f.getName();
+                                if (on.equals(opname)) {
+                                    return f;
+                                }   
+                            }
+                        }
                     }
                 }
             }

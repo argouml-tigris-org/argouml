@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    mvw
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -96,6 +97,15 @@ public class ActionStateDiagram extends ActionNewDiagram {
             machine = Model.getStateMachinesFactory().createStateMachine();
             if (Model.getFacade().isANamespace(target)) {
                 namespace = target;
+                /* Follow well-formedness rule for a Class [2].
+                 * Determine the owning namespace for the statemachine: */
+                while (Model.getFacade().isAClass(namespace)) {
+                  Object parent = Model.getFacade().getNamespace(namespace);
+                  if (parent == null) {
+                      break;
+                  }
+                  namespace = parent;
+              }
             }
             Model.getCoreHelper().setNamespace(machine, namespace);
             Model.getStateMachinesFactory()
@@ -115,10 +125,5 @@ public class ActionStateDiagram extends ActionNewDiagram {
         }
         return true;
     }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -5197718695001757808L;
 
 }

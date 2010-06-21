@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    mvw
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -167,14 +168,23 @@ public interface StateMachinesHelper {
     Collection getOutgoingStates(Object ostatevertex);
 
     /**
-     * Finds the operation to which a CallEvent refers.
+     * Finds the operation to which a CallEvent refers, based on the given 
+     * transition. This function determines the context of the statemachine 
+     * that contains the given transition. If the context is a Classifier, then 
+     * all operations of this classifier are candidates. If the context is a 
+     * BehavioralFeature, then all operations of the owner Classifier are 
+     * candidates. The first operation of which the name matches is the result.
+     * For Activity diagrams: If the context is a Package, then
+     * all Operations of all Classifiers in the package are candidates.
      * TODO: This function works for the most normal cases,
      * but needs some testing for rare cases, e.g. internal transitions,...
+     * TODO: The Parameters of the candidates are ignored. Maybe this 
+     * method should return a set of matching operations.
      *
      * @author MVW
-     * @param trans Object of type MTransition
+     * @param trans Object of type Transition
      * @param opname the name of the operation sought
-     * @return Object The operation with the given name, or null.
+     * @return Object the operation with the given name, or null
      */
     Object findOperationByName(Object trans, String opname);
 

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    mvw
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -54,6 +55,7 @@ import org.omg.uml.foundation.core.BehavioralFeature;
 import org.omg.uml.foundation.core.Classifier;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
+import org.omg.uml.foundation.core.UmlClass;
 
 /**
  * Factory to create UML classes for the UML BehaviorialElements::ActivityGraphs
@@ -145,12 +147,23 @@ class ActivityGraphsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     public ActivityGraph buildActivityGraph(Object theContext) {
         if (theContext instanceof ModelElement) {
             ActivityGraph myActivityGraph = createActivityGraph();
-            myActivityGraph.setContext((ModelElement) theContext);
-            if (theContext instanceof Namespace) {
-                myActivityGraph.setNamespace((Namespace) theContext);
-            } else if (theContext instanceof BehavioralFeature) {
-                myActivityGraph.setNamespace(((BehavioralFeature) theContext).
-                        getOwner());
+            ModelElement modelelement = (ModelElement) theContext;
+            myActivityGraph.setContext(modelelement);
+            
+            if (modelelement instanceof BehavioralFeature) {
+                modelelement = ((BehavioralFeature) modelelement).getOwner();
+            }
+            if (modelelement instanceof Namespace) {
+                Namespace namespace = (Namespace) modelelement;
+                /* Follow well-formedness rule for a Class [2].
+                 * See issue 4282. Do not use a class 
+                 * as the namespace for an activityGraph: */
+                while (namespace instanceof UmlClass) {
+                    Namespace pns = namespace.getNamespace();
+                    if (pns == null) break;
+                    namespace = pns;
+                }
+                myActivityGraph.setNamespace(namespace);
             }
             State top =
                     (CompositeState) modelImpl.getStateMachinesFactory()

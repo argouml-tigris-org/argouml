@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    mvw
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -48,11 +49,11 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.ui.UndoableAction;
 
 /**
  * Abstract action to trigger creation of a new diagram. <p>
@@ -85,7 +86,6 @@ public abstract class ActionNewDiagram extends UndoableAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
 
         // TODO: Get Project or other necessary context from source??
         // e.getSource();
@@ -97,8 +97,10 @@ public abstract class ActionNewDiagram extends UndoableAction {
         Object ns = findNamespace();
         
         if (ns != null && isValidNamespace(ns)) {
-            ArgoDiagram diagram = createDiagram(ns, 
-                    p.getProjectSettings().getDefaultDiagramSettings());
+            super.actionPerformed(e);
+            DiagramSettings settings = 
+                p.getProjectSettings().getDefaultDiagramSettings();
+            ArgoDiagram diagram = createDiagram(ns, settings);
             assert (diagram != null)
             : "No diagram was returned by the concrete class";
 
@@ -115,7 +117,8 @@ public abstract class ActionNewDiagram extends UndoableAction {
     }
 
     /**
-     * Find the right namespace for the diagram.
+     * Find an alternative namespace for the diagram, only to be used 
+     * if the target is not suitable.
      *
      * @return the namespace or null
      */

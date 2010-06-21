@@ -58,9 +58,12 @@ import org.argouml.profile.init.InitProfileSubsystem;
  * @author MVW
  */
 public class TestTransitionNotationUml extends TestCase {
+    private Object model;
     private Object aClass;
+    private Object returnType;
     private Object aStateMachine;
     private Object aState;
+    private Object aOper;
 
     /**
      * The constructor.
@@ -79,11 +82,11 @@ public class TestTransitionNotationUml extends TestCase {
         assertTrue("Model subsystem init failed.", Model.isInitiated());
         new InitProfileSubsystem().init();
         Project p = ProjectManager.getManager().getCurrentProject();
-        Object model =
-            Model.getModelManagementFactory().createModel();
-        aClass = Model.getCoreFactory().buildClass(model);
-        Object returnType = p.getDefaultReturnType();
-        Model.getCoreFactory().buildOperation2(aClass, returnType, "myOper");
+        returnType = p.getDefaultReturnType();
+
+        model = Model.getModelManagementFactory().createModel();
+        aClass = Model.getCoreFactory().buildClass("A", model);
+        aOper = Model.getCoreFactory().buildOperation2(aClass, returnType, "myOper");
         aStateMachine =
             Model.getStateMachinesFactory().buildStateMachine(aClass);
         Object top = Model.getFacade().getTop(aStateMachine);
@@ -399,20 +402,140 @@ public class TestTransitionNotationUml extends TestCase {
     /**
      * Test for the parseTrigger() method:
      * linking of an Operation for a CallEvent.
+     * The operation resides on the class that is the context of the 
+     * statemachine:
      */
-    public void testParseTriggerCallEventOperation() {
+    public void testParseTriggerCallEventOperation1() {
+        checkLinkingOfOperationToCallEvent("myOper()", aOper);
+    }
+
+    /**
+     * Test for the parseTrigger() method:
+     * linking of an Operation for a CallEvent.
+     * With the operation residing on another class within the same 
+     * namespace:
+     */
+    public void testParseTriggerCallEventOperation2() {
+        Object bClass = Model.getCoreFactory().buildClass("B", model);
+        Object bOper = Model.getCoreFactory().buildOperation2(bClass, 
+                returnType, "bOper");
+        checkLinkingOfOperationToCallEvent("bOper()", bOper);
+    }
+
+    /**
+     * Test for the parseTrigger() method:
+     * linking of an Operation for a CallEvent.
+     * When the context is a behavioral feature and 
+     * the operation = context:
+     */
+    public void testParseTriggerCallEventOperation3() {
+        Model.getStateMachinesHelper().setContext(aStateMachine, aOper);
+        checkLinkingOfOperationToCallEvent("myOper()", aOper);
+    }
+
+    /**
+     * Test for the parseTrigger() method:
+     * linking of an Operation for a CallEvent.
+     * When the context is a behavioral feature and the operation differs 
+     * from the context:
+     */
+    public void testParseTriggerCallEventOperation4() {
+        Model.getStateMachinesHelper().setContext(aStateMachine, aOper);
+        Object bClass = Model.getCoreFactory().buildClass("B", model);
+        Model.getCoreFactory().buildOperation2(bClass, returnType, "cOper");
+        Object dOper = Model.getCoreFactory().buildOperation2(bClass, 
+                returnType, "dOper");
+        checkLinkingOfOperationToCallEvent("dOper()", dOper);
+    }
+    
+    /**
+     * Test for the parseTrigger() method:
+     * linking of an Operation for a CallEvent.
+     * When the context is a package and the operation is on a class 
+     * within that package:
+     */
+    public void testParseTriggerCallEventOperation5() {
+        Object aPack = Model.getModelManagementFactory().buildPackage("pack1");
+        Model.getCoreHelper().setNamespace(aPack, model);
+        aClass = Model.getCoreFactory().buildClass("A", aPack);
+        aOper = Model.getCoreFactory().buildOperation2(aClass, returnType, "myOper");
+        aStateMachine =
+            Model.getActivityGraphsFactory().buildActivityGraph(aPack);
+       
+        Object top = Model.getFacade().getTop(aStateMachine);
+        aState = Model.getStateMachinesFactory().buildCompositeState(top);
+        
+        Object bClass = Model.getCoreFactory().buildClass("B", aPack);
+        Model.getCoreFactory().buildOperation2(bClass, returnType, "cOper");
+        Object dOper = Model.getCoreFactory().buildOperation2(bClass, 
+                returnType, "dOper");
+        checkLinkingOfOperationToCallEvent("dOper()", dOper);
+    }
+    
+    /**
+     * Test for the parseTrigger() method:
+     * linking of an Operation for a CallEvent.
+     * When the context is a nested class and the operation is on a class 
+     * within the containing package:
+     */
+    public void testParseTriggerCallEventOperation6() {
+        Object aPack = Model.getModelManagementFactory().buildPackage("pack1");
+        Model.getCoreHelper().setNamespace(aPack, model);
+        aClass = Model.getCoreFactory().buildClass("A", aPack);
+        // nested class:
+        Object bClass = Model.getCoreFactory().buildClass("B", aClass);
+        Object cClass = Model.getCoreFactory().buildClass("C", bClass);
+        
+        aStateMachine =
+            Model.getActivityGraphsFactory().buildActivityGraph(cClass);
+        Object top = Model.getFacade().getTop(aStateMachine);
+        aState = Model.getStateMachinesFactory().buildCompositeState(top);
+        
+        Model.getCoreFactory().buildOperation2(cClass, returnType, "cOper");
+        Object dOper = Model.getCoreFactory().buildOperation2(aClass, 
+                returnType, "dOper");
+        checkLinkingOfOperationToCallEvent("dOper()", dOper);
+    }
+    
+    /**
+     * Test for the parseTrigger() method:
+     * linking of an Operation for a CallEvent.
+     * When the context is a nested class and the operation is on the same 
+     * nested class:
+     */
+    public void testParseTriggerCallEventOperation7() {
+        Object aPack = Model.getModelManagementFactory().buildPackage("pack1");
+        Model.getCoreHelper().setNamespace(aPack, model);
+        aClass = Model.getCoreFactory().buildClass("A", aPack);
+        // nested class:
+        Object bClass = Model.getCoreFactory().buildClass("B", aClass);
+        Object cClass = Model.getCoreFactory().buildClass("C", bClass);
+        
+        aStateMachine =
+            Model.getActivityGraphsFactory().buildActivityGraph(cClass);
+        Object top = Model.getFacade().getTop(aStateMachine);
+        aState = Model.getStateMachinesFactory().buildCompositeState(top);
+        
+        Model.getCoreFactory().buildOperation2(cClass, returnType, "cOper");
+        Object dOper = Model.getCoreFactory().buildOperation2(cClass, 
+                returnType, "dOper");
+        checkLinkingOfOperationToCallEvent("dOper()", dOper);
+    }
+    
+    /**
+     * This method only uses the "aState" variable.
+     */
+    private void checkLinkingOfOperationToCallEvent(String text, Object operation) {
         Object trans;
         Object trig;
-        String text;
         Object myOp;
-
-        text = "myOper()"; // this is an existing operation of the class!
         trans = checkGenerated(aState, text, true, false, false, false);
         trig = Model.getFacade().getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of CallEvent for "
                 + text, Model.getFacade().isACallEvent(trig));
         myOp = Model.getFacade().getOperation(trig);
         assertTrue("Operation of CallEvent not linked", myOp != null);
+        assertTrue("Wrong operation linked to callevent", myOp == operation);
     }
 
     /**
