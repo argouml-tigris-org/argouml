@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    andreas
+ *    mvw
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -232,6 +233,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
     private ActionAboutArgoUML aboutAction;
     private ActionExit exitAction;
     private ActionOpenProject openAction;
+    private ActionLayout layoutAction;
 
     /**
      * The constructor.
@@ -248,8 +250,14 @@ public class GenericArgoMenuBar extends JMenuBar implements
         disableableActions.add(navigateTargetForwardAction);
         navigateTargetBackAction = new NavigateTargetBackAction();
         disableableActions.add(navigateTargetBackAction);
+        layoutAction = new ActionLayout();
+        disableableActions.add(layoutAction);
         
         TargetManager.getInstance().addTargetListener(this);
+        /* This next line added to solve issue 5755.
+         * Bring the enabled/disabled state of the actions in line with the 
+         * last target change that happened before we registered as listener. */
+        setTarget();
     }
 
     /**
@@ -685,9 +693,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         ShortcutMgr.assignAccelerator(preferredSize,
                 ShortcutMgr.ACTION_PREFERRED_SIZE);
 
-        Action layout = new ActionLayout();
-        disableableActions.add(layout);
-        arrange.add(layout);
+        arrange.add(layoutAction);
 
         // This used to be deferred, but it's only 30-40 msec of work.
         initAlignMenu(align);
