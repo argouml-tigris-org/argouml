@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    mvw
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -293,14 +294,23 @@ public class DisplayTextTree extends JTree {
         return name;
     }
 
+    /**
+     * Generate the text to represent a Transition.
+     * 
+     * @param value a Transition UML object
+     * @return a representation of the Transition with trigger, guard 
+     * and effect
+     */
     private String formatTransitionLabel(Object value) {
         String name;
         name = Model.getFacade().getName(value);
+        NotationSettings settings = getNotationSettings();
         NotationProvider notationProvider =
             NotationProviderFactory2.getInstance()
                 .getNotationProvider(
                         NotationProviderFactory2.TYPE_TRANSITION,
-                        value);
+                        value,
+                        Notation.findNotation(settings.getNotationLanguage()));
         String signature = notationProvider.toString(value, 
                 NotationSettings.getDefaultSettings());
         if (name != null && name.length() > 0) {
@@ -320,6 +330,15 @@ public class DisplayTextTree extends JTree {
                 getNotationSettings().isUseGuillemets());
     }
 
+    /**
+     * Create a string representing the given modelelement. Normally this is 
+     * just the name, but if the element is not named, something like 
+     * "anonymous Classifier" is returned with i18n applied.
+     * 
+     * @param modelElement the given element
+     * @return a recognizable name for the element 
+     * (guaranteed with length > 0)
+     */
     public static final String getModelElementDisplayName(Object modelElement) {
         String name = Model.getFacade().getName(modelElement);
         if (name == null || name.equals("")) {
