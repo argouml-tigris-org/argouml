@@ -508,8 +508,9 @@ public class DetailsPane
         
         // If sel is the ToDo Tab (i.e. is an instance of TabToDoTarget), we 
         // don't need to do anything, because the ToDo Tab is already dealt 
-        // with by it's own listener. 
-        if (!(sel instanceof TabToDoTarget)) {
+        // with by it's own listener. TabProps is also deals with itself.
+        // TODO: Do we really need this for anything?
+        if (!(sel instanceof TabToDoTarget) && !(sel instanceof TabProps)) {
             // The other tabs need to be updated depending on the selection.
             if (sel instanceof TabTarget) {
                 ((TabTarget) sel).setTarget(target);
