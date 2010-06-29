@@ -67,7 +67,7 @@ import org.tigris.toolbar.ToolBarFactory;
  */
 class SwingUIFactory {
 	
-	private static final Logger LOG = Logger.getLogger(SwingUIFactory.class);
+    private static final Logger LOG = Logger.getLogger(SwingUIFactory.class);
     
     public SwingUIFactory() {
         
@@ -415,19 +415,19 @@ class SwingUIFactory {
             if (Model.getFacade().isACallEvent(target)) {
                 UMLComboBoxModel model = 
                     new UMLCallEventOperationComboBoxModel(propertyName, target);
-                UMLComboBox combo = new UMLCallEventOperationComboBox(model);
+                UMLComboBox combo = new UMLComboBox(model);
                 comp = new UMLComboBoxNavigator(Translator.localize(
                         "label.operation.navigate.tooltip"),
                         combo);
             } else {
                 final UMLComboBoxModel model = 
                     new UMLCallActionOperationComboBoxModel(propertyName, target);
-                UMLComboBox operationComboBox =
+                UMLComboBox combo =
                     new UMLCallActionOperationComboBox(model,
                             model.getAction());
-                comp = new UMLComboBoxNavigator(
-                        Translator.localize("label.operation.navigate.tooltip"),
-                        operationComboBox);
+                comp = new UMLComboBoxNavigator(Translator.localize(
+                	"label.operation.navigate.tooltip"),
+                        combo);
             }
         } else if ("representedClassifier".equals(prop.getName())) {
             final UMLComboBoxModel model = 

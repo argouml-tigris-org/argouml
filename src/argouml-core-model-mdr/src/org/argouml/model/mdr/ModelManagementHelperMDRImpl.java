@@ -738,8 +738,9 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
                 }
             }
             /* TODO: This is the 2nd part of this method: */
-            Collection imports = modelImpl.getFacade().getImportedElements(ns);
-            results.addAll(imports);
+            if (ns instanceof UmlPackage) {
+                results.addAll(modelImpl.getFacade().getImportedElements(ns));
+            }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }

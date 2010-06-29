@@ -38,12 +38,14 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.Action;
 
 import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
 
 class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
     
@@ -70,23 +72,24 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
         Collection ops = new ArrayList();
         if (Model.getFacade().isACallEvent(target)) {
             Object ns = Model.getFacade().getNamespace(target);
-            if (Model.getFacade().isANamespace(ns)) {
-                Collection classifiers =
-                    Model.getModelManagementHelper().getAllModelElementsOfKind(
-                            ns,
-                            Model.getMetaTypes().getClassifier());
-                for (Object classifier : classifiers) {
-                    ops.addAll(Model.getFacade().getOperations(classifier));
-                }
-                
-                // TODO: getAllModelElementsOfKind should probably do this
-                // processing of imported elements automatically
-                for (Object importedElem : Model.getModelManagementHelper()
-                        .getAllImportedElements(ns)) {
-                    if (Model.getFacade().isAClassifier(importedElem)) {
-                        ops.addAll(Model.getFacade()
-                                .getOperations(importedElem));
-                    }
+            if (Model.getFacade().isAClassifier(ns)) {
+                ns = Model.getFacade().getNamespace(ns);
+            }
+            Collection classifiers =
+                Model.getModelManagementHelper().getAllModelElementsOfKind(
+                        ns,
+                        Model.getMetaTypes().getClassifier());
+            for (Object classifier : classifiers) {
+                ops.addAll(Model.getFacade().getOperations(classifier));
+            }
+            
+            // TODO: getAllModelElementsOfKind should probably do this
+            // processing of imported elements automatically
+            for (Object importedElem : Model.getModelManagementHelper()
+                    .getAllImportedElements(ns)) {
+                if (Model.getFacade().isAClassifier(importedElem)) {
+                    ops.addAll(Model.getFacade()
+                            .getOperations(importedElem));
                 }
             }
         }
@@ -116,6 +119,35 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel {
     }
     
     public Action getAction() {
-        return null;
+        return new SetAction();
     }
+    
+    private class SetAction extends UndoableAction {
+
+        /**
+         * The constructor.
+         */
+        public SetAction() {
+            super("");
+        }
+
+        /*
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            super.actionPerformed(e);
+            final Object source = e.getSource();
+            if (source instanceof UMLComboBox) {
+                final Object selected = ((UMLComboBox) source).getSelectedItem();
+                final Object target = ((UMLComboBox) source).getTarget();
+                if (Model.getFacade().isACallEvent(target) 
+                    && Model.getFacade().isAOperation(selected)) {
+                    if (Model.getFacade().getOperation(target) != selected) {
+                        Model.getCommonBehaviorHelper().setOperation(
+                                target, selected);
+                    }
+                }
+            }
+        }
+    }    
 }
