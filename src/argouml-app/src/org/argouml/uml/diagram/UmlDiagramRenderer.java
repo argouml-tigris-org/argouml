@@ -334,7 +334,7 @@ public abstract class UmlDiagramRenderer
         for (Object fig : lay.getContentsNoEdges()) {
  
             if (fig instanceof FigNode
-                    && ((FigNode) fig).getOwner().equals(modelElement)) {
+                    && modelElement.equals(((FigNode) fig).getOwner())) {
                 return ((FigNode) fig);
             }
         }
