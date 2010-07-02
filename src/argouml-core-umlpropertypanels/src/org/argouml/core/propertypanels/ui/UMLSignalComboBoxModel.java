@@ -57,12 +57,12 @@ import org.argouml.ui.UndoableAction;
 /**
  * The model for the signal combobox on the reception proppanel.
  */
-public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel {
+public class UMLSignalComboBoxModel extends UMLComboBoxModel {
 
     /**
      * Constructor for UMLReceptionSignalComboBoxModel.
      */
-    public UMLReceptionSignalComboBoxModel(
+    public UMLSignalComboBoxModel(
         final String propertyName,
         final Object target) {
         super(propertyName, false);

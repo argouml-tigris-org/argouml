@@ -2979,8 +2979,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="parameter" type="Parameter" new="true" />
     <list name="transition" type="Event" />    
     <separator />
-    <list name="signal" type="Signal" />
-	
+    <combo name="signal" type="Signal" new="true" />
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
