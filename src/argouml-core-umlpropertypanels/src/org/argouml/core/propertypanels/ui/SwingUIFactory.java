@@ -506,7 +506,7 @@ class SwingUIFactory {
                     combo);
         } else if ("signal".equals(prop.getName())) {
             final UMLComboBoxModel model =
-                new UMLReceptionSignalComboBoxModel(propertyName, target);
+                new UMLSignalComboBoxModel(propertyName, target);
             final UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(
                     Translator.localize("label.type.navigate.tooltip"),
