@@ -2826,8 +2826,7 @@
     <list name="parameter" type="org.omg.uml.foundation.core.Parameter" />
     <list name="transition" type="Event" />    
     <separator />
-    <list name="signal" type="Signal" />
-	
+    <combo name="signal" type="org.omg.uml.behavioralelements.commonbehavior.Signal" />
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
