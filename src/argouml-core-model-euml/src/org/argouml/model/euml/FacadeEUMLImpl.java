@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Action;
+import org.eclipse.uml2.uml.ActivityNode;
 import org.eclipse.uml2.uml.ActivityPartition;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.AggregationKind;
@@ -196,6 +197,14 @@ class FacadeEUMLImpl implements Facade {
 
     }
 
+    public Object getActivity(Object handle) {
+        if (!(handle instanceof ActivityNode)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of ActivityNode"); //$NON-NLS-1$
+        }
+        return ((ActivityNode) handle).getActivity();
+    }
+    
     public List getActualArguments(Object handle) {
         throw new NotYetImplementedException();
 

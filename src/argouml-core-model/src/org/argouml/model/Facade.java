@@ -2961,6 +2961,15 @@ public interface Facade {
      * @return the activityGraph
      */
     Object getActivityGraph(Object handle);
+    
+    /**
+     * Return the Activity of an ActivityNode (UML2 only).
+     * 
+     * @param handle the activitynode
+     * @return the activity
+     */
+    Object getActivity(Object handle);
+    
 
     /**
      * Return the actual arguments for a given action.

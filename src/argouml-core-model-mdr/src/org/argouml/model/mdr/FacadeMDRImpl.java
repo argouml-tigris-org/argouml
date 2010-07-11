@@ -55,6 +55,7 @@ import javax.jmi.reflect.RefClass;
 import javax.jmi.reflect.RefFeatured;
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
+import javax.naming.OperationNotSupportedException;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
@@ -3719,6 +3720,13 @@ class FacadeMDRImpl implements Facade {
             throw new InvalidElementException(e);
         }
         return illegalArgumentObject(handle);
+    }
+
+
+    public Object getActivity(Object handle) {
+        return new OperationNotSupportedException(
+                "UML 1.x does not support the model element " //$NON-NLS-1$
+                + handle.getClass().getName());
     }
 
 
