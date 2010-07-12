@@ -3723,7 +3723,7 @@ class FacadeMDRImpl implements Facade {
 
 
     public Object getActivity(Object handle) {
-        return new NotImplementedException(
+        throw new NotImplementedException(
                 "UML 1.x does not support the model element " //$NON-NLS-1$
                 + handle.getClass().getName());
     }
