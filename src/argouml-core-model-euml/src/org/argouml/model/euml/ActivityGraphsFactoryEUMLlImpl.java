@@ -44,7 +44,7 @@ class ActivityGraphsFactoryEUMLlImpl implements ActivityGraphsFactory,
     }
 
     public Object buildActivityGraph(final Object theContext) {
-        if (!(theContext instanceof Namespace)) {
+        if (!(theContext instanceof org.eclipse.uml2.uml.Package)) {
             throw new IllegalArgumentException("Didn't expect a " + theContext);
         }
         RunnableClass run = new RunnableClass() {
