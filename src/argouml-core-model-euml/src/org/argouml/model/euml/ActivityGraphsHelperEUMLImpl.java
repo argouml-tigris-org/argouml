@@ -61,8 +61,7 @@ class ActivityGraphsHelperEUMLImpl implements ActivityGraphsHelper {
     }
 
     public boolean isAddingActivityGraphAllowed(Object context) {
-        // TODO Auto-generated method stub
-        return false;
+        return (context instanceof org.eclipse.uml2.uml.Package);
     }
 
     public void removeContent(Object partition, Object modeElement) {

@@ -16,6 +16,11 @@ import java.util.Collection;
 
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.ActivityGraphsFactory;
+import org.eclipse.uml2.uml.Activity;
+import org.eclipse.uml2.uml.Include;
+import org.eclipse.uml2.uml.Namespace;
+import org.eclipse.uml2.uml.UMLFactory;
+import org.eclipse.uml2.uml.UseCase;
 
 /**
  * The implementation of the ActivityGraphsFactory for EUML2.
@@ -38,9 +43,24 @@ class ActivityGraphsFactoryEUMLlImpl implements ActivityGraphsFactory,
         modelImpl = implementation;
     }
 
-    public Object buildActivityGraph(Object theContext) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
+    public Object buildActivityGraph(final Object theContext) {
+        if (!(theContext instanceof Namespace)) {
+            throw new IllegalArgumentException("Didn't expect a " + theContext);
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                Activity activity = UMLFactory.eINSTANCE.createActivity();
+                activity.setPackage((org.eclipse.uml2.uml.Package)theContext);
+                getParams().add(activity);
+            }
+        };
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run,
+                "Create the activity # in the package #");
+        modelImpl.getEditingDomain().getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), theContext);
+
+        return (Activity) run.getParams().get(0);
     }
 
     public Object buildClassifierInState(Object classifier, Collection state) {
