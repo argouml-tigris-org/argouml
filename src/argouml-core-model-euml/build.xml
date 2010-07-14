@@ -60,8 +60,6 @@ This is designed to work in two different environments:
     </path>
 
     <path id="compile.classpath">
-      <pathelement location="${argo.build.dir}/log4j.jar"/>
-      <pathelement location="${argo.build.dir}/argouml-model.jar"/>
       <fileset dir="../argouml-core-infra/build/">
         <include name="*.jar"/>
       </fileset>
