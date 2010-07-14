@@ -268,6 +268,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         } else if (elementType == metaTypes.getInstance()) {
             throw new IllegalArgumentException(
                     "Attempt to instantiate abstract type"); //$NON-NLS-1$
+        } else if (elementType == metaTypes.getActivity()) {
+            o = modelImpl.getActivityGraphsFactory().createActivityGraph();
         } else if (elementType == metaTypes.getCallState()) {
             o = modelImpl.getActivityGraphsFactory().createCallState();
         } else if (elementType == metaTypes.getSimpleState()) {

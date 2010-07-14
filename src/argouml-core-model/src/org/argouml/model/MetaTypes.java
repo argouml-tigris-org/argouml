@@ -81,11 +81,10 @@ public interface MetaTypes {
      */
     Object getActionState();
     
-    // Not in UML 2.x - don't implement
-//    /**
-//     * @return the ActivityGraph class.
-//     */
-//    Object getActivityGraph();
+    /**
+     * @return the Activity class for UML2
+     */
+    Object getActivity();
 
     /**
      * @return Returns the Actor.

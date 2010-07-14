@@ -893,6 +893,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             element = Model.getStateMachinesFactory().buildSubmachineState(container);
         } else if (elementType == metaTypes.getTransition() && container instanceof State) {
             element = Model.getStateMachinesFactory().buildInternalTransition(container);
+        } else if (elementType == metaTypes.getActivity()) {
+            element = Model.getActivityGraphsFactory().buildActivityGraph(container);
         } else {
             // build all other elements using existing buildNode
             element = buildNode(elementType);

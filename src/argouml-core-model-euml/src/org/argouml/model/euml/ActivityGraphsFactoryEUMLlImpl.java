@@ -57,7 +57,7 @@ class ActivityGraphsFactoryEUMLlImpl implements ActivityGraphsFactory,
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
-                Activity activity = UMLFactory.eINSTANCE.createActivity();
+                Activity activity = (Activity)createActivityGraph();
                 activity.setPackage((org.eclipse.uml2.uml.Package)theContext);
                 getParams().add(activity);
             }
@@ -87,8 +87,7 @@ class ActivityGraphsFactoryEUMLlImpl implements ActivityGraphsFactory,
     }
 
     public Object createActivityGraph() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
+        return UMLFactory.eINSTANCE.createActivity();
     }
 
     public Object createCallState() {

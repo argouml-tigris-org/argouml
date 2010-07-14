@@ -67,13 +67,13 @@ public class ActionActivityDiagram extends ActionNewDiagram {
     @Override
     protected ArgoDiagram createDiagram(Object namespace, 
             DiagramSettings settings) {
-        Object context = getContext(namespace); 
-        Object graph = 
-            Model.getActivityGraphsFactory().buildActivityGraph(context);
+        final Object context = getContext(namespace); 
+        final Object activity = 
+            Model.getUmlFactory().buildNode(Model.getMetaTypes().getActivity(), context);
 
         return DiagramFactory.getInstance().create(
                 DiagramFactory.DiagramType.Activity,
-                graph, settings);
+                activity, settings);
     }
 
     private Object getContext(Object namespace) {

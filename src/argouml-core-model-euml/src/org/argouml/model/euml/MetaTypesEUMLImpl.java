@@ -17,6 +17,7 @@ import org.argouml.model.MetaTypes;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Action;
+import org.eclipse.uml2.uml.Activity;
 import org.eclipse.uml2.uml.ActivityPartition;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.AggregationKind;
@@ -123,9 +124,9 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         return State.class;
     }
     
-//    public Object getActivityGraph() {
-//        return ActivityGraph.class;
-//    }
+    public Object getActivity() {
+        return Activity.class;
+    }
 
     public Object getActor() {
         return Actor.class;

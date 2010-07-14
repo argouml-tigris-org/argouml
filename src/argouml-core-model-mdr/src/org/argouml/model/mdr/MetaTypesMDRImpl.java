@@ -41,7 +41,9 @@ package org.argouml.model.mdr;
 import javax.jmi.model.PrimitiveType;
 
 import org.argouml.model.MetaTypes;
+import org.argouml.model.NotImplementedException;
 import org.omg.uml.behavioralelements.activitygraphs.ActionState;
+import org.omg.uml.behavioralelements.activitygraphs.ActivityGraph;
 import org.omg.uml.behavioralelements.activitygraphs.CallState;
 import org.omg.uml.behavioralelements.activitygraphs.ClassifierInState;
 import org.omg.uml.behavioralelements.activitygraphs.ObjectFlowState;
@@ -216,6 +218,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getActionState() {
         return ActionState.class;
+    }
+
+    public Object getActivity() {
+        return ActivityGraph.class;
     }
 
     public Object getActor() {
