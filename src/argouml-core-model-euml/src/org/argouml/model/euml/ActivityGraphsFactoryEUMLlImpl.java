@@ -43,6 +43,14 @@ class ActivityGraphsFactoryEUMLlImpl implements ActivityGraphsFactory,
         modelImpl = implementation;
     }
 
+    /**
+     * ActivityGraph is a UML1.x element that has been dropped in UML2.
+     * For convenience and prevent changes to interfaces this is currently
+     * being used to build an Activity for UML2
+     * @param theContext the package the activity is to be contained inside
+     * @return the Activity created
+     * @see org.argouml.model.ActivityGraphsFactory#buildActivityGraph(java.lang.Object)
+     */
     public Object buildActivityGraph(final Object theContext) {
         if (!(theContext instanceof org.eclipse.uml2.uml.Package)) {
             throw new IllegalArgumentException("Didn't expect a " + theContext);
