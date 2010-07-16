@@ -1,0 +1,41 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- 
+    Experimenting with maven for the nightly build.
+  -->
+
+  <!--
+    This contains things (relative paths) that are different for modules
+    i.e. for things not under argouml/src/blabla but under argouml-modules.
+  -->
+
+  <groupId>org.argouml</groupId>
+  <artifactId>parentpom-for-modules</artifactId>
+  <version>0.1</version>
+  <packaging>pom</packaging>
+
+  <parent>
+    <groupId>org.argouml</groupId>
+    <artifactId>parentpom</artifactId>
+    <version>0.1</version>
+    <relativePath>parentpom.xml</relativePath>
+  </parent>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <configLocation>${basedir}/../argouml/tools/checkstyle/checkstyle5_argouml.xml</configLocation>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+</project>
