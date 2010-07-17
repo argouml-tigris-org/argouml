@@ -18,6 +18,7 @@ import org.argouml.model.NotImplementedException;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Action;
 import org.eclipse.uml2.uml.Activity;
+import org.eclipse.uml2.uml.ActivityParameterNode;
 import org.eclipse.uml2.uml.ActivityPartition;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.AggregationKind;
@@ -29,13 +30,16 @@ import org.eclipse.uml2.uml.CallAction;
 import org.eclipse.uml2.uml.CallBehaviorAction;
 import org.eclipse.uml2.uml.CallConcurrencyKind;
 import org.eclipse.uml2.uml.CallEvent;
+import org.eclipse.uml2.uml.CentralBufferNode;
 import org.eclipse.uml2.uml.ChangeEvent;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Constraint;
+import org.eclipse.uml2.uml.ControlFlow;
 import org.eclipse.uml2.uml.CreateObjectAction;
+import org.eclipse.uml2.uml.DataStoreNode;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.DestroyObjectAction;
@@ -43,6 +47,7 @@ import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
+import org.eclipse.uml2.uml.ExpansionNode;
 import org.eclipse.uml2.uml.Expression;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.ExtensionPoint;
@@ -59,6 +64,7 @@ import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
+import org.eclipse.uml2.uml.ObjectFlow;
 import org.eclipse.uml2.uml.ObjectNode;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.PackageImport;
@@ -129,6 +135,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     
     public Object getActivity() {
         return Activity.class;
+    }
+
+    public Object getActivityParameterNode() {
+        return ActivityParameterNode.class;
     }
 
     public Object getActor() {
@@ -205,6 +215,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         return State.class;
     }
 
+    public Object getCentralBufferNode() {
+        return CentralBufferNode.class;
+    }
+
     public Object getClassifier() {
         return Classifier.class;
     }
@@ -243,8 +257,12 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         return Constraint.class;
     }
 
+    public Object getControlFlow() {
+        return ControlFlow.class;
+    }
+
     public Object getCreateAction() {
-        throw new NotImplementedException("This is not a UML2 element");
+        throw new NotImplementedException("This is not a UML2 element"); //$NON-NLS-1$
     }
 
     public Object getCreateObjectAction() {
@@ -260,7 +278,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getDestroyAction() {
-        throw new NotImplementedException("This is not a UML2 class");
+        throw new NotImplementedException("This is not a UML2 class"); //$NON-NLS-1$
     }
     
     public Object getDestroyObjectAction() {
@@ -406,9 +424,12 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 //        return org.eclipse.uml2.uml.ObjectNode.class;        
     }
 
+    public Object getObjectFlow() {
+        return ObjectFlow.class;
+    }
+    
     public Object getObjectFlowState() {
-        // TODO: not in UML 2.1
-        return ObjectNode.class;
+        throw new NotImplementedException("This is not a UML1.4 class"); //$NON-NLS-1$
     }
 
     public Object getOperation() {
@@ -599,13 +620,15 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getCollaborationInstanceSet() {
-        // TODO: Need UML 2.x equivalent
-        return null /*CollaborationInstanceSet.class*/;
+        throw new NotYetImplementedException();
     }
 
     public Object getDataValue() {
-        // TODO: Need UML 2.x equivalent
-        return null /*DataValue.class*/;
+        throw new NotYetImplementedException();
+    }
+
+    public Object getDataStoreNode() {
+        return DataStoreNode.class;
     }
 
     public Object getElement() {
@@ -619,6 +642,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 
     public Object getExpression() {
         return Expression.class;
+    }
+
+    public Object getExpansionNode() {
+        return ExpansionNode.class;
     }
 
     public Object getFeature() {

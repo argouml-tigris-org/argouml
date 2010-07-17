@@ -87,6 +87,11 @@ public interface MetaTypes {
     Object getActivity();
 
     /**
+     * @return the ActivityParameterNode class for UML2
+     */
+    Object getActivityParameterNode();
+
+    /**
      * @return Returns the Actor.
      */
     Object getActor();
@@ -167,6 +172,11 @@ public interface MetaTypes {
     Object getCallState();
 
     /**
+     * @return the CentralBufferNode class for UML2
+     */
+    Object getCentralBufferNode();
+
+    /**
      * Return the UML Class class. This method has a special name because Java
      * already uses the getClass() method.
      * 
@@ -213,6 +223,11 @@ public interface MetaTypes {
      * @return Return the Constraint type.
      */
     Object getConstraint();
+
+    /**
+     * @return Returns the ControlFlow class for UML2
+     */
+    Object getControlFlow();
     
     /**
      * @return Returns the CreateAction.
@@ -228,6 +243,11 @@ public interface MetaTypes {
      * @return Returns the Datatype.
      */
     Object getDataType();
+
+    /**
+     * @return Returns the DataStoreNode class for UML2.
+     */
+    Object getDataStoreNode();
 
     /**
      * @return Returns the Dependency.
@@ -268,6 +288,11 @@ public interface MetaTypes {
      * @return Returns the Exception.
      */
     Object getException();
+
+    /**
+     * @return Returns the ExpansionNode class for UML2
+     */
+    Object getExpansionNode();
 
     /**
      * @return Returns the Extend.
@@ -365,6 +390,11 @@ public interface MetaTypes {
      * @return Returns the ObjectFlowState.
      */
     Object getObjectFlowState();
+
+    /**
+     * @return Returns the ObjectFlow class for UML2
+     */
+    Object getObjectFlow();
 
     /**
      * @return Returns the Operation.

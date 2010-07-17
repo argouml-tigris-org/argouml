@@ -224,6 +224,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return ActivityGraph.class;
     }
 
+    public Object getActivityParameterNode() {
+        throw new NotImplementedException("This is not a UML1.4 class");
+    }
+
     public Object getActor() {
         return Actor.class;
     }
@@ -288,6 +292,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return CallState.class;
     }
 
+    public Object getCentralBufferNode() {
+        throw new NotImplementedException("This is not a UML1.4 class");
+    }
+
     public Object getUMLClass() {
         return UmlClass.class;
     }
@@ -324,11 +332,19 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return Constraint.class;
     }
 
+    public Object getControlFlow() {
+        throw new NotImplementedException("This is not a UML1.4 class");
+    }
+
     public Object getCreateAction() {
         return CreateAction.class;
     }
 
     public Object getCreateObjectAction() {
+        throw new NotImplementedException("This is not a UML1.4 class");
+    }
+    
+    public Object getDataStoreNode() {
         throw new NotImplementedException("This is not a UML1.4 class");
     }
 
@@ -366,6 +382,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getException() {
         return UmlException.class;
+    }
+
+    public Object getExpansionNode() {
+        throw new NotImplementedException("This is not a UML1.4 class");
     }
 
     public Object getExtend() {
@@ -438,6 +458,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getObject() {
         return org.omg.uml.behavioralelements.commonbehavior.Object.class;
+    }
+
+    public Object getObjectFlow() {
+        throw new NotImplementedException("This is not a UML1.4 class");
     }
 
     public Object getObjectFlowState() {
