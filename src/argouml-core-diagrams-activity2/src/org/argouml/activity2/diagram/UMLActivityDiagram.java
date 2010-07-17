@@ -18,14 +18,18 @@ import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.swing.Action;
+
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ActivityDiagram;
 import org.argouml.model.Model;
+import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
@@ -34,8 +38,6 @@ import org.tigris.gef.presentation.FigNode;
 
 public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
     
-    private Object[] actions;
-
     private static final Logger LOG = Logger
         .getLogger(UMLActivityDiagram.class);
     
@@ -77,10 +79,21 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
 
     @Override
     protected Object[] getUmlActions() {
-        if (actions == null) {
-            actions = new Object[0];
-        }
+        Object[] actions =
+        {
+            createAction(Model.getMetaTypes().getCallBehaviorAction(), "button.new-callbehavioraction"),
+            createAction(Model.getMetaTypes().getCreateObjectAction(), "button.new-createobjectaction"),
+            createAction(Model.getMetaTypes().getDestroyObjectAction(), "button.new-destroyobjectaction"),
+        };
         return actions;
+    }
+
+    /**
+     * @return Returns a diagram tool creation action.
+     */
+    private Action createAction(Object metaType, String label) {
+        return new RadioAction(
+                new CmdCreateNode(metaType, label));
     }
     
     @Override
@@ -96,7 +109,7 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
     
     @Override
     public boolean doesAccept(Object objectToAccept) {
-        if (Model.getFacade().isAComment(objectToAccept)) {
+        if (Model.getFacade().isAComment(objectToAccept) || Model.getFacade().isAAction(objectToAccept)) {
             return true;
         }
         return false;
@@ -131,7 +144,9 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
         
         DiagramSettings settings = getDiagramSettings();
         
-        if (Model.getFacade().isAComment(modelElement)) {
+        if (Model.getFacade().isAAction(modelElement)) {
+            figNode = new FigAction(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAComment(modelElement)) {
             figNode = new FigComment(modelElement, bounds, settings);
         }
         

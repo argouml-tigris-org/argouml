@@ -152,6 +152,11 @@ public interface MetaTypes {
     Object getCallAction();
 
     /**
+     * @return Returns the CreateObjectAction.
+     */
+    Object getCallBehaviorAction();
+
+    /**
      * @return Returns the CallConcurrencyKind.
      */
     Object getCallConcurrencyKind();
@@ -215,6 +220,11 @@ public interface MetaTypes {
     Object getCreateAction();
 
     /**
+     * @return Returns the CreateObjectAction.
+     */
+    Object getCreateObjectAction();
+
+    /**
      * @return Returns the Datatype.
      */
     Object getDataType();
@@ -228,6 +238,11 @@ public interface MetaTypes {
      * @return Returns the DestroyAction.
      */
     Object getDestroyAction();
+    
+    /**
+     * @return Returns the DestroyObjectAction.
+     */
+    Object getDestroyObjectAction();
     
     /**
      * @return the ElementImport class.

@@ -64,6 +64,7 @@ import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Type;
+import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.UseCase;
 
@@ -270,8 +271,12 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                     "Attempt to instantiate abstract type"); //$NON-NLS-1$
         } else if (elementType == metaTypes.getActivity()) {
             o = modelImpl.getActivityGraphsFactory().createActivityGraph();
-        } else if (elementType == metaTypes.getCallState()) {
-            o = modelImpl.getActivityGraphsFactory().createCallState();
+        } else if (elementType == metaTypes.getCallBehaviorAction()) {
+            o = UMLFactory.eINSTANCE.createCallBehaviorAction();
+        } else if (elementType == metaTypes.getCreateObjectAction()) {
+            o = UMLFactory.eINSTANCE.createCreateObjectAction();
+        } else if (elementType == metaTypes.getDestroyObjectAction()) {
+            o = UMLFactory.eINSTANCE.createDestroyObjectAction();
         } else if (elementType == metaTypes.getSimpleState()) {
             o = modelImpl.getStateMachinesFactory().createSimpleState();
         } else if (elementType == metaTypes.getFinalState()) {

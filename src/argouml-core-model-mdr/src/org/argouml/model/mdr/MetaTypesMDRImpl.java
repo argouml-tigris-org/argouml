@@ -276,6 +276,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return CallAction.class;
     }
 
+    public Object getCallBehaviorAction() {
+        throw new NotImplementedException("This is not a UML1.4 class");
+    }
+
     public Object getCallConcurrencyKind() {
         return CallConcurrencyKind.class;
     }
@@ -324,6 +328,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return CreateAction.class;
     }
 
+    public Object getCreateObjectAction() {
+        throw new NotImplementedException("This is not a UML1.4 class");
+    }
+
     public Object getDataType() {
         return DataType.class;
     }
@@ -334,6 +342,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getDestroyAction() {
         return DestroyAction.class;
+    }
+
+    public Object getDestroyObjectAction() {
+        throw new NotImplementedException("This is not a UML1.4 class");
     }
 
     public Object getEnumeration() {

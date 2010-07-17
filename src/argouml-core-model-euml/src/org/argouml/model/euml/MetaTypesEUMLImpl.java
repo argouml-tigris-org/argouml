@@ -26,6 +26,7 @@ import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.AssociationClass;
 import org.eclipse.uml2.uml.BehavioralFeature;
 import org.eclipse.uml2.uml.CallAction;
+import org.eclipse.uml2.uml.CallBehaviorAction;
 import org.eclipse.uml2.uml.CallConcurrencyKind;
 import org.eclipse.uml2.uml.CallEvent;
 import org.eclipse.uml2.uml.ChangeEvent;
@@ -34,8 +35,10 @@ import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.Constraint;
+import org.eclipse.uml2.uml.CreateObjectAction;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
+import org.eclipse.uml2.uml.DestroyObjectAction;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Enumeration;
@@ -188,6 +191,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         return CallAction.class;
     }
 
+    public Object getCallBehaviorAction() {
+        return CallBehaviorAction.class;
+    }
+
     public Object getCallConcurrencyKind() {
         return CallConcurrencyKind.class;
     }
@@ -237,8 +244,11 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getCreateAction() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
+        throw new NotImplementedException("This is not a UML2 element");
+    }
+
+    public Object getCreateObjectAction() {
+        return CreateObjectAction.class;
     }
 
     public Object getDataType() {
@@ -250,8 +260,11 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getDestroyAction() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
+        throw new NotImplementedException("This is not a UML2 class");
+    }
+    
+    public Object getDestroyObjectAction() {
+        return DestroyObjectAction.class;
     }
     
     public Object getElementImport() {
