@@ -36,6 +36,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Abstraction;
 import org.eclipse.uml2.uml.Action;
+import org.eclipse.uml2.uml.ActivityEdge;
 import org.eclipse.uml2.uml.ActivityNode;
 import org.eclipse.uml2.uml.ActivityPartition;
 import org.eclipse.uml2.uml.Actor;
@@ -1603,22 +1604,28 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAActionSequence(Object handle) {
-        // TODO: gone in UML 2.x
+        // Gone in UML 2.x
         return false;
     }
 
     public boolean isAActionState(Object handle) {
-        // TODO: ActionState, CallState, and SubactivityState have been replaced
+        // ActionState, CallState, and SubactivityState have been replaced
         // in UML 2.0 by explicitly modeled Actions
         return false;
     }
 
+    public boolean isAActivityEdge(Object handle) {
+        return handle instanceof ActivityEdge;
+    }
+    
     public boolean isAActivityGraph(Object handle) {
-        // TODO: Just a guess - double check - tfm;
-//        return handle instanceof ActivityGroup;
         return false;
     }
 
+    public boolean isAActivityNode(Object handle) {
+        return handle instanceof ActivityNode;
+    }
+    
     public boolean isAActor(Object handle) {
         return handle instanceof Actor;
     }

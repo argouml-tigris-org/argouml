@@ -332,9 +332,16 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
-    
+    public boolean isAActivityEdge(Object handle) {
+        return false; // Not in UML1.4
+    }
+
     public boolean isAActivityGraph(Object handle) {
         return handle instanceof ActivityGraph;
+    }
+
+    public boolean isAActivityNode(Object handle) {
+        return false; // Not in UML1.4
     }
 
     public boolean isABehavioralFeature(Object handle) {

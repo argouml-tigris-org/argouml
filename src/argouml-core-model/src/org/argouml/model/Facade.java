@@ -256,12 +256,28 @@ public interface Facade {
     boolean isAbstract(Object handle);
 
     /**
-     * Recognizer for ActivityGraph.
+     * Recognizer for UML2 ActivityEdge.
+     *
+     * @param handle candidate
+     * @return true if handle is ActivityEdge.
+     */
+    boolean isAActivityEdge(Object handle);
+
+    /**
+     * Recognizer for UML1.4 ActivityGraph.
      *
      * @param handle candidate
      * @return true if handle is ActivityGraph.
      */
     boolean isAActivityGraph(Object handle);
+
+    /**
+     * Recognizer for UML2 ActivityNode.
+     *
+     * @param handle candidate
+     * @return true if handle is ActivityNode.
+     */
+    boolean isAActivityNode(Object handle);
 
     /**
      * Recognizer for BehavioralFeature.
