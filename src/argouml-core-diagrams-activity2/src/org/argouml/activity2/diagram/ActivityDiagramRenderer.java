@@ -1,6 +1,6 @@
-/* $Id: ActivityDiagramRenderer.java bobtarling $
+/* $Id: $
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ package org.argouml.activity2.diagram;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -54,20 +55,20 @@ class ActivityDiagramRenderer extends UmlDiagramRenderer {
     }
 
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
-                                 Map styleAttributes) {
-        FigEdge figEdge = null;
-        
+            Map styleAttributes) {
+        assert edge != null;
         assert lay instanceof LayerPerspective;
+
         ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
         DiagramSettings settings = diag.getDiagramSettings();
-        
-        if (edge instanceof CommentEdge) {
-            figEdge = new FigEdgeNote(edge, settings);
-        } else {
-            figEdge = getFigEdgeFor(edge, styleAttributes);
-        }       
-        addEdge(lay, figEdge, edge);
-        return figEdge;
-    }
+        FigEdge newEdge = null;
 
+        if (Model.getFacade().isAActivityEdge(edge)) {
+            newEdge = new FigActivityEdge(edge, settings);
+        } else if (edge instanceof CommentEdge) {
+            newEdge = new FigEdgeNote(edge, settings);
+        } 
+        addEdge(lay, newEdge, edge);
+        return newEdge;
+    }
 }

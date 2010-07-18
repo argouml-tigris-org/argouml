@@ -20,6 +20,7 @@ import java.util.List;
 import org.argouml.model.Model;
 import org.argouml.model.UmlHelper;
 import org.eclipse.uml2.uml.Action;
+import org.eclipse.uml2.uml.ActivityEdge;
 import org.eclipse.uml2.uml.Behavior;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
@@ -78,6 +79,8 @@ class UmlHelperEUMLImpl implements UmlHelper {
             return modelImpl.getCoreHelper().getSource(relationship);
         } else if (relationship instanceof Transition) {
             return modelImpl.getStateMachinesHelper().getSource(relationship);
+        } else if (relationship instanceof ActivityEdge) {
+            return ((ActivityEdge) relationship).getSource();
         } else if (relationship instanceof Property) {
             // TODO: We expect an association end here - check more carefully? - tfm
             return modelImpl.getCoreHelper().getSource(relationship);
@@ -88,17 +91,19 @@ class UmlHelperEUMLImpl implements UmlHelper {
     /*
      * @see org.argouml.model.UmlHelper#getDestination(java.lang.Object)
      */
-    public Object getDestination(Object relationShip) {
-        if (relationShip instanceof Relationship) {
+    public Object getDestination(Object relationship) {
+        if (relationship instanceof Relationship) {
             // handles all children of relationship including extend and
             // include which are not members of core
-            return modelImpl.getCoreHelper().getDestination(relationShip);
-        } else if (relationShip instanceof Transition) {
+            return modelImpl.getCoreHelper().getDestination(relationship);
+        } else if (relationship instanceof ActivityEdge) {
+            return ((ActivityEdge) relationship).getTarget();
+        } else if (relationship instanceof Transition) {
             return modelImpl.getStateMachinesHelper().
-                    getDestination(relationShip);
-        } else if (relationShip instanceof Property) {
+                    getDestination(relationship);
+        } else if (relationship instanceof Property) {
             // TODO: We expect an association end here - check more carefully? - tfm
-            return modelImpl.getCoreHelper().getDestination(relationShip);
+            return modelImpl.getCoreHelper().getDestination(relationship);
         }
         throw new IllegalArgumentException();
     }

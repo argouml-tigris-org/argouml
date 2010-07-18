@@ -1,4 +1,4 @@
-/* $Id: UMLActivityDiagram.java  bobtarling $
+/* $Id: $
  *****************************************************************************
  * Copyright (c) 2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
@@ -28,11 +28,13 @@ import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.FigNode;
 
@@ -79,11 +81,12 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
 
     @Override
     protected Object[] getUmlActions() {
-        Object[] actions =
-        {
-            createAction(Model.getMetaTypes().getCallBehaviorAction(), "button.new-callbehavioraction"),
-            createAction(Model.getMetaTypes().getCreateObjectAction(), "button.new-createobjectaction"),
-            createAction(Model.getMetaTypes().getDestroyObjectAction(), "button.new-destroyobjectaction"),
+        Object[] actions = {
+            getCreateEdgeAction(Model.getMetaTypes().getControlFlow(), "button.new-controlflow"),
+            getCreateEdgeAction(Model.getMetaTypes().getObjectFlow(), "button.new-objectflow"),
+            getCreateNodeAction(Model.getMetaTypes().getCallBehaviorAction(), "button.new-callbehavioraction"),
+            getCreateNodeAction(Model.getMetaTypes().getCreateObjectAction(), "button.new-createobjectaction"),
+            getCreateNodeAction(Model.getMetaTypes().getDestroyObjectAction(), "button.new-destroyobjectaction"),
         };
         return actions;
     }
@@ -91,10 +94,19 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
     /**
      * @return Returns a diagram tool creation action.
      */
-    private Action createAction(Object metaType, String label) {
+    private Action getCreateNodeAction(Object metaType, String label) {
         return new RadioAction(
                 new CmdCreateNode(metaType, label));
     }
+    
+    protected Action getCreateEdgeAction(Object metaType, String label) {
+        return new RadioAction(
+                new ActionSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        metaType,
+                        label));
+    }    
     
     @Override
     public String getLabelName() {
@@ -109,7 +121,9 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
     
     @Override
     public boolean doesAccept(Object objectToAccept) {
-        if (Model.getFacade().isAComment(objectToAccept) || Model.getFacade().isAAction(objectToAccept)) {
+        if (Model.getFacade().isAComment(objectToAccept)
+                || Model.getFacade().isAActivityEdge(objectToAccept) 
+                || Model.getFacade().isAAction(objectToAccept) ) {
             return true;
         }
         return false;

@@ -1,5 +1,5 @@
-// $Id$
-/*******************************************************************************
+/* $Id$
+ *******************************************************************************
  * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -9,7 +9,7 @@
  * Contributors:
  *    Tom Morris - initial framework
  *    Bogdan Pistol - initial implementation
- *    thn
+ *    Thomas Neustupny
  *    Bob Tarling
  *****************************************************************************/
 
@@ -32,18 +32,23 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Abstraction;
+import org.eclipse.uml2.uml.Action;
+import org.eclipse.uml2.uml.ActivityNode;
 import org.eclipse.uml2.uml.Actor;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.AssociationClass;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Component;
+import org.eclipse.uml2.uml.ControlFlow;
+import org.eclipse.uml2.uml.ControlNode;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
+import org.eclipse.uml2.uml.ExecutableNode;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.ExtensionPoint;
 import org.eclipse.uml2.uml.Generalization;
@@ -51,6 +56,8 @@ import org.eclipse.uml2.uml.Include;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Node;
+import org.eclipse.uml2.uml.ObjectFlow;
+import org.eclipse.uml2.uml.ObjectNode;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PackageImport;
@@ -151,6 +158,10 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         {Transition.class,       State.class, },
         {AssociationClass.class, Type.class, }, 
         {Property.class, Classifier.class, Association.class, },
+        {ControlFlow.class, ControlNode.class, },
+        {ControlFlow.class, ExecutableNode.class, },
+        {ControlFlow.class, ControlNode.class, ExecutableNode.class, },
+        {ObjectFlow.class, ObjectNode.class, },
 //        {Message.class, ClassifierRole.class },
     };
 
@@ -230,6 +241,22 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         } else if (elementType == metaTypes.getInclude()) {
             connection = modelImpl.getUseCasesFactory().buildInclude(
                     fromElement, toElement);
+        } else if (elementType == metaTypes.getControlFlow()) {
+            ActivityNode fromActivity = (ActivityNode) fromElement;
+            ActivityNode toActivity = (ActivityNode) fromElement;
+            ControlFlow cf = UMLFactory.eINSTANCE.createControlFlow();
+            cf.setActivity(fromActivity.getActivity());
+            cf.setSource(fromActivity);
+            cf.setTarget(toActivity);
+            connection = cf;
+        } else if (elementType == metaTypes.getObjectFlow()) {
+            ObjectNode fromObject = (ObjectNode) fromElement;
+            ObjectNode toObject = (ObjectNode) fromElement;
+            ControlFlow of = UMLFactory.eINSTANCE.createControlFlow();
+            of.setActivity(fromObject.getActivity());
+            of.setSource(fromObject);
+            of.setTarget(toObject);
+            connection = of;
         } else if (elementType == metaTypes.getTransition()) {
             connection = modelImpl.getStateMachinesFactory().buildTransition(
                     fromElement, toElement);
