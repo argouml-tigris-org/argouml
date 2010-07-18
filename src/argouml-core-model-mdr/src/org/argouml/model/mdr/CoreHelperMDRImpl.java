@@ -2770,7 +2770,8 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     
     public void setDefaultValue(Object handle, Object expr) {
-        if (handle instanceof Parameter && expr instanceof Expression) {
+        if (handle instanceof Parameter
+                && (expr == null || expr instanceof Expression)) {
             ((Parameter) handle).setDefaultValue((Expression) expr);
             return;
         }
