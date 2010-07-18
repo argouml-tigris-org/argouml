@@ -53,18 +53,14 @@ class UMLDefaultValueExpressionModel extends UMLExpressionModel {
      * @param propertyName the name of the property
      */
     public UMLDefaultValueExpressionModel(Object target) {
-        super(target, "default value");
+        super(target, "defaultValue");
     }
 
     /*
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        Object target = getTarget();
-        if (target == null) {
-            return null;
-        }
-        return Model.getFacade().getDefaultValue(target);
+        return Model.getFacade().getDefaultValue(getTarget());
     }
 
     /*
@@ -72,15 +68,8 @@ class UMLDefaultValueExpressionModel extends UMLExpressionModel {
      */
     public void setExpression(Object expression) {
         Object target = getTarget();
-
-        if (target != null) {
-            Model.getCoreHelper().setDefaultValue(target, null);
-            Model.getCoreHelper().setDefaultValue(target, expression);
-        }
-        else {
-            // TODO: Log error
-        }
-
+        Model.getCoreHelper().setDefaultValue(target, null);
+        Model.getCoreHelper().setDefaultValue(target, expression);
     }
 
     /*
