@@ -15,6 +15,7 @@ package org.argouml.activity2;
 
 import org.apache.log4j.Logger;
 import org.argouml.activity2.diagram.ActivityDiagramFactory;
+import org.argouml.model.Model;
 import org.argouml.moduleloader.ModuleInterface;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
@@ -34,15 +35,16 @@ public class ActivityDiagramModule implements ModuleInterface {
     private ActivityDiagramPropPanelFactory propPanelFactory;
         
     public boolean enable() {
-        
-        propPanelFactory =
-            new ActivityDiagramPropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(propPanelFactory);
-        // TODO: Remove the casting to DiagramFactoryInterface2
-        // as soon as DiagramFactoryInterface is removed.
-        DiagramFactory.getInstance().registerDiagramFactory(
-                DiagramType.Activity, 
-                (DiagramFactoryInterface2) new ActivityDiagramFactory());
+        if (Model.getFacade().getUmlVersion().indexOf("2") >= 0) {
+            // This module will still register as enabled for UML1.4 but it won't
+            // actually do anything.
+            propPanelFactory =
+                new ActivityDiagramPropPanelFactory();
+            PropPanelFactoryManager.addPropPanelFactory(propPanelFactory);
+            DiagramFactory.getInstance().registerDiagramFactory(
+                    DiagramType.Activity, 
+                    new ActivityDiagramFactory());
+        }
         return true;
     }
 
