@@ -68,6 +68,7 @@ public class FigLink extends FigEdgeModelElement {
 
     private void initialize() {
         middleGroup.addFig(getNameFig());
+        middleGroup.addFig(getStereotypeFig());
         addPathItem(middleGroup,
                 new PathItemPlacement(this, middleGroup, 50, 25));
         getNameFig().setUnderline(true);
