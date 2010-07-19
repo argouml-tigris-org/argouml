@@ -228,6 +228,10 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof Abstraction;
     }
 
+    public boolean isAAcceptEventAction(Object handle) {
+        return false; // Not in UML1.4
+    }
+
     public boolean isAAction(Object handle) {
         return handle instanceof Action;
     }
@@ -701,6 +705,10 @@ class FacadeMDRImpl implements Facade {
 
     public boolean isASendAction(Object handle) {
         return handle instanceof SendAction;
+    }
+
+    public boolean isASendSignalAction(Object handle) {
+        return false; // Not in UML1.4
     }
 
     public boolean isASignal(Object handle) {

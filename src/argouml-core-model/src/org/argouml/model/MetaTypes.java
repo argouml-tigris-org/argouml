@@ -67,6 +67,11 @@ public interface MetaTypes {
     Object getAbstraction();
 
     /**
+     * @return Returns the SendSignalAction.
+     */
+    Object getAcceptEventAction();
+
+    /**
      * @return Returns the Action.
      */
     Object getAction();
@@ -462,6 +467,11 @@ public interface MetaTypes {
      * @return Returns the SendAction.
      */
     Object getSendAction();
+
+    /**
+     * @return Returns the SendSignalAction.
+     */
+    Object getSendSignalAction();
 
     /**
      * @return Returns the Signal.

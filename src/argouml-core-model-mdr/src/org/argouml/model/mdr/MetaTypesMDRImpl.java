@@ -208,6 +208,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return Abstraction.class;
     }
 
+    public Object getAcceptEventAction() {
+        throw new NotImplementedException("Not a UML 1.4 element");
+    }
+
     public Object getAction() {
         return Action.class;
     }
@@ -518,6 +522,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getSendAction() {
         return SendAction.class;
+    }
+
+    public Object getSendSignalAction() {
+        throw new NotImplementedException("Not a UML 1.4 element");
     }
 
     public Object getSignal() {

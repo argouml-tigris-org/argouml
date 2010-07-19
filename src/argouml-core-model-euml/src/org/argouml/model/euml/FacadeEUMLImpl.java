@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Abstraction;
+import org.eclipse.uml2.uml.AcceptEventAction;
 import org.eclipse.uml2.uml.Action;
 import org.eclipse.uml2.uml.ActivityEdge;
 import org.eclipse.uml2.uml.ActivityNode;
@@ -1603,6 +1604,10 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof Action;
     }
 
+    public boolean isAAcceptEventAction(Object handle) {
+        return handle instanceof AcceptEventAction;
+    }
+
     public boolean isAActionSequence(Object handle) {
         // Gone in UML 2.x
         return false;
@@ -2020,9 +2025,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isASendAction(Object handle) {
-        // TODO: Do we want both here? - tfm
-        return handle instanceof SendObjectAction
-                || handle instanceof SendSignalAction;
+        // Not in UML2
+        return false;
+    }
+
+    public boolean isASendObjectAction(Object handle) {
+        return handle instanceof SendObjectAction;
+    }
+
+    public boolean isASendSignalAction(Object handle) {
+        return handle instanceof SendSignalAction;
     }
 
     public boolean isASignal(Object handle) {

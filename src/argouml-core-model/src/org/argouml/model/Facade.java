@@ -124,6 +124,14 @@ public interface Facade {
     boolean isAAction(Object handle);
 
     /**
+     * Recognizer for a UML2 AcceptEventAction.
+     *
+     * @param handle candidate
+     * @return true if handle is an AcceptEventAction
+     */
+    boolean isAAcceptEventAction(Object handle);
+
+    /**
      * Recognizer for ActionSequence.
      *
      * @param handle candidate
@@ -940,6 +948,14 @@ public interface Facade {
      * @return true if handle is a SendAction
      */
     boolean isASendAction(Object handle);
+
+    /**
+     * Recognizer for UML2 SendSignalAction.
+     *
+     * @param handle candidate
+     * @return true if handle is a SendSignalAction
+     */
+    boolean isASendSignalAction(Object handle);
 
     /**
      * Recognizer for Signal.

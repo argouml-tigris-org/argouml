@@ -16,6 +16,7 @@ package org.argouml.model.euml;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.uml2.uml.Abstraction;
+import org.eclipse.uml2.uml.AcceptEventAction;
 import org.eclipse.uml2.uml.Action;
 import org.eclipse.uml2.uml.Activity;
 import org.eclipse.uml2.uml.ActivityParameterNode;
@@ -77,6 +78,7 @@ import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Reception;
 import org.eclipse.uml2.uml.Relationship;
+import org.eclipse.uml2.uml.SendSignalAction;
 import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.SignalEvent;
 import org.eclipse.uml2.uml.State;
@@ -120,6 +122,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 
     public Object getAction() {
         return Action.class;
+    }
+
+    public Object getAcceptEventAction() {
+        return AcceptEventAction.class;
     }
 
     public Object getActionExpression() {
@@ -478,13 +484,17 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getScopeKind() {
-        // Not in UML 2.x - deprecated in Model API
-        throw new NotImplementedException();
+        throw new NotImplementedException(
+                "Not a UML2 model element"); //$NON-NLS-1$
     }
 
     public Object getSendAction() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
+        throw new NotImplementedException(
+                "Not a UML2 model element"); //$NON-NLS-1$
+    }
+
+    public Object getSendSignalAction() {
+        return SendSignalAction.class;
     }
 
     public Object getSignal() {
@@ -492,8 +502,8 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getSimpleState() {
-        // TODO: Gone in UML 2.1
-        return State.class;
+        throw new NotImplementedException(
+                "Not a UML2 model element"); //$NON-NLS-1$
     }
 
     public Object getState() {
