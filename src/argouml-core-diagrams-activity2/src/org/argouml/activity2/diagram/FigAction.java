@@ -55,11 +55,10 @@ public class FigAction extends FigNodeModelElement {
             xs[3] = X0 + WIDTH - HEIGHT / 2; ys[3] = Y0 + HEIGHT;
             xs[4] = X0;                      ys[4] = Y0 + HEIGHT;
             xs[5] = X0;                      ys[5] = Y0;
-            final FigPoly polyFig = new FigPoly();
-            polyFig.setXs(xs);
-            polyFig.setYs(ys);
             final Polygon p = new Polygon(xs, ys, 6);
-            polyFig.setPolygon(p);
+            final FigGravityPoly polyFig = new FigGravityPoly(p);
+//            final FigPoly polyFig = new FigPoly();
+//            polyFig.setPolygon(p);
             return polyFig;
         } else if (Model.getFacade().isAAcceptEventAction(getOwner())) {
             final int[] xs = new int[6];
@@ -71,11 +70,10 @@ public class FigAction extends FigNodeModelElement {
             xs[3] = X0;              ys[3] = Y0 + HEIGHT;
             xs[4] = X0 + HEIGHT / 2; ys[4] = Y0 + HEIGHT / 2;
             xs[5] = X0;              ys[5] = Y0;
-            final FigPoly polyFig = new FigPoly();
-            polyFig.setXs(xs);
-            polyFig.setYs(ys);
             final Polygon p = new Polygon(xs, ys, 6);
-            polyFig.setPolygon(p);
+            final FigGravityPoly polyFig = new FigGravityPoly(p);
+//            final FigPoly polyFig = new FigPoly();
+//            polyFig.setPolygon(p);
             return polyFig;
         } else {
             return new FigRRect(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
