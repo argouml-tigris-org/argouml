@@ -87,6 +87,9 @@ public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
             getCreateNodeAction(Model.getMetaTypes().getCallBehaviorAction(), "button.new-callbehavioraction"),
             getCreateNodeAction(Model.getMetaTypes().getCreateObjectAction(), "button.new-createobjectaction"),
             getCreateNodeAction(Model.getMetaTypes().getDestroyObjectAction(), "button.new-destroyobjectaction"),
+            getCreateNodeAction(Model.getMetaTypes().getAcceptEventAction(), "button.new-accepteventaction"),
+            getCreateNodeAction(Model.getMetaTypes().getSendSignalAction(), "button.new-sendsignalaction"),
+            getCreateNodeAction(Model.getMetaTypes().getDestroyObjectAction(), "button.new-destroyobjectaction"),
         };
         return actions;
     }
