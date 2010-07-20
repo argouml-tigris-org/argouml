@@ -312,6 +312,10 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = UMLFactory.eINSTANCE.createDataStoreNode();
         } else if (elementType == metaTypes.getExpansionNode()) {
             o = UMLFactory.eINSTANCE.createDataStoreNode();
+        } else if (elementType == metaTypes.getAcceptEventAction()) {
+            o = UMLFactory.eINSTANCE.createAcceptEventAction();
+        } else if (elementType == metaTypes.getSendSignalAction()) {
+            o = UMLFactory.eINSTANCE.createSendSignalAction();
         } else if (elementType == metaTypes.getSimpleState()) {
             o = modelImpl.getStateMachinesFactory().createSimpleState();
         } else if (elementType == metaTypes.getFinalState()) {
