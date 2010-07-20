@@ -71,7 +71,7 @@ public class FigAction extends FigNodeModelElement {
             xs[4] = X0 + HEIGHT / 2; ys[4] = Y0 + HEIGHT / 2;
             xs[5] = X0;              ys[5] = Y0;
             final Polygon p = new Polygon(xs, ys, 6);
-            final FigGravityPoly polyFig = new FigGravityPoly(p);
+            final FigGravityPoly polyFig = new FigAcceptEventPoly(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
 //            final FigPoly polyFig = new FigPoly();
 //            polyFig.setPolygon(p);
             return polyFig;

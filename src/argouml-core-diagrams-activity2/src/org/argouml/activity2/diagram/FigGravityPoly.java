@@ -21,11 +21,15 @@ import org.tigris.gef.base.Geometry;
 import org.tigris.gef.presentation.FigPoly;
 
 /**
- * A FigPoly to which 
+ * A FigPoly to which edges gravitate to the perimeter instead of the points
  * @author Bob Tarling
  *
  */
 public class FigGravityPoly extends FigPoly {
+    
+    FigGravityPoly() {
+        super();
+    }
     
     FigGravityPoly(Polygon p) {
         super();
