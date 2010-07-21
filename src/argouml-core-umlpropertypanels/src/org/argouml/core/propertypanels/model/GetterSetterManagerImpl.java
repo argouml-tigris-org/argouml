@@ -1054,8 +1054,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     private class EntryActionGetterSetter extends ListGetterSetter {
         
         public Collection getOptions(Object modelElement, Class<?> type) {
-        	final ArrayList list = new ArrayList(1);
-        	list.add(Model.getFacade().getEntry(modelElement));
+            final ArrayList list = new ArrayList(1);
+            list.add(Model.getFacade().getEntry(modelElement));
             return list;
         }
       
