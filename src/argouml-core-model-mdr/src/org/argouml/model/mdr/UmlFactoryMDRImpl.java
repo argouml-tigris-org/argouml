@@ -765,7 +765,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 + elementType);
     }
 
-    public Object buildNode(Object elementType, Object container) {
+    public Object buildNode(Object elementType, Object container, String properyName) {
         
         Object element = null;
         
@@ -825,28 +825,28 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             element = Model.getStateMachinesFactory().buildGuard(container);
         } else if (elementType == metaTypes.getCreateAction()) {
             element = Model.getCommonBehaviorFactory().createCreateAction();
-            setNewAction(container, (Action) element);
+            setNewAction(container, (Action) element, properyName);
         } else if (elementType == metaTypes.getCallAction()) {
             element = Model.getCommonBehaviorFactory().createCallAction();
-            setNewAction(container, (Action) element);
+            setNewAction(container, (Action) element, properyName);
         } else if (elementType == metaTypes.getReturnAction()) {
             element = Model.getCommonBehaviorFactory().createReturnAction();
-            setNewAction(container, (Action) element);
+            setNewAction(container, (Action) element, properyName);
         } else if (elementType == metaTypes.getDestroyAction()) {
             element = Model.getCommonBehaviorFactory().createDestroyAction();
-            setNewAction(container, (Action) element);
+            setNewAction(container, (Action) element, properyName);
         } else if (elementType == metaTypes.getSendAction()) {
             element = Model.getCommonBehaviorFactory().createSendAction();
-            setNewAction(container, (Action) element);
+            setNewAction(container, (Action) element, properyName);
         } else if (elementType == metaTypes.getTerminateAction()) {
             element = Model.getCommonBehaviorFactory().createTerminateAction();
-            setNewAction(container, (Action) element);
+            setNewAction(container, (Action) element, properyName);
         } else if (elementType == metaTypes.getUninterpretedAction()) {
             element = Model.getCommonBehaviorFactory().createUninterpretedAction();
-            setNewAction(container, (Action) element);
+            setNewAction(container, (Action) element, properyName);
         } else if (elementType == metaTypes.getActionSequence()) {
             element = Model.getCommonBehaviorFactory().createActionSequence();
-            setNewAction(container, (Action) element);
+            setNewAction(container, (Action) element, properyName);
         } else if (elementType == metaTypes.getCallEvent()) {
             element = Model.getStateMachinesFactory().createCallEvent();
             if (container instanceof Transition) {
@@ -911,17 +911,28 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return element;
     }
     
-    private void setNewAction(Object container, Action action) {
+    private void setNewAction(Object container, Action action, String propertyName) {
         if (container instanceof Transition) {
             ((Transition) container).setEffect(action);
         } else if (container instanceof State) {
-            ((State) container).setEntry(action);
+            if ("exit".equals(propertyName)) {
+                ((State) container).setExit(action);
+            } else if ("doActivity".equals(propertyName)) {
+                ((State) container).setDoActivity(action);
+            } else {
+                ((State) container).setEntry(action);
+            }
         } else if (container instanceof ActionSequence) {
             ((ActionSequence) container).getAction().add(action);
         } else {
             throw new IllegalArgumentException("Did not expect a " + container);
         }
     }
+
+    public Object buildNode(Object elementType, Object container) {
+        return buildNode(elementType, container, null);
+    }
+    
     
     /**
      * Add a newly created event to a trigger

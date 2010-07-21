@@ -269,10 +269,17 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         return connection;
     }
     
-    public Object buildNode(Object elementType, Object container) {
+    public Object buildNode(
+            final Object elementType,
+            final Object container,
+            final String propertyName) {
         Object element = buildNode(elementType);
         modelImpl.getCoreHelper().addOwnedElement(container, element);
         return element;
+    }
+
+    public Object buildNode(Object elementType, Object container) {
+        return buildNode(elementType, container, null);
     }
 
     public Object buildNode(Object elementType) {

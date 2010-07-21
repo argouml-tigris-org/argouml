@@ -97,6 +97,20 @@ public interface UmlFactory {
     Object buildNode(Object elementType, Object container);
 
     /**
+     * Creates a UML model element of the given type and adds 
+     * it to the passed in container.
+     * 
+     * @param elementType the type of model element to build
+     * @param container the model element that will contain the 
+     * newly built model element
+     * @param property the property name of the containment
+     * this is only required when a container has multiple
+     * properties old containing the same type of object
+     * @return the model element
+     */
+    Object buildNode(Object elementType, Object container, String property);
+
+    /**
      * Checks if some type of UML model element is valid to
      * connect other UML model elements.<p>
      *
