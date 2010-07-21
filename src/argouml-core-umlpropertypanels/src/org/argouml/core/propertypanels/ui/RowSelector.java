@@ -243,7 +243,10 @@ class RowSelector extends UmlControl
      * @param expanded true if the control should be initially expanded
      * @param expandable true if the control should be expandable
      */
-    public RowSelector(DefaultListModel model, boolean expanded, boolean expandable) {
+    public RowSelector(
+	    final DefaultListModel model,
+	    final boolean expanded,
+	    final boolean expandable) {
         super(new BorderLayout());
         
         this.expandable = expandable;
@@ -261,11 +264,11 @@ class RowSelector extends UmlControl
             readonly = Model.getModelManagementHelper().isReadOnly(target);
             metaTypes = null;
             newActions = ((UMLModelElementListModel) model).getNewActions();
-        } else if (model instanceof org.argouml.core.propertypanels.ui.SimpleListModel) {
-            target = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getUmlElement();
-            metaType = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaType();
-            metaTypes = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getMetaTypes();
-            additionalNewCommands = ((org.argouml.core.propertypanels.ui.SimpleListModel) model).getAdditionalCommands();
+        } else if (model instanceof SimpleListModel) {
+            target = ((SimpleListModel) model).getUmlElement();
+            metaType = ((SimpleListModel) model).getMetaType();
+            metaTypes = ((SimpleListModel) model).getMetaTypes();
+            additionalNewCommands = ((SimpleListModel) model).getAdditionalCommands();
             scroll = new ScrollListImpl(model, 1);
             readonly = Model.getModelManagementHelper().isReadOnly(target);
         } else {
@@ -305,12 +308,14 @@ class RowSelector extends UmlControl
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
         if (model instanceof SimpleListModel
-        		&& ((SimpleListModel) model).getAddCommand() != null) {
-	        removeAction = new RemoveAction(scroll.getList(), ((SimpleListModel) model));
-	        addAction = new AddAction(((SimpleListModel) model).getAddCommand());
+                && ((SimpleListModel) model).getAddCommand() != null) {
+            removeAction =
+                new RemoveAction(scroll.getList(), ((SimpleListModel) model));
+            addAction =
+                new AddAction(((SimpleListModel) model).getAddCommand());
         } else {
-        	removeAction = null;
-        	addAction = null;
+            removeAction = null;
+            addAction = null;
         }
         
 
@@ -329,10 +334,13 @@ class RowSelector extends UmlControl
                 final ArrayList<Action> actions = new ArrayList<Action>(6);
     
                 for (Object meta : metaTypes) {
-                    if (Model.getUmlFactory().isContainmentValid(meta, target)) {
+                    if (Model.getUmlFactory().isContainmentValid(
+                            meta, target)) {
                         final String label =
-                            "button.new-" + Model.getMetaTypes().getName(meta).toLowerCase();
-                        final Action createAction = new ActionCreateContainedModelElement(
+                            "button.new-"
+                            + Model.getMetaTypes().getName(meta).toLowerCase();
+                        final Action createAction =
+                            new ActionCreateContainedModelElement(
                                 meta,
                                 target,
                                 label);
@@ -344,10 +352,15 @@ class RowSelector extends UmlControl
                     actions.addAll(newActions);
                 }
                 
-                if (additionalNewCommands != null && !additionalNewCommands.isEmpty()) {
+                if (additionalNewCommands != null
+                        && !additionalNewCommands.isEmpty()) {
                     for (Command cmd : additionalNewCommands) {
-        		if (cmd instanceof IconIdentifiable && cmd instanceof Named) {
-                            actions.add(new CommandAction(cmd, ((Named)cmd).getName(), ((IconIdentifiable)cmd).getIcon()));
+        		if (cmd instanceof IconIdentifiable
+        		        && cmd instanceof Named) {
+                            actions.add(new CommandAction(
+                                    cmd, 
+                                    ((Named)cmd).getName(),
+                                    ((IconIdentifiable)cmd).getIcon()));
         		} else {
                             actions.add(new CommandAction(cmd));
         		}
@@ -383,10 +396,13 @@ class RowSelector extends UmlControl
                 // then any new buttons
                 List<Action> createActions = new ArrayList<Action>();
                 for (Object meta : metaTypes) {
-                    if (Model.getUmlFactory().isContainmentValid(meta, target)) {
+                    if (Model.getUmlFactory().isContainmentValid(
+                            meta, target)) {
                         final String label =
-                            "button.new-" + Model.getMetaTypes().getName(meta).toLowerCase();
-                        final Action createAction = new ActionCreateContainedModelElement(
+                            "button.new-"
+                            + Model.getMetaTypes().getName(meta).toLowerCase();
+                        final Action createAction =
+                            new ActionCreateContainedModelElement(
                                 meta,
                                 target,
                                 label);
@@ -394,18 +410,19 @@ class RowSelector extends UmlControl
                     }
                 }
 
-                if (additionalNewCommands != null && !additionalNewCommands.isEmpty()) {
-                	for (Command cmd : additionalNewCommands) {
-                		if (cmd instanceof IconIdentifiable && cmd instanceof Named) {
+                if (additionalNewCommands != null
+                        && !additionalNewCommands.isEmpty()) {
+                    for (Command cmd : additionalNewCommands) {
+                	if (cmd instanceof IconIdentifiable && cmd instanceof Named) {
                             createActions.add(new CommandAction(cmd, ((Named)cmd).getName(), ((IconIdentifiable)cmd).getIcon()));
-                		} else {
-                			createActions.add(new CommandAction(cmd));
-                		}
-                	}
+                	} else {
+                            createActions.add(new CommandAction(cmd));
+                	} 
+                    }
                 }
                 
                 if (createActions.size() > 2) {
-                	actions.add(createActions.toArray());
+                    actions.add(createActions.toArray());
                 } else {
                     actions.addAll(createActions);
                 }
@@ -447,7 +464,8 @@ class RowSelector extends UmlControl
             }
 
             JPanel buttonPanel =
-                new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
+                new JPanel(new FlexiGridLayout(
+                        2, 1, FlexiGridLayout.ROWCOLPREFERRED));
             expander = new JLabel();
             this.addMouseListener(this);
             setIcon();
@@ -482,7 +500,7 @@ class RowSelector extends UmlControl
         }
         
         if (EXPANDED_CONTROLS.contains(getId())) {
-        	toggleExpansion();
+            toggleExpansion();
         }
         
     }
@@ -552,9 +570,9 @@ class RowSelector extends UmlControl
         expanded = !expanded;
         
         if (expanded) {
-        	EXPANDED_CONTROLS.add(getId());
+            EXPANDED_CONTROLS.add(getId());
         } else {
-        	EXPANDED_CONTROLS.remove(getId());
+            EXPANDED_CONTROLS.remove(getId());
         }
 
         setIcon();
@@ -574,10 +592,10 @@ class RowSelector extends UmlControl
         final String id;
     	ListModel model = getList().getModel();
     	if (model instanceof SimpleListModel) {
-    		SimpleListModel slm = (SimpleListModel) model;
-    		id = slm.getPropertyName() + ":" + slm.getMetaType();
+            SimpleListModel slm = (SimpleListModel) model;
+            id = slm.getPropertyName() + ":" + slm.getMetaType();
     	} else {
-    		id = model.getClass().getName();
+            id = model.getClass().getName();
     	}
     	return id;
     }
@@ -599,20 +617,20 @@ class RowSelector extends UmlControl
     public void removeNotify() {
     	if (!readonly) {
             getList().removeListSelectionListener(this);
-	        getList().removeListSelectionListener(deleteAction);
-	        if (moveUpAction != null) {
-	            getList().removeListSelectionListener(moveUpAction);
-	            getList().removeListSelectionListener(moveDownAction);
-	            getList().removeListSelectionListener(moveTopAction);
-	            getList().removeListSelectionListener(moveBottomAction);
-	        }
+            getList().removeListSelectionListener(deleteAction);
+            if (moveUpAction != null) {
+                getList().removeListSelectionListener(moveUpAction);
+                getList().removeListSelectionListener(moveDownAction);
+                getList().removeListSelectionListener(moveTopAction);
+                getList().removeListSelectionListener(moveBottomAction);
+            }
     	}
         this.removeMouseListener(this);
         getModel().removeListDataListener(this);
         if (getModel() instanceof UMLModelElementListModel) {
             ((UMLModelElementListModel) getModel()).removeModelEventListener();
         } else {
-            ((org.argouml.core.propertypanels.ui.SimpleListModel) getModel()).removeModelEventListener();
+            ((SimpleListModel) getModel()).removeModelEventListener();
         }
     }
 
@@ -662,7 +680,8 @@ class RowSelector extends UmlControl
 
     public void intervalAdded(ListDataEvent e) {
         if (e.getIndex0() == e.getIndex1()
-                && getModel().getElementAt(e.getIndex0()) == movedModelElement.getElement()) {
+                && getModel().getElementAt(e.getIndex0()) 
+                == movedModelElement.getElement()) {
             LOG.info("Setting attribute to selected");
             final Object element = movedModelElement.getElement();
             movedModelElement.setElement(null);
@@ -682,17 +701,18 @@ class RowSelector extends UmlControl
     }
     
 
-	public void valueChanged(ListSelectionEvent e) {
-		if (removeAction != null) {
-	        removeAction.setEnabled(getList().getSelectedIndex() > -1);
-		}
-	}
+    public void valueChanged(ListSelectionEvent e) {
+        if (removeAction != null) {
+            removeAction.setEnabled(getList().getSelectedIndex() > -1);
+        }
+    }
     
 
     /**
      * This action deletes the model elements that are selected in the JList
      */
-    private class DeleteAction extends UndoableAction implements ListSelectionListener {
+    private class DeleteAction extends UndoableAction
+            implements ListSelectionListener {
 
         /**
          * The class uid
@@ -794,7 +814,8 @@ class RowSelector extends UmlControl
     /**
      * This action deletes the model elements that are selected in the JList
      */
-    private class MoveDownAction extends UndoableAction implements ListSelectionListener {
+    private class MoveDownAction extends UndoableAction
+            implements ListSelectionListener {
 
         /**
          * The class uid
@@ -839,7 +860,8 @@ class RowSelector extends UmlControl
     /**
      * This action deletes the model elements that are selected in the JList
      */
-    private class MoveTopAction extends UndoableAction implements ListSelectionListener {
+    private class MoveTopAction extends UndoableAction
+            implements ListSelectionListener {
 
         /**
          * The class uid
@@ -883,7 +905,8 @@ class RowSelector extends UmlControl
     /**
      * This action deletes the model elements that are selected in the JList
      */
-    private class MoveBottomAction extends UndoableAction implements ListSelectionListener {
+    private class MoveBottomAction extends UndoableAction
+            implements ListSelectionListener {
 
         /**
          * The class uid
@@ -942,15 +965,15 @@ class RowSelector extends UmlControl
     	private Command command;
     	
     	public AddAction(Command command) {
-    		super("", ResourceLoaderWrapper.lookupIcon("Add"));
-    		this.command = command;
+            super("", ResourceLoaderWrapper.lookupIcon("Add"));
+            this.command = command;
     	}
     	
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			super.actionPerformed(e);
-			command.execute();
-		}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    super.actionPerformed(e);
+	    command.execute();
+	}
     }
     
     private static class RemoveAction extends UndoableAction {
@@ -959,22 +982,23 @@ class RowSelector extends UmlControl
     	private final JList list;
     	
     	public RemoveAction(JList list, SimpleListModel model) {
-    		super("", ResourceLoaderWrapper.lookupIcon("Remove"));
-    		this.simpleListModel = model;
-    		this.list = list;
+    	    super("", ResourceLoaderWrapper.lookupIcon("Remove"));
+    	    this.simpleListModel = model;
+    	    this.list = list;
     	}
     	
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			super.actionPerformed(e);
-			final Object objectToRemove = list.getSelectedValue();
-			if (objectToRemove!= null) {
-				Command command = simpleListModel.getRemoveCommand(objectToRemove);
-				command.execute();
-			} else {
-				LOG.warn("No selcted object was found in the list control - we shouldn't be able to get here");
-			}
-		}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    super.actionPerformed(e);
+	    final Object objectToRemove = list.getSelectedValue();
+	    if (objectToRemove!= null) {
+		Command command =
+		    simpleListModel.getRemoveCommand(objectToRemove);
+		command.execute();
+	    } else {
+		LOG.warn("No selected object was found in the list control - we shouldn't be able to get here");
+	    }
+	}
     }
     
     private static class CommandAction extends UndoableAction {
@@ -982,20 +1006,19 @@ class RowSelector extends UmlControl
     	private final Command command;
     	
     	public CommandAction(Command cmd) {
-    		super("", ResourceLoaderWrapper.lookupIcon("Remove"));
-    		this.command = cmd;
+    	    super("", ResourceLoaderWrapper.lookupIcon("Remove"));
+    	    this.command = cmd;
     	}
     	
     	public CommandAction(Command cmd, String name, Icon icon) {
-    		super(name, icon);
-    		
-    		this.command = cmd;
+    	    super(name, icon);
+    	    this.command = cmd;
     	}
     	
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			super.actionPerformed(e);
-			command.execute();
-		}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    super.actionPerformed(e);
+	    command.execute();
+	}
     }
 }
