@@ -53,7 +53,8 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 public class ActionCreateContainedModelElement
             extends AbstractActionNewModelElement {
 
-    private Object metaType; 
+    final private Object metaType; 
+    final private String property; 
 
     /**
      * Construct the action.
@@ -84,13 +85,34 @@ public class ActionCreateContainedModelElement
         super(menuDescr);
         
         metaType = theMetaType;
+        property = null;
+        
+        setTarget(target);
+    }
+
+    /**
+     * Construct the action.
+     * 
+     * @param theMetaType the element to be created
+     * @param target the container that will own the new element
+     * @param menuDescr the description for the menu item label.
+     */
+    public ActionCreateContainedModelElement(
+            Object theMetaType, 
+            Object target,
+            String property,
+            String menuDescr) {
+        super(menuDescr);
+        
+        metaType = theMetaType;
+        this.property = property;
         
         setTarget(target);
     }
 
     public void actionPerformed(ActionEvent e) {            
-        Object newElement = Model.getUmlFactory().buildNode(metaType, 
-                getTarget());
+        Object newElement =
+            Model.getUmlFactory().buildNode(metaType, getTarget(), property);
             
         TargetManager.getInstance().setTarget(newElement);                
     }
