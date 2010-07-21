@@ -67,7 +67,7 @@ class UMLCollaborationRepresentedClassifierComboBoxModel
             final String propertyName,
             final Object target) {
         super(propertyName, true);
-        setTarget(propertyName);
+        setTarget(target);
     }
     
     /*

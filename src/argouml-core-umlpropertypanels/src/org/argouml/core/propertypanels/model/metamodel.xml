@@ -2427,7 +2427,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
-    <list name="classifier" type="Classifier" />
+    <combo name="classifier" type="Classifier" />
     <!--
     <list name="targetFlow" type="Flow" label="label.target-flows" />
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
