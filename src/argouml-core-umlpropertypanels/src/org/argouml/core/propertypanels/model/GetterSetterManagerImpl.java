@@ -98,7 +98,9 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("templateParameter", new TemplateParameterGetterSetter());
         addGetterSetter("reception", new ReceptionGetterSetter());
         addGetterSetter("deferrableEvent", new DeferrableEventGetterSetter());
+        addGetterSetter("exit", new ExitActionGetterSetter());
         addGetterSetter("entry", new EntryActionGetterSetter());
+        addGetterSetter("doActivity", new DoActivityActionGetterSetter());
         addGetterSetter("action", new ActionGetterSetter());
         addGetterSetter("subvertex", new SubvertexGetterSetter());
         addGetterSetter("internalTransition", new InternalTransitionGetterSetter());
@@ -1056,6 +1058,58 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public Collection getOptions(Object modelElement, Class<?> type) {
             final ArrayList list = new ArrayList(1);
             list.add(Model.getFacade().getEntry(modelElement));
+            return list;
+        }
+      
+        public Object get(Object modelElement, Class<?> type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, Class<?> type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getAction();
+        }
+    }
+    
+    private class ExitActionGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, Class<?> type) {
+            final ArrayList list = new ArrayList(1);
+            list.add(Model.getFacade().getExit(modelElement));
+            return list;
+        }
+      
+        public Object get(Object modelElement, Class<?> type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, Class<?> type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getAction();
+        }
+    }
+    
+    private class DoActivityActionGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, Class<?> type) {
+            final ArrayList list = new ArrayList(1);
+            list.add(Model.getFacade().getDoActivity(modelElement));
             return list;
         }
       

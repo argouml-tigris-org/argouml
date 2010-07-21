@@ -256,16 +256,19 @@ class RowSelector extends UmlControl
         List<Action> newActions = null;
         List<Command> additionalNewCommands = null;
         
+        final String propertyName;
         if (model instanceof UMLModelElementListModel) {
             // Temporary until SimpleListModel is used for all
             target = ((UMLModelElementListModel) model).getTarget();
             metaType = ((UMLModelElementListModel) model).getMetaType();
+            propertyName = null;
             scroll = new OldScrollList(model, 1);
             readonly = Model.getModelManagementHelper().isReadOnly(target);
             metaTypes = null;
             newActions = ((UMLModelElementListModel) model).getNewActions();
         } else if (model instanceof SimpleListModel) {
             target = ((SimpleListModel) model).getUmlElement();
+            propertyName = ((SimpleListModel) model).getPropertyName();
             metaType = ((SimpleListModel) model).getMetaType();
             metaTypes = ((SimpleListModel) model).getMetaTypes();
             additionalNewCommands = ((SimpleListModel) model).getAdditionalCommands();
@@ -273,6 +276,7 @@ class RowSelector extends UmlControl
             readonly = Model.getModelManagementHelper().isReadOnly(target);
         } else {
             // Temporary until SimpleListModel is used for all
+            propertyName = null;
             target = null;
             readonly = true;
         }
@@ -343,6 +347,7 @@ class RowSelector extends UmlControl
                             new ActionCreateContainedModelElement(
                                 meta,
                                 target,
+                                propertyName,
                                 label);
                         actions.add(createAction);
                     }
