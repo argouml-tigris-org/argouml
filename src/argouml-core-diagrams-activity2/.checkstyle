@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fileset-config file-format-version="1.2.0" simple-config="true">
+  <local-check-config name="ArgoUML conventions" location="/argouml-core-tools/checkstyle/checkstyle5_argouml.xml" type="project" description="The Checkstyle configuration used in the ArgoUML project.">
+    <property name="checkstyle.header.file" value="${workspace_loc}/argouml-core-tools/checkstyle/java.header"/>
+    <additional-data name="protect-config-file" value="false"/>
+  </local-check-config>
+  <fileset name="all" enabled="true" check-config-name="ArgoUML conventions" local="true">
+    <file-match-pattern match-pattern="." include-pattern="true"/>
+  </fileset>
+  <filter name="WriteProtectedFiles" enabled="true"/>
+  <filter name="FilesFromPackage" enabled="true">
+    <filter-data value="src_generated"/>
+  </filter>
+  <filter name="NonSrcDirs" enabled="true"/>
+</fileset-config>
