@@ -95,11 +95,8 @@
           <sourceEncoding>utf-8</sourceEncoding>
           <minimumTokens>100</minimumTokens>
           <targetJdk>1.5</targetJdk>
-          <excludes>
-            <exclude>**/*Lexer.java</exclude>
-          </excludes>
           <excludeRoots>
-            <excludeRoot>target/generated-sources/stubs</excludeRoot>
+            <excludeRoot>src_generated</excludeRoot>
           </excludeRoots>
         </configuration>
       </plugin>
