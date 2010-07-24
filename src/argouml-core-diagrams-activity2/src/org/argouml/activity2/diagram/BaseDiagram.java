@@ -60,20 +60,11 @@ abstract class BaseDiagram extends UMLDiagram {
         } catch (PropertyVetoException e) {
             LOG.error("Exception", e);
         }
-        ((ActivityDiagramGraphModel) getGraphModel()).setOwner(owner);
     }
     
     abstract UmlDiagramRenderer createDiagramRenderer();
     abstract UMLMutableGraphSupport createGraphModel();
     
-    @Override
-    public void initialize(Object owner) {
-        super.initialize(owner);
-        ActivityDiagramGraphModel gm =
-            (ActivityDiagramGraphModel) getGraphModel();
-        gm.setOwner(owner);
-    }
-
     @Override
     protected Object[] getUmlActions() {
         
