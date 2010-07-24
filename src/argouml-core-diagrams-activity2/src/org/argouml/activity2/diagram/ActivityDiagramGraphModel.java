@@ -30,17 +30,8 @@ class ActivityDiagramGraphModel extends UMLMutableGraphSupport {
     private static final Logger LOG = Logger
             .getLogger(ActivityDiagramGraphModel.class);
 
-    /**
-     * The activity this Activity Diagram belongs to
-     */
-    private Object activity;
-
     public ActivityDiagramGraphModel() {
         super();
-    }
-
-    public Object getActivity() {
-        return activity;
     }
 
     /*
@@ -63,13 +54,5 @@ class ActivityDiagramGraphModel extends UMLMutableGraphSupport {
 
     public Object getOwner(Object port) {
         return port;
-    }
-    
-    public Object getOwner() {
-        return activity;
-    }
-    
-    public void setOwner(Object owner) {
-        this.activity = owner;
     }
 }
