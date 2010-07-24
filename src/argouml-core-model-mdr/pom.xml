@@ -1,0 +1,91 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- 
+    Experimenting with maven for the nightly build.
+  -->
+
+  <parent>
+    <groupId>org.argouml</groupId>
+    <artifactId>parentpom</artifactId>
+    <version>0.1</version>
+    <relativePath>../../tools/maven/parentpom.xml</relativePath>
+  </parent>
+
+  <artifactId>argouml-core-model-mdr</artifactId>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-core-model</artifactId>
+      <version>0.1</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>jmi</groupId>
+      <artifactId>jmi</artifactId>
+      <version>1.0-5</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>jmi</groupId>
+      <artifactId>mof</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>java-interfaces</artifactId>
+      <version>0.30.0</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.netbeans.mdr</groupId>
+      <artifactId>jmiutils</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.netbeans.mdr</groupId>
+      <artifactId>mdrapi</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.netbeans.mdr</groupId>
+      <artifactId>openide-util</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.6-5</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.netbeans.mdr</groupId>
+      <artifactId>nbmdr</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>

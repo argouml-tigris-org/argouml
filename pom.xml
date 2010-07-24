@@ -15,5 +15,6 @@
 
   <modules>
     <module>src/argouml-core-model</module>
+    <module>src/argouml-core-model-mdr</module>
   </modules>
 </project>
