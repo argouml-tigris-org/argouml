@@ -53,17 +53,18 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
         };
     }
 
-
     @Override
     Object[] getNewNodeTypes() {
         return new Object[] {
-            Model.getMetaTypes().getObjectNode(),
             Model.getMetaTypes().getCallBehaviorAction(),
             Model.getMetaTypes().getCreateObjectAction(),
             Model.getMetaTypes().getDestroyObjectAction(),
             Model.getMetaTypes().getAcceptEventAction(),
             Model.getMetaTypes().getSendSignalAction(),
-            Model.getMetaTypes().getDestroyObjectAction()
+            Model.getMetaTypes().getDestroyObjectAction(),
+            Model.getMetaTypes().getActivityParameterNode(),
+            Model.getMetaTypes().getCentralBufferNode(),
+            Model.getMetaTypes().getDataStoreNode(),
         };
     }
 
@@ -73,7 +74,6 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
         super.initialize(owner);
         ActivityDiagramGraphModel gm =
             (ActivityDiagramGraphModel) getGraphModel();
-        gm.setOwner(owner);
     }
 
     @Override
@@ -85,7 +85,7 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
     public boolean doesAccept(Object objectToAccept) {
         if (Model.getFacade().isAComment(objectToAccept)
                 || Model.getFacade().isAActivityEdge(objectToAccept) 
-                || Model.getFacade().isAAction(objectToAccept) ) {
+                || Model.getFacade().isAActivityNode(objectToAccept) ) {
             return true;
         }
         return false;
@@ -99,7 +99,7 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
         
         DiagramSettings settings = getDiagramSettings();
         
-        if (Model.getFacade().isAAction(modelElement)) {
+        if (Model.getFacade().isAActivityNode(modelElement)) {
             figNode = new FigActivityNode(modelElement, bounds, settings);
         } else if (Model.getFacade().isAComment(modelElement)) {
             figNode = new FigComment(modelElement, bounds, settings);
