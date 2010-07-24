@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    mvw
+ *    Linus Tolke
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -65,12 +66,21 @@ public class FigMessage extends FigNodeModelElement {
 
     private static Vector<String> arrowDirections;
 
-    private FigPoly figPoly;
-
     private static final int SOUTH = 0;
     private static final int EAST = 1;
     private static final int WEST = 2;
     private static final int NORTH = 3;
+
+    static {
+        arrowDirections = new Vector<String>(4);
+        // TODO: i18n
+        arrowDirections.add(SOUTH, "South");
+        arrowDirections.add(EAST, "East");
+        arrowDirections.add(WEST, "West");
+        arrowDirections.add(NORTH, "North");
+    }
+
+    private FigPoly figPoly;
 
     /**
      * The current arrow direction set to constants above.
@@ -101,17 +111,6 @@ public class FigMessage extends FigNodeModelElement {
 	addFig(figPoly);
     }
 
-    private void initArrows() {
-        if (arrowDirections == null) {
-            arrowDirections = new Vector<String>(4);
-            // TODO: i18n
-            arrowDirections.add(SOUTH, "South");
-            arrowDirections.add(EAST, "East");
-            arrowDirections.add(WEST, "West");
-            arrowDirections.add(NORTH, "North");
-        }
-    }
-
     /**
      * Construct a FigMessage.
      * 
@@ -122,7 +121,6 @@ public class FigMessage extends FigNodeModelElement {
     public FigMessage(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
-        initArrows();
         initFigs();
         updateNameText();
     }
