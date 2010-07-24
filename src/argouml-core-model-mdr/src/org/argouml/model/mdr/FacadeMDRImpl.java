@@ -256,6 +256,11 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof ObjectFlowState;
     }
 
+    public boolean isAObjectNode(Object handle) {
+        // NOT UML1.4
+        return false;
+    }
+
     public boolean isASubactivityState(Object handle) {
         return handle instanceof SubactivityState;
     }
