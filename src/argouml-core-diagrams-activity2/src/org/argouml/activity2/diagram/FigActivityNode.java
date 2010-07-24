@@ -76,8 +76,11 @@ public class FigActivityNode extends FigNodeModelElement {
             return polyFig;
         } else if (Model.getFacade().isAObjectNode(getOwner())) {
             return new FigRect(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
-        } else {
+        } else if (Model.getFacade().isAAction(getOwner())) {
             return new FigRRect(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
+        } else {
+            // More to do here
+            return null;
         }
     }
     
