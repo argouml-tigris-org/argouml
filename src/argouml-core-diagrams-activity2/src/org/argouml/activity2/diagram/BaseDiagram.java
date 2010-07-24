@@ -68,15 +68,22 @@ abstract class BaseDiagram extends UMLDiagram {
     @Override
     protected Object[] getUmlActions() {
         
-        Object[] edgeTools = getNewEdgeTypes();
-        Object[] nodeTools = getNewNodeTypes();
-        Object[] actions = new Object[edgeTools.length + nodeTools.length];
+        final Object[] edgeTools = getNewEdgeTypes();
+        final Object[] nodeTools = getNewNodeTypes();
+        final Object[] actions =
+            new Object[edgeTools.length + nodeTools.length];
         int i = 0;
         for (Object meta : edgeTools) {
-            actions[i++] = getCreateEdgeAction(meta, "button.new-" + Model.getMetaTypes().getName(meta));
+            actions[i++] = getCreateEdgeAction(
+                    meta, 
+                    "button.new-" 
+                    + Model.getMetaTypes().getName(meta).toLowerCase());
         }
         for (Object meta : nodeTools) {
-            actions[i++] = getCreateNodeAction(meta, "button.new-" + Model.getMetaTypes().getName(meta));
+            actions[i++] = getCreateNodeAction(
+                    meta, 
+                    "button.new-" 
+                    + Model.getMetaTypes().getName(meta).toLowerCase());
         }
         return actions;
     }
