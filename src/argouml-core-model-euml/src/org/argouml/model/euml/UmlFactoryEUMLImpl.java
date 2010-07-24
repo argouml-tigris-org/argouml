@@ -163,6 +163,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         {ControlFlow.class, ControlNode.class, ExecutableNode.class, },
         {ObjectFlow.class, ObjectNode.class, },
         {ObjectFlow.class, ObjectNode.class, Action.class, },
+        {ObjectFlow.class, Action.class, ObjectNode.class, },
 //        {Message.class, ClassifierRole.class },
     };
 
@@ -251,8 +252,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             cf.setTarget(toActivity);
             connection = cf;
         } else if (elementType == metaTypes.getObjectFlow()) {
-            ObjectNode fromObject = (ObjectNode) fromElement;
-            ObjectNode toObject = (ObjectNode) fromElement;
+            ActivityNode fromObject = (ActivityNode) fromElement;
+            ActivityNode toObject = (ActivityNode) fromElement;
             ControlFlow of = UMLFactory.eINSTANCE.createControlFlow();
             of.setActivity(fromObject.getActivity());
             of.setSource(fromObject);
