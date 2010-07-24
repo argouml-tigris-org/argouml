@@ -1966,6 +1966,10 @@ class FacadeEUMLImpl implements Facade {
         return false;
     }
 
+    public boolean isAObjectNode(Object handle) {
+        return handle instanceof ObjectNode;
+    }
+
     public boolean isAOperation(Object handle) {
         return handle instanceof Operation;
     }
