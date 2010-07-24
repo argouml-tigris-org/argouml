@@ -162,6 +162,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         {ControlFlow.class, ExecutableNode.class, },
         {ControlFlow.class, ControlNode.class, ExecutableNode.class, },
         {ObjectFlow.class, ObjectNode.class, },
+        {ObjectFlow.class, ObjectNode.class, Action.class, },
 //        {Message.class, ClassifierRole.class },
     };
 
@@ -318,7 +319,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         } else if (elementType == metaTypes.getDataStoreNode()) {
             o = UMLFactory.eINSTANCE.createDataStoreNode();
         } else if (elementType == metaTypes.getExpansionNode()) {
-            o = UMLFactory.eINSTANCE.createDataStoreNode();
+            o = UMLFactory.eINSTANCE.createExpansionNode();
         } else if (elementType == metaTypes.getAcceptEventAction()) {
             o = UMLFactory.eINSTANCE.createAcceptEventAction();
         } else if (elementType == metaTypes.getSendSignalAction()) {
