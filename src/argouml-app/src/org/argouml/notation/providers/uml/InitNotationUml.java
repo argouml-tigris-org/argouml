@@ -133,8 +133,8 @@ public class InitNotationUml implements InitSubsystem {
 
         NotationProviderFactory2.getInstance().setDefaultNotation(name);
 
-        /* Initialise the NotationUtilityUml: */
-        (new NotationUtilityUml()).init();
+        /* Initialize the NotationUtilityUml: */
+        NotationUtilityUml.init();
     }
 
     public List<GUISettingsTabInterface> getProjectSettingsTabs() {
