@@ -1,0 +1,133 @@
+/* $Id: $
+ *****************************************************************************
+ * Copyright (c) 2010 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *****************************************************************************
+ */
+
+package org.argouml.activity2.diagram;
+
+import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.Collections;
+
+import javax.swing.Action;
+
+import org.apache.log4j.Logger;
+import org.argouml.model.Model;
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.uml.diagram.UmlDiagramRenderer;
+import org.argouml.uml.diagram.ui.ActionSetMode;
+import org.argouml.uml.diagram.ui.RadioAction;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.FigNode;
+
+abstract class BaseDiagram extends UMLDiagram {
+    
+    private static final Logger LOG = Logger
+        .getLogger(BaseDiagram.class);
+    
+    public BaseDiagram(Object owner) {
+        super();
+        MutableGraphModel gm = createGraphModel();
+        setGraphModel(gm);
+        
+        // Create the layer
+        LayerPerspective lay = new
+            LayerPerspectiveMutable(this.getName(), gm);
+        setLayer(lay);
+        
+        // Create the renderer
+        UmlDiagramRenderer renderer = createDiagramRenderer();
+        lay.setGraphNodeRenderer(renderer);
+        lay.setGraphEdgeRenderer(renderer);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Constructing diagram for " + owner);
+        }
+        try {
+            this.setName(getNewDiagramName());
+        } catch (PropertyVetoException e) {
+            LOG.error("Exception", e);
+        }
+        ((ActivityDiagramGraphModel) getGraphModel()).setOwner(owner);
+    }
+    
+    abstract UmlDiagramRenderer createDiagramRenderer();
+    abstract UMLMutableGraphSupport createGraphModel();
+    
+    @Override
+    public void initialize(Object owner) {
+        super.initialize(owner);
+        ActivityDiagramGraphModel gm =
+            (ActivityDiagramGraphModel) getGraphModel();
+        gm.setOwner(owner);
+    }
+
+    @Override
+    protected Object[] getUmlActions() {
+        
+        Object[] edgeTools = getNewEdgeTypes();
+        Object[] nodeTools = getNewNodeTypes();
+        Object[] actions = new Object[edgeTools.length + nodeTools.length];
+        int i = 0;
+        for (Object meta : edgeTools) {
+            actions[i++] = getCreateEdgeAction(meta, "button.new-" + Model.getMetaTypes().getName(meta));
+        }
+        for (Object meta : nodeTools) {
+            actions[i++] = getCreateNodeAction(meta, "button.new-" + Model.getMetaTypes().getName(meta));
+        }
+        return actions;
+    }
+    
+    abstract Object[] getNewNodeTypes();
+    abstract Object[] getNewEdgeTypes();
+
+    /**
+     * @return Returns a diagram tool creation action.
+     */
+    private Action getCreateNodeAction(Object metaType, String label) {
+        return new RadioAction(
+                new CmdCreateNode(metaType, label));
+    }
+    
+    protected Action getCreateEdgeAction(Object metaType, String label) {
+        return new RadioAction(
+                new ActionSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        metaType,
+                        label));
+    }    
+    
+    @Override
+    public void encloserChanged(FigNode enclosed, FigNode oldEncloser,
+            FigNode newEncloser) {
+    	// Do nothing.        
+    }
+    
+    /*
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
+     */
+    public boolean isRelocationAllowed(Object base)  {
+        return false;
+    }
+    
+    public Collection getRelocationCandidates(Object root) {
+        return Collections.EMPTY_LIST;
+    }
+    
+    public boolean relocate(Object base) {
+        return false;
+    }
+}
