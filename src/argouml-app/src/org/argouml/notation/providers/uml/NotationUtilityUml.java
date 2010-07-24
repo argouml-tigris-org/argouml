@@ -120,8 +120,8 @@ public final class NotationUtilityUml {
         parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
     }
 
-    public void init() {
-	int assPos = 0;
+    static void init() {
+        int assPos = 0;
         attributeSpecialStrings[assPos++] =
             new PropertySpecialString("frozen",
                 new PropertyOperation() {
