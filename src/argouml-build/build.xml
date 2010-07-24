@@ -245,6 +245,7 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-app" inheritAll="false"               target="jar"/>
 
     <ant dir="../argouml-core-diagrams-sequence2" inheritAll="false" target="jar"/>
+    <ant dir="../argouml-core-diagrams-activity2" inheritAll="false" target="jar"/>
     <ant dir="../argouml-core-umlpropertypanels" inheritAll="false" target="jar"/>
 
     <!-- Copy everything to the build directory -->
@@ -274,6 +275,9 @@ Property files to be searched (in argouml-build):
     <mkdir dir="${argo.build.dir}/ext"/>
     <copy todir="${argo.build.dir}/ext" includeEmptyDirs="false">
       <fileset dir="../argouml-core-diagrams-sequence2/build">
+        <include name="*"/>
+      </fileset>
+      <fileset dir="../argouml-core-diagrams-activity2/build">
         <include name="*"/>
       </fileset>
       <fileset dir="../argouml-core-umlpropertypanels/build">
@@ -346,12 +350,15 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-app" inheritAll="false"
          target="${tests-to-do}"/>
 
-    <!-- Tests for sequence2 -->
-    <!-- Tests for umlpropertypanels -->
+    <!-- Preparations for tests for things in ext -->
     <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"    target="jar"/>
     <ant dir="../argouml-app" inheritAll="false"               target="jar"/>
+
+    <!-- Tests for sequence2 -->
+    <!-- Tests for activity2 -->
+    <!-- Tests for umlpropertypanels -->
     <ant dir="../argouml-core-diagrams-sequence2" inheritAll="false"
          target="${tests-to-do}"/>
 
