@@ -164,6 +164,14 @@ public interface Facade {
     boolean isAObjectFlowState(Object handle);
 
     /**
+     * Recognizer for ObjectNode.
+     *
+     * @param handle candidate
+     * @return true if handle is an ObjectNode
+     */
+    boolean isAObjectNode(Object handle);
+
+    /**
      * Recognizer for SubactivityState.
      *
      * @param handle candidate
