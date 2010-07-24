@@ -244,6 +244,13 @@ public class StylePanelFig
      * have not changed.<p>
      */
     public void refresh() {
+        if (TargetManager.getInstance().getTargets().size() > 1) {
+            // See issue 6109 - if we have multiple targets this method
+            // can result in a feedback problem where selecting a target
+            // changes the selection colour in the combo and as a result
+            // that trigger a change of colour of all selected Figs
+            return;
+        }
     	Fig target = getPanelTarget();
     	 //TODO: How about FigAssociationClass?
         if (target instanceof FigEdgeModelElement) {

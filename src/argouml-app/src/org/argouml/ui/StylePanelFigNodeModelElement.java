@@ -51,6 +51,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.argouml.i18n.Translator;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.PathContainer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.ColorRenderer;
@@ -129,6 +130,13 @@ public class StylePanelFigNodeModelElement
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
+        if (TargetManager.getInstance().getTargets().size() > 1) {
+            // See issue 6109 - if we have multiple targets this method
+            // can result in a feedback problem where selecting a target
+            // changes the selection colour in the combo and as a result
+            // that trigger a change of colour of all selected Figs
+            return;
+        }
         refreshTransaction = true;
         // Let the parent do its refresh.
         super.refresh();
