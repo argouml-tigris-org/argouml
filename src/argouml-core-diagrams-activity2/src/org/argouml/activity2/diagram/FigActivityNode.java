@@ -74,10 +74,10 @@ public class FigActivityNode extends FigNodeModelElement {
             final Polygon p = new Polygon(xs, ys, 6);
             final FigGravityPoly polyFig = new FigAcceptEventPoly(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
             return polyFig;
-        } else if (Model.getFacade().isAObjectNode(getOwner())) {
-            return new FigRect(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
         } else if (Model.getFacade().isAAction(getOwner())) {
             return new FigRRect(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
+        } else if (Model.getFacade().isAObjectNode(getOwner())) {
+            return new FigRect(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
         } else {
             // More to do here
             return null;
