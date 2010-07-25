@@ -162,7 +162,6 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         {ControlFlow.class, ExecutableNode.class, },
         {ControlFlow.class, ControlNode.class, ExecutableNode.class, },
         {ObjectFlow.class, ObjectNode.class, },
-        {ObjectFlow.class, ObjectNode.class, Action.class, },
         {ObjectFlow.class, Action.class, ObjectNode.class, },
 //        {Message.class, ClassifierRole.class },
     };
