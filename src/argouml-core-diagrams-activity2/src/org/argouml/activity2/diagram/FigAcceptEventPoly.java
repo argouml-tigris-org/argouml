@@ -46,6 +46,12 @@ public class FigAcceptEventPoly extends FigGravityPoly {
         super(p);
     }
 
+    /**
+     * This overrides the behaviour of FigGravityPoly in that the closest point 
+     * on the left of the fig is where a horizontal line from anotherPt would
+     * intersect this Fig. This prevents an edge from attaching to a point
+     * on a convex polygon where it would look better connecting to the edge.
+     */
     @Override
     public Point getClosestPoint(Point anotherPt) {
         if (anotherPt.x < getX() && anotherPt.y >= getY() && anotherPt.y < getY() + getHeight()) {
