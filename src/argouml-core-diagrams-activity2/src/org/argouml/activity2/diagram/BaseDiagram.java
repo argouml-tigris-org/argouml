@@ -76,14 +76,12 @@ abstract class BaseDiagram extends UMLDiagram {
         for (Object meta : edgeTools) {
             actions[i++] = getCreateEdgeAction(
                     meta, 
-                    "button.new-" 
-                    + Model.getMetaTypes().getName(meta).toLowerCase());
+                    Model.getMetaTypes().getName(meta));
         }
         for (Object meta : nodeTools) {
             actions[i++] = getCreateNodeAction(
                     meta, 
-                    "button.new-" 
-                    + Model.getMetaTypes().getName(meta).toLowerCase());
+                    Model.getMetaTypes().getName(meta));
         }
         return actions;
     }
