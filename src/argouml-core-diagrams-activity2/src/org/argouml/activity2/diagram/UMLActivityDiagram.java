@@ -68,6 +68,8 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
                 Model.getMetaTypes().getCentralBufferNode(),
                 Model.getMetaTypes().getDataStoreNode(),
             },
+            Model.getMetaTypes().getInputPin(),
+            Model.getMetaTypes().getOutputPin(),
         };
     }
 
