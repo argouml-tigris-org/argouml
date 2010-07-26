@@ -56,15 +56,18 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
     @Override
     Object[] getNewNodeTypes() {
         return new Object[] {
-            Model.getMetaTypes().getCallBehaviorAction(),
-            Model.getMetaTypes().getCreateObjectAction(),
-            Model.getMetaTypes().getDestroyObjectAction(),
+            new Object[] {
+                Model.getMetaTypes().getCallBehaviorAction(),
+                Model.getMetaTypes().getCreateObjectAction(),
+                Model.getMetaTypes().getDestroyObjectAction(),
+            },
             Model.getMetaTypes().getAcceptEventAction(),
             Model.getMetaTypes().getSendSignalAction(),
-            Model.getMetaTypes().getDestroyObjectAction(),
-            Model.getMetaTypes().getActivityParameterNode(),
-            Model.getMetaTypes().getCentralBufferNode(),
-            Model.getMetaTypes().getDataStoreNode(),
+            new Object[] {
+                Model.getMetaTypes().getActivityParameterNode(),
+                Model.getMetaTypes().getCentralBufferNode(),
+                Model.getMetaTypes().getDataStoreNode(),
+            },
         };
     }
 

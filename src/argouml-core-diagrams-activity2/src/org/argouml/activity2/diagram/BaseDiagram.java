@@ -74,14 +74,32 @@ abstract class BaseDiagram extends UMLDiagram {
             new Object[edgeTools.length + nodeTools.length];
         int i = 0;
         for (Object meta : edgeTools) {
-            actions[i++] = getCreateEdgeAction(
-                    meta, 
-                    Model.getMetaTypes().getName(meta));
+            if (meta instanceof Object[]) {
+                Object[] childEdgeTools = (Object[]) meta;
+                final Object[] childActions =
+                    new Object[childEdgeTools.length];
+                int j = 0;
+                for (Object childMeta : childEdgeTools) {
+                    childActions[j++] = getCreateEdgeAction(childMeta);
+                }
+                actions[i++] = childActions;
+            } else {
+                actions[i++] = getCreateEdgeAction(meta);
+            }
         }
         for (Object meta : nodeTools) {
-            actions[i++] = getCreateNodeAction(
-                    meta, 
-                    Model.getMetaTypes().getName(meta));
+            if (meta instanceof Object[]) {
+                Object[] childNodeTools = (Object[]) meta;
+                final Object[] childActions =
+                    new Object[childNodeTools.length];
+                int j = 0;
+                for (Object childMeta : childNodeTools) {
+                    childActions[j++] = getCreateNodeAction(childMeta);
+                }
+                actions[i++] = childActions;
+            } else {
+                actions[i++] = getCreateNodeAction(meta);
+            }
         }
         return actions;
     }
@@ -92,12 +110,14 @@ abstract class BaseDiagram extends UMLDiagram {
     /**
      * @return Returns a diagram tool creation action.
      */
-    private Action getCreateNodeAction(Object metaType, String label) {
+    private Action getCreateNodeAction(Object metaType) {
+        String label = Model.getMetaTypes().getName(metaType);
         return new RadioAction(
                 new CmdCreateNode(metaType, label));
     }
     
-    protected Action getCreateEdgeAction(Object metaType, String label) {
+    protected Action getCreateEdgeAction(Object metaType) {
+        String label = Model.getMetaTypes().getName(metaType);
         return new RadioAction(
                 new ActionSetMode(
                         ModeCreatePolyEdge.class,
