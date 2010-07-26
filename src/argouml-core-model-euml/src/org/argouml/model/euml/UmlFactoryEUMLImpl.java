@@ -62,6 +62,7 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
+import org.eclipse.uml2.uml.Pin;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Reception;
@@ -324,6 +325,10 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = UMLFactory.eINSTANCE.createAcceptEventAction();
         } else if (elementType == metaTypes.getSendSignalAction()) {
             o = UMLFactory.eINSTANCE.createSendSignalAction();
+        } else if (elementType == metaTypes.getInputPin()) {
+            o = UMLFactory.eINSTANCE.createInputPin();
+        } else if (elementType == metaTypes.getOutputPin()) {
+            o = UMLFactory.eINSTANCE.createOutputPin();
         } else if (elementType == metaTypes.getSimpleState()) {
             o = modelImpl.getStateMachinesFactory().createSimpleState();
         } else if (elementType == metaTypes.getFinalState()) {
@@ -672,6 +677,12 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         validContainmentMap.put(Stereotype.class,
                 new Class<?>[] {
                     Property.class
+                });
+
+        // valid elements for an Action to contain
+        validContainmentMap.put(Action.class,
+                new Class<?>[] {
+                    Pin.class
                 });
     }
         
