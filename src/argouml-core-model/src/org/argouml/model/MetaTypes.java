@@ -337,6 +337,11 @@ public interface MetaTypes {
     Object getInclude();
 
     /**
+     * @return Returns the InputPin.
+     */
+    Object getInputPin();
+
+    /**
      * @return Returns the Instance.
      */
     Object getInstance();
@@ -405,6 +410,11 @@ public interface MetaTypes {
      * @return Returns the Operation.
      */
     Object getOperation();
+    
+    /**
+     * @return Returns the OutputPin.
+     */
+    Object getOutputPin();
 
     /**
      * @return Returns the Package.
