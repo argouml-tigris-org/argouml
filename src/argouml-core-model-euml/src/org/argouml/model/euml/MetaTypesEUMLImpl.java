@@ -56,6 +56,7 @@ import org.eclipse.uml2.uml.Feature;
 import org.eclipse.uml2.uml.FinalState;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Include;
+import org.eclipse.uml2.uml.InputPin;
 import org.eclipse.uml2.uml.InstanceSpecification;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.InteractionConstraint;
@@ -68,6 +69,7 @@ import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.ObjectFlow;
 import org.eclipse.uml2.uml.ObjectNode;
 import org.eclipse.uml2.uml.Operation;
+import org.eclipse.uml2.uml.OutputPin;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
@@ -344,6 +346,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         return Include.class;
     }
 
+    public Object getInputPin() {
+        return InputPin.class;
+    }
+
     public Object getInstance() {
         // TODO: Check for changed semantics - tfm
         return InstanceSpecification.class;
@@ -440,6 +446,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 
     public Object getOperation() {
         return Operation.class;
+    }
+
+    public Object getOutputPin() {
+        return OutputPin.class;
     }
 
     public Object getPackage() {
