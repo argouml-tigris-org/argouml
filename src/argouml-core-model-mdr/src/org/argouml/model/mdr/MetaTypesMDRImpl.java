@@ -420,6 +420,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return Include.class;
     }
 
+    public Object getInputPin() {
+        throw new NotImplementedException("Not a UML1.4 element");
+    }
+
     public Object getInstance() {
         return Instance.class;
     }
@@ -474,6 +478,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getOperation() {
         return Operation.class;
+    }
+
+    public Object getOutputPin() {
+        throw new NotImplementedException("Not a UML1.4 element");
     }
 
     public Object getPackage() {
