@@ -55,10 +55,6 @@ import org.argouml.model.Model;
 public class InitUmlUI implements InitSubsystem {
 
     public void init() {
-        /* Set up the property panels for UML elements: */
-        PropPanelFactory elementFactory = new ElementPropPanelFactory();
-        PropPanelFactoryManager.addPropPanelFactory(elementFactory);
-
         /* Set up the property panels for other UML objects: */
         PropPanelFactory umlObjectFactory = new UmlObjectPropPanelFactory();
         PropPanelFactoryManager.addPropPanelFactory(umlObjectFactory);
