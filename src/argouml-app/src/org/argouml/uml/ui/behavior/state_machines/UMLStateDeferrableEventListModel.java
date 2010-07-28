@@ -46,7 +46,10 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 /**
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class UMLStateDeferrableEventListModel
     extends UMLModelElementListModel2 {
 

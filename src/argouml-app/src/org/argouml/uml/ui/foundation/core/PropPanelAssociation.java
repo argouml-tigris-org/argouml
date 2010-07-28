@@ -52,7 +52,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
  * <p>
  * TODO: In UML 2.x an Association is both a Relationship and a Classifier, so
  * this inheritance hierarchy needs to be changed.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelAssociation extends PropPanelRelationship {
 
     /**

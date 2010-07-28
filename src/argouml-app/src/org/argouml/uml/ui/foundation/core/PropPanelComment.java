@@ -58,7 +58,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
  * In UML 1.4 and beyond, the Comment has a "body"
  * attribute to contain the comment string, although 
  * some UML tools continue to use the name attribute.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelComment extends PropPanelModelElement {
 
     /**

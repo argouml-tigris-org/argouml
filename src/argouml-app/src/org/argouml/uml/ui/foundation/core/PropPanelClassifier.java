@@ -49,7 +49,10 @@ import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
 
 /**
  * The abstract properties panel for Classifiers.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public abstract class PropPanelClassifier extends PropPanelNamespace {
 
     private JPanel modifiersPanel;

@@ -66,7 +66,10 @@ import org.tigris.gef.presentation.Fig;
  *
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public abstract class UMLModelElementListModel2 extends DefaultListModel
         implements TargetListener, PropertyChangeListener {
 

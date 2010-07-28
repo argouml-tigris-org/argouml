@@ -52,7 +52,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
  * The properties tab panel for StateVertex and family.
  *
  * @author oliver.heyden
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
     private JScrollPane incomingScroll;

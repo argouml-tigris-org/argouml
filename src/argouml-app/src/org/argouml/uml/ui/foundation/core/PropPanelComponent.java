@@ -50,7 +50,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
  * PropPanel for a UML Component.
  *
  * @author 5eichler@informatik.uni-hamburg.de
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelComponent extends PropPanelClassifier {
 
     /**

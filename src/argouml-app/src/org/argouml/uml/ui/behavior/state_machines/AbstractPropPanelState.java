@@ -51,8 +51,10 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 
 /**
  * The abstract properties panel for a State.
- *
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public abstract class AbstractPropPanelState extends PropPanelStateVertex {
 
     private JScrollPane entryScroll;

@@ -129,7 +129,10 @@ import org.argouml.uml.ui.model_management.PropPanelSubsystem;
  * We throw an exception if one is not found.
  *
  * @author Michiel
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 class ElementPropPanelFactory implements PropPanelFactory {
 
     public PropPanel createPropPanel(Object element) {

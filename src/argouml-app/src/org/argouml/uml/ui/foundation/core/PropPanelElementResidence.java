@@ -48,9 +48,10 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * 
  * The ElementResidence is not a ModelElement according MDR, 
  * hence this properties panel does not show a name field.
- * 
- * @author michiel
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelElementResidence extends PropPanelModelElement {
 
     /**
