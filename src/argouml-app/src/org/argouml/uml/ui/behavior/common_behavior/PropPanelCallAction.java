@@ -56,7 +56,10 @@ import org.argouml.ui.UndoableAction;
 
 /**
  * The properties panel for a CallAction.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelCallAction extends PropPanelAction {
 
     /**

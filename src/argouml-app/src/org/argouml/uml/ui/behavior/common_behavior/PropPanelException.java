@@ -46,7 +46,10 @@ package org.argouml.uml.ui.behavior.common_behavior;
  * handle it separately.
  * 
  * @author Tom Morris
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelException extends PropPanelSignal {
 
     /**

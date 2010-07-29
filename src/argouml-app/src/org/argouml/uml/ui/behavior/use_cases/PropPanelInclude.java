@@ -50,7 +50,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
  * Builds the property panel for an Include relationship.<p>
  *
  * @author Jeremy Bennett
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelInclude extends PropPanelRelationship {
 
     /**

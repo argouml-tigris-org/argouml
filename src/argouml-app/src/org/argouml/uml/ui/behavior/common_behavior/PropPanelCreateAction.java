@@ -49,7 +49,10 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
  * <p>
  * TODO: this property panel needs refactoring to remove dependency on old gui
  * components.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelCreateAction extends PropPanelAction {
 
     /**

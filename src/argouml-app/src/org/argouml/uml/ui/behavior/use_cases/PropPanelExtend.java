@@ -65,7 +65,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
  *       old GUI components.
  *
  * @author mail@jeremybennett.com
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelExtend extends PropPanelRelationship {
 
     /**

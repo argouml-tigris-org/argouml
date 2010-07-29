@@ -55,8 +55,10 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
  * TODO: uses the associationEnd icon
  *
  * @author mkl
- *
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelLinkEnd extends PropPanelModelElement {
 
     /**

@@ -47,7 +47,10 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
  * The abstract properties panel for any type of Instance.
  *
  * @author jrobbins
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public abstract class PropPanelInstance extends PropPanelModelElement {
 
     private JPanel stimuliSenderScroll;

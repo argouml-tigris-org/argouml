@@ -58,7 +58,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
  *
  * <em>Note</em>. ArgoUML does not currently support separate
  * compartments on the display for this.<p>
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelUseCase extends PropPanelClassifier {
 
     /**

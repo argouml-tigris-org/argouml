@@ -59,7 +59,10 @@ import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
  * TODO: This is unused and only partially complete. It needs to implement all
  * Classifier properties as well as the Subsystem specific isInstantiable
  * property.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelSubsystem extends PropPanelPackage {
 
     private JScrollPane featureScroll;

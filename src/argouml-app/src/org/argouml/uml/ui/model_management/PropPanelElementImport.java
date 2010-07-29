@@ -59,7 +59,10 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
  * hence this properties panel does not show a name field.
  *
  * @author Michiel
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelElementImport extends PropPanelModelElement {
 
     private JPanel modifiersPanel;

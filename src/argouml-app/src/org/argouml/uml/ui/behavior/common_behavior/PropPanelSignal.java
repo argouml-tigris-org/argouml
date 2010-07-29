@@ -64,7 +64,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
  * NOTE: Although the UML 1.4 spec (both sec. 2.9.2.20 and 3.77.2) says that
  * "parameters are specified as Attributes" the WFR in sect 2.9.3.20 is
  * <code>self.contents->isEmpty</code>, effectively prohibiting this.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelSignal extends PropPanelClassifier {
 
     /**

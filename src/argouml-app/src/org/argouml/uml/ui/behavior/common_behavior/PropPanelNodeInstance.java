@@ -55,7 +55,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
  * <p>
  * TODO: this property panel needs refactoring to remove dependency on old gui
  * components.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelNodeInstance extends PropPanelInstance {
 
     /**

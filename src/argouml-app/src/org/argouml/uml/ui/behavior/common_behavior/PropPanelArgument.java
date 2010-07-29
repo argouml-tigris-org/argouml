@@ -55,7 +55,10 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
  * @since aug 10, 2003
  * @author Decki, Endi, Yayan. Polytechnic of Bandung Indonesia, Computer
  *         Engineering Departement
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelArgument extends PropPanelModelElement {
 
     /**

@@ -75,7 +75,10 @@ import org.argouml.ui.UndoableAction;
 
 /**
  * PropPanelPackage defines the Property Panel for Package elements.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelPackage extends PropPanelNamespace  {
 
     /**
