@@ -44,7 +44,10 @@ import org.argouml.uml.ui.UMLTextField2;
  * The properties panel for a SynchState.
  *
  * @author mvw@tigris.org
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelSynchState extends PropPanelStateVertex {
 
     /**

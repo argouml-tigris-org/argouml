@@ -43,7 +43,10 @@ package org.argouml.uml.ui.behavior.state_machines;
  * The properties panel for a FinalState.
  *
  * @author 5heyden
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelFinalState extends AbstractPropPanelState {
 
     /**

@@ -47,7 +47,10 @@ import org.argouml.uml.ui.foundation.core.ActionNewParameter;
  * The properties panel for a SignalEvent.
  *
  * @author oliver.heyden
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelSignalEvent extends PropPanelEvent {
 
     /**

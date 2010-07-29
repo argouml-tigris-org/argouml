@@ -44,7 +44,10 @@ import javax.swing.ImageIcon;
  * The properties panel for a State.
  *
  * @author 5heyden
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelSimpleState extends AbstractPropPanelState {
 
     /**

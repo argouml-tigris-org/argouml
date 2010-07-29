@@ -55,7 +55,10 @@ import org.argouml.uml.ui.foundation.core.ActionNewParameter;
  * The properties panel of a CallEvent.
  *
  * @author oliver.heyden@gentleware.de
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelCallEvent extends PropPanelEvent {
 
     /**

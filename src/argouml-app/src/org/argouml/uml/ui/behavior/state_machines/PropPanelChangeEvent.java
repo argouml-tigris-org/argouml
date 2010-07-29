@@ -49,7 +49,10 @@ import org.argouml.uml.ui.UMLExpressionModel2;
  * The properties panel for a ChangeEvent.
  *
  * @author oliver.heyden
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelChangeEvent extends PropPanelEvent {
 
     /**

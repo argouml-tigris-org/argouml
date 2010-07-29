@@ -49,7 +49,10 @@ import org.argouml.ui.targetmanager.TargetManager;
 /**
  * Property Panel for the collection of pseudostates (branch, fork, ...). It
  * dynamically sets its name to the pseudostate used.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelPseudostate extends PropPanelStateVertex {
 
     /**

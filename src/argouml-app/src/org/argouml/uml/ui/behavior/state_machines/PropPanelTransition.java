@@ -62,7 +62,10 @@ import org.argouml.util.ToolBarUtility;
  * The properties panel for a Transition.
  *
  * @author jrobbins
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelTransition extends PropPanelModelElement {
 
     /**

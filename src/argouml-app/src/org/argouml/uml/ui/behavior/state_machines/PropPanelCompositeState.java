@@ -52,7 +52,10 @@ import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
  * The properties panel for a Composite State.
  *
  * @author 5heyden
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelCompositeState extends AbstractPropPanelState {
 
     /**
