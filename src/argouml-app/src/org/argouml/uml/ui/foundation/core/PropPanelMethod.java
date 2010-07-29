@@ -64,7 +64,10 @@ import org.argouml.ui.UndoableAction;
  * A property panel for methods.
  *
  * @author thn@tigris.org
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelMethod extends PropPanelFeature {
 
     private UMLComboBox2 specificationComboBox;

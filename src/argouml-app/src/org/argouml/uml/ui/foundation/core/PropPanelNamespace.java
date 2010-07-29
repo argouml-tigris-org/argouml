@@ -47,8 +47,10 @@ import org.argouml.uml.ui.ScrollList;
 
 /**
  * The abstract properties panel for a Namespace.
- *
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public abstract class PropPanelNamespace extends PropPanelModelElement {
 
     private JScrollPane ownedElementsScroll;

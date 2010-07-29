@@ -46,7 +46,10 @@ import org.argouml.uml.ui.UMLLinkedList;
 
 /**
  * The properties panel for an Enumeration element.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelEnumeration extends PropPanelDataType {
 
     private JScrollPane literalsScroll;

@@ -49,8 +49,10 @@ import org.argouml.uml.ui.UMLTextField2;
 /**
  * PropPanel for a TemplateParameter.
  * @author alepekhin
- *
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelTemplateParameter extends PropPanelModelElement {
 
     private static final long serialVersionUID = 8466952187322427678L;

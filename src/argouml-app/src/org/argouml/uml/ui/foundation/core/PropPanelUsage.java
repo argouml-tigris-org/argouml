@@ -43,8 +43,10 @@ import org.argouml.uml.ui.ActionNavigateNamespace;
 
 /**
  * The properties panel for a Usage.
- *
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelUsage extends PropPanelDependency {
 
     /**

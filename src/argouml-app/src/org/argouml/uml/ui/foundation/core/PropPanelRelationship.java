@@ -46,7 +46,10 @@ import javax.swing.ImageIcon;
  *
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelRelationship extends PropPanelModelElement {
 
     /**

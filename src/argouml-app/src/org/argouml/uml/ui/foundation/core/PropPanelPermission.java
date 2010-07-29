@@ -49,7 +49,10 @@ import org.argouml.uml.ui.ActionNavigateNamespace;
  * (ArgoUML only supports the <<import>> Permission currently). The friend
  * Permission has been dropped. Also the type hierarchy has been reorganized so
  * that PackageImport is not a subtype of Dependency.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelPermission extends PropPanelDependency {
 
     /**

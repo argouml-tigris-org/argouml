@@ -56,7 +56,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
  * and it registers as targetlistener. 
  * All these models keep getting target change events... 
  * Make this conform with all others!
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelEnumerationLiteral extends PropPanelModelElement {
 
     /**

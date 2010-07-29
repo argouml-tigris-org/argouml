@@ -60,7 +60,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 
 /**
  * A property panel for Operations of Classifiers.
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class PropPanelOperation extends PropPanelFeature {
 
     /**
