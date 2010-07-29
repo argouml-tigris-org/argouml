@@ -61,6 +61,10 @@
     </dependency>
   </dependencies>
 
+  <properties>
+    <maven.findbugs.timeout>18000000</maven.findbugs.timeout>
+  </properties>
+
   <reporting>
     <plugins>
       <plugin>
