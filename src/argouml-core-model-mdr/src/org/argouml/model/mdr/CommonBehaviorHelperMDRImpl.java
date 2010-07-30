@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    mvw
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -515,7 +516,8 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
             ((Action) handle).setTarget((ObjectSetExpression) element);
             return;
         }
-        if (handle instanceof Transition && element instanceof StateVertex) {
+        if (handle instanceof Transition && 
+                (element == null || element instanceof StateVertex)) {
             ((Transition) handle).setTarget((StateVertex) element);
             return;
         }

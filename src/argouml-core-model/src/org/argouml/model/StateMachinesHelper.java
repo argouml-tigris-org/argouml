@@ -89,7 +89,7 @@ public interface StateMachinesHelper {
      * implementation, the parameters of the method are of type Object.<p>
      *
      * @param transition the given transition
-     * @param event the given event
+     * @param event the given event or null
      */
     void setEventAsTrigger(Object transition, Object event);
 
@@ -301,10 +301,10 @@ public interface StateMachinesHelper {
     void setInternalTransitions(Object handle, Collection intTrans);
 
     /**
-     * Sets the source state of some message.
+     * Sets the source state of some transition.
      *
-     * @param handle the message
-     * @param state the source state
+     * @param handle the transition
+     * @param state the source state or null
      */
     void setSource(Object handle, Object state);
 

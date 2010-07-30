@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    mvw
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -56,6 +57,7 @@ import javax.swing.JPopupMenu;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProfileConfiguration;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
@@ -63,6 +65,7 @@ import org.argouml.profile.Profile;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.ActionCreateEdgeModelElement;
 import org.argouml.ui.ContextActionFactoryManager;
+import org.argouml.ui.UndoableAction;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramUtils;
@@ -76,6 +79,7 @@ import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.diagram.ui.ActionAddExistingNodes;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
 import org.argouml.uml.diagram.ui.ModeAddToDiagram;
+import org.argouml.uml.transformer.TransformerManager;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
@@ -90,7 +94,6 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
-import org.argouml.ui.UndoableAction;
 
 /**
  * PopUp for extra functionality for the Explorer.
@@ -236,6 +239,10 @@ public class ExplorerPopup extends JPopupMenu {
         if (mutableModelElementsOnly) {
             initMenuCreateModelElements();
         }
+        
+        if (!multiSelect && mutableModelElementsOnly) {
+            initMenuTransform();
+        }
 
         final boolean modelElementSelected = 
             Model.getFacade().isAUMLElement(selectedItem);
@@ -374,6 +381,22 @@ public class ExplorerPopup extends JPopupMenu {
             ActionDeleteModelElements ad = new ActionDeleteModelElements();
             ad.setEnabled(ad.shouldBeEnabled());
             this.add(ad);
+        }
+    }
+
+    private void initMenuTransform() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Object t = TargetManager.getInstance().getModelTarget();
+        List<Action> actions = TransformerManager.getInstance().actions(p, t);
+        LOG.debug("Building menu Transform");
+        if (!actions.isEmpty()) {
+            JMenu transformMenu = 
+                new JMenu(menuLocalize("menu.popup.transform"));
+            for (Action a : actions) {
+                transformMenu.add(new JMenuItem(a));
+                LOG.debug("Building menu Transform - adding: " + a.getValue(Action.NAME));
+            }
+            this.add(transformMenu);
         }
     }
 

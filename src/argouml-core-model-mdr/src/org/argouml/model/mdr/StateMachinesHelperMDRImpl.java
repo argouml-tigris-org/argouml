@@ -540,7 +540,8 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
 
 
     public void setSource(Object handle, Object state) {
-        if (handle instanceof Transition && state instanceof StateVertex) {
+        if (handle instanceof Transition && 
+                (state == null || state instanceof StateVertex)) {
             ((Transition) handle).setSource((StateVertex) state);
             return;
         }
