@@ -1054,8 +1054,11 @@ public abstract class FigNodeModelElement
         if (isResizable()) {
             bbox.width = Math.max(bbox.width, minSize.width);
             bbox.height = Math.max(bbox.height, minSize.height);
-            setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-        } else {
+        }
+        if (bbox.x != getX()
+                && bbox.y != getY()
+                && bbox.width != getWidth()
+                && bbox.height != getHeight()) {
             setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
         }
     }
