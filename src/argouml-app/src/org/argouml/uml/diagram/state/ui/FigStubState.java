@@ -249,76 +249,88 @@ public class FigStubState extends FigStateVertex {
     @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (getOwner() == null) {
-            return;
-        }
-        Object top = null;
-        Object oldRef = null;
-        Object container = facade.getContainer(getOwner());
+        // TODO: Rather than specifically ignore some item maybe it would be better
+        // to specifically state what items are of interest. Otherwise we may still
+        // be acting on other events we don't need
+        if (!Model.getFacade().isATransition(mee.getNewValue())
+                && getOwner() != null) {
+            Object container = facade.getContainer(getOwner());
 
-        //The event source is the owner stub state
-        if ((mee.getSource().equals(getOwner()))) {
-            if (mee.getPropertyName().equals("referenceState")) {
-                updateReferenceText();
-                if (container != null && facade.isASubmachineState(container)
-                        && facade.getSubmachine(container) != null) {
-                    top = facade.getTop(facade.getSubmachine(container));
-                    oldRef = stateMHelper.getStatebyName(
-                            (String) mee.getOldValue(), top);
-                }
-                updateListeners(oldRef, getOwner());
-            } else if ((mee.getPropertyName().equals("container")
-                    && facade.isASubmachineState(container))) {
-                removeListeners();
-                Object o = mee.getOldValue();
-                if (o != null && facade.isASubmachineState(o)) {
-                    removeElementListener(o);
-                }
-                stateMHelper.setReferenceState(getOwner(), null);
-                updateListeners(getOwner(), getOwner());
-                updateReferenceText();
-            }
-        } else {
-            /*The event source is the submachine state*/
-            if (container != null
-                    && mee.getSource().equals(container)
-                    && facade.isASubmachineState(container)
-                    && facade.getSubmachine(container) != null) {
-                /* The submachine has got a new name*/
-                // This indicates a change in association, not name - tfm
-                if (mee.getPropertyName().equals("submachine")) {
-                    if (mee.getOldValue() != null) {
-                        top = facade.getTop(mee.getOldValue());
-                        oldRef = stateMHelper.getStatebyName(facade
-                                .getReferenceState(getOwner()), top);
+            //The event source is the owner stub state
+            if ((mee.getSource().equals(getOwner()))) {
+                if (mee.getPropertyName().equals("referenceState")) {
+                    updateReferenceText();
+                    final Object oldRef;
+                    if (container != null && facade.isASubmachineState(container)
+                            && facade.getSubmachine(container) != null) {
+                        final Object top;
+                        top = facade.getTop(facade.getSubmachine(container));
+                        oldRef = stateMHelper.getStatebyName(
+                                (String) mee.getOldValue(), top);
+                    } else {
+                        oldRef = null;
+                    }
+                    updateListeners(oldRef, getOwner());
+                } else if ((mee.getPropertyName().equals("container")
+                        && facade.isASubmachineState(container))) {
+                    removeListeners();
+                    Object o = mee.getOldValue();
+                    if (o != null && facade.isASubmachineState(o)) {
+                        removeElementListener(o);
                     }
                     stateMHelper.setReferenceState(getOwner(), null);
-                    updateListeners(oldRef, getOwner());
+                    updateListeners(getOwner(), getOwner());
                     updateReferenceText();
                 }
-
             } else {
-                // The event source is the stub state's referenced state
-                // or one of the referenced state's path.
-                if (facade.getSubmachine(container) != null) {
-                    top = facade.getTop(facade.getSubmachine(container));
-                }
-                String path = facade.getReferenceState(getOwner());
-                Object refObject = stateMHelper.getStatebyName(path, top);
-                String ref;
-                if (refObject == null) {
-                    // The source was the referenced state that has got
-                    // a new name.
-                    ref = stateMHelper.getPath(mee.getSource());
+                /*The event source is the submachine state*/
+                if (container != null
+                        && mee.getSource().equals(container)
+                        && facade.isASubmachineState(container)
+                        && facade.getSubmachine(container) != null) {
+                    /* The submachine has got a new name*/
+                    // This indicates a change in association, not name - tfm
+                    if (mee.getPropertyName().equals("submachine")) {
+                        final Object oldRef;
+                        if (mee.getOldValue() != null) {
+                            final Object top;
+                            top = facade.getTop(mee.getOldValue());
+                            oldRef = stateMHelper.getStatebyName(facade
+                                    .getReferenceState(getOwner()), top);
+                        } else {
+                            oldRef = null;
+                        }
+                        stateMHelper.setReferenceState(getOwner(), null);
+                        updateListeners(oldRef, getOwner());
+                        updateReferenceText();
+                    }
+
                 } else {
-                    //The source was one of the referenced state's path which
-                    // has got a new name.
-                    ref = stateMHelper.getPath(refObject);
+                    // The event source is the stub state's referenced state
+                    // or one of the referenced state's path.
+                    final Object top;
+                    if (facade.getSubmachine(container) != null) {
+                        top = facade.getTop(facade.getSubmachine(container));
+                    } else {
+                        top = null;
+                    }
+                    String path = facade.getReferenceState(getOwner());
+                    Object refObject = stateMHelper.getStatebyName(path, top);
+                    String ref;
+                    if (refObject == null) {
+                        // The source was the referenced state that has got
+                        // a new name.
+                        ref = stateMHelper.getPath(mee.getSource());
+                    } else {
+                        //The source was one of the referenced state's path which
+                        // has got a new name.
+                        ref = stateMHelper.getPath(refObject);
+                    }
+                    // The Referenced State or one of his path's states has got
+                    // a new name
+                    stateMHelper.setReferenceState(getOwner(), ref);
+                    updateReferenceText();
                 }
-                // The Referenced State or one of his path's states has got
-                // a new name
-                stateMHelper.setReferenceState(getOwner(), ref);
-                updateReferenceText();
             }
         }
     }

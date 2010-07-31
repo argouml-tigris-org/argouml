@@ -265,8 +265,13 @@ public class FigSubactivityState extends FigStateVertex {
         super.modelChanged(mee);
         if (mee instanceof AssociationChangeEvent 
                 || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            updateListeners(getOwner(), getOwner());
+            // TODO: Rather than specifically ignore some item maybe it would be better
+            // to specifically state what items are of interest. Otherwise we may still
+            // be acting on other events we don't need
+            if (!Model.getFacade().isATransition(mee.getNewValue())) {
+                renderingChanged();
+                updateListeners(getOwner(), getOwner());
+            }
         }
     }
 

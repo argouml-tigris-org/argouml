@@ -334,26 +334,30 @@ public class FigSubmachineState extends FigState {
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
-        if (getOwner() == null) {
-            return;
-        }
-        if ((mee.getSource().equals(getOwner()))) {
-            if ((mee.getPropertyName()).equals("submachine")) {
-                updateInclude();
-                if (mee.getOldValue() != null) {
-                    updateListenersX(getOwner(), mee.getOldValue());
-                }
-            }
-        } else {
-            if (mee.getSource()
-                    == Model.getFacade().getSubmachine(getOwner())) {
-                // The Machine State has got a new name
-                if (mee.getPropertyName().equals("name")) {
+        
+        // TODO: Rather than specifically ignore some item maybe it would be better
+        // to specifically state what items are of interest. Otherwise we may still
+        // be acting on other events we don't need
+        if (!Model.getFacade().isATransition(mee.getNewValue())
+                && getOwner() != null) {
+            if ((mee.getSource().equals(getOwner()))) {
+                if ((mee.getPropertyName()).equals("submachine")) {
                     updateInclude();
+                    if (mee.getOldValue() != null) {
+                        updateListenersX(getOwner(), mee.getOldValue());
+                    }
                 }
-                // The Machine State has been deleted from model
-                if (mee.getPropertyName().equals("top")) {
-                    updateListeners(getOwner(), null);
+            } else {
+                if (mee.getSource()
+                        == Model.getFacade().getSubmachine(getOwner())) {
+                    // The Machine State has got a new name
+                    if (mee.getPropertyName().equals("name")) {
+                        updateInclude();
+                    }
+                    // The Machine State has been deleted from model
+                    if (mee.getPropertyName().equals("top")) {
+                        updateListeners(getOwner(), null);
+                    }
                 }
             }
         }

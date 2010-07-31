@@ -484,12 +484,13 @@ public class FigConcurrentRegion extends FigState
     // event processing
 
     protected void modelChanged(PropertyChangeEvent mee) {
-        if ("container".equals(mee.getPropertyName())
-                || "isConcurrent".equals(mee.getPropertyName())
-                || "subvertex".equals(mee.getPropertyName())) {
-            //do nothing
-            // this only happens at creation time - I hope
-        } else {
+        // TODO: Rather than specifically ignore some item maybe it would be better
+        // to specifically state what items are of interest. Otherwise we may still
+        // be acting on other events we don't need
+        if (!Model.getFacade().isATransition(mee.getNewValue())
+                && !("container".equals(mee.getPropertyName()))
+                && !("isConcurrent".equals(mee.getPropertyName()))
+                && !("subvertex".equals(mee.getPropertyName()))) {
             super.modelChanged(mee);
         }
     }

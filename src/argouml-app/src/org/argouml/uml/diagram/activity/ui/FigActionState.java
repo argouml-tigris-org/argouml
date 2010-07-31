@@ -45,6 +45,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
@@ -73,6 +74,8 @@ public class FigActionState extends FigStateVertex {
     private static final int PADDING = 8;
 
     private FigRRect cover;
+    
+    private static final Logger LOG = Logger.getLogger(FigActionState.class);
 
     /**
      * The notation provider for the textfield.
@@ -285,9 +288,14 @@ public class FigActionState extends FigStateVertex {
         super.modelChanged(mee);
         if (mee instanceof AddAssociationEvent
                 || mee instanceof AttributeChangeEvent) {
-            renderingChanged();
-            notationProvider.updateListener(this, getOwner(), mee);
-            damage();
+            // TODO: Rather than specifically ignore some item maybe it would be better
+            // to specifically state what items are of interest. Otherwise we may still
+            // be acting on other events we don't need
+            if (!Model.getFacade().isATransition(mee.getNewValue())) {
+                renderingChanged();
+                notationProvider.updateListener(this, getOwner(), mee);
+                damage();
+            }
         }
     }
 
