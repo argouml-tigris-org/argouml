@@ -28,7 +28,7 @@ import org.argouml.ui.ContextActionFactory;
  *
  * @author Michiel van der Wulp
  */
-public final class TransformerManager implements ContextActionFactory {
+final class TransformerManager implements ContextActionFactory {
     
     private HashSet<Transformer> transformers;
     
