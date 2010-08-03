@@ -79,7 +79,6 @@ import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.diagram.ui.ActionAddExistingNodes;
 import org.argouml.uml.diagram.ui.ActionSaveDiagramToClipboard;
 import org.argouml.uml.diagram.ui.ModeAddToDiagram;
-import org.argouml.uml.transformer.TransformerManager;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
 import org.argouml.uml.ui.ActionCollaborationDiagram;
@@ -240,10 +239,6 @@ public class ExplorerPopup extends JPopupMenu {
             initMenuCreateModelElements();
         }
         
-        if (!multiSelect && mutableModelElementsOnly) {
-            initMenuTransform();
-        }
-
         final boolean modelElementSelected = 
             Model.getFacade().isAUMLElement(selectedItem);
 
@@ -384,22 +379,6 @@ public class ExplorerPopup extends JPopupMenu {
         }
     }
 
-    private void initMenuTransform() {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Object t = TargetManager.getInstance().getModelTarget();
-        List<Action> actions = TransformerManager.getInstance().actions(p, t);
-        LOG.debug("Building menu Transform");
-        if (!actions.isEmpty()) {
-            JMenu transformMenu = 
-                new JMenu(menuLocalize("menu.popup.transform"));
-            for (Action a : actions) {
-                transformMenu.add(new JMenuItem(a));
-                LOG.debug("Building menu Transform - adding: " + a.getValue(Action.NAME));
-            }
-            this.add(transformMenu);
-        }
-    }
-
     /**
      * initialize the menu for diagram construction in the explorer popup menu.
      *
@@ -533,9 +512,10 @@ public class ExplorerPopup extends JPopupMenu {
     }
     
     private void initMenuCreateModuleActions() {
-        final List<Action> modelElementMenuItems = 
+        final List<Action> contextActions = 
             ContextActionFactoryManager.getContextPopupActions();
-        for (Action a : modelElementMenuItems) {
+        for (Action a : contextActions) {
+            LOG.info("Adding the Action " + a);
             add(a);
         }
     }

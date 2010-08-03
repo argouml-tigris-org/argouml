@@ -98,7 +98,6 @@ import org.argouml.uml.diagram.state.ui.InitStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.InitClassDiagram;
 import org.argouml.uml.diagram.ui.InitDiagramAppearanceUI;
 import org.argouml.uml.diagram.use_case.ui.InitUseCaseDiagram;
-import org.argouml.uml.transformer.InitTransformer;
 import org.argouml.uml.ui.InitUmlUI;
 import org.argouml.util.ArgoFrame;
 import org.argouml.util.JavaRuntimeUtility;
@@ -444,7 +443,6 @@ public class Main {
         SubsystemUtility.initSubsystem(new InitUmlUI());
         SubsystemUtility.initSubsystem(new InitCheckListUI());
         SubsystemUtility.initSubsystem(new InitCognitiveUI());
-        SubsystemUtility.initSubsystem(new InitTransformer());
 
         /*
          * Initialize the module loader. At least the plug-ins that provide
