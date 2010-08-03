@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -60,25 +60,20 @@ import org.argouml.util.MyTokenizer;
  * There is no support for the interface specifier
  * (that maps to the "specification" of an AssociationEnd). <p>
  * 
- * TODO: This is the only notation (that I'm aware of) that requires state.
- * All others should become effectively singletons. - Bob.
+ * This is the only notation (that I'm aware of) that requires state.
+ * All others could become effectively singletons. - Bob.
+ * 
  * @author michiel
  */
 public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
-
-    /**
-     * Create a new instance of AssociationEndNameNotationUml
-     * @return the notation
-     */
-    public static final AssociationEndNameNotationUml getInstance() {
-    	return new AssociationEndNameNotationUml();
-    }
 	
     /**
      * The constructor.
+     * 
+     * @param associationEnd the UML element
      */
-    protected AssociationEndNameNotationUml() {
-        super();
+    public AssociationEndNameNotationUml(Object associationEnd) {
+        super(associationEnd);
     }
 
     /*

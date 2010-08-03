@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -70,23 +70,13 @@ public class AttributeNotationUml extends AttributeNotation {
      */
     private static final Logger LOG = 
         Logger.getLogger(AttributeNotationUml.class);
-
-    private static final AttributeNotationUml INSTANCE =
-            new AttributeNotationUml();
-    
-    /**
-     * @return the singleton
-     */
-    public static final AttributeNotationUml getInstance() {
-    	return INSTANCE;
-    }
     
     /**
      * The constructor.
+     * @param attribute the UML object
      */
-    protected AttributeNotationUml() {
-        super();
-        LOG.info("Creating AttributeNotationUml");
+    public AttributeNotationUml(Object attribute) {
+        super(attribute);
     }
 
     /*

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -52,19 +52,10 @@ public class AttributeNotationJava extends AttributeNotation {
 
     /**
      * The constructor.
+     * @param attribute the UML object
      */
-    protected AttributeNotationJava() {
-        super();
-    }
-
-    private static final AttributeNotationJava INSTANCE =
-        new AttributeNotationJava();
-
-    /**
-     * @return the singleton instance
-     */
-    public static final AttributeNotationJava getInstance() {
-        return INSTANCE;
+    public AttributeNotationJava(Object attribute) {
+        super(attribute);
     }
 
     /*

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,28 +47,19 @@ import org.argouml.notation.providers.AssociationEndNameNotation;
 import org.argouml.notation.providers.uml.NotationUtilityUml;
 
 /**
- * The Java notation for an associationend name (i.e. the  role).
+ * The Java notation for an associationEnd name (i.e. the  role).
  * 
  * @author michiel
  */
 public class AssociationEndNameNotationJava extends AssociationEndNameNotation {
 
-    private static final AssociationEndNameNotationJava INSTANCE =
-		new AssociationEndNameNotationJava();
-	
-	/**
-	 * Create a new instance of AssociationEndNameNotationUml
-	 * @return the notation
-	 */
-    public static final AssociationEndNameNotationJava getInstance() {
-    	return INSTANCE;
-    }
-
     /**
      * The constructor.
+     * 
+     * @param associationEnd the UML element
      */
-    protected AssociationEndNameNotationJava() {
-        super();
+    public AssociationEndNameNotationJava(Object associationEnd) {
+        super(associationEnd);
     }
 
     /*
