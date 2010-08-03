@@ -50,7 +50,6 @@ import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
-import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.NotationSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.undo.Memento;
@@ -102,9 +101,6 @@ public class ProjectSettings {
         
         String notationLanguage =
             Notation.getConfiguredNotation().getConfigurationValue();
-        // TODO: The concept of a single global notation language doesn't
-        // work with multiple projects
-        NotationProviderFactory2.setCurrentLanguage(notationLanguage);
         npSettings.setNotationLanguage(notationLanguage);
         
         npSettings.setUseGuillemets(Configuration.getBoolean(
@@ -215,13 +211,11 @@ public class ProjectSettings {
 
             public void redo() {
                 npSettings.setNotationLanguage(newLanguage);
-                NotationProviderFactory2.setCurrentLanguage(newLanguage);
                 fireNotationEvent(key, oldLanguage, newLanguage);
             }
 
             public void undo() {
                 npSettings.setNotationLanguage(oldLanguage);
-                NotationProviderFactory2.setCurrentLanguage(oldLanguage);
                 fireNotationEvent(key, newLanguage, oldLanguage);
             }
         };

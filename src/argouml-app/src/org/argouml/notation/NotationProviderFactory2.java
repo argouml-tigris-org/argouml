@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -59,12 +59,7 @@ public final class NotationProviderFactory2 {
 
     private static final Logger LOG = 
         Logger.getLogger(NotationProviderFactory2.class);
-    
-    // TODO: The concept of a single global notation language isn't going to
-    // work with multiple projects (or diagrams with different languages in
-    // the same project)
-    private static String currentLanguage;
-    
+
     /**
      * TYPE_NAME the name of the modelelement, e.g. class, package, state
      */
@@ -210,22 +205,6 @@ public final class NotationProviderFactory2 {
             instance = new NotationProviderFactory2();
         }
         return instance;
-    }
-
-    /**
-     * Get a NotationProvider for the current language.
-     * 
-     * @param type the provider type
-     * @return the provider
-     * @param object the constructor parameter
-     * @deprecated for 0.27.2 by tfmorris.  Use 
-     * {@link #getNotationProvider(int, Object, NotationName)}.
-     */
-    @Deprecated
-    public NotationProvider getNotationProvider(int type,
-            Object object) {
-        NotationName name = Notation.findNotation(currentLanguage);
-        return getNotationProvider(type, object, name);
     }
 
     /**
@@ -375,18 +354,6 @@ public final class NotationProviderFactory2 {
                     && Notation.removeNotation(notationName);
         }
         return false;
-    }
-
-    /**
-     * Set the default notation language for all users of this factory.
-     * 
-     * @param theCurrentLanguage the currentLanguage to set
-     * @deprecated for 0.27.2 by tfmorris. Callers should manage the language
-     *             that they want explicitly.
-     */
-    @Deprecated
-    public static void setCurrentLanguage(String theCurrentLanguage) {
-        NotationProviderFactory2.currentLanguage = theCurrentLanguage;
     }
 
 }
