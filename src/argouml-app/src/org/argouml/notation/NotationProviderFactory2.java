@@ -41,7 +41,6 @@ package org.argouml.notation;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -225,18 +224,12 @@ public final class NotationProviderFactory2 {
         Class clazz = getNotationProviderClass(type, name);
         if (clazz != null) {
             try {
-                try {
-                    Class[] mp = {};
-                    Method m = clazz.getMethod("getInstance", mp);
-                    return (NotationProvider) m.invoke(null, (Object[]) mp);
-                } catch (Exception e) {
-                    Class[] cp = {Object.class};
-                    Constructor constructor = clazz.getConstructor(cp);
-                    Object[] params = {
-                        object,
-                    };
-                    return (NotationProvider) constructor.newInstance(params);
-                }
+                Class[] cp = {Object.class};
+                Constructor constructor = clazz.getConstructor(cp);
+                Object[] params = {
+                    object,
+                };
+                return (NotationProvider) constructor.newInstance(params);
             } catch (SecurityException e) {
                 // TODO: Why aren't we throwing an exception here?
             	// Returning null results in NPE and no explanation why.
