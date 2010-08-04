@@ -117,6 +117,8 @@ public class AttributeNotationUml extends AttributeNotation {
             return;
         }
 
+        /* TODO: We should have all the information that is required in the 
+         * NotationSettings object */
         Project project = ProjectManager.getManager().getCurrentProject();
 
         ParseException pex = null;
