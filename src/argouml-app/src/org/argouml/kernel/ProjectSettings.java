@@ -307,28 +307,6 @@ public class ProjectSettings {
     }
 
     /**
-     * @return the left pointing guillemet, i.e. << or the one-character symbol
-     * @deprecated for 0.27.2 by tfmorris. There's no need for a separate method
-     *             for this. It can be easily handled in a format string using
-     *             the results of {@link DiagramSettings#isUseGuillemets()}.
-     */
-    @Deprecated
-    public String getLeftGuillemot() {
-        return getUseGuillemotsValue() ? "\u00ab" : "<<";
-    }
-
-    /**
-     * @return the right pointing guillemet, i.e. >> or the one-character symbol
-     * @deprecated for 0.27.2 by tfmorris. There's no need for a separate method
-     *             for this. It can be easily handled in a format string using
-     *             the results of {@link DiagramSettings#isUseGuillemets()}.
-     */
-    @Deprecated
-    public String getRightGuillemot() {
-        return getUseGuillemotsValue() ? "\u00bb" : ">>";
-    }
-
-    /**
      * Used by "argo.tee".
      *
      * @return Returns "true" if we show association names.

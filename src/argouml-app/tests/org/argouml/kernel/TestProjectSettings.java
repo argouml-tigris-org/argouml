@@ -118,18 +118,10 @@ public class TestProjectSettings extends TestCase {
         Project p = ProjectManager.getManager().makeEmptyProject();
         assertTrue("Guillemots not correct",
                 !p.getProjectSettings().getUseGuillemotsValue());
-        assertTrue("Guillemots string not set correctly",
-                "<<".equals(p.getProjectSettings().getLeftGuillemot()));
-        assertTrue("Guillemots string not set correctly",
-                ">>".equals(p.getProjectSettings().getRightGuillemot()));
 
         p.getProjectSettings().setUseGuillemots(true);
         assertTrue("Guillemots not correct",
                 p.getProjectSettings().getUseGuillemotsValue());
-        assertTrue("Guillemots string not set correctly",
-                "\u00ab".equals(p.getProjectSettings().getLeftGuillemot()));
-        assertTrue("Guillemots string not set correctly",
-                "\u00bb".equals(p.getProjectSettings().getRightGuillemot()));
 
         p.getProjectSettings().setUseGuillemots(Boolean.toString(false));
         assertTrue("Guillemots not correct",
