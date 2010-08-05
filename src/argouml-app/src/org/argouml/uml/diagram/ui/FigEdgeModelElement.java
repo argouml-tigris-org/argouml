@@ -60,6 +60,7 @@ import java.util.Vector;
 
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.JMenu;
 import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
@@ -331,8 +332,17 @@ public abstract class FigEdgeModelElement
         // Added this part to load the extra menu content
         final List<Action> modulesActions =
             ContextActionFactoryManager.getContextPopupActions();
-        if(modulesActions!=null && modulesActions.size()>0){
-            popUpActions.addAll(modulesActions);
+        
+        for (Action a : modulesActions) {
+            if (a instanceof List) {
+                JMenu m = new JMenu((Action) a);
+                popUpActions.add(m);
+                for (Action subAction : (List<Action>) a) {
+                    m.add(subAction);
+                }
+            } else {
+                popUpActions.add(a);
+            }
         }
         
         // popupAddOffset should be equal to the number of items added here:

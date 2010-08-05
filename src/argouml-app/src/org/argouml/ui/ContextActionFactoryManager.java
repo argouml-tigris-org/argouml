@@ -41,11 +41,11 @@ package org.argouml.ui;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.Action;
-import javax.swing.JSeparator;
 
+import org.apache.log4j.Logger;
+import org.argouml.kernel.ActionList;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
@@ -105,11 +105,12 @@ public class ContextActionFactoryManager {
 	for (ContextActionFactory factory : ContextActionFactoryManager
 				.getFactories()) {
 	    tmpActionsContainer = factory.createContextPopupActions(element);
-	    if (tmpActionsContainer != null && tmpActionsContainer.size() > 0) {
-		if (allActionsFound.size() > 0) {
-    	    	    allActionsFound.add(null);
-    	    	}
-   	    	allActionsFound.addAll(tmpActionsContainer);
+	    if (tmpActionsContainer instanceof ActionList) {
+	        allActionsFound.add((Action) tmpActionsContainer);
+	    } else {
+                if (tmpActionsContainer != null && tmpActionsContainer.size() > 0) {
+                    allActionsFound.addAll(tmpActionsContainer);
+                }
 	    }
 	}
 	return allActionsFound;

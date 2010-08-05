@@ -53,9 +53,11 @@ import javax.swing.Action;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.MenuElement;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ActionList;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -514,9 +516,33 @@ public class ExplorerPopup extends JPopupMenu {
     private void initMenuCreateModuleActions() {
         final List<Action> contextActions = 
             ContextActionFactoryManager.getContextPopupActions();
-        for (Action a : contextActions) {
-            LOG.info("Adding the Action " + a);
-            add(a);
+        LOG.info(contextActions);
+        if (contextActions instanceof ActionList) {
+            recursiveAdd(this, (Action) contextActions);
+        } else {
+            for (Action a : contextActions) {
+                recursiveAdd(this, a);
+            }
+        }
+    }
+    
+    private void recursiveAdd(MenuElement menu, Action a) {
+        if (a instanceof List<?>) {
+            JMenu m = new JMenu(a);
+            if (menu instanceof JPopupMenu) {
+                ((JPopupMenu) menu).add(m);
+            } else if (menu instanceof JMenu) {
+                ((JMenu) menu).add(m);
+            }
+            for (Action subAction : (List<Action>) a) {
+                recursiveAdd(m, subAction);
+            }
+        } else {
+            if (menu instanceof JPopupMenu) {
+                ((JPopupMenu) menu).add(a);
+            } else if (menu instanceof JMenu) {
+                ((JMenu) menu).add(a);
+            }
         }
     }
     

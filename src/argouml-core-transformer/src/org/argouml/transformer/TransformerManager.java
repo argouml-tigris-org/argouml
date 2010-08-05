@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.swing.Action;
 
+import org.argouml.kernel.ActionList;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ContextActionFactory;
@@ -63,9 +64,9 @@ final class TransformerManager implements ContextActionFactory {
     }
 
     public List createContextPopupActions(Object element) {
-        Project p = ProjectManager.getManager().getCurrentProject();
+        final Project p = ProjectManager.getManager().getCurrentProject();
         
-        List<Action> result = new ArrayList<Action>();
+        final ActionList result = new ActionList("Transform to");
         for (Transformer t : getTransformers()) {
             if (t.canTransform(element)) {
                 result.addAll(t.actions(p, element));
