@@ -633,7 +633,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
 
     public boolean setIgnoredElements(String[] elementNames) {
         if (elementNames == null) {
-            elementNames = new String[] {};
+            ignoredElements = new String[] {};
         } else {
             ignoredElements = elementNames;
         }
