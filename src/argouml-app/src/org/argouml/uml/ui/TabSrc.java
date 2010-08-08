@@ -80,7 +80,11 @@ public class TabSrc
     /**
      * These predicates determine if this tab is enabled.
      */
-    private static List<Predicate> predicates;
+    private static List<Predicate> predicates = new ArrayList<Predicate>();
+    static {
+        /* Add a predicate for ArgoUML's default capabilities: */
+        predicates.add(new DefaultPredicate());
+    }
 
 
     /**
@@ -89,12 +93,6 @@ public class TabSrc
      */
     public TabSrc() {
         super("tab.source", true);
-        if (predicates == null) {
-            predicates = new ArrayList<Predicate>();
-            /* Add a predicate for ArgoUML's
-             * default capabilities: */
-            predicates.add(new DefaultPredicate());
-        }
 
         setEditable(false);
         langName = (Language) cbLang.getSelectedItem();
@@ -142,8 +140,9 @@ public class TabSrc
         if (files == null) {
 	    generateSource(modelObject);
         }
-        if (files != null && files.length > cbFiles.getSelectedIndex())
+        if (files != null && files.length > cbFiles.getSelectedIndex()) {
             return files[cbFiles.getSelectedIndex()].getContent();
+        }
         return null;
     }
 
@@ -152,12 +151,15 @@ public class TabSrc
         LOG.debug("TabSrc   setting src for " 
                 + Model.getFacade().getName(getTarget()));
         Object modelObject = getTarget();
-        if (getTarget() instanceof FigNode)
+        if (getTarget() instanceof FigNode) {
             modelObject = ((FigNode) getTarget()).getOwner();
-        if (getTarget() instanceof FigEdge)
+        }
+        if (getTarget() instanceof FigEdge) {
             modelObject = ((FigEdge) getTarget()).getOwner();
-        if (modelObject == null)
+        }
+        if (modelObject == null) {
             return;
+        }
         /* TODO: Implement this! */
         //Parser.ParseAndUpdate(modelObject, s);
     }
@@ -234,7 +236,7 @@ public class TabSrc
         predicates.add(predicate);
     }
 
-    class DefaultPredicate implements Predicate {
+    private static class DefaultPredicate implements Predicate {
         public boolean evaluate(Object object) {
             return (Model.getFacade().isAClassifier(object));
         }
