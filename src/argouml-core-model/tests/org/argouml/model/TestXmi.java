@@ -70,6 +70,31 @@ public class TestXmi extends TestCase {
     }
 
     /**
+     * Test the set and get of IgnoredElements.
+     */
+    public void testIgnoredElements() {
+        assertEquals("Ignored elements array not correct length", 0, 
+                xmiReader.getIgnoredElements().length);
+
+        xmiReader.setIgnoredElements(new String[] {"foo"});
+        assertEquals("Ignored elements array not correct length", 1, 
+                xmiReader.getIgnoredElements().length);
+
+        xmiReader.setIgnoredElements(new String[] {});
+        assertEquals("Ignored elements array not correct length", 0, 
+                xmiReader.getIgnoredElements().length);
+
+        xmiReader.setIgnoredElements(new String[] {"foo", "bar"});
+        assertEquals("Ignored elements array not correct length", 2, 
+                xmiReader.getIgnoredElements().length);
+
+        xmiReader.setIgnoredElements(null);
+        assertEquals("Ignored elements array not correct length", 0, 
+                xmiReader.getIgnoredElements().length);
+    }
+    
+    
+    /**
      * Test the XMI reader.
      * 
      * @throws IOException If we couldn't open the file
@@ -80,8 +105,7 @@ public class TestXmi extends TestCase {
         assertEquals("Wrong tag", "XMI", xmiReader.getTagName());
         String[] ignoredElements = new String[] {"foo"};
         xmiReader.setIgnoredElements(ignoredElements);
-        assertEquals("Ignored elements array not correct length", 1, 
-                xmiReader.getIgnoredElements().length);
+
         assertEquals("Ignored elements count not zero", 0, 
                 xmiReader.getIgnoredElementCount());
         
