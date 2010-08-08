@@ -247,6 +247,7 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-core-diagrams-sequence2" inheritAll="false" target="jar"/>
     <ant dir="../argouml-core-diagrams-activity2" inheritAll="false" target="jar"/>
     <ant dir="../argouml-core-umlpropertypanels" inheritAll="false" target="jar"/>
+    <ant dir="../argouml-core-transformer" inheritAll="false"     target="jar"/>
 
     <!-- Copy everything to the build directory -->
     <mkdir dir="${argo.build.dir}"/>
@@ -281,6 +282,9 @@ Property files to be searched (in argouml-build):
         <include name="*"/>
       </fileset>
       <fileset dir="../argouml-core-umlpropertypanels/build">
+        <include name="*"/>
+      </fileset>
+      <fileset dir="../argouml-core-transformer/build">
         <include name="*"/>
       </fileset>
     </copy>
@@ -357,10 +361,17 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-app" inheritAll="false"               target="jar"/>
 
     <!-- Tests for sequence2 -->
+    <!-- Currently none. -->
+
     <!-- Tests for activity2 -->
+    <!-- Currently none. -->
+
     <!-- Tests for umlpropertypanels -->
     <ant dir="../argouml-core-diagrams-sequence2" inheritAll="false"
          target="${tests-to-do}"/>
+
+    <!-- Tests for transformer -->
+    <!-- Currently none. -->
 
     <antcall target="tests-reports"/>
   </target>  
@@ -435,7 +446,11 @@ Property files to be searched (in argouml-build):
     <delete dir="${argo.build.dir}"/>
 
     <!-- Build the subdirs in opposite order. -->
+    <ant dir="../argouml-core-transformer"
+         inheritAll="false"                                   target="clean"/>
     <ant dir="../argouml-core-umlpropertypanels"
+         inheritAll="false"                                   target="clean"/>
+    <ant dir="../argouml-core-diagrams-activity2"
          inheritAll="false"                                   target="clean"/>
     <ant dir="../argouml-core-diagrams-sequence2"
          inheritAll="false"                                   target="clean"/>
