@@ -14,10 +14,6 @@
 package org.argouml.transformer;
 
 
-import javax.swing.Action;
-
-import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.ui.UndoableAction;
 

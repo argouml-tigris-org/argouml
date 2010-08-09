@@ -13,12 +13,10 @@
 
 package org.argouml.transformer;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.swing.Action;
-
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ActionList;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -66,13 +64,14 @@ final class TransformerManager implements ContextActionFactory {
     public List createContextPopupActions(Object element) {
         final Project p = ProjectManager.getManager().getCurrentProject();
         
-        final ActionList result = new ActionList("Transform to");
+        final ActionList result = new ActionList(
+                Translator.localize("transform.menu.popup.transform"));
         for (Transformer t : getTransformers()) {
             if (t.canTransform(element)) {
                 result.addAll(t.actions(p, element));
             }
         }
-        return result;
+        return result.size() > 0 ? result : null;
     }
     
     

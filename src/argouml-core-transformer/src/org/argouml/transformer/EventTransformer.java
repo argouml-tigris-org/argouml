@@ -20,6 +20,7 @@ import java.util.List;
 
 import javax.swing.Action;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 
@@ -132,7 +133,8 @@ class EventTransformer implements Transformer {
          * Constructor.
          */
         EventToCallEvent(Project project, Object sourceModelElement) {
-            super("Transform to Call Event", project, sourceModelElement);
+            super(Translator.localize("transform.button.new-callevent"), 
+                    project, sourceModelElement);
         }
 
         @Override
@@ -155,7 +157,8 @@ class EventTransformer implements Transformer {
          * Constructor.
          */
         EventToSignalEvent(Project project, Object sourceModelElement) {
-            super("Transform to Signal Event", project, sourceModelElement);
+            super(Translator.localize("transform.button.new-signalevent"), 
+                    project, sourceModelElement);
         }
 
         @Override
@@ -171,7 +174,8 @@ class EventTransformer implements Transformer {
          * Constructor.
          */
        EventToChangeEvent(Project project, Object sourceModelElement) {
-            super("Transform to Change Event", project, sourceModelElement);
+            super(Translator.localize("transform.button.new-changeevent"), 
+                    project, sourceModelElement);
         }
 
         @Override
@@ -189,7 +193,8 @@ class EventTransformer implements Transformer {
          * Constructor.
          */
        EventToTimeEvent(Project project, Object sourceModelElement) {
-            super("Transform to Time Event", project, sourceModelElement);
+            super(Translator.localize("transform.button.new-timeevent"), 
+                    project, sourceModelElement);
         }
 
         @Override

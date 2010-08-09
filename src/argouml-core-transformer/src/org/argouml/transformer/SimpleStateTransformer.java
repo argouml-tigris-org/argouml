@@ -23,6 +23,7 @@ import java.util.List;
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -77,7 +78,8 @@ class SimpleStateTransformer implements Transformer {
     class SimpleStateToCompositeState extends TransformerAction {
 
         SimpleStateToCompositeState(Project project, Object sourceModelElement) {
-            super("Transform to Composite State", project, sourceModelElement);
+            super(Translator.localize("transform.button.new-compositestate"), 
+                    project, sourceModelElement);
         }
         
         public void actionPerformed(ActionEvent e) {
