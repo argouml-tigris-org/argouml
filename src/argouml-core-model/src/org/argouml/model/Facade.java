@@ -2019,7 +2019,8 @@ public interface Facade {
      * StructuralFeature, or TagDefinition.
      * 
      * @param handle
-     *            model element to retrieve from.
+     *            model element to retrieve from. 
+     *            An exception is thrown if null.
      * @return multiplicity
      */
     Object getMultiplicity(Object handle);

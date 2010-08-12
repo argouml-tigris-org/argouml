@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    dthompson
+ *    mvw
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -63,6 +64,11 @@ public abstract class MultiplicityNotation extends NotationProvider {
         // dthompson 29/12/2008: It seems that the returned value is 
         // irrelevant here, so I assume that the purpose of this call
         // is just to throw an exception in case of a problem.
+        /* mvw: Indeed. The intention of the constructor parameter is to prove
+         * that there is a valid UML object to bind the notation to. 
+         * So, the next statement should fail on a null parameter, 
+         * and on anything that is not an object of which 
+         * we can retrieve the multiplicity. */
         Model.getFacade().getMultiplicity(multiplicityOwner);
     }
 
