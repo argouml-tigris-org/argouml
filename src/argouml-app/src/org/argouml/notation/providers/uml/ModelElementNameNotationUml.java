@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,22 +49,22 @@ import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.ModelElementNameNotation;
 
 /**
- * Handles the notation of the name of a modelelement in UML,
- * ie a string on the format:<pre>
+ * Handles the notation of the name of a modelElement in UML,
+ * i.e. a string on the format:<pre>
  *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#] [name]
  * </pre>
  *
- * @author mvw@tigris.org
+ * @author mvw
  */
 public class ModelElementNameNotationUml extends ModelElementNameNotation {
 
     /**
      * The constructor.
      *
-     * @param name the uml object
+     * @param modelElement the UML object
      */
-    public ModelElementNameNotationUml(Object name) {
-        super(name);
+    public ModelElementNameNotationUml(Object modelElement) {
+        super(modelElement);
     }
 
     /*
