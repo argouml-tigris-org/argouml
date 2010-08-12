@@ -424,11 +424,8 @@ public class FindDialog extends ArgoDialog
                 Model.getMetaTypes().getStereotype()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getTagDefinition()));
-        
-        // TODO: Doesn't work (perhaps because composite?), so disable for
-        // now so user isn't misled - tfm - 20070904
-//        type.addItem(PredicateMType.create(
-//                Model.getMetaTypes().getTaggedValue()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getTaggedValue()));
         
         // Not in UML 2.x (or Metatypes)
 //        type.addItem(PredicateMType.create(

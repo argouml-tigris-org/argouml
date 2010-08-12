@@ -64,6 +64,7 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ChildGenRelated;
 import org.argouml.uml.PredicateSearch;
@@ -326,6 +327,12 @@ public class TabResults
             LOG.debug("go " + sel + " in " + d.getName());
             TargetManager.getInstance().setTarget(d);
         }
+	if (Model.getFacade().isATaggedValue(sel)) {
+	    // For tagged values, use their containing ModelElement since they
+	    // don't have property panels of their own
+	    // TODO: May want to do this for other types too?
+	    sel = Model.getFacade().getModelElementContainer(sel);
+	}
 	TargetManager.getInstance().setTarget(sel);
     }
 
