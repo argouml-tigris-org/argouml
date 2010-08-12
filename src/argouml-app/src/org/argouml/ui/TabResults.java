@@ -48,8 +48,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -105,6 +107,7 @@ public class TabResults
     private Object root;
     private JSplitPane mainPane;
     private List results = new ArrayList();
+    private Set diagramResults = new HashSet();
     private List related = new ArrayList();
     private List<ArgoDiagram> diagrams = new ArrayList<ArgoDiagram>();
     private boolean relatedShown;
@@ -420,6 +423,7 @@ public class TabResults
     private void depthFirst(Object node, ArgoDiagram lastDiagram) {
 	if (node instanceof ArgoDiagram) {
 	    lastDiagram = (ArgoDiagram) node;
+	    diagramResults.clear();
 	    if (!pred.matchDiagram(lastDiagram)) {
                 return;
             }
@@ -430,9 +434,15 @@ public class TabResults
 	    Object child = iterator.next();
 	    if (pred.evaluate(child)
                     && (lastDiagram != null || pred.matchDiagram(""))) {
-		results.add(child);
-		diagrams.add(lastDiagram);
-	    }
+	        // Only return once per diagram so we don't, for example, find
+	        // a class as a diagram element and also as a child of a package
+	        // which is on the diagram
+                if (!diagramResults.contains(child)) {
+                    diagramResults.add(child);
+                    results.add(child);
+                    diagrams.add(lastDiagram);
+                }
+            }
 	    depthFirst(child, lastDiagram);
 	}
     }
