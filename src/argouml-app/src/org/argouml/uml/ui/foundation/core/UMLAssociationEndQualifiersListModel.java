@@ -46,7 +46,10 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
  * @author pepargouml@yahoo.es
+ * @deprecated This class is only provided by property panels which are now
+ * external to ArgoUML
  */
+@Deprecated
 public class UMLAssociationEndQualifiersListModel
     extends UMLModelElementOrderedListModel2 {
 

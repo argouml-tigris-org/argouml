@@ -33,6 +33,7 @@ import org.argouml.kernel.Command;
 import org.argouml.kernel.NonUndoableCommand;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.MetaTypes;
 import org.argouml.model.Model;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
@@ -106,6 +107,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("internalTransition", new InternalTransitionGetterSetter());
         addGetterSetter("classifier", new ClassifierGetterSetter());
         addGetterSetter("baseClass", new BaseClassGetterSetter());
+        addGetterSetter("qualifier", new QualifierGetterSetter());
         
         // UML2 only
         addGetterSetter("ownedOperation", new FeatureGetterSetter());
@@ -2072,5 +2074,29 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 	        return null;
 	    }
 	}
+    }
+    
+    private class QualifierGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, Class<?> type) {
+            return Model.getFacade().getQualifiers(modelElement);
+        }
+      
+        public Object get(Object modelElement, Class<?> type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, Class<?> type) {
+            return getOptions(element, type).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getAttribute();
+        }
     }
 }

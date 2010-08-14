@@ -510,7 +510,7 @@ The combination of the above allows the GUI to distinguish between
       <checkbox name="targetScope" type="ScopeKind" label="label.static" />
       <checkbox name="ordering" type="OrderingKind" label="label.ordered" />
     </checkgroup>
-    <list name="qualifier" type="Attribute" label="label.qualifiers" />
+    <list name="qualifier" type="Attribute" new="true" label="label.qualifiers" />
     <list name="specification" type="Classifier" />
 	<separator />
     <optionbox name="aggregation" type="AggregationKind" />

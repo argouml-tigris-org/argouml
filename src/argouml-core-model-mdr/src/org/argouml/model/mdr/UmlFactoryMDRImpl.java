@@ -352,6 +352,12 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 ComponentInstance.class, NodeInstance.class
             });
 
+        // specifies valid elements for a Model to contain 
+        validContainmentMap.put(AssociationEnd.class,
+            new Class<?>[] {
+                Attribute.class
+            });
+
         // specifies valid elements for a Package to contain
         validContainmentMap.put(UmlPackage.class, 
             new Class<?>[] { 
@@ -552,52 +558,72 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for an State to contain
         validContainmentMap.put(State.class, 
                 new Class<?>[] { 
-                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class,
+                    TimeEvent.class
                 });
         
         // specifies valid elements for an CallState to contain
         validContainmentMap.put(CallState.class, 
                 new Class<?>[] { 
                     CallAction.class,
-                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class,
+                    TimeEvent.class
                 });
         
         // specifies valid elements for an SimpleState to contain
         validContainmentMap.put(SimpleState.class, 
                 new Class<?>[] { 
                     Transition.class,
-                    CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
-                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                    CallAction.class, CreateAction.class, DestroyAction.class,
+                    ReturnAction.class, SendAction.class, 
+                    TerminateAction.class,
+                    UninterpretedAction.class, ActionSequence.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class, 
+                    TimeEvent.class
                 });
         
         // specifies valid elements for an SimpleState to contain
         validContainmentMap.put(FinalState.class, 
                 new Class<?>[] { 
                     Transition.class,
-                    CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class
+                    CallAction.class, CreateAction.class, DestroyAction.class, 
+                    ReturnAction.class, SendAction.class, TerminateAction.class,
+                    UninterpretedAction.class, ActionSequence.class
                 });
         
         // specifies valid elements for an SubactivityState to contain
         validContainmentMap.put(SubactivityState.class, 
                 new Class<?>[] { 
                     Transition.class,
-                    CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
-                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                    CallAction.class, CreateAction.class, DestroyAction.class, 
+                    ReturnAction.class, SendAction.class, TerminateAction.class, 
+                    UninterpretedAction.class, ActionSequence.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class, 
+                    TimeEvent.class
                 });
         
         // specifies valid elements for an ActionState to contain
         validContainmentMap.put(ActionState.class, 
                 new Class<?>[] { 
-                    CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
-                    CallEvent.class, ChangeEvent.class, SignalEvent.class, TimeEvent.class
+                    CallAction.class, CreateAction.class, DestroyAction.class, 
+                    ReturnAction.class, SendAction.class, TerminateAction.class, 
+                    UninterpretedAction.class, ActionSequence.class,
+                    CallEvent.class, ChangeEvent.class, SignalEvent.class, 
+                    TimeEvent.class
                 });
         
         // specifies valid elements for an ActionState to contain
         validContainmentMap.put(CompositeState.class, 
                 new Class<?>[] {
                     Transition.class,
-                    Pseudostate.class, SynchState.class, StubState.class, CompositeState.class, SimpleState.class, FinalState.class, SubmachineState.class,
-                    CallAction.class, CreateAction.class, DestroyAction.class, ReturnAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class
+                    Pseudostate.class, SynchState.class, StubState.class, 
+                    CompositeState.class, SimpleState.class,
+                    FinalState.class, 
+                    SubmachineState.class,
+                    CallAction.class, CreateAction.class, DestroyAction.class,
+                    ReturnAction.class, SendAction.class, 
+                    TerminateAction.class, 
+                    UninterpretedAction.class, ActionSequence.class
                 });
         
     }

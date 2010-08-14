@@ -53,7 +53,11 @@ abstract class NavigateSiblingAction extends AbstractAction {
         final Object owner =
             Model.getFacade().getModelElementContainer(modelElement);
         if (Model.getFacade().isAAttribute(modelElement)) {
-            list = Model.getFacade().getAttributes(owner);
+            if (Model.getFacade().isAAssociationEnd(Model.getFacade().getOwner(modelElement))) {
+                list = Model.getFacade().getQualifiers(owner);
+            } else {
+                list = Model.getFacade().getAttributes(owner);
+            }
         } else if (Model.getFacade().isAOperation(modelElement)
                 || Model.getFacade().isAReception(modelElement)) {
             list = Model.getFacade().getOperationsAndReceptions(owner);

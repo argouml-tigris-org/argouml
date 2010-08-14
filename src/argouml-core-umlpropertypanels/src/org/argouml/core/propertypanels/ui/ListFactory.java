@@ -111,8 +111,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLActivityGraphPartitionListModel(modelElement);
         } else if ("predecessor".equals(propName)) {
             model = new UMLMessagePredecessorListModel(modelElement);
-        } else if ("qualifier".equals(propName)) {
-            model = new UMLAssociationEndQualifiersListModel(modelElement);
         } else if ("resident".equals(propName)) {
             model = new UMLContainerResidentListModel(modelElement);
         } else if ("residentElement".equals(propName)) {
