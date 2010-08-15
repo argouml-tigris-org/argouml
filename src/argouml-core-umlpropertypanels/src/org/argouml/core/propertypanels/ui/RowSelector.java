@@ -56,6 +56,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
@@ -129,6 +130,8 @@ class RowSelector extends UmlControl
     private final boolean readonly;
     
     private static final Set<String> EXPANDED_CONTROLS = new TreeSet<String>();
+    
+    private final ArrayList actions;
     
     static {
         // Extract the icon that is used by the tree control
@@ -323,6 +326,7 @@ class RowSelector extends UmlControl
         }
         
 
+        actions = new ArrayList<Action>(6);
         if (!expandable && !expanded) {
             jscroll.setVerticalScrollBarPolicy(
                     JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -335,7 +339,6 @@ class RowSelector extends UmlControl
             moveBottomAction = null;
             if (!readonly) {
                 // Create popup toolbutton if we have a single row
-                final ArrayList<Action> actions = new ArrayList<Action>(6);
     
                 for (Object meta : metaTypes) {
                     if (Model.getUmlFactory().isContainmentValid(
@@ -383,9 +386,6 @@ class RowSelector extends UmlControl
             if (!readonly) {
         	// TODO: Lets build this into a separate buildToolbar method
         		
-                // Create actions and expander if we have multiple rows
-                final ArrayList actions = new ArrayList(6);
-                
                 // Create add and remove buttons if needed first
                 if (addAction != null) {
                     actions.add(addAction);
@@ -500,6 +500,7 @@ class RowSelector extends UmlControl
                     getList().addListSelectionListener(moveBottomAction);
                 }
             }
+            getList().addMouseListener(this);
             
             getModel().addListDataListener(this);
         }
@@ -545,7 +546,9 @@ class RowSelector extends UmlControl
     }
 
     public void mouseClicked(MouseEvent e) {
-        toggleExpansion();
+	if (e.getSource() == this) {
+            toggleExpansion();
+	}
     }
 
     public void mouseEntered(MouseEvent e) {
@@ -559,13 +562,33 @@ class RowSelector extends UmlControl
     }
 
     public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
-
+        if (e.isPopupTrigger()) {
+            JPopupMenu popup = new JPopupMenu();
+            for (Object action : actions) {
+        	if (action instanceof Action) {
+        	    popup.add((Action) action);
+        	}
+            }
+            if (popup.getComponentCount() > 0) {
+                popup.show(this, e.getX(), e.getY());
+            }
+            e.consume();
+        }
     }
 
     public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
-
+        if (e.isPopupTrigger()) {
+            JPopupMenu popup = new JPopupMenu();
+            for (Object action : actions) {
+        	if (action instanceof Action) {
+        	    popup.add((Action) action);
+        	}
+            }
+            if (popup.getComponentCount() > 0) {
+                popup.show(this, e.getX(), e.getY());
+            }
+            e.consume();
+        }
     }
 
     /**
@@ -628,6 +651,7 @@ class RowSelector extends UmlControl
                 getList().removeListSelectionListener(moveDownAction);
                 getList().removeListSelectionListener(moveTopAction);
                 getList().removeListSelectionListener(moveBottomAction);
+                getList().removeMouseListener(this);
             }
     	}
         this.removeMouseListener(this);
