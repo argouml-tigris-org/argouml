@@ -135,7 +135,8 @@ public class MetaDataCache {
                 final String propertyName = controlNode.getAttribute("name");
                 final String label = controlNode.getAttribute("label");
                 
-                ControlData controlData = new ControlData(controlNode.getTagName(), propertyName, label);
+                final ControlData controlData =
+                    new ControlData(controlNode.getTagName(), propertyName, label);
                 
                 final String types = controlNode.getAttribute("type");
                 StringTokenizer st = new StringTokenizer(types, ",");
@@ -144,18 +145,7 @@ public class MetaDataCache {
                 }
                 
                 if (controlNode.getTagName().equals("checkgroup")) {
-                    final NodeList checkBoxNodes = controlNode.getElementsByTagName("checkbox");
-                    for (int k = 0; i < checkBoxNodes.getLength(); ++k) {
-                        Element cbNode = (Element) controlNodes.item(k);
-                        
-                        final String checkBoxType = 
-            	                cbNode.getAttributes().getNamedItem("type").getNodeValue();
-                        final String checkBoxName = 
-                	        cbNode.getAttributes().getNamedItem("name").getNodeValue();
-                        
-                        CheckBoxData cbd = new CheckBoxData(metaTypeByName.get(checkBoxType), checkBoxName);
-                        controlData.addCheckbox(cbd);
-                    }
+                    addCheckboxes(controlData, controlNode);
                 }
                 
                 pm.addControlData(controlData);
@@ -165,5 +155,20 @@ public class MetaDataCache {
         return map;
     }
     
-    
+    private void addCheckboxes(ControlData controlData, Element controlElement) {
+        final NodeList checkBoxElements =
+            controlElement.getElementsByTagName("checkbox");
+        for (int i = 0; i < checkBoxElements.getLength(); ++i) {
+            Element cbNode = (Element) checkBoxElements.item(i);
+            
+            final String checkBoxType =
+        	cbNode.getAttributes().getNamedItem("type").getNodeValue();
+            final String checkBoxName = 
+    	        cbNode.getAttributes().getNamedItem("name").getNodeValue();
+            
+            CheckBoxData cbd =
+        	new CheckBoxData(metaTypeByName.get(checkBoxType), checkBoxName);
+            controlData.addCheckbox(cbd);
+        }
+    }
 }
