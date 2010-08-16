@@ -338,7 +338,7 @@ class RowSelector extends UmlControl
             moveTopAction = null;
             moveBottomAction = null;
             if (!readonly) {
-                // Create popup toolbutton if we have a single row
+                // Create popup tool if we have a single row
     
                 for (Object meta : metaTypes) {
                     if (Model.getUmlFactory().isContainmentValid(
@@ -752,7 +752,7 @@ class RowSelector extends UmlControl
          * Construct the Action
          */
         public DeleteAction() {
-            super("button.delete",
+            super(Translator.localize("menu.popup.delete"),
                     ResourceLoaderWrapper.lookupIconResource("DeleteFromModel"));
             setEnabled(false);
         }
@@ -932,7 +932,7 @@ class RowSelector extends UmlControl
 
 
     /**
-     * This action deletes the model elements that are selected in the JList
+     * This action moves up the model elements that are selected in the JList
      */
     private class MoveBottomAction extends UndoableAction
             implements ListSelectionListener {
