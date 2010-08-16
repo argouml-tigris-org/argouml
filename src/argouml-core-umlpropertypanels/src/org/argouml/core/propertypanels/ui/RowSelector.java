@@ -901,7 +901,7 @@ class RowSelector extends UmlControl
          * Construct the action
          */
         MoveTopAction() {
-            super(Translator.localize("menu.popup.movetop"),
+            super(Translator.localize("menu.popup.movetotop"),
                     ResourceLoaderWrapper.lookupIconResource("MoveTop"));
             setEnabled(false);
         }
@@ -946,7 +946,7 @@ class RowSelector extends UmlControl
          * Construct the action
          */
         MoveBottomAction() {
-            super(Translator.localize("menu.popup.movebottom"),
+            super(Translator.localize("menu.popup.movetobottom"),
                     ResourceLoaderWrapper.lookupIconResource("MoveBottom"));
             setEnabled(false);
         }
