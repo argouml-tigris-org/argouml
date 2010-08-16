@@ -148,13 +148,15 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     public Collection getOptions(
             final Object umlElement,
             final String propertyName,
-            final Class<?> type) {
+            final Collection<Class<?>> types) {
         BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof OptionGetterSetter) {
-            LOG.info("OptionGetterSetter found for " + propertyName + " of " + bgs);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("OptionGetterSetter found for "
+                	+ propertyName + " of " + bgs);
+            }
             final OptionGetterSetter ogs = (OptionGetterSetter) bgs;
-            final Collection options = ogs.getOptions(umlElement, type);
-            return options;
+            return ogs.getOptions(umlElement, types);
         }
         
         return null;
@@ -182,11 +184,11 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     public boolean isValidElement(
             final String propertyName,
-            final Class<?> type,
+            final Collection<Class<?>> types,
             final Object element) {
         BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof ListGetterSetter) {
-            return ((ListGetterSetter) bgs).isValidElement(element, type);
+            return ((ListGetterSetter) bgs).isValidElement(element, types);
         }
         
         return false;
@@ -664,18 +666,18 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         /**
          * Get all the features for the model
          * @param modelElement
-         * @param type
+         * @param types
          * @return
-         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, Collection)
          */
         public Collection getOptions(
                 final Object modelElement,
-                final Class<?> type) {
-            
-            if (Model.getMetaTypes().getAttribute().equals(type)) {
-                return Model.getFacade().getAttributes(modelElement);
-            } else if (Model.getMetaTypes().getOperation().equals(type)) {
+                final Collection<Class<?>> types) {
+
+            if (types.contains(Model.getMetaTypes().getOperation()) && types.contains(Model.getMetaTypes().getReception())) {
                 return Model.getFacade().getOperationsAndReceptions(modelElement);
+            } else if (types.contains(Model.getMetaTypes().getAttribute())) {
+                return Model.getFacade().getAttributes(modelElement);
             } else {
                 return Collections.EMPTY_LIST;
             }
@@ -692,8 +694,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
         public boolean isValidElement(
                 final Object element,
-                final Class<?> type) {
-            return getOptions(element, type).contains(element);
+                final Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -708,13 +710,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         /**
          * Get all the owned elements for the namespace
          * @param modelElement
-         * @param type
+         * @param types
          * @return
-         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, Collection)
          */
         public Collection getOptions(
                 final Object modelElement,
-                final Class<?> type) {
+                final Collection<Class<?>> types) {
             
             return Model.getFacade().getOwnedElements(modelElement);
         }
@@ -730,8 +732,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
         public boolean isValidElement(
                 final Object element,
-                final Class<?> type) {
-            return getOptions(element, type).contains(element);
+                final Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -745,13 +747,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         /**
          * Get all the owned elements for the namespace
          * @param modelElement
-         * @param type
+         * @param types
          * @return
-         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, Collection)
          */
         public Collection getOptions(
                 final Object modelElement,
-                final Class<?> type) {
+                final Collection<Class<?>> types) {
             return Model.getFacade().getRaisedExceptions(modelElement);
         }
       
@@ -766,8 +768,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
         public boolean isValidElement(
                 final Object element,
-                final Class<?> type) {
-            return getOptions(element, type).contains(element);
+                final Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -780,13 +782,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         /**
          * Get all the method for the operation
          * @param modelElement
-         * @param type
+         * @param types
          * @return
-         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, Collection)
          */
         public Collection getOptions(
                 final Object modelElement,
-                final Class<?> type) {
+                final Collection<Class<?>> types) {
             return Model.getFacade().getMethods(modelElement);
         }
       
@@ -801,8 +803,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
         public boolean isValidElement(
                 final Object element,
-                final Class<?> type) {
-            return getOptions(element, type).contains(element);
+                final Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -816,13 +818,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         /**
          * Get all the method for the operation
          * @param modelElement
-         * @param type
+         * @param types
          * @return
-         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, Collection)
          */
         public Collection getOptions(
                 final Object modelElement,
-                final Class<?> type) {
+                final Collection<Class<?>> types) {
             return Model.getFacade().getMessages(modelElement);
         }
       
@@ -837,8 +839,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
         public boolean isValidElement(
                 final Object element,
-                final Class<?> type) {
-            return getOptions(element, type).contains(element);
+                final Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -852,13 +854,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         /**
          * Get all the method for the operation
          * @param modelElement
-         * @param type
+         * @param types
          * @return
-         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, Collection)
          */
         public Collection getOptions(
                 final Object modelElement,
-                final Class<?> type) {
+                final Collection<Class<?>> types) {
             return Model.getFacade().getArguments(modelElement);
         }
       
@@ -873,8 +875,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
         public boolean isValidElement(
                 final Object element,
-                final Class<?> type) {
-            return getOptions(element, type).contains(element);
+                final Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -888,13 +890,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         /**
          * Get all the extension points
          * @param modelElement
-         * @param type
+         * @param types
          * @return
-         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, Collection)
          */
         public Collection getOptions(
                 final Object modelElement,
-                final Class<?> type) {
+                final Collection<Class<?>> types) {
             return Model.getFacade().getExtensionPoints(modelElement);
         }
       
@@ -909,8 +911,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
         public boolean isValidElement(
                 final Object element,
-                final Class<?> type) {
-            return getOptions(element, type).contains(element);
+                final Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -923,13 +925,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         /**
          * Get all the guards
          * @param modelElement
-         * @param type
+         * @param types
          * @return
-         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, Collection)
          */
         public Collection getOptions(
                 final Object modelElement,
-                final Class<?> type) {
+                final Collection<Class<?>> types) {
             final ArrayList l = new ArrayList(1);
             l.add(Model.getFacade().getGuard(modelElement));
             return l;
@@ -946,8 +948,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
         public boolean isValidElement(
                 final Object element,
-                final Class<?> type) {
-            return getOptions(element, type).contains(element);
+                final Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -960,13 +962,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         /**
          * Get all the effects
          * @param modelElement
-         * @param type
+         * @param types
          * @return
-         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, Collection)
          */
         public Collection getOptions(
                 final Object modelElement,
-                final Class<?> type) {
+                final Collection<Class<?>> types) {
             final ArrayList l = new ArrayList(1);
             l.add(Model.getFacade().getEffect(modelElement));
             return l;
@@ -983,8 +985,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
         public boolean isValidElement(
                 final Object element,
-                final Class<?> type) {
-            return getOptions(element, type).contains(element);
+                final Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -997,13 +999,13 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         /**
          * Get all the effects
          * @param modelElement
-         * @param type
+         * @param types
          * @return
-         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, java.lang.String)
+         * @see org.argouml.core.propertypanels.model.GetterSetterManager.OptionGetterSetter#getOptions(java.lang.Object, Collection)
          */
         public Collection getOptions(
                 final Object modelElement,
-                final Class<?> type) {
+                final Collection<Class<?>> types) {
             final ArrayList l = new ArrayList(1);
             l.add(Model.getFacade().getTrigger(modelElement));
             return l;
@@ -1020,8 +1022,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
         public boolean isValidElement(
                 final Object element,
-                final Class<?> type) {
-            return getOptions(element, type).contains(element);
+                final Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1033,7 +1035,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         public Collection getOptions(
         	final Object modelElement,
-        	final Class<?> type) {
+        	final Collection<Class<?>> types) {
             return Model.getFacade().getParameters(modelElement);
         }
       
@@ -1046,8 +1048,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1057,7 +1059,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class EntryActionGetterSetter extends ListGetterSetter {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             final ArrayList list = new ArrayList(1);
             list.add(Model.getFacade().getEntry(modelElement));
             return list;
@@ -1072,8 +1074,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1083,7 +1085,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class ExitActionGetterSetter extends ListGetterSetter {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             final ArrayList list = new ArrayList(1);
             list.add(Model.getFacade().getExit(modelElement));
             return list;
@@ -1098,8 +1100,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1109,7 +1111,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class DoActivityActionGetterSetter extends ListGetterSetter {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             final ArrayList list = new ArrayList(1);
             list.add(Model.getFacade().getDoActivity(modelElement));
             return list;
@@ -1124,8 +1126,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1135,7 +1137,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class ActionGetterSetter extends ListGetterSetter {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getActions(modelElement);
         }
       
@@ -1148,8 +1150,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1159,7 +1161,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
     private class SubvertexGetterSetter extends ListGetterSetter {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getSubvertices(modelElement);
         }
       
@@ -1172,8 +1174,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1267,8 +1269,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class TemplateParameterGetterSetter extends ListGetterSetter {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
-            LOG.info("Getting template parameters for " + modelElement);
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Getting template parameters for " + modelElement);
+            }
             return Model.getFacade().getTemplateParameters(modelElement);
         }
       
@@ -1281,8 +1285,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1292,7 +1296,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class ElementImportGetterSetter extends ListGetterSetter implements Addable, Removeable {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getImportedElements(modelElement);
         }
       
@@ -1309,8 +1313,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1394,7 +1398,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class DeferrableEventGetterSetter extends ListGetterSetter implements Addable, Removeable {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getDeferrableEvents(modelElement);
         }
       
@@ -1411,8 +1415,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1504,7 +1508,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class ReceptionGetterSetter extends ListGetterSetter implements Addable, Removeable {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getReceptions(modelElement);
         }
       
@@ -1517,8 +1521,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1732,7 +1736,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class SenderGetterSetter extends ListGetterSetter {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getSentStimuli(modelElement);
         }
       
@@ -1745,9 +1749,9 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
           
-            return getOptions(element, type).contains(element);
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1757,7 +1761,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class LiteralGetterSetter extends ListGetterSetter {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getEnumerationLiterals(modelElement);
         }
       
@@ -1770,9 +1774,9 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
           
-            return getOptions(element, type).contains(element);
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1782,7 +1786,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class ReceiverGetterSetter extends ListGetterSetter {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getReceivedStimuli(modelElement);
         }
       
@@ -1795,9 +1799,9 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
           
-            return getOptions(element, type).contains(element);
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1806,7 +1810,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     private class InternalTransitionGetterSetter extends ListGetterSetter {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getInternalTransitions(modelElement);
         }
       
@@ -1819,9 +1823,9 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
           
-            return getOptions(element, type).contains(element);
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1832,7 +1836,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
     private class ClassifierGetterSetter extends ListGetterSetter implements Addable, Removeable {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getClassifiers(modelElement);
         }
       
@@ -1845,8 +1849,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -1943,7 +1947,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class BaseClassGetterSetter extends ListGetterSetter implements Addable, Removeable {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             LinkedList<String> list = new LinkedList<String>(
                     Model.getFacade().getBaseClasses(modelElement));
             Collections.sort(list);
@@ -1959,8 +1963,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {
@@ -2078,7 +2082,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     private class QualifierGetterSetter extends ListGetterSetter {
         
-        public Collection getOptions(Object modelElement, Class<?> type) {
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return Model.getFacade().getQualifiers(modelElement);
         }
       
@@ -2091,8 +2095,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             // not needed
         }
 
-        public boolean isValidElement(Object element, Class<?> type) {
-            return getOptions(element, type).contains(element);
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
         }
         
         public Object getMetaType() {

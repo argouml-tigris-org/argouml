@@ -50,11 +50,11 @@ public abstract class GetterSetterManager {
     
     public abstract Object create(String propertyName, String language, String body);
 
-    public abstract Collection getOptions(Object umlElement, String propertyName, Class<?> type);
+    public abstract Collection getOptions(Object umlElement, String propertyName, Collection<Class<?>> types);
     
     public abstract Object getMetaType(String propertyName);
     
-    public abstract boolean isValidElement(String propertyName, Class<?> type, Object umlElement);
+    public abstract boolean isValidElement(String propertyName, Collection<Class<?>> types, Object umlElement);
     
     public abstract Command getRemoveCommand(String propertyName, Object umlElement, Object objectToRemove);
     
@@ -94,14 +94,14 @@ public abstract class GetterSetterManager {
             this.options = options;
         }
 
-        protected Collection getOptions(Object modelElement, Class<?> type) {
+        protected Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             return options;
         }
     }
     
     
     protected abstract class ListGetterSetter extends OptionGetterSetter {
-        abstract boolean isValidElement(Object modelElement, Class<?> type);
+        abstract boolean isValidElement(Object modelElement, Collection<Class<?>> types);
         abstract Object getMetaType();
         boolean isFullBuildOnly() {
         	return false;

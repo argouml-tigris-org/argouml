@@ -122,14 +122,14 @@ class SimpleListModel
 		                    removeElement(objectToRemove);
 		                } else if (e instanceof AddAssociationEvent) {
 		                    Object newElement = ((AddAssociationEvent) e).getChangedValue();
-		                        
-		                    if (!SimpleListModel.this.contains(newElement)) {
+		                    if (metaTypes.contains(newElement.getClass())
+		                	    && !SimpleListModel.this.contains(newElement)) {
 			                if (Model.getUmlHelper().isMovable(getMetaType())) {
 			                    final Collection c =
 			                        (Collection) getterSetterManager.getOptions( 
 			                            umlElement, 
 			                            propertyName, 
-			                            metaTypes.get(0));
+			                            metaTypes);
 			                    final int index =
 			                        CollectionUtil.indexOf(c, newElement);
 			                    if (index < 0 || index > getSize() - 1) {
@@ -173,12 +173,14 @@ class SimpleListModel
      */
     private void build() {
         try {
-            final Class<?> metaType = metaTypes.get(0);
-            LOG.info("Getting options for " + umlElement + " " + propertyName + " " + metaType);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Getting options for " + umlElement
+                	+ " " + propertyName + " " + metaTypes);
+            }
             final Collection c = (Collection) getterSetterManager.getOptions( 
                     umlElement, 
                     propertyName, 
-                    metaType);
+                    metaTypes);
             for (Object o : c) {
                 addElement(o);
             }
