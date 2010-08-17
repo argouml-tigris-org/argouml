@@ -55,8 +55,10 @@ import org.tigris.gef.presentation.Fig;
  * 
  * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
- * 
+ * @deprecated by Bob Tarling in 0.31.4 - the property panel module is now
+ * responsible for property panel controls and models
  */
+@Deprecated
 public class UMLClassifierRoleAvailableFeaturesListModel
     extends UMLModelElementListModel2 {
 

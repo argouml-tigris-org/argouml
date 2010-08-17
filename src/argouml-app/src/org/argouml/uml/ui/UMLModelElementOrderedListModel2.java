@@ -55,7 +55,10 @@ import org.argouml.ui.UndoableAction;
  * "Move Down", "Move to Top", and "Move to Bottom".
  *
  * @author Michiel
+ * @deprecated by Bob Tarling in 0.31.4 - the property panel module is now
+ * responsible for property panel controls and models
  */
+@Deprecated
 public abstract class UMLModelElementOrderedListModel2 extends
         UMLModelElementListModel2 {
 

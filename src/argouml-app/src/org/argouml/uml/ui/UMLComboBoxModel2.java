@@ -71,7 +71,10 @@ import org.tigris.gef.presentation.Fig;
  *
  * This combobox allows selecting no value, if so indicated
  * at construction time of this class. I.e. it is "clearable".
+ * @deprecated by Bob Tarling in 0.31.4 - the property panel module is now
+ * responsible for property panel controls and models
  */
+@Deprecated
 public abstract class UMLComboBoxModel2 extends AbstractListModel
         implements PropertyChangeListener, 
         ComboBoxModel, TargetListener, PopupMenuListener {

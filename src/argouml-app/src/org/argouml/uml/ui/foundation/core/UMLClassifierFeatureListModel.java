@@ -47,7 +47,10 @@ import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 26, 2003
+ * @deprecated by Bob Tarling in 0.31.4 - the property panel module is now
+ * responsible for property panel controls and models
  */
+@Deprecated
 public class UMLClassifierFeatureListModel
     extends UMLModelElementOrderedListModel2 {
 
