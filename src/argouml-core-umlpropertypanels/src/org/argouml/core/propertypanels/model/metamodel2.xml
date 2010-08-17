@@ -266,7 +266,7 @@ name
     <separator />
     <list name="feature" type="Property" new="true" label="label.attributes" />
     <list name="ownedOperation" type="Operation,Reception" new="true" label="label.operations" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="Property" />
     <list name="ownedElement" type="Class" new="true" label="label.owned-elements"/>
 	<debug />
     <attribute name="targetFlow" type="Flow" />
@@ -591,6 +591,7 @@ name
     <combo name="type" type="Classifier" />
     <combo name="multiplicity" type="Multiplicity" />
     <singlerow name="owner" type="Classifier" />
+    <singlerow name="association" type="Association" />
     <separator />
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
