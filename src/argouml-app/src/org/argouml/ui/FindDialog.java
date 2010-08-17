@@ -411,8 +411,6 @@ public class FindDialog extends ArgoDialog
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getOperation()));
         type.addItem(PredicateMType.create(
-                Model.getMetaTypes().getSimpleState()));
-        type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getSignal()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getState()));
@@ -424,8 +422,6 @@ public class FindDialog extends ArgoDialog
                 Model.getMetaTypes().getStereotype()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getTagDefinition()));
-        type.addItem(PredicateMType.create(
-                Model.getMetaTypes().getTaggedValue()));
         
         // Not in UML 2.x (or Metatypes)
 //        type.addItem(PredicateMType.create(
@@ -437,6 +433,14 @@ public class FindDialog extends ArgoDialog
                 Model.getMetaTypes().getTransition()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getUseCase()));
+        
+        // TODO: Can we move this knowledge behind model facade rather than have a condition here?
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            type.addItem(PredicateMType.create(
+                    Model.getMetaTypes().getSimpleState()));
+            type.addItem(PredicateMType.create(
+                    Model.getMetaTypes().getTaggedValue()));
+        }
     }
 
     /*
