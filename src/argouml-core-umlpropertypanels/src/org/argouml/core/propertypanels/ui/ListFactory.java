@@ -63,8 +63,8 @@ class ListFactory implements ComponentFactory {
         
         if ("annotatedElement".equals(propName)) {
             model = new UMLCommentAnnotatedElementListModel(modelElement);
-        } else if ("association".equals(propName)) {
-            model = new UMLClassifierAssociationEndListModel(modelElement);
+//        } else if ("association".equals(propName)) {
+//            model = new UMLClassifierAssociationEndListModel(modelElement);
         } else if ("associationRole".equals(propName)) {
             model = new UMLAssociationAssociationRoleListModel(modelElement);
         } else if ("availableContents".equals(propName)) {

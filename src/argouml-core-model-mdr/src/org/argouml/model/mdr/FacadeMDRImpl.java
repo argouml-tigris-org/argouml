@@ -1235,6 +1235,9 @@ class FacadeMDRImpl implements Facade {
         return (org.omg.uml.UmlPackage) refPackage;
     }
 
+    public Collection getAssociations(Object handle) {
+        throw new NotImplementedException("Not available for UML1.4");
+    }
 
     public Collection getAssociationEnds(Object handle) {
         try {

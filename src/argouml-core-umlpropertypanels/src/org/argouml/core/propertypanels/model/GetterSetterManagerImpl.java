@@ -109,8 +109,14 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("trigger", new TriggerGetterSetter());
         addGetterSetter("visibility", new VisibilityGetterSetter());
         
-        // UML2 only
-        addGetterSetter("ownedOperation", new FeatureGetterSetter());
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            // UML1.4 only
+            addGetterSetter("association", new AssociationEndGetterSetter());
+        } else {
+            // UML2 only
+            addGetterSetter("ownedOperation", new FeatureGetterSetter());
+            addGetterSetter("association", new AssociationGetterSetter());
+        }
     }
     
     /**
@@ -2101,6 +2107,54 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         public Object getMetaType() {
             return Model.getMetaTypes().getAttribute();
+        }
+    }
+    
+    private class AssociationEndGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
+            return Model.getFacade().getAssociationEnds(modelElement);
+        }
+      
+        public Object get(Object modelElement, Class<?> type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getAssociationEnd();
+        }
+    }
+    
+    private class AssociationGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
+            return Model.getFacade().getAssociations(modelElement);
+        }
+      
+        public Object get(Object modelElement, Class<?> type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getAssociationEnd();
         }
     }
 }

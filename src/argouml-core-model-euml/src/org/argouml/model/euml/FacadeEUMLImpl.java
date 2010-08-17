@@ -254,6 +254,15 @@ class FacadeEUMLImpl implements Facade {
         }
         return ((Property) handle).getAssociation();
     }
+    
+    public Collection<Association> getAssociations(Object handle) {
+        if (!(handle instanceof Classifier)) {
+            throw new IllegalArgumentException(
+                    "handle must be instance of Classifier"); //$NON-NLS-1$
+        }
+        return ((Classifier) handle).getAssociations();
+    }
+
 
     public Property getAssociationEnd(Object classifier, Object association) {
         if (!(classifier instanceof Classifier)) {

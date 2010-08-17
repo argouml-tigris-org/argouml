@@ -1429,6 +1429,15 @@ public interface Facade {
     Object getAssociation(Object handle);
 
     /**
+     * Returns the Associations connected to a Classifer.
+     * UML2 only
+     *
+     * @param handle the Classifier
+     * @return associations
+     */
+    Collection getAssociations(Object handle);
+
+    /**
      * Return the AssociationEnd connecting the given Classifier 
      * and Association.
      *
