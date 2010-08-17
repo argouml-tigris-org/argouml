@@ -161,17 +161,20 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 // The code below will make navigable ends owned by the classifier
                 // at the opposite end, but let's just make them owned by the association
                 // for simplicity (don't assume everything will be like this though!)
-                // This code reinstated by Bob 17 Aug 2010
-                if (UMLUtil.getOwnedAttributes((Type) type2) == null) {
-                    association.getOwnedEnds().add(property1);
-                } else {
-                    UMLUtil.getOwnedAttributes((Type) type2).add(property1);
-                }
-                if (UMLUtil.getOwnedAttributes((Type) type1) == null) {
-                    association.getOwnedEnds().add(property2);
-                } else {
-                    UMLUtil.getOwnedAttributes((Type) type1).add(property2);
-                }
+                // Bob says - see page 42 and 43 of UML2.2 superstructure
+                // for info on property ownership. Default will be association ownership
+                // but we need a way for the user to change to classifier ownership at a
+                // later time.
+//                if (UMLUtil.getOwnedAttributes((Type) type2) == null) {
+//                    association.getOwnedEnds().add(property1);
+//                } else {
+//                    UMLUtil.getOwnedAttributes((Type) type2).add(property1);
+//                }
+//                if (UMLUtil.getOwnedAttributes((Type) type1) == null) {
+//                    association.getOwnedEnds().add(property2);
+//                } else {
+//                    UMLUtil.getOwnedAttributes((Type) type1).add(property2);
+//                }
                 //
                 ((Type) type1).getNearestPackage().getPackagedElements().add(
                         association);
