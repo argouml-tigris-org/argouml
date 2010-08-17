@@ -331,7 +331,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="AssociationEnd" label="label.association-ends"/>
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
@@ -359,7 +359,7 @@ The combination of the above allows the GUI to distinguish between
     <separator />
     <list name="feature" type="Attribute" new="true" label="label.attributes" />
     <list name="feature" type="Operation,Reception" new="true" label="label.operations" />
-    <list name="association" type="Classifier" />    
+    <list name="association" type="AssociationEnd" label="label.association-ends"/>    
     <list name="ownedElement" type="Class" new="true" label="label.owned-elements"/>
 	
 	<debug />
@@ -927,7 +927,7 @@ The combination of the above allows the GUI to distinguish between
     <separator />
     <list name="feature" type="Attribute" new="true" label="label.attributes" />
     <list name="feature" type="Operation,Reception" new="true" label="label.operations" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="AssociationEnd" label="label.association-ends"/>
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     
     <debug />
@@ -1324,7 +1324,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="AssociationEnd" label="label.association-ends"/>
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
@@ -1545,7 +1545,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="AssociationEnd" label="label.association-ends"/>
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
@@ -1592,7 +1592,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="AssociationEnd" label="label.association-ends"/>
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
@@ -2555,7 +2555,7 @@ The combination of the above allows the GUI to distinguish between
     <separator />
     <list name="feature" type="Attribute" label="label.attributes" new="true" />
     <list name="feature" type="Operation,Reception" new="true" label="label.operations" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="AssociationEnd" label="label.association-ends"/>
     <list name="extensionPoint" type="ExtensionPoint" label="label.extension-points" new="true" />
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
@@ -2600,7 +2600,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <list name="association" type="Classifier" />
+    <list name="association" type="AssociationEnd" label="label.association-ends"/>
     <list name="feature" type="Operation,Reception" new="true" label="label.operations" />
 
 	<debug />
@@ -3417,7 +3417,7 @@ The combination of the above allows the GUI to distinguish between
     <separator />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="AssociationEnd" label="label.association-ends"/>
     <separator />
     <list name="availableFeature" type="Feature" label="label.available-features" />
     <list name="availableContents" type="ModelElement" label="label.available-contents" />
@@ -3944,7 +3944,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="AssociationEnd" label="label.association-ends"/>
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
@@ -4062,7 +4062,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="AssociationEnd" label="label.association-ends"/>
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
