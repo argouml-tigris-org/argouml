@@ -42,10 +42,12 @@ import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 26, 2003
+ * @deprecated in 0.31.2 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 public class UMLClassifierAssociationEndListModel
     extends UMLModelElementListModel2 {
 
