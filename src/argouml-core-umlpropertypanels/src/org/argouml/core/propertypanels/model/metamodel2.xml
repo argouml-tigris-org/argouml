@@ -238,7 +238,7 @@ name
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="Association" label="label.associations" />
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
@@ -266,7 +266,7 @@ name
     <separator />
     <list name="feature" type="Property" new="true" label="label.attributes" />
     <list name="ownedOperation" type="Operation,Reception" new="true" label="label.operations" />
-    <list name="association" type="Property" />
+    <list name="association" type="Association" label="label.associations" />
     <list name="ownedElement" type="Class" new="true" label="label.owned-elements"/>
 	<debug />
     <attribute name="targetFlow" type="Flow" />
@@ -459,7 +459,7 @@ name
 	<list name="generalization" type="Generalization" />    
     <list name="specialization" type="GeneralizableElement" />
 	<separator />
-	<list name="association" type="Classifier" />
+    <list name="association" type="Association" label="label.associations" />
     <list name="feature" type="Property" new="true" label="label.attributes" />
     <list name="ownedOperation" type="Operation,Reception" new="true" label="label.operations" />
 	
@@ -797,7 +797,7 @@ name
     <separator />
     <list name="feature" type="Property" new="true" label="label.attributes" />
     <list name="ownedOperation" type="Operation,Reception" new="true" label="label.operations" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="Association" label="label.associations" />
     <list name="ownedElement" type="ModelElement" label="label.owned-elements"/>
     
     <debug />
@@ -1192,7 +1192,7 @@ name
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="Association" label="label.associations" />
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
@@ -1414,7 +1414,7 @@ name
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="Association" label="label.associations" />
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
@@ -1461,7 +1461,7 @@ name
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="Association" label="label.associations" />
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
@@ -2406,7 +2406,7 @@ name
     <separator />
     <list name="feature" type="Property" new="true" label="label.attributes" />
     <list name="ownedOperation" type="Operation,Reception" new="true" label="label.operations" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="Association" label="label.associations" />
     <list name="extensionPoint" type="ExtensionPoint" new="true" label="label.extension-points" />
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
@@ -2451,7 +2451,7 @@ name
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
     <separator />
-    <list name="association" type="Classifier" />
+    <list name="association" type="Association" label="label.associations" />
     <list name="ownedOperation" type="Operation,Reception" new="true" label="label.operations" />
 
 	<debug />
@@ -3261,7 +3261,7 @@ name
     <separator />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="Association" label="label.associations" />
     <separator />
     <list name="availableFeature" type="Feature" label="label.available-features" />
     <list name="availableContents" type="ModelElement" label="label.available-contents" />
@@ -3786,7 +3786,7 @@ name
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="Association" label="label.associations" />
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
@@ -3938,7 +3938,7 @@ name
     <list name="powertypeRange" type="Generalization" />
     <list name="typedFeature" type="Classifier" />
     <list name="typedParameter" type="Classifier" />
-    <list name="association" type="Classifier" />
+    <list name="association" type="Association" label="label.associations" />
     <list name="specifiedEnd" type="Classifier" />
     <list name="instance" type="Classifier" />
     <list name="createAction" type="Classifier" />
