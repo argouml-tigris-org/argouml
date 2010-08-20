@@ -116,7 +116,10 @@ public class PropPanelActionSequence extends PropPanelModelElement {
 
 /**
  * Model for ActionSequence's list of Actions.
+ * @deprecated in 0.31.5 by Bob Tarling  This is replaced by the XML property
+ * panels module
  */
+@Deprecated
 class UMLActionSequenceActionListModel
     extends UMLModelElementOrderedListModel2 {
 
@@ -185,7 +188,11 @@ class UMLActionSequenceActionListModel
     }
 }
 
-
+/**
+ * @deprecated in 0.31.5 by Bob Tarling  This is replaced by the XML property
+ * panels module
+ */
+@Deprecated
 class ActionRemoveAction extends AbstractActionRemoveElement {
 
 
@@ -213,6 +220,11 @@ class ActionRemoveAction extends AbstractActionRemoveElement {
 
 }
 
+/**
+ * @deprecated in 0.31.5 by Bob Tarling  This is replaced by the XML property
+ * panels module
+ */
+@Deprecated
 class UMLActionSequenceActionList extends UMLMutableLinkedList {
 
     /**
@@ -232,6 +244,11 @@ class UMLActionSequenceActionList extends UMLMutableLinkedList {
 
 }
 
+/**
+ * @deprecated in 0.31.5 by Bob Tarling  This is replaced by the XML property
+ * panels module
+ */
+@Deprecated
 class PopupMenuNewActionSequenceAction extends JPopupMenu {
 
     /**
