@@ -527,9 +527,11 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         // specifies valid elements for an AssociationRole to contain
         validContainmentMap.put(ActionSequence.class, 
                 new Class<?>[] { 
-                    TemplateParameter.class,
-                    CreateAction.class, DestroyAction.class, SendAction.class, TerminateAction.class, UninterpretedAction.class, ActionSequence.class,
-                    Argument.class
+                    TemplateParameter.class, Argument.class,
+                    CallAction.class, ReturnAction.class, CreateAction.class,
+                    DestroyAction.class, SendAction.class,
+                    TerminateAction.class, UninterpretedAction.class,
+                    ActionSequence.class,
                 });
         
         // specifies valid elements for an AssociationRole to contain
