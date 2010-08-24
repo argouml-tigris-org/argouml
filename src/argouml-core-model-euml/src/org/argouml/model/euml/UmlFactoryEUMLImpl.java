@@ -329,10 +329,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = UMLFactory.eINSTANCE.createInputPin();
         } else if (elementType == metaTypes.getOutputPin()) {
             o = UMLFactory.eINSTANCE.createOutputPin();
-        } else if (elementType == metaTypes.getSimpleState()) {
-            o = modelImpl.getStateMachinesFactory().createSimpleState();
-        } else if (elementType == metaTypes.getFinalState()) {
-            o = modelImpl.getStateMachinesFactory().createFinalState();
+        } else if (elementType == metaTypes.getState()) {
+            o = UMLFactory.eINSTANCE.createState();
         } else if (elementType == metaTypes.getPseudostate()) {
             o = modelImpl.getStateMachinesFactory().createPseudostate();
         } else if (elementType == metaTypes.getObjectFlowState()) {

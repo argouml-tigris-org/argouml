@@ -594,7 +594,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getContext(Object handle) {
-        throw new NotYetImplementedException();
+        if (isAStateMachine(handle)) {
+            return ((StateMachine) handle).getContext();
+        }
+        throw new IllegalArgumentException("handle must be a state machine");
     }
 
     public Collection getContexts(Object handle) {

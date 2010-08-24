@@ -13,6 +13,11 @@ package org.argouml.model.euml;
 
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.StateMachinesFactory;
+import org.eclipse.uml2.uml.BehavioredClassifier;
+import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.ProtocolStateMachine;
+import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.UMLFactory;
 
 /**
@@ -115,9 +120,14 @@ class StateMachinesFactoryEUMLImpl implements StateMachinesFactory,
     }
 
     public Object buildStateMachine(Object oContext) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
+        BehavioredClassifier bc = (BehavioredClassifier) oContext;
+        StateMachine machine = (StateMachine) createStateMachine();
+        bc.setClassifierBehavior(machine);
+        
+        bc.getOwnedElements().add(machine);
 
+        Element o2 = machine.getOwner();
+        return machine;
     }
 
     public Object buildStubState(Object compositeState) {

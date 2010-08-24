@@ -13,7 +13,10 @@ package org.argouml.model.euml;
 
 import java.util.Collection;
 
+import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
+import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.State;
 
 /**
@@ -104,9 +107,24 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
     }
 
     public Object getStateMachine(Object handle) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        if (handle == null) {
+            throw new IllegalArgumentException("bad argument to "
+                    + "getStateMachine() - " + handle);
+        }
+        Object container =
+            modelImpl.getFacade().getModelElementContainer(handle);
+        while (container != null) {
+            if (Model.getFacade().isAStateMachine(container)) {
+                return container;
+            }
+            container =
+                modelImpl.getFacade()
+                    .getModelElementContainer(container);
+        }
+        /* In this case, either the container was not set,
+         * or it was not contained in a statemachine.
+         */
+        return null;
     }
 
     public Object getStatebyName(String path, Object container) {
@@ -122,9 +140,7 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
     }
 
     public boolean isAddingStatemachineAllowed(Object context) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        return (context instanceof Classifier);
     }
 
     public boolean isTopState(Object o) {
