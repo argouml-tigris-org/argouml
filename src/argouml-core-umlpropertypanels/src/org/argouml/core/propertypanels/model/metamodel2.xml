@@ -704,10 +704,10 @@ name
     <text name="name" type="Name" />
     <singlerow name="behavioralFeature" type="BehavioralFeature" />
     <combo name="type" type="Classifier" />
+    <combo name="multiplicity" type="Multiplicity" />
     <separator />
     <textarea name="defaultValue" type="Expression" />
     <optionbox name="kind" type="ParameterDirectionKind" />
-    <combo name="multiplicity" type="Multiplicity" />
      
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
