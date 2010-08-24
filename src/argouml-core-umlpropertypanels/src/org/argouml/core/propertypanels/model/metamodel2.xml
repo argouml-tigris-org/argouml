@@ -707,6 +707,7 @@ name
     <separator />
     <textarea name="defaultValue" type="Expression" />
     <optionbox name="kind" type="ParameterDirectionKind" />
+    <combo name="multiplicity" type="Multiplicity" />
      
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
