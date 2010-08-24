@@ -398,29 +398,51 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        Object[] actions =
-        {
-            getActionState(),
-	    getActionCompositeState(),
-	    getActionTransition(),
-	    getActionSynchState(),
-	    getActionSubmachineState(),
-	    getActionStubState(),
-	    null,
-	    getActionStartPseudoState(),
-	    getActionFinalPseudoState(),
-	    getActionJunctionPseudoState(),
-            getActionChoicePseudoState(),
-	    getActionForkPseudoState(),
-	    getActionJoinPseudoState(),
-	    getActionShallowHistoryPseudoState(),
-	    getActionDeepHistoryPseudoState(),
-            null,
-            getTriggerActions(),
-            getActionGuard(),
-            getEffectActions(),
-        };
-        return actions;
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            Object[] actions =
+            {
+                getActionState(),
+                getActionCompositeState(),
+                getActionTransition(),
+                getActionSynchState(),
+                getActionSubmachineState(),
+                getActionStubState(),
+                null,
+                getActionStartPseudoState(),
+                getActionFinalPseudoState(),
+                getActionJunctionPseudoState(),
+                getActionChoicePseudoState(),
+                getActionForkPseudoState(),
+                getActionJoinPseudoState(),
+                getActionShallowHistoryPseudoState(),
+                getActionDeepHistoryPseudoState(),
+                null,
+                getTriggerActions(),
+                getActionGuard(),
+                getEffectActions(),
+            };
+            return actions;
+        } else {
+            Object[] actions =
+            {
+                getActionState(),
+                getActionTransition(),
+                null,
+                getActionStartPseudoState(),
+                getActionFinalPseudoState(),
+                getActionJunctionPseudoState(),
+                getActionChoicePseudoState(),
+                getActionForkPseudoState(),
+                getActionJoinPseudoState(),
+                getActionShallowHistoryPseudoState(),
+                getActionDeepHistoryPseudoState(),
+                null,
+                getTriggerActions(),
+                getActionGuard(),
+                getEffectActions(),
+            };
+            return actions;
+        }
     }
 
     protected Object[] getTriggerActions() {
@@ -568,10 +590,17 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     protected Action getActionState() {
         if (actionState == null) {
-            actionState =
-                new RadioAction(
-                        new CmdCreateNode(Model.getMetaTypes().getSimpleState(),
-                                	  "button.new-simplestate"));
+            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                actionState =
+                    new RadioAction(
+                            new CmdCreateNode(Model.getMetaTypes().getSimpleState(),
+                                              "button.new-simplestate"));
+            } else {
+                actionState =
+                    new RadioAction(
+                            new CmdCreateNode(Model.getMetaTypes().getState(),
+                                              "button.new-simplestate"));
+            }
         }
         return actionState;
     }

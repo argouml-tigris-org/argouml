@@ -108,8 +108,11 @@ public class ActionStateDiagram extends ActionNewDiagram {
               }
             }
             Model.getCoreHelper().setNamespace(machine, namespace);
-            Model.getStateMachinesFactory()
+            
+            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                Model.getStateMachinesFactory()
                     .buildCompositeStateOnStateMachine(machine);
+            }
         }
         return machine;
     }
