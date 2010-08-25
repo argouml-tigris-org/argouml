@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    Thomas Neustupny
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -492,10 +492,10 @@ class CoreHelperMDRImpl implements CoreHelper {
         return name;
     }
     
-    public List<Parameter> getReturnParameters(Object operation) {
+    public List<Parameter> getReturnParameters(Object bf) {
         List<Parameter> returnParams = new ArrayList<Parameter>();
         try {
-            for (Parameter parameter : ((Operation) operation).getParameter()) {
+            for (Parameter parameter : ((BehavioralFeature) bf).getParameter()) {
                 if (ParameterDirectionKindEnum.PDK_RETURN.equals(parameter
                         .getKind())) {
                     returnParams.add(parameter);

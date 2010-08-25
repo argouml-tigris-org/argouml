@@ -10,6 +10,7 @@
  *    Tom Morris - initial framework & prototype implementation
  *    Bogdan Pistol - initial implementation
  *    Thomas Neustupny
+ *    Michiel van der Wulp
  *****************************************************************************/
 
 package org.argouml.model.euml;
@@ -908,13 +909,13 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return result;
     }
 
-    public List<Parameter> getReturnParameters(Object operation) {
-        if (!(operation instanceof Operation)) {
+    public List<Parameter> getReturnParameters(Object bf) {
+        if (!(bf instanceof BehavioralFeature)) {
             throw new IllegalArgumentException(
-                    "'operation' must be instance of Operation"); //$NON-NLS-1$
+                    "'bf' must be instance of BehavioralFeature"); //$NON-NLS-1$
         }
         List<Parameter> result = new ArrayList<Parameter>();
-        for (Parameter p : ((Operation) operation).getOwnedParameters()) {
+        for (Parameter p : ((Operation) bf).getOwnedParameters()) {
             if (p.getDirection() == ParameterDirectionKind.RETURN_LITERAL) {
                 result.add(p);
             }

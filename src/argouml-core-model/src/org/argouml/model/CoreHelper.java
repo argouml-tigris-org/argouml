@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Thomas Neustupny
+ *    Michiel van der Wulp
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -163,12 +164,13 @@ public interface CoreHelper {
     Collection getParents(Object generalizableElement);
 
     /**
-     * Return all return parameters for an Operation.
+     * Return all return parameters for a BehavioralFeature 
+     * (Operation, Reception,...).
      *
-     * @param operation is the operation.
+     * @param bf is the behavioral feature.
      * @return List of parameters of with direction kind of Return.
      */
-    List getReturnParameters(Object operation);
+    List getReturnParameters(Object bf);
 
     /**
      * Return the Operation which is the specification for a Method.<p>

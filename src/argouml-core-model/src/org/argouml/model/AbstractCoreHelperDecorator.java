@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,7 @@
  * Contributors:
  *    tfmorris
  *    Thomas Neustupny
+ *    Michiel van der Wulp
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -130,8 +131,8 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         return impl.getParents(generalizableElement);
     }
 
-    public List getReturnParameters(Object operation) {
-        return impl.getReturnParameters(operation);
+    public List getReturnParameters(Object bf) {
+        return impl.getReturnParameters(bf);
     }
 
     public Object getSpecification(Object object) {
