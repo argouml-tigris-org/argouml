@@ -1449,9 +1449,15 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
             protected List getChoices() {
                 List list = new ArrayList();
-                list.addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(
-                        Model.getFacade().getRoot(getTarget()),
+                
+                Object parent =
+                    Model.getStateMachinesHelper()
+                        .findNamespaceForEvent(getTarget(), null);
+                list.addAll(
+                    Model.getModelManagementHelper().getAllModelElementsOfKind(
+                        parent,
                         Model.getMetaTypes().getEvent()));
+                
                 return list;
             }
 
