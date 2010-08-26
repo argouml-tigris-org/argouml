@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Bob Tarling
+ *    Michiel van der Wulp
  *****************************************************************************/
 
 package org.argouml.core.propertypanels.ui;
@@ -15,11 +16,9 @@ package org.argouml.core.propertypanels.ui;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.Action;
-import javax.swing.event.ChangeEvent;
 
 import org.argouml.model.Model;
 import org.argouml.ui.ActionCreateContainedModelElement;
@@ -63,11 +62,10 @@ public class UMLTransitionTriggerComboBoxModel extends UMLComboBoxModel {
         final Object transition = getTarget();
         Object selectedElement = getSelectedModelElement();
         removeAllElements();
-        
-        Object parent = Model.getFacade().getModelElementContainer(transition);
-        if (!Model.getFacade().isAPackage(parent)) {
-            parent = Model.getFacade().getModelElementContainer(parent);
-        }
+
+        Object parent =
+            Model.getStateMachinesHelper()
+                .findNamespaceForEvent(transition, null);
         final Collection list =
             Model.getModelManagementHelper().getAllModelElementsOfKind(
                 parent,
