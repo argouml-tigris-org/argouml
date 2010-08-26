@@ -61,6 +61,7 @@ public class UMLTransitionTriggerComboBoxModel extends UMLComboBoxModel {
      */
     protected void buildModelList() {
         final Object transition = getTarget();
+        Object selectedElement = getSelectedModelElement();
         removeAllElements();
         
         Object parent = Model.getFacade().getModelElementContainer(transition);
@@ -72,7 +73,6 @@ public class UMLTransitionTriggerComboBoxModel extends UMLComboBoxModel {
                 parent,
                 Model.getMetaTypes().getEvent());
         
-        Object selectedElement = getSelectedModelElement();
         if (selectedElement != null && !list.contains(selectedElement)) {
             // Just in case the existing selected element is from elsewhere
             // make sure it is in the list
@@ -80,7 +80,9 @@ public class UMLTransitionTriggerComboBoxModel extends UMLComboBoxModel {
         }
         setElements(list);
 
-        setSelectedItem(Model.getFacade().getTrigger(transition));
+        if (selectedElement != null) {
+            setSelectedItem(selectedElement);
+        }
     }
 
     protected boolean isValidElement(Object m) {
