@@ -53,13 +53,31 @@ public class UMLTransitionTriggerComboBoxModel extends UMLComboBoxModel {
         return true;
     }
     
+    /**
+     * For the list of possible items include all events under the first package
+     * above the target transition
+     * 
+     * @see org.argouml.core.propertypanels.ui.UMLComboBoxModel#buildModelList()
+     */
     protected void buildModelList() {
-        Object transition = getTarget();
+        final Object transition = getTarget();
         removeAllElements();
+        
+        Object parent = Model.getFacade().getModelElementContainer(transition);
+        if (!Model.getFacade().isAPackage(parent)) {
+            parent = Model.getFacade().getModelElementContainer(parent);
+        }
         final Collection list =
             Model.getModelManagementHelper().getAllModelElementsOfKind(
-                Model.getFacade().getRoot(getTarget()),
+                parent,
                 Model.getMetaTypes().getEvent());
+        
+        Object selectedElement = getSelectedModelElement();
+        if (selectedElement != null && !list.contains(selectedElement)) {
+            // Just in case the existing selected element is from elsewhere
+            // make sure it is in the list
+            list.add(selectedElement);
+        }
         setElements(list);
 
         setSelectedItem(Model.getFacade().getTrigger(transition));
