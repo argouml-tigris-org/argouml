@@ -727,6 +727,8 @@ abstract class UMLComboBoxModel extends AbstractListModel
 
     public void popupMenuWillBecomeVisible(PopupMenuEvent ev) {
         if (isLazy() && !modelValid && !processingWillBecomeVisible) {
+            Object selectedElement = getSelectedModelElement();
+            
             buildModelListTimed();
             modelValid = true;
             // We should be able to just do the above, but Swing has already
@@ -739,6 +741,9 @@ abstract class UMLComboBoxModel extends AbstractListModel
                 list.getUI().setPopupVisible( list, true );
             } finally {
                 processingWillBecomeVisible = false;
+            }
+            if (selectedElement != null) {
+                setSelectedItem(selectedElement);
             }
         }
     }

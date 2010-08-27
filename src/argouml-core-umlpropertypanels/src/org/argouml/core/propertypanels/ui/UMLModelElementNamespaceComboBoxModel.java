@@ -114,8 +114,6 @@ class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel {
     protected void buildModelList() {
         Set<Object> elements = new TreeSet<Object>(new PathComparator());
 
-        Object selectedElement = getSelectedModelElement();
-        
         Object model =
             ProjectManager.getManager().getCurrentProject().getRoot();
         Object target = getTarget();
@@ -142,10 +140,6 @@ class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel {
         // so remove all the old contents first
         removeAllElements();
         addAll(elements);
-
-        if (selectedElement != null) {
-            setSelectedItem(selectedElement);
-        }
     }
 
     /*
