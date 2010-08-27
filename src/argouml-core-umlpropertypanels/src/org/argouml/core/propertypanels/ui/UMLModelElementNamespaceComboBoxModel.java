@@ -78,6 +78,7 @@ class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel {
             final String propertyName,
             final Object target) {
         super("namespace", true);
+        assert (target != null);
         Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
         setTarget(target);
@@ -146,10 +147,7 @@ class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel {
      * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
-            return Model.getFacade().getNamespace(getTarget());
-        }
-        return null;
+        return Model.getFacade().getNamespace(getTarget());
     }
     
     @Override
