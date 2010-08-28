@@ -1527,7 +1527,18 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setMultiplicity(final Object handle, Object arg) {
-        if (arg == null) {
+        if (arg == null || arg.equals("")) {
+            RunnableClass run = new RunnableClass() {
+                public void run() {
+                    ((MultiplicityElement) handle).setLowerValue(null);
+                    ((MultiplicityElement) handle).setUpperValue(null);
+                }
+            };
+            editingDomain.getCommandStack().execute(
+                    new ChangeCommand(
+                            modelImpl, run,
+                            "Removing the multiplicity from element #", //$NON-NLS-1$
+                            handle));
             return;
         }
         if (!(handle instanceof MultiplicityElement)) {
