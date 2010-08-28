@@ -1084,6 +1084,15 @@ public interface CoreHelper {
     void setMultiplicity(Object handle, Object arg);
 
     /**
+     * Set the multiplicity of a ModelElement.
+     *
+     * @param handle model element
+     * @param lower the lower range of the multiplicity
+     * @param upper the upper range of the multiplicity
+     */
+    void setMultiplicity(Object handle, int lower, int upper);
+
+    /**
      * Set the name of a ModelElement.
      *
      * @param handle is the model element

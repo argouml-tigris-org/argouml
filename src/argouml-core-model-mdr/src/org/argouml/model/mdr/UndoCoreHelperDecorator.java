@@ -287,6 +287,22 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         }, arg, Model.getFacade().getMultiplicity(handle));
     }
 
+    public void setMultiplicity(final Object handle, int lower, int upper) {
+        final String lowerStr;
+        if (lower == -1) {
+            lowerStr = "*";
+        } else {
+            lowerStr = Integer.toString(lower);
+        }
+        final String upperStr;
+        if (upper == -1) {
+            upperStr = "*";
+        } else {
+            upperStr = Integer.toString(lower);
+        }
+        setMultiplicity(handle, lowerStr + ".." + upperStr);
+    }
+
     public void setBody(final Object handle, String body) {
         createCommand(new StringSetter() {
             public void set(String value) {

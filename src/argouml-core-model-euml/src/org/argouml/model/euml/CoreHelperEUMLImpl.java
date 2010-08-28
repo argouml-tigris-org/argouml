@@ -1531,7 +1531,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
             return;
         }
         if (!(handle instanceof MultiplicityElement)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "A MultiplicityElement was expected"); //$NON-NLS-1$
         }
         if (arg instanceof String) {
             String s = (String) arg;
@@ -1569,31 +1570,39 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 upper = lower;
             }
             
-            final int lower_ = lower, upper_ = upper;
-            RunnableClass run = new RunnableClass() {
-                public void run() {
-                    // TODO: We currently delete the old values before setting
-                    // to something new. This is a workaround to issue 6056.
-                    // We should consider giving an API to get the lower and
-                    // upper values so that controls can listen directly to
-                    // those rather than the element containing those values.
-                    ((MultiplicityElement) handle).setLowerValue(null);
-                    ((MultiplicityElement) handle).setUpperValue(null);
-                    //
-                    ((MultiplicityElement) handle).setLower(lower_);
-                    ((MultiplicityElement) handle).setUpper(upper_);
-                }
-            };
-            editingDomain.getCommandStack().execute(
-                    new ChangeCommand(
-                            modelImpl, run,
-                            "Set the multiplicity # to the element #", arg,
-                            handle));
+            setMultiplicity(handle, lower, upper);
         } else {
             throw new NotYetImplementedException();
         }
     }
 
+    public void setMultiplicity(
+            final Object handle,
+            final int lower,
+            final int upper) {
+            
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                // TODO: We currently delete the old values before setting
+                // to something new. This is a workaround to issue 6056.
+                // We should consider giving an API to get the lower and
+                // upper values so that controls can listen directly to
+                // those rather than the element containing those values.
+                ((MultiplicityElement) handle).setLowerValue(null);
+                ((MultiplicityElement) handle).setUpperValue(null);
+                //
+                ((MultiplicityElement) handle).setLower(lower);
+                ((MultiplicityElement) handle).setUpper(upper);
+            }
+        };
+        editingDomain.getCommandStack().execute(
+                new ChangeCommand(
+                        modelImpl, run,
+                        "Set the multiplicity #..# to the element #", //$NON-NLS-1$
+                        lower, upper, handle));
+    }
+
+    
     public void setName(final Object handle, final String name) {
         if (!(handle instanceof NamedElement)) {
             if (handle instanceof Generalization) {

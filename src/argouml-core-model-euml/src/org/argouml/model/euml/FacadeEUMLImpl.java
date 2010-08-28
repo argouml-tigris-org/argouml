@@ -1000,9 +1000,15 @@ class FacadeEUMLImpl implements Facade {
         // MultiplicityElement is now an interface implemented
         // by element types that support multiplicities - tfm
         if (handle instanceof MultiplicityElement) {
-            return (MultiplicityElement) handle;
+            MultiplicityElement me = (MultiplicityElement) handle;
+            if (me.getUpperValue() == null && me.getLowerValue() == null) {
+                return null;
+            } else {
+                return (MultiplicityElement) handle;
+            }
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(
+                    "MultiplicityElement expected"); //$NON-NLS-1$
         }
     }
 

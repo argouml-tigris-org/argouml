@@ -153,6 +153,8 @@ public interface DataTypesFactory extends Factory {
      *            the upper bound of the range. The integer value -1 represents
      *            the special UML value 'unlimited'
      * @return an initialized UML Multiplicity instance.
+     * @deprecated by Bob Tarling in 0.31.5 use
+     * CoreHelper.setMultiplicity(Object, int, int);
      */
     @Deprecated
     Object createMultiplicity(int lower, int upper);

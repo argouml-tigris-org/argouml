@@ -2972,6 +2972,13 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
+    public void setMultiplicity(Object handle, int lower, int upper) {
+
+        Object arg =
+            modelImpl.getDataTypesFactory().createMultiplicity(lower, upper);
+        
+        setMultiplicity(handle, arg);
+    }
 
     public void setName(final Object handle, final String name) {
         if (handle instanceof ModelElement) {
