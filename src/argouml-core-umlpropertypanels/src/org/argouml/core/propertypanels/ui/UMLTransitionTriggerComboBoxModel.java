@@ -28,12 +28,11 @@ import org.argouml.ui.UndoableAction;
 public class UMLTransitionTriggerComboBoxModel extends UMLComboBoxModel {
 
     public UMLTransitionTriggerComboBoxModel(
-        final String propertyName,
-        final Object target) {
-        super(propertyName, false);
+            final String propertyName,
+            final Object target) {
+        super(target, propertyName, false);
         Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
-        setTarget(target);
     }
     
     @SuppressWarnings("unchecked")

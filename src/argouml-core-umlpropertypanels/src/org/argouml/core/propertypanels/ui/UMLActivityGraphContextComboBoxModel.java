@@ -67,8 +67,7 @@ class UMLActivityGraphContextComboBoxModel extends  UMLComboBoxModel {
      * Constructor for UMLStateMachineContextListModel.
      */
     public UMLActivityGraphContextComboBoxModel(String propertyName, final Object target) {
-        super(propertyName, false);
-        setTarget(target);
+        super(target, propertyName, false);
     }
 
     /*

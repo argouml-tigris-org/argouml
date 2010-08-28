@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -72,6 +72,11 @@ import org.argouml.model.UmlChangeEvent;
 abstract class UMLComboBoxModel extends AbstractListModel
         implements PropertyChangeListener, ComboBoxModel, PopupMenuListener {
 
+    /**
+     * The UID
+     */
+    private static final long serialVersionUID = 6038919811554379037L;
+
     private static final Logger LOG = Logger.getLogger(UMLComboBoxModel.class);
 
     /**
@@ -84,7 +89,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
     /**
      * The target of the comboboxmodel. This is some UML modelelement
      */
-    private Object comboBoxTarget = null;
+    private Object target = null;
 
     /**
      * The list with objects that should be shown in the combobox.
@@ -149,16 +154,41 @@ abstract class UMLComboBoxModel extends AbstractListModel
      *            clear the attribute.
      * @throws IllegalArgumentException if one of the arguments is null
      */
-    public UMLComboBoxModel(String name, boolean clearable) {
+    public UMLComboBoxModel(Object target, String name, boolean clearable) {
         super();
         if (name == null || name.equals("")) {
             throw new IllegalArgumentException("A property name must be provided");
+        }
+        if (target == null) {
+            throw new IllegalArgumentException("Target cannot be null");
         }
         // It would be better if we didn't need the container to get
         // the target. This constructor can have zero parameters as
         // soon as we improve targetChanged.
         isClearable = clearable;
         propertySetName = name;
+        modelValid = false;
+            
+        /* Add new listeners: */
+        this.target = target;
+        Model.getPump().addModelEventListener(this, target,
+                propertySetName);
+        // Allow listening to other elements:
+        addOtherModelEventListeners(target);
+        
+        buildingModel = true;
+        buildMinimalModelList();
+        // Do not set buildingModel = false here, 
+        // otherwise the action for selection is performed.
+        setSelectedItem(external2internal(getSelectedModelElement()));
+        buildingModel = false;
+
+        if (getSize() > 0) {
+            fireIntervalAdded(this, 0, getSize() - 1);
+        }
+        if (getSelectedItem() != null && isClearable) {
+            addElement(CLEARED); // makes sure we can select 'none'
+        }
     }
 
     public final void propertyChange(final PropertyChangeEvent pve) {
@@ -314,7 +344,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
      * @return  the ModelElement
      */
     protected Object getTarget() {
-        return comboBoxTarget;
+        return target;
     }
 
     /**
@@ -395,18 +425,18 @@ abstract class UMLComboBoxModel extends AbstractListModel
      * 
      * @param theNewTarget the target
      */
-    protected void setTarget(Object theNewTarget) {
+    final protected void setTarget(Object theNewTarget) {
         assert (getTarget() == null);
         assert (theNewTarget != null);
         modelValid = false;
         LOG.debug("setTarget target :  " + theNewTarget);
             
         /* Add new listeners: */
-        comboBoxTarget = theNewTarget;
-        Model.getPump().addModelEventListener(this, comboBoxTarget,
+        target = theNewTarget;
+        Model.getPump().addModelEventListener(this, target,
                 propertySetName);
         // Allow listening to other elements:
-        addOtherModelEventListeners(comboBoxTarget);
+        addOtherModelEventListeners(target);
         
         buildingModel = true;
         buildMinimalModelList();
@@ -424,9 +454,9 @@ abstract class UMLComboBoxModel extends AbstractListModel
     }
     
     public void removeModelEventListener() {
-        Model.getPump().removeModelEventListener(this, comboBoxTarget,
+        Model.getPump().removeModelEventListener(this, target,
                 propertySetName);
-        removeOtherModelEventListeners(comboBoxTarget);
+        removeOtherModelEventListeners(target);
     }
 
     

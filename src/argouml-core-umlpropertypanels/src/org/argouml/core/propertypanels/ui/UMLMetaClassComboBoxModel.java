@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -36,7 +36,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.core.propertypanels.ui;
 
 import java.awt.event.ActionEvent;
@@ -73,7 +72,7 @@ class UMLMetaClassComboBoxModel extends UMLComboBoxModel {
     public UMLMetaClassComboBoxModel(
             final String propertyName,
             final Object target) {
-        super(propertyName, true);
+        super(target, propertyName, true);
         
         Collection<String> tmpMetaClasses =
                 Model.getCoreHelper().getAllMetatypeNames();
@@ -91,7 +90,6 @@ class UMLMetaClassComboBoxModel extends UMLComboBoxModel {
             metaClasses = new LinkedList<String>(tmpMetaClasses);
             Collections.sort(metaClasses);
         }
-        setTarget(target);
     }
 
     /*

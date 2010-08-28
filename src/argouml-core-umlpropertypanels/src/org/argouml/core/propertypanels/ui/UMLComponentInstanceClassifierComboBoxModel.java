@@ -39,8 +39,7 @@ class UMLComponentInstanceClassifierComboBoxModel
     public UMLComponentInstanceClassifierComboBoxModel(
             final String propertyName,
             final Object target) {
-        super(propertyName, true);
-        setTarget(target);
+        super(target, propertyName, true);
     }
     
     /*

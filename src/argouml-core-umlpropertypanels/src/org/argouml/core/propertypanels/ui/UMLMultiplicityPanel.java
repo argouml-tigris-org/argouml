@@ -62,6 +62,10 @@ import org.argouml.ui.UndoableAction;
  */
 class UMLMultiplicityPanel extends JPanel implements ItemListener {
 
+    /**
+     * The UID
+     */
+    private static final long serialVersionUID = -3087728411434482078L;
     private MultiplicityComboBox multiplicityComboBox;
     private MultiplicityCheckBox checkBox;
     private MultiplicityComboBoxModel multiplicityComboBoxModel;
@@ -84,7 +88,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
         super(new BorderLayout());
         
         multiplicityComboBoxModel =
-            new MultiplicityComboBoxModel(propertyName);
+            new MultiplicityComboBoxModel(target, propertyName);
         
         checkBox = new MultiplicityCheckBox();
         multiplicityComboBox =
@@ -95,7 +99,8 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
         multiplicityComboBox.addItemListener(this);
         add(checkBox, BorderLayout.WEST);
         add(multiplicityComboBox, BorderLayout.CENTER);
-        setTarget(target);
+        multiplicityComboBox.setTarget(target);
+        checkBox.setTarget(target);
     }
     
     /**
@@ -142,18 +147,6 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
 	return multiplicityComboBoxModel.getTarget();
     }
     
-    /**
-     * Sets the target.
-     * @param target
-     */
-    public void setTarget(Object target) {
-        if (getTarget() != target) {
-            multiplicityComboBoxModel.setTarget(target);
-            multiplicityComboBox.setTarget(target);
-            checkBox.setTarget(target);
-        }
-    }
-
     /**
      * An editable and searchable combobox to edit the multiplicity attribute of
      * some modelelement.
@@ -227,8 +220,10 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
          *
          * @param propertySetName the name of the property set
          */
-        public MultiplicityComboBoxModel(String propertySetName) {
-            super(propertySetName, false);
+        public MultiplicityComboBoxModel(
+        	final Object target,
+        	final String propertySetName) {
+            super(target, propertySetName, false);
         }
     
         /*

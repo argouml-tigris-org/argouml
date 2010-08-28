@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -75,10 +75,9 @@ class UMLGeneralizationPowertypeComboBoxModel
     public UMLGeneralizationPowertypeComboBoxModel(
             final String propertyName,
             final Object target) {
-        super(propertyName, true);
+        super(target, propertyName, true);
         Model.getPump().addClassModelEventListener(this,
                 Model.getMetaTypes().getNamespace(), "ownedElement");
-        setTarget(target);
     }
 
     /*
