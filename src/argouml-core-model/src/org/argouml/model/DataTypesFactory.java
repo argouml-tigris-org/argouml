@@ -154,22 +154,29 @@ public interface DataTypesFactory extends Factory {
      *            the special UML value 'unlimited'
      * @return an initialized UML Multiplicity instance.
      */
+    @Deprecated
     Object createMultiplicity(int lower, int upper);
 
     /**
-     * Create an initialized instance of a UML Multiplicity.
+     * Create an initialized instance of a UML Multiplicity (UML1.4 only).
      *
      * @param range a List containing the range
      * @return an initialized UML Multiplicity instance.
+     * @deprecated by Bob Tarling in 0.31.5 use
+     * CoreHelper.setMultiplicity(Object, Object);
      */
+    @Deprecated
     Object createMultiplicity(List range);
 
     /**
-     * Create an initialized instance of a UML Multiplicity.
+     * Create an initialized instance of a UML Multiplicity (UML1.4 only).
      *
      * @param str a String representing the multiplicity
      * @return an initialized UML Multiplicity instance.
+     * @deprecated by Bob Tarling in 0.31.5 use
+     * CoreHelper.setMultiplicity(Object, Object);
      */
+    @Deprecated
     Object createMultiplicity(String str);
     
     /**
@@ -183,7 +190,10 @@ public interface DataTypesFactory extends Factory {
      *                asterisk character (*) representing "unlimited". The
      *                string "*" is equivalent to "0..*".
      * @return MultiplicityRange A multiplicity range
+     * @deprecated by Bob Tarling in 0.31.5 use
+     * CoreHelper.setMultiplicity(Object, Object);
      */
+    @Deprecated
     public Object createMultiplicityRange(String str);
     
     /**
@@ -195,6 +205,9 @@ public interface DataTypesFactory extends Factory {
      * @param upper
      *            the upper bound of the range
      * @return MultiplictyRange A multiplicity range
+     * @deprecated by Bob Tarling in 0.31.5 use
+     * CoreHelper.setMultiplicity(Object, Object);
      */
+    @Deprecated
     public Object createMultiplicityRange(int lower, int upper);
 }
