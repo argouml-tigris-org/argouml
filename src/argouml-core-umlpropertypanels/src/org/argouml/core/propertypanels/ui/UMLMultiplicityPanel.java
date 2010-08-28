@@ -284,11 +284,6 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
             return null;
         }
 
-        @Override
-        protected Object getTarget() {
-            return super.getTarget();
-        }
-        
         public Action getAction() {
             return new ActionSetClassifierRoleMultiplicity();
         }
