@@ -69,7 +69,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
     private MultiplicityComboBox multiplicityComboBox;
     private MultiplicityCheckBox checkBox;
     
-    private static List multiplicityList = new ArrayList();
+    private static List<String> multiplicityList = new ArrayList<String>();
     
     static {
         multiplicityList.add("1");
@@ -123,23 +123,12 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
     }
 
     public void itemStateChanged(ItemEvent event) {
-        if (event.getSource() == multiplicityComboBox && getTarget() != null) {
+        if (event.getSource() == multiplicityComboBox) {
             Object item = multiplicityComboBox.getSelectedItem();
             Object target = multiplicityComboBox.getTarget();
-            Object multiplicity = Model.getFacade().getMultiplicity(target);
-            if (Model.getFacade().isAMultiplicity(item)) {
-                if (!multiplicity.equals(item)) {
-                    Model.getCoreHelper().setMultiplicity(target, item);
-                }
-            } else if (item instanceof String) {
-                if (!item.equals(Model.getFacade().toString(multiplicity))) {
-                    Model.getCoreHelper().setMultiplicity(
-                            target,
-                            Model.getDataTypesFactory().createMultiplicity(
-                                    (String) item));
-                }
-            } else {
-                Model.getCoreHelper().setMultiplicity(target, null);
+            String currentMult = Model.getFacade().toString(Model.getFacade().getMultiplicity(target));
+            if (!currentMult.equals(item)) {
+                Model.getCoreHelper().setMultiplicity(target, item);
             }
         }
     }
@@ -190,20 +179,14 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
          */
         protected void doOnEdit(Object item) {
             String text = (String) item;
-            Object multi = null;
-            try {
-                multi = Model.getDataTypesFactory().createMultiplicity(text);
-            } catch (IllegalArgumentException e) {
-                Object o = search(text);
-                if (search(text) != null ) {
-                    multi = o;
-                }
+            Model.getCoreHelper().setMultiplicity(getTarget(), text);
+            text = Model.getFacade().toString(Model.getFacade().getMultiplicity(getTarget()));
+            Object o = search(text);
+            if (o == null) {
+        	((MultiplicityComboBoxModel) getModel()).addElement(text);
             }
-            if (multi != null) {
-                setSelectedItem(multi);
-            } else {
-                getEditor().setItem(getSelectedItem());
-            }
+            setSelectedItem(text);
+            getEditor().setItem(text);
         }
     }
     
@@ -244,7 +227,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
             setElements(multiplicityList);
             Object t = getTarget();
             if (Model.getFacade().isAModelElement(t)) {
-                addElement(Model.getFacade().getMultiplicity(t));
+                addElement(Model.getFacade().toString(Model.getFacade().getMultiplicity(t)));
             }
         }
     
@@ -252,17 +235,11 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
          * @see org.argouml.uml.ui.UMLComboBoxModel#addElement(java.lang.Object)
          */
         public void addElement(Object o) {
-            if (o == null) {
-                return;
-            }
-            if (Model.getFacade().isAMultiplicity(o)) {
-                o = Model.getFacade().toString(o);
-                if ("".equals(o)) {
-                    o = "1";
-                }
+            if (!(o instanceof String)) {
+                throw new IllegalArgumentException("Only strings can be added to the combo");
             }
             if (!multiplicityList.contains(o) && isValidElement(o)) {
-                multiplicityList.add(o);
+                multiplicityList.add((String) o);
             }
             super.addElement(o);
         }
@@ -271,9 +248,11 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
          * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
          */
         public void setSelectedItem(Object anItem) {
+            if (!(anItem instanceof String)) {
+        	anItem = Model.getFacade().toString(anItem);
+            }
             addElement(anItem);
-            super.setSelectedItem((anItem == null) ? null 
-                    : Model.getFacade().toString(anItem));
+            super.setSelectedItem(anItem);
         }
 
         protected Object getSelectedModelElement() {
@@ -318,9 +297,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
                         if (!item.equals(Model.getFacade().toString(
                                 Model.getFacade().getMultiplicity(target)))) {
                             Model.getCoreHelper().setMultiplicity(
-                                    target,
-                                    Model.getDataTypesFactory().createMultiplicity(
-                                            (String) item));
+                                    target, (String) item);
                         }
                     } else {
                         Model.getCoreHelper().setMultiplicity(target, null);
@@ -343,12 +320,10 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
 	    if (e.getStateChange() == ItemEvent.SELECTED) {
 		String comboText =
 		    (String) multiplicityComboBox.getSelectedItem();
-                Object multi =
-                    Model.getDataTypesFactory().createMultiplicity(comboText);
-		if (multi == null) {
+		if (comboText == null) {
                     Model.getCoreHelper().setMultiplicity(getTarget(), "1");
 		} else {
-                    Model.getCoreHelper().setMultiplicity(getTarget(), multi);
+                    Model.getCoreHelper().setMultiplicity(getTarget(), comboText);
 		}
 		multiplicityComboBox.setEnabled(true);
 		multiplicityComboBox.setEditable(true);
