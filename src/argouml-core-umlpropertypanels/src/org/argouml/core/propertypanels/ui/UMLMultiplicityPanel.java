@@ -87,10 +87,14 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
             final Object target) {
         super(new BorderLayout());
         
+        if (target == null) {
+            throw new IllegalArgumentException("A target must be supplied");
+        }
+        
         multiplicityComboBoxModel =
             new MultiplicityComboBoxModel(target, propertyName);
         
-        checkBox = new MultiplicityCheckBox();
+        checkBox = new MultiplicityCheckBox(target);
         multiplicityComboBox =
 		new MultiplicityComboBox(
 		        multiplicityComboBoxModel,
@@ -100,7 +104,6 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
         add(checkBox, BorderLayout.WEST);
         add(multiplicityComboBox, BorderLayout.CENTER);
         multiplicityComboBox.setTarget(target);
-        checkBox.setTarget(target);
     }
     
     /**
@@ -334,8 +337,10 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
     private class MultiplicityCheckBox extends JCheckBox
         implements ItemListener {
 	
-	public MultiplicityCheckBox() {
-	    addItemListener(this);
+	public MultiplicityCheckBox(
+		final Object target) {
+            setSelected(Model.getFacade().getMultiplicity(target) != null);
+            addItemListener(this);
 	}
 
 	public void itemStateChanged(ItemEvent e) {
@@ -357,18 +362,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
                 Model.getCoreHelper().setMultiplicity(getTarget(), null);
 	    }
 	}
-	
-	/**
-	 * Sets the target
-	 * @param theTarget
-	 */
-	public void setTarget (Object theTarget) {
-	    boolean exists = theTarget != null 
-	        && Model.getFacade().getMultiplicity(theTarget) != null;
-	    setSelected(exists);
-        }
     }
-    
 }
 
 
