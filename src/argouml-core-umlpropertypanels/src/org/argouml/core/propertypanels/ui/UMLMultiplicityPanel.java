@@ -68,7 +68,6 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
     private static final long serialVersionUID = -3087728411434482078L;
     private MultiplicityComboBox multiplicityComboBox;
     private MultiplicityCheckBox checkBox;
-    private MultiplicityComboBoxModel multiplicityComboBoxModel;
     
     private static List multiplicityList = new ArrayList();
     
@@ -91,7 +90,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
             throw new IllegalArgumentException("A target must be supplied");
         }
         
-        multiplicityComboBoxModel =
+        MultiplicityComboBoxModel multiplicityComboBoxModel =
             new MultiplicityComboBoxModel(target, propertyName);
         
         checkBox = new MultiplicityCheckBox(target);
@@ -126,7 +125,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
     public void itemStateChanged(ItemEvent event) {
         if (event.getSource() == multiplicityComboBox && getTarget() != null) {
             Object item = multiplicityComboBox.getSelectedItem();
-            Object target = multiplicityComboBoxModel.getTarget();
+            Object target = multiplicityComboBox.getTarget();
             Object multiplicity = Model.getFacade().getMultiplicity(target);
             if (Model.getFacade().isAMultiplicity(item)) {
                 if (!multiplicity.equals(item)) {
@@ -146,7 +145,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
     }
     
     private Object getTarget() {
-	return multiplicityComboBoxModel.getTarget();
+	return multiplicityComboBox.getTarget();
     }
     
     /**
