@@ -2931,14 +2931,26 @@ class CoreHelperMDRImpl implements CoreHelper {
 
     public void setMultiplicity(Object handle, Object arg) {
         if (arg instanceof String) {
-            // TODO: We have multiple string representations for multiplicities
-            // these should be consolidated. This form is used by
-            // org.argouml.uml.reveng
-            if ("1_N".equals(arg)) {
+            String sarg = (String) arg;
+            boolean allDigits = true;
+            for (int i=0; i < sarg.length(); ++i) {
+                if (!Character.isDigit(sarg.charAt(i))) {
+                    allDigits = false;
+                }
+            }
+            if (allDigits || sarg.indexOf('.') > -1 || sarg.indexOf(',') > -1) {
                 arg =
-                    modelImpl.getDataTypesFactory().createMultiplicity(1, -1);
+                    modelImpl.getDataTypesFactory().createMultiplicity(sarg);
             } else {
-                arg = modelImpl.getDataTypesFactory().createMultiplicity(1, 1);
+                // TODO: We have multiple string representations for multiplicities
+                // these should be consolidated. This form is used by
+                // org.argouml.uml.reveng
+                if ("1_N".equals(arg)) {
+                    arg =
+                        modelImpl.getDataTypesFactory().createMultiplicity(1, -1);
+                } else {
+                    arg = modelImpl.getDataTypesFactory().createMultiplicity(1, 1);
+                }
             }
         }
 
