@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -103,7 +103,6 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
         multiplicityComboBox.addItemListener(this);
         add(checkBox, BorderLayout.WEST);
         add(multiplicityComboBox, BorderLayout.CENTER);
-        multiplicityComboBox.setTarget(target);
     }
     
     /**
@@ -165,13 +164,19 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
         private static final long serialVersionUID = -5860730478954634611L;
 
         /**
-         * Constructor for UMLMultiplicityComboBox2.
-         * @param arg0 the combobox model
+         * Constructor for MultiplicityComboBox.
+         * @param arg0 the model
          * @param selectAction the action
          */
-        public MultiplicityComboBox(UMLComboBoxModel model,
+        public MultiplicityComboBox(
+        	MultiplicityComboBoxModel model,
                 Action selectAction) {
             super(model, selectAction);
+            final Object target = model.getTarget();
+	    final boolean exists =
+		(Model.getFacade().getMultiplicity(target) != null);
+	    setEnabled(exists);
+	    setEditable(exists);
         }
 
         /**
@@ -201,14 +206,6 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
                 getEditor().setItem(getSelectedItem());
             }
         }
-
-	public void setTarget(Object target) {
-	    boolean exists = (target != null 
-	        && Model.getFacade().getMultiplicity(target) != null);
-	    multiplicityComboBox.setEnabled(exists);
-	    multiplicityComboBox.setEditable(exists);
-	    checkBox.setSelected(exists);
-	}
     }
     
     
@@ -219,6 +216,11 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
         extends UMLComboBoxModel {
 
         /**
+	 * The UID
+	 */
+	private static final long serialVersionUID = 1096137101625304715L;
+
+	/**
          * Constructor for UMLMultiplicityComboBoxModel.
          *
          * @param propertySetName the name of the property set
