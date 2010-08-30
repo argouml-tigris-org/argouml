@@ -70,9 +70,14 @@ public class GoStateMachineToState extends AbstractPerspectiveRule {
     public Collection getChildren(Object parent) {
 
         if (Model.getFacade().isAStateMachine(parent)) {
-            if (Model.getFacade().getTop(parent) != null) {
-                return Model.getFacade().getSubvertices(
-                        Model.getFacade().getTop(parent));
+            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                if (Model.getFacade().getTop(parent) != null) {
+                    return Model.getFacade().getSubvertices(
+                            Model.getFacade().getTop(parent));
+                }
+            } else {
+                // TODO: UML2 - what do we do here?
+                return Collections.EMPTY_SET;
             }
         }
         return Collections.EMPTY_SET;
