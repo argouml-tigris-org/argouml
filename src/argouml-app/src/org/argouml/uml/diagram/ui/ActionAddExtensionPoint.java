@@ -1,13 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
+ *    Laurent Braud
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -45,6 +46,8 @@ import javax.swing.Action;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.ui.UndoableAction;
 
@@ -107,6 +110,26 @@ public final class ActionAddExtensionPoint extends UndoableAction {
 
         if (singleton == null) {
             singleton = new ActionAddExtensionPoint();
+            
+            // When a new target is selected, we have to check if it 's a use case.
+            //Then, the icone "add extension point" have to become enabled.
+            TargetManager.getInstance().addTargetListener(new TargetListener() {
+               
+                public void targetAdded(TargetEvent e) {
+                    setTarget();
+                }
+                public void targetRemoved(TargetEvent e) {
+                    setTarget();
+                }
+
+                public void targetSet(TargetEvent e) {
+                    setTarget();
+                }
+                private void setTarget() {
+                    singleton.setEnabled(singleton.shouldBeEnabled());
+                }
+            });
+            singleton.setEnabled(singleton.shouldBeEnabled());
         }
 
         return singleton;
@@ -119,23 +142,23 @@ public final class ActionAddExtensionPoint extends UndoableAction {
      * @param ae  The action that caused us to be invoked.
      */
     public void actionPerformed(ActionEvent ae) {
-	super.actionPerformed(ae);
+        super.actionPerformed(ae);
 
         // Find the target in the project browser. We can only do anything if
         // its a use case.
 
-	Object         target = TargetManager.getInstance().getModelTarget();
+        Object target = TargetManager.getInstance().getModelTarget();
 
-	if (!(Model.getFacade().isAUseCase(target))) {
+        if (!(Model.getFacade().isAUseCase(target))) {
             return;
         }
 
         // Create a new extension point and make it the browser target. Then
         // invoke the superclass action method.
 
-	Object ep =
+        Object ep =
             Model.getUseCasesFactory()
-            	.buildExtensionPoint(target);
+                .buildExtensionPoint(target);
 
         TargetManager.getInstance().setTarget(ep);
     }
@@ -150,10 +173,25 @@ public final class ActionAddExtensionPoint extends UndoableAction {
      *          otherwise.
      */
     public boolean isEnabled() {
-	Object target = TargetManager.getInstance().getModelTarget();
+        Object target = TargetManager.getInstance().getModelTarget();
 
-	return super.isEnabled()
+        return super.isEnabled()
                 && (Model.getFacade().isAUseCase(target));
+        
+    }
+    
+    /**
+     * Called when a new target is selected, in order to display Action
+     * @return true if the target is a use case, otherwise false
+     * 
+     * @since 2010-08-30
+     */
+    public boolean shouldBeEnabled() {
+        Object target = TargetManager.getInstance().getSingleModelTarget();
+        if (target == null) {
+            return false;
+        }
+        return Model.getFacade().isAUseCase(target);
     }
 
 } /* end class ActionAddExtensionPoint */
