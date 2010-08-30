@@ -1,0 +1,58 @@
+/* $Id:$
+ *****************************************************************************
+ * Copyright (c) 2009 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *****************************************************************************
+ *
+ * Some portions of this file was previously release using the BSD License:
+ */
+
+package org.argouml.state2.diagram;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Logger;
+import org.argouml.model.Model;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
+
+class StateDiagramGraphModel extends UMLMutableGraphSupport {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger
+            .getLogger(StateDiagramGraphModel.class);
+
+    public StateDiagramGraphModel() {
+        super();
+    }
+
+    /*
+     * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
+     */
+    public List getPorts(Object nodeOrEdge) {
+        List res = new ArrayList();
+        return res;
+    }
+
+    public List getInEdges(Object port) {
+        // TODO: Auto-generated method stub
+        return null;
+    }
+
+    public List getOutEdges(Object port) {
+        // TODO: Auto-generated method stub
+        return null;
+    }
+
+    public Object getOwner(Object port) {
+        return port;
+    }
+}

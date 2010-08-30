@@ -1,0 +1,12 @@
+Manifest-Version: 2.0
+Class-Path: argouml.jar
+Created-By: 1.2 (Sun Microsystems Inc.) 
+
+Name: org/argouml/state2/StateDiagramModule.class
+Extension-name: org.argouml.state2.StateDiagramModule
+Specification-Title: State Diagram Module
+Specification-Version: 0.1
+Specification-Vendor: ArgoUML Team
+Implementation-Title: State Diagram Module
+Implementation-Version: 0.1
+Implementation-Vendor: ArgoUML Team

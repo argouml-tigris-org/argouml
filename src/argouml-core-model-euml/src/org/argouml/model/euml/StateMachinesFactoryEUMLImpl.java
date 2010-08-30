@@ -124,9 +124,6 @@ class StateMachinesFactoryEUMLImpl implements StateMachinesFactory,
         StateMachine machine = (StateMachine) createStateMachine();
         bc.setClassifierBehavior(machine);
         
-        bc.getOwnedElements().add(machine);
-
-        Element o2 = machine.getOwner();
         return machine;
     }
 
