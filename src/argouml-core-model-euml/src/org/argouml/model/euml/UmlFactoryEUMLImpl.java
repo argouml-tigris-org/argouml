@@ -333,8 +333,6 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = UMLFactory.eINSTANCE.createState();
         } else if (elementType == metaTypes.getPseudostate()) {
             o = modelImpl.getStateMachinesFactory().createPseudostate();
-        } else if (elementType == metaTypes.getObjectFlowState()) {
-            o = modelImpl.getActivityGraphsFactory().createObjectFlowState();
         } else if (elementType == metaTypes.getActionState()) {
             o = modelImpl.getActivityGraphsFactory().createActionState();
         } else if (elementType == metaTypes.getSubactivityState()) {
@@ -352,8 +350,6 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         } else if (elementType == metaTypes.getState()) {
             throw new IllegalArgumentException(
                     "Attempt to instantiate abstract type"); //$NON-NLS-1$
-        } else if (elementType == modelImpl.getMetaTypes().getSimpleState()) {
-            o = modelImpl.getStateMachinesFactory().createSimpleState();
         } else if (elementType == metaTypes.getClassifierRole()) {
             o = modelImpl.getCollaborationsFactory().createClassifierRole();
         } else if (elementType == metaTypes.getComponent()) {
