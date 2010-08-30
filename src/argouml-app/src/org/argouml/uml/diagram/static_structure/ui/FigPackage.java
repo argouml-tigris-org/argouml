@@ -328,6 +328,25 @@ public class FigPackage extends FigNodeModelElement
         forceRepaintShadow();
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
+    
+    /**
+     * Override ancestor behaviour by always calling setBounds even if the
+     * size hasn't changed. Without this override the Package bounds draw
+     * incorrectly. This is not the best fix but is a workaround until the
+     * true cause is known.
+     * 
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
+     */
+    protected void updateBounds() {
+        if (!isCheckSize()) {
+            return;
+        }
+        Rectangle bbox = getBounds();
+        Dimension minSize = getMinimumSize();
+        bbox.width = Math.max(bbox.width, minSize.width);
+        bbox.height = Math.max(bbox.height, minSize.height);
+        setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
+    }    
 
     /**
      * USED BY PGML.tee.
