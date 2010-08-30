@@ -20,7 +20,7 @@ import java.util.List;
 public class ControlData {
     
     private String controlType;
-    private String name;
+    private String propertyName;
     private String label;
     
     private List<Class<?>> types = new ArrayList<Class<?>>();
@@ -28,15 +28,15 @@ public class ControlData {
     
     public ControlData(
             final String controlType,
-            final String name,
+            final String propertyName,
             final String label) {
         this.controlType = controlType;
-        this.name = name;
+        this.propertyName = propertyName;
         
         if (label != null && label.length() > 0) {
             this.label = label;
         } else {
-            this.label = "label." + name.toLowerCase();
+            this.label = "label." + propertyName.toLowerCase();
         }
     }
     
@@ -44,8 +44,8 @@ public class ControlData {
         return controlType;
     }
 
-    public String getName() {
-        return name;
+    public String getPropertyName() {
+        return propertyName;
     }
     
     public String getLabel() {

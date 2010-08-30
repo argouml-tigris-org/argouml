@@ -16,24 +16,24 @@ package org.argouml.core.propertypanels.model;
 public class CheckBoxData {
     
     private Class<?> type;
-    private String name;
+    private String propertyName;
     
     public CheckBoxData(
             final Class<?> type,
-            final String name) {
+            final String propertyName) {
         this.type = type;
-        this.name = name;
+        this.propertyName = propertyName;
     }
     
     public Class<?> getType() {
         return type;
     }
 
-    public String getName() {
-        return name;
+    public String getPropertyName() {
+        return propertyName;
     }
 
     public String getLabel() {
-        return name;
+        return propertyName;
     }
 }

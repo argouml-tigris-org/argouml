@@ -110,7 +110,7 @@ class SwingUIFactory {
             } catch (Exception e) {
                 throw new IllegalStateException(
             		"Exception caught building control " + prop.getControlType()
-            		+ " for property " + prop.getName() + " on panel for "
+            		+ " for property " + prop.getPropertyName() + " on panel for "
             		+ target, e);
             }
         }
@@ -167,63 +167,63 @@ class SwingUIFactory {
         // instantiated when its not always needed.
         JPanel p = new JPanel();
         
-        final TitledBorder border = new TitledBorder(prop.getName());        
+        final TitledBorder border = new TitledBorder(prop.getPropertyName());        
         p.setBorder(border);
 
         JComponent control = null;
         
-        final String propertyName = prop.getName();
+        final String propertyName = prop.getPropertyName();
         
-        if ("initialValue".equals(prop.getName())) {        
+        if ("initialValue".equals(prop.getPropertyName())) {        
             UMLExpressionModel model = 
                 new UMLInitialValueExpressionModel(target);
-            p  = new UMLExpressionPanel(model, prop.getName());
+            p  = new UMLExpressionPanel(model, prop.getPropertyName());
             control = p;
-        } else if ("defaultValue".equals(prop.getName())) {
+        } else if ("defaultValue".equals(prop.getPropertyName())) {
             UMLExpressionModel model = 
                 new UMLDefaultValueExpressionModel(target);
-            p  = new UMLExpressionPanel(model, prop.getName());
+            p  = new UMLExpressionPanel(model, prop.getPropertyName());
             control = p;
-        } else if ("specification".equals(prop.getName())) {
+        } else if ("specification".equals(prop.getPropertyName())) {
             UMLPlainTextDocument document = 
-                new UMLOperationSpecificationDocument(prop.getName(), target);
+                new UMLOperationSpecificationDocument(prop.getPropertyName(), target);
             UMLTextArea osta = new UMLTextArea(document);
             osta.setRows(3);
             control = new JScrollPane(osta);
-        } else if ("body".equals(prop.getName()) && "String".equals(prop.getType())) {
-            UMLPlainTextDocument document = new UMLCommentBodyDocument(prop.getName(), target);
+        } else if ("body".equals(prop.getPropertyName()) && "String".equals(prop.getType())) {
+            UMLPlainTextDocument document = new UMLCommentBodyDocument(prop.getPropertyName(), target);
             UMLTextArea text = new UMLTextArea(document);
             text.setLineWrap(true);
             text.setRows(5);
             control = new JScrollPane(text);
-        } else if ("condition".equals(prop.getName())) {
+        } else if ("condition".equals(prop.getPropertyName())) {
             UMLExpressionModel conditionModel =
                 new UMLConditionExpressionModel(target);
             JTextArea conditionArea =
                 new UMLExpressionBodyField(conditionModel, true);
             conditionArea.setRows(5);
             control = new JScrollPane(conditionArea);
-        } else if ("script".equals(prop.getName())) {
+        } else if ("script".equals(prop.getPropertyName())) {
             UMLExpressionModel scriptModel =
                 new UMLScriptExpressionModel(target);            
-            p  = new UMLExpressionPanel(scriptModel, prop.getName());
+            p  = new UMLExpressionPanel(scriptModel, prop.getPropertyName());
             control = p;
-        } else if ("recurrence".equals(prop.getName())) {
+        } else if ("recurrence".equals(prop.getPropertyName())) {
             UMLExpressionModel recurrenceModel =
                 new UMLRecurrenceExpressionModel(target);            
-            p  = new UMLExpressionPanel(recurrenceModel, prop.getName());
+            p  = new UMLExpressionPanel(recurrenceModel, prop.getPropertyName());
             control = p;
-        } else if ("expression".equals(prop.getName())) {
+        } else if ("expression".equals(prop.getPropertyName())) {
             UMLExpressionModel model = new UMLExpressionExpressionModel(target);
-            p = new UMLExpressionPanel(model, prop.getName());
+            p = new UMLExpressionPanel(model, prop.getPropertyName());
             control = p;
-        } else if ("changeExpression".equals(prop.getName())) {
+        } else if ("changeExpression".equals(prop.getPropertyName())) {
             UMLExpressionModel model = new UMLChangeExpressionModel(target);
-            p = new UMLExpressionPanel(model, prop.getName());
+            p = new UMLExpressionPanel(model, prop.getPropertyName());
             control = p;
-        } else if ("when".equals(prop.getName())) {
+        } else if ("when".equals(prop.getPropertyName())) {
             UMLExpressionModel model = new UMLTimeExpressionModel(target);
-            p = new UMLExpressionPanel(model, prop.getName());
+            p = new UMLExpressionPanel(model, prop.getPropertyName());
             control = p;
         }
         
@@ -260,7 +260,7 @@ class SwingUIFactory {
         
         final SingleListFactory factory = new SingleListFactory();
         final JComponent pane =
-            factory.createComponent(target, prop.getName(), prop.getTypes());
+            factory.createComponent(target, prop.getPropertyName(), prop.getTypes());
         
         if (pane != null) {
             addControl(panel, Translator.localize(prop.getLabel()), pane, target);
@@ -273,7 +273,7 @@ class SwingUIFactory {
         
         final ListFactory factory = new ListFactory();
         final JComponent list =
-            factory.createComponent(target, prop.getName(), prop.getTypes());
+            factory.createComponent(target, prop.getPropertyName(), prop.getTypes());
 
         if (list != null) {
             addControl(panel, Translator.localize(prop.getLabel()), list, target);
@@ -289,7 +289,7 @@ class SwingUIFactory {
     private void buildOptionBox(JPanel panel, Object target,
             ControlData prop) {
         
-        final String propertyName = prop.getName();
+        final String propertyName = prop.getPropertyName();
 
         final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter(prop.getType());
 
@@ -314,10 +314,10 @@ class SwingUIFactory {
 	    final Object target,
             final ControlData prop) {
         JPanel p = new JPanel(new GridLayout2());
-        TitledBorder border = new TitledBorder(prop.getName());        
+        TitledBorder border = new TitledBorder(prop.getPropertyName());        
         p.setBorder(border);
         
-        if ("modifiers".equals(prop.getName())) {  
+        if ("modifiers".equals(prop.getPropertyName())) {  
             for (CheckBoxData data : prop.getCheckboxes()) {
                 buildCheckBox(p, target, data);
             }                            
@@ -330,7 +330,7 @@ class SwingUIFactory {
             final Object target,
             final CheckBoxData prop) {
         
-        final String propertyName = prop.getName();
+        final String propertyName = prop.getPropertyName();
         
         final GetterSetterManager getterSetter =
             GetterSetterManager.getGetterSetter(prop.getType());
@@ -362,8 +362,8 @@ class SwingUIFactory {
         
         JComponent comp = null;
         
-        final String propertyName = prop.getName();
-        if ("namespace".equals(prop.getName())) {
+        final String propertyName = prop.getPropertyName();
+        if ("namespace".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model =
                 new UMLModelElementNamespaceComboBoxModel(propertyName, target);
             final UMLComboBox combo = new UMLSearchableComboBox(
@@ -373,7 +373,7 @@ class SwingUIFactory {
                     Translator.localize(
                     "label.namespace.navigate.tooltip"),
                     combo);
-        } else if ("type".equals(prop.getName())) {
+        } else if ("type".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model;
             if (Model.getFacade().isATemplateParameter(target)) {
                 model = new UMLStructuralFeatureTypeComboBoxModel(
@@ -385,7 +385,7 @@ class SwingUIFactory {
                         target);
             }
             comp = new UMLComboBox(model);
-        } else if ("base".equals(prop.getName())) {
+        } else if ("base".equals(prop.getPropertyName())) {
             if (Model.getFacade().isAAssociationRole(target)) {
                 final UMLComboBoxModel model = 
                     new UMLAssociationRoleBaseComboBoxModel(propertyName, target);
@@ -398,22 +398,22 @@ class SwingUIFactory {
             } else {
                 //
             }
-        } else if ("powertype".equals(prop.getName())) {
+        } else if ("powertype".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model = 
                 new UMLGeneralizationPowertypeComboBoxModel(propertyName, target);
             final UMLComboBox combo = new UMLComboBox(
                     model);
             comp = combo;
-        } else if ("multiplicity".equals(prop.getName())) {            
+        } else if ("multiplicity".equals(prop.getPropertyName())) {            
             final UMLMultiplicityPanel mPanel = new UMLMultiplicityPanel(propertyName, target);
             comp = mPanel;
-        } else if ("activator".equals(prop.getName())) {
+        } else if ("activator".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model = 
                 new UMLMessageActivatorComboBoxModel(propertyName, target);
             final JComboBox combo =
                 new UMLMessageActivatorComboBox(model, model.getAction());
             comp = combo;
-        } else if ("operation".equals(prop.getName())) {
+        } else if ("operation".equals(prop.getPropertyName())) {
             if (Model.getFacade().isACallEvent(target)) {
                 UMLComboBoxModel model = 
                     new UMLCallEventOperationComboBoxModel(propertyName, target);
@@ -430,28 +430,28 @@ class SwingUIFactory {
                 	"label.operation.navigate.tooltip"),
                         combo);
             }
-        } else if ("classifier".equals(prop.getName())) {
+        } else if ("classifier".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model = 
                 new UMLComponentInstanceClassifierComboBoxModel(propertyName, target);
             UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "label.component-instance.navigate.tooltip"),
                             combo);
-        } else if ("representedClassifier".equals(prop.getName())) {
+        } else if ("representedClassifier".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model = 
                 new UMLCollaborationRepresentedClassifierComboBoxModel(propertyName, target);
             UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "label.represented-classifier.navigate.tooltip"),
                             combo);
-        } else if ("representedOperation".equals(prop.getName())) {
+        } else if ("representedOperation".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model = 
                 new UMLCollaborationRepresentedOperationComboBoxModel(propertyName, target);
             UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "label.represented-operation.navigate.tooltip"),
                     combo);
-        } else if ("context".equals(prop.getName())) {
+        } else if ("context".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model;
             if (Model.getFacade().isAActivityGraph(target)) {
                 model = 
@@ -465,32 +465,32 @@ class SwingUIFactory {
                             "label.context.navigate.tooltip"),
                     combo);
 
-        } else if ("association".equals(prop.getName())) {
+        } else if ("association".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model = 
                 new UMLLinkAssociationComboBoxModel(propertyName, target);
             comp =  new UMLComboBoxNavigator(Translator.localize(
                         "label.association.navigate.tooltip"),                
                     new UMLSearchableComboBox(model,
                             model.getAction(), true));
-        } else if ("participant".equals(prop.getName())) {
+        } else if ("participant".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model = 
                 new UMLAssociationEndTypeComboBoxModel(propertyName, target);
             comp = new UMLComboBox(model,
                     true);
-        } else if ("submachine".equals(prop.getName())) {
+        } else if ("submachine".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model =
                 new UMLSubmachineStateComboBoxModel(propertyName, target);
             final UMLComboBox submachineBox = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(Translator.localize(
                             "tooltip.nav-submachine"), submachineBox);
-        } else if ("referenceState".equals(prop.getName())) {
+        } else if ("referenceState".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model = 
                 new UMLStubStateComboBoxModel(propertyName, target);
             final UMLComboBox referencestateBox =
                 new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(Translator.localize(
                     "tooltip.nav-stubstate"), referencestateBox);            
-        } else if ("tagType".equals(prop.getName())) {
+        } else if ("tagType".equals(prop.getPropertyName())) {
             UMLComboBoxModel model = new UMLMetaClassComboBoxModel(propertyName, target);
             final UMLComboBox typeComboBox = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(
@@ -498,35 +498,35 @@ class SwingUIFactory {
                    typeComboBox);
             // TODO: Why is this disabled always?
             comp.setEnabled(false);
-        } else if ("parameter".equals(prop.getName())) {
+        } else if ("parameter".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model =
                 new UMLTemplateParameterParameterComboBoxModel(target);
             final UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(
                     Translator.localize("label.type.navigate.tooltip"),
                     combo);
-        } else if ("defaultElement".equals(prop.getName())) {
+        } else if ("defaultElement".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model =
                 new UMLTemplateParameterDefaultElementComboBoxModel(propertyName, target);
             final UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(
                     Translator.localize("label.type.navigate.tooltip"),
                     combo);
-        } else if ("signal".equals(prop.getName())) {
+        } else if ("signal".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model =
                 new UMLSignalComboBoxModel(propertyName, target);
             final UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(
                     Translator.localize("label.type.navigate.tooltip"),
                     combo);
-        } else if ("trigger".equals(prop.getName())) {
+        } else if ("trigger".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model =
                 new UMLTransitionTriggerComboBoxModel(propertyName, target);
             final UMLComboBox combo = new UMLComboBox(model);
             comp = new UMLComboBoxNavigator(
                     Translator.localize("label.type.navigate.tooltip"),
                     combo);
-        } else if ("specification".equals(prop.getName())) {
+        } else if ("specification".equals(prop.getPropertyName())) {
             final UMLComboBoxModel model =
                 new UMLMethodSpecificationComboBoxModel(propertyName, target);
             final UMLComboBox combo = new UMLComboBox(model);
@@ -551,17 +551,17 @@ class SwingUIFactory {
             ControlData prop) {
        
         UMLPlainTextDocument document = null;
-        if ("name".equals(prop.getName())) {
+        if ("name".equals(prop.getPropertyName())) {
             if (Model.getFacade().isATemplateParameter(target)) {
                 target = Model.getFacade().getParameter(target);
             }
-            document = new UMLModelElementNameDocument(prop.getName(), target);
-        } else if ("discriminator".equals(prop.getName())) {
-            document = new UMLDiscriminatorNameDocument(prop.getName(), target);
-        } else if ("location".equals(prop.getName())) {
-            document = new UMLExtensionPointLocationDocument(prop.getName(), target);
-        } else if ("bound".equals(prop.getName())) {
-            document = new UMLSynchStateBoundDocument(prop.getName(), target);
+            document = new UMLModelElementNameDocument(prop.getPropertyName(), target);
+        } else if ("discriminator".equals(prop.getPropertyName())) {
+            document = new UMLDiscriminatorNameDocument(prop.getPropertyName(), target);
+        } else if ("location".equals(prop.getPropertyName())) {
+            document = new UMLExtensionPointLocationDocument(prop.getPropertyName(), target);
+        } else if ("bound".equals(prop.getPropertyName())) {
+            document = new UMLSynchStateBoundDocument(prop.getPropertyName(), target);
         }
         
         if (document != null) {
