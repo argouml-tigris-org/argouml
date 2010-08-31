@@ -596,6 +596,7 @@ name
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
       <checkbox name="isSpecification" type="Boolean" />
+      <checkbox name="isNavigable" type="Boolean" />
       <checkbox name="ownerScope" type="ScopeKind" label="label.static" />
     </checkgroup>
     <optionbox name="changeability" type="ChangeableKind" />
