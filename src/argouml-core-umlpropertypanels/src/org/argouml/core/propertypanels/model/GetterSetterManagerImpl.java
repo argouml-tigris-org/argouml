@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -102,6 +103,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("raisedSignal", new RaisedExceptionGetterSetter());
         addGetterSetter("receiver", new ReceiverGetterSetter());
         addGetterSetter("reception", new ReceptionGetterSetter());
+        addGetterSetter("residentElement", new ResidentElementGetterSetter());
         addGetterSetter("sender", new SenderGetterSetter());
         addGetterSetter("subvertex", new SubvertexGetterSetter());
         addGetterSetter("targetScope", new TargetScopeGetterSetter());
@@ -1611,6 +1613,148 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	    public Object execute() {
     	        Model.getCommonBehaviorHelper()
     	            .removeReception(target, objectToRemove);
+    	        return null;
+    	    }
+    	}
+    }
+    
+    private class ResidentElementGetterSetter extends ListGetterSetter implements Addable, Removeable {
+        
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
+            Iterator it = Model.getFacade().getResidentElements(modelElement).iterator();
+            ArrayList list = new ArrayList();
+            while (it.hasNext()) {
+        	list.add(Model.getFacade().getResident(it.next()));
+            }
+            return list;
+        }
+      
+        public Object get(Object modelElement, Class<?> type) {
+            // not needed
+            return null;
+        }
+        
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getElementResidence();
+        }
+        
+        public Command getAddCommand(Object modelElement) {
+        	return new AddCommand(modelElement);
+        }
+        
+        public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
+        	return new RemoveCommand(modelElement, objectToRemove);
+        }
+        
+        private class AddCommand extends AddModelElementCommand {
+
+            /**
+             * Constructor for ActionAddPackageImport.
+             */
+            public AddCommand(final Object target) {
+                super(target);
+            }
+
+
+            protected List getChoices() {
+                List list = new ArrayList();
+                /* TODO: correctly implement next function 
+                 * in the model subsystem for 
+                 * issue 1942: */
+                Object model =
+                    ProjectManager.getManager().getCurrentProject().getModel();
+                list.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(model, 
+                            Model.getMetaTypes().getUMLClass()));
+                list.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(model, 
+                            Model.getMetaTypes().getInterface()));
+                list.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(model, 
+                            Model.getMetaTypes().getDataType()));
+                list.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(model, 
+                            Model.getMetaTypes().getDataValue()));
+                list.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(model, 
+                            Model.getMetaTypes().getAssociation()));
+                list.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(model, 
+                            Model.getMetaTypes().getDependency()));
+                list.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(model, 
+                            Model.getMetaTypes().getConstraint()));
+                list.addAll(Model.getModelManagementHelper()
+                        .getAllModelElementsOfKind(model, 
+                            Model.getMetaTypes().getSignal()));
+                return list;
+            }
+
+
+            protected List getSelected() {
+                Iterator it = Model.getFacade().getResidentElements(getTarget()).iterator();
+                ArrayList list = new ArrayList();
+                while (it.hasNext()) {
+            	list.add(Model.getFacade().getResident(it.next()));
+                }
+                return list;
+            }
+
+
+            protected String getDialogTitle() {
+                return Translator.localize("dialog.title.add-residentelements");
+            }
+
+
+            @Override
+            protected void doIt(Collection selected) {
+                ArrayList toRemove = new ArrayList();
+                Collection current = Model.getFacade().getResidentElements(getTarget());
+                for (Iterator it = current.iterator(); it.hasNext(); ) {
+                    toRemove.add(Model.getFacade().getResident(it.next()));
+                }
+        	
+                toRemove.removeAll(selected);
+                selected.removeAll(current);
+                
+                for (Iterator it = toRemove.iterator(); it.hasNext(); ) {
+                    Model.getCoreHelper().removeElementResidence(getTarget(), it.next());
+                }
+                for (Iterator it = selected.iterator(); it.hasNext(); ) {
+                    Model.getCoreFactory().buildElementResidence(
+                            it.next(), getTarget());
+                }
+            }
+        }
+        
+        private class RemoveCommand
+    	    extends NonUndoableCommand {
+        	
+        	private final Object target;
+        	private final Object objectToRemove;
+        	
+    	    /**
+    	     * Constructor for ActionRemovePackageImport.
+    	     */
+    	    public RemoveCommand(final Object target, final Object objectToRemove) {
+    	        this.target = target;
+    	        this.objectToRemove = objectToRemove;
+    	    }
+    	    
+    	    /*
+    	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    	     */
+    	    public Object execute() {
+    	        Model.getCoreHelper()
+    	            .removeElementResidence(target, objectToRemove);
     	        return null;
     	    }
     	}

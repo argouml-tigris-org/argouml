@@ -113,8 +113,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLMessagePredecessorListModel(modelElement);
         } else if ("resident".equals(propName)) {
             model = new UMLContainerResidentListModel(modelElement);
-        } else if ("residentElement".equals(propName)) {
-            model = new UMLComponentResidentListModel(modelElement);
         } else if ("specialization".equals(propName)) {
             model = new UMLGeneralizableElementSpecializationListModel(modelElement);
         } else if ("specification".equals(propName)) {
