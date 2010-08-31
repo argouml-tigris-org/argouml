@@ -38,6 +38,7 @@
 
 package org.argouml.diagram.uml2;
 
+import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 
@@ -70,7 +71,9 @@ class FigAssociationClass2 extends FigAssociationClass {
      * @param element model element
      * @param settings rendering settings
      */
-    public FigAssociationClass2(Object element, DiagramSettings settings) {
-        super(element, settings);
+    public FigAssociationClass2(
+            final DiagramEdgeSettings diagramElementSettings,
+            DiagramSettings settings) {
+        super(diagramElementSettings, settings);
     }
 }

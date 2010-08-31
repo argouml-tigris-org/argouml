@@ -41,6 +41,7 @@ package org.argouml.diagram.uml2;
 import java.beans.PropertyChangeEvent;
 
 import org.apache.log4j.Logger;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigAssociation;
 
@@ -59,9 +60,11 @@ class FigAssociation2 extends FigAssociation {
      * @param owner owning uml element
      * @param settings rendering settings
      */
-    public FigAssociation2(Object owner, DiagramSettings settings) {
-        super(owner, settings);
-        addListener(owner);
+    public FigAssociation2(
+            final DiagramEdgeSettings diagramEdgeSettings,
+            final DiagramSettings settings) {
+        super(diagramEdgeSettings, settings);
+        addListener(diagramEdgeSettings.getOwner());
     }
     
     @Override

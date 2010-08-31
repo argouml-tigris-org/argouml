@@ -46,6 +46,7 @@ import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
@@ -160,7 +161,14 @@ public class StructureDiagram2Renderer extends UmlDiagramRenderer {
         
         FigEdge newEdge = null;
         if (Model.getFacade().isAAssociationClass(edge)) {
-            newEdge = new FigAssociationClass2(edge, settings);
+            Object[] associationEnds = 
+                Model.getFacade().getConnections(edge).toArray();
+            newEdge = new FigAssociationClass2(
+                    new DiagramEdgeSettings(
+                            edge, 
+                            associationEnds[0], 
+                            associationEnds[1]), 
+                            settings);
         } else if (Model.getFacade().isAAssociationEnd(edge)) {
             FigAssociationEnd2 asend = new FigAssociationEnd2(edge, settings);
             Model.getFacade().getAssociation(edge);
@@ -176,7 +184,14 @@ public class StructureDiagram2Renderer extends UmlDiagramRenderer {
             asend.setDestFigNode(classifierFN);
             newEdge = asend;
         } else if (Model.getFacade().isAAssociation(edge)) {
-            newEdge = new FigAssociation2(edge, settings);
+            Object[] associationEnds = 
+                Model.getFacade().getConnections(edge).toArray();
+            newEdge = new FigAssociation2(
+                    new DiagramEdgeSettings(
+                            edge, 
+                            associationEnds[0], 
+                            associationEnds[1]), 
+                            settings);
         } else if (Model.getFacade().isALink(edge)) {
             FigLink2 lnkFig = new FigLink2(edge, settings);
             Collection linkEndsColn = Model.getFacade().getConnections(edge);
