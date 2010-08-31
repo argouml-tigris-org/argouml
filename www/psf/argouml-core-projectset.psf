@@ -4,6 +4,7 @@
 <project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-app,argouml-app"/>
 <project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-core-diagrams-sequence2,argouml-core-diagrams-sequence2"/>
 <project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-core-diagrams-activity2,argouml-core-diagrams-activity2"/>
+<project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-core-diagrams-state2,argouml-core-diagrams-state2"/>
 <project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-core-diagrams-uml2,argouml-core-diagrams-uml2"/>
 <project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-core-infra,argouml-core-infra"/>
 <project reference="0.9.3,http://argouml.tigris.org/svn/argouml/trunk/src/argouml-core-model,argouml-core-model"/>
