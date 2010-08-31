@@ -93,32 +93,6 @@ public class FigAssociation extends FigEdgeModelElement {
     private FigTextGroup middleGroup;
 
     /**
-     * @deprecated in 0.29.1 by Bob Tarling. Use
-     * FigAssociation(DiagramElementSettings, DiagramSettings)
-     * @param association The association model element
-     * @param settings The diagram settings
-     */
-    @Deprecated
-    public FigAssociation(
-            final Object association, 
-            final DiagramSettings settings) {
-        super(association, settings);
-        
-        createNameLabel(association, settings);
-        
-        Iterator it = Model.getFacade().getConnections(association).iterator();
-        
-        final Object sourceAssociationEnd = it.next();
-        final Object destAssociationEnd = it.next();
-        
-        createEndFigs(sourceAssociationEnd, destAssociationEnd, settings, 45);
-        
-        setBetweenNearestPoints(true);
-        
-        initializeNotationProvidersInternal(association);
-    }
-    
-    /**
      * Constructor used by PGML parser.
      * 
      * @param diagramEdgeSettings the destination uml association-end element

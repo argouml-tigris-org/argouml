@@ -80,23 +80,6 @@ public class FigAssociationClass
     private static final long serialVersionUID = 3643715304027095083L;
 
     /**
-     * @deprecated Use
-     * FigAssociationClass(Object, Object, Object, DiagramSettings)
-     * @param associationClass The association model element
-     * @param settings The diagram settings
-     */
-    @Deprecated
-    public FigAssociationClass(
-            final Object associationClass, 
-            final DiagramSettings settings) {
-        super(associationClass, settings);
-        
-        setBetweenNearestPoints(true);
-        ((FigPoly) getFig()).setRectilinear(false);
-        setDashed(false);
-    }
-    
-    /**
      * Construct an association class figure for the given AssociationClass
      * model element using the rendering settings.
      * 

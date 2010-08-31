@@ -62,22 +62,6 @@ public class FigAssociationRole extends FigAssociation {
     private FigMessageGroup messages;
 
     /**
-     * @deprecated in 0.29.1 Use
-     * FigAssociationRole(DiagramEdgeSettings, DiagramSettings)
-     * @param associationRole The association model element
-     * @param settings The diagram settings
-     */
-    @Deprecated
-    public FigAssociationRole(
-            final Object associationRole, 
-            final DiagramSettings settings) {
-        super(associationRole, settings);
-        
-        messages = new FigMessageGroup(associationRole, settings);
-        addPathItem(messages, new PathItemPlacement(this, messages, 50, 10));
-    }
-    
-    /**
      * Construct an AssociationRole fig with the given properties and diagram
      * settings.
      * 
