@@ -44,6 +44,7 @@ import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.cmd.ShortcutMgr;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
+import org.argouml.uml.ui.ActionCollaborationDiagram;
 import org.argouml.uml.ui.ActionDeploymentDiagram;
 import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
@@ -86,6 +87,13 @@ public class MenuBar2 extends GenericArgoMenuBar {
         getCreateDiagramToolbar().add((new ActionSequenceDiagram()));
         ShortcutMgr.assignAccelerator(sequenzDiagram,
                 ShortcutMgr.ACTION_SEQUENCE_DIAGRAM);
+        
+        JMenuItem collaborationDiagram =
+            getCreateDiagramMenu().add(new ActionCollaborationDiagram());
+        setMnemonic(collaborationDiagram, "Collaboration Diagram");
+        getCreateDiagramToolbar().add((new ActionCollaborationDiagram()));
+        ShortcutMgr.assignAccelerator(collaborationDiagram,
+                ShortcutMgr.ACTION_COLLABORATION_DIAGRAM);
         
         JMenuItem stateDiagram =
             getCreateDiagramMenu().add(new ActionStateDiagram());
