@@ -1716,21 +1716,24 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 
             @Override
             protected void doIt(Collection selected) {
-                ArrayList toRemove = new ArrayList();
                 Collection current = Model.getFacade().getResidentElements(getTarget());
-                for (Iterator it = current.iterator(); it.hasNext(); ) {
-                    toRemove.add(Model.getFacade().getResident(it.next()));
-                }
+                
+                ArrayList toRemove = new ArrayList(current);
         	
                 toRemove.removeAll(selected);
                 selected.removeAll(current);
                 
                 for (Iterator it = toRemove.iterator(); it.hasNext(); ) {
-                    Model.getCoreHelper().removeElementResidence(getTarget(), it.next());
+                    Object elementResidenceToDelete = it.next();
+                    Model.getCoreHelper().removeElementResidence(getTarget(), elementResidenceToDelete);
+                    Model.getUmlFactory().delete(elementResidenceToDelete);
                 }
                 for (Iterator it = selected.iterator(); it.hasNext(); ) {
-                    Model.getCoreFactory().buildElementResidence(
-                            it.next(), getTarget());
+                    final Object element = it.next();
+                    if (!Model.getFacade().isAElementResidence(element)) {
+                        Model.getCoreFactory().buildElementResidence(
+                                element, getTarget());
+                    }
                 }
             }
         }
