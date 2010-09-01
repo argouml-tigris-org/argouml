@@ -1637,6 +1637,10 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public void set(Object element, Object x) {
             // not needed
         }
+        
+        public boolean isFullBuildOnly() {
+            return true;
+        }
 
         public boolean isValidElement(Object element, Collection<Class<?>> types) {
             return getOptions(element, types).contains(element);
