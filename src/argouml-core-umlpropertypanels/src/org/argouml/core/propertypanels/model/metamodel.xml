@@ -1102,7 +1102,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <separator />
     <list name="feature" type="Operation,Reception" new="true" label="label.operations" />
-    <list name="residentElement" type="Class,Interface,DataType,Association,Dependency,Constraint,Signal,DataValue,Object" new="true" label="label.residents" />
+    <list name="residentElement" type="Class,Interface,DataType,Association,Dependency,Constraint,Signal,DataValue,Object" label="label.residents" />
 	<debug />
 	<attribute name="visibility" type="VisibilityKind" />
     <attribute name="targetFlow" type="Flow" />
