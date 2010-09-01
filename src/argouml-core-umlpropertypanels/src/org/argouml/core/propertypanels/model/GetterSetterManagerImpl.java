@@ -1756,8 +1756,15 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
     	     */
     	    public Object execute() {
-    	        Model.getCoreHelper()
-    	            .removeElementResidence(target, objectToRemove);
+                Collection current = Model.getFacade().getResidentElements(target);
+                for (Iterator it = current.iterator(); it.hasNext(); ) {
+                    Object elementResidenceToDelete = it.next();
+                    if (Model.getFacade().getResident(elementResidenceToDelete) == objectToRemove) {
+                        Model.getCoreHelper().removeElementResidence(target, elementResidenceToDelete);
+                        Model.getUmlFactory().delete(elementResidenceToDelete);
+                        return null;
+                    }
+                }
     	        return null;
     	    }
     	}
