@@ -108,50 +108,52 @@ class SimpleListModel
      */
     public void propertyChange(final PropertyChangeEvent e) {
         if (e instanceof RemoveAssociationEvent
-        		|| e instanceof AddAssociationEvent) {
-	        Runnable doWorkRunnable = new Runnable() {
-	            public void run() {
-	                try {
-	                    if (getterSetterManager.isFullBuildOnly(propertyName)) {
-		               	removeAllElements();
-		               	build();
-	                    } else {
-		                if (e instanceof RemoveAssociationEvent) {
-		                    final Object objectToRemove =
-		                    		((RemoveAssociationEvent) e).getChangedValue();
-		                    removeElement(objectToRemove);
-		                } else if (e instanceof AddAssociationEvent) {
-		                    Object newElement = ((AddAssociationEvent) e).getChangedValue();
-		                    if (metaTypes.contains(newElement.getClass())
-		                	    && !SimpleListModel.this.contains(newElement)) {
-			                if (Model.getUmlHelper().isMovable(getMetaType())) {
-			                    final Collection c =
-			                        (Collection) getterSetterManager.getOptions( 
-			                            umlElement, 
-			                            propertyName, 
-			                            metaTypes);
-			                    final int index =
-			                        CollectionUtil.indexOf(c, newElement);
-			                    if (index < 0 || index > getSize() - 1) {
-			                        LOG.warn(
-			                                "Unable to add element at correct position "
-			                                + index + " added to end instead");
-			                        addElement(newElement);
-			                    } else {
-			                        add(index, newElement);
-			                    }
-			                } else {
-			                    addElement(newElement);
-			                }
-		                    }
-		                }
-	                    }
-	                } catch (InvalidElementException e) {
-	                    LOG.debug("propertyChange accessed a deleted element ", e);
-	                }
-	            }  
-	        };
-	        SwingUtilities.invokeLater(doWorkRunnable);
+                || e instanceof AddAssociationEvent) {
+                
+            Runnable doWorkRunnable = new Runnable() {
+                public void run() {
+                    try {
+                        if (getterSetterManager.isFullBuildOnly(
+                        	propertyName)) {
+	               	    removeAllElements();
+	               	    build();
+                        } else {
+        	            if (e instanceof RemoveAssociationEvent) {
+        	                final Object objectToRemove =
+        	            	    ((RemoveAssociationEvent) e).getChangedValue();
+        	                removeElement(objectToRemove);
+        	            } else if (e instanceof AddAssociationEvent) {
+        	                Object newElement = ((AddAssociationEvent) e).getChangedValue();
+        	                if (metaTypes.contains(newElement.getClass())
+        	                        && !SimpleListModel.this.contains(newElement)) {
+        		            if (Model.getUmlHelper().isMovable(getMetaType())) {
+        		                final Collection c =
+        		                    (Collection) getterSetterManager.getOptions( 
+        		                        umlElement, 
+        		                        propertyName, 
+        		                        metaTypes);
+        		                final int index =
+        		                    CollectionUtil.indexOf(c, newElement);
+        		                if (index < 0 || index > getSize() - 1) {
+        		                    LOG.warn(
+        		                            "Unable to add element at correct position "
+        		                            + index + " added to end instead");
+        		                    addElement(newElement);
+        		                } else {
+        		                    add(index, newElement);
+        		                }
+        		            } else {
+        		                addElement(newElement);
+        		            }
+        	                }
+        	            }
+                        }
+                    } catch (InvalidElementException e) {
+                        LOG.debug("propertyChange accessed a deleted element ", e);
+                    }
+                }  
+            };
+            SwingUtilities.invokeLater(doWorkRunnable);
         } else if (e.getPropertyName().equals("baseClass")
         	&& e.getPropertyName().equals(propertyName)
         	&& e instanceof AttributeChangeEvent) {
