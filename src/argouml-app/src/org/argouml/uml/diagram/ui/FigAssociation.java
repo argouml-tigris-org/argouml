@@ -144,7 +144,7 @@ public class FigAssociation extends FigEdgeModelElement {
                     getOwner(), 
                     new String[] {"navigableOwnedEnd"});
         }
-        super.removeFromDiagram();
+        super.removeFromDiagramImpl();
     }
     
     public void propertyChange(PropertyChangeEvent pce) {
