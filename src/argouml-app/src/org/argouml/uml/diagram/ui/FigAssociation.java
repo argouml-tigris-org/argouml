@@ -52,6 +52,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
@@ -130,7 +131,34 @@ public class FigAssociation extends FigEdgeModelElement {
         setBetweenNearestPoints(true);
         
         initializeNotationProvidersInternal(getOwner());
+        
+        if (Model.getFacade().getUmlVersion().charAt(0) == '2') {
+            Model.getPump().addModelEventListener(this, getOwner(), 
+                    new String[] {"navigableOwnedEnd"});
+        }
     }
+    
+    protected void removeFromDiagramImpl() {
+        if (Model.getFacade().getUmlVersion().charAt(0) == '2') {
+            Model.getPump().removeModelEventListener(this, 
+                    getOwner(), 
+                    new String[] {"navigableOwnedEnd"});
+        }
+        super.removeFromDiagram();
+    }
+    
+    public void propertyChange(PropertyChangeEvent pce) {
+        if (Model.getFacade().getUmlVersion().charAt(0) == '2'
+                && pce instanceof AssociationChangeEvent
+                && pce.getPropertyName().equals("navigableOwnedEnd")) {
+            srcEnd.getGroup().determineArrowHead();
+            destEnd.getGroup().determineArrowHead();
+            applyArrowHeads();
+            damage();
+        }
+        super.propertyChange(pce);
+    }
+    
     
     /**
      * Called by the constructor to create the Figs at each end
@@ -899,7 +927,7 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     /**
      * Decide which arrow head should appear
      */
-    private void determineArrowHead() {
+    void determineArrowHead() {
         assert getOwner() != null;
 
         Object ak =  Model.getFacade().getAggregation(getOwner());
