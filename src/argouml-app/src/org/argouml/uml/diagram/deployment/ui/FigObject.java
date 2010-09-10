@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -194,6 +194,25 @@ public class FigObject extends FigNodeModelElement {
         
         w = Math.max(60, w);
         return new Dimension(w, h);
+    }
+
+    /**
+     * Override ancestor behaviour by always calling setBounds even if the
+     * size hasn't changed. Without this override the Package bounds draw
+     * incorrectly. This is not the best fix but is a workaround until the
+     * true cause is known. See issue 6135.
+     * 
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
+     */
+    protected void updateBounds() {
+        if (!isCheckSize()) {
+            return;
+        }
+        Rectangle bbox = getBounds();
+        Dimension minSize = getMinimumSize();
+        bbox.width = Math.max(bbox.width, minSize.width);
+        bbox.height = Math.max(bbox.height, minSize.height);
+        setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
     }
 
     /*

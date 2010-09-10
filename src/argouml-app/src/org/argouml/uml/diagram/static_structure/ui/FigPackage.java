@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Bob Tarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -59,14 +60,15 @@ import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.UndoableAction;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramFactory;
+import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.StereotypeContainer;
 import org.argouml.uml.diagram.VisibilityContainer;
-import org.argouml.uml.diagram.DiagramFactory.DiagramType;
 import org.argouml.uml.diagram.ui.ArgoFig;
 import org.argouml.uml.diagram.ui.ArgoFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -78,7 +80,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-import org.argouml.ui.UndoableAction;
 
 /**
  * Class to display graphics for a UML package in a class diagram,
@@ -333,7 +334,7 @@ public class FigPackage extends FigNodeModelElement
      * Override ancestor behaviour by always calling setBounds even if the
      * size hasn't changed. Without this override the Package bounds draw
      * incorrectly. This is not the best fix but is a workaround until the
-     * true cause is known.
+     * true cause is known. See issue 6135.
      * 
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
      */
