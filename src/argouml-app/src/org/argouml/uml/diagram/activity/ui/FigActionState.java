@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -42,20 +43,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
-import org.argouml.notation.Notation;
-import org.argouml.notation.NotationName;
-import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.diagram.ui.FigMultiLineTextWithBold;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -74,14 +71,7 @@ public class FigActionState extends FigStateVertex {
     private static final int PADDING = 8;
 
     private FigRRect cover;
-    
-    private static final Logger LOG = Logger.getLogger(FigActionState.class);
 
-    /**
-     * The notation provider for the textfield.
-     */
-    private NotationProvider notationProvider;
-    
     /**
      * Constructor used by PGML parser.
      * 
@@ -95,11 +85,15 @@ public class FigActionState extends FigStateVertex {
         initializeActionState();
     }
 
+    @Override
+    protected Fig createBigPortFig() {
+        FigRRect frr = new FigRRect(X0 + 1, Y0 + 1, STATE_WIDTH - 2, HEIGHT - 2,
+                DEBUG_COLOR, DEBUG_COLOR);
+        frr.setCornerRadius(frr.getHeight() / 2);
+        return frr;
+    }
+
     private void initializeActionState() {
-        
-        setBigPort(new FigRRect(X0 + 1, Y0 + 1, STATE_WIDTH - 2, HEIGHT - 2,
-                DEBUG_COLOR, DEBUG_COLOR));
-        ((FigRRect) getBigPort()).setCornerRadius(getBigPort().getHeight() / 2);
         cover = new FigRRect(X0, Y0, STATE_WIDTH, HEIGHT, 
                 LINE_COLOR, FILL_COLOR);
         cover.setCornerRadius(getHeight() / 2);
@@ -130,24 +124,6 @@ public class FigActionState extends FigStateVertex {
         //setBlinkPorts(false); //make port invisible unless mouse enters
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.state.ui.FigStateVertex#initNotationProviders(java.lang.Object)
-     */
-    @Override
-    protected void initNotationProviders(Object own) {
-        if (notationProvider != null) {
-            notationProvider.cleanListener(this, own);
-        }
-        super.initNotationProviders(own);
-        NotationName notationName = Notation.findNotation(getNotationSettings()
-                .getNotationLanguage());
-        if (Model.getFacade().isAActionState(own)) {
-            notationProvider =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                        getNotationProviderType(), own, this, notationName);
-        }
     }
     
     /**
@@ -293,57 +269,8 @@ public class FigActionState extends FigStateVertex {
             // be acting on other events we don't need
             if (!Model.getFacade().isATransition(mee.getNewValue())) {
                 renderingChanged();
-                notationProvider.updateListener(this, getOwner(), mee);
                 damage();
             }
         }
     }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#removeFromDiagramImpl()
-     */
-    @Override
-    public void removeFromDiagramImpl() {
-        if (notationProvider != null) {
-            notationProvider.cleanListener(this, getOwner());
-        }
-        super.removeFromDiagramImpl();
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
-     */
-    @Override
-    protected void updateNameText() {
-        if (notationProvider != null) {
-            getNameFig().setText(notationProvider.toString(getOwner(), 
-                    getNotationSettings()));
-        }
-    }
-
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
-     */
-    @Override
-    protected void textEdited(FigText ft) throws PropertyVetoException {
-        notationProvider.parse(getOwner(), ft.getText());
-        ft.setText(notationProvider.toString(getOwner(), 
-                getNotationSettings()));
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEditStarted(org.tigris.gef.presentation.FigText)
-     */
-    @Override
-    protected void textEditStarted(FigText ft) {
-        if (ft == getNameFig()) {
-            showHelp(notationProvider.getParsingHelp());
-        }
-    }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -3526461404860044420L;
 }
