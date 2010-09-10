@@ -83,6 +83,7 @@ import org.argouml.cognitive.ui.ActionGoToCritique;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.Owned;
 import org.argouml.kernel.Project;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
@@ -153,7 +154,8 @@ public abstract class FigNodeModelElement
         Clarifiable,
         ArgoFig,
         StereotypeStyled,
-        DiagramElement {
+        DiagramElement,
+        Owned {
 
 
     private static final Logger LOG =

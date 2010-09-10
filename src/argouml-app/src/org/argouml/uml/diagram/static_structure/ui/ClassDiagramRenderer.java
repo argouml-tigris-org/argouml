@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,27 +38,12 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.util.Collection;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.CoreFactory;
-import org.argouml.model.Model;
-import org.argouml.uml.CommentEdge;
-import org.argouml.uml.diagram.ArgoDiagram;
-import org.argouml.uml.diagram.DiagramEdgeSettings;
-import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.GraphChangeAdapter;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
-import org.argouml.uml.diagram.ui.FigAbstraction;
-import org.argouml.uml.diagram.ui.FigAssociation;
-import org.argouml.uml.diagram.ui.FigAssociationClass;
-import org.argouml.uml.diagram.ui.FigAssociationEnd;
-import org.argouml.uml.diagram.ui.FigDependency;
-import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.FigPermission;
-import org.argouml.uml.diagram.ui.FigUsage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Layer;
@@ -164,118 +149,21 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
         }
         
         assert lay instanceof LayerPerspective;
-        ArgoDiagram diag = (ArgoDiagram) ((LayerPerspective) lay).getDiagram();
-        DiagramSettings settings = diag.getDiagramSettings();
         
-        FigEdge newEdge = null;
-        if (Model.getFacade().isAAssociationClass(edge)) {
-            Object[] associationEnds = 
-                Model.getFacade().getConnections(edge).toArray();
-            newEdge = new FigAssociationClass(
-                    new DiagramEdgeSettings(
-                            edge, 
-                            associationEnds[0], 
-                            associationEnds[1]), 
-                            settings);
-            FigNode sourceFig =
-                getFigNodeForAssociationEnd(diag, associationEnds[0]);
-            FigNode destFig =
-                getFigNodeForAssociationEnd(diag, associationEnds[1]);
-            newEdge.setSourceFigNode(sourceFig);
-            newEdge.setSourcePortFig(sourceFig);
-            newEdge.setDestFigNode(destFig);
-            newEdge.setDestPortFig(destFig);
-        } else if (Model.getFacade().isAAssociationEnd(edge)) {
-            FigAssociationEnd asend = new FigAssociationEnd(edge, settings);
-            Model.getFacade().getAssociation(edge);
-            FigNode associationFN =
-                (FigNode) lay.presentationFor(
-			Model.getFacade().getAssociation(edge));
-            FigNode classifierFN =
-                (FigNode) lay.presentationFor(Model.getFacade().getType(edge));
+        final FigEdge newEdge;
 
-            asend.setSourcePortFig(associationFN);
-            asend.setSourceFigNode(associationFN);
-            asend.setDestPortFig(classifierFN);
-            asend.setDestFigNode(classifierFN);
-            newEdge = asend;
-        } else if (Model.getFacade().isAAssociation(edge)) {
-            Object[] associationEnds = 
-                Model.getFacade().getConnections(edge).toArray();
-            newEdge = new FigAssociation(
-                    new DiagramEdgeSettings(
-                            edge, 
-                            associationEnds[0], 
-                            associationEnds[1]), 
-                            settings);
-            FigNode sourceFig =
-                getFigNodeForAssociationEnd(diag, associationEnds[0]);
-            FigNode destFig =
-                getFigNodeForAssociationEnd(diag, associationEnds[1]);
-            newEdge.setSourceFigNode(sourceFig);
-            newEdge.setSourcePortFig(sourceFig);
-            newEdge.setDestFigNode(destFig);
-            newEdge.setDestPortFig(destFig);
-        } else if (Model.getFacade().isALink(edge)) {
-            FigLink lnkFig = new FigLink(edge, settings);
-            Collection linkEndsColn = Model.getFacade().getConnections(edge);
-
-            Object[] linkEnds = linkEndsColn.toArray();
-            Object fromInst = Model.getFacade().getInstance(linkEnds[0]);
-            Object toInst = Model.getFacade().getInstance(linkEnds[1]);
-
-            FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
-            FigNode toFN = (FigNode) lay.presentationFor(toInst);
-            lnkFig.setSourcePortFig(fromFN);
-            lnkFig.setSourceFigNode(fromFN);
-            lnkFig.setDestPortFig(toFN);
-            lnkFig.setDestFigNode(toFN);
-            lnkFig.getFig().setLayer(lay);
-            newEdge = lnkFig;
-        } else if (Model.getFacade().isAGeneralization(edge)) {
-            newEdge = new FigGeneralization(edge, settings);
-        } else if (Model.getFacade().isAPackageImport(edge)) {
-            newEdge = new FigPermission(edge, settings);
-        } else if (Model.getFacade().isAUsage(edge)) {
-            newEdge = new FigUsage(edge, settings);
-        } else if (Model.getFacade().isAAbstraction(edge)) {
-            newEdge = new FigAbstraction(edge, settings);
-        } else if (Model.getFacade().isADependency(edge)) {
-
-            String name = "";
-            for (Object stereotype : Model.getFacade().getStereotypes(edge)) {
-                name = Model.getFacade().getName(stereotype);
-                if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
-                    break;
-                }
-            }
-            if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
-                // TODO: This code doesn't look like it will get reached because
-                // any abstraction/realization is going to take the 
-                // isAAbstraction leg of the if before it gets to this more
-                // general case. - tfm 20080508
-                FigAbstraction realFig = new FigAbstraction(edge, settings);
-
-                Object supplier =
-                    ((Model.getFacade().getSuppliers(edge).toArray())[0]);
-                Object client =
-                    ((Model.getFacade().getClients(edge).toArray())[0]);
-
-                FigNode supFN = (FigNode) lay.presentationFor(supplier);
-                FigNode cliFN = (FigNode) lay.presentationFor(client);
-
-                realFig.setSourcePortFig(cliFN);
-                realFig.setSourceFigNode(cliFN);
-                realFig.setDestPortFig(supFN);
-                realFig.setDestFigNode(supFN);
-                realFig.getFig().setLayer(lay);
-                newEdge = realFig;
-            } else {
-                FigDependency depFig = new FigDependency(edge, settings);
-                newEdge = depFig;
-            }
-        } else if (edge instanceof CommentEdge) {
-            newEdge = new FigEdgeNote(edge, settings);
+        // Although not generally true for GEF, for Argo we know that the layer
+        // is a LayerPerspective which knows the associated diagram
+        Diagram diag = ((LayerPerspective) lay).getDiagram(); 
+        if (diag instanceof UMLDiagram
+                && ((UMLDiagram) diag).doesAccept(edge)) {
+            newEdge = (FigEdge) ((UMLDiagram) diag)
+                    .drop(edge, null);
+        } else {
+            LOG.error("TODO: ClassDiagramRenderer getFigEdgeFor " + edge);
+            throw new IllegalArgumentException(
+                    "Edge is not a recognised type. Received "
+                    + edge.getClass().getName());
         }
 
         addEdge(lay, newEdge, edge);

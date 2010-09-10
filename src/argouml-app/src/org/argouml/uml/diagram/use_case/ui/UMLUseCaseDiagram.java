@@ -1,13 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -494,8 +495,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     }
     
     @Override
-    public FigNode drop(Object droppedObject, Point location) {
-        FigNode figNode = null;
+    public DiagramElement drop(Object droppedObject, Point location) {
+        DiagramElement figNode = null;
        
         // If location is non-null, convert to a rectangle that we can use
         Rectangle bounds = null;
@@ -503,8 +504,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             bounds = new Rectangle(location.x, location.y, 0, 0);
         }
 
-        figNode = (FigNode) createDiagramElement(droppedObject, bounds);
-        return figNode;
+        return createDiagramElement(droppedObject, bounds);
     }
 
     public DiagramElement createDiagramElement(

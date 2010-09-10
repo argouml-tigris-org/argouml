@@ -1,4 +1,4 @@
-/* $Id: $
+/* $Id:$
  *****************************************************************************
  * Copyright (c) 2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
@@ -40,7 +40,7 @@ class StateDiagramRenderer extends UmlDiagramRenderer {
         Diagram diag = ((LayerPerspective) lay).getDiagram(); 
         if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(node)) {
-            result = ((UMLDiagram) diag).drop(node, null);
+            result = (FigNode) ((UMLDiagram) diag).drop(node, null);
         } else {
             LOG.warn("StateDiagramRenderer getFigNodeFor unexpected node " 
                     + node);

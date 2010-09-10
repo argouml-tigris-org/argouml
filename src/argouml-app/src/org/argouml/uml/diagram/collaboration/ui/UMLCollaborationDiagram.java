@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -510,8 +510,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     }
     
     @Override
-    public FigNode drop(Object droppedObject, Point location) {
-        FigNode figNode = null;
+    public DiagramElement drop(Object droppedObject, Point location) {
+        DiagramElement figNode = null;
         GraphModel gm = getGraphModel();
         Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
         

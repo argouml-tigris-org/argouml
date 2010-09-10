@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -61,6 +61,7 @@ import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ArgoDiagramImpl;
+import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.Relocatable;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
@@ -637,17 +638,14 @@ public abstract class UMLDiagram
      * @param location The location in the diagram where the object is dropped.
      * @return The object that has been added to the diagram.
      */
-    public FigNode drop(Object droppedObject, Point location) {
-        FigNode figNode = null;
-       
+    public DiagramElement drop(Object droppedObject, Point location) {
         // If location is non-null, convert to a rectangle that we can use
         Rectangle bounds = null;
         if (location != null) {
             bounds = new Rectangle(location.x, location.y, 0, 0);
         }
 
-        figNode = (FigNode) createDiagramElement(droppedObject, bounds);
-        return figNode;
+        return createDiagramElement(droppedObject, bounds);
     }
     
     /**

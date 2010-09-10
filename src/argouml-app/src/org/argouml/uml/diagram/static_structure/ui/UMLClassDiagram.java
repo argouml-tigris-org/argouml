@@ -1,13 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Thomas Neustupny
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -46,7 +47,11 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
+import org.argouml.uml.CommentEdge;
+import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
@@ -55,7 +60,16 @@ import org.argouml.uml.diagram.deployment.ui.FigMNode;
 import org.argouml.uml.diagram.deployment.ui.FigNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.argouml.uml.diagram.ui.FigAbstraction;
+import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigAssociationClass;
+import org.argouml.uml.diagram.ui.FigAssociationEnd;
+import org.argouml.uml.diagram.ui.FigDependency;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigPermission;
+import org.argouml.uml.diagram.ui.FigUsage;
 import org.argouml.uml.diagram.ui.ModeCreateDependency;
 import org.argouml.uml.diagram.ui.ModeCreatePermission;
 import org.argouml.uml.diagram.ui.ModeCreateUsage;
@@ -65,8 +79,10 @@ import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.argouml.uml.ui.foundation.core.ActionAddAttribute;
 import org.argouml.uml.ui.foundation.core.ActionAddOperation;
 import org.argouml.util.ToolBarUtility;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -660,6 +676,12 @@ public class UMLClassDiagram extends UMLDiagram {
             return true;
         } else if (Model.getFacade().isAComponent(objectToAccept)) {
             return true;
+        } else if (Model.getFacade().isAAssociationEnd(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isADependency(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAGeneralization(objectToAccept)) {
+            return true;
         }
         return false;
 
@@ -670,8 +692,136 @@ public class UMLClassDiagram extends UMLDiagram {
             final Rectangle bounds) {
         
         FigNodeModelElement figNode = null;
+        FigEdge figEdge = null;
         
         DiagramSettings settings = getDiagramSettings();
+
+        if (Model.getFacade().isAAssociationClass(modelElement)) {
+            Object[] associationEnds = 
+                Model.getFacade().getConnections(modelElement).toArray();
+            figEdge = new FigAssociationClass(
+                    new DiagramEdgeSettings(
+                            modelElement, 
+                            associationEnds[0], 
+                            associationEnds[1]), 
+                            settings);
+            FigNode sourceFig =
+                getFigNodeForAssociationEnd(associationEnds[0]);
+            FigNode destFig =
+                getFigNodeForAssociationEnd(associationEnds[1]);
+            figEdge.setSourceFigNode(sourceFig);
+            figEdge.setSourcePortFig(sourceFig);
+            figEdge.setDestFigNode(destFig);
+            figEdge.setDestPortFig(destFig);
+        } else if (Model.getFacade().isAAssociationEnd(modelElement)) {
+            figEdge = new FigAssociationEnd(modelElement, settings);
+            Model.getFacade().getAssociation(modelElement);
+            FigNode associationFN =
+                (FigNode) getLayer().presentationFor(
+                        Model.getFacade().getAssociation(modelElement));
+            FigNode classifierFN =
+                (FigNode) getLayer().presentationFor(Model.getFacade().getType(modelElement));
+
+            figEdge.setSourcePortFig(associationFN);
+            figEdge.setSourceFigNode(associationFN);
+            figEdge.setDestPortFig(classifierFN);
+            figEdge.setDestFigNode(classifierFN);
+        } else if (Model.getFacade().isAAssociation(modelElement)
+                && !Model.getFacade().isANaryAssociation(modelElement)) {
+            Object[] associationEnds = 
+                Model.getFacade().getConnections(modelElement).toArray();
+            figEdge = new FigAssociation(
+                    new DiagramEdgeSettings(
+                            modelElement, 
+                            associationEnds[0], 
+                            associationEnds[1]), 
+                            settings);
+            FigNode sourceFig =
+                getFigNodeForAssociationEnd(associationEnds[0]);
+            FigNode destFig =
+                getFigNodeForAssociationEnd(associationEnds[1]);
+            figEdge.setSourceFigNode(sourceFig);
+            figEdge.setSourcePortFig(sourceFig);
+            figEdge.setDestFigNode(destFig);
+            figEdge.setDestPortFig(destFig);
+        } else if (Model.getFacade().isALink(modelElement)) {
+            figEdge = new FigLink(modelElement, settings);
+            Collection linkEndsColn = Model.getFacade().getConnections(modelElement);
+
+            Object[] linkEnds = linkEndsColn.toArray();
+            Object fromInst = Model.getFacade().getInstance(linkEnds[0]);
+            Object toInst = Model.getFacade().getInstance(linkEnds[1]);
+
+            FigNode fromFN = (FigNode) getLayer().presentationFor(fromInst);
+            FigNode toFN = (FigNode) getLayer().presentationFor(toInst);
+            figEdge.setSourcePortFig(fromFN);
+            figEdge.setSourceFigNode(fromFN);
+            figEdge.setDestPortFig(toFN);
+            figEdge.setDestFigNode(toFN);
+            figEdge.getFig().setLayer(getLayer());
+        } else if (Model.getFacade().isAGeneralization(modelElement)) {
+            figEdge = new FigGeneralization(modelElement, settings);
+
+            Object supplier =
+                (Model.getFacade().getSpecific(modelElement));
+            Object client =
+                (Model.getFacade().getGeneral(modelElement));
+           
+            FigNode supFN = (FigNode) getLayer().presentationFor(supplier);
+            FigNode cliFN = (FigNode) getLayer().presentationFor(client);
+            
+            figEdge.setSourceFigNode(supFN);
+            figEdge.setSourcePortFig(supFN);
+            figEdge.setDestFigNode(cliFN);
+            figEdge.setDestPortFig(cliFN);
+        } else if (Model.getFacade().isADependency(modelElement)) {
+            
+            if (Model.getFacade().isAPackageImport(modelElement)) {
+                figEdge = new FigPermission(modelElement, settings);
+            } else if (Model.getFacade().isAUsage(modelElement)) {
+                figEdge = new FigUsage(modelElement, settings);
+            } else if (Model.getFacade().isAAbstraction(modelElement)) {
+                figEdge = new FigAbstraction(modelElement, settings);
+            } else {
+    
+                String name = "";
+                for (Object stereotype : Model.getFacade().getStereotypes(modelElement)) {
+                    name = Model.getFacade().getName(stereotype);
+                    if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
+                        break;
+                    }
+                }
+                if (CoreFactory.REALIZE_STEREOTYPE.equals(name)) {
+                    // TODO: This code doesn't look like it will get reached because
+                    // any abstraction/realization is going to take the 
+                    // isAAbstraction leg of the if before it gets to this more
+                    // general case. - tfm 20080508
+                    figEdge = new FigAbstraction(modelElement, settings);
+                } else {
+                    figEdge = new FigDependency(modelElement, settings);
+                }
+            }
+            Object supplier =
+                ((Model.getFacade().getSuppliers(modelElement).toArray())[0]);
+            Object client =
+                ((Model.getFacade().getClients(modelElement).toArray())[0]);
+            figEdge = new FigDependency(modelElement, settings);
+            FigNode supFN = (FigNode) getLayer().presentationFor(supplier);
+            FigNode cliFN = (FigNode) getLayer().presentationFor(client);
+
+            figEdge.setSourcePortFig(cliFN);
+            figEdge.setSourceFigNode(cliFN);
+            figEdge.setDestPortFig(supFN);
+            figEdge.setDestFigNode(supFN);
+            figEdge.getFig().setLayer(getLayer());
+        } else if (modelElement instanceof CommentEdge) {
+            figEdge = new FigEdgeNote(modelElement, settings);
+        }
+        
+        if (figEdge != null) {
+            figEdge.computeRoute();
+            return (DiagramElement) figEdge;
+        }
         
         if (Model.getFacade().isAAssociation(modelElement)) {
             figNode =
@@ -723,4 +873,43 @@ public class UMLClassDiagram extends UMLDiagram {
         }
         return figNode;
     }
+    
+    protected FigNode getFigNodeForAssociationEnd(
+            final Object associationEnd) {
+        Object classifier = 
+            Model.getFacade().getClassifier(associationEnd);
+        return getNodePresentationFor(getLayer(), classifier);
+    }
+    
+    /**
+     * Get the FigNode from the given layer that represents the given
+     * model element.
+     * The FigNode portion of an association class is returned in preference
+     * to the FigEdge portion.
+     * If no FigNode is found then a FIgEdge is searched for and the FigNode
+     * that acts as its edge port is returned.
+     * @param lay the layer containing the Fig
+     * @param modelElement the model element to find presentation for
+     * @return the FigNode presentation of the model element
+     */
+    private FigNode getNodePresentationFor(Layer lay, Object modelElement) {
+        assert modelElement != null : "A modelElement must be supplied";
+        for (Object fig : lay.getContentsNoEdges()) {
+ 
+            if (fig instanceof FigNode
+                    && modelElement.equals(((FigNode) fig).getOwner())) {
+                return ((FigNode) fig);
+            }
+        }
+        for (Object fig : lay.getContentsEdgesOnly()) {
+            if (fig instanceof FigEdgeModelElement
+                    && modelElement.equals(((FigEdgeModelElement) fig)
+                            .getOwner())) {
+                return ((FigEdgeModelElement) fig).getEdgePort();
+            }
+        }
+        return null;
+    }
+    
+    
 }

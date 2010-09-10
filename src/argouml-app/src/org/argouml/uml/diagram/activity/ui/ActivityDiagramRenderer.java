@@ -1,13 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -95,7 +96,7 @@ public class ActivityDiagramRenderer extends StateDiagramRenderer {
         Diagram diag = ((LayerPerspective) lay).getDiagram(); 
         if (diag instanceof UMLDiagram
             && ((UMLDiagram) diag).doesAccept(node)) {
-            figNode = ((UMLDiagram) diag).drop(node, null);
+            figNode = (FigNode) ((UMLDiagram) diag).drop(node, null);
         } else {
             figNode =  super.getFigNodeFor(gm, lay, node, styleAttributes);
             if (figNode == null) {

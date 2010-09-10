@@ -43,7 +43,7 @@ class ActivityDiagramRenderer extends UmlDiagramRenderer {
         Diagram diag = ((LayerPerspective) lay).getDiagram(); 
         if (diag instanceof UMLDiagram
                 && ((UMLDiagram) diag).doesAccept(node)) {
-            result = ((UMLDiagram) diag).drop(node, null);
+            result = (FigNode) ((UMLDiagram) diag).drop(node, null);
         } else {
             LOG.warn("ActivityDiagramRenderer getFigNodeFor unexpected node " 
                     + node);

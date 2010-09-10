@@ -81,6 +81,7 @@ import org.argouml.cognitive.ui.ActionGoToCritique;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.Owned;
 import org.argouml.kernel.Project;
 import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.AssociationChangeEvent;
@@ -102,6 +103,7 @@ import org.argouml.ui.ContextActionFactoryManager;
 import org.argouml.ui.ProjectActions;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
+import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.util.IItemUID;
@@ -144,7 +146,9 @@ public abstract class FigEdgeModelElement
         Highlightable,
         IItemUID,
         ArgoFig,
-        Clarifiable {
+        Clarifiable,
+        DiagramElement,
+        Owned {
 
     private static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);

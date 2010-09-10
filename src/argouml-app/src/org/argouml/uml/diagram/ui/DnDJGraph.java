@@ -1,13 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -51,8 +52,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Owned;
 import org.argouml.ui.TransferableModelElements;
 import org.argouml.uml.diagram.ArgoDiagram;
+import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -61,6 +64,7 @@ import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.graph.presentation.JGraph;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -211,21 +215,23 @@ class DnDJGraph
             while (i.hasNext()) {
                 /* TODO: Why not call UMLDiagram.doesAccept() first, 
                  * like in ClassDiagramRenderer?  */
-                FigNode figNode = ((UMLDiagram ) diagram).drop(i.next(),
+                DiagramElement figNode = ((UMLDiagram ) diagram).drop(i.next(),
                         dropTargetDropEvent.getLocation());
                 
-                if (figNode != null) {
+                if (figNode != null && figNode instanceof Owned) {
                     MutableGraphModel gm =
                         (MutableGraphModel) diagram.getGraphModel();
-                    if (!gm.getNodes().contains(figNode.getOwner())) {
-                        gm.getNodes().add(figNode.getOwner());
+                    Object owner = ((Owned) figNode).getOwner();
+                    if (!gm.getNodes().contains(owner)) {
+                        gm.getNodes().add(owner);
                     }
                     
                     Globals.curEditor().getLayerManager().getActiveLayer()
-                            .add(figNode);
-                    gm.addNodeRelatedEdges(figNode.getOwner());
+                            .add((Fig) figNode);
+                    if (figNode instanceof FigNode && figNode instanceof Owned) {
+                        gm.addNodeRelatedEdges(((Owned) figNode).getOwner());
+                    }
                 }
-                
             }
 
             dropTargetDropEvent.getDropTargetContext().dropComplete(true);
