@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -45,26 +45,25 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
 import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 
 /**
  * Class to display graphics for a UML Choice State in a diagram - the circle.
  *
  * TODO: This should really be renamed FigChoiceState.  It's the
- * last vestige the UML 1.3 name.
+ * last vestige of the UML 1.3 name.
  *
  * @author pepargouml
  */
 public class FigBranchState extends FigStateVertex {
 
-    private static final int WIDTH = 24;
-    private static final int HEIGHT = 24;
+    private static final int BWIDTH = 24;
+    private static final int BHEIGHT = 24;
 
     private FigCircle head;
-    private FigCircle bp;
 
 
-    
     /**
      * Construct a new FigBranchState.
      * 
@@ -78,11 +77,15 @@ public class FigBranchState extends FigStateVertex {
         initFigs();
     }
     
+    @Override
+    protected Fig createBigPortFig() {
+        FigCircle bp = new FigCircle(X0, Y0, BWIDTH, BHEIGHT, DEBUG_COLOR, DEBUG_COLOR);
+        return bp;
+    }
+
     private void initFigs() {
         setEditable(false);
-        bp = new FigCircle(X0, Y0, WIDTH, HEIGHT, DEBUG_COLOR, DEBUG_COLOR);
-        setBigPort(bp);
-        head = new FigCircle(X0, Y0, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
+        head = new FigCircle(X0, Y0, BWIDTH, BHEIGHT, LINE_COLOR, FILL_COLOR);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
@@ -98,7 +101,7 @@ public class FigBranchState extends FigStateVertex {
      */
     @Override
     public Point getClosestPoint(Point anotherPt) {
-        Point p = bp.connectionPoint(anotherPt);
+        Point p = getBigPort().connectionPoint(anotherPt);
         return p;
     }
 

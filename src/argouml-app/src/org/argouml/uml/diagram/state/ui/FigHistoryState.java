@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -44,6 +44,7 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
 import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigText;
 
@@ -81,10 +82,14 @@ public abstract class FigHistoryState extends FigStateVertex {
         initFigs();
     }
 
+    @Override
+    protected Fig createBigPortFig() {
+        return new FigCircle(X, Y, WIDTH, HEIGHT, DEBUG_COLOR, 
+                DEBUG_COLOR);
+    }
+
     private void initFigs() {
         setEditable(false);
-        setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, DEBUG_COLOR, 
-                DEBUG_COLOR));
         head = new FigCircle(X, Y, WIDTH, HEIGHT, LINE_COLOR, FILL_COLOR);
         h = new FigText(X, Y, WIDTH - 10, HEIGHT - 10);
         h.setFont(getSettings().getFontPlain());

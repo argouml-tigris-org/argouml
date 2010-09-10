@@ -61,8 +61,12 @@ public class FigObject extends FigNodeModelElement {
 
     private FigRect cover;
 
+    @Override
+    protected Fig createBigPortFig() {
+        return new FigRect(X0, Y0, 90, 50, DEBUG_COLOR, DEBUG_COLOR);
+    }
+
     private void initFigs() {
-        setBigPort(new FigRect(X0, Y0, 90, 50, DEBUG_COLOR, DEBUG_COLOR));
         cover = new FigRect(X0, Y0, 90, 50, LINE_COLOR, FILL_COLOR);
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);

@@ -150,18 +150,22 @@ public class FigPackage extends FigNodeModelElement
      */
     private boolean stereotypeVisible = true;
 
+    @Override
+    protected Fig createBigPortFig() {
+        PackagePortFigRect ppfr = 
+            new PackagePortFigRect(0, 0, width, height, indentX, tabHeight);
+        ppfr.setFilled(false);
+        ppfr.setLineWidth(0);
+        return ppfr;
+    }
+
     private void initialize() {
         body.setEditable(false);
-        
-        setBigPort(
-            new PackagePortFigRect(0, 0, width, height, indentX, tabHeight));
+
         background = new PackageBackground(0, 0, width, height, indentX, tabHeight);
         
         getNameFig().setBounds(0, 0, width - indentX, textH + 2);
         getNameFig().setJustification(FigText.JUSTIFY_LEFT);
-
-        getBigPort().setFilled(false);
-        getBigPort().setLineWidth(0);
 
         // Set properties of the stereotype box. 
         // Initially not set to be displayed, but this will be changed

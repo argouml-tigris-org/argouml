@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -55,17 +56,21 @@ import org.tigris.gef.presentation.FigRect;
  * This class represents a Pool of Swimlanes for Activity diagrams. This is
  * exists only to act as the GEF style encloser. Other nodes in the same
  * must be placed entirely within or outside the boundaries of this Fig
- * but cannot intersect with the boundary.
+ * but cannot intersect with the boundary. <p>
  * TODO: There is no actual model element being represented here so we are
  * inheriting a lot of behaviour from FigNodeModelElement that we don't want.
  * We require to split FigNodeModelElement to separate the code that requires
- * a model element owner. See issue 
+ * a model element owner. See issue ... <p>
+ * Remark mvw: Why not give it an owner instead? The ActivityGraph 
+ * is the obvious candidate, or maybe the top state.
  *
  * @author mkl
  */
 public class FigPool extends FigNodeModelElement {
 
     private void initialize(Rectangle r) {
+        /* TODO: Replace the next deprecated call. This case is complicated 
+         * by the use of parameters. All other Figs work differently. */
         setBigPort(new FigEmptyRect(r.x, r.y, r.width, r.height));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);

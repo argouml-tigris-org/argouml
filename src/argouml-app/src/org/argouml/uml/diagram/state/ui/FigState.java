@@ -53,6 +53,7 @@ import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -99,12 +100,16 @@ public abstract class FigState extends FigStateVertex {
                     notation);
     }
 
+    @Override
+    protected Fig createBigPortFig() {
+        return new FigRRect(getInitialX() + 1, getInitialY() + 1,
+                getInitialWidth() - 2, getInitialHeight() - 2,
+                DEBUG_COLOR, DEBUG_COLOR);
+    }
+
     private void initializeState() {
         // TODO: Get rid of magic numbers!  Figure out which represent line
         // widths vs padding vs offsets
-        setBigPort(new FigRRect(getInitialX() + 1, getInitialY() + 1,
-                getInitialWidth() - 2, getInitialHeight() - 2,
-                DEBUG_COLOR, DEBUG_COLOR));
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(getInitialX() + 2, getInitialY() + 2,
                        getInitialWidth() - 4,

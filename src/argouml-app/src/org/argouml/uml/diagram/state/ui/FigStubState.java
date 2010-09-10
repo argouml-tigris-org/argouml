@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -51,6 +51,7 @@ import org.argouml.model.StateMachinesHelper;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.SelectionMoveClarifiers;
 import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -90,13 +91,18 @@ public class FigStubState extends FigStateVertex {
         initFigs();
     }
 
+    @Override
+    protected Fig createBigPortFig() {
+        FigRect fr = new FigRect(X, Y, WIDTH, HEIGHT);
+        fr.setLineWidth(0);
+        fr.setFilled(false);
+        return fr;
+    }
+
     private void initFigs() {
         facade = Model.getFacade();
         stateMHelper = Model.getStateMachinesHelper();
 
-        setBigPort(new FigRect(X, Y, WIDTH, HEIGHT));
-        getBigPort().setLineWidth(0);
-        getBigPort().setFilled(false);
         stubline = new FigLine(X,
                 Y,
                 WIDTH,

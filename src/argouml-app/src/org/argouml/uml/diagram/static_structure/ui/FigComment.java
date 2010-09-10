@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -122,6 +122,14 @@ public class FigComment
      */
     private boolean newlyCreated;
 
+    @Override
+    protected Fig createBigPortFig() {
+        FigRect fr = new FigRect(0, 0, width, height, null, null);
+        fr.setFilled(false);
+        fr.setLineWidth(0);
+        return fr;
+    }
+
     private void initialize() {
         Color fg = super.getLineColor(); // Use super because not fully init'd
         Color fill = super.getFillColor();
@@ -145,11 +153,6 @@ public class FigComment
         Color col = outlineFig.getFillColor();
         urCorner.setFillColor(col.darker());
         urCorner.setLineWidth(LINE_WIDTH);
-
-        setBigPort(new FigRect(0, 0, width, height, null, null));
-        getBigPort().setFilled(false);
-        getBigPort().setLineWidth(0);
-
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -52,6 +53,7 @@ import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigDiamond;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
@@ -72,9 +74,13 @@ public class FigNodeAssociation extends FigNodeModelElement {
 
     private FigDiamond head;
 
+    @Override
+    protected Fig createBigPortFig() {
+        return new FigDiamond(0, 0, 70, 70, DEBUG_COLOR, DEBUG_COLOR);
+    }
+
     private void initFigs() {
         setEditable(false);
-        setBigPort(new FigDiamond(0, 0, 70, 70, DEBUG_COLOR, DEBUG_COLOR));
         head = new FigDiamond(0, 0, 70, 70, LINE_COLOR, FILL_COLOR);
 
         getNameFig().setFilled(false);

@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -46,6 +46,7 @@ import java.util.Iterator;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Geometry;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigDiamond;
 
 /**
@@ -77,10 +78,14 @@ public class FigJunctionState extends FigStateVertex {
         initFigs();
     }
     
+    @Override
+    protected Fig createBigPortFig() {
+        return new FigDiamond(X, Y, WIDTH, HEIGHT, false, 
+                DEBUG_COLOR, DEBUG_COLOR);
+    }
+
     private void initFigs() {
         setEditable(false);
-        setBigPort(new FigDiamond(X, Y, WIDTH, HEIGHT, false, 
-                DEBUG_COLOR, DEBUG_COLOR));
         head = new FigDiamond(X, Y, WIDTH, HEIGHT, false, 
                 LINE_COLOR, FILL_COLOR);
 

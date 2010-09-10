@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -44,6 +44,7 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
 import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 
 /**
@@ -74,10 +75,14 @@ public class FigForkState extends FigStateVertex {
         initFigs();
     }
 
+    @Override
+    protected Fig createBigPortFig() {
+        return new FigRect(X, Y, STATE_WIDTH, HEIGHT, DEBUG_COLOR,
+                DEBUG_COLOR);
+    }
+
     private void initFigs() {
         setEditable(false);
-        setBigPort(new FigRect(X, Y, STATE_WIDTH, HEIGHT, DEBUG_COLOR,
-                DEBUG_COLOR));
         head = new FigRect(X, Y, STATE_WIDTH, HEIGHT, LINE_COLOR,
                 SOLID_FILL_COLOR);
         // add Figs to the FigNode in back-to-front order
