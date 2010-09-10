@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -85,12 +86,17 @@ public abstract class AbstractFigNode extends FigNodeModelElement {
     private static final int DEFAULT_WIDTH = 200;
     private static final int DEFAULT_HEIGHT = 180;
 
+    @Override
+    protected Fig createBigPortFig() {
+       Fig cpfr = new CubePortFigRect(DEFAULT_X, DEFAULT_Y - DEPTH, 
+               DEFAULT_WIDTH + DEPTH, 
+               DEFAULT_HEIGHT + DEPTH, DEPTH);
+       cpfr.setFilled(false);
+       cpfr.setLineWidth(0);
+        return cpfr;
+    }
+
     private void initFigs() {
-        setBigPort(new CubePortFigRect(DEFAULT_X, DEFAULT_Y - DEPTH, 
-                DEFAULT_WIDTH + DEPTH, 
-                DEFAULT_HEIGHT + DEPTH, DEPTH));
-        getBigPort().setFilled(false);
-        getBigPort().setLineWidth(0);
         cover = new FigCube(DEFAULT_X, DEFAULT_Y, DEFAULT_WIDTH,
                 DEFAULT_HEIGHT, LINE_COLOR, FILL_COLOR);
 

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -90,12 +91,17 @@ public class FigPartition extends FigNodeModelElement {
         initFigs();
     }
 
+    @Override
+    protected Fig createBigPortFig() {
+        // TODO: define constants for magic numbers
+        FigRect fr = new FigRect(X0, Y0, 160, 200, DEBUG_COLOR, DEBUG_COLOR);
+        fr.setFilled(false);
+        fr.setLineWidth(0);
+        return fr;
+    }
+
     private void initFigs() {
         // TODO: define constants for magic numbers
-        setBigPort(new FigRect(X0, Y0, 160, 200, DEBUG_COLOR, DEBUG_COLOR));
-        getBigPort().setFilled(false);
-        getBigPort().setLineWidth(0);
-        
         leftLine = new FigLine(X0, Y0, 10, 300, LINE_COLOR);
         rightLine = new FigLine(150, Y0, 160, 300, LINE_COLOR);
         bottomLine = new FigLine(X0, 300, 150, 300, LINE_COLOR);
@@ -401,7 +407,7 @@ public class FigPartition extends FigNodeModelElement {
     
     /**
      * When dragging this partition drag all other partitions with it.
-     * @return all the partitions to drag togther.
+     * @return all the partitions to drag together.
      */
     @Override
     public List getDragDependencies() {

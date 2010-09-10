@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,7 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
@@ -77,7 +78,6 @@ public class FigSubactivityState extends FigStateVertex {
 
 
     private FigRRect cover;
-    //private FigGroup icon;
 
     private FigRRect s1;
     private FigRRect s2;
@@ -97,15 +97,17 @@ public class FigSubactivityState extends FigStateVertex {
         initFigs();
     }
 
+    @Override
+    protected Fig createBigPortFig() {
+        FigRRect frr = new FigRRect(X, Y, W, H, DEBUG_COLOR, DEBUG_COLOR);
+        frr.setCornerRadius(frr.getHeight() / 2);
+        frr.setLineWidth(0);
+        return frr;
+    }
+
     private void initFigs() {
-        FigRRect bigPort = new FigRRect(X, Y, W, H, DEBUG_COLOR, DEBUG_COLOR);
-        bigPort.setCornerRadius(bigPort.getHeight() / 2);
         cover = new FigRRect(X, Y, W, H, LINE_COLOR, FILL_COLOR);
         cover.setCornerRadius(getHeight() / 2);
-
-        bigPort.setLineWidth(0);
-
-        //icon = makeSubStatesIcon(X + W, Y); // the substate icon in the corner
 
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(10 + PADDING, 10, 90 - PADDING * 2, 25);
@@ -114,14 +116,12 @@ public class FigSubactivityState extends FigStateVertex {
         getNameFig().setEditable(false);
 
         // add Figs to the FigNode in back-to-front order
-        addFig(bigPort);
+        addFig(getBigPort());
         addFig(cover);
         addFig(getNameFig());
-        //addFig(icon);
 
         makeSubStatesIcon(X + W, Y);
 
-        setBigPort(bigPort);
         setBounds(getBounds());
     }
 

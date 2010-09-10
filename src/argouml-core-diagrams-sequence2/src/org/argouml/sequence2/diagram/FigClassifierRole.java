@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
@@ -105,12 +104,15 @@ public class FigClassifierRole extends FigNodeModelElement {
         }
     }
     
+    @Override
+    protected Fig createBigPortFig() {
+        return new FigClassifierRolePort();
+    }
+
     /**
      * Initialization which is common to multiple constructors.
      */
     private void initialize() {
-        setBigPort(new FigClassifierRolePort());
-        
         emptyFig = new FigEmptyRect(getX(), getY(), getWidth(), offset);
         emptyFig.setLineWidth(0);
         

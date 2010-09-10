@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -50,6 +50,7 @@ import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
@@ -98,15 +99,19 @@ public class FigClassifierRole extends FigNodeModelElement {
         }
     }
 
+    @Override
+    protected Fig createBigPortFig() {
+        // The big port. Color of the big port is irrelevant
+        return new FigRect(X0, Y0, DEFAULT_WIDTH, DEFAULT_HEIGHT,
+                DEBUG_COLOR, DEBUG_COLOR);
+    }
+
     /**
      * There should be no size calculations here, 
      * since not all attributes are set yet.
      */
     private void initClassifierRoleFigs() {
-        // The big port and cover. Color of the big port is irrelevant
-
-        setBigPort(new FigRect(X0, Y0, DEFAULT_WIDTH, DEFAULT_HEIGHT,
-                DEBUG_COLOR, DEBUG_COLOR));
+        // The cover. 
         cover = new FigRect(X0, Y0, DEFAULT_WIDTH, DEFAULT_HEIGHT, LINE_COLOR,
                 FILL_COLOR);
 
