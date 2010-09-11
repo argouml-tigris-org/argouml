@@ -127,8 +127,8 @@ public class FigActionState extends FigStateVertex {
     }
     
     /**
-     * Overrule this for subclasses of the FigActionState 
-     * that need a different NotationProvider.
+     * The FigActionState needs a different 
+     * NotationProvider for its "name" field.
      * 
      * @return the type of the notation provider
      */
