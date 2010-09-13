@@ -45,21 +45,15 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.List;
 
-import javax.swing.AbstractListModel;
 import javax.swing.Action;
 import javax.swing.ComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JToolBar;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.swidgets.FlexiGridLayout;
-import org.tigris.toolbar.ToolBarFactory;
-import org.tigris.toolbar.toolbutton.PopupToolBoxButton;
-import org.tigris.toolbar.toolbutton.ToolButton;
 
 /**
  * This class implements a panel that adds a navigation button to the right of
@@ -70,6 +64,11 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  */
 public class UMLComboBoxNavigator extends UmlControl implements ActionListener,
         ItemListener {
+
+    /**
+     * The UID
+     */
+    private static final long serialVersionUID = -4076669106516586439L;
 
     private static ImageIcon icon = ResourceLoaderWrapper
             .lookupIconResource("ComboNav");
@@ -106,22 +105,6 @@ public class UMLComboBoxNavigator extends UmlControl implements ActionListener,
             if (!actions.isEmpty()) {
                 final JPanel buttonPanel =
                 	createSingleButtonPanel(actions);
-//                    new JPanel(new FlexiGridLayout(2, 1, FlexiGridLayout.ROWCOLPREFERRED));
-//        		final ToolButton tb;
-//            	if (actions.size() == 1) {
-//            		tb = new ToolButton(actions.get(0));
-//            	} else {
-//                    PopupToolBoxButton ptb = new PopupToolBoxButton(actions.get(0), actions.size(), 1, true);
-//                    for (Action action : actions) {
-//                        ptb.add(action);
-//                    }
-//                    tb = ptb;
-//            	}
-//                final ToolBarFactory tbf = new ToolBarFactory(new Object[] {});
-//                JToolBar toolbar = tbf.createToolBar();
-//                toolbar.setRollover(true);
-//        		toolbar.add(tb);
-//                buttonPanel.add(toolbar);
                 add(buttonPanel, BorderLayout.WEST);
                 
             }
