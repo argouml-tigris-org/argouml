@@ -1445,11 +1445,13 @@ class CoreHelperMDRImpl implements CoreHelper {
                 if (!isValidNamespace((StructuralFeature) modelElement, ns)) {
                     return false;
                 }
-            } else if (modelElement instanceof GeneralizableElement) {
-                GeneralizableElement ge = (GeneralizableElement) modelElement;
-                if (!isValidNamespace(ge, ns)) {
-                    return false;
-                }
+                // TODO: Issue 6144. It is proposed to allow any paclage to return as a potential
+                // namespace. Commenting out until this is reviewed and clearly accepted by all.
+//            } else if (modelElement instanceof GeneralizableElement) {
+//                GeneralizableElement ge = (GeneralizableElement) modelElement;
+//                if (!isValidNamespace(ge, ns)) {
+//                    return false;
+//                }
             } else if (modelElement instanceof Generalization) {
                 if (!isValidNamespace((Generalization) modelElement, ns)) {
                     return false;
@@ -1688,27 +1690,30 @@ class CoreHelperMDRImpl implements CoreHelper {
      * self.generalization->forAll(g |
      *   self.namespace.allContents->includes(g.parent) )
      */
-    private boolean isValidNamespace(
-            GeneralizableElement generalizableElement,
-            Namespace namespace) {
-        
-        Collection<Generalization> generalizations = 
-            generalizableElement.getGeneralization();
-        
-        ModelManagementHelperMDRImpl modelManagementHelper = 
-            (ModelManagementHelperMDRImpl) modelImpl.getModelManagementHelper();
-        
-        for (Generalization generalization : generalizations) {
-            final GeneralizableElement parent = generalization.getParent();
-            final Set<ModelElement> results = new HashSet<ModelElement>(2000);
-            final Set<ModelElement> dupCheck = new HashSet<ModelElement>(2000);
-            modelManagementHelper.getAllContents(results, namespace, dupCheck);
-            if (!results.contains(parent)) {
-                return false;
-            }
-        }
-        return true;
-    }
+// TODO: Issue 6144. It is proposed to allow any paclage to return as a potential
+// namespace. Commenting out until this is reviewed and clearly accepted by all.
+     
+//    private boolean isValidNamespace(
+//            GeneralizableElement generalizableElement,
+//            Namespace namespace) {
+//        
+//        Collection<Generalization> generalizations = 
+//            generalizableElement.getGeneralization();
+//        
+//        ModelManagementHelperMDRImpl modelManagementHelper = 
+//            (ModelManagementHelperMDRImpl) modelImpl.getModelManagementHelper();
+//        
+//        for (Generalization generalization : generalizations) {
+//            final GeneralizableElement parent = generalization.getParent();
+//            final Set<ModelElement> results = new HashSet<ModelElement>(2000);
+//            final Set<ModelElement> dupCheck = new HashSet<ModelElement>(2000);
+//            modelManagementHelper.getAllContents(results, namespace, dupCheck);
+//            if (!results.contains(parent)) {
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
 
     public Namespace getFirstSharedNamespace(Object ns1, Object ns2) {
