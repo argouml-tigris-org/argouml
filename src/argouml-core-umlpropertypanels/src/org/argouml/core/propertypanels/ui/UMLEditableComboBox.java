@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -44,6 +44,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -53,9 +55,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicComboBoxEditor;
+import javax.swing.text.BadLocationException;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLListCellRenderer2;
 
 /**
@@ -66,7 +72,7 @@ import org.argouml.uml.ui.UMLListCellRenderer2;
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
  */
-public abstract class UMLEditableComboBox extends UMLComboBox implements
+public class UMLEditableComboBox extends UMLComboBox implements
         FocusListener {
 
     /**
@@ -100,6 +106,12 @@ public abstract class UMLEditableComboBox extends UMLComboBox implements
             private JTextField theTextField;
 
             /**
+             * Set true by KeyListener and tested by DocumentListener to make
+             * sure the a document change is as a result of a key press.
+             */
+            private boolean keyTyped = false;
+            
+            /**
              * Constructs a UMLImagePanel
              * @param textField The textfield the user can edit
              * @param showIcon boolean which must be true if an icon is to be
@@ -118,6 +130,61 @@ public abstract class UMLEditableComboBox extends UMLComboBox implements
                 }
                 add(theTextField, BorderLayout.CENTER);
                 theTextField.addFocusListener(UMLEditableComboBox.this);
+                
+                theTextField.addKeyListener(new KeyListener() {
+		    
+		    public void keyTyped(KeyEvent arg0) {
+			keyTyped = true;
+		    }
+		    
+		    public void keyReleased(KeyEvent arg0) {
+			// TODO: Auto-generated method stub
+			
+		    }
+		    
+		    public void keyPressed(KeyEvent arg0) {
+			// TODO: Auto-generated method stub
+			
+		    }
+		});
+                theTextField.getDocument().addDocumentListener(new DocumentListener() {
+
+        	    public void changedUpdate(DocumentEvent ev) {
+        		try {
+                            String filter = ev.getDocument().getText(0, ev.getDocument().getLength());
+        		    if (keyTyped) {
+                                ((UMLComboBoxModel) getModel()).setFilter(filter);
+                                keyTyped = false;
+        		    }
+            		} catch (BadLocationException e) {
+            		    // TODO: Auto-generated catch block
+            		}
+            	    }
+
+        	    public void insertUpdate(DocumentEvent ev) {
+        		try {
+                            String filter = ev.getDocument().getText(0, ev.getDocument().getLength());
+        		    if (keyTyped) {
+                                ((UMLComboBoxModel) getModel()).setFilter(filter);
+                                keyTyped = false;
+        		    }
+        		} catch (BadLocationException e) {
+        		    // TODO: Auto-generated catch block
+        		}
+        	    }
+
+        	    public void removeUpdate(DocumentEvent ev) {
+        		try {
+                            String filter = ev.getDocument().getText(0, ev.getDocument().getLength());
+        		    if (keyTyped) {
+                                ((UMLComboBoxModel) getModel()).setFilter(filter);
+                                keyTyped = false;
+        		    }
+        		} catch (BadLocationException e) {
+        		    // TODO: Auto-generated catch block
+        		}
+        	    } 
+                });
             }
 
             public void setText(String text) {
@@ -192,9 +259,11 @@ public abstract class UMLEditableComboBox extends UMLComboBox implements
                 if (theShowIcon && (anObject != null))
                     panel.setIcon(ResourceLoaderWrapper.getInstance()
                             .lookupIcon(anObject));
-            } else
-                super.setItem(anObject);
-
+            } else if (Model.getFacade().isAUMLElement(anObject)) {
+                super.setItem(Model.getFacade().getName(anObject));
+            } else {
+        	super.setItem(anObject);
+            }
         }
 
         /**
@@ -288,8 +357,9 @@ public abstract class UMLEditableComboBox extends UMLComboBox implements
             // next statement is necessary to update the textfield
             // if the selection is equal to what was allready
             // selected
-            if (oldValue == getSelectedItem())
+            if (oldValue == getSelectedItem()) {
                 getEditor().setItem(getSelectedItem());
+            }
         }
     }
 
@@ -300,13 +370,13 @@ public abstract class UMLEditableComboBox extends UMLComboBox implements
      * @param item The item in the comboboxeditor. In this case it's the text of
      * the editable textfield.
      */
-    protected abstract void doOnEdit(Object item);
+    protected void doOnEdit(Object item) {}
 
     /*
      * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
      */
     public final void focusGained(FocusEvent arg0) {
-        // ignored
+	getEditor().selectAll();
     }
 
     /*
@@ -318,5 +388,15 @@ public abstract class UMLEditableComboBox extends UMLComboBox implements
      */
     public final void focusLost(FocusEvent arg0) {
         doOnEdit(getEditor().getItem());
+    }
+
+    public void firePopupMenuWillBecomeInvisible() {
+	super.firePopupMenuWillBecomeInvisible();
+        ((UMLComboBoxModel) getModel()).setFilter("");
+    }
+    
+    @Override
+    public void removeNotify() {
+	super.removeNotify();
     }
 }

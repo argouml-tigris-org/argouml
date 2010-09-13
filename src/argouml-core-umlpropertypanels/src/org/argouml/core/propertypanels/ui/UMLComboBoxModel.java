@@ -136,6 +136,8 @@ abstract class UMLComboBoxModel extends AbstractListModel
 
     private boolean modelValid;
 
+    private String filter;
+
 
     /**
      * Constructs a model for a combobox. The container given is used to
@@ -387,7 +389,13 @@ abstract class UMLComboBoxModel extends AbstractListModel
         fireListEvents = false;
         int oldSize = objects.size();
         for (Object o : col) {
-            addElement(o);
+            if (filter != null && filter.length() > 0) {
+        	if (Model.getFacade().getName(o).toLowerCase().startsWith(filter.toLowerCase())) {
+                    addElement(o);
+        	}
+            } else {
+                addElement(o);
+            }
         }
         setSelectedItem(external2internal(selected));
         fireListEvents = true;
@@ -629,6 +637,11 @@ abstract class UMLComboBoxModel extends AbstractListModel
             return true;
         }
         return false;
+    }
+    
+    public void setFilter(String filter) {
+	this.filter = filter;
+	modelValid = false;
     }
 
     /**
