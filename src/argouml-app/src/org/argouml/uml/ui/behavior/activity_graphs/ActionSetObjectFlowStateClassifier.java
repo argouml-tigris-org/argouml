@@ -45,9 +45,12 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.ui.UndoableAction;
 
 /**
-* @since Aug 11, 2004
-* @author mvw
-*/
+ * @since Aug 11, 2004
+ * @author mvw
+ * @deprecated in 0.31.5 by Bob Tarling. Property panel controls are now
+ * internal to the property panel component
+ */
+@Deprecated
 public class ActionSetObjectFlowStateClassifier extends UndoableAction {
 
     /**

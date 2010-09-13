@@ -130,6 +130,11 @@ public class PropPanelClassifierInState extends PropPanelClassifier {
 
 }
 
+/**
+ * @deprecated in 0.31.5 by Bob Tarling. Property panel controls are now
+ * internal to the property panel component
+ */
+@Deprecated
 class ActionSetClassifierInStateType extends UndoableAction {
 
     /**

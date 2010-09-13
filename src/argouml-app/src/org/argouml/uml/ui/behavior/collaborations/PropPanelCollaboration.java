@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -52,7 +52,10 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
  * Property panel for collaborations. 
  *
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated in 0.31.5 by Bob Tarling. Property panel controls are now
+ * internal to the property panel component
  */
+@Deprecated
 public class PropPanelCollaboration extends PropPanelNamespace {
 
     /**

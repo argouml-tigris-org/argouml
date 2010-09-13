@@ -64,6 +64,8 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
  * this method
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 4, 2003
+ * @deprecated in 0.31.5 by Bob Tarling. Property panel controls are now
+ * internal to the property panel component
  */
 public abstract class UMLEditableComboBox extends UMLComboBox2 implements
         FocusListener {

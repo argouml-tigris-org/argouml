@@ -59,6 +59,8 @@ import org.argouml.uml.ui.behavior.collaborations.ActionSetClassifierRoleMultipl
  * multiplicity.
  * @author Bob Tarling
  * @since 0.23 alpha2
+ * @deprecated in 0.31.5 by Bob Tarling. Property panel controls are now
+ * internal to the property panel component
  */
 public class UMLMultiplicityPanel extends JPanel implements ItemListener {
 

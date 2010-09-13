@@ -54,7 +54,10 @@ import org.argouml.ui.targetmanager.TargettableModelView;
 
 /**
  * ComboBox for selecting UML Elements.
+ * @deprecated in 0.31.5 by Bob Tarling. Property panel controls are now
+ * internal to the property panel component
  */
+@Deprecated
 public class UMLComboBox2
     extends JComboBox
     implements TargettableModelView, TargetListener, 
