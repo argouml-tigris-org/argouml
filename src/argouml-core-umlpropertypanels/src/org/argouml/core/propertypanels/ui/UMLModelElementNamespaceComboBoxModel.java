@@ -127,12 +127,10 @@ class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel {
         /* TODO: Enhance the isValidNamespace function so
          * that this never happens.
          */
-        if (target != null) {
-            Object namespace = Model.getFacade().getNamespace(target);
-            if (namespace != null && !elements.contains(namespace)) {
-                elements.add(namespace);
-                LOG.warn("The current namespace is not a valid one!");
-            }
+        Object namespace = Model.getFacade().getNamespace(target);
+        if (namespace != null && !elements.contains(namespace)) {
+            elements.add(namespace);
+            LOG.warn("The current namespace is not a valid one!");
         }
 
         // Our comparator will throw an InvalidElementException if the old
