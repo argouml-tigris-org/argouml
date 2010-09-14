@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    tfmorris
- *    mvw
+ *    Michiel van der Wulp
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -259,7 +259,7 @@ public interface CommonBehaviorHelper {
      * Set the Expression (script) for an Action.
      *
      * @param handle Action
-     * @param expr the script (ActionExpression)
+     * @param expr the script (ActionExpression) or null
      */
     void setScript(Object handle, Object expr);
 

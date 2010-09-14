@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -463,6 +463,9 @@ public class StateBodyNotationUml extends StateBodyNotation {
             if (body.equals(s)) {
                 return;
             }
+            /* Throw away the old actionExpression (see issue 6145):  */
+            Model.getCommonBehaviorHelper().setScript(old, null);
+            Model.getUmlFactory().delete(ae);
         }
         ae = Model.getDataTypesFactory().createActionExpression(language, s);
         Model.getCommonBehaviorHelper().setScript(old, ae);
