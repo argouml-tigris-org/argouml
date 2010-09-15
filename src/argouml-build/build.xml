@@ -242,8 +242,9 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-core-model" inheritAll="false"           target="jar"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"       target="jar"/>
     <ant dir="../argouml-core-model-euml" inheritAll="false"      target="install"/>
-    <ant dir="../argouml-app" inheritAll="false"               target="jar"/>
+    <ant dir="../argouml-app" inheritAll="false"                  target="jar"/>
 
+    <ant dir="../argouml-core-diagrams-state2" inheritAll="false" target="jar"/>
     <ant dir="../argouml-core-diagrams-sequence2" inheritAll="false" target="jar"/>
     <ant dir="../argouml-core-diagrams-activity2" inheritAll="false" target="jar"/>
     <ant dir="../argouml-core-umlpropertypanels" inheritAll="false" target="jar"/>
@@ -275,6 +276,9 @@ Property files to be searched (in argouml-build):
     </delete>
     <mkdir dir="${argo.build.dir}/ext"/>
     <copy todir="${argo.build.dir}/ext" includeEmptyDirs="false">
+      <fileset dir="../argouml-core-diagrams-state2/build">
+        <include name="*"/>
+      </fileset>
       <fileset dir="../argouml-core-diagrams-sequence2/build">
         <include name="*"/>
       </fileset>
@@ -360,6 +364,9 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-core-model-mdr" inheritAll="false"    target="jar"/>
     <ant dir="../argouml-app" inheritAll="false"               target="jar"/>
 
+    <!-- Tests for state2 -->
+    <!-- Currently none. -->
+
     <!-- Tests for sequence2 -->
     <!-- Currently none. -->
 
@@ -396,7 +403,13 @@ Property files to be searched (in argouml-build):
       <fileset dir="../argouml-app">
         <include name="build/tests/reports/**/TEST-*.xml"/>
       </fileset>
+      <fileset dir="../argouml-core-diagrams-state2">
+        <include name="build/tests/reports/**/TEST-*.xml"/>
+      </fileset>
       <fileset dir="../argouml-core-diagrams-sequence2">
+        <include name="build/tests/reports/**/TEST-*.xml"/>
+      </fileset>
+      <fileset dir="../argouml-core-diagrams-activity2">
         <include name="build/tests/reports/**/TEST-*.xml"/>
       </fileset>
       <fileset dir="../argouml-core-umlpropertypanels">
@@ -454,6 +467,8 @@ Property files to be searched (in argouml-build):
          inheritAll="false"                                   target="clean"/>
     <ant dir="../argouml-core-diagrams-sequence2"
          inheritAll="false"                                   target="clean"/>
+    <ant dir="../argouml-core-diagrams-state2"
+         inheritAll="false"                                   target="clean"/>
     <ant dir="../argouml-app" inheritAll="false"              target="clean"/>
     <ant dir="../argouml-core-model-euml" inheritAll="false"  target="clean"/>
     <ant dir="../argouml-core-model-mdr" inheritAll="false"   target="clean"/>
@@ -496,7 +511,9 @@ Property files to be searched (in argouml-build):
         <pathelement location="../argouml-app/src"/>
         <pathelement location="../argouml-core-model/src"/>
         <pathelement location="../argouml-core-model-mdr/src"/>
+        <pathelement location="../argouml-core-diagrams-state2/src"/>
         <pathelement location="../argouml-core-diagrams-sequence2/src"/>
+        <pathelement location="../argouml-core-diagrams-activity2/src"/>
  	<pathelement location="../argouml-core-umlpropertypanels/src"/>
       </sourcepath>
 
