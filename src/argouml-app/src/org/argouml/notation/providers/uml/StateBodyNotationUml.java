@@ -463,9 +463,6 @@ public class StateBodyNotationUml extends StateBodyNotation {
             if (body.equals(s)) {
                 return;
             }
-            /* Throw away the old actionExpression (see issue 6145):  */
-            Model.getCommonBehaviorHelper().setScript(old, null);
-            Model.getUmlFactory().delete(ae);
         }
         ae = Model.getDataTypesFactory().createActionExpression(language, s);
         Model.getCommonBehaviorHelper().setScript(old, ae);

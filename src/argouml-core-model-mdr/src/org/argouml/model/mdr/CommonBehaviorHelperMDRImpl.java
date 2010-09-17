@@ -458,7 +458,19 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     public void setScript(Object handle, Object expr) {
         if (handle instanceof Action
                 && (expr == null || expr instanceof ActionExpression)) {
-            ((Action) handle).setScript((ActionExpression) expr);
+            Action a = (Action) handle;
+            ActionExpression ae =a.getScript();
+            if (ae == (ActionExpression) expr) {
+                return;
+            }
+            if (ae != null) {
+                /* Throw away the old actionExpression (see issue 6145):  */
+                a.setScript(null);
+                modelImpl.getUmlFactory().delete(ae);
+            }
+            if (expr != null) {
+                a.setScript((ActionExpression) expr);
+            }
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + " or expr: "
