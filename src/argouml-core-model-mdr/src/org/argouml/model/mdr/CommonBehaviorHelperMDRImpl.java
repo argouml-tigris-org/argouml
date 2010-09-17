@@ -11,7 +11,7 @@
  *    mvw
  *****************************************************************************
  *
- * Some portions of this file was previously release using the BSD License:
+ * Some portions of this file were previously released using the BSD License:
  */
 
 // Copyright (c) 1996-2007 The Regents of the University of California. All
@@ -446,30 +446,42 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
 
 
     public void setRecurrence(Object handle, Object expr) {
-        if (handle instanceof Action && expr instanceof IterationExpression) {
-            ((Action) handle).setRecurrence((IterationExpression) expr);
-            return;
+        Action action = (Action) handle;
+        IterationExpression oldExpr = action.getRecurrence();
+        IterationExpression newExpr = (IterationExpression) expr;
+        if (!equal(oldExpr, newExpr)) {
+            action.setRecurrence(newExpr);
+            if (oldExpr != null) {
+                Model.getUmlFactory().delete(oldExpr);
+            }
         }
-        throw new IllegalArgumentException("handle: " + handle + " or expr: "
-                + expr);
     }
 
+    private boolean equal(Expression expr1, Expression expr2) {
+        if (expr1 == null) {
+            if (expr2 == null) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return expr1.equals(expr2);
+        }
+    }
 
     public void setScript(Object handle, Object expr) {
         if (handle instanceof Action
                 && (expr == null || expr instanceof ActionExpression)) {
             Action a = (Action) handle;
-            ActionExpression ae =a.getScript();
-            if (ae == (ActionExpression) expr) {
+            ActionExpression oldae =a.getScript();
+            ActionExpression newae = (ActionExpression) expr;
+            if (equal(oldae,newae)) {
                 return;
             }
-            if (ae != null) {
+            a.setScript(newae);
+            if (oldae != null) {
                 /* Throw away the old actionExpression (see issue 6145):  */
-                a.setScript(null);
-                modelImpl.getUmlFactory().delete(ae);
-            }
-            if (expr != null) {
-                a.setScript((ActionExpression) expr);
+                modelImpl.getUmlFactory().delete(oldae);
             }
             return;
         }
@@ -525,7 +537,15 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     public void setTarget(Object handle, Object element) {
         if (handle instanceof Action 
                 && element instanceof ObjectSetExpression) {
-            ((Action) handle).setTarget((ObjectSetExpression) element);
+            Action action = (Action) handle;
+            ObjectSetExpression oldExpr = action.getTarget();
+            ObjectSetExpression newExpr = (ObjectSetExpression) element;
+            if (!equal(oldExpr, newExpr)) {
+                action.setTarget(newExpr);
+                if (oldExpr != null) {
+                    Model.getUmlFactory().delete(oldExpr);
+                }
+            }            
             return;
         }
         if (handle instanceof Transition && 
@@ -557,6 +577,15 @@ class CommonBehaviorHelperMDRImpl implements CommonBehaviorHelper {
     public void setValue(Object handle, Object value) {
         if (handle instanceof Argument) {
             ((Argument) handle).setValue((Expression) value);
+            Argument argument = (Argument) handle;
+            Expression oldExpr = argument.getValue();
+            Expression newExpr = (Expression) value;
+            if (!equal(oldExpr, newExpr)) {
+                argument.setValue(newExpr);
+                if (oldExpr != null) {
+                    Model.getUmlFactory().delete(oldExpr);
+                }
+            }
             return;
         }
         if (handle instanceof AttributeLink) {
