@@ -71,7 +71,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     private static final String ATTR05 =
         "public name {a=b, c = d } : [1..*] int = 0";
     private static final String ATTR06 =
-        "private name {a=b, c = d } [*..*] : int = 15 {frozen}";
+        "private name {a=b, c = d } [0..*] : int = 15 {frozen}";
     private static final String ATTR07 = "+name : String = \'val[15] \'";
     private static final String ATTR08 =
         "  + name : String = \"a <<string>>\"";
@@ -386,19 +386,19 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, model);
 
-        checkThrows(attr, NATTR01, true, false, false);
-        checkThrows(attr, NATTR02, true, false, false);
-        checkThrows(attr, NATTR03, true, false, false);
-        checkThrows(attr, NATTR04, true, false, false);
-        checkThrows(attr, NATTR05, true, false, false);
-        checkThrows(attr, NATTR06, true, false, false);
-        checkThrows(attr, NATTR07, true, false, false);
-        checkThrows(attr, NATTR08, true, false, false);
-        checkThrows(attr, NATTR09, true, false, false);
-        checkThrows(attr, NATTR10, true, false, false);
-        checkThrows(attr, NATTR11, true, false, false);
-        checkThrows(attr, NATTR12, true, false, false);
-        checkThrows(attr, NATTR13, true, false, false);
+        checkThrows(attr, NATTR01, true);
+        checkThrows(attr, NATTR02, true);
+        checkThrows(attr, NATTR03, true);
+        checkThrows(attr, NATTR04, true);
+        checkThrows(attr, NATTR05, true);
+        checkThrows(attr, NATTR06, true);
+        checkThrows(attr, NATTR07, true);
+        checkThrows(attr, NATTR08, true);
+        checkThrows(attr, NATTR09, true);
+        checkThrows(attr, NATTR10, true);
+        checkThrows(attr, NATTR11, true);
+        checkThrows(attr, NATTR12, true);
+        checkThrows(attr, NATTR13, true);
     }
 
     /**
@@ -699,16 +699,16 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         Object returnType = project.getDefaultReturnType();
 
         op = Model.getCoreFactory().buildOperation(cl, returnType);
-        checkThrows(op, NOPER01, true, false, false);
-        checkThrows(op, NOPER02, true, false, false);
-        checkThrows(op, NOPER03, true, false, false);
-        checkThrows(op, NOPER04, true, false, false);
-        checkThrows(op, NOPER05, true, false, false);
-        checkThrows(op, NOPER06, true, false, false);
-        checkThrows(op, NOPER07, true, false, false);
-        checkThrows(op, NOPER08, true, false, false);
-        checkThrows(op, NOPER09, true, false, false);
-        checkThrows(op, NOPER10, true, false, false);
+        checkThrows(op, NOPER01, true);
+        checkThrows(op, NOPER02, true);
+        checkThrows(op, NOPER03, true);
+        checkThrows(op, NOPER04, true);
+        checkThrows(op, NOPER05, true);
+        checkThrows(op, NOPER06, true);
+        checkThrows(op, NOPER07, true);
+        checkThrows(op, NOPER08, true);
+        checkThrows(op, NOPER09, true);
+        checkThrows(op, NOPER10, true);
     }
 
     /**
@@ -926,9 +926,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     private void checkThrows(
                  Object element,
                  String text,
-                 boolean prsEx,
-                 boolean ex2,
-                 boolean ex3) {
+                 boolean prsEx) {
         if (Model.getFacade().isAAttribute(element)) {
             try {
                 AttributeNotationUml anu = new AttributeNotationUml(element);
