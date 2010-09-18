@@ -190,8 +190,7 @@ public class TestExtensionMechanismsHelper extends TestCase {
         Object td = Model.getExtensionMechanismsFactory().buildTagDefinition(
                 "testTD", stereotype, null, "String");
         Model.getExtensionMechanismsHelper().setTagType(td, "Boolean");
-        Object mult = Model.getDataTypesFactory().createMultiplicity("1..3");
-        Model.getCoreHelper().setMultiplicity(td, mult);
+        Model.getCoreHelper().setMultiplicity(td, "1..3");
         assertEquals("1..3", facade.toString(facade.getMultiplicity(td)));
     }
 }

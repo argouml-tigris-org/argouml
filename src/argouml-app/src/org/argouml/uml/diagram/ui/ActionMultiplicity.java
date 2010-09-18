@@ -123,10 +123,7 @@ public class ActionMultiplicity extends UndoableAction {
 
             if (!mult.equals(Model.getFacade().toString(
                     Model.getFacade().getMultiplicity(ascEnd)))) {
-                Model.getCoreHelper().setMultiplicity(
-                        ascEnd,
-                        Model.getDataTypesFactory().createMultiplicity(
-                                (String) mult));
+                Model.getCoreHelper().setMultiplicity(ascEnd, (String) mult);
             }
 
 	}

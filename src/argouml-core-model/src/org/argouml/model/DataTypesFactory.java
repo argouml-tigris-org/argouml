@@ -1,13 +1,13 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -153,8 +153,9 @@ public interface DataTypesFactory extends Factory {
      *            the upper bound of the range. The integer value -1 represents
      *            the special UML value 'unlimited'
      * @return an initialized UML Multiplicity instance.
-     * @deprecated by Bob Tarling in 0.31.5 use
-     * CoreHelper.setMultiplicity(Object, int, int);
+     * @deprecated by Bob Tarling in 0.31.5 because in UML 2.x the data value
+     * Multiplicity has instead become an abstract MultiplicityElement.  Use
+     * {@link CoreHelper#setMultiplicity(Object, int, int)}
      */
     @Deprecated
     Object createMultiplicity(int lower, int upper);
@@ -164,8 +165,9 @@ public interface DataTypesFactory extends Factory {
      *
      * @param range a List containing the range
      * @return an initialized UML Multiplicity instance.
-     * @deprecated by Bob Tarling in 0.31.5 use
-     * CoreHelper.setMultiplicity(Object, Object);
+     * @deprecated by Bob Tarling in 0.31.5 because in UML 2.x the data value
+     * Multiplicity has instead become an abstract MultiplicityElement.  Use
+     * {@link CoreHelper#setMultiplicity(Object, int, int)}
      */
     @Deprecated
     Object createMultiplicity(List range);
@@ -175,8 +177,9 @@ public interface DataTypesFactory extends Factory {
      *
      * @param str a String representing the multiplicity
      * @return an initialized UML Multiplicity instance.
-     * @deprecated by Bob Tarling in 0.31.5 use
-     * CoreHelper.setMultiplicity(Object, Object);
+     * @deprecated by Bob Tarling in 0.31.5 because in UML 2.x the data value
+     * Multiplicity has instead become an abstract MultiplicityElement.  Use
+     * {@link CoreHelper#setMultiplicity(Object, String)}.
      */
     @Deprecated
     Object createMultiplicity(String str);
@@ -192,8 +195,9 @@ public interface DataTypesFactory extends Factory {
      *                asterisk character (*) representing "unlimited". The
      *                string "*" is equivalent to "0..*".
      * @return MultiplicityRange A multiplicity range
-     * @deprecated by Bob Tarling in 0.31.5 use
-     * CoreHelper.setMultiplicity(Object, Object);
+     * @deprecated by Bob Tarling in 0.31.5 because in UML 2.x the data value
+     * Multiplicity has instead become an abstract MultiplicityElement.  Use
+     * {@link CoreHelper#setMultiplicity(Object, String)}
      */
     @Deprecated
     public Object createMultiplicityRange(String str);

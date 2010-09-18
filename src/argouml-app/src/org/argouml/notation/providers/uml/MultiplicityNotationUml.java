@@ -73,7 +73,7 @@ public class MultiplicityNotationUml extends MultiplicityNotation {
     @Override
     public void parse(final Object multiplicityOwner, final String text) {
         try {
-            parseMultiplicity(multiplicityOwner, text);
+            setMultiplicity(multiplicityOwner, text);
         } catch (ParseException pe) {
             final String msg = "statusmsg.bar.error.parsing.multiplicity";
             final Object[] args = {pe.getLocalizedMessage(),
@@ -84,6 +84,12 @@ public class MultiplicityNotationUml extends MultiplicityNotation {
         }
     }
 
+    /**
+     * @deprecated by tfmorris for 0.31.6.  No application code should expect
+     * to handle Multiplicty elements (the return value of this method).  Use
+     * {@link #setMultiplicity(Object, String)}
+     */
+    @Deprecated
     protected Object parseMultiplicity(final Object multiplicityOwner,
             final String s1) throws ParseException {
         String s = s1.trim();
@@ -93,8 +99,17 @@ public class MultiplicityNotationUml extends MultiplicityNotation {
         } catch (IllegalArgumentException iae) {
             throw new ParseException(iae.getLocalizedMessage(), 0);
         }
-        Model.getCoreHelper().setMultiplicity(multiplicityOwner, multi);
+        setMultiplicity(multiplicityOwner, s1);
         return multi;
+    }
+
+    protected void setMultiplicity(final Object multiplicityOwner,
+            final String arg) throws ParseException {
+        try {
+            Model.getCoreHelper().setMultiplicity(multiplicityOwner, arg);
+        } catch (IllegalArgumentException iae) {
+            throw new ParseException(iae.getLocalizedMessage(), 0);
+        }
     }
 
     @Override

@@ -362,20 +362,17 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, model);
 
-        checkMultiplicity(attr, ATTR04,
-                Model.getDataTypesFactory().createMultiplicity("1..1"));
+        checkMultiplicity(attr, ATTR04, 1, 1);
 
         attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, model);
 
-        checkMultiplicity(attr, ATTR05,
-                Model.getDataTypesFactory().createMultiplicity("1..*"));
+        checkMultiplicity(attr, ATTR05, 1, -1);
 
         attr = Model.getCoreFactory().buildAttribute2(attrType);
         Model.getCoreHelper().setNamespace(attr, model);
 
-        checkMultiplicity(attr, ATTR06,
-                Model.getDataTypesFactory().createMultiplicity("*..*"));
+        checkMultiplicity(attr, ATTR06, 0, -1);
     }
 
     /**
@@ -910,32 +907,20 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     private void checkMultiplicity(
                    Object attr,
                    String text,
-                   Object mult)
+                   int lower,
+                   int upper)
         throws ParseException {
 
         AttributeNotationUml anu = new AttributeNotationUml(attr); 
         anu.parseAttribute(text, attr);
-        if (mult == null) {
-            assertTrue(
-                    text
-                    + " gave wrong multiplicity: "
-                    + (Model.getFacade().getMultiplicity(attr) == null
-                       ? "(null)"
-                       : Model.getFacade().toString(Model.getFacade().
-                               getMultiplicity(attr))),
-                    Model.getFacade().getMultiplicity(attr) == null);
-        } else {
-            assertTrue(
-                    text
-                    + " gave wrong multiplicity: "
-                    + (Model.getFacade().getMultiplicity(attr) == null
-                       ? "(null)"
-                       : Model.getFacade().toString(Model.getFacade().
-                               getMultiplicity(attr))),
-                    Model.getFacade().toString(mult).equals(
-                            Model.getFacade().toString(
-                                    Model.getFacade().getMultiplicity(attr))));
-        }
+        Object m = Model.getFacade().getMultiplicity(attr);
+        int l = Model.getFacade().getLower(m);
+        int u = Model.getFacade().getUpper(m);
+        assertTrue(text + " gave wrong multiplicity: "
+                + (Model.getFacade().getMultiplicity(attr) == null ? "(null)"
+                        : Model.getFacade().toString(m)), 
+                        (lower == l && upper == u));
+        
     }
 
     private void checkThrows(

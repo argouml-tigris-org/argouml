@@ -148,7 +148,7 @@ public class MDRModelImplementation implements ModelImplementation {
 
     private CommonBehaviorHelper theCommonBehaviorHelper;
 
-    private DataTypesFactory theDataTypesFactory;
+    private DataTypesFactoryMDRImpl theDataTypesFactory;
 
     private DataTypesHelper theDataTypesHelper;
 
@@ -694,6 +694,10 @@ public class MDRModelImplementation implements ModelImplementation {
         return theDataTypesFactory;
     }
 
+    DataTypesFactoryMDRImpl getDataTypesFactoryInternal() {
+        return theDataTypesFactory;
+    }
+    
     /*
      * @see org.argouml.model.ModelImplementation#getDataTypesHelper()
      */

@@ -120,25 +120,10 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
         if (event.getSource() == multiplicityComboBox && getTarget() != null) {
             Object item = multiplicityComboBox.getSelectedItem();
             Object target = multiplicityComboBoxModel.getTarget();
-            Object multiplicity = Model.getFacade().getMultiplicity(target);
             if (Model.getFacade().isAMultiplicity(item)) {
-                if (!item.equals(multiplicity)) {
-                    Model.getCoreHelper().setMultiplicity(target, item);
-                    delete(multiplicity);
-                }
+                Model.getCoreHelper().setMultiplicity(target, item);
             } else if (item instanceof String) {
-                if (!item.equals(Model.getFacade().toString(multiplicity))) {
-                    Model.getCoreHelper().setMultiplicity(
-                            target,
-                            Model.getDataTypesFactory().createMultiplicity(
-                                    (String) item));
-                    delete(multiplicity);
-                }
-            } else {
-                if (multiplicity != null) {
-                    Model.getCoreHelper().setMultiplicity(target, null);
-                    delete(multiplicity);
-                }
+                Model.getCoreHelper().setMultiplicity(target, (String) item);
             }
         }
     }
@@ -190,6 +175,7 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
         protected void doOnEdit(Object item) {
             String text = (String) item;
             try {
+                // TODO: Add a parse for syntax method?
                 Object multi = 
                     Model.getDataTypesFactory().createMultiplicity(text);
                 if (multi != null) {
@@ -315,32 +301,19 @@ public class UMLMultiplicityPanel extends JPanel implements ItemListener {
 
 	public void itemStateChanged(ItemEvent e) {
 	    Object target = getTarget();
-	    Object oldValue = Model.getFacade().getMultiplicity(target);
 	    // Note: MultiplicityComboBox.targetSet() can cause this event
 	    // as well as user actions, so be sure to consider this in 
 	    // changing the following logic 
-	    if (e.getStateChange() == ItemEvent.SELECTED) {
-                String comboText = 
-                    (String) multiplicityComboBox.getSelectedItem();
-                if (oldValue == null
-                        || !comboText.equals(Model.getFacade().toString(
-                                oldValue))) {
-                    Object multi = Model.getDataTypesFactory()
-                            .createMultiplicity(comboText);
-                    if (multi == null) {
-                        Model.getCoreHelper().setMultiplicity(target, "1");
-                    } else {
-                        Model.getCoreHelper().setMultiplicity(target, multi);
-                    }
-                    delete(oldValue);
-                }
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                Model.getCoreHelper().setMultiplicity(target,
+                        (String) multiplicityComboBox.getSelectedItem());
+
 		multiplicityComboBox.setEnabled(true);
 		multiplicityComboBox.setEditable(true);
 	    } else {
 		multiplicityComboBox.setEnabled(false);
 		multiplicityComboBox.setEditable(false);
                 Model.getCoreHelper().setMultiplicity(target, null);
-                delete(oldValue);
 	    }
 	}
     }

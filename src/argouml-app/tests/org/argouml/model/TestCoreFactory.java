@@ -690,27 +690,25 @@ public class TestCoreFactory extends TestCase {
         Object class1 = Model.getCoreFactory().buildClass("Class1", model);
         Object class2 = Model.getCoreFactory().buildClass("Class2", model);
         Object assoc = Model.getCoreFactory().createAssociation();
-        Object unlimited = Model.getDataTypesFactory().createMultiplicity(0, -1);
-        Object ordering = Model.getOrderingKind().getUnordered();
+      Object ordering = Model.getOrderingKind().getUnordered();
         Object aggComposite = Model.getAggregationKind().getComposite();
         Object scope = Model.getScopeKind().getInstance(); // not static
         Object changeable = Model.getChangeableKind().getChangeable();
         Object visibility = Model.getVisibilityKind().getPrivate();
         try {
             Model.getCoreFactory().buildAssociationEnd(assoc, "End", class1,
-                    unlimited, null, false, ordering, aggComposite, scope,
-                    changeable, visibility);
+                    new Integer[] {0, -1}, null, false, ordering, aggComposite,
+                    scope, changeable, visibility);
             fail("Creation of aggregate association end with multiplicity "
                     + "of 'unlimited' should throw an exception");
         } catch (IllegalArgumentException e) {
             // Test passed
         }
 
-        Object multi2 = Model.getDataTypesFactory().createMultiplicity(0, 2);
         try {
             Model.getCoreFactory().buildAssociationEnd(assoc, "End", class1,
-                    multi2, null, false, ordering, aggComposite, scope,
-                    changeable, visibility);
+                    new Integer[] {0, 2}, null, false, ordering, aggComposite,
+                    scope, changeable, visibility);
             fail("Creation of aggregate association end with multiplicity "
                     + "of 2 should throw an exception");
         } catch (IllegalArgumentException e) {
@@ -719,14 +717,13 @@ public class TestCoreFactory extends TestCase {
         
         Object aggNone = Model.getAggregationKind().getNone();
         Object ae = Model.getCoreFactory().buildAssociationEnd(assoc, "End",
-                class1, multi2, null, false, ordering, aggNone, scope,
-                changeable, visibility);
+                class1, new Integer[] {0, 2}, null, false, ordering, aggNone,
+                scope, changeable, visibility);
         assertTrue(Model.getFacade().isAAssociationEnd(ae));
         
         ae = null;
-        Object multi1 = Model.getDataTypesFactory().createMultiplicity(0, 1);
-        ae = Model.getCoreFactory().buildAssociationEnd(assoc, "End",
-                class1, multi1, null, false, ordering, aggComposite, scope,
+        ae = Model.getCoreFactory().buildAssociationEnd(assoc, "End", class1,
+                new Integer[] {0, 1}, null, false, ordering, aggComposite, scope,
                 changeable, visibility);
         assertTrue(Model.getFacade().isAAssociationEnd(ae));
     }

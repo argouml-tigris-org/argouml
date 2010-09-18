@@ -1,13 +1,13 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
  *    Thomas Neustupny
  *******************************************************************************
  *
@@ -423,6 +423,7 @@ public interface CoreFactory extends Factory {
      * @param visibility the visibilitykind
      * @return AssociationEnd
      */
+    @Deprecated
     Object buildAssociationEnd(
         Object assoc,
         String name,
@@ -436,6 +437,37 @@ public interface CoreFactory extends Factory {
         Object changeable,
         Object visibility);
 
+    /**
+     * Builds a fully configurable association end. All variables for
+     * an associationend can be given as parameter.
+     * @param assoc The associaton this end will be part of
+     * @param name The name of the association end
+     * @param type The type (classifier) the end will connect. The end
+     * is a connection piece between an association and a classifier
+     * @param multiplicity array of two integers containing lower and upper bound
+     * @param stereo The stereotype
+     * @param navigable The navigability. True if this association end
+     *                  can be 'passed' from the other classifier.
+     * @param order Ordering of the association
+     * @param aggregation the aggregationkind
+     * @param scope the scope kind
+     * @param changeable the changeablekind
+     * @param visibility the visibilitykind
+     * @return AssociationEnd
+     */
+    Object buildAssociationEnd(
+        Object assoc,
+        String name,
+        Object type,
+        Integer[] multiplicity,
+        Object stereo,
+        boolean navigable,
+        Object order,
+        Object aggregation,
+        Object scope,
+        Object changeable,
+        Object visibility);
+    
     /**
      * Builds a simply configured association end.
      *

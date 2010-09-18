@@ -300,6 +300,9 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                     "The multilicity of the property must" + //$NON-NLS-1$
                     " be instance of MultiplicityElement."); //$NON-NLS-1$
         }
+        MultiplicityElement m = (MultiplicityElement) multi;
+        final int lower = m.getLower();
+        final int upper = m.getUpper();
         if ((order != null && !(order instanceof Boolean))
                 || (changeable != null && !(changeable instanceof Boolean))) {
             throw new IllegalArgumentException(
@@ -314,9 +317,9 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             public void run() {
                 Property property = buildAssociationEndInternal(
                         (Association) assoc, name, (Type) type,
-                        (MultiplicityElement) multi, (Stereotype) stereo,
+                        new Integer[] {lower, upper}, (Stereotype) stereo,
                         navigable, (Boolean) order,
-                        (AggregationKind) aggregation, (Boolean) scope,
+                        (AggregationKind) aggregation,(Boolean) scope,
                         (Boolean) changeable, (VisibilityKind) visibility);
                  getParams().add(property);
             }
@@ -344,7 +347,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
     private Property buildAssociationEndInternal(final Association assoc,
             final String name, final Type type,
-            final MultiplicityElement multi, final Stereotype stereo,
+            final Integer[] multi, final Stereotype stereo,
             final Boolean navigable, final Boolean order,
             final AggregationKind aggregation, final Object scope,
             final Object changeable, final VisibilityKind visibility) {
@@ -370,13 +373,11 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             property.setVisibility((VisibilityKind) visibility);
         }
         if (multi != null) {
-            if (((MultiplicityElement) multi).getLowerValue() != null) {
-                property.setLowerValue(
-                        ((MultiplicityElement) multi).getLowerValue());
+            if (multi[0] != null) {
+                property.setLower(multi[0]);
             }
-            if (((MultiplicityElement) multi).getUpperValue() != null) {
-                property.setLowerValue(
-                        ((MultiplicityElement) multi).getUpperValue());
+            if (multi[1] != null) {
+                property.setUpper(multi[1]);
             }
         }
         if (order != null) {
@@ -393,15 +394,24 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return property;
     }
     
+    @Deprecated
     public Property buildAssociationEnd(Object assoc, String name, Object type,
             Object multi, Object stereo, boolean navigable, Object order,
             Object aggregation, Object scope, Object changeable,
             Object visibility) {
-        return buildAssociationEnd(
-                assoc, name, type, multi, stereo, navigable, order,
-                aggregation, scope, changeable, visibility);
+        throw new NotImplementedException();
     }
 
+    public Property buildAssociationEnd(Object assoc, String name, Object type,
+            Integer[] multi, Object stereo, boolean navigable, Object order,
+            Object aggregation, Object scope, Object changeable,
+            Object visibility) {
+        return buildAssociationEndInternal((Association) assoc, name,
+                (Type) type, multi, (Stereotype) stereo, (Boolean) navigable,
+                (Boolean) order, (AggregationKind) aggregation, scope,
+                changeable, (VisibilityKind) visibility);
+    }
+        
     public Property buildAssociationEnd(Object type, Object assoc) {
         return buildAssociationEnd(
                 assoc, null, type, null, null, null, null, null, null, null,

@@ -592,10 +592,19 @@ public abstract class AbstractCoreHelperDecorator implements CoreHelper {
         impl.setKind(handle, kind);
     }
 
+    @Deprecated
     public void setMultiplicity(Object handle, Object arg) {
         impl.setMultiplicity(handle, arg);
     }
 
+    public void setMultiplicity(Object handle, String arg) {
+        impl.setMultiplicity(handle, arg);
+    }
+
+    public void setMultiplicity(Object handle, int lower, int upper) {
+        impl.setMultiplicity(handle, lower, upper);
+    }
+    
     public void setName(Object handle, String name) {
         impl.setName(handle, name);
     }

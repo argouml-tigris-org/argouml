@@ -38,8 +38,6 @@
 
 package org.argouml.model;
 
-import java.util.LinkedList;
-
 import junit.framework.TestCase;
 
 /**
@@ -99,14 +97,6 @@ public class TestDataTypesFactory extends TestCase {
 					     objs,
 					     args);
 
-	// Multiplicity
-
-	CheckUMLModelHelper.deleteAndRelease(dtf.createMultiplicity(1, 10));
-
-	CheckUMLModelHelper.deleteAndRelease(
-		dtf.createMultiplicity(new LinkedList()));
-
-	CheckUMLModelHelper.deleteAndRelease(dtf.createMultiplicity("1..10"));
 
 	// Do we need to add tests for the following?
 	//

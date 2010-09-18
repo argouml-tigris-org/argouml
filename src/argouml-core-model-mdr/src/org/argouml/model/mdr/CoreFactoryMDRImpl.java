@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,7 @@
  * Contributors:
  *    bobtarling
  *    Thomas Neustupny
+ *    Tom Morris
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -596,7 +597,61 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
 
     public AssociationEnd buildAssociationEnd(Object assoc, String name,
+            Object type, Integer[] multiplicity, Object stereo, boolean navigable,
+            Object order, Object aggregation, Object scope, Object changeable,
+            Object visibility) {
+        if (aggregation != null
+                && aggregation.equals(AggregationKindEnum.AK_COMPOSITE)
+                && multiplicity != null 
+                && (multiplicity[1] > 1 || multiplicity[1] == -1) ) {
+            throw new IllegalArgumentException("aggregation is composite "
+                    + "and multiplicity > 1");
+        }        
+        AssociationEnd ae = buildAssociationEndInternal(assoc, name, type,
+                stereo, navigable, order, aggregation, scope, changeable,
+                visibility);
+        if (multiplicity != null) {
+            Multiplicity m = modelImpl.getDataTypesFactoryInternal()
+                    .createMultiplicityInternal(multiplicity[0],
+                            multiplicity[1]);
+            ae.setMultiplicity(m);
+        }
+        return ae;
+    }
+
+    @Deprecated
+    public AssociationEnd buildAssociationEnd(Object assoc, String name,
             Object type, Object multi, Object stereo, boolean navigable,
+            Object order, Object aggregation, Object scope, Object changeable,
+            Object visibility) {
+        if (multi != null && !(multi instanceof Multiplicity)) {
+            throw new IllegalArgumentException("Multiplicity");
+        }
+        if (aggregation != null
+                && aggregation.equals(AggregationKindEnum.AK_COMPOSITE)
+                && multi != null 
+                && compareMultiplicity(getMaxUpper((Multiplicity) multi), 1) 
+                    > 0) {
+            throw new IllegalArgumentException("aggregation is composite "
+                    + "and multiplicity > 1");
+        }
+        AssociationEnd ae = buildAssociationEndInternal(assoc, name, type,
+                stereo, navigable, order, aggregation, scope, changeable,
+                visibility);
+        if (multi == null) {
+            ae.setMultiplicity(getMultiplicity11());
+        } else if (multi instanceof Multiplicity) {
+            ae.setMultiplicity((Multiplicity) multi);
+        } else if (multi instanceof String) {
+            Multiplicity m = modelImpl.getDataTypesFactoryInternal()
+                    .createMultiplicityInternal((String) multi);
+            ae.setMultiplicity(m);
+        }
+        return ae;
+    }
+
+    private AssociationEnd buildAssociationEndInternal (Object assoc, String name,
+            Object type, Object stereo, boolean navigable,
             Object order, Object aggregation, Object scope, Object changeable,
             Object visibility) {
         // wellformednessrules and preconditions
@@ -604,9 +659,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 || !(type instanceof Classifier)) {
             throw new IllegalArgumentException("either type or association "
                     + "are null");
-        }
-        if (multi != null && !(multi instanceof Multiplicity)) {
-            throw new IllegalArgumentException("Multiplicity");
         }
         if (stereo != null && !(stereo instanceof Stereotype)) {
             throw new IllegalArgumentException("Stereotype");
@@ -627,15 +679,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             throw new IllegalArgumentException("VisibilityKind");
         }
 
-        if (aggregation != null
-                && aggregation.equals(AggregationKindEnum.AK_COMPOSITE)
-                && multi != null 
-                && compareMultiplicity(getMaxUpper((Multiplicity) multi), 1) 
-                    > 0) {
-            throw new IllegalArgumentException("aggregation is composite "
-                    + "and multiplicity > 1");
-        }
-
         AssociationEnd end = createAssociationEnd();
         end.setAssociation((UmlAssociation) assoc);
         end.setParticipant((Classifier) type);
@@ -646,11 +689,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             for (AssociationEnd e : ends) {
                 e.setAggregation(AggregationKindEnum.AK_NONE);
             }
-        }
-        if (multi != null) {
-            end.setMultiplicity((Multiplicity) multi);
-        } else {
-            end.setMultiplicity(getMultiplicity11());
         }
         if (stereo != null) {
             end.getStereotype().clear();
@@ -731,8 +769,8 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * Get a 1..1 multiplicity
      */
     private Multiplicity getMultiplicity11() {
-        return (Multiplicity) modelImpl.getDataTypesFactory()
-                .createMultiplicity(1, 1);
+        return modelImpl.getDataTypesFactoryInternal()
+                .createMultiplicityInternal(1, 1);
     }
 
 
@@ -2221,6 +2259,7 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      * @param target the new attribute to be adapted
      */
     void doCopyAttribute(Attribute source, Attribute target) {
+        // TODO: Delete old multiplicity? Why is "copy" using hard coded value? - tfm
         target.setMultiplicity(getMultiplicity11());
         target.setChangeability(source.getChangeability());
         target.setTargetScope(source.getTargetScope());

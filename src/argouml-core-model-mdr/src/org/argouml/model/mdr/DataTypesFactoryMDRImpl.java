@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -177,7 +177,12 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
 
 
+    @Deprecated
     public Multiplicity createMultiplicity(int lower, int upper) {
+        return createMultiplicityInternal(lower, upper);
+    }
+
+    Multiplicity createMultiplicityInternal(int lower, int upper) {
         Multiplicity multiplicity = modelImpl.getUmlPackage().getDataTypes()
                 .getMultiplicity().createMultiplicity();
         if (LOG.isDebugEnabled()) {
@@ -187,7 +192,7 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         super.initialize(multiplicity);
         return multiplicity;
     }
-
+    
     /*
      * TODO: As currently implemented, this expects a list of
      * MultiplicityRanges. Is this an interface change from the NSUML
@@ -195,7 +200,12 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
      * 
      * @see org.argouml.model.DataTypesFactory#createMultiplicity(java.util.List)
      */
-    public Multiplicity createMultiplicity(List range) {
+    @Deprecated
+    public Multiplicity createMultiplicity(final List range) {
+        return createMultiplicityInternal(range);
+    }
+
+    Multiplicity createMultiplicityInternal(final List<MultiplicityRange> range) {
         Multiplicity multiplicity = modelImpl.getUmlPackage().getDataTypes()
                 .getMultiplicity().createMultiplicity();
         if (LOG.isDebugEnabled()) {
@@ -205,14 +215,18 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         super.initialize(multiplicity);
         return multiplicity;
     }
-
-
-    public Multiplicity createMultiplicity(String str) {
+    
+    @Deprecated
+    public Multiplicity createMultiplicity(final String str) {
+        return createMultiplicityInternal(str);
+    }
+    
+    Multiplicity createMultiplicityInternal(final String str) {
         List<MultiplicityRange> ranges = 
             Collections.unmodifiableList(parseRanges(str));
         return createMultiplicity(ranges);
     }
-
+    
     private List<MultiplicityRange> parseRanges(String str) {
         List<MultiplicityRange> rc = new ArrayList<MultiplicityRange>();
         // Return 1..1 multiplicity for empty string
@@ -224,10 +238,15 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         while (stk.hasMoreTokens()) {
             rc.add(createMultiplicityRange(stk.nextToken()));
         }
+        if (rc.size() > 1) {
+            LOG.debug("UML 2.x does not support multiple multiplicity ranges.  " 
+                    + str);
+        }
         return rc;
     }
 
     
+    @Deprecated
     public MultiplicityRange createMultiplicityRange(String str) {
         StringTokenizer stk = new StringTokenizer(str, ". ");
         if (!stk.hasMoreTokens()) {
@@ -252,7 +271,9 @@ class DataTypesFactoryMDRImpl extends AbstractUmlModelFactoryMDR
     }
     
 
-    public MultiplicityRange createMultiplicityRange(int lower, int upper) {
+    @Deprecated
+    public MultiplicityRange createMultiplicityRange(final int lower, 
+            final int upper) {
         MultiplicityRange range = 
             modelImpl.getUmlPackage().getDataTypes().getMultiplicityRange()
                 .createMultiplicityRange(lower, upper);

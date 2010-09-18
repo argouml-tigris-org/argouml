@@ -452,9 +452,7 @@ public class AttributeNotationUml extends AttributeNotation {
             StringBuilder multiplicity, int multindex) throws ParseException {
         if (multiplicity != null) {
             try {
-                Model.getCoreHelper().setMultiplicity(attribute,
-                        Model.getDataTypesFactory().createMultiplicity(
-                                multiplicity.toString().trim()));
+                Model.getCoreHelper().setMultiplicity(attribute, multiplicity.toString());
             } catch (IllegalArgumentException iae) {
                 String msg = "parsing.error.attribute.bad-multiplicity";
                 Object[] args = {iae};

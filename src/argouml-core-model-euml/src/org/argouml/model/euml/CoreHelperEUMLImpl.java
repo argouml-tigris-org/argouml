@@ -1526,8 +1526,17 @@ class CoreHelperEUMLImpl implements CoreHelper {
         addOwnedElement(container, handle);
     }
 
+    @Deprecated
     public void setMultiplicity(final Object handle, Object arg) {
-        if (arg == null || arg.equals("")) {
+        throw new NotImplementedException();
+    }
+
+    public void setMultiplicity(final Object handle, String arg) {
+        if (!(handle instanceof MultiplicityElement)) {
+            throw new IllegalArgumentException(
+                    "A MultiplicityElement was expected"); //$NON-NLS-1$
+        }
+        if (arg == null || arg.equals("")) { //$NON-NLS-1$
             RunnableClass run = new RunnableClass() {
                 public void run() {
                     ((MultiplicityElement) handle).setLowerValue(null);
@@ -1541,50 +1550,47 @@ class CoreHelperEUMLImpl implements CoreHelper {
                             handle));
             return;
         }
-        if (!(handle instanceof MultiplicityElement)) {
-            throw new IllegalArgumentException(
-                    "A MultiplicityElement was expected"); //$NON-NLS-1$
-        }
-        if (arg instanceof String) {
-            String s = (String) arg;
-            int lower = 1, upper = 1;
 
-            if ("*".equals(s.trim())) { //$NON-NLS-1$
-                lower = 0;
-                upper = -1;
-            } else if (s.contains("..")) { //$NON-NLS-1$
-                String[] pieces = s.trim().split("\\.\\."); //$NON-NLS-1$
-                if (pieces.length > 2) {
-                    throw new IllegalArgumentException((String) arg);
-                }
-                lower = Integer.parseInt(pieces[0]);
-                if ("*".equals(pieces[1])) { //$NON-NLS-1$
-                    upper = -1;
-                } else {
-                    upper = Integer.parseInt(pieces[1]);
-                }
-            } else if (s.contains("_")) { //$NON-NLS-1$
-                // also parse 1_* or 0_N etc.
-                String[] pieces = s.trim().split("_"); //$NON-NLS-1$
-                if (pieces.length > 2) {
-                    throw new IllegalArgumentException((String) arg);
-                }
-                lower = Integer.parseInt(pieces[0]);
-                if ("*".equals(pieces[1]) //$NON-NLS-1$
-                     || "N".equals(pieces[1])) { //$NON-NLS-1$
-                    upper = -1;
-                } else {
-                    upper = Integer.parseInt(pieces[1]);
-                }
-            } else { 
-                lower = Integer.parseInt(s);
-                upper = lower;
+        int[] range = parseMultiplicity(arg);
+        setMultiplicity(handle, range[0], range[1]);
+
+    }
+
+    private int[] parseMultiplicity(String arg) {
+        int lower = 1, upper = 1;
+
+        if ("*".equals(arg.trim())) { //$NON-NLS-1$
+            lower = 0;
+            upper = -1;
+        } else if (arg.contains("..")) { //$NON-NLS-1$
+            String[] pieces = arg.trim().split("\\.\\."); //$NON-NLS-1$
+            if (pieces.length > 2) {
+                throw new IllegalArgumentException((String) arg);
             }
-            
-            setMultiplicity(handle, lower, upper);
-        } else {
-            throw new NotYetImplementedException();
+            lower = Integer.parseInt(pieces[0]);
+            if ("*".equals(pieces[1])) { //$NON-NLS-1$
+                upper = -1;
+            } else {
+                upper = Integer.parseInt(pieces[1]);
+            }
+        } else if (arg.contains("_")) { //$NON-NLS-1$
+            // also parse 1_* or 0_N etc.
+            String[] pieces = arg.trim().split("_"); //$NON-NLS-1$
+            if (pieces.length > 2) {
+                throw new IllegalArgumentException((String) arg);
+            }
+            lower = Integer.parseInt(pieces[0]);
+            if ("*".equals(pieces[1]) //$NON-NLS-1$
+                    || "N".equals(pieces[1])) { //$NON-NLS-1$
+                upper = -1;
+            } else {
+                upper = Integer.parseInt(pieces[1]);
+            }
+        } else { 
+            lower = Integer.parseInt(arg);
+            upper = lower;
         }
+        return new int[] {lower, upper};
     }
 
     public void setMultiplicity(

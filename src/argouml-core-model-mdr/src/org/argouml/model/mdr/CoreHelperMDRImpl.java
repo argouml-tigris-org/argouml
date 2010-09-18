@@ -9,6 +9,7 @@
  * Contributors:
  *    Thomas Neustupny
  *    Michiel van der Wulp
+ *    Tom Morris
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -2933,66 +2934,76 @@ class CoreHelperMDRImpl implements CoreHelper {
         }
     }
 
+    public void setMultiplicity(Object handle, String arg) {
+        setMultiplicity(handle,createMultiplicity(arg));
+    }
 
+    private void setMultiplicity(Object handle, Multiplicity arg) {
+        Multiplicity previousMult =
+            (Multiplicity) Model.getFacade().getMultiplicity(handle);
+        if (handle instanceof AssociationRole) {
+            ((AssociationRole) handle).setMultiplicity(arg);
+        } else if (handle instanceof ClassifierRole) {
+            ((ClassifierRole) handle).setMultiplicity(arg);
+        } else if (handle instanceof StructuralFeature) {
+            ((StructuralFeature) handle).setMultiplicity(arg);
+        } else if (handle instanceof AssociationEnd) {
+            ((AssociationEnd) handle).setMultiplicity(arg);
+        } else if (handle instanceof TagDefinition) {
+            ((TagDefinition) handle).setMultiplicity(arg);
+        }
+        if (previousMult != null &&
+                Model.getFacade().getModelElementContainer(previousMult)
+                == null) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Previous multiplicity of " + handle + " will be deleted." + arg);
+            }
+            Model.getUmlFactory().delete(previousMult);
+        }        
+    }
+    
+    @Deprecated
     public void setMultiplicity(Object handle, Object arg) {
         if (arg instanceof String) {
-            String sarg = (String) arg;
-            boolean allDigits = true;
-            for (int i=0; i < sarg.length(); ++i) {
-                if (!Character.isDigit(sarg.charAt(i))) {
-                    allDigits = false;
-                }
-            }
-            if (allDigits || sarg.indexOf('.') > -1 || sarg.indexOf(',') > -1) {
-                arg =
-                    modelImpl.getDataTypesFactory().createMultiplicity(sarg);
-            } else {
-                // TODO: We have multiple string representations for multiplicities
-                // these should be consolidated. This form is used by
-                // org.argouml.uml.reveng
-                if ("1_N".equals(arg)) {
-                    arg =
-                        modelImpl.getDataTypesFactory().createMultiplicity(1, -1);
-                } else {
-                    arg = modelImpl.getDataTypesFactory().createMultiplicity(1, 1);
-                }
-            }
-        }
-
-        if (arg == null || arg instanceof Multiplicity) {
-            Multiplicity mult = (Multiplicity) arg;
-            Multiplicity previousMult =
-                (Multiplicity) Model.getFacade().getMultiplicity(handle);
-            if (handle instanceof AssociationRole) {
-                ((AssociationRole) handle).setMultiplicity(mult);
-            } else if (handle instanceof ClassifierRole) {
-                ((ClassifierRole) handle).setMultiplicity(mult);
-            } else if (handle instanceof StructuralFeature) {
-                ((StructuralFeature) handle).setMultiplicity(mult);
-            } else if (handle instanceof AssociationEnd) {
-                ((AssociationEnd) handle).setMultiplicity(mult);
-            } else if (handle instanceof TagDefinition) {
-                ((TagDefinition) handle).setMultiplicity(mult);
-            }
-            if (previousMult != null &&
-                    Model.getFacade().getModelElementContainer(previousMult)
-                    == null) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Previous multiplicity of " + handle + " will be deleted." + mult);
-                }
-                Model.getUmlFactory().delete(previousMult);
-            }
+            setMultiplicity(handle, (String) arg);
             return;
+        }
+        if (arg == null || arg instanceof Multiplicity) {
+            setMultiplicity(handle, (Multiplicity) arg);
         } else {
             throw new IllegalArgumentException("handle: " + handle + " or arg: "
                     + arg);
         }
     }
 
+    private Multiplicity createMultiplicity(String sarg) {
+        boolean allDigits = true;
+        for (int i=0; i < sarg.length(); ++i) {
+            if (!Character.isDigit(sarg.charAt(i))) {
+                allDigits = false;
+            }
+        }
+        if (allDigits || sarg.indexOf('.') > -1 || sarg.indexOf(',') > -1) {
+            return modelImpl.getDataTypesFactoryInternal()
+                    .createMultiplicityInternal(sarg);
+        } else {
+            // TODO: We have multiple string representations for multiplicities
+            // these should be consolidated. This form is used by
+            // org.argouml.uml.reveng
+            if ("1_N".equals(sarg)) {
+                return modelImpl.getDataTypesFactoryInternal()
+                        .createMultiplicityInternal(1, -1);
+            } else {
+                return modelImpl.getDataTypesFactoryInternal()
+                        .createMultiplicityInternal(1, 1);
+            }
+        }
+    }
+
     public void setMultiplicity(Object handle, int lower, int upper) {
 
-        Object arg =
-            modelImpl.getDataTypesFactory().createMultiplicity(lower, upper);
+        Multiplicity arg = modelImpl.getDataTypesFactoryInternal()
+                .createMultiplicityInternal(lower, upper);
         
         setMultiplicity(handle, arg);
     }

@@ -9,6 +9,7 @@
  * Contributors:
  *    Thomas Neustupny
  *    Michiel van der Wulp
+ *    Tom Morris
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -1080,9 +1081,20 @@ public interface CoreHelper {
      * @param handle model element
      * @param arg multiplicity as string OR multiplicity object,
      *            null is a valid value (unspecified)
+     * @deprecated for 0.31.6 by tfmorris.  Use {@link #setMultiplicity(Object, String)}.
      */
+    @Deprecated
     void setMultiplicity(Object handle, Object arg);
 
+    /**
+     * Set the multiplicity of an Element.
+     *
+     * @param handle model element
+     * @param arg multiplicity as string
+     *            null is a valid value (unspecified)
+     */
+    void setMultiplicity(Object handle, String arg);
+    
     /**
      * Set the multiplicity of a ModelElement.
      *

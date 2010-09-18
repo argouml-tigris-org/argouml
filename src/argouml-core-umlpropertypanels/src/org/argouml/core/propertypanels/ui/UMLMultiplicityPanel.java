@@ -124,7 +124,7 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
 
     public void itemStateChanged(ItemEvent event) {
         if (event.getSource() == multiplicityComboBox) {
-            Object item = multiplicityComboBox.getSelectedItem();
+            String item = (String) multiplicityComboBox.getSelectedItem();
             Object target = multiplicityComboBox.getTarget();
             String currentMult = Model.getFacade().toString(Model.getFacade().getMultiplicity(target));
             if (!currentMult.equals(item)) {
@@ -287,22 +287,16 @@ class UMLMultiplicityPanel extends JPanel implements ItemListener {
              *      java.lang.Object, java.lang.Object)
              */
             public void setSelectedItem(Object item, Object target) {
-                if (target != null
-                        && Model.getFacade().isAClassifierRole(target)) {
-                    if (Model.getFacade().isAMultiplicity(item)) {
-                        if (!item.equals(Model.getFacade().getMultiplicity(target))) {
-                            Model.getCoreHelper().setMultiplicity(target, item);
-                        }
-                    } else if (item instanceof String) {
-                        if (!item.equals(Model.getFacade().toString(
-                                Model.getFacade().getMultiplicity(target)))) {
-                            Model.getCoreHelper().setMultiplicity(
-                                    target, (String) item);
-                        }
-                    } else {
-                        Model.getCoreHelper().setMultiplicity(target, null);
-                    }
-                }
+		if (target != null
+			&& Model.getFacade().isAClassifierRole(target)) {
+		    if (Model.getFacade().isAMultiplicity(item)) {
+			// TODO: Aren't our items always strings? - tfm 20100917
+			Model.getCoreHelper().setMultiplicity(target, item);
+		    } else if (item instanceof String) {
+			Model.getCoreHelper().setMultiplicity(target,
+				(String) item);
+		    }
+		}
             }
         }
     }

@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -381,8 +381,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
             coreHelper.setNamespace(td, ns);
         }
         coreHelper.setName(td, name);
-        coreHelper.setMultiplicity(td, org.argouml.model.Model
-                .getDataTypesFactory().createMultiplicity(0, 1));
+        coreHelper.setMultiplicity(td, 0, 1);
         td.setTagType(tagType);
         return td;
     }
@@ -437,7 +436,7 @@ class ExtensionMechanismsFactoryMDRImpl extends
         target.setTagType(source.getTagType());
         String srcMult = org.argouml.model.Model.getFacade().toString(
                 source.getMultiplicity());
-        target.setMultiplicity((Multiplicity) org.argouml.model.Model
-                .getDataTypesFactory().createMultiplicity(srcMult));
+        target.setMultiplicity(modelImpl.getDataTypesFactoryInternal()
+                .createMultiplicityInternal(srcMult));
     }    
 }
