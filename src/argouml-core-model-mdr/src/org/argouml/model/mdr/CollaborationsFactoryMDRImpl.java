@@ -62,7 +62,6 @@ import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.datatypes.AggregationKind;
 import org.omg.uml.foundation.datatypes.AggregationKindEnum;
-import org.omg.uml.foundation.datatypes.Multiplicity;
 
 /**
  * Factory to create UML classes for the UML BehaviorialElements::Collaborations
