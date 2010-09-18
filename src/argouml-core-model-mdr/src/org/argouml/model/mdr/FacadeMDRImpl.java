@@ -1383,7 +1383,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    @SuppressWarnings("deprecation")
+    @Deprecated
     public Object getChangeability(Object handle) {
         try {
             if (handle instanceof StructuralFeature) {
@@ -2547,7 +2547,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    @SuppressWarnings("deprecation")
+    @Deprecated
     public Object getDiscriminator(Object handle) {
         try {
             if (handle instanceof Generalization) {
@@ -3493,7 +3493,7 @@ class FacadeMDRImpl implements Facade {
     }
 
 
-    @SuppressWarnings("deprecation")
+    @Deprecated
     public Object getTargetScope(Object handle) {
         try {
             if (handle instanceof StructuralFeature) {

@@ -456,19 +456,37 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public void setExpression(Object handle, Object value) {
         if (handle instanceof Guard
                 && (value == null || value instanceof BooleanExpression)) {
-            ((Guard) handle).setExpression((BooleanExpression) value);
+            Expression oldExp = ((Guard) handle).getExpression();
+            if (!equal(oldExp,(Expression) value)) {
+                ((Guard) handle).setExpression((BooleanExpression) value);
+                if (oldExp != null) {
+                    Model.getUmlFactory().delete(oldExp);
+                }
+            }
             return;
         }
         if (handle instanceof ChangeEvent
                 && (value == null || value instanceof BooleanExpression)) {
             ChangeEvent ce = (ChangeEvent) handle;
-            ce.setChangeExpression((BooleanExpression) value);
+            Expression oldExp = ce.getChangeExpression();
+            if (!equal(oldExp,(Expression) value)) {
+                ce.setChangeExpression((BooleanExpression) value);
+                if (oldExp != null) {
+                    Model.getUmlFactory().delete(oldExp);
+                }
+            }
             return;
         }
         if (handle instanceof Argument
                 && (value == null || value instanceof Expression)) {
             Argument arg = (Argument) handle;
-            arg.setValue((Expression) value);
+            Expression oldExp = arg.getValue();
+            if (!equal(oldExp,(Expression) value)) {
+                arg.setValue((Expression) value);
+                if (oldExp != null) {
+                    Model.getUmlFactory().delete(oldExp);
+                }
+            }
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + " or value: "
@@ -476,6 +494,19 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     }
 
 
+    private boolean equal(Expression expr1, Expression expr2) {
+        if (expr1 == null) {
+            if (expr2 == null) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return expr1.equals(expr2);
+        }
+    }
+    
+    
     public void setGuard(Object handle, Object guard) {
         if (handle instanceof Transition
                 && (guard == null || guard instanceof Guard)) {
@@ -601,7 +632,13 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public void setWhen(Object handle, Object value) {
         if (handle instanceof TimeEvent
                 && (value == null || value instanceof TimeExpression)) {
-            ((TimeEvent) handle).setWhen((TimeExpression) value);
+            Expression oldExp = ((TimeEvent) handle).getWhen();
+            if (!equal(oldExp,(Expression) value)) {
+                ((TimeEvent) handle).setWhen((TimeExpression) value);
+                if (oldExp != null) {
+                    Model.getUmlFactory().delete(oldExp);
+                }
+            }
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + " or value: "
@@ -612,8 +649,14 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public void setChangeExpression(Object handle, Object value) {
         if (handle instanceof ChangeEvent
                 && (value == null || value instanceof BooleanExpression)) {
-            ((ChangeEvent) handle)
-                    .setChangeExpression((BooleanExpression) value);
+            Expression oldExp = ((ChangeEvent) handle).getChangeExpression();
+            if (!equal(oldExp, (Expression) value)) {
+                ((ChangeEvent) handle)
+                        .setChangeExpression((BooleanExpression) value);
+                if (oldExp != null) {
+                    Model.getUmlFactory().delete(oldExp);
+                }
+            }
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + " or value: "

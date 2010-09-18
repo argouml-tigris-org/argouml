@@ -115,7 +115,6 @@ final class ModelManagementFactoryMDRImpl extends
         }
     }
     
-    @SuppressWarnings("deprecation")
     @Deprecated
     public void setRootModel(Object rootModel) {
         if (rootModel != null && !(rootModel instanceof Model)) {
@@ -127,7 +126,6 @@ final class ModelManagementFactoryMDRImpl extends
     }
 
 
-    @SuppressWarnings("deprecation")
     @Deprecated
     public Object getRootModel() {
         return theRootModel;
