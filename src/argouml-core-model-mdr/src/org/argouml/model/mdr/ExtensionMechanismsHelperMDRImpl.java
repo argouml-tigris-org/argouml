@@ -192,7 +192,6 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
     }
 
 
-    @SuppressWarnings("deprecation")
     @Deprecated
     public String getMetaModelName(Object m) {
         return modelImpl.getMetaTypes().getName(m);

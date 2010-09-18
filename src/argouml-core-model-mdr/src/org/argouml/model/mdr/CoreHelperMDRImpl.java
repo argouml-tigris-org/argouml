@@ -2682,13 +2682,25 @@ class CoreHelperMDRImpl implements CoreHelper {
     public void setBody(Object handle, Object expr) {
         if (handle instanceof Method
                 && (expr == null || expr instanceof ProcedureExpression)) {
-            ((Method) handle).setBody((ProcedureExpression) expr);
+            ProcedureExpression oldPe = ((Method)handle).getBody();
+            if (!equal(oldPe, (ProcedureExpression) expr)) {
+                ((Method) handle).setBody((ProcedureExpression) expr);
+                if (oldPe != null) {
+                    Model.getUmlFactory().delete(oldPe);
+                }
+            }
             return;
         }
 
         if (handle instanceof Constraint
                 && (expr == null || expr instanceof BooleanExpression)) {
-            ((Constraint) handle).setBody((BooleanExpression) expr);
+            BooleanExpression oldBe = ((Constraint)handle).getBody();
+            if (!equal(oldBe, (BooleanExpression) expr)) {
+                ((Constraint) handle).setBody((BooleanExpression) expr);
+                if (oldBe != null) {
+                    Model.getUmlFactory().delete(oldBe);
+                }
+            }
             return;
         }
 
@@ -2696,6 +2708,19 @@ class CoreHelperMDRImpl implements CoreHelper {
                 + expr);
     }
 
+
+    private boolean equal(Expression expr1, Expression expr2) {
+        if (expr1 == null) {
+            if (expr2 == null) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return expr1.equals(expr2);
+        }
+    }
+    
     @Deprecated
     public void setChangeability(Object handle, Object ck) {
         if (ck == null || ck instanceof ChangeableKind) {
@@ -2778,7 +2803,13 @@ class CoreHelperMDRImpl implements CoreHelper {
     public void setDefaultValue(Object handle, Object expr) {
         if (handle instanceof Parameter
                 && (expr == null || expr instanceof Expression)) {
-            ((Parameter) handle).setDefaultValue((Expression) expr);
+            Expression oldExp = ((Parameter) handle).getDefaultValue();
+            if (!equal(oldExp, (Expression) expr)) {
+                ((Parameter) handle).setDefaultValue((Expression) expr);
+                if (oldExp != null) {
+                    Model.getUmlFactory().delete(oldExp);
+                }
+            }
             return;
         }
         throw new IllegalArgumentException("handle: " + handle + " or expr: "
@@ -2842,7 +2873,13 @@ class CoreHelperMDRImpl implements CoreHelper {
     public void setInitialValue(Object at, Object expr) {
         if (at instanceof Attribute
                 && (expr == null || expr instanceof Expression)) {
-            ((Attribute) at).setInitialValue((Expression) expr);
+            Expression oldExp = ((Attribute) at).getInitialValue();
+            if (!equal(oldExp, (Expression) expr)) {
+                ((Attribute) at).setInitialValue((Expression) expr);
+                if (oldExp != null) {
+                    Model.getUmlFactory().delete(oldExp);
+                }
+            }
             return;
         }
         throw new IllegalArgumentException("at: " + at + " or expr: " + expr);

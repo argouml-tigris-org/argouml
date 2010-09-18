@@ -57,6 +57,7 @@ import org.omg.uml.behavioralelements.usecases.UseCase;
 import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.foundation.datatypes.BooleanExpression;
+import org.omg.uml.foundation.datatypes.Expression;
 import org.omg.uml.modelmanagement.Subsystem;
 
 /**
@@ -396,15 +397,33 @@ class UseCasesHelperMDRImpl implements UseCasesHelper {
         if (handle instanceof Extend
                 && (booleanExpression == null
                         || booleanExpression instanceof BooleanExpression)) {
-            ((Extend) handle)
-                    .setCondition((BooleanExpression) booleanExpression);
+            Expression oldExp = ((Extend) handle).getCondition();
+            if (!equal(oldExp, (Expression) booleanExpression)) {
+                ((Extend) handle)
+                        .setCondition((BooleanExpression) booleanExpression);
+                if (oldExp != null) {
+                    Model.getUmlFactory().delete(oldExp);
+                }
+            }
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or booleanExpression: " + booleanExpression);
     }
 
-
+    private boolean equal(Expression expr1, Expression expr2) {
+        if (expr1 == null) {
+            if (expr2 == null) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return expr1.equals(expr2);
+        }
+    }
+    
+    
     public void setExtension(Object handle, Object useCase) {
         if (!(useCase instanceof UseCase)) {
             throw new IllegalArgumentException("A use case must be supplied");

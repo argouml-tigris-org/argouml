@@ -50,6 +50,7 @@ import javax.jmi.reflect.RefObject;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.model.ModelCommand;
 import org.argouml.model.ModelManagementHelper;
 import org.argouml.model.NotImplementedException;
@@ -104,6 +105,7 @@ import org.omg.uml.foundation.datatypes.BooleanExpression;
 import org.omg.uml.foundation.datatypes.CallConcurrencyKindEnum;
 import org.omg.uml.foundation.datatypes.ChangeableKind;
 import org.omg.uml.foundation.datatypes.ChangeableKindEnum;
+import org.omg.uml.foundation.datatypes.Expression;
 import org.omg.uml.foundation.datatypes.Multiplicity;
 import org.omg.uml.foundation.datatypes.MultiplicityRange;
 import org.omg.uml.foundation.datatypes.OrderingKind;
@@ -191,7 +193,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
     
 
-    @SuppressWarnings("deprecation")
     @Deprecated
     public UmlAssociation createAssociation() {
         return createAssociation(modelImpl.getUmlPackage());
@@ -333,7 +334,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return myFlow;
     }
 
-    @SuppressWarnings("deprecation")
     @Deprecated
     public Generalization createGeneralization() {
         return createGeneralization(modelImpl.getUmlPackage());
@@ -385,7 +385,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
 
-    @SuppressWarnings("deprecation")
     @Deprecated
     public Permission createPermission() {
         return createPackageImport();
@@ -493,7 +492,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         return assoc;
     }
 
-    @SuppressWarnings("deprecation")
     @Deprecated
     public UmlAssociation buildAssociation(Object fromClassifier,
             Object aggregationKind1, Object toClassifier,
@@ -2292,22 +2290,36 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     void doCopyMethod(Method source, Method target) {
         ProcedureExpression pe = source.getBody();
-        if (pe != null) {
+        ProcedureExpression oldPe = target.getBody();
+        if (!equal(oldPe,pe)) {
             target.setBody((ProcedureExpression) 
                     modelImpl.getDataTypesFactory().createProcedureExpression(
                             pe.getLanguage(), pe.getBody()));
+            if (oldPe != null) {
+                Model.getUmlFactory().delete(oldPe);
+            }
         }
 
         doCopyBehavioralFeature(source, target);
     }
 
 
-
+    private boolean equal(Expression expr1, Expression expr2) {
+        if (expr1 == null) {
+            if (expr2 == null) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return expr1.equals(expr2);
+        }
+    }
     
     /**
      * Copy the attributes of one Reception to another.
      * 
-     * @param source the rception to copy attributes from
+     * @param source the reception to copy attributes from
      * @param target the reception to be adapted
      */
     void doCopyReception(Reception source, Reception target) {
