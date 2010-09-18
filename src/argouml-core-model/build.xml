@@ -32,6 +32,40 @@
     <property name="debug" value="yes"/>
     <property name="deprecation" value="yes"/>
     <property name="optimize" value="yes"/>
+
+    <!-- Things for tests -->
+    <property name="tests.classes" value="${build.dir}/tests/classes"/>
+    <property name="tests.reports" value="${build.dir}/tests/reports"/>
+
+    <!-- Define a couple places we can find Junit -->
+    <!-- Try to figure out where our tools directory is. Done after overrides
+    are loaded so user can override, but before defaults -->
+    <property name="tool.test.file" value="checkstyle/java.header"/>
+    <available file="${argo.root.dir}/argouml-core-tools/${tool.test.file}" 
+        type="file" property="argo.tools.dir" value="${argo.root.dir}/argouml-core-tools"/>
+    <available file="../../tools/${tool.test.file}" 
+        type="file" property="argo.tools.dir" value="../../tools"/>
+  	
+    <path id="junit.classpath">
+      <pathelement location="${junit.jar.path}"/>
+      <pathelement location="${argo.tools.dir}/junit-3.8.2/junit.jar"/>
+    </path>
+
+    <path id="tests.compile.classpath">
+      <pathelement location="${build.classes}"/>
+      <path refid="junit.classpath"/>
+    </path>
+
+    <path id="tests.run.classpath">
+      <path refid="tests.compile.classpath"/>
+      <!-- The tests relies on that mdr is build before. -->
+      <fileset dir="../argouml-core-infra/build/">
+        <include name="*.jar"/>
+      </fileset>
+      <fileset dir="../argouml-core-model-mdr/build/">
+        <include name="*.jar"/>
+      </fileset>
+    </path>
   </target>
 
   <!-- =================================================================== -->
@@ -77,6 +111,69 @@
     <delete dir="${build.dir}" quiet="true"/>
     <antcall target="pde-clean" />
   </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Compiles the tests directory                                        -->
+  <!-- =================================================================== -->
+  <target name="compile-tests"
+          depends="init,compile">
+    <!-- create directories -->
+    <mkdir dir="${tests.classes}"/>
+
+    <javac srcdir="tests"
+           destdir="${tests.classes}"
+           includes="org/argouml/**/*.java"
+           debug="${debug}"
+           deprecation="${deprecation}"
+           optimize="${optimize}"
+           source="1.5"
+           target="1.5"
+       >
+       <compilerarg compiler="javac1.5" line="-Xlint:unchecked"/>
+       <classpath>
+         <path refid="tests.compile.classpath"/>
+       </classpath>
+    </javac>
+    <copy todir="${tests.classes}">
+      <fileset dir="tests">
+        <include name="**/*.lcf"/>
+      </fileset>
+      <fileset dir="tests">
+        <include name="testmodels/**/*.xmi"/>
+        <include name="testmodels/**/*.xml.zip"/>
+        <include name="testmodels/**/*.xml"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Runs the tests                                                      -->
+  <!-- =================================================================== -->
+  <target name="tests-xml"
+          depends="init,compile,compile-tests">
+    <!-- create directories -->
+    <mkdir dir="${tests.reports}/junit/output"/>
+
+    <junit errorproperty="junit.failure" fork="yes" haltonfailure="false"
+           maxmemory="256M" printsummary="true">
+        <sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/info_console.lcf"/>
+        <sysproperty key="argouml.model.implementation"
+                   value="org.argouml.model.mdr.MDRModelImplementation"/>
+      <classpath>
+        <pathelement location="${tests.classes}"/>
+        <path refid="tests.run.classpath"/>
+      </classpath>
+      <formatter type="xml"/>
+      <batchtest todir="${tests.reports}/junit/output">
+        <fileset dir="tests">
+          <include name="org/argouml/**/Test*.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
 
 
   <!-- =================================================================== -->
