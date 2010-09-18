@@ -333,7 +333,15 @@ Property files to be searched (in argouml-build):
     <!-- Build the subdirs in order. -->
 
     <!-- argouml-core-infra doesn't have tests. -->
-    <!-- argouml-core-model doesn't have tests. -->
+
+    <!-- Tests for argouml-core-model. -->
+    <!-- Yes, it is unorthodox that these tests reference the mdr tests
+         but that is the way they are currently built. -->
+    <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
+    <ant dir="../argouml-core-model" inheritAll="false"        target="jar"/>
+    <ant dir="../argouml-core-model-mdr" inheritAll="false"    target="jar"/>
+    <ant dir="../argouml-core-model" inheritAll="false"
+         target="${tests-to-do}"/>
 
     <!-- Tests for argouml-core-model-mdr -->
     <ant dir="../argouml-core-infra" inheritAll="false"        target="jar"/>
