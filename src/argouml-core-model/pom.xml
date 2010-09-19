@@ -82,7 +82,7 @@
     <dependency>
       <groupId>org.argouml</groupId>
       <artifactId>argouml-mdr</artifactId>
-      <version>0.31.2</version>
+      <version>0.31.5</version>
       <type>jar</type>
       <scope>test</scope>
       <optional>true</optional>
