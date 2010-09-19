@@ -132,7 +132,7 @@ public class RadioButtonPanel extends JPanel
      * Remove listeners when this component is removed
      */
     public void removeNotify() {
-        Model.getPump().addModelEventListener(
+        Model.getPump().removeModelEventListener(
                 this, umlElement, propertyName);
         
         final Enumeration<AbstractButton> en =
