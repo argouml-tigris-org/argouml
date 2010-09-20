@@ -724,10 +724,10 @@ public interface CoreFactory extends Factory {
 
     /**
      * Adds a parameter initialized to default values to a given event
-     * or behavioral feature.
+     * or behavioral feature or objectFlowState.
      *
-     * @param o an event or behavioral feature
-     * @param type the type of the parameter
+     * @param o an event or behavioral feature or objectFlowState
+     * @param type the type of the parameter or null
      * @return the parameter
      */
     Object buildParameter(Object o, Object type);
