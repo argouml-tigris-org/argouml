@@ -15,10 +15,8 @@ package org.argouml.core.propertypanels.ui;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import javax.swing.DefaultListModel;
 import javax.swing.SwingUtilities;
