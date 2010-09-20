@@ -124,7 +124,13 @@ class SimpleListModel
         	                removeElement(objectToRemove);
         	            } else if (e instanceof AddAssociationEvent) {
         	                Object newElement = ((AddAssociationEvent) e).getChangedValue();
-        	                if (metaTypes.contains(newElement.getClass())
+                                boolean typeValid = false;
+                                for (Class<?> cls : metaTypes) {
+                                    if (cls.isInstance(newElement)) {
+                                	typeValid = true;
+                                    }
+                                }
+        	                if (typeValid
         	                        && !SimpleListModel.this.contains(newElement)) {
         		            if (Model.getUmlHelper().isMovable(getMetaType())) {
         		                final Collection c =
