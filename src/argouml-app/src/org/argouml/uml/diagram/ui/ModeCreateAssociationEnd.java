@@ -176,7 +176,7 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
         // Detach any edges (such as comment edges) already attached
         // to the FigAssociation before the FigAssociation is removed.
         // They'll later be re-attached to the new FigNodeAssociation
-        final Collection<FigEdge> existingEdges = originalEdgePort.getEdges();
+        final Collection<FigEdge> existingEdges = originalEdgePort.getFigEdges();
         for (FigEdge edge : existingEdges) {
             if (edge instanceof FigEdgeAssociationClass) {
                 // If there are bits of an association class then

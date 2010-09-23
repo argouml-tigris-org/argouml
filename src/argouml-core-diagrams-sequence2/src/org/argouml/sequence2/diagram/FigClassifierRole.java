@@ -264,7 +264,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      */
     private void updateMinimumHeight() {
         int yMax = getY();
-        List<FigEdge> figsEdges = getEdges();
+        List<FigEdge> figsEdges = getFigEdges();
         FigMessage createMessage = getFirstCreateFigMessage();
         
         // TODO: Is this next line safe? What happens if there is just one

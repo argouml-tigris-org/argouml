@@ -454,14 +454,14 @@ public class FigMessage extends FigEdgeModelElement {
      * @return the activator that has been applied to the message.
      */
     public Object determineActivator() {
-        final FigClassifierRole fcr = (FigClassifierRole) getSourceNode();
+        final FigClassifierRole fcr = (FigClassifierRole) getSourceFigNode();
         final List<FigMessage> messageFigs = fcr.getFigMessages();
         final Iterator<FigMessage> it = messageFigs.iterator();
         Object activator = null;
         while (it.hasNext()) {
             FigMessage messageFig = it.next();
             if ((messageFig.isCreateAction() || messageFig.isCallAction())
-                    && messageFig.getDestNode() == fcr) {
+                    && messageFig.getDestFigNode() == fcr) {
                 activator = messageFig.getOwner();
             } else if (messageFig == this) {
                 Model.getCollaborationsHelper().setActivator(

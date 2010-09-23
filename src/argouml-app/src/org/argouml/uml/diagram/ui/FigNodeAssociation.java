@@ -164,7 +164,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
         // Detach any non-associationend edges (such as comment edges) already
         // attached before this association node is removed.
         // They'll later be re-attached to the new FigAssociation
-        final Collection<FigEdge> existingEdges = getEdges();
+        final Collection<FigEdge> existingEdges = getFigEdges();
         for (Iterator<FigEdge> it = existingEdges.iterator(); it.hasNext(); ) {
             FigEdge edge = it.next();
             if (edge instanceof FigAssociationEnd) {
