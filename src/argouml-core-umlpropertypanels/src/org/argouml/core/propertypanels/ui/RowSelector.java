@@ -97,7 +97,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * @since 0.29.2
  */
 class RowSelector extends UmlControl
-        implements MouseListener, ListDataListener, ListSelectionListener {
+        implements MouseListener, ListDataListener, ListSelectionListener, Expandable {
 
     /**
      * The logger
@@ -128,8 +128,6 @@ class RowSelector extends UmlControl
      * Identifies if the model element is a readonly modelelement
      */
     private final boolean readonly;
-    
-    private static final Set<String> EXPANDED_CONTROLS = new TreeSet<String>();
     
     private final ArrayList actions;
     
@@ -190,12 +188,6 @@ class RowSelector extends UmlControl
      * when the element is added and mark it as selected.
      */
     private MovedModelElement movedModelElement = new MovedModelElement();
-
-    /**
-     * The label that contains the +/- symbol to indicate
-     * expansion feature to user.
-     */
-    private final JLabel expander;
 
     /**
      * The toolbar of controls for manipulating items in the list
@@ -330,7 +322,6 @@ class RowSelector extends UmlControl
         if (!expandable && !expanded) {
             jscroll.setVerticalScrollBarPolicy(
                     JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-            expander = null;
             toolbar = null;
             deleteAction = null;
             moveUpAction = null;
@@ -471,10 +462,7 @@ class RowSelector extends UmlControl
             JPanel buttonPanel =
                 new JPanel(new FlexiGridLayout(
                         2, 1, FlexiGridLayout.ROWCOLPREFERRED));
-            expander = new JLabel();
             this.addMouseListener(this);
-            setIcon();
-            buttonPanel.add(expander);
             // TODO: In think this will always be true
             if (toolbar != null) {
                 toolbar.setVisible(false);
@@ -504,11 +492,6 @@ class RowSelector extends UmlControl
             
             getModel().addListDataListener(this);
         }
-        
-        if (EXPANDED_CONTROLS.contains(getId())) {
-            toggleExpansion();
-        }
-        
     }
 
     /**
@@ -594,16 +577,9 @@ class RowSelector extends UmlControl
     /**
      * Toggle between expansion and contraction of the control
      */
-    private void toggleExpansion() {
+    public void toggleExpansion() {
         expanded = !expanded;
         
-        if (expanded) {
-            EXPANDED_CONTROLS.add(getId());
-        } else {
-            EXPANDED_CONTROLS.remove(getId());
-        }
-
-        setIcon();
         if (toolbar != null) {
             toolbar.setVisible(expanded);
         }
@@ -616,6 +592,18 @@ class RowSelector extends UmlControl
         }
     }
     
+    public JComponent getExpansion() {
+	return toolbar;
+    }
+    
+    public boolean isExpanded() {
+	return expanded;
+    }
+    
+    public boolean isExpandable() {
+	return expandable;
+    }
+    
     private String getId() {
         final String id;
     	ListModel model = getList().getModel();
@@ -626,17 +614,6 @@ class RowSelector extends UmlControl
             id = model.getClass().getName();
     	}
     	return id;
-    }
-
-    /**
-     * Set the icon according to the current expansion setting
-     */
-    private void setIcon() {
-        if (expanded) {
-            expander.setIcon(expandedIcon);
-        } else {
-            expander.setIcon(collapsedIcon);
-        }
     }
 
     /**

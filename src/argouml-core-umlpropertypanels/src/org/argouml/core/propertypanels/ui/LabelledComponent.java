@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -39,24 +39,49 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Set;
+import java.util.TreeSet;
 
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTree;
+import javax.swing.plaf.TreeUI;
+import javax.swing.plaf.basic.BasicTreeUI;
+import javax.swing.plaf.metal.MetalTreeUI;
 
 /**
  * A wrapped label and component pair
  * 
  * @author Bob Tarling
  */
-class LabelledComponent extends JPanel {
-    
+class LabelledComponent extends JPanel implements MouseListener {
+
     /**
      * The class uid
      */
     private static final long serialVersionUID = -6805892904843209588L;
+
+    private static final Set<String> EXPANDED_CONTROLS = new TreeSet<String>();
+    
+    /**
+     * The icon to use when the control is expanded
+     */
+    private static Icon expandedIcon;
+
+    /**
+     * The icon to use when the control is collapsed
+     */
+    private static Icon collapsedIcon;
     
     /**
      * The label for the component that might also be wrapped inside this
@@ -65,6 +90,27 @@ class LabelledComponent extends JPanel {
     private final JLabel label;
     
     private final JComponent component;
+    /**
+     * The label that contains the +/- symbol to indicate
+     * expansion feature to user.
+     */
+    private final JLabel expander;
+    
+    static {
+        // Extract the icon that is used by the tree control
+        // for the current look and feel
+        final JTree dummyTree = new JTree();
+
+        final BasicTreeUI btu;
+        if (dummyTree.getUI() instanceof BasicTreeUI) {
+            btu = (BasicTreeUI) dummyTree.getUI();
+        } else {
+            btu = new MetalTreeUI();
+        }
+
+        expandedIcon = btu.getExpandedIcon();
+        collapsedIcon = btu.getCollapsedIcon();
+    }
     
     /**
      * Construct a new LabelledComponent
@@ -81,12 +127,46 @@ class LabelledComponent extends JPanel {
             label = new JLabel(name);
             label.setLabelFor(component);
             JPanel labelPanel = new JPanel();
-            labelPanel.add(label, BorderLayout.NORTH);
-            add(labelPanel, BorderLayout.WEST);
+            labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.X_AXIS));
+            labelPanel.add(label);
+            JPanel leftPanel = new JPanel();
+            leftPanel.add(labelPanel, BorderLayout.CENTER);
+            add(leftPanel, BorderLayout.WEST);
+            if (component instanceof Expandable && ((Expandable) component).isExpandable()) {
+                expander = new JLabel();
+        	leftPanel.add(expander, BorderLayout.EAST);
+        	addMouseListener(this);
+                setIcon();
+                if (EXPANDED_CONTROLS.contains(getId())) {
+                    toggleExpansion();
+                }
+            } else {
+                expander = null;
+            }
         } else {
             label = null;
+            expander = null;
         }
     }
+    
+    private String getId() {
+	return label.getText();
+    }
+    
+    /**
+     * Set the icon according to the current expansion setting
+     */
+    private void setIcon() {
+	if (expander != null) {
+            if (((Expandable) component).isExpanded()) {
+                expander.setIcon(expandedIcon);
+            } else {
+                expander.setIcon(collapsedIcon);
+            }
+        }
+    }
+    
+    
     
     /**
      * Get the label created from the component name
@@ -103,4 +183,48 @@ class LabelledComponent extends JPanel {
             return super.getPreferredSize();
         }
     }
+    
+    public void mouseClicked(MouseEvent e) {
+	if (e.getSource() == this) {
+            toggleExpansion();
+	}
+    }
+
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    public void mouseExited(MouseEvent e) {
+    }
+
+    public void mousePressed(MouseEvent arg0) {
+    }
+
+    public void mouseReleased(MouseEvent arg0) {
+    }
+    
+    /**
+     * Toggle between expansion and contraction of the control
+     */
+    private void toggleExpansion() {
+	((Expandable) component).toggleExpansion();
+        
+        if (((Expandable) component).isExpanded()) {
+            EXPANDED_CONTROLS.add(getId());
+        } else {
+            EXPANDED_CONTROLS.remove(getId());
+        }
+
+        setIcon();
+//        if (toolbar != null) {
+//            toolbar.setVisible(expanded);
+//        }
+//
+//        // Force the parent to redraw
+//        Component c = getParent();
+//        if (c != null) {
+//            c.invalidate();
+//            c.validate();
+//        }
+    }
+    
 }
