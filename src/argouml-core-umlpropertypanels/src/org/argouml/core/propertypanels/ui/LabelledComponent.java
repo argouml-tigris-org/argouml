@@ -95,6 +95,9 @@ class LabelledComponent extends JPanel implements MouseListener {
      * expansion feature to user.
      */
     private final JLabel expander;
+
+    private final JPanel leftPanel;
+    
     
     static {
         // Extract the icon that is used by the tree control
@@ -129,7 +132,7 @@ class LabelledComponent extends JPanel implements MouseListener {
             JPanel labelPanel = new JPanel();
             labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.X_AXIS));
             labelPanel.add(label);
-            JPanel leftPanel = new JPanel();
+            leftPanel = new JPanel();
             leftPanel.add(labelPanel, BorderLayout.CENTER);
             add(leftPanel, BorderLayout.WEST);
             if (component instanceof Expandable && ((Expandable) component).isExpandable()) {
@@ -138,7 +141,7 @@ class LabelledComponent extends JPanel implements MouseListener {
         	addMouseListener(this);
                 setIcon();
                 if (EXPANDED_CONTROLS.contains(getId())) {
-                    toggleExpansion();
+                    toggleExpansion((Expandable) component);
                 }
             } else {
                 expander = null;
@@ -146,6 +149,7 @@ class LabelledComponent extends JPanel implements MouseListener {
         } else {
             label = null;
             expander = null;
+            leftPanel = null;
         }
     }
     
@@ -186,7 +190,7 @@ class LabelledComponent extends JPanel implements MouseListener {
     
     public void mouseClicked(MouseEvent e) {
 	if (e.getSource() == this) {
-            toggleExpansion();
+            toggleExpansion((Expandable) component);
 	}
     }
 
@@ -205,26 +209,28 @@ class LabelledComponent extends JPanel implements MouseListener {
     /**
      * Toggle between expansion and contraction of the control
      */
-    private void toggleExpansion() {
-	((Expandable) component).toggleExpansion();
+    private void toggleExpansion(Expandable expandable) {
+	
+	boolean expanded = !expandable.isExpanded();
+	
+	expandable.setExpanded(expanded);
         
-        if (((Expandable) component).isExpanded()) {
+        if (expanded) {
             EXPANDED_CONTROLS.add(getId());
         } else {
             EXPANDED_CONTROLS.remove(getId());
         }
 
         setIcon();
-//        if (toolbar != null) {
-//            toolbar.setVisible(expanded);
-//        }
-//
-//        // Force the parent to redraw
-//        Component c = getParent();
-//        if (c != null) {
-//            c.invalidate();
-//            c.validate();
-//        }
+        if (expandable.getExpansion() != null) {
+            expandable.getExpansion().setVisible(expanded);
+        }
+
+        // Force the parent to redraw
+        Component c = component.getParent();
+        if (c != null) {
+            c.invalidate();
+            c.validate();
+        }
     }
-    
 }

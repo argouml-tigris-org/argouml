@@ -46,14 +46,11 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.swing.Action;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
@@ -529,19 +526,12 @@ class RowSelector extends UmlControl
     }
 
     public void mouseClicked(MouseEvent e) {
-	if (e.getSource() == this) {
-            toggleExpansion();
-	}
     }
 
     public void mouseEntered(MouseEvent e) {
-        // TODO Auto-generated method stub
-
     }
 
     public void mouseExited(MouseEvent e) {
-        // TODO Auto-generated method stub
-
     }
 
     public void mousePressed(MouseEvent e) {
@@ -574,22 +564,8 @@ class RowSelector extends UmlControl
         }
     }
 
-    /**
-     * Toggle between expansion and contraction of the control
-     */
-    public void toggleExpansion() {
-        expanded = !expanded;
-        
-        if (toolbar != null) {
-            toolbar.setVisible(expanded);
-        }
-
-        // Force the parent to redraw
-        Component c = getParent();
-        if (c != null) {
-            c.invalidate();
-            c.validate();
-        }
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
     }
     
     public JComponent getExpansion() {
@@ -604,18 +580,6 @@ class RowSelector extends UmlControl
 	return expandable;
     }
     
-    private String getId() {
-        final String id;
-    	ListModel model = getList().getModel();
-    	if (model instanceof SimpleListModel) {
-            SimpleListModel slm = (SimpleListModel) model;
-            id = slm.getPropertyName() + ":" + slm.getMetaType();
-    	} else {
-            id = model.getClass().getName();
-    	}
-    	return id;
-    }
-
     /**
      * Remove all the listeners that were added in the constructor
      */

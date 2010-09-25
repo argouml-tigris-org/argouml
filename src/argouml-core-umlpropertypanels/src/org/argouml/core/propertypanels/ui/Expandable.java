@@ -25,6 +25,6 @@ import javax.swing.JComponent;
 interface Expandable {
     boolean isExpandable();
     boolean isExpanded();
-    void toggleExpansion();
+    void setExpanded(boolean expanded);
     JComponent getExpansion();
 }
