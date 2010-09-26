@@ -39,6 +39,7 @@ package org.argouml.core.propertypanels.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
@@ -78,9 +79,7 @@ import org.argouml.model.UmlHelper;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.UndoableAction;
 import org.tigris.gef.presentation.FigTextEditor;
-import org.tigris.swidgets.FlexiGridLayout;
-import org.tigris.toolbar.ToolBar;
-import org.tigris.toolbar.ToolBarFactory;
+import org.tigris.toolbar.toolbutton.ToolBox;
 
 /**
  * A control for displaying the contents of a list model elements in a panel
@@ -388,10 +387,6 @@ class RowSelector extends UmlControl
                     moveDownAction = new MoveDownAction();
                     moveTopAction = new MoveTopAction();
                     moveBottomAction = new MoveBottomAction();
-                    actions.add(moveUpAction);
-                    actions.add(moveDownAction);
-                    actions.add(moveTopAction);
-                    actions.add(moveBottomAction);
                 } else {
                     moveUpAction = null;
                     moveDownAction = null;
@@ -482,6 +477,12 @@ class RowSelector extends UmlControl
         	    popup.add((Action) action);
         	}
             }
+	    if (moveTopAction != null) {
+		popup.add(moveTopAction);
+		popup.add(moveBottomAction);
+		popup.add(moveUpAction);
+		popup.add(moveDownAction);
+	    }
             if (popup.getComponentCount() > 0) {
                 popup.show(this, e.getX(), e.getY());
             }
@@ -497,6 +498,12 @@ class RowSelector extends UmlControl
         	    popup.add((Action) action);
         	}
             }
+	    if (moveTopAction != null) {
+		popup.add(moveTopAction);
+		popup.add(moveBottomAction);
+		popup.add(moveUpAction);
+		popup.add(moveDownAction);
+	    }
             if (popup.getComponentCount() > 0) {
                 popup.show(this, e.getX(), e.getY());
             }
@@ -509,37 +516,36 @@ class RowSelector extends UmlControl
     }
     
     public JComponent getExpansion() {
-	actions.size();
-	ArrayList actions1 = new ArrayList(actions.size() / 2 + actions.size() % 2);
-	ArrayList actions2 = new ArrayList(actions.size() / 2);
 	
-	Object[] actionPair = {
-	    actions1, actions2
-	};
-	
-	for (int i=0; i < actions.size(); ++i) {
-	    if (i % 2 == 0) {
-		actions1.add(actions.get(i));
-	    } else {
-		actions2.add(actions.get(i));
-	    }
+	final ToolBox tb =
+	    new ToolBox(2, actions.size() / 2 + actions.size() % 2, true);
+	for (int i = 0; i < actions.size() / 2 + actions.size() % 2; ++i) {
+            tb.add((Action) actions.get(i));
 	}
+        if (moveUpAction != null) {
+            tb.add(moveUpAction);
+        }
+        if (moveTopAction != null) {
+            tb.add(moveTopAction);
+        }
+	if (actions.size() % 2 == 1) {
+	    tb.add(new JPanel());
+	}
+	for (int i = actions.size() / 2 + actions.size() % 2; i < actions.size(); ++i) {
+            tb.add((Action) actions.get(i));
+	}
+        if (moveDownAction != null) {
+            tb.add(moveDownAction);
+        }
+        if (moveBottomAction != null) {
+            tb.add(moveBottomAction);
+        }
 	
-        final ToolBarFactory tbf = new ToolBarFactory(actions1);
-        JToolBar toolbar = tbf.createToolBar();
-        toolbar.setRollover(true);
-        final ToolBarFactory tbf2 = new ToolBarFactory(actions2);
-        JToolBar toolbar2 = tbf2.createToolBar();
-        toolbar2.setRollover(true);
-        
-        JComponent expander =
-            new JPanel(new FlexiGridLayout(
-        	    2, 1, 0, 0,
-        	    FlexiGridLayout.HORIZONTAL,
-        	    FlexiGridLayout.EAST));
-        expander.add(toolbar);
-        expander.add(toolbar2);
-        
+	JComponent expander = new JPanel(
+		new FlowLayout(FlowLayout.RIGHT));
+	
+	expander.add(tb);
+	
         return expander;
     }
     
