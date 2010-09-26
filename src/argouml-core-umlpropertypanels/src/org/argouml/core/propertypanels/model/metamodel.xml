@@ -339,7 +339,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="classifierInState" type="Classifier" label="label.classifier-in-state" />
     <list name="objectFlowState" type="Classifier" />
   </panel>
-  <panel name="Class">
+  <panel name="Class" newchild="Attribute,Operation">
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />    
     <optionbox name="visibility" type="VisibilityKind" />
@@ -540,7 +540,7 @@ The combination of the above allows the GUI to distinguish between
     <attribute name="linkEnd" type="AssociationEnd" />
     <attribute name="associationEndRole" type="AssociationEnd" />
   </panel>
-  <panel name="Interface">
+  <panel name="Interface" new="Operation">
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <optionbox name="visibility" type="VisibilityKind" />
@@ -683,7 +683,7 @@ The combination of the above allows the GUI to distinguish between
     <attribute name="generalization" type="Generalization" />
     <attribute name="specialization" type="GeneralizableElement" />    
   </panel>
-  <panel name="Attribute">
+  <panel name="Attribute" newsibling="Attribute">
     <text name="name" type="Name" />
     <combo name="type" type="Classifier" />
     <combo name="multiplicity" type="Multiplicity" />
@@ -755,7 +755,7 @@ The combination of the above allows the GUI to distinguish between
     <separator />
     <list name="raisedSignal" type="Signal" new="true" label="label.raisedsignals" />
   </panel>
-  <panel name="Operation">
+  <panel name="Operation" newsibling="Operation">
     <text name="name" type="Name" />
     <singlerow name="owner" type="Classifier" />
     <list name="parameter" type="Parameter" new="true" />
@@ -2185,7 +2185,7 @@ The combination of the above allows the GUI to distinguish between
     <attribute name="value" type="Expression" />
     <attribute name="action" type="Action" />
   </panel>
-  <panel name="Reception">
+  <panel name="Reception" newsibling="Reception">
     <text name="name" type="Name" />
     <singlerow name="owner" type="Classifier" />
     <optionbox name="visibility" type="VisibilityKind" />
