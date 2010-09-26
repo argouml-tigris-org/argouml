@@ -39,6 +39,7 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -313,7 +314,8 @@ class SwingUIFactory {
 	    final JPanel panel,
 	    final Object target,
             final ControlData prop) {
-        JPanel p = new JPanel(new GridLayout2());
+        JPanel p = new JPanel();
+        p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
         TitledBorder border = new TitledBorder(prop.getPropertyName());        
         p.setBorder(border);
         

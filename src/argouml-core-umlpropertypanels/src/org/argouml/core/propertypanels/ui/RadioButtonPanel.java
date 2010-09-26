@@ -24,6 +24,7 @@ import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
 import javax.swing.Action;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -91,9 +92,9 @@ public class RadioButtonPanel extends JPanel
             getterSetterManager.getOptions(umlElement, propertyName, null);
         
         setLayout(horizontal
-                ? new GridLayout()
+                ? new BoxLayout(this, BoxLayout.X_AXIS)
                 : new FlexiGridLayout(0, options.size()));
-        
+
         this.propertyName = propertyName;
         this.getterSetterManager = getterSetterManager;
         this.umlElement = umlElement;
