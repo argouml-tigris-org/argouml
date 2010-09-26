@@ -156,11 +156,6 @@ class RowSelector extends UmlControl
     private MovedModelElement movedModelElement = new MovedModelElement();
 
     /**
-     * The toolbar of controls for manipulating items in the list
-     */
-    private final JToolBar toolbar;
-
-    /**
      * The delete action that we must enable/disable
      */
     private final DeleteAction deleteAction;
@@ -288,7 +283,6 @@ class RowSelector extends UmlControl
         if (!expandable && !expanded) {
             jscroll.setVerticalScrollBarPolicy(
                     JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-            toolbar = null;
             deleteAction = null;
             moveUpAction = null;
             moveDownAction = null;
@@ -389,35 +383,22 @@ class RowSelector extends UmlControl
                     actions.addAll(createActions);
                 }
                 
-                List<Action> navigateActions = new ArrayList<Action>();
                 if (Model.getUmlHelper().isMovable(metaType)) {
                     moveUpAction = new MoveUpAction();
                     moveDownAction = new MoveDownAction();
                     moveTopAction = new MoveTopAction();
                     moveBottomAction = new MoveBottomAction();
-                    navigateActions.add(moveUpAction);
-                    navigateActions.add(moveDownAction);
-                    navigateActions.add(moveTopAction);
-                    navigateActions.add(moveBottomAction);
+                    actions.add(moveUpAction);
+                    actions.add(moveDownAction);
+                    actions.add(moveTopAction);
+                    actions.add(moveBottomAction);
                 } else {
                     moveUpAction = null;
                     moveDownAction = null;
                     moveTopAction = null;
                     moveBottomAction = null;
                 }
-                actions.addAll(navigateActions);
-
-                Object[] actionsArray = actions.toArray();
-                
-                final ToolBarFactory tbf = new ToolBarFactory(actions);
-                toolbar = tbf.createToolBar();
-                toolbar.setRollover(true);
-                toolbar.setOrientation(ToolBar.VERTICAL);
             } else {
-                final ToolBarFactory tbf = new ToolBarFactory(new Object[] {});
-                toolbar = tbf.createToolBar();
-                toolbar.setRollover(true);
-                toolbar.setOrientation(ToolBar.VERTICAL);
                 moveUpAction = null;
                 moveDownAction = null;
                 moveTopAction = null;
@@ -425,16 +406,7 @@ class RowSelector extends UmlControl
                 deleteAction = null;
             }
 
-            JPanel buttonPanel =
-                new JPanel(new FlexiGridLayout(
-                        2, 1, FlexiGridLayout.ROWCOLPREFERRED));
             this.addMouseListener(this);
-            // TODO: In think this will always be true
-            if (toolbar != null) {
-                toolbar.setVisible(false);
-                buttonPanel.add(toolbar);
-            }
-            add(buttonPanel, BorderLayout.WEST);
 
             if (!Model.getModelManagementHelper().isReadOnly(target)) {
             	if (deleteAction != null) {
@@ -481,8 +453,7 @@ class RowSelector extends UmlControl
         }
         return size;
     }
-
-
+    
     /**
      * @return the preferred size as the height of one row in a JList
      */
@@ -538,7 +509,38 @@ class RowSelector extends UmlControl
     }
     
     public JComponent getExpansion() {
-	return toolbar;
+	actions.size();
+	ArrayList actions1 = new ArrayList(actions.size() / 2 + actions.size() % 2);
+	ArrayList actions2 = new ArrayList(actions.size() / 2);
+	
+	Object[] actionPair = {
+	    actions1, actions2
+	};
+	
+	for (int i=0; i < actions.size(); ++i) {
+	    if (i % 2 == 0) {
+		actions1.add(actions.get(i));
+	    } else {
+		actions2.add(actions.get(i));
+	    }
+	}
+	
+        final ToolBarFactory tbf = new ToolBarFactory(actions1);
+        JToolBar toolbar = tbf.createToolBar();
+        toolbar.setRollover(true);
+        final ToolBarFactory tbf2 = new ToolBarFactory(actions2);
+        JToolBar toolbar2 = tbf2.createToolBar();
+        toolbar2.setRollover(true);
+        
+        JComponent expander =
+            new JPanel(new FlexiGridLayout(
+        	    2, 1, 0, 0,
+        	    FlexiGridLayout.HORIZONTAL,
+        	    FlexiGridLayout.EAST));
+        expander.add(toolbar);
+        expander.add(toolbar2);
+        
+        return expander;
     }
     
     public boolean isExpanded() {

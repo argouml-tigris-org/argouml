@@ -39,10 +39,9 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Set;
@@ -55,9 +54,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTree;
-import javax.swing.plaf.TreeUI;
 import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.plaf.metal.MetalTreeUI;
+
+import org.tigris.swidgets.FlexiGridLayout;
 
 /**
  * A wrapped label and component pair
@@ -78,6 +78,7 @@ class LabelledComponent extends JPanel implements MouseListener {
      */
     private static Icon expandedIcon;
 
+    private JComponent expansion;
     /**
      * The icon to use when the control is collapsed
      */
@@ -130,14 +131,14 @@ class LabelledComponent extends JPanel implements MouseListener {
             label = new JLabel(name);
             label.setLabelFor(component);
             JPanel labelPanel = new JPanel();
-            labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.X_AXIS));
+            labelPanel.setLayout(new FlexiGridLayout(1, 2, FlexiGridLayout.ROWCOLPREFERRED));
             labelPanel.add(label);
-            leftPanel = new JPanel();
-            leftPanel.add(labelPanel, BorderLayout.CENTER);
+            leftPanel = new JPanel(new BorderLayout());
+            leftPanel.add(labelPanel, BorderLayout.NORTH);
             add(leftPanel, BorderLayout.WEST);
             if (component instanceof Expandable && ((Expandable) component).isExpandable()) {
                 expander = new JLabel();
-        	leftPanel.add(expander, BorderLayout.EAST);
+        	labelPanel.add(expander);
         	addMouseListener(this);
                 setIcon();
                 if (EXPANDED_CONTROLS.contains(getId())) {
@@ -222,12 +223,15 @@ class LabelledComponent extends JPanel implements MouseListener {
         }
 
         setIcon();
-        if (expandable.getExpansion() != null) {
-            expandable.getExpansion().setVisible(expanded);
+        
+        if (expansion == null) {
+            expansion = expandable.getExpansion();
+            leftPanel.add(expansion, BorderLayout.CENTER);
         }
+        expansion.setVisible(expanded);
 
         // Force the parent to redraw
-        Component c = component.getParent();
+        Component c = component.getParent().getParent();
         if (c != null) {
             c.invalidate();
             c.validate();
