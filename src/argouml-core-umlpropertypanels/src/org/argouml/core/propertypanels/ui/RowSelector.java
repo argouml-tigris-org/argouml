@@ -57,15 +57,12 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
-import javax.swing.JTree;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.TreeUI;
-import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.table.TableCellEditor;
 
 import org.apache.log4j.Logger;
@@ -107,16 +104,6 @@ class RowSelector extends UmlControl
     private static final long serialVersionUID = 3937183621483536749L;
 
     /**
-     * The icon to use when the control is expanded
-     */
-    private static Icon expandedIcon;
-
-    /**
-     * The icon to use when the control is collapsed
-     */
-    private static Icon collapsedIcon;
-
-    /**
      * The model element that is the target of this control
      */
     private final Object target;
@@ -128,24 +115,6 @@ class RowSelector extends UmlControl
     
     private final ArrayList actions;
     
-    static {
-        // Extract the icon that is used by the tree control
-        // for the current look and feel
-        final JTree dummyTree = new JTree();
-
-        final TreeUI tu = dummyTree.getUI();
-
-        if (tu instanceof BasicTreeUI) {
-            final BasicTreeUI btu = (BasicTreeUI) tu;
-            expandedIcon = btu.getExpandedIcon();
-            collapsedIcon = btu.getCollapsedIcon();
-        } else {
-            // TODO: We want some default icons of our own here
-            expandedIcon = null;
-            collapsedIcon = null;
-        }
-    }
-
     /**
      * The scrollpane that will contain the list
      */
