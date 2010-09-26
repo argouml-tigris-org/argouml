@@ -16,9 +16,10 @@ package org.argouml.core.propertypanels.ui;
 import javax.swing.JComponent;
 
 /**
- * An interface for components that have the possibility of being expanded and shrunk.
- * Not all components that implement this interface can actually be expanded, they only
- * have the possibility if the implementation if isExpandable is true.
+ * An interface for components that have the possibility of being expanded and
+ * shrunk.
+ * Not all components that implement this interface can actually be expanded,
+ * they only have the potential to do so. isExpandable must also return true.
  *
  * @author Bob Tarling
  */
