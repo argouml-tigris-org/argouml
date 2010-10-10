@@ -87,19 +87,19 @@ public class XmiException extends UmlException {
      * Create a new XmiException.
      *
      * @param message The error or warning message.
-     * @param publicId The public identifier of the entity that generated
-     *                 the error or warning.
-     * @param systemId The system identifier of the entity that generated
-     *                 the error or warning.
+     * @param pubId The public identifier of the entity that generated
+     *              the error or warning.
+     * @param sysId The system identifier of the entity that generated
+     *              the error or warning.
      * @param line The line number of the end of the text that
-     *                   caused the error or warning.
+     *             caused the error or warning.
      * @param column The column number of the end of the text that
-     *                     cause the error or warning.
+     *               cause the error or warning.
      */
-    public XmiException(String message, String publicId, String systemId,
+    public XmiException(String message, String pubId, String sysId,
             int line, int column) {
         super(message);
-        init(publicId, systemId, line, column);
+        init(pubId, sysId, line, column);
     }
     
     
@@ -108,37 +108,37 @@ public class XmiException extends UmlException {
      * 
      * @param message The error or warning message, or null to use the message
      *                from the embedded exception.
-     * @param publicId The public identifier of the entity that generated the
-     *                error or warning.
-     * @param systemId The system identifier of the entity that generated the
-     *                error or warning.
+     * @param pubId The public identifier of the entity that generated the
+     *              error or warning.
+     * @param sysId The system identifier of the entity that generated the
+     *              error or warning.
      * @param line The line number of the end of the text that caused the
-     *                error or warning.
+     *             error or warning.
      * @param column The column number of the end of the text that cause
-     *                the error or warning.
+     *               the error or warning.
      * @param e Another exception to embed in this one.
      */
-    public XmiException(String message, String publicId, String systemId,
+    public XmiException(String message, String pubId, String sysId,
             int line, int column, Exception e) {
         super(message, e);
-        init(publicId, systemId, line, column);
+        init(pubId, sysId, line, column);
     }
 
 
     /**
      * Internal initialization method.
      * 
-     * @param publicId The public identifier of the entity which generated the
-     *                exception, or null.
-     * @param systemId The system identifier of the entity which generated the
-     *                exception, or null.
+     * @param pubId The public identifier of the entity which generated the
+     *              exception, or null.
+     * @param sysId The system identifier of the entity which generated the
+     *              exception, or null.
      * @param line The line number of the error, or -1.
      * @param column The column number of the error, or -1.
      */
-    private void init(String publicId, String systemId, int line,
+    private void init(String pubId, String sysId, int line,
             int column) {
-        this.publicId = publicId;
-        this.systemId = systemId;
+        this.publicId = pubId;
+        this.systemId = sysId;
         lineNumber = line;
         columnNumber = column;
     }
