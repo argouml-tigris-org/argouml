@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    Bob Tarling - Post GSOC improvements
- *    Christian López Espínola
+ *    Christian Lï¿½pez Espï¿½nola
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -60,7 +60,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.tigris.swidgets.GridLayout2;
 import org.tigris.toolbar.ToolBarFactory;
 
 /**
