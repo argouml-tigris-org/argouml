@@ -3,6 +3,9 @@
 	<name>argouml-app</name>
 	<comment></comment>
 	<projects>
+		<project>argouml-core-diagrams-sequence2</project>
+		<project>argouml-core-model</project>
+		<project>argouml-core-tools</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
