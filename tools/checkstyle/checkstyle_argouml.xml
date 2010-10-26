@@ -95,7 +95,7 @@
     <module name="LineLength">
       <!-- ignore Javadoc refs, imports, & CVS Id tagline -->
       <property name="ignorePattern"
-	      value="^( *\* @see |import |// \$Id:)"/>
+	      value="^( *\* @see |import |/[/*] \$Id:)"/>
     </module>
 
     <module name="LocalFinalVariableName"/>

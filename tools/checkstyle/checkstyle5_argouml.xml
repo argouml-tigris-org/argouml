@@ -5,9 +5,9 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: ArgoUML checks
+    Checkstyle-Configuration: ArgoUML conventions
     Description: 
-These are the checks that are defined for the argouml project.
+The Checkstyle configuration used in the ArgoUML project.
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
@@ -45,7 +45,7 @@ These are the checks that are defined for the argouml project.
       <property name="scope" value="protected"/>
     </module>
     <module name="LineLength">
-      <property name="ignorePattern" value="^( *\* @see |import |// \$Id:)"/>
+      <property name="ignorePattern" value="^( *\* @see |import |/[/*] \$Id:)"/>
     </module>
     <module name="LocalFinalVariableName"/>
     <module name="LocalVariableName"/>
