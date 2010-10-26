@@ -39,7 +39,6 @@
 package org.argouml.model;
 
 import java.util.Collection;
-import java.util.Enumeration;
 
 /**
  * The interface for the Helper for Uml.<p>
@@ -48,6 +47,9 @@ import java.util.Enumeration;
  */
 public interface UmlHelper {
     
+    /**
+     * Direction of the movement.
+     */
     public enum Direction {
         UP, DOWN, TOP, BOTTOM;
     }
@@ -90,8 +92,9 @@ public interface UmlHelper {
     Object getDestination(Object relationShip);
     
     /**
-     * Returns true if a model element can be moved within its parent 
-     * @param parent the parent model element
+     * Returns true if a model element can be moved within its parent.
+     * 
+     * @return the parent model element
      * @param element the element to move
      */
     boolean isMovable(Object element);
