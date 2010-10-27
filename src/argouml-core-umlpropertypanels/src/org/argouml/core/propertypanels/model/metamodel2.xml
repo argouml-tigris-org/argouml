@@ -58,6 +58,7 @@ name
   <class name="Interaction">org.eclipse.uml2.uml.Interaction</class>
   <class name="Package">org.eclipse.uml2.uml.Package</class>
   <class name="Model">org.eclipse.uml2.uml.Model</class>
+  <class name="Profile">org.eclipse.uml2.uml.Profile</class>
 </classes>
 <panels>
   <panel name="Multiplicity">
