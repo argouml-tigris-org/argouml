@@ -49,12 +49,14 @@ import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.border.EtchedBorder;
 
+import org.argouml.taskmgmt.ProgressEvent;
+import org.argouml.taskmgmt.ProgressMonitor;
 import org.tigris.gef.ui.IStatusBar;
 
 /**
  * The splash screen.
  */
-public class SplashScreen extends JWindow implements IStatusBar {
+public class SplashScreen extends JWindow implements IStatusBar, ProgressMonitor {
 
     private StatusBar statusBar = new StatusBar();
     
@@ -67,7 +69,7 @@ public class SplashScreen extends JWindow implements IStatusBar {
      * The constructor.
      */
     public SplashScreen() {
-        this("Loading ArgoUML...", "Splash");
+        this("Splash");
     }
 
     /**
@@ -76,7 +78,7 @@ public class SplashScreen extends JWindow implements IStatusBar {
      * @param title the title of the window
      * @param iconName the icon for the window
      */
-    private SplashScreen(String title, String iconName) {
+    private SplashScreen(String iconName) {
 	super();
 
 	setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -105,7 +107,11 @@ public class SplashScreen extends JWindow implements IStatusBar {
 
     /**
      * @return the status bar of this dialog
+     * @deprecated for 0.31.7 by tfmorris. Use methods from the
+     *             {@link IStatusBar} interface implemented by this class 
+     *             e.g. {@link #showStatus(String)}/
      */
+    @Deprecated
     public StatusBar getStatusBar() {
         return statusBar;
     }
@@ -146,6 +152,43 @@ public class SplashScreen extends JWindow implements IStatusBar {
      */
     public boolean isPaintCalled() {
         return paintCalled;
+    }
+
+    public void progress(ProgressEvent event) throws InterruptedException {
+        statusBar.progress(event);        
+    }
+
+    public void updateProgress(int progress) {
+        statusBar.updateProgress(progress);
+    }
+
+    public void updateSubTask(String name) {
+        statusBar.updateSubTask(name);
+    }
+
+    public void updateMainTask(String name) {
+        statusBar.updateMainTask(name);
+    }
+
+    public boolean isCanceled() {
+        return false;
+    }
+
+    public void setMaximumProgress(int max) {
+        statusBar.setMaximumProgress(max);
+    }
+
+    public void notifyNullAction() {
+        // ignored - will never be called
+    }
+
+    public void notifyMessage(String title, String introduction, String message) {
+        // TODO: Auto-generated method stub
+        
+    }
+
+    public void close() {
+        // TODO: Auto-generated method stub        
     }
 
 }

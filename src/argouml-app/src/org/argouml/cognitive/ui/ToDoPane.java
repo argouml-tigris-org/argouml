@@ -128,15 +128,21 @@ public class ToDoPane extends JPanel
     private JLabel countLabel;
     private Object lastSel;
 
-
     /**
      * Construct the ToDoPane.
-     *
-     * @param splash if not null, then we have to show progress in the splash
+     * @param splash Unused parameter for backwards compatibility.
+     * 
+     * @deprecated for 0.31.7 by tfmorris.  Use 0-arg constructor.
      */
-    // TODO: This should take a ProgressMonitor or something more generic
-    // (or nothing at all since it doesn't do that much work)
-    public ToDoPane(SplashScreen splash) {
+    @Deprecated
+    public ToDoPane(@SuppressWarnings("unused") SplashScreen splash) {
+        this();
+    }
+    
+    /**
+     * Construct the ToDoPane.
+     */
+    public ToDoPane() {
 
         setLayout(new BorderLayout());
 
@@ -164,12 +170,6 @@ public class ToDoPane extends JPanel
         // next line coming from projectbrowser
         setRoot(Designer.theDesigner().getToDoList());
         Designer.theDesigner().getToDoList().addToDoListListener(this);
-
-        if (splash != null) {
-            splash.getStatusBar().showStatus(
-	            Translator.localize("statusmsg.bar.making-todopane"));
-            splash.getStatusBar().showProgress(25);
-        }
 
         setPerspectives(buildPerspectives());
 

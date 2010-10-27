@@ -47,13 +47,17 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.border.EtchedBorder;
 
+import org.argouml.taskmgmt.ProgressEvent;
+import org.argouml.taskmgmt.ProgressMonitor;
 import org.tigris.gef.ui.IStatusBar;
 
 /**
  * The status bar.
  *
  */
-public class StatusBar extends JPanel implements Runnable, IStatusBar {
+public class StatusBar 
+extends JPanel 
+implements Runnable, IStatusBar, ProgressMonitor {
 
     private JLabel msg = new JLabel();
     private JProgressBar progress = new JProgressBar();
@@ -134,6 +138,41 @@ public class StatusBar extends JPanel implements Runnable, IStatusBar {
 	progress.setValue(0);
 	showStatus("");
 	repaint();
+    }
+
+    public void progress(ProgressEvent event) throws InterruptedException {
+        // TODO: Auto-generated method stub
+    }
+
+    public void updateProgress(int value) {
+        progress.setValue(value);
+    }
+
+    public void updateSubTask(String name) {
+        msg.setText(name);
+    }
+
+    public void updateMainTask(String name) {
+        msg.setText(name);
+    }
+
+    public boolean isCanceled() {
+        return false;
+    }
+
+    public void setMaximumProgress(int max) {
+        progress.setMaximum(max);        
+    }
+
+    public void notifyNullAction() {}
+
+    public void notifyMessage(String title, String introduction, String message) {
+        // TODO: Auto-generated method stub
+        
+    }
+
+    public void close() {
+        setVisible(false);        
     }
 
 }

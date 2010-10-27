@@ -75,6 +75,7 @@ import org.argouml.cognitive.ui.InitCognitiveUI;
 import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.moduleloader.InitModuleLoader;
@@ -215,7 +216,7 @@ public class Main {
 
             st.mark("perspectives");
             if (splash != null) {
-                splash.getStatusBar().showProgress(75);
+                splash.updateProgress(75);
             }
 
             st.mark("open window");
@@ -479,18 +480,18 @@ public class Main {
     private static void openProject(SimpleTimer st, SplashScreen splash,
             ProjectBrowser pb, URL urlToOpen) {
         if (splash != null) {
-            splash.getStatusBar().showProgress(40);
+            splash.updateProgress(40);
         }
         
         st.mark("open project");
         Designer.disableCritiquing();
         Designer.clearCritiquing();
 
-        boolean projectLoaded = false;
+        Project project = null;
         if (urlToOpen != null) {
             if (splash != null) {
                 Object[] msgArgs = {projectName};
-                splash.getStatusBar().showStatus(
+                splash.showStatus(
                         Translator.messageFormat(
                                 "statusmsg.bar.readingproject",
                                 msgArgs));
@@ -502,21 +503,20 @@ public class Main {
             System.err.println("The filename is " + filename);
             System.err.println("The file is " + file);
             System.err.println("File.exists = " + file.exists());
-            projectLoaded = pb.loadProject(file, true, null);
+            project =  pb.loadProject2(file, true, null);
         } else {
             if (splash != null) {
-                splash.getStatusBar().showStatus(
+                splash.showStatus(
                         Translator.localize(
                                 "statusmsg.bar.defaultproject"));
             }
         }
 
-        if (!projectLoaded) {
+        if (project != null) {
             // Although this looks redundant, it's needed to get all
             // the initialization state set correctly.  
             // Too many side effects as part of initialization!
-            ProjectManager.getManager().setCurrentProject(
-                    ProjectManager.getManager().getCurrentProject());
+            ProjectManager.getManager().setCurrentProject(project);
             ProjectManager.getManager().setSaveEnabled(false);
         }
 
@@ -554,8 +554,8 @@ public class Main {
     private static void updateProgress(SplashScreen splash, int percent,
             String message) {
         if (splash != null) {
-            splash.getStatusBar().showStatus(Translator.localize(message));
-            splash.getStatusBar().showProgress(percent);
+            splash.showStatus(Translator.localize(message));
+            splash.updateProgress(percent);
         }
     }
 
@@ -864,7 +864,7 @@ public class Main {
      */
     private static ProjectBrowser initializeGUI(SplashScreen splash) {
         // make the projectbrowser
-        JPanel todoPane = new ToDoPane(splash);
+        JPanel todoPane = new ToDoPane();
 	ProjectBrowser pb = ProjectBrowser.makeInstance(splash, true, todoPane);
 
 	JOptionPane.setRootFrame(pb);

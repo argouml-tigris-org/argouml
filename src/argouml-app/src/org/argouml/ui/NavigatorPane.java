@@ -49,6 +49,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
 import org.argouml.i18n.Translator;
+import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.ui.explorer.ActionPerspectiveConfig;
 import org.argouml.ui.explorer.DnDExplorerTree;
 import org.argouml.ui.explorer.ExplorerTree;
@@ -79,8 +80,40 @@ class NavigatorPane
      * and a configuration dialog to tailor the perspectives.
      *
      * @param splash The splash screen where to show progress.
+     * @deprecated for 0.31.7 by tfmorris.  
+     * Use {@link NavigatorPane#NavigatorPane(ProgressMonitor)}.
      */
+    @Deprecated
     public NavigatorPane(SplashScreen splash) {
+        this(splash, null);
+    }
+
+    /**
+     * Construct a new navigator panel.<p>
+     *
+     * This panel consists of a Combobox to select a navigation
+     * perspective, a combobox to select ordering,
+     * a JTree to display the UML model,
+     * and a configuration dialog to tailor the perspectives.
+     *
+     * @param pm ProgressMonitor to receive progress updates.  May be null.
+     */
+    @Deprecated
+    public NavigatorPane(ProgressMonitor pm) {
+        this(null, pm);
+    }
+    
+    /**
+     * Constructs a new navigator panel.<p>
+     *
+     * This panel consists of a Combobox to select a navigation
+     * perspective, a combobox to select ordering,
+     * a JTree to display the UML model,
+     * and a configuration dialog to tailor the perspectives.
+     *
+     * @param splash The splash screen where to show progress.
+     */
+    private NavigatorPane(SplashScreen splash, ProgressMonitor pm) {
 
         JComboBox perspectiveCombo = new PerspectiveComboBox();
         JComboBox orderByCombo = new JComboBox();
@@ -113,6 +146,10 @@ class NavigatorPane
             splash.getStatusBar().showStatus(Translator.localize(
 		    "statusmsg.bar.making-navigator-pane-perspectives"));
             splash.getStatusBar().showProgress(25);
+        } else if (pm != null) {
+            pm.updateSubTask(Translator.localize(
+                    "statusmsg.bar.making-navigator-pane-perspectives"));
+            pm.updateProgress(25);
         }
 
         perspectiveCombo.addItemListener((ExplorerTreeModel) tree.getModel());
