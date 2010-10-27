@@ -1523,7 +1523,26 @@ public final class ProjectBrowser
         LoadSwingWorker worker = new LoadSwingWorker(file, showUI);
         worker.start();
     }
-    	
+
+    /**
+     * Loads the project file and opens all kinds of error message windows
+     * if it doesn't work for some reason. In those cases it preserves
+     * the old project.
+     *
+     * @param file the file to open.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     * @param pmw       the ProgressMonitor to be updated;  
+     *                          if not needed, use null 
+     * @return true if the file was successfully opened
+     * 
+     * TODO: Separate this into a Swing specific class - tfm
+     */
+    public boolean loadProject(File file, boolean showUI, 
+            ProgressMonitor pmw) {
+        return (loadProject2(file, showUI, pmw) != null);
+    }
+    
     /**
      * Loads the project file and opens all kinds of error message windows
      * if it doesn't work for some reason. In those cases it preserves
@@ -1538,7 +1557,7 @@ public final class ProjectBrowser
      * 
      * TODO: Separate this into a Swing specific class - tfm
      */
-    public boolean loadProject(File file, boolean showUI, 
+    public Project loadProject2(File file, boolean showUI, 
             ProgressMonitor pmw) {
         LOG.info("Loading project.");
 
@@ -1750,7 +1769,10 @@ public final class ProjectBrowser
                 }
             }
         }
-        return success;
+        if (!success) {
+            return null;
+        }
+        return project;
     }
 
     /**
