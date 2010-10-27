@@ -57,7 +57,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JToolBar;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataEvent;
@@ -112,7 +111,7 @@ class RowSelector extends UmlControl
      */
     private final boolean readonly;
     
-    private final ArrayList actions;
+    private final List actions;
     
     /**
      * The scrollpane that will contain the list
