@@ -145,12 +145,12 @@ public class Main {
     private static List<String> commands;
 
     private static String projectName = null;
-    
+
     private static String theTheme;
 
     // Andreas: this is just temporary for the uml2 pre-alpha versions.
     private static boolean showUml2warning = true;
-    
+
     /**
      * The main entry point of ArgoUML.
      * @param args command line parameters
@@ -163,13 +163,13 @@ public class Main {
             st.mark("begin");
 
             initPreinitialize();
-            
+
             st.mark("arguments");
             parseCommandLine(args);
 
             // Register our last chance exception handler
             AwtExceptionHandler.registerExceptionHandler();
-            
+
             // Get the splash screen up as early as possible
             st.mark("create splash");
             SplashScreen splash = null;
@@ -200,7 +200,7 @@ public class Main {
                 new ActionExit().doCommand(null);
                 return;
             }
-            
+
             if (reloadRecent && projectName == null) {
                 projectName = getMostRecentProject();
             }
@@ -257,13 +257,13 @@ public class Main {
             ArgoFrame.getFrame().setCursor(
                     Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
-	    // Andreas: just temporary: a warning dialog for uml2...
-	    if( showUml2warning && Model.getFacade().getUmlVersion().startsWith("2")) {
-		JOptionPane.showMessageDialog( ArgoFrame.getFrame()
-					       , "You are running an experimental version not meant for productive work!"
-					       , "UML2 pre-alpha warning"
-					       , JOptionPane.WARNING_MESSAGE);
-	    }
+            // Andreas: just temporary: a warning dialog for uml2...
+            if( showUml2warning && Model.getFacade().getUmlVersion().startsWith("2")) {
+                JOptionPane.showMessageDialog( ArgoFrame.getFrame()
+                        , "You are running an experimental version not meant for productive work!"
+                        , "UML2 pre-alpha warning"
+                        , JOptionPane.WARNING_MESSAGE);
+            }
 
 
             //ToolTipManager.sharedInstance().setInitialDelay(500);
@@ -300,8 +300,8 @@ public class Main {
         org.argouml.util.Tools.logVersionInfo();
         setSystemProperties();
     }
-    
-   
+
+
     private static void initTranslator() {
         // Set the i18n locale
         Translator.init(Configuration.getString(Argo.KEY_LOCALE));
@@ -329,12 +329,11 @@ public class Main {
         System.setProperty("apple.laf.useScreenMenuBar", "true");
 
         /* FIX: set the application name for Mac OS X */
-        System.setProperty(
-                "com.apple.mrj.application.apple.menu.about.name",
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name",
                 "ArgoUML");
     }
-    
-    
+
+
     /**
      * Parse command line args. The assumption is that all options precede the
      * name of a project file to load. Sets static fields that can be referenced
@@ -348,7 +347,7 @@ public class Main {
                 Argo.KEY_RELOAD_RECENT_PROJECT, false);
         commands = new ArrayList<String>();
         theTheme = null;
-        
+
         for (int i = 0; i < args.length; i++) {
             if (args[i].startsWith("-")) {
                 String themeName = LookAndFeelMgr.getInstance()
@@ -394,12 +393,11 @@ public class Main {
                     PrintManager.getInstance().print();
                     // nothing else to do (?)
                     System.exit(0);
-		} else if (args[i].equalsIgnoreCase("-nouml2warning")) {  // Andreas: just temporary for the 
-			showUml2warning = false;                         // uml2 pre-alpha versions!
+                } else if (args[i].equalsIgnoreCase("-nouml2warning")) {  // Andreas: just temporary for the 
+                    showUml2warning = false;                         // uml2 pre-alpha versions!
                 } else {
-                    System.err
-                            .println("Ignoring unknown/incomplete option '"
-                                    + args[i] + "'");
+                    System.err.println("Ignoring unknown/incomplete option '"
+                            + args[i] + "'");
                 }
             } else {
                 if (projectName == null) {
@@ -459,7 +457,7 @@ public class Main {
         return pb;
     }
 
-    
+
     /**
      * Initialize the UML model repository.
      */
@@ -482,7 +480,7 @@ public class Main {
         if (splash != null) {
             splash.updateProgress(40);
         }
-        
+
         st.mark("open project");
         Designer.disableCritiquing();
         Designer.clearCritiquing();
@@ -507,8 +505,7 @@ public class Main {
         } else {
             if (splash != null) {
                 splash.showStatus(
-                        Translator.localize(
-                                "statusmsg.bar.defaultproject"));
+                        Translator.localize("statusmsg.bar.defaultproject"));
             }
         }
 
@@ -524,7 +521,7 @@ public class Main {
         Designer.enableCritiquing();
     }
 
-    
+
     private static String getMostRecentProject() {
         // If no project was entered on the command line,
         // try to reload the most recent project if that option is true
@@ -572,7 +569,7 @@ public class Main {
         File projectFile = new File(theProjectName);
         if (!projectFile.exists()) {
             System.err.println("Project file '" + projectFile
-			       + "' does not exist.");
+                    + "' does not exist.");
             /* this will cause an empty project to be created */
         } else {
             try {
@@ -604,9 +601,9 @@ public class Main {
          * Why are these gone? */
         System.err.println("");
         System.err.println("You can also set java settings which influence "
-			   + "the behaviour of ArgoUML:");
+                + "the behaviour of ArgoUML:");
         System.err.println("  -Xms250M -Xmx500M  [makes ArgoUML reserve "
-			   + "more memory for large projects]");
+                + "more memory for large projects]");
         System.err.println("\n\n");
     }
 
@@ -623,11 +620,11 @@ public class Main {
         // check if we are using a supported java version
         if (!JavaRuntimeUtility.isJreSupported()) {
 
-	    System.err.println("You are using Java "
+            System.err.println("You are using Java "
                     + JavaRuntimeUtility.getJreVersion()
                     + ", Please use Java 5 (aka 1.5) or later"
                     + " with ArgoUML");
-	    System.exit(0);
+            System.exit(0);
         }
     }
 
@@ -642,7 +639,7 @@ public class Main {
             System.err.println("ERROR: unable to get localhost information.");
             e.printStackTrace(System.err);
             System.err.println("On Unix systems this usually indicates that"
-                + "your /etc/hosts file is incorrectly setup.");
+                    + "your /etc/hosts file is incorrectly setup.");
             System.err.println("Stopping execution of ArgoUML.");
             System.exit(0);
         }
@@ -673,7 +670,7 @@ public class Main {
 //        ArgoFrame.getInstance().setVisible(true);
         performCommandsInternal(list);
     }
-    
+
     /**
      * Perform a list of commands that were given on the command line.
      *
@@ -684,68 +681,68 @@ public class Main {
      */
     private static void performCommandsInternal(List<String> list) {
         for (String commandString : list) {
-	    int pos = commandString.indexOf('=');
+            int pos = commandString.indexOf('=');
 
-	    String commandName;
-	    String commandArgument;
+            String commandName;
+            String commandArgument;
 
-	    if (pos == -1) {
-		commandName = commandString;
-		commandArgument = null;
-	    } else {
-		commandName = commandString.substring(0, pos);
-		commandArgument = commandString.substring(pos + 1);
-	    }
+            if (pos == -1) {
+                commandName = commandString;
+                commandArgument = null;
+            } else {
+                commandName = commandString.substring(0, pos);
+                commandArgument = commandString.substring(pos + 1);
+            }
 
-	    // Perform one command.
-	    Class c;
-	    try {
-		c = Class.forName(commandName);
-	    } catch (ClassNotFoundException e) {
-		System.out.println("Cannot find the command: " + commandName);
-		continue;
-	    }
+            // Perform one command.
+            Class c;
+            try {
+                c = Class.forName(commandName);
+            } catch (ClassNotFoundException e) {
+                System.out.println("Cannot find the command: " + commandName);
+                continue;
+            }
 
-	    // Now create a new object.
-	    Object o = null;
-	    try {
-		o = c.newInstance();
-	    } catch (InstantiationException e) {
-		System.out.println(commandName
-				   + " could not be instantiated - skipping"
-				   + " (InstantiationException)");
-		continue;
-	    } catch (IllegalAccessException e) {
-		System.out.println(commandName
-				   + " could not be instantiated - skipping"
-				   + " (IllegalAccessException)");
-		continue;
-	    }
+            // Now create a new object.
+            Object o = null;
+            try {
+                o = c.newInstance();
+            } catch (InstantiationException e) {
+                System.out.println(commandName
+                        + " could not be instantiated - skipping"
+                        + " (InstantiationException)");
+                continue;
+            } catch (IllegalAccessException e) {
+                System.out.println(commandName
+                        + " could not be instantiated - skipping"
+                        + " (IllegalAccessException)");
+                continue;
+            }
 
 
-	    if (o == null || !(o instanceof CommandLineInterface)) {
-		System.out.println(commandName
-				   + " is not a command - skipping.");
-		continue;
-	    }
+            if (o == null || !(o instanceof CommandLineInterface)) {
+                System.out.println(commandName
+                        + " is not a command - skipping.");
+                continue;
+            }
 
-	    CommandLineInterface clio = (CommandLineInterface) o;
+            CommandLineInterface clio = (CommandLineInterface) o;
 
-	    System.out.println("Performing command "
-			       + commandName + "( "
-			       + (commandArgument == null
-				  ? "" : commandArgument) + " )");
-	    boolean result = clio.doCommand(commandArgument);
-	    if (!result) {
-		System.out.println("There was an error executing "
-				   + "the command "
-				   + commandName + "( "
-				   + (commandArgument == null
-				      ? "" : commandArgument) + " )");
-		System.out.println("Aborting the rest of the commands.");
-		return;
-	    }
-	}
+            System.out.println("Performing command "
+                    + commandName + "( "
+                    + (commandArgument == null
+                            ? "" : commandArgument) + " )");
+            boolean result = clio.doCommand(commandArgument);
+            if (!result) {
+                System.out.println("There was an error executing "
+                        + "the command "
+                        + commandName + "( "
+                        + (commandArgument == null
+                                ? "" : commandArgument) + " )");
+                System.out.println("Aborting the rest of the commands.");
+                return;
+            }
+        }
     }
 
     /**
@@ -760,7 +757,7 @@ public class Main {
             argoDir.mkdir();
         }
     }
-    
+
     /**
      * Install our security handlers,
      * and do basic initialization of log4j.
@@ -774,7 +771,7 @@ public class Main {
      * Refer to {@link java.awt.EventDispatchThread} for details.
      */
     static {
- 
+
         /*  
          * Install the trap to "eat" SecurityExceptions.
          * 
@@ -782,8 +779,8 @@ public class Main {
          * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4714232
          */
         System.setProperty(
-            "sun.awt.exception.handler",
-            ArgoAwtExceptionHandler.class.getName());
+                "sun.awt.exception.handler",
+                ArgoAwtExceptionHandler.class.getName());
 
         /*
          *  The string <code>log4j.configuration</code> is the
@@ -801,39 +798,37 @@ public class Main {
         // deployment.user.logdir & deployment.user.tmp
         if (System.getProperty("log4j.configuration") == null) {
             Properties props = new Properties();
-	    InputStream stream = null;
+            InputStream stream = null;
             try {
-		stream =
-                        Thread.currentThread().getContextClassLoader()
-                                .getResourceAsStream(
-                                        DEFAULT_LOGGING_CONFIGURATION);
+                stream = Thread.currentThread().getContextClassLoader()
+                        .getResourceAsStream(DEFAULT_LOGGING_CONFIGURATION);
 
-		if (stream != null) {
-		    props.load(stream);
-		}
+                if (stream != null) {
+                    props.load(stream);
+                }
             } catch (IOException io) {
                 io.printStackTrace();
                 System.exit(-1);
             }
 
-	    PropertyConfigurator.configure(props);
+            PropertyConfigurator.configure(props);
 
-	    if (stream == null) {
-		BasicConfigurator.configure();
-		Logger.getRootLogger().getLoggerRepository().setThreshold(
+            if (stream == null) {
+                BasicConfigurator.configure();
+                Logger.getRootLogger().getLoggerRepository().setThreshold(
                         Level.ERROR); // default level is DEBUG
                 Logger.getRootLogger().error(
                         "Failed to find valid log4j properties"
-                                + "in log4j.configuration"
-                                + "using default logging configuration");
-	    }
+                        + "in log4j.configuration"
+                        + "using default logging configuration");
+            }
         }
 
         // initLogging();
         LOG = Logger.getLogger(Main.class);
     }
 
-    
+
     /**
      * Create and display a splash screen.
      * @return the splash screen
@@ -856,7 +851,7 @@ public class Main {
         }
         return splash;
     }
-    
+
     /**
      * Do a part of the initialization that is very much GUI-stuff.
      *
@@ -865,15 +860,15 @@ public class Main {
     private static ProjectBrowser initializeGUI(SplashScreen splash) {
         // make the projectbrowser
         JPanel todoPane = new ToDoPane();
-	ProjectBrowser pb = ProjectBrowser.makeInstance(splash, true, todoPane);
+        ProjectBrowser pb = ProjectBrowser.makeInstance(splash, true, todoPane);
 
-	JOptionPane.setRootFrame(pb);
+        JOptionPane.setRootFrame(pb);
 
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         // Set the screen layout to what the user left it before, or
         // to reasonable defaults.
         Rectangle scrSize = GraphicsEnvironment.getLocalGraphicsEnvironment()
-                .getMaximumWindowBounds();
+        .getMaximumWindowBounds();
 
         int configFrameWidth =
             Configuration.getInteger(Argo.KEY_SCREEN_WIDTH, scrSize.width);
@@ -881,14 +876,14 @@ public class Main {
         if (w == 0) {
             w = 600;
         }
-        
+
         int configFrameHeight =
             Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT, scrSize.height);
         int h = Math.min(configFrameHeight, scrSize.height);
         if (h == 0) {
             h = 400;
         }
-        
+
         int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);
         int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
         pb.setLocation(x, y);
@@ -896,13 +891,13 @@ public class Main {
         pb.setExtendedState(Configuration.getBoolean(
                 Argo.KEY_SCREEN_MAXIMIZED, false) 
                 ? Frame.MAXIMIZED_BOTH : Frame.NORMAL);
-        
+
         UIManager.put("Button.focusInputMap", new UIDefaults.LazyInputMap(
                 new Object[] {
-                    "ENTER", "pressed",
-                    "released ENTER", "released",
-                    "SPACE", "pressed",
-                    "released SPACE", "released"
+                        "ENTER", "pressed",
+                        "released ENTER", "released",
+                        "SPACE", "pressed",
+                        "released SPACE", "released"
                 })
         );         
         return pb;
@@ -948,7 +943,7 @@ class PostLoad implements Runnable {
     public PostLoad(List<Runnable> actions) {
         postLoadActions = actions;
     }
-    
+
     /*
      * @see java.lang.Runnable#run()
      */
@@ -978,11 +973,11 @@ class LoadModules implements Runnable {
      */
     private static final Logger LOG = Logger.getLogger(LoadModules.class);
 
-    
+
     private static final String[] OPTIONAL_INTERNAL_MODULES = {
         "org.argouml.dev.DeveloperModule",
     };
-    
+
     /**
      * Load internal modules which should be found on the standard
      * classpath.
@@ -1002,7 +997,7 @@ class LoadModules implements Runnable {
      * @see java.lang.Runnable#run()
      */
     public void run() {
-	huntForInternalModules();
+        huntForInternalModules();
         LOG.info("Module loading done");
     }
 
