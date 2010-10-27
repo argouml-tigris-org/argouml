@@ -124,31 +124,34 @@ public class MetaDataCache {
             final String name = 
     	        panelNode.getAttributes().getNamedItem("name").getNodeValue();
             Class<?> clazz = metaTypeByName.get(name);
-            
-            PanelData pm = new PanelData(clazz, name);
-            map.put(clazz, pm);
-            
-            final NodeList controlNodes = panelNode.getElementsByTagName("*");
-            for (int j = 0; j < controlNodes.getLength(); ++j) {
-                Element controlNode = (Element) controlNodes.item(j);
+
+            if (clazz == null) {
+                LOG.warn("No class name translation found for panel: " + name);
+            } else {
+                PanelData pm = new PanelData(clazz, name);
+                map.put(clazz, pm);
                 
-                final String propertyName = controlNode.getAttribute("name");
-                final String label = controlNode.getAttribute("label");
-                
-                final ControlData controlData =
-                    new ControlData(controlNode.getTagName(), propertyName, label);
-                
-                final String types = controlNode.getAttribute("type");
-                StringTokenizer st = new StringTokenizer(types, ",");
-                while (st.hasMoreTokens()) {
-                    controlData.addType(metaTypeByName.get(st.nextToken()));
+                final NodeList controlNodes = panelNode.getElementsByTagName("*");
+                for (int j = 0; j < controlNodes.getLength(); ++j) {
+                    Element controlNode = (Element) controlNodes.item(j);
+                    
+                    final String propertyName = controlNode.getAttribute("name");
+                    final String label = controlNode.getAttribute("label");
+                    
+                    final ControlData controlData =
+                        new ControlData(controlNode.getTagName(), propertyName, label);
+                    
+                    final String types = controlNode.getAttribute("type");
+                    StringTokenizer st = new StringTokenizer(types, ",");
+                    while (st.hasMoreTokens()) {
+                        controlData.addType(metaTypeByName.get(st.nextToken()));
+                    }
+                    
+                    if (controlNode.getTagName().equals("checkgroup")) {
+                        addCheckboxes(controlData, controlNode);
+                    }
+                    pm.addControlData(controlData);
                 }
-                
-                if (controlNode.getTagName().equals("checkgroup")) {
-                    addCheckboxes(controlData, controlNode);
-                }
-                
-                pm.addControlData(controlData);
             }
         }
 	    
