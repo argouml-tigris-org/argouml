@@ -38,6 +38,9 @@
 
 package org.argouml.core.propertypanels.ui;
 
+import java.util.Collection;
+import java.util.List;
+
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -152,19 +155,28 @@ class SwingUIFactory {
             // list on property panel
             tb.add(new ActionNewStereotype());
             
-            for (Class<?> metaType : panelData.getNewChildElements()) {
-                tb.add(new ActionCreateContainedModelElement(metaType, target));
-            }
+            addCreateButtons(target, tb, panelData.getNewChildElements());
             
-            final Object parent = Model.getFacade().getModelElementContainer(target);
-
-            if (parent != null) {
-                for (Class<?> metaType : panelData.getNewSiblingElements()) {
-                    tb.add(new ActionCreateContainedModelElement(metaType, parent));
+            final Object parent =
+        	Model.getFacade().getModelElementContainer(target);
+            addCreateButtons(parent, tb, panelData.getNewSiblingElements());
+        }
+        panel.add(tb);
+    }
+    
+    private void addCreateButtons(
+	    final Object container, 
+	    final JToolBar tb,
+	    final Collection<Class<?>> metaTypes) {
+        if (container != null) {
+            for (Class<?> metaType : metaTypes) {
+                if (Model.getUmlFactory().isContainmentValid(
+            	    metaType, container)) {
+                    tb.add(new ActionCreateContainedModelElement(
+                    	metaType, container));
                 }
             }
         }
-        panel.add(tb);
     }
     
     private void buildTextArea(

@@ -540,7 +540,7 @@ The combination of the above allows the GUI to distinguish between
     <attribute name="linkEnd" type="AssociationEnd" />
     <attribute name="associationEndRole" type="AssociationEnd" />
   </panel>
-  <panel name="Interface" new="Operation">
+  <panel name="Interface" new-child="Operation">
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
     <optionbox name="visibility" type="VisibilityKind" />
