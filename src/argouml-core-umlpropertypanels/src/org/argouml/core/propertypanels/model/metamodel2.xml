@@ -587,7 +587,7 @@ name
     <attribute name="generalization" type="Generalization" />
     <attribute name="specialization" type="GeneralizableElement" />    
   </panel>
-  <panel name="Property">
+  <panel name="Property" navigate-sibling="true" >
     <text name="name" type="Name" />
     <combo name="type" type="Classifier" />
     <combo name="multiplicity" type="Multiplicity" />
@@ -659,7 +659,7 @@ name
     <separator />
     <list name="raisedSignal" type="Signal" new="true" label="label.raisedsignals" />
   </panel>
-  <panel name="Operation">
+  <panel name="Operation" navigate-sibling="true" >
     <text name="name" type="Name" />
     <singlerow name="owner" type="Classifier" />
     <list name="parameter" type="Parameter" new="true" />
@@ -2049,7 +2049,7 @@ name
     <attribute name="value" type="Expression" />
     <attribute name="action" type="Action" />
   </panel>
-  <panel name="Reception">
+  <panel name="Reception" navigate-sibling="true" >
     <text name="name" type="Name" />
     <singlerow name="owner" type="Classifier" />
     <optionbox name="visibility" type="VisibilityKind" />

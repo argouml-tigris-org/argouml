@@ -13,6 +13,7 @@
 
 package org.argouml.core.propertypanels.model;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,13 +23,29 @@ public class PanelData  {
     private final Class<?> clazz;
     private final List<ControlData> properties;
     private final String name;
+    private final Collection<Class<?>> newChildElements;
+    private final Collection<Class<?>> newSiblingElements;
+    private final boolean siblingNavigation;
     
-    public PanelData(Class<?> clazz, String name) {
+    public PanelData(
+	    final Class<?> clazz,
+	    final String name,
+	    final Collection<Class<?>> newChildElements,
+	    final Collection<Class<?>> newSiblingElements,
+	    final boolean siblingNavigation) {
+	
         this.clazz = clazz;
         this.name = name;
         properties = new LinkedList<ControlData>();
+        this.newChildElements = newChildElements;
+        this.newSiblingElements = newSiblingElements;
+        this.siblingNavigation = siblingNavigation;
     }
     
+    public boolean isSiblingNavigation() {
+        return siblingNavigation;
+    }
+
     public void addControlData(ControlData record) {
         properties.add(record);
     }
@@ -43,5 +60,13 @@ public class PanelData  {
     
     public List<ControlData> getProperties () {
         return Collections.unmodifiableList(properties);
+    }
+
+    public Collection<Class<?>> getNewChildElements() {
+        return newChildElements;
+    }
+
+    public Collection<Class<?>> getNewSiblingElements() {
+        return newSiblingElements;
     }
 }

@@ -15,7 +15,9 @@ package org.argouml.core.propertypanels.model;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -121,30 +123,41 @@ public class MetaDataCache {
         for (int i = 0; i < panelNodes.getLength(); ++i) {
             
             Element panelNode = (Element) panelNodes.item(i);
-            final String name = 
-    	        panelNode.getAttributes().getNamedItem("name").getNodeValue();
+            final String name = panelNode.getAttribute("name");
+
             Class<?> clazz = metaTypeByName.get(name);
 
             if (clazz == null) {
                 LOG.warn("No class name translation found for panel: " + name);
             } else {
-                PanelData pm = new PanelData(clazz, name);
+                final List<Class<?>> newChildTypes =
+                    stringToMetaTypes(panelNode.getAttribute("new-child"));
+                final List<Class<?>> newSiblingTypes =
+                    stringToMetaTypes(panelNode.getAttribute("new-sibling"));
+                
+                final boolean siblingNavigation =
+                    "true".equals(panelNode.getAttribute("navigate-sibling"));
+                
+                final PanelData pm =
+                    new PanelData(clazz, name, newChildTypes, newSiblingTypes, siblingNavigation);
                 map.put(clazz, pm);
                 
-                final NodeList controlNodes = panelNode.getElementsByTagName("*");
+                final NodeList controlNodes =
+                    panelNode.getElementsByTagName("*");
                 for (int j = 0; j < controlNodes.getLength(); ++j) {
                     Element controlNode = (Element) controlNodes.item(j);
                     
-                    final String propertyName = controlNode.getAttribute("name");
+                    final String propertyName =
+                	controlNode.getAttribute("name");
                     final String label = controlNode.getAttribute("label");
                     
                     final ControlData controlData =
                         new ControlData(controlNode.getTagName(), propertyName, label);
                     
-                    final String types = controlNode.getAttribute("type");
-                    StringTokenizer st = new StringTokenizer(types, ",");
-                    while (st.hasMoreTokens()) {
-                        controlData.addType(metaTypeByName.get(st.nextToken()));
+                    final List<Class<?>> types =
+                	stringToMetaTypes(controlNode.getAttribute("type"));
+                    for (Class<?> metaType : types) {
+                        controlData.addType(metaType);
                     }
                     
                     if (controlNode.getTagName().equals("checkgroup")) {
@@ -156,6 +169,22 @@ public class MetaDataCache {
         }
 	    
         return map;
+    }
+    
+    /**
+     * Takes as input a string of comma separated metatypes (e.g.
+     * "Class,Interface,Attribute") and converts it to a list of classes of
+     * the appropriate type.
+     * @param typesString
+     * @return 
+     */
+    private List<Class<?>> stringToMetaTypes(String typesString) {
+	List<Class<?>> classes = new ArrayList<Class<?>>();
+        StringTokenizer st = new StringTokenizer(typesString, ",");
+        while (st.hasMoreTokens()) {
+            classes.add(metaTypeByName.get(st.nextToken()));
+        }
+        return classes;
     }
     
     private void addCheckboxes(ControlData controlData, Element controlElement) {

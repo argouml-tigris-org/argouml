@@ -54,6 +54,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.core.propertypanels.model.CheckBoxData;
 import org.argouml.core.propertypanels.model.ControlData;
 import org.argouml.core.propertypanels.model.GetterSetterManager;
+import org.argouml.core.propertypanels.model.MetaDataCache;
 import org.argouml.core.propertypanels.model.PanelData;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -81,13 +82,13 @@ class SwingUIFactory {
     public void createGUI (
             final Object target,
             final JPanel panel) throws Exception {
-        PanelData data = 
+        PanelData panelData = 
             XMLPropPanelFactory.getInstance().getPropertyPanelsData(
               	target.getClass());
             
-        createLabel(target, panel);
+        createLabel(target, panelData, panel);
             
-        for (ControlData prop : data.getProperties()) {
+        for (ControlData prop : panelData.getProperties()) {
             try {
                 if ("text".equals(prop.getControlType())) {
                     buildTextboxPanel(panel, target, prop);
@@ -120,7 +121,10 @@ class SwingUIFactory {
      * @param target
      * @param panel
      */
-    private void createLabel (Object target, JPanel panel) {
+    private void createLabel(
+	    final Object target,
+	    final PanelData panelData,
+	    final JPanel panel) {
         final String metaTypeName = Model.getMetaTypes().getName(target);
         final ToolBarFactory tbf = new ToolBarFactory(new Object[0]);
         tbf.setRollover(true);
@@ -139,12 +143,7 @@ class SwingUIFactory {
         if (!Model.getModelManagementHelper().isReadOnly(target)) {
             tb.add(new NavigateUpAction(target));
             
-            // TODO: This should not be hard coded but should be driven from the panel xml
-            if (Model.getFacade().isAAttribute(target)
-                || Model.getFacade().isAOperation(target)
-                || Model.getFacade().isAReception(target)
-                || Model.getFacade().isAParameter(target)
-                || Model.getFacade().isAAssociationEnd(target)) {
+            if (panelData.isSiblingNavigation()) {
                 tb.add(new NavigatePreviousAction(target));
                 tb.add(new NavigateNextAction(target));
             }
@@ -153,6 +152,15 @@ class SwingUIFactory {
             // We only have this here until we have stereotypes
             // list on property panel
             tb.add(new ActionNewStereotype());
+            
+            for (Class<?> newChildElement : panelData.getNewChildElements()) {
+        	LOG.debug("Child = " + newChildElement);
+        	// TODO: Create new child action here
+            }
+            for (Class<?> newSiblingElement : panelData.getNewSiblingElements()) {
+        	LOG.debug("Sibling = " + newSiblingElement);
+        	// TODO: Create new sibling action here
+            }
         }
         panel.add(tb);
     }

@@ -339,7 +339,7 @@ The combination of the above allows the GUI to distinguish between
     <list name="classifierInState" type="Classifier" label="label.classifier-in-state" />
     <list name="objectFlowState" type="Classifier" />
   </panel>
-  <panel name="Class" newchild="Attribute,Operation">
+  <panel name="Class" new-child="Attribute,Operation">
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />    
     <optionbox name="visibility" type="VisibilityKind" />
@@ -498,7 +498,7 @@ The combination of the above allows the GUI to distinguish between
     <attribute name="ordering" type="OrderingKind" />
     <attribute name="type" type="Classifier" />
   </panel>
-  <panel name="AssociationEnd">
+  <panel name="AssociationEnd" navigate-sibling="true" >
     <text name="name" type="Name" />
     <combo name="participant" type="Classifier" label="label.type" />
     <combo name="multiplicity" type="Multiplicity" />
@@ -683,7 +683,7 @@ The combination of the above allows the GUI to distinguish between
     <attribute name="generalization" type="Generalization" />
     <attribute name="specialization" type="GeneralizableElement" />    
   </panel>
-  <panel name="Attribute" newsibling="Attribute">
+  <panel name="Attribute" new-sibling="Reception,Operation,Attribute" navigate-sibling="true" >
     <text name="name" type="Name" />
     <combo name="type" type="Classifier" />
     <combo name="multiplicity" type="Multiplicity" />
@@ -755,7 +755,7 @@ The combination of the above allows the GUI to distinguish between
     <separator />
     <list name="raisedSignal" type="Signal" new="true" label="label.raisedsignals" />
   </panel>
-  <panel name="Operation" newsibling="Operation">
+  <panel name="Operation" new-sibling="Reception,Operation,Attribute" navigate-sibling="true" >
     <text name="name" type="Name" />
     <singlerow name="owner" type="Classifier" />
     <list name="parameter" type="Parameter" new="true" />
@@ -798,7 +798,7 @@ The combination of the above allows the GUI to distinguish between
     <attribute name="callAction" type="Operation" />
     <attribute name="occurrence" type="Operation" />
   </panel>
-  <panel name="Parameter">
+  <panel name="Parameter" navigate-sibling="true" >
     <text name="name" type="Name" />
     <singlerow name="behavioralFeature" type="BehavioralFeature" />
     <combo name="type" type="Classifier" />
@@ -2185,7 +2185,7 @@ The combination of the above allows the GUI to distinguish between
     <attribute name="value" type="Expression" />
     <attribute name="action" type="Action" />
   </panel>
-  <panel name="Reception" newsibling="Reception">
+  <panel name="Reception" new-sibling="Reception,Operation,Attribute" navigate-sibling="true" >
     <text name="name" type="Name" />
     <singlerow name="owner" type="Classifier" />
     <optionbox name="visibility" type="VisibilityKind" />
