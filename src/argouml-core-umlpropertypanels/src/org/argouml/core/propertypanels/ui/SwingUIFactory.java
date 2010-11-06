@@ -54,10 +54,10 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.core.propertypanels.model.CheckBoxData;
 import org.argouml.core.propertypanels.model.ControlData;
 import org.argouml.core.propertypanels.model.GetterSetterManager;
-import org.argouml.core.propertypanels.model.MetaDataCache;
 import org.argouml.core.propertypanels.model.PanelData;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.tigris.toolbar.ToolBarFactory;
@@ -70,7 +70,6 @@ class SwingUIFactory {
     private static final Logger LOG = Logger.getLogger(SwingUIFactory.class);
     
     public SwingUIFactory() {
-        
     }
     
     /**
@@ -153,13 +152,16 @@ class SwingUIFactory {
             // list on property panel
             tb.add(new ActionNewStereotype());
             
-            for (Class<?> newChildElement : panelData.getNewChildElements()) {
-        	LOG.debug("Child = " + newChildElement);
-        	// TODO: Create new child action here
+            for (Class<?> metaType : panelData.getNewChildElements()) {
+                tb.add(new ActionCreateContainedModelElement(metaType, target));
             }
-            for (Class<?> newSiblingElement : panelData.getNewSiblingElements()) {
-        	LOG.debug("Sibling = " + newSiblingElement);
-        	// TODO: Create new sibling action here
+            
+            final Object parent = Model.getFacade().getModelElementContainer(target);
+
+            if (parent != null) {
+                for (Class<?> metaType : panelData.getNewSiblingElements()) {
+                    tb.add(new ActionCreateContainedModelElement(metaType, parent));
+                }
             }
         }
         panel.add(tb);
