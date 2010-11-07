@@ -1,0 +1,39 @@
+<!--
+   This file defines the types of diagram elements to be made available in
+   the UML2 activity diagram.
+   
+   Each element within the diagram "root" element represents a toolbar button
+   that will be made available to the user. Elements within the toolbar can be
+   grouped with the "dropdown" element to place thjem within a dropdown
+   toolbutton.
+   
+   The other element types indicates the representation used to display
+   diagram element when it is created.
+   
+   poly-edge - an edge two join two nodes, the edge can be multiple parts
+               (essentially an unconnected polygon)
+   rect - a rectangular node
+   rrect - a rectangular node with rounded corners
+   pentagon - a pentagon that is formed by a combined rectangle and a triangle much
+               like a direction sign on a signpost. If the concave attribute
+               is set the triangle forms a notch into the rectangle.
+   connector - A connection point required for some nodes.
+-->
+<diagram name="Activity">
+  <poly-edge type="ControlFlow" destarrow="true" />
+  <poly-edge type="ObjectFlow" destarrow="true" />
+  <dropdown>
+    <rrect type="CallObjectAction" />
+    <rrect type="CreateObjectAction" />
+    <rrect type="DestroyObjectAction" />
+  </dropdown>
+  <pentagon type="SendSignalAction" />
+  <pentagon type="AcceptEventAction" concave="true" />
+  <dropdown>
+    <rect type="ActivityParameterNode" />
+    <rect type="CentralBufferNode" />
+    <rect type="DataStoreNode" />
+  </dropdown>
+  <connector type="InputPin" />
+  <connector type="OutputPin" />
+</diagram>
