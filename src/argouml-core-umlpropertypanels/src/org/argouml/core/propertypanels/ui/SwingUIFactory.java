@@ -164,6 +164,14 @@ class SwingUIFactory {
         panel.add(tb);
     }
     
+    /**
+     * Create the actions to create new model elements and add the buttons to
+     * perform those actions to the given toolbar. 
+     * @param container The model element that will contain the newly created elements
+     * @param tb The toolbar to contain the buttons.
+     * @param metaTypes The list of model element types for which
+     * actions/buttons are required
+     */
     private void addCreateButtons(
 	    final Object container, 
 	    final JToolBar tb,
