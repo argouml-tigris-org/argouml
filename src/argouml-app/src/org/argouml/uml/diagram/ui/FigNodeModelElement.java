@@ -9,6 +9,7 @@
  * Contributors:
  *    Thomas Neustupny
  *    Bob Tarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -109,8 +110,8 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramAppearance;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.PathContainer;
 import org.argouml.uml.diagram.DiagramSettings.StereotypeStyle;
+import org.argouml.uml.diagram.PathContainer;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.util.IItemUID;
 import org.argouml.util.ItemUID;
@@ -1068,10 +1069,11 @@ public abstract class FigNodeModelElement
             bbox.width = Math.max(bbox.width, minSize.width);
             bbox.height = Math.max(bbox.height, minSize.height);
         }
+        /* Only update the bounds if they change:  */
         if (bbox.x != getX()
-                && bbox.y != getY()
-                && bbox.width != getWidth()
-                && bbox.height != getHeight()) {
+                || bbox.y != getY()
+                || bbox.width != getWidth()
+                || bbox.height != getHeight()) {
             setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
         }
     }
