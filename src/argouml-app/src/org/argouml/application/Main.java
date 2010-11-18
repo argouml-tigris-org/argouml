@@ -509,13 +509,12 @@ public class Main {
             }
         }
 
-        if (project != null) {
-            // Although this looks redundant, it's needed to get all
-            // the initialization state set correctly.  
-            // Too many side effects as part of initialization!
-            ProjectManager.getManager().setCurrentProject(project);
-            ProjectManager.getManager().setSaveEnabled(false);
+        // We MUST have a project open before continuing. Create if necessary
+        if (project == null) {
+            project = ProjectManager.getManager().makeEmptyProject(true);
         }
+        ProjectManager.getManager().setCurrentProject(project);
+        ProjectManager.getManager().setSaveEnabled(false);
 
         st.mark("set project");
         Designer.enableCritiquing();
