@@ -5,9 +5,17 @@ a name that can be used as an identifier rather than using the fully qualified
 name
  -->
 <classes>
-  <class name="Expression">org.eclipse.uml2.uml.Expression</class>
-  <class name="TimeExpression">org.eclipse.uml2.uml.TimeExpression</class>
+  <class name="AcceptEventAction">org.eclipse.uml2.uml.AcceptEventAction</class>
+  <class name="Action">org.eclipse.uml2.uml.Action</class>
+  <class name="ActivityParameterNode">org.eclipse.uml2.uml.ActivityParameterNode</class>
+  <class name="CallAction">org.eclipse.uml2.uml.CallAction</class>
+  <class name="CallBehaviorAction">org.eclipse.uml2.uml.CallBehaviorAction</class>
+  <class name="CreateObjectAction">org.eclipse.uml2.uml.CreateObjectAction</class>
+  <class name="DestroyObjectAction">org.eclipse.uml2.uml.DestroyObjectAction</class>
   <class name="Element">org.eclipse.uml2.uml.Element</class>
+  <class name="Expression">org.eclipse.uml2.uml.Expression</class>
+  <class name="SendSignalAction">org.eclipse.uml2.uml.SendSignalAction</class>
+  <class name="TimeExpression">org.eclipse.uml2.uml.TimeExpression</class>
   <class name="Namespace">org.eclipse.uml2.uml.Namespace</class>
   <class name="Classifier">org.eclipse.uml2.uml.Classifier</class>
   <class name="Class">org.eclipse.uml2.uml.Class</class>
@@ -35,8 +43,6 @@ name
   <class name="Stereotype">org.eclipse.uml2.uml.Stereotype</class>
   <class name="Artifact">org.eclipse.uml2.uml.Artifact</class>
   <class name="Signal">org.eclipse.uml2.uml.Signal</class>
-  <class name="Action">org.eclipse.uml2.uml.Action</class>
-  <class name="CallAction">org.eclipse.uml2.uml.CallAction</class>
   <class name="Reception">org.eclipse.uml2.uml.Reception</class>
   <class name="UseCase">org.eclipse.uml2.uml.UseCase</class>
   <class name="Actor">org.eclipse.uml2.uml.Actor</class>
@@ -1566,6 +1572,9 @@ name
     <attribute name="sendAction" type="Signal" />
     <attribute name="occurrence" type="Signal" />
   </panel>
+  <panel name="AcceptEventAction">
+    <text name="name" type="Name" />    
+  </panel>
   <panel name="Action">
     <text name="name" type="Name" />
     <optionbox name="visibility" type="VisibilityKind" />
@@ -1603,6 +1612,9 @@ name
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
     <attribute name="message" type="Action" />
+  </panel>
+  <panel name="ActivityParameterNode">
+    <text name="name" type="Name" />    
   </panel>
   <panel name="CreateAction">
     <text name="name" type="Name" />
@@ -1643,6 +1655,9 @@ name
     <attribute name="transition" type="Action" />
     <attribute name="message" type="Action" />
   </panel>
+  <panel name="CreateObjectAction">
+    <text name="name" type="Name" />
+  </panel>
   <panel name="DestroyAction">
     <text name="name" type="Name" />    
     <checkgroup name="modifiers">
@@ -1681,6 +1696,9 @@ name
     <attribute name="transition" type="Action" />
     <attribute name="message" type="Action" />
   </panel>
+  <panel name="DestroyObjectAction">
+    <text name="name" type="Name" />    
+  </panel>
   <panel name="UninterpretedAction">
     <text name="name" type="Name" />
     <checkgroup name="modifiers">
@@ -1718,6 +1736,9 @@ name
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
     <attribute name="message" type="Action" />
+  </panel>
+  <panel name="SendSignalAction">
+    <text name="name" type="Name" />    
   </panel>
   <panel name="AttributeLink">
     <text name="name" type="Name" />
@@ -1943,6 +1964,9 @@ name
     <attribute name="state" type="Action" />
     <attribute name="transition" type="Action" />
     <attribute name="message" type="Action" />    
+  </panel>
+  <panel name="CallBehaviorAction">
+    <text name="name" type="Name" />    
   </panel>
   <panel name="SendAction">
     <text name="name" type="Name" />
