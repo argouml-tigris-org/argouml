@@ -31,7 +31,7 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
     private static final Logger LOG = Logger
         .getLogger(UMLActivityDiagram.class);
     
-    public UMLActivityDiagram(Object activity) {
+    UMLActivityDiagram(Object activity) {
         super(activity);
     }
     

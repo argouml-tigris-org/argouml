@@ -25,7 +25,7 @@ import org.tigris.gef.presentation.FigPoly;
  * @author Bob Tarling
  *
  */
-public class FigGravityPoly extends FigPoly {
+class FigGravityPoly extends FigPoly {
     
     FigGravityPoly() {
         super();

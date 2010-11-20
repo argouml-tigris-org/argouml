@@ -30,7 +30,7 @@ class ActivityDiagramGraphModel extends UMLMutableGraphSupport {
     private static final Logger LOG = Logger
             .getLogger(ActivityDiagramGraphModel.class);
 
-    public ActivityDiagramGraphModel() {
+    ActivityDiagramGraphModel() {
         super();
     }
 

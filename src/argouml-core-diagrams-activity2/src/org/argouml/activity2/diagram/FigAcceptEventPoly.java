@@ -26,7 +26,7 @@ import org.tigris.gef.presentation.FigPoly;
  * @author Bob Tarling
  *
  */
-public class FigAcceptEventPoly extends FigGravityPoly {
+class FigAcceptEventPoly extends FigGravityPoly {
     
     FigAcceptEventPoly(int x, int y, int w, int h, Color lineColor, Color fillColor) {
         super();

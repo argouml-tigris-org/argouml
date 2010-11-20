@@ -38,7 +38,7 @@ abstract class BaseDiagram extends UMLDiagram {
     private static final Logger LOG = Logger
         .getLogger(BaseDiagram.class);
     
-    public BaseDiagram(Object owner) {
+    BaseDiagram(Object owner) {
         super();
         MutableGraphModel gm = createGraphModel();
         setGraphModel(gm);

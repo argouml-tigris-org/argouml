@@ -25,7 +25,12 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 
-public class FigActivityNode extends FigNodeModelElement {
+/**
+ * TODO: This class should not inherit FigBaseNode, instead FigBaseNode
+ * should be decorated according to the instructions in diagram.xml
+ * @author Bob Tarling
+ */
+public class FigActivityNode extends FigBaseNode {
 
     private static final int PADDING = 8;
     private static final int WIDTH = 90;
