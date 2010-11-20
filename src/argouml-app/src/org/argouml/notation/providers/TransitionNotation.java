@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -45,7 +45,7 @@ import org.argouml.notation.NotationProvider;
  * This abstract class forms the basis of all Notation providers
  * for the text shown next to a Transition. Subclass this for all languages.
  *
- * @author mvw@tigris.org
+ * @author Michiel van der Wulp
  */
 public abstract class TransitionNotation extends NotationProvider {
 
@@ -58,6 +58,14 @@ public abstract class TransitionNotation extends NotationProvider {
         if (!Model.getFacade().isATransition(transition)) {
             throw new IllegalArgumentException("This is not a Transition.");
         }
+    }
+
+    @Override
+    public void initialiseListener(Object modelElement) {
+        // register for events from all modelelements
+        // that change the text
+        // i.e. when the Transition is replaced:
+        NotationUtilityProviders.addListenersForTransition(this, modelElement);
     }
 
 }

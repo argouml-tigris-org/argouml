@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,7 +38,6 @@
 
 package org.argouml.notation.providers;
 
-import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -50,7 +49,7 @@ import org.argouml.notation.NotationProvider;
  * for the text shown above the association Fig.
  * Subclass this for all languages.
  *
- * @author mvw
+ * @author Michiel van der Wulp
  */
 public abstract class AssociationNameNotation extends NotationProvider {
 
@@ -65,14 +64,10 @@ public abstract class AssociationNameNotation extends NotationProvider {
         }
     }
 
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#initialiseListener(
-     * java.beans.PropertyChangeListener, java.lang.Object)
-     */
-    public void initialiseListener(PropertyChangeListener listener, 
-            Object modelElement) {
+    @Override
+    public void initialiseListener(Object modelElement) {
         /* Listen to the modelelement itself: */
-        addElementListener(listener, modelElement, 
+        addElementListener(modelElement, 
                 new String[] {"name", "visibility", "stereotype"});
         Collection stereotypes =
             Model.getFacade().getStereotypes(modelElement);
@@ -80,7 +75,6 @@ public abstract class AssociationNameNotation extends NotationProvider {
         while (iter.hasNext()) {
             Object oneStereoType = iter.next();
             addElementListener(
-                    listener, 
                     oneStereoType, 
                     new String[] {"name", "remove"});
         }

@@ -97,6 +97,7 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationRenderer;
 import org.argouml.notation.NotationSettings;
 import org.argouml.profile.FigNodeStrategy;
 import org.argouml.ui.ArgoJMenu;
@@ -150,6 +151,7 @@ public abstract class FigNodeModelElement
         PathContainer,
         ArgoDiagramAppearanceEventListener,
         ArgoNotationEventListener,
+        NotationRenderer,
         Highlightable,
         IItemUID,
         Clarifiable,
@@ -1401,7 +1403,7 @@ public abstract class FigNodeModelElement
         if (event instanceof AssociationChangeEvent 
                 || event instanceof AttributeChangeEvent) {
             if (notationProviderName != null) {
-                notationProviderName.updateListener(this, getOwner(), event);
+                notationProviderName.updateListener(getOwner(), event);
             }
             // TODO: This brute force approach of updating listeners on each
             // and every event, without checking the event type or any other
@@ -1549,7 +1551,7 @@ public abstract class FigNodeModelElement
      */
     protected void initNotationProviders(Object own) {
         if (notationProviderName != null) {
-            notationProviderName.cleanListener(this, own);
+            notationProviderName.cleanListener();
         }
         if (Model.getFacade().isAUMLElement(own)) {
             NotationName notation = Notation.findNotation(
@@ -1968,7 +1970,7 @@ public abstract class FigNodeModelElement
      */
     protected void removeFromDiagramImpl() {
         if (notationProviderName != null) { //This test needed for a FigPool
-            notationProviderName.cleanListener(this, getOwner());
+            notationProviderName.cleanListener();
         }
         removeAllElementListeners();
         setShadowSize(0);
@@ -2621,5 +2623,27 @@ public abstract class FigNodeModelElement
         if (f.getOwner() != port) {
             f.setOwner(port);
         }
+    }
+    
+    public void notationRenderingChanged(NotationProvider np, String rendering) {
+        if (notationProviderName == np) {
+            nameFig.setText(rendering);
+            updateBounds();
+            damage();
+        }
+    }
+
+    public NotationSettings getNotationSettings(NotationProvider np) {
+        if (notationProviderName == np) {
+            return getNotationSettings();
+        }
+        return null;
+    }
+
+    public Object getOwner(NotationProvider np) {
+        if (notationProviderName == np) {
+            return getOwner();
+        }
+        return null;
     }
 }

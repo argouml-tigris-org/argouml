@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -52,6 +52,7 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationRenderer;
 import org.argouml.notation.NotationSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 
@@ -63,7 +64,7 @@ import org.argouml.uml.diagram.DiagramSettings;
  * @author Michiel
  */
 public class FigSingleLineTextWithNotation extends FigSingleLineText 
-    implements ArgoNotationEventListener {
+    implements ArgoNotationEventListener, NotationRenderer {
 
     /**
      * @param owner the owning UML object
@@ -112,14 +113,14 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
     @Override
     public void removeFromDiagram() {
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-        notationProvider.cleanListener(this, getOwner());
+        notationProvider.cleanListener();
         super.removeFromDiagram();
     }
     
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         if (notationProvider != null) {
-            notationProvider.updateListener(this, getOwner(), pce);
+            notationProvider.updateListener(getOwner(), pce);
         }
         super.propertyChange(pce);
     }
@@ -169,14 +170,14 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
      */
     void setNotationProvider(NotationProvider np) {
         if (notationProvider != null) {
-            notationProvider.cleanListener(this, getOwner());
+            notationProvider.cleanListener();
         }
         this.notationProvider = np;
     }
 
     protected void initNotationProviders() {
         if (notationProvider != null) {
-            notationProvider.cleanListener(this, getOwner());
+            notationProvider.cleanListener();
         }
         if (getOwner() != null) {
             NotationName notation = Notation.findNotation(
@@ -299,5 +300,26 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
     
     protected NotationSettings getNotationSettings() {
         return getSettings().getNotationSettings();
+    }
+
+    public void notationRenderingChanged(NotationProvider np, String rendering) {
+        if (notationProvider == np) {
+            setText(rendering);
+            damage();
+        }
+    }
+
+    public NotationSettings getNotationSettings(NotationProvider np) {
+        if (notationProvider == np) {
+            return getNotationSettings();
+        }
+        return null;
+    }
+
+    public Object getOwner(NotationProvider np) {
+        if (notationProvider == np) {
+            return getOwner();
+        }
+        return null;
     }
 }

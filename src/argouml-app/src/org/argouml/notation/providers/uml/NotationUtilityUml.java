@@ -59,7 +59,7 @@ import org.argouml.util.MyTokenizer;
 /**
  * This class is a utility for the UML notation.
  *
- * @author mvw@tigris.org
+ * @author Michiel van der Wulp
  */
 public final class NotationUtilityUml {
     /**
@@ -86,6 +86,8 @@ public final class NotationUtilityUml {
      * The list of CustomSeparators to use when tokenizing parameters.
      */
     private static final List<CustomSeparator> parameterCustomSep;
+
+    private static final String LIST_SEPARATOR = ", ";
 
     /**
      * The character with a meaning as a visibility at the start
@@ -1204,5 +1206,24 @@ public final class NotationUtilityUml {
         } else {
             return generateAction(a);
         }
+    }
+    
+    static StringBuilder formatNameList(Collection modelElements) {
+        return formatNameList(modelElements, LIST_SEPARATOR);
+    }
+
+    static StringBuilder formatNameList(Collection modelElements, 
+            String separator) {
+        StringBuilder result = new StringBuilder();
+        for (Object element : modelElements) {
+            String name = Model.getFacade().getName(element);
+            // TODO: Any special handling for null names? append will use "null"
+            result.append(name).append(separator);
+        }
+        if (result.length() >= separator.length()) {
+            result.delete(result.length() - separator.length(), 
+                    result.length());
+        }
+        return result;
     }
 }

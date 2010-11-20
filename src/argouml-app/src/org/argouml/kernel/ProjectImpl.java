@@ -9,6 +9,7 @@
  * Contributors:
  *    Tom Morris
  *    Bob Tarling
+ *    Michiel van der Wulp
  *******************************************************************************
  *
  * Some portions of this file were previously release using the BSD License:
@@ -159,7 +160,8 @@ public class ProjectImpl implements java.io.Serializable, Project {
     /**
      * Cache for the default model.
      */
-    private HashMap<String, Object> defaultModelTypeCache;
+    private HashMap<String, Object> defaultModelTypeCache = 
+        new HashMap<String, Object>();
 
     private final Collection trashcan = new ArrayList();
 
@@ -206,7 +208,6 @@ public class ProjectImpl implements java.io.Serializable, Project {
         version = ApplicationVersion.getVersion();
 
         historyFile = "";
-        defaultModelTypeCache = new HashMap<String, Object>();
 
         LOG.info("making empty project with empty model");
         addSearchPath("PROJECT_DIR");

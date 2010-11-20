@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -44,7 +44,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 
 /**
  * A class that implements this abstract class manages a text
@@ -55,14 +58,13 @@ import org.argouml.model.Model;
  * Additionally, a help text for the parsing is provided,
  * so that the user knows the syntax.
  * 
- * @author mvw@tigris.org
+ * @author Michiel van der Wulp
  */
-public abstract class NotationProvider {
+public abstract class NotationProvider implements PropertyChangeListener {
 
     private static final Logger LOG = Logger.getLogger(NotationProvider.class);
-    
-    private static final String LIST_SEPARATOR = ", ";
-    
+    private NotationRenderer renderer;
+
     /**
      * A collection of properties of listeners registered for this notation.
      * Each entry is a 2 element array containing the element and the property
@@ -98,39 +100,33 @@ public abstract class NotationProvider {
             NotationSettings settings);
     
     /**
-     * Initialise the appropriate model change listeners 
+     * Initialize the appropriate model change listeners 
      * for the given modelelement to the given listener.
      * Overrule this when you need more than 
      * listening to all events from the base modelelement.
      * 
-     * @param listener the given listener
      * @param modelElement the modelelement that we provide 
      * notation for
      */
-    public void initialiseListener(PropertyChangeListener listener, 
-            Object modelElement) {
-        addElementListener(listener, modelElement);
+    public void initialiseListener(Object modelElement) {
+        addElementListener(modelElement);
     }
     
     /**
      * Clean out the listeners registered before.
+     * <p>
      * The default implementation is to remove all listeners 
      * that were remembered by the utility functions below.
-     * 
-     * @param listener the given listener
-     * @param modelElement the modelelement that we provide 
-     * notation for
      */
-    public void cleanListener(final PropertyChangeListener listener, 
-            final Object modelElement) {
-        removeAllElementListeners(listener);
+    public void cleanListener() {
+        removeAllElementListeners();
     }
     
     /**
      * Update the set of listeners based on the given event. <p>
      * 
      * The default implementation just removes all listeners, and then 
-     * re-initialises completely - this is method 1. 
+     * re-initializes completely - this is method 1. 
      * A more efficient way would be to dissect 
      * the propertyChangeEvent, and only adapt the listeners
      * that need to be adapted - this is method 2. <p>
@@ -142,14 +138,11 @@ public abstract class NotationProvider {
      * that we only need to traverse the model structure in one location, i.e. 
      * the initialiseListener() method.
      * 
-     * @param listener the given listener
      * @param modelElement the modelelement that we provide 
      * notation for
      * @param pce the received event, that we base the changes on
      */
-    public void updateListener(final PropertyChangeListener listener, 
-            Object modelElement,
-            PropertyChangeEvent pce) {
+    public void updateListener(Object modelElement, PropertyChangeEvent pce) {
         // e.g. for an operation:
         // if pce.getSource() == modelElement
         // && event.propertyName = "parameter"
@@ -168,10 +161,33 @@ public abstract class NotationProvider {
                     + modelElement);
             return;
         }
-        cleanListener(listener, modelElement);
-        initialiseListener(listener, modelElement);
+        cleanListener();
+        initialiseListener(modelElement);
     }
-    
+
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (renderer != null) {
+            Object owner = renderer.getOwner(this);
+            if ((owner == evt.getSource()) 
+                    && (evt instanceof DeleteInstanceEvent)) {
+                return;
+            }
+            if (owner != null) {
+                if (Model.getUmlFactory().isRemoved(owner)) {
+                    LOG.warn("Encountered deleted object during delete of " 
+                            + owner);
+                    return;
+                }
+                renderer.notationRenderingChanged(this,
+                        toString(owner, renderer.getNotationSettings(this)));
+                if (evt instanceof AddAssociationEvent 
+                        || evt instanceof RemoveAssociationEvent) {
+                    initialiseListener(owner);
+                }
+            }
+        }
+    }
+
     /*
      * Add an element listener and remember the registration.
      * 
@@ -193,6 +209,16 @@ public abstract class NotationProvider {
             LOG.warn("Attempted duplicate registration of event listener"
                     + " - Element: " + element + " Listener: " + listener);
         }
+    }
+    
+    /**
+     * Utility function to add a listener for an array of property names 
+     * and remember the registration.
+     * 
+     * @param element element to listen for changes on
+     */
+    public final void addElementListener(Object element) {
+        addElementListener(this, element);
     }
     
     /*
@@ -220,6 +246,17 @@ public abstract class NotationProvider {
             LOG.debug("Attempted duplicate registration of event listener"
                     + " - Element: " + element + " Listener: " + listener);
         }
+    }
+    
+    /**
+     * Utility function to add a listener for an array of property names 
+     * and remember the registration.
+     * 
+     * @param element element to listen for changes on
+     * @param property name of property to listen for changes of
+     */
+    public final void addElementListener(Object element, String property) {
+        addElementListener(this, element, property);
     }
 
     /*
@@ -249,6 +286,18 @@ public abstract class NotationProvider {
         }
     }
     
+    /**
+     * Utility function to add a listener for an array of property names 
+     * and remember the registration.
+     * 
+     * @param element element to listen for changes on
+     * @param property array of property names (Strings) 
+     * to listen for changes of
+     */
+    public final void addElementListener(Object element, String[] property) {
+        addElementListener(this, element, property);
+    }
+    
     /*
      * Utility function to remove an element listener 
      * and adapt the remembered list of registration.
@@ -261,6 +310,16 @@ public abstract class NotationProvider {
             Object element) {
         listeners.remove(new Object[] {element, null});
         Model.getPump().removeModelEventListener(listener, element);
+    }
+    
+    /**
+     * Utility function to remove an element listener 
+     * and adapt the remembered list of registration.
+     * 
+     * @param element element to listen for changes on
+     */
+    public final void removeElementListener(Object element) {
+        removeElementListener(this, element);
     }
     
     /*
@@ -289,22 +348,18 @@ public abstract class NotationProvider {
         listeners.clear();
     }
     
-    protected StringBuilder formatNameList(Collection modelElements) {
-        return formatNameList(modelElements, LIST_SEPARATOR);
+    /**
+     * Utility function to unregister all listeners 
+     * registered through addElementListener.
+     */
+    public final void removeAllElementListeners() {
+        removeAllElementListeners(this);
     }
 
-    protected StringBuilder formatNameList(Collection modelElements, 
-            String separator) {
-        StringBuilder result = new StringBuilder();
-        for (Object element : modelElements) {
-            String name = Model.getFacade().getName(element);
-            // TODO: Any special handling for null names? append will use "null"
-            result.append(name).append(separator);
-        }
-        if (result.length() >= separator.length()) {
-            result.delete(result.length() - separator.length(), 
-                    result.length());
-        }
-        return result;
+    /**
+     * @param nr the NotationRenderer
+     */
+    void setRenderer(NotationRenderer nr) {
+        renderer = nr;
     }
 }

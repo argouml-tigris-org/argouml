@@ -52,6 +52,7 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRRect;
@@ -137,7 +138,7 @@ public abstract class FigState extends FigStateVertex {
     @Override
     protected void initNotationProviders(Object own) {
         if (notationProviderBody != null) {
-            notationProviderBody.cleanListener(this, own);
+            notationProviderBody.cleanListener();
         }
         super.initNotationProviders(own);
         NotationName notation = Notation.findNotation(
@@ -150,9 +151,7 @@ public abstract class FigState extends FigStateVertex {
         }
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
-     */
+    @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         // TODO: Do we really need to be listening for both of these events?
@@ -168,7 +167,7 @@ public abstract class FigState extends FigStateVertex {
             }
             
             renderingChanged();
-            notationProviderBody.updateListener(this, getOwner(), mee);
+            notationProviderBody.updateListener(getOwner(), mee);
             damage();
         }
     }
@@ -179,7 +178,7 @@ public abstract class FigState extends FigStateVertex {
     @Override
     public void removeFromDiagramImpl() {
         if (notationProviderBody != null) {
-            notationProviderBody.cleanListener(this, getOwner());
+            notationProviderBody.cleanListener();
         }
         super.removeFromDiagramImpl();
     }
@@ -276,6 +275,25 @@ public abstract class FigState extends FigStateVertex {
         super.updateFont();
         Font f = getSettings().getFont(Font.PLAIN);
         internal.setFont(f);
+    }
+
+    public void notationRenderingChanged(NotationProvider np, String rendering) {
+        super.notationRenderingChanged(np, rendering);
+        if (notationProviderBody == np) {
+            internal.setText(rendering);
+            updateBounds();
+            damage();
+        }
+    }
+
+    public NotationSettings getNotationSettings(NotationProvider np) {
+        // both have the same settings
+        return getNotationSettings();
+    }
+
+    public Object getOwner(NotationProvider np) {
+        // both have the same owner
+        return getOwner();
     }
 
 }

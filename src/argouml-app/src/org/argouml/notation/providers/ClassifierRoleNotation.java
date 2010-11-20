@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,7 +38,6 @@
 
 package org.argouml.notation.providers;
 
-import java.beans.PropertyChangeListener;
 import java.util.Collection;
 
 import org.argouml.model.Model;
@@ -49,7 +48,7 @@ import org.argouml.notation.NotationProvider;
  * for the text shown in the Fig that represents the ClassifierRole.
  * Subclass this for all languages.
  * 
- * @author Michiel
+ * @author Michiel van der Wulp
  */
 public abstract class ClassifierRoleNotation extends NotationProvider {
     
@@ -65,12 +64,11 @@ public abstract class ClassifierRoleNotation extends NotationProvider {
     }
 
     @Override
-    public void initialiseListener(PropertyChangeListener listener, 
-            Object modelElement) {
-        super.initialiseListener(listener, modelElement);
+    public void initialiseListener(Object modelElement) {
+        super.initialiseListener(modelElement);
         Collection classifiers = Model.getFacade().getBases(modelElement);
         for (Object c : classifiers) {
-            addElementListener(listener, c, "name");
+            addElementListener(c, "name");
         }
     }
 

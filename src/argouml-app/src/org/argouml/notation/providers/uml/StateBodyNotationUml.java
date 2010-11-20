@@ -54,7 +54,7 @@ import org.argouml.notation.providers.StateBodyNotation;
 /**
  * UML notation for the body of a state.
  * 
- * @author Michiel
+ * @author Michiel van der Wulp
  */
 public class StateBodyNotationUml extends StateBodyNotation {
 

@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -39,7 +39,6 @@
 package org.argouml.notation.providers;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -52,7 +51,7 @@ import org.argouml.notation.NotationProvider;
  * for the text shown in the Fig that represents an Object.
  * Subclass this for all languages.
  *
- * @author mvw@tigris.org
+ * @author Michiel van der Wulp
  */
 public abstract class ObjectNotation extends NotationProvider {
 
@@ -67,12 +66,9 @@ public abstract class ObjectNotation extends NotationProvider {
         }
     }
 
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
-     */
-    public void initialiseListener(PropertyChangeListener listener, 
-            Object modelElement) {
-        addElementListener(listener, modelElement, 
+    @Override
+    public void initialiseListener(Object modelElement) {
+        addElementListener(modelElement, 
                 new String[] {"name", "classifier"});
 
         // Add the following once we show stereotypes:
@@ -87,23 +83,23 @@ public abstract class ObjectNotation extends NotationProvider {
         Iterator i = c.iterator();
         while (i.hasNext()) {
             Object st = i.next();
-            addElementListener(listener, st, "name");
+            addElementListener(st, "name");
         }
     }
 
     /*
      * @see org.argouml.notation.providers.NotationProvider#updateListener(java.beans.PropertyChangeListener, java.lang.Object, java.beans.PropertyChangeEvent)
      */
-    public void updateListener(PropertyChangeListener listener, 
+    public void updateListener(
             Object modelElement, PropertyChangeEvent pce) {
         if (pce instanceof AttributeChangeEvent
                 && pce.getSource() == modelElement
                 && "classifier".equals(pce.getPropertyName())) {
             if (pce.getOldValue() != null) {
-                removeElementListener(listener, pce.getOldValue());
+                removeElementListener(pce.getOldValue());
             }
             if (pce.getNewValue() != null) {
-                addElementListener(listener, pce.getNewValue(), "name");
+                addElementListener(pce.getNewValue(), "name");
             }
         }
     }

@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -46,7 +46,7 @@ import org.argouml.notation.NotationProvider;
  * for the Classifier type name text shown in an ObjectFlowState. 
  * Subclass this for all languages.
  * 
- * @author Michiel
+ * @author Michiel van der Wulp
  */
 public abstract class ObjectFlowStateTypeNotation extends NotationProvider {
 
@@ -59,6 +59,16 @@ public abstract class ObjectFlowStateTypeNotation extends NotationProvider {
         if (!Model.getFacade().isAObjectFlowState(objectflowstate)) {
             throw new IllegalArgumentException(
                     "This is not a ObjectFlowState.");
+        }
+    }
+
+    @Override
+    public void initialiseListener(Object modelElement) {
+        addElementListener(modelElement);
+        Object classifier = Model.getFacade().getType(modelElement);
+        if (Model.getFacade().isAClassifier(classifier)) {
+            addElementListener(classifier,
+                    new String[] {"remove", "name"});
         }
     }
 

@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -53,7 +53,7 @@ import org.argouml.profile.init.InitProfileSubsystem;
  * @author Michiel
  */
 public class TestNotationProvider extends TestCase 
-    implements PropertyChangeListener {
+    implements NotationRenderer {
 
     /*
      * @see junit.framework.TestCase#setUp()
@@ -105,8 +105,9 @@ public class TestNotationProvider extends TestCase
     
     /**
      * Test if the listener gets events when model elements change:
+     * @throws InterruptedException 
      */
-    public void testListener() {
+    public void testListener() throws InterruptedException {
         Object model =
             Model.getModelManagementFactory().createModel();
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -114,23 +115,34 @@ public class TestNotationProvider extends TestCase
         aClass = Model.getCoreFactory().buildClass(model);
         
         NotationProvider np = new NPImpl();
-        np.initialiseListener(this, aClass);
+        np.setRenderer(this);
+        np.initialiseListener(aClass);
         
         propChanged = false;
         Model.getCoreHelper().setName(aClass, "ClassA1");
         Model.getPump().flushModelEvents();
+        Thread.sleep(2000);
         assertTrue("No event received", propChanged);
         
-        np.cleanListener(this, aClass);
+        np.cleanListener();
         propChanged = false;
         Model.getCoreHelper().setName(aClass, "ClassA2");
         Model.getPump().flushModelEvents();
         assertTrue("Event received, despite not listening", !propChanged);
 
-        np.updateListener(this, aClass, null);
+        np.updateListener(aClass, null);
     }
 
-    public void propertyChange(PropertyChangeEvent evt) {
+    public void notationRenderingChanged(NotationProvider np, 
+            String rendering) {
         propChanged = true;
+    }
+
+    public NotationSettings getNotationSettings(NotationProvider np) {
+        return new NotationSettings();
+    }
+
+    public Object getOwner(NotationProvider np) {
+        return aClass;
     }
 }

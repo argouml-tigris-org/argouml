@@ -9,6 +9,7 @@
  * Contributors:
  *    Thomas Neustupny
  *    Bob Tarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -96,6 +97,7 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationRenderer;
 import org.argouml.notation.NotationSettings;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
@@ -142,6 +144,7 @@ public abstract class FigEdgeModelElement
         KeyListener,
         PropertyChangeListener,
         ArgoNotationEventListener,
+        NotationRenderer,
         ArgoDiagramAppearanceEventListener,
         Highlightable,
         IItemUID,
@@ -937,7 +940,7 @@ public abstract class FigEdgeModelElement
         if (e instanceof AssociationChangeEvent 
                 || e instanceof AttributeChangeEvent) {
             if (notationProviderName != null) {
-                notationProviderName.updateListener(this, getOwner(), e);
+                notationProviderName.updateListener(getOwner(), e);
                 updateNameText();
             }
             updateListeners(getOwner(), getOwner());
@@ -1001,7 +1004,7 @@ public abstract class FigEdgeModelElement
      */ 
     protected void initNotationProviders(Object own) {
         if (notationProviderName != null) {
-            notationProviderName.cleanListener(this, own);
+            notationProviderName.cleanListener();
         }
         /* This should NOT be looking for a NamedElement, 
          * since this is not always about the name of this 
@@ -1203,7 +1206,7 @@ public abstract class FigEdgeModelElement
             removeElementListener(o);
         }
         if (notationProviderName != null) {
-            notationProviderName.cleanListener(this, getOwner());
+            notationProviderName.cleanListener();
         }
 
         /* TODO: MVW: Why is this not done in GEF? */
@@ -1799,4 +1802,25 @@ public abstract class FigEdgeModelElement
             calcBounds();
         }
     } /* end computeRoute */
+    
+    public void notationRenderingChanged(NotationProvider np, String rendering) {
+        if (notationProviderName == np) {
+            nameFig.setText(rendering);
+            damage();
+        }
+    }
+
+    public NotationSettings getNotationSettings(NotationProvider np) {
+        if (notationProviderName == np) {
+            return getNotationSettings();
+        }
+        return null;
+    }
+
+    public Object getOwner(NotationProvider np) {
+        if (notationProviderName == np) {
+            return getOwner();
+        }
+        return null;
+    }
 }

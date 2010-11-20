@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,8 +38,6 @@
 
 package org.argouml.notation.providers;
 
-import java.beans.PropertyChangeListener;
-
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 
@@ -48,7 +46,7 @@ import org.argouml.notation.NotationProvider;
  * for the text shown in the Fig that represents the name of the modelelement.
  * Subclass this for all languages.
  *
- * @author mvw@tigris.org
+ * @author Michiel van der Wulp
  */
 public abstract class ModelElementNameNotation extends NotationProvider {
 
@@ -63,18 +61,15 @@ public abstract class ModelElementNameNotation extends NotationProvider {
         }
     }
 
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
-     */
-    public void initialiseListener(PropertyChangeListener listener, 
-            Object modelElement) {
+    @Override
+    public void initialiseListener(Object modelElement) {
         /* Listen to the modelelement itself: */
-        addElementListener(listener, modelElement, 
+        addElementListener(modelElement, 
                 new String[] {"name", "visibility"});
-        /* Listen to name changes in the path (usefull for e.g. Package): */
+        /* Listen to name changes in the path (useful for e.g. Package): */
         Object ns = Model.getFacade().getNamespace(modelElement);
         while (ns != null && !Model.getFacade().isAModel(ns)) {
-            addElementListener(listener, ns,
+            addElementListener(ns,
                 new String[] {"name", "namespace"});
             ns = Model.getFacade().getNamespace(ns);
         }

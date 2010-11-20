@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -39,7 +39,6 @@
 package org.argouml.notation.providers;
 
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -53,7 +52,7 @@ import org.argouml.notation.NotationProvider;
  * for the text shown next to the end of an association.
  * Subclass this for all languages.
  * 
- * @author michiel
+ * @author Michiel van der Wulp
  */
 public abstract class AssociationEndNameNotation extends NotationProvider {
 
@@ -68,13 +67,9 @@ public abstract class AssociationEndNameNotation extends NotationProvider {
         }
     }
 
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#addListener(java.beans.PropertyChangeListener, java.lang.Object)
-     */
-    public void initialiseListener(PropertyChangeListener listener, 
-            Object modelElement) {
+    @Override
+    public void initialiseListener(Object modelElement) {
         addElementListener(
-                listener, 
                 modelElement, 
                 new String[] {"name", "visibility", "stereotype"});
         Collection stereotypes =
@@ -83,17 +78,13 @@ public abstract class AssociationEndNameNotation extends NotationProvider {
         while (iter.hasNext()) {
             Object o = iter.next();
             addElementListener(
-                    listener, 
                     o, 
                     new String[] {"name", "remove"});
         }
     }
 
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#updateListener(java.beans.PropertyChangeListener, java.lang.Object, java.beans.PropertyChangeEvent)
-     */
-    public void updateListener(PropertyChangeListener listener, 
-            Object modelElement,
+    @Override
+    public void updateListener(Object modelElement,
             PropertyChangeEvent pce) {
         Object obj = pce.getSource();
         if ((obj == modelElement) 
@@ -102,7 +93,6 @@ public abstract class AssociationEndNameNotation extends NotationProvider {
                     && Model.getFacade().isAStereotype(pce.getNewValue())) {
                 // new stereotype
                 addElementListener(
-                        listener, 
                         pce.getNewValue(), 
                         new String[] {"name", "remove"});
             }
@@ -110,7 +100,6 @@ public abstract class AssociationEndNameNotation extends NotationProvider {
                     && Model.getFacade().isAStereotype(pce.getOldValue())) {
                 // removed stereotype
                 removeElementListener(
-                        listener, 
                         pce.getOldValue());
             }
         }

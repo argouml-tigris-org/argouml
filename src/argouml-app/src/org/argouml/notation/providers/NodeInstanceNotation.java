@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,6 +38,8 @@
 
 package org.argouml.notation.providers;
 
+import java.util.Collection;
+
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 
@@ -46,7 +48,7 @@ import org.argouml.notation.NotationProvider;
  * for the text shown in the Fig that represents a nodeInstance. 
  * Subclass this for all languages.
  * 
- * @author mvw@tigris.org
+ * @author Michiel van der Wulp
  */
 public abstract class NodeInstanceNotation extends NotationProvider {
     
@@ -61,4 +63,14 @@ public abstract class NodeInstanceNotation extends NotationProvider {
         }
     }
 
+    @Override
+    public void initialiseListener(Object modelElement) {
+        addElementListener(modelElement,
+                new String[] {"name", "classifier", "remove"});
+        Collection<Object> c = Model.getFacade().getClassifiers(modelElement);
+        for (Object classifier : c) {
+            addElementListener(classifier,
+                    new String[] {"name", "remove"});
+        }
+    }
 }

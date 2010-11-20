@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,8 +38,6 @@
 
 package org.argouml.notation.providers;
 
-import java.beans.PropertyChangeListener;
-
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 
@@ -48,7 +46,7 @@ import org.argouml.notation.NotationProvider;
  * for the text shown in the Fig that represents the CallState.
  * Subclass this for all languages.
  *
- * @author mvw@tigris.org
+ * @author Michiel van der Wulp
  */
 public abstract class CallStateNotation extends NotationProvider {
 
@@ -63,30 +61,26 @@ public abstract class CallStateNotation extends NotationProvider {
         }
     }
 
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#initialiseListener(
-     * java.beans.PropertyChangeListener, java.lang.Object)
-     */
-    public void initialiseListener(PropertyChangeListener listener, 
-            Object modelElement) {
+    @Override
+    public void initialiseListener(Object modelElement) {
         // register for events from all modelelements
         // that change the name and body text
         // i.e. when the CallAction is replaced:
-        addElementListener(listener, modelElement, 
+        addElementListener(modelElement, 
                 new String[] {"entry", "name", "remove"});
         Object entryAction = Model.getFacade().getEntry(modelElement);
         if (Model.getFacade().isACallAction(entryAction)) {
             // and when the Operation is replaced:
-            addElementListener(listener, entryAction, "operation");
+            addElementListener(entryAction, "operation");
             Object operation = Model.getFacade().getOperation(entryAction);
             if (operation != null) {
                 // and when the owner is replaced (unlikely for operations),
                 // and when the operation changes name:
-                addElementListener(listener, operation,
+                addElementListener(operation,
                         new String[] {"owner", "name"});
                 Object classifier = Model.getFacade().getOwner(operation);
                 // and when the class changes name:
-                addElementListener(listener, classifier, "name");
+                addElementListener(classifier, "name");
             }
         }
     }

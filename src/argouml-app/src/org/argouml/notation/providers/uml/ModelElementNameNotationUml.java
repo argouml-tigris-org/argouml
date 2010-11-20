@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -54,7 +54,7 @@ import org.argouml.notation.providers.ModelElementNameNotation;
  *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#] [name]
  * </pre>
  *
- * @author mvw
+ * @author Michiel van der Wulp
  */
 public class ModelElementNameNotationUml extends ModelElementNameNotation {
 

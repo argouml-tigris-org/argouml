@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -71,7 +71,7 @@ import org.argouml.util.MyTokenizer;
  *
  * This syntax is compatible with the UML 1.3 and 1.4 specification.
  * 
- * @author Michiel
+ * @author Michiel van der Wulp
  */
 public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
 
@@ -278,8 +278,8 @@ public class ClassifierRoleNotationUml extends ClassifierRoleNotation {
         }
         nameString = nameString.trim();
         // Loop through all base classes, building a comma separated list
-        StringBuilder baseString = 
-            formatNameList(Model.getFacade().getBases(modelElement));
+        StringBuilder baseString = NotationUtilityUml.formatNameList(
+                Model.getFacade().getBases(modelElement));
         baseString = new StringBuilder(baseString.toString().trim());       
         // Build the final string
         if (nameString.length() != 0) {

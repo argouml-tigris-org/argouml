@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -53,6 +53,7 @@ import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
+import org.argouml.notation.NotationSettings;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
@@ -157,7 +158,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
             notationProviderState =
                 NotationProviderFactory2.getInstance().getNotationProvider(
                         NotationProviderFactory2.TYPE_OBJECTFLOWSTATE_STATE,
-                        own, notationName);
+                        own, this, notationName);
         }
     }
     
@@ -391,6 +392,25 @@ public class FigObjectFlowState extends FigNodeModelElement {
     @Override
     public Selection makeSelection() {
         return new SelectionActionState(this);
+    }
+
+    public void notationRenderingChanged(NotationProvider np, String rendering) {
+        super.notationRenderingChanged(np, rendering);
+        if (notationProviderState == np) {
+            state.setText(rendering);
+            updateBounds();
+            damage();
+        }
+    }
+
+    public NotationSettings getNotationSettings(NotationProvider np) {
+        // both have the same settings
+        return getNotationSettings();
+    }
+
+    public Object getOwner(NotationProvider np) {
+        // both have the same owner
+        return getOwner();
     }
 
 }

@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,7 +38,6 @@
 
 package org.argouml.notation;
 
-import java.beans.PropertyChangeListener;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -212,6 +211,9 @@ public final class NotationProviderFactory2 {
      * If there is any reason for failure, null is returned - no
      * exception is thrown. 
      * The caller is supposed to deal with receiving null.
+     * <p>
+     * Use this function when you do not want to monitor model 
+     * changes which may cause the string to change.
      * 
      * @param type the provider type
      * @param object the constructor parameter
@@ -262,20 +264,23 @@ public final class NotationProviderFactory2 {
     /**
      * Get a NotationProvider for the current project. 
      * This also initializes the listeners.
+     * <p>
+     * Use this function when you want to monitor model 
+     * changes which may cause the string to change.
      * 
      * @param type the provider type
      * @param object the constructor parameter
-     * @param listener the fig
-     * that refreshes after the NotationProvider has changed
+     * @param nr the fig that refreshes after the NotationProvider has changed
      * @param name the name of the notation language to use
      * @return the provider
      */
     public NotationProvider getNotationProvider(int type,
-            Object object, PropertyChangeListener listener, 
+            Object object, NotationRenderer nr, 
             NotationName name) {
 
         NotationProvider p = getNotationProvider(type, object, name);
-        p.initialiseListener(listener, object);
+        p.setRenderer(nr);
+        p.initialiseListener(object);
         return p;
     }
 

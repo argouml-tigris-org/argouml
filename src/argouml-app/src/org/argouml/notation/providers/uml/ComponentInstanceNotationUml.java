@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -49,7 +49,7 @@ import org.argouml.notation.providers.ComponentInstanceNotation;
 /**
  * UML notation for a component instance.
  * 
- * @author Michiel
+ * @author Michiel van der Wulp
  */
 public class ComponentInstanceNotationUml extends ComponentInstanceNotation {
 
@@ -125,8 +125,8 @@ public class ComponentInstanceNotationUml extends ComponentInstanceNotation {
         }
 
         // construct bases string (comma separated)
-        StringBuilder baseStr = 
-            formatNameList(Model.getFacade().getClassifiers(modelElement));
+        StringBuilder baseStr = NotationUtilityUml.formatNameList(
+                Model.getFacade().getClassifiers(modelElement));
         if ((nameStr.length() == 0) && (baseStr.length() == 0)) {
             return "";
         }

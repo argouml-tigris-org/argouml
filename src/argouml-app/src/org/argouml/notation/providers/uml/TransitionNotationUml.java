@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,7 +38,6 @@
 
 package org.argouml.notation.providers.uml;
 
-import java.beans.PropertyChangeListener;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -56,7 +55,7 @@ import org.argouml.notation.providers.TransitionNotation;
 /**
  * UML Notation for the text shown next to a Transition.
  *
- * @author mvw
+ * @author Michiel van der Wulp
  */
 public class TransitionNotationUml extends TransitionNotation {
 
@@ -566,7 +565,7 @@ public class TransitionNotationUml extends TransitionNotation {
     /**
      * This deletes modelelements, and swallows null without barking.
      *
-     * @author mvw@tigris.org
+     * @author Michiel van der Wulp
      * @param obj
      *            the modelelement to be deleted
      */
@@ -758,82 +757,6 @@ public class TransitionNotationUml extends TransitionNotation {
             return "";
         }
         return Model.getFacade().getName(cls);
-    }
-
-    /*
-     * @see org.argouml.uml.notation.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
-     */
-    public void initialiseListener(PropertyChangeListener listener,
-            Object modelElement) {
-        addListenersForTransition(listener, modelElement);
-    }
-
-    private void addListenersForAction(PropertyChangeListener listener,
-            Object action) {
-        if (action != null) {
-            addElementListener(listener, action,
-                    new String[] {
-                    // TODO: Action isn't a valid property name
-                    // Or is it?  Double check validity checking code
-                        "script", "actualArgument", "action"
-                    });
-            Collection args = Model.getFacade().getActualArguments(action);
-            Iterator i = args.iterator();
-            while (i.hasNext()) {
-                Object argument = i.next();
-                addElementListener(listener, argument, "value");
-            }
-            if (Model.getFacade().isAActionSequence(action)) {
-                Collection subactions = Model.getFacade().getActions(action);
-                i = subactions.iterator();
-                while (i.hasNext()) {
-                    Object a = i.next();
-                    addListenersForAction(listener, a);
-                }
-            }
-        }
-    }
-
-    private void addListenersForEvent(PropertyChangeListener listener,
-            Object event) {
-        if (event != null) {
-            if (Model.getFacade().isAEvent(event)) {
-                addElementListener(listener, event,
-                        new String[] {
-                            "parameter", "name"});
-            }
-            if (Model.getFacade().isATimeEvent(event)) {
-                addElementListener(listener, event, new String[] {"when"});
-            }
-            if (Model.getFacade().isAChangeEvent(event)) {
-                addElementListener(listener, event,
-                        new String[] {"changeExpression"});
-            }
-
-            Collection prms = Model.getFacade().getParameters(event);
-            Iterator i = prms.iterator();
-            while (i.hasNext()) {
-                Object parameter = i.next();
-                addElementListener(listener, parameter);
-            }
-        }
-    }
-
-    private void addListenersForTransition(PropertyChangeListener listener,
-            Object transition) {
-        addElementListener(listener, transition,
-                new String[] {"guard", "trigger", "effect"});
-
-        Object guard = Model.getFacade().getGuard(transition);
-        if (guard != null) {
-            addElementListener(listener, guard, "expression");
-        }
-
-        Object trigger = Model.getFacade().getTrigger(transition);
-        addListenersForEvent(listener, trigger);
-
-        Object effect = Model.getFacade().getEffect(transition);
-        addListenersForAction(listener, effect);
     }
 
 }

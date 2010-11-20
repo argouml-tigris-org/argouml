@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,7 +38,6 @@
 
 package org.argouml.notation.providers;
 
-import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import org.argouml.model.Model;
@@ -49,7 +48,7 @@ import org.argouml.notation.NotationProvider;
  * for the text shown in the Fig that represents the Message.
  * Subclass this for all languages.
  * 
- * @author michiel
+ * @author Michiel van der Wulp
  */
 public abstract class MessageNotation extends NotationProvider {
     
@@ -64,35 +63,32 @@ public abstract class MessageNotation extends NotationProvider {
         }
     }
 
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
-     */
-    public void initialiseListener(PropertyChangeListener listener, 
-             Object umlMessage) {
-        addElementListener(listener, umlMessage,
+    @Override
+    public void initialiseListener(Object umlMessage) {
+        addElementListener(umlMessage,
                 new String[] {"activator", "predecessor", "successor", 
                     "sender", "receiver", "action", "name"});
         Object action = Model.getFacade().getAction(umlMessage);
         if (action != null) {
-            addElementListener(listener, action,
+            addElementListener(action,
                     new String[] {"remove", "recurrence", "script", 
                         "actualArgument", "signal", "operation"});
             List args = Model.getFacade().getActualArguments(action);
             for (Object argument : args) {
-                addElementListener(listener, argument,
+                addElementListener(argument,
                         new String[] {"remove", "value"});
             }
             if (Model.getFacade().isACallAction(action)) {
                 Object operation = Model.getFacade().getOperation(action);
                 if (Model.getFacade().isAOperation(operation)) {
-                    addElementListener(listener, operation,
+                    addElementListener(operation,
                             new String[] {"name"});
                 }
             }
             if (Model.getFacade().isASendAction(action)) {
                 Object signal = Model.getFacade().getSignal(action);
                 if (Model.getFacade().isASignal(signal)) {
-                    addElementListener(listener, signal,
+                    addElementListener(signal,
                             new String[] {"name"});
                 }
             }

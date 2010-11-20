@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,8 +38,6 @@
 
 package org.argouml.notation.providers;
 
-import java.beans.PropertyChangeListener;
-
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 
@@ -48,7 +46,7 @@ import org.argouml.notation.NotationProvider;
  * for the name of an association-role.
  * Subclass this for all languages.
  * 
- * @author michiel
+ * @author Michiel van der Wulp
  */
 public abstract class AssociationRoleNotation extends NotationProvider {
     
@@ -64,16 +62,13 @@ public abstract class AssociationRoleNotation extends NotationProvider {
         }
     }
 
-    /*
-     * @see org.argouml.notation.providers.NotationProvider#initialiseListener(java.beans.PropertyChangeListener, java.lang.Object)
-     */
-    public void initialiseListener(PropertyChangeListener listener, 
-            Object modelElement) {
-        addElementListener(listener, modelElement, 
+    @Override
+    public void initialiseListener(Object modelElement) {
+        addElementListener(modelElement, 
             new String[] {"name", "base"});
         Object assoc = Model.getFacade().getBase(modelElement);
         if (assoc != null) {
-            addElementListener(listener, assoc, "name");
+            addElementListener(assoc, "name");
         }
     }
 

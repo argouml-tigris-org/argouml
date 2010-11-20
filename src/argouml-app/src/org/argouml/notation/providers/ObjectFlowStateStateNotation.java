@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2010 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,6 +38,8 @@
 
 package org.argouml.notation.providers;
 
+import java.util.Collection;
+
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
 
@@ -46,7 +48,7 @@ import org.argouml.notation.NotationProvider;
  * for the ClassifierInState state name text shown in an ObjectFlowState. 
  * Subclass this for all languages.
  * 
- * @author Michiel
+ * @author Michiel van der Wulp
  */
 public abstract class ObjectFlowStateStateNotation extends NotationProvider {
 
@@ -62,4 +64,18 @@ public abstract class ObjectFlowStateStateNotation extends NotationProvider {
         }
     }
 
+    @Override
+    public void initialiseListener(Object modelElement) {
+        addElementListener(modelElement);
+        Object cis = Model.getFacade().getType(modelElement);
+        if (Model.getFacade().isAClassifierInState(cis)) {
+            addElementListener(cis,
+                    new String[] {"remove", "inState"});
+            Collection<Object> c = Model.getFacade().getInStates(cis);
+            for (Object state : c) {
+                addElementListener(state,
+                        new String[] {"remove", "name"});
+            }
+        }
+    }
 }
