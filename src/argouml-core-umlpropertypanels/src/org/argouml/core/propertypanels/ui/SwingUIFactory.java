@@ -87,7 +87,13 @@ class SwingUIFactory {
         PanelData panelData = 
             XMLPropPanelFactory.getInstance().getPropertyPanelsData(
               	target.getClass());
-            
+        
+        if (panelData == null) {
+            panel.add(new JLabel("There is no panel configured for " + target.getClass()));
+            LOG.error("No panel found for " + target.getClass());
+            return;
+        }
+        
         createLabel(target, panelData, panel);
             
         for (ControlData prop : panelData.getProperties()) {
