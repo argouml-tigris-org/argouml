@@ -13,6 +13,7 @@
 
 package org.argouml.activity2.diagram;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
@@ -25,6 +26,8 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
  */
 class FigBaseNode extends FigNodeModelElement {
 
+    private BaseDisplayState displayState;
+    
     /**
      * Constructor a new FigBaseNode
      * 
@@ -36,5 +39,19 @@ class FigBaseNode extends FigNodeModelElement {
             final DiagramSettings settings) {
         super(owner, bounds, settings);
         addFig(getBigPort());
+    }
+    
+    void setDisplayState(BaseDisplayState displayState) {
+        this.displayState = displayState;
+        if (getBigPort() != null) {
+            removeFig(getBigPort());
+        }
+        setBigPort(displayState.getBigPort());
+        addFig(displayState.getBigPort());
+    }
+    
+    @Override
+    public Dimension getMinimumSize() {
+        return displayState.getMinimumSize();
     }
 }

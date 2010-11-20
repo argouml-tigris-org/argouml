@@ -105,7 +105,18 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
         DiagramSettings settings = getDiagramSettings();
         
         if (Model.getFacade().isAActivityNode(modelElement)) {
-            figNode = new FigActivityNode(modelElement, bounds, settings);
+            figNode = new FigBaseNode(modelElement, bounds, settings);
+            final String style;
+            if (Model.getFacade().isAObjectNode(modelElement)) {
+                style="rect";
+            } else if (Model.getFacade().isASendSignalAction(modelElement)) {
+                style="pentagon";
+            } else if (Model.getFacade().isAAcceptEventAction(modelElement)) {
+                style="concave-pentagon";
+            } else {
+                style="rrect";
+            }
+            DiagramElementBuilder.buildDiagramElement((FigBaseNode) figNode, style, modelElement, settings);
         } else if (Model.getFacade().isAComment(modelElement)) {
             figNode = new FigComment(modelElement, bounds, settings);
         }
