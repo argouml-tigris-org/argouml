@@ -10,15 +10,19 @@ name
   <class name="ActivityParameterNode">org.eclipse.uml2.uml.ActivityParameterNode</class>
   <class name="CallAction">org.eclipse.uml2.uml.CallAction</class>
   <class name="CallBehaviorAction">org.eclipse.uml2.uml.CallBehaviorAction</class>
+  <class name="CentralBufferNode">org.eclipse.uml2.uml.CentralBufferNode</class>
+  <class name="Class">org.eclipse.uml2.uml.Class</class>
+  <class name="Classifier">org.eclipse.uml2.uml.Classifier</class>
+  <class name="">org.eclipse.uml2.uml.ControlFlow</class>
   <class name="CreateObjectAction">org.eclipse.uml2.uml.CreateObjectAction</class>
+  <class name="DataStoreNode">org.eclipse.uml2.uml.DataStoreNode</class>
   <class name="DestroyObjectAction">org.eclipse.uml2.uml.DestroyObjectAction</class>
   <class name="Element">org.eclipse.uml2.uml.Element</class>
   <class name="Expression">org.eclipse.uml2.uml.Expression</class>
+  <class name="Namespace">org.eclipse.uml2.uml.Namespace</class>
+  <class name="ObjectFlow">org.eclipse.uml2.uml.ObjectFlow</class>
   <class name="SendSignalAction">org.eclipse.uml2.uml.SendSignalAction</class>
   <class name="TimeExpression">org.eclipse.uml2.uml.TimeExpression</class>
-  <class name="Namespace">org.eclipse.uml2.uml.Namespace</class>
-  <class name="Classifier">org.eclipse.uml2.uml.Classifier</class>
-  <class name="Class">org.eclipse.uml2.uml.Class</class>
   <class name="DataType">org.eclipse.uml2.uml.DataType</class>
   <class name="Feature">org.eclipse.uml2.uml.Feature</class>
   <class name="StructuralFeature">org.eclipse.uml2.uml.StructuralFeature</class>
@@ -1966,6 +1970,18 @@ name
     <attribute name="message" type="Action" />    
   </panel>
   <panel name="CallBehaviorAction">
+    <text name="name" type="Name" />    
+  </panel>
+  <panel name="ControlFlow">
+    <text name="name" type="Name" />    
+  </panel>
+  <panel name="CentralBufferNode">
+    <text name="name" type="Name" />    
+  </panel>
+  <panel name="DataStoreNode">
+    <text name="name" type="Name" />    
+  </panel>
+  <panel name="ObjectFlow">
     <text name="name" type="Name" />    
   </panel>
   <panel name="SendAction">
