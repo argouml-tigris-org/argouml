@@ -13,9 +13,10 @@ name
   <class name="CentralBufferNode">org.eclipse.uml2.uml.CentralBufferNode</class>
   <class name="Class">org.eclipse.uml2.uml.Class</class>
   <class name="Classifier">org.eclipse.uml2.uml.Classifier</class>
-  <class name="">org.eclipse.uml2.uml.ControlFlow</class>
+  <class name="ControlFlow">org.eclipse.uml2.uml.ControlFlow</class>
   <class name="CreateObjectAction">org.eclipse.uml2.uml.CreateObjectAction</class>
   <class name="DataStoreNode">org.eclipse.uml2.uml.DataStoreNode</class>
+  <class name="DataType">org.eclipse.uml2.uml.DataType</class>
   <class name="DestroyObjectAction">org.eclipse.uml2.uml.DestroyObjectAction</class>
   <class name="Element">org.eclipse.uml2.uml.Element</class>
   <class name="Expression">org.eclipse.uml2.uml.Expression</class>
@@ -23,7 +24,6 @@ name
   <class name="ObjectFlow">org.eclipse.uml2.uml.ObjectFlow</class>
   <class name="SendSignalAction">org.eclipse.uml2.uml.SendSignalAction</class>
   <class name="TimeExpression">org.eclipse.uml2.uml.TimeExpression</class>
-  <class name="DataType">org.eclipse.uml2.uml.DataType</class>
   <class name="Feature">org.eclipse.uml2.uml.Feature</class>
   <class name="StructuralFeature">org.eclipse.uml2.uml.StructuralFeature</class>
   <class name="Interface">org.eclipse.uml2.uml.Interface</class>
