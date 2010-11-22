@@ -16,6 +16,7 @@ package org.argouml.activity2.diagram;
 import java.awt.event.ActionEvent;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.ui.UndoableAction;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Mode;
 
@@ -23,10 +24,12 @@ class CreateDiagramElementAction extends UndoableAction {
     
     final Object metaType;
     final String style;
+    final ArgoDiagram diagram;
 
-    CreateDiagramElementAction(Object metaType, String style, String name) {
+    CreateDiagramElementAction(Object metaType, String style, String name, ArgoDiagram diagram) {
         super(name, ResourceLoaderWrapper.lookupIconResource(
                 ResourceLoaderWrapper.getImageBinding(name)));
+        this.diagram = diagram;
         this.metaType = metaType;
         this.style = style;
     }
@@ -34,7 +37,7 @@ class CreateDiagramElementAction extends UndoableAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
 
-        Mode placeMode = new ModePlaceDiagramElement(metaType, style, "Click to place diagram element");
+        Mode placeMode = new ModePlaceDiagramElement(diagram, metaType, style, "Click to place diagram element");
         Globals.mode(placeMode, false);
     }
 }

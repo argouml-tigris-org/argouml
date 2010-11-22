@@ -43,10 +43,17 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+/**
+ * Diagram class for UML2 Activity Diagram
+ * @author Bob Tarling
+ */
 public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
     
     private static final Logger LOG = Logger
         .getLogger(UMLActivityDiagram.class);
+    
+    private Map<String, Class<?>> metaTypeByName;
+    private Map<Class<?>, String> nameByMetaType;
     
     UMLActivityDiagram(Object activity) {
         super(activity);
@@ -90,36 +97,6 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
         };
     }
     
-    private Map<String, Class<?>> metaTypeByName;
-    private Map<Class<?>, String> nameByMetaType;
-    private List<Object> getCreateDiagramElementActions() {
-        try {
-            final Document doc = getDocument();
-            final NodeList nl = doc.getDocumentElement().getChildNodes();
-            for (int i = 0; i < nl.getLength(); ++i) {
-                final Node n = nl.item(i);
-                if (n.getNodeName().equals("classes")) {
-                    final int size = n.getChildNodes().getLength();
-                    nameByMetaType = new HashMap<Class<?>, String>(size);
-                    metaTypeByName = new HashMap<String, Class<?>>(size);
-                    populateClassMaps((Element) n, nameByMetaType, metaTypeByName);
-                } else if (n.getNodeName().equals("toolbar")) {
-                    List<Object> actions = getToolbarActions((Element) n);
-                    return actions;
-                }
-            }
-        } catch (DOMException e) {
-            LOG.error("", e);
-        } catch (IOException e) {
-            LOG.error("", e);
-        } catch (ParserConfigurationException e) {
-            LOG.error("", e);
-        } catch (SAXException e) {
-            LOG.error("", e);
-        }
-        return null;
-    }
-
     private List<Object> getToolbarActions(Element toolbarNode) {
         List<Object> toolbarActions = new ArrayList<Object>();
         final NodeList nl = toolbarNode.getElementsByTagName("*");
@@ -129,13 +106,18 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
             String style = itemNode.getNodeName();
             if (style.equals("dropdown")) {
                 o = getToolbarActions(itemNode);
+            } else if (style.equals("poly-edge")) {
+                final String type = itemNode.getAttribute("type");
+                final Class<?> metaType = metaTypeByName.get(type);
+                o = getCreateEdgeAction(metaType);
             } else {
-                String type = itemNode.getAttribute("type");
-                Class<?> metaType = metaTypeByName.get(type);
+                final String type = itemNode.getAttribute("type");
+                final Class<?> metaType = metaTypeByName.get(type);
                 o = new CreateDiagramElementAction(
                         metaType, 
                         style, 
-                        Model.getMetaTypes().getName(metaType));
+                        Model.getMetaTypes().getName(metaType),
+                        this);
             }
             toolbarActions.add(o);
         }
@@ -164,11 +146,21 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
         }
     }
     
-    
-    private Document getDocument() throws IOException, DOMException, ParserConfigurationException, SAXException {
+    /**
+     * Get the diagram definition XML document
+     * @return
+     * @throws IOException
+     * @throws DOMException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
+    private Document getDocument()
+        throws IOException, DOMException,
+            ParserConfigurationException, SAXException {
         final String filename;
         filename = "org/argouml/activity2/diagram/diagram.xml";
-        InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(filename);
+        InputStream inputStream = 
+            this.getClass().getClassLoader().getResourceAsStream(filename);
         InputSource inputSource = new InputSource(inputStream);
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
@@ -177,9 +169,31 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
     
     @Override
     protected Object[] getUmlActions() {
-        Object[] actions = super.getUmlActions();
-        getCreateDiagramElementActions();
-        return actions;
+        try {
+            final Document doc = getDocument();
+            final NodeList nl = doc.getDocumentElement().getChildNodes();
+            for (int i = 0; i < nl.getLength(); ++i) {
+                final Node n = nl.item(i);
+                if (n.getNodeName().equals("classes")) {
+                    final int size = n.getChildNodes().getLength();
+                    nameByMetaType = new HashMap<Class<?>, String>(size);
+                    metaTypeByName = new HashMap<String, Class<?>>(size);
+                    populateClassMaps((Element) n, nameByMetaType, metaTypeByName);
+                } else if (n.getNodeName().equals("toolbar")) {
+                    List<Object> actions = getToolbarActions((Element) n);
+                    return actions.toArray();
+                }
+            }
+        } catch (DOMException e) {
+            LOG.error("", e);
+        } catch (IOException e) {
+            LOG.error("", e);
+        } catch (ParserConfigurationException e) {
+            LOG.error("", e);
+        } catch (SAXException e) {
+            LOG.error("", e);
+        }
+        return null;
     }
     
     

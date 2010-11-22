@@ -9,7 +9,9 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
+import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.FigModifyingModeImpl;
 import org.tigris.gef.base.Globals;
@@ -25,9 +27,11 @@ import org.tigris.gef.undo.UndoManager;
 
 public class ModePlaceDiagramElement extends FigModifyingModeImpl {
 
+    private static final Logger LOG = Logger.getLogger(ModePlaceDiagramElement.class);
     private final Object metaType;
     private final String style;
     private final String instructions;
+    private final ArgoDiagram diagram;
     
     private Object modelElement;
     private GraphNode graphNode;
@@ -36,9 +40,11 @@ public class ModePlaceDiagramElement extends FigModifyingModeImpl {
     private static final int HEIGHT = 25;
     
     public ModePlaceDiagramElement(
+            ArgoDiagram diagram,
             Object metaType,
             String style,
             String instructions) {
+        this.diagram = diagram;
         this.metaType = metaType;
         this.style = style;
         if (instructions == null) {
@@ -56,20 +62,20 @@ public class ModePlaceDiagramElement extends FigModifyingModeImpl {
         return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
     }
 
-    // //////////////////////////////////////////////////////////////
-    // event handlers
-
-    /** Move the perpective along with the mouse. */
     public void mousePressed(MouseEvent me) {
         if (me.isConsumed()) {
             return;
         }
         UndoManager.getInstance().addMementoLock(this);
+        // TODO: Something might go wrong during processing. We don't really
+        // want to create the model element until the user releases the mouse
+        // in the place expected.
         modelElement = Model.getUmlFactory().buildNode(metaType);
+        //
         start();
         editor = Globals.curEditor();
         Layer lay = editor.getLayerManager().getActiveLayer();
-        graphNode = createDiagramElement(lay, modelElement, null);
+        graphNode = createDiagramElement(lay, modelElement, diagram.getDiagramSettings());
         mouseMoved(me);
         me.consume();
     }
@@ -115,15 +121,14 @@ public class ModePlaceDiagramElement extends FigModifyingModeImpl {
             return;
         }
 
-        MutableGraphModel mgm =
-            (MutableGraphModel) editor.getGraphModel();
-        if (mgm.canAddNode(modelElement)) {
-            UndoManager.getInstance().startChain();
-            editor.add((Fig) graphNode);
-            mgm.addNode(modelElement);
+        LOG.info("Mouse released");
+        MutableGraphModel mgm = (MutableGraphModel) editor.getGraphModel();
+        UndoManager.getInstance().startChain();
+        editor.add((Fig) graphNode);
+        mgm.addNode(modelElement);
 
-            editor.getSelectionManager().select((Fig) graphNode);
-        }
+        editor.getSelectionManager().select((Fig) graphNode);
+        LOG.info("The diagram element " + graphNode + " was added");
         done();
         me.consume();
     }
