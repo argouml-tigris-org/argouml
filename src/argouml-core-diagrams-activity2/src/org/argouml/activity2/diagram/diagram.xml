@@ -23,25 +23,42 @@
    The other element types indicates the representation used to display
    diagram element when it is created.
    
-   poly-edge - an edge two join two nodes, the edge can be multiple parts
+   poly-edge - an edge to join two nodes, the edge can be multiple parts
                (essentially an unconnected polygon)
    rect - a rectangular node
    rrect - a rectangular node with rounded corners
    pentagon - a pentagon that is formed by a combined rectangle and a triangle much
-               like a direction sign on a signpost. If the concave attribute
-               is set the triangle forms a notch into the rectangle.
-   connector - A connection point required for some nodes.
+               like a direction sign on a signpost.
+   concave-pentagon - similar to a pentagon but with the triangle forms a notch into
+                      the rectangle.
+   connector - A connection point required for some nodes to attach edges.
 -->
 <diagram name="Activity">
+<classes>
+  <class name="AcceptEventAction">org.eclipse.uml2.uml.AcceptEventAction</class>
+  <class name="ActivityParameterNode">org.eclipse.uml2.uml.ActivityParameterNode</class>
+  <class name="CallBehaviorAction">org.eclipse.uml2.uml.CallBehaviorAction</class>
+  <class name="CentralBufferNode">org.eclipse.uml2.uml.CentralBufferNode</class>
+  <class name="ControlFlow">org.eclipse.uml2.uml.ControlFlow</class>
+  <class name="CreateObjectAction">org.eclipse.uml2.uml.CreateObjectAction</class>
+  <class name="DataStoreNode">org.eclipse.uml2.uml.DataStoreNode</class>
+  <class name="DataType">org.eclipse.uml2.uml.DataType</class>
+  <class name="DestroyObjectAction">org.eclipse.uml2.uml.DestroyObjectAction</class>
+  <class name="InputPin">org.eclipse.uml2.uml.InputPin</class>
+  <class name="ObjectFlow">org.eclipse.uml2.uml.ObjectFlow</class>
+  <class name="OutputPin">org.eclipse.uml2.uml.OutputPin</class>
+  <class name="SendSignalAction">org.eclipse.uml2.uml.SendSignalAction</class>
+</classes>
+<toolbar>
   <poly-edge type="ControlFlow" destarrow="true" />
   <poly-edge type="ObjectFlow" destarrow="true" />
   <dropdown>
-    <rrect type="CallObjectAction" />
+    <rrect type="CallBehaviorAction" />
     <rrect type="CreateObjectAction" />
     <rrect type="DestroyObjectAction" />
   </dropdown>
   <pentagon type="SendSignalAction" />
-  <pentagon type="AcceptEventAction" concave="true" />
+  <concave-pentagon type="AcceptEventAction" />
   <dropdown>
     <rect type="ActivityParameterNode" />
     <rect type="CentralBufferNode" />
@@ -49,4 +66,5 @@
   </dropdown>
   <connector type="InputPin" />
   <connector type="OutputPin" />
+</toolbar>
 </diagram>
