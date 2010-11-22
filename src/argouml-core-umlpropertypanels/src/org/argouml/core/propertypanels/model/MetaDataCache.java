@@ -56,13 +56,10 @@ public class MetaDataCache {
         for (int i = 0; i < nl.getLength(); ++i) {
             Node n = nl.item(i);
             if (n.getNodeName().equals("classes")) {
-        	metaTypeByName = getClasses((Element) n);
-        	
-        	nameByMetaType = new HashMap<Class<?>, String>(metaTypeByName.size());
-        	for (Map.Entry<String, Class<?>> s : metaTypeByName.entrySet()) {
-        	    nameByMetaType.put(s.getValue(), s.getKey());
-        	}
-        	
+        	final int size = n.getChildNodes().getLength();
+        	nameByMetaType = new HashMap<Class<?>, String>(size);
+        	metaTypeByName = new HashMap<String, Class<?>>(size);
+        	populateClassMaps((Element) n, nameByMetaType, metaTypeByName);
             } else if (n.getNodeName().equals("panels")) {
         	cache = getPanels((Element) n);
             }
@@ -95,10 +92,10 @@ public class MetaDataCache {
         return db.parse(inputSource);
     }
     
-    private HashMap<String, Class<?>> getClasses(Element classesNode) {
-        final HashMap<String, Class<?>> map =
-            new HashMap<String, Class<?>>(
-        	    classesNode.getChildNodes().getLength());
+    private void populateClassMaps(
+	    final Element classesNode,
+	    final Map<Class<?>, String> nameByMetaType,
+	    final Map<String, Class<?>> metaTypeByName) {
         final NodeList nl = classesNode.getElementsByTagName("class");
         for (int i = 0; i < nl.getLength(); ++i) {
             Node classNode = nl.item(i);
@@ -106,12 +103,13 @@ public class MetaDataCache {
             try {
                 final String name = 
         	    classNode.getAttributes().getNamedItem("name").getNodeValue();
-                map.put(name, Class.forName(className));
+                Class<?> clazz = Class.forName(className);
+                metaTypeByName.put(name, clazz);
+    	        nameByMetaType.put(clazz, name);
             } catch (ClassNotFoundException e) {
         	    LOG.error("Class not found " + className, e);
             }
         }
-        return map;
     }
     
     private Map<Class<?>, PanelData> getPanels(Element panelsNode) {
