@@ -136,8 +136,21 @@ public class TestXmi extends TestCase {
         } catch (UmlException e) {
             assertTrue("Unexpected exception type", e instanceof XmiException);
             XmiException xe = (XmiException) e;
-            assertEquals("Unexpected line number", -1, xe.getLineNumber());
-            assertEquals("Unexpected column number", -1, xe.getColumnNumber());
+
+            // Depends on implementation: 
+            if (xe.getLineNumber() == -1) {
+                // The netbeans SAXParser sets line number
+                // and column number to -1.
+                assertEquals("Unexpected line number", -1, xe.getLineNumber());
+                assertEquals("Unexpected column number", 
+                             -1, xe.getColumnNumber());
+            } else {
+                // The xerces SAXParser sets line number
+                // and column number to 1.
+                assertEquals("Unexpected line number", 1, xe.getLineNumber());
+                assertEquals("Unexpected column number", 
+                             1, xe.getColumnNumber());                
+            }
         }
     }
     
