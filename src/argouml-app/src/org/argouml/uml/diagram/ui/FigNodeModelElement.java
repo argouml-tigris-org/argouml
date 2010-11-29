@@ -1402,9 +1402,6 @@ public abstract class FigNodeModelElement
     protected void modelChanged(PropertyChangeEvent event) {
         if (event instanceof AssociationChangeEvent 
                 || event instanceof AttributeChangeEvent) {
-            if (notationProviderName != null) {
-                notationProviderName.updateListener(getOwner(), event);
-            }
             // TODO: This brute force approach of updating listeners on each
             // and every event, without checking the event type or any other
             // information is going to cause lots of InvalidElementExceptions

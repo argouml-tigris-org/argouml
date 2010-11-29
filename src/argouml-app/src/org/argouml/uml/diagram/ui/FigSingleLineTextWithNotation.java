@@ -39,7 +39,6 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
 
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
@@ -116,15 +115,7 @@ public class FigSingleLineTextWithNotation extends FigSingleLineText
         notationProvider.cleanListener();
         super.removeFromDiagram();
     }
-    
-    @Override
-    public void propertyChange(PropertyChangeEvent pce) {
-        if (notationProvider != null) {
-            notationProvider.updateListener(getOwner(), pce);
-        }
-        super.propertyChange(pce);
-    }
-    
+
     /**
      * This is a template method called by the ArgoUML framework as the result
      * of a change to a model element. Do not call this method directly

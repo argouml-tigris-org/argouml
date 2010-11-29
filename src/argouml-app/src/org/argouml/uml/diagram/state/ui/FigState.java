@@ -167,7 +167,6 @@ public abstract class FigState extends FigStateVertex {
             }
             
             renderingChanged();
-            notationProviderBody.updateListener(getOwner(), mee);
             damage();
         }
     }

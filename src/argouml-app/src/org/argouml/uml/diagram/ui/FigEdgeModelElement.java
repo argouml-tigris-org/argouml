@@ -939,10 +939,6 @@ public abstract class FigEdgeModelElement
         
         if (e instanceof AssociationChangeEvent 
                 || e instanceof AttributeChangeEvent) {
-            if (notationProviderName != null) {
-                notationProviderName.updateListener(getOwner(), e);
-                updateNameText();
-            }
             updateListeners(getOwner(), getOwner());
         }
 
