@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    Bob Tarling
- *    Christian López Espínola
+ *    Christian L\u00f3pez Esp\u00ednola
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
