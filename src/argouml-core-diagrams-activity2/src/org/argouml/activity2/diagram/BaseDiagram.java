@@ -14,14 +14,22 @@
 package org.argouml.activity2.diagram;
 
 import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.Action;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.ui.ActionSetMode;
@@ -32,6 +40,13 @@ import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.FigNode;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 abstract class BaseDiagram extends UMLDiagram {
     
@@ -65,56 +80,131 @@ abstract class BaseDiagram extends UMLDiagram {
     abstract UmlDiagramRenderer createDiagramRenderer();
     abstract UMLMutableGraphSupport createGraphModel();
     
+    private Map<String, Class<?>> metaTypeByName;
+    private Map<Class<?>, String> nameByMetaType;
+    
     @Override
     protected Object[] getUmlActions() {
-        
-        final Object[] edgeTools = getNewEdgeTypes();
-        final Object[] nodeTools = getNewNodeTypes();
-        final Object[] actions =
-            new Object[edgeTools.length + nodeTools.length];
-        int i = 0;
-        for (Object meta : edgeTools) {
-            if (meta instanceof Object[]) {
-                Object[] childEdgeTools = (Object[]) meta;
-                final Object[] childActions =
-                    new Object[childEdgeTools.length];
-                int j = 0;
-                for (Object childMeta : childEdgeTools) {
-                    childActions[j++] = getCreateEdgeAction(childMeta);
-                }
-                actions[i++] = childActions;
-            } else {
-                actions[i++] = getCreateEdgeAction(meta);
-            }
+        try {
+            final Document doc = getDocument();
+            final Element element =
+                getElement(doc.getDocumentElement(), "classes");
+            final int size = element.getChildNodes().getLength();
+            nameByMetaType = new HashMap<Class<?>, String>(size);
+            metaTypeByName = new HashMap<String, Class<?>>(size);
+            populateClassMaps(element, nameByMetaType, metaTypeByName);
+            
+            final Element toolbarElement =
+                getElement(doc.getDocumentElement(), "toolbar");
+            return getToolbarActions(toolbarElement);
+        } catch (DOMException e) {
+            LOG.error("", e);
+        } catch (IOException e) {
+            LOG.error("", e);
+        } catch (ParserConfigurationException e) {
+            LOG.error("", e);
+        } catch (SAXException e) {
+            LOG.error("", e);
         }
-        for (Object meta : nodeTools) {
-            if (meta instanceof Object[]) {
-                Object[] childNodeTools = (Object[]) meta;
-                final Object[] childActions =
-                    new Object[childNodeTools.length];
-                int j = 0;
-                for (Object childMeta : childNodeTools) {
-                    childActions[j++] = getCreateNodeAction(childMeta);
-                }
-                actions[i++] = childActions;
-            } else {
-                actions[i++] = getCreateNodeAction(meta);
-            }
-        }
-        return actions;
+        return null;
     }
     
-    abstract Object[] getNewNodeTypes();
-    abstract Object[] getNewEdgeTypes();
-
     /**
-     * @return Returns a diagram tool creation action.
+     * Get the single (or first) child Element of the given element
+     * that has the given tag name.
+     * @param element
+     * @param tagName
+     * @return the child element
      */
-    private Action getCreateNodeAction(Object metaType) {
-        String label = Model.getMetaTypes().getName(metaType);
-        return new RadioAction(
-                new CmdCreateNode(metaType, label));
+    private Element getElement(Element element, String tagName) {
+        final NodeList nl = element.getElementsByTagName(tagName);
+        if (nl.getLength() == 0) {
+            return null;
+        }
+        return (Element) nl.item(0);
     }
+    
+    private Object[] getToolbarActions(Element toolbarNode) {
+        
+        final NodeList nl = toolbarNode.getChildNodes();
+
+        List<Element> elements = new ArrayList<Element>();
+        for (int i = 0; i < nl.getLength(); ++i) {
+            final Node n = nl.item(i);
+            if (n instanceof Element) {
+                elements.add((Element) n);
+            }
+        }
+
+        final Object[] toolbarActions = new Object[elements.size()];
+        
+        for (int i = 0; i < elements.size(); ++i) {
+            final Element itemNode = elements.get(i);
+            Object o;
+            String style = itemNode.getNodeName();
+            if (style.equals("dropdown")) {
+                o = getToolbarActions(itemNode);
+            } else if (style.equals("poly-edge")) {
+                final String type = itemNode.getAttribute("type");
+                final Class<?> metaType = metaTypeByName.get(type);
+                o = getCreateEdgeAction(metaType);
+            } else {
+                final String type = itemNode.getAttribute("type");
+                final Class<?> metaType = metaTypeByName.get(type);
+                o = new CreateDiagramElementAction(
+                        metaType, 
+                        style, 
+                        Model.getMetaTypes().getName(metaType),
+                        this);
+            }
+            toolbarActions[i] = o;
+        }
+        return toolbarActions;
+    }
+    
+    // TODO: This is currently duplicated from MetaDataCache - must find a
+    // common place in model facade
+    private void populateClassMaps(
+            final Element classesNode,
+            final Map<Class<?>, String> nameByMetaType,
+            final Map<String, Class<?>> metaTypeByName) {
+        final NodeList nl = classesNode.getElementsByTagName("class");
+        for (int i = 0; i < nl.getLength(); ++i) {
+            Element classNode = (Element) nl.item(i);
+            String className = classNode.getTextContent();
+            try {
+                final String name = 
+                    classNode.getAttribute("name");
+                Class<?> clazz = Class.forName(className);
+                metaTypeByName.put(name, clazz);
+                nameByMetaType.put(clazz, name);
+            } catch (ClassNotFoundException e) {
+                    LOG.error("Class not found " + className, e);
+            }
+        }
+    }
+    
+    /**
+     * Get the diagram definition XML document
+     * @return
+     * @throws IOException
+     * @throws DOMException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
+    private Document getDocument()
+        throws IOException, DOMException,
+            ParserConfigurationException, SAXException {
+        final String filename = getDiagramXmlFile();
+        InputStream inputStream = 
+            this.getClass().getClassLoader().getResourceAsStream(filename);
+        InputSource inputSource = new InputSource(inputStream);
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        return db.parse(inputSource);
+    }
+    
+    protected abstract String getDiagramXmlFile();
     
     protected Action getCreateEdgeAction(Object metaType) {
         String label = Model.getMetaTypes().getName(metaType);
