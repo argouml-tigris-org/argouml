@@ -362,6 +362,9 @@ public class StereotypeUtility {
                 }
             }
         }
+        for (Project p : ProjectManager.getManager().getOpenProjects()) {
+            p.updateRoots();
+        }
     }
 
     /**
