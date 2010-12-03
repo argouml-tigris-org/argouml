@@ -44,6 +44,8 @@ import java.util.Collection;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.ui.UndoableAction;
@@ -97,6 +99,9 @@ public class ActionSetModelElementStereotype extends UndoableAction {
             // Add stereotypes submenu
             if (newStereo != null) {
                 Model.getCoreHelper().addStereotype(target, newStereo);
+                for (Project p : ProjectManager.getManager().getOpenProjects()) {
+                    p.updateRoots();
+                }
             }
         }
     }
