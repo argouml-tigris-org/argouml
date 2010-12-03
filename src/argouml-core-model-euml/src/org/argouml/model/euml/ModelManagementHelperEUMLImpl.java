@@ -202,7 +202,20 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
         path.add(modelImpl.getFacade().getName(element));
         return path;
     }
-    
+
+    public List<Object> getRootElements(Object model) {
+        if (model instanceof Model) {
+            List<Object> contents = new ArrayList<Object>();
+            contents.addAll(((Model) model).eResource().getContents());
+            if (!contents.contains(model)) {
+                contents.add(model);
+            }
+            return contents;
+        }
+        throw new IllegalArgumentException(
+                "model must be instance of Model"); //$NON-NLS-1$
+    }
+
     public boolean isCyclicOwnership(Object parent, Object child) {
         // TODO: Auto-generated method stub
         return false;

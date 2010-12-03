@@ -427,6 +427,13 @@ class ModelManagementHelperMDRImpl implements ModelManagementHelper {
     }
     
 
+    public List<Object> getRootElements(Object model) {
+        List<Object> contents = new ArrayList<Object>();
+        contents.add(model);
+        return contents;
+    }
+
+    
     public boolean isCyclicOwnership(Object parent, Object child) {
         return (getOwnerShipPath(parent).contains(child) || parent == child);
     }

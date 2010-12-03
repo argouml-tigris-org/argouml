@@ -185,6 +185,21 @@ public interface ModelManagementHelper {
      */
     List<String> getPathList(Object element);
     
+    /**
+     * Find the root elements in the context of a given model. The model itself
+     * also belongs to the list, so the resulting list cannot be empty.
+     * <p>
+     * Note: in UML 1.x, the model itself is the only element that is returned.
+     * But in UML 2.x, e.g., stereotype applications are also included.
+     * <p>
+     * 
+     * @param model
+     *                is the model the root elements belong to.
+     * @return A List of elements as described above.
+     * @throws IllegalArgumentException
+     *                 if model isn't a Model object.
+     */
+    List<Object> getRootElements(Object model);
 
     /**
      * Checks if a child for some ownership relationship (as in a
