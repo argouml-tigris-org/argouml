@@ -527,6 +527,13 @@ public interface Project {
      * @param elements Collection of top level ModelElements
      */
     public void setRoots(final Collection elements);
+
+    /**
+     * Updates the top level ModelElements for all projects. In UML2, each
+     * model knows it's root elements, so this could make setRoots(...)
+     * obsolete. E.g., applying a stereotype in UML2 adds a new root.
+     */
+    public void updateRoots();
     
     /**
      * Returns true if the given name is a valid name for a diagram. Valid means

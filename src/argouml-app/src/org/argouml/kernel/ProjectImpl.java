@@ -984,6 +984,21 @@ public class ProjectImpl implements java.io.Serializable, Project {
         roots.addAll(elements);
     }
 
+    public void updateRoots() {
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            // not needed in UML 1.x
+            return;
+        }
+        roots.clear();
+        for (Object m : models) {
+            for (Object e : Model.getModelManagementHelper().getRootElements(m)) {
+                if (!roots.contains(e)) {
+                    roots.add(e);
+                }
+            }
+        }
+    }
+
     public boolean isValidDiagramName(String name) {
         boolean rv = true;
         for (ArgoDiagram diagram : diagrams) {
