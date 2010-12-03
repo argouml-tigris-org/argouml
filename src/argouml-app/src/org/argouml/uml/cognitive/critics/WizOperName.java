@@ -49,6 +49,8 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepCue;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 
 /**
@@ -187,6 +189,9 @@ public class WizOperName extends WizMEName {
 
             if (addedCreateStereotype) {
                 Model.getCoreHelper().removeStereotype(oper, createStereotype);
+                for (Project p : ProjectManager.getManager().getOpenProjects()) {
+                    p.updateRoots();
+                }
             }
         }
     }
@@ -264,6 +269,9 @@ public class WizOperName extends WizMEName {
                 try {
                     createStereotype = theStereotype;
                     Model.getCoreHelper().addStereotype(oper, theStereotype);
+                    for (Project p : ProjectManager.getManager().getOpenProjects()) {
+                        p.updateRoots();
+                    }
                     addedCreateStereotype = true;
                 } catch (Exception pve) {
                     LOG.error("could not set stereotype", pve);

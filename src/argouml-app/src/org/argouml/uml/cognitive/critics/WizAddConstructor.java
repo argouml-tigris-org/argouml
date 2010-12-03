@@ -44,6 +44,7 @@ import javax.swing.JPanel;
 
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -90,6 +91,9 @@ public class WizAddConstructor extends UMLWizard {
 	        Model.getCoreFactory().buildOperation2(me, returnType, newName);
 	    Model.getCoreHelper()
 	        .addStereotype(oper, getCreateStereotype(oper));
+            for (Project p : ProjectManager.getManager().getOpenProjects()) {
+                p.updateRoots();
+            }
 	    TargetManager.getInstance().setTargets(savedTargets);
             break;
 	}
