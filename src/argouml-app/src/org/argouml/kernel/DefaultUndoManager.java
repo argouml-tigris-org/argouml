@@ -75,6 +75,11 @@ class DefaultUndoManager implements UndoManager {
     private boolean newInteraction = true;
     
     /**
+     * The project to which this undo manager relates
+     */
+    private final Project project;
+    
+    /**
      * A description of the user interaction taking place.
      * Often this is the label of an Action.
      */
@@ -83,21 +88,30 @@ class DefaultUndoManager implements UndoManager {
     private UndoStack undoStack = new UndoStack();
     private RedoStack redoStack = new RedoStack();
     
+    /**
+     * @deprecated in 0.32 alpha by Bob Tarling use DefaultUndoManager(Project)
+     */
+    @Deprecated
     private static final UndoManager INSTANCE = new DefaultUndoManager();
 
+    /**
+     * @deprecated in 0.32 alpha by Bob Tarling use DefaultUndoManager(Project)
+     */
+   @Deprecated
     private DefaultUndoManager() {
         super();
+        project = null;
+    }
+    
+    DefaultUndoManager(Project project) {
+        super();
+        this.project = project;
     }
     
     /**
-     * Get the UndoManager singleton instance.
-     * 
-     * @deprecated The DefaultUndoManager is only temporarily a singleton until
-     *             changes are made to GEF at which point there will be one undo
-     *             manager per ArgoUML project and this method will disappear.
-     * @return the singleton undo manager
+     * @deprecated in 0.32 alpha by Bob Tarling use DefaultUndoManager(Project)
      */
-    @Deprecated
+   @Deprecated
     public static UndoManager getInstance() {
         return INSTANCE;
     }

@@ -167,7 +167,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
 
     // TODO: Change this to use an UndoManager instance per project when
     // GEF has been enhanced.
-    private UndoManager undoManager = DefaultUndoManager.getInstance();
+    private UndoManager undoManager = new DefaultUndoManager(this);
 
     private boolean dirty = false;
     
