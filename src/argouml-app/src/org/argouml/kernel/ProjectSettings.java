@@ -82,7 +82,21 @@ public class ProjectSettings {
     /* Generation preferences: */
     private String headerComment =
         "Your copyright and other header comments";
+    
+    private Project project;
 
+    /**
+     * Create a new set of project settings for the given project,
+     * based on the application defaults. <p>
+     *
+     * The constructor is not public, since this
+     * class is only created from the Project..
+     * @param project the project owning these settings
+     */
+    ProjectSettings(Project project) {
+        this();
+        this.project = project;
+    }
 
     /**
      * Create a new set of project settings,
@@ -230,7 +244,7 @@ public class ProjectSettings {
             UndoManager.getInstance().addMemento(memento);
         }
         memento.redo();
-        ProjectManager.getManager().setSaveEnabled(true);
+        project.setDirty(true);
     }
 
     /**
