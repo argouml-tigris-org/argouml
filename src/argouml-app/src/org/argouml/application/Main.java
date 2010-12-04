@@ -514,7 +514,7 @@ public class Main {
             project = ProjectManager.getManager().makeEmptyProject(true);
         }
         ProjectManager.getManager().setCurrentProject(project);
-        ProjectManager.getManager().setSaveEnabled(false);
+        project.setDirty(false);
 
         st.mark("set project");
         Designer.enableCritiquing();
