@@ -273,6 +273,11 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof AggregationKind;
     }
 
+    public boolean isAAppliedProfileElement(Object handle) {
+        // non existent in UML1
+        return false;
+    }
+
     public boolean isAArgument(Object modelElement) {
         return modelElement instanceof Argument;
     }

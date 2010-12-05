@@ -196,6 +196,13 @@ public interface Facade {
     boolean isAAggregationKind(Object handle);
 
     /**
+     * Recognizer for an applied profile element. UML2 only.
+     *
+     * @param handle candidate
+     * @return true if handle is an applied profile element
+     */
+    boolean isAAppliedProfileElement(Object handle);
+    /**
      * Recognizer for Artifact.
      *
      * @param handle candidate

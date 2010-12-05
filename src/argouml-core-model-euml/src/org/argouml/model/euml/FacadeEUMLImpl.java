@@ -30,8 +30,11 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.Abstraction;
@@ -1028,6 +1031,30 @@ class FacadeEUMLImpl implements Facade {
             }
         } else if (handle instanceof Enumerator) {
             return ((Enumerator) handle).getName();
+        } else if (handle instanceof DynamicEObjectImpl) {
+            StringBuffer name = new StringBuffer();
+            EClass c = ((DynamicEObjectImpl) handle).eClass();
+            if (c != null) {
+                EObject p = c.eContainer();
+                if (p instanceof EPackage) {
+                    name.append(((EPackage)p).getName()).append(':');
+                } else {
+                    name.append("(null):");
+                }
+                name.append('<').append('<').append(c.getName()).append('>').append('>');
+                /*
+                char sep = '<';
+                for (EStructuralFeature o : c.getEAllStructuralFeatures()) {
+                    name.append(sep).append(o.getName());
+                    sep = ',';
+                }
+                if (sep == ',') {
+                    name.append('>');
+                }
+                */
+                return name.toString();
+            }
+            return handle.toString();
         } else {
             // TODO: Some elements such as Generalization are
             // no longer named.  For a transitional period we'll
@@ -1655,6 +1682,10 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAAggregationKind(Object handle) {
         return handle instanceof AggregationKind;
+    }
+
+    public boolean isAAppliedProfileElement(Object handle) {
+        return handle instanceof DynamicEObjectImpl;
     }
 
     public boolean isAArgument(Object modelElement) {
