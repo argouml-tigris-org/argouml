@@ -102,9 +102,7 @@ class ActionAddStereotype extends UndoableAction {
         } else {
             Model.getCoreHelper().addStereotype(modelElement, stereotype);
         }
-        for (Project p : ProjectManager.getManager().getOpenProjects()) {
-            p.updateRoots();
-        }
+        ProjectManager.getManager().updateRoots();
     }
 
     /*
