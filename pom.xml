@@ -17,5 +17,6 @@
     <module>src/argouml-core-model</module>
     <module>src/argouml-core-model-mdr</module>
     <module>src/argouml-core-model-euml</module>
+    <module>src/argouml-app</module>
   </modules>
 </project>
