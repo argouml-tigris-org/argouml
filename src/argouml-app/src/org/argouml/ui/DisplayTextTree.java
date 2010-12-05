@@ -229,7 +229,11 @@ public class DisplayTextTree extends JTree {
                 return Model.getFacade().toString(value);
             } catch (InvalidElementException e) {
                 return Translator.localize("misc.name.deleted");
-            }            
+            }
+        }
+
+        if (Model.getFacade().isAAppliedProfileElement(value)) {
+            return Model.getFacade().getName(value);
         }
         
         if (value instanceof ArgoDiagram) {
