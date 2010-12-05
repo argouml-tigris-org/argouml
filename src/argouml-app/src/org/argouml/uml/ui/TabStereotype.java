@@ -59,7 +59,6 @@ import javax.swing.event.ListSelectionListener;
 
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.swingext.SpacerPanel;
@@ -237,9 +236,7 @@ public class TabStereotype extends PropPanel implements TabModelTarget {
             return;
         }
         Model.getCoreHelper().addStereotype(modelElement, stereotype);
-        for (Project p : ProjectManager.getManager().getOpenProjects()) {
-            p.updateRoots();
-        }
+        ProjectManager.getManager().updateRoots();
     }
 
     /**
@@ -256,9 +253,7 @@ public class TabStereotype extends PropPanel implements TabModelTarget {
         if (Model.getFacade().getStereotypes(modelElement)
                 .contains(stereotype)) {
             Model.getCoreHelper().removeStereotype(modelElement, stereotype);
-            for (Project p : ProjectManager.getManager().getOpenProjects()) {
-                p.updateRoots();
-            }
+            ProjectManager.getManager().updateRoots();
         }
     }
 
