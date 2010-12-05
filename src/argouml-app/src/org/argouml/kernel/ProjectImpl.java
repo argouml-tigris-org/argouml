@@ -197,7 +197,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         projectType = type;
         setProfileConfiguration(new ProfileConfiguration(this));
 
-        projectSettings = new ProjectSettings();
+        projectSettings = new ProjectSettings(this);
 
         Model.getModelManagementFactory().setRootModel(null);
 
