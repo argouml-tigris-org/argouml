@@ -49,6 +49,9 @@ import javax.swing.Action;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoStatusEvent;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -546,6 +549,21 @@ public final class ProjectManager implements ModelCommandCreationObserver {
             }
         }
         oldProject.remove();
+    }
+
+    /**
+     * Updates the top level ModelElements for all projects.
+     */
+    public void updateRoots() {
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            // not needed in UML 1.x
+            return;
+        }
+        for (Project p : getOpenProjects()) {
+            p.updateRoots();
+        }
+        firePropertyChanged(OPEN_PROJECTS_PROPERTY,
+                new Project[] {currentProject}, new Project[] {currentProject});
     }
 
     /**
