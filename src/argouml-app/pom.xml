@@ -1,0 +1,138 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <!-- 
+    Experimenting with maven for the nightly build.
+  -->
+
+  <parent>
+    <groupId>org.argouml</groupId>
+    <artifactId>parentpom</artifactId>
+    <version>0.1</version>
+    <relativePath>../../tools/maven/parentpom.xml</relativePath>
+  </parent>
+
+  <artifactId>argouml-app</artifactId>
+  <version>0.2-SNAPSHOT</version>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-core-model</artifactId>
+      <version>0.2-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.tigris.gef</groupId>
+      <artifactId>gef</artifactId>
+      <version>0.13.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.tigris.swidgets</groupId>
+      <artifactId>swidgets</artifactId>
+      <version>0.1.4-5</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.tigris.toolbar</groupId>
+      <artifactId>toolbar</artifactId>
+      <version>1.4.1-20071227-1</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>tudresden.ocl</groupId>
+      <artifactId>ocl-argo</artifactId>
+      <version>1.1-5</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.6-5</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
+
+    <!-- MDR things -->
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-core-model-mdr</artifactId>
+      <version>0.2-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>jmi</groupId>
+      <artifactId>jmi</artifactId>
+      <version>1.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>jmi</groupId>
+      <artifactId>mof</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>java-interfaces</artifactId>
+      <version>0.30.0</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.netbeans.mdr</groupId>
+      <artifactId>jmiutils</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.netbeans.mdr</groupId>
+      <artifactId>mdrapi</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.netbeans.mdr</groupId>
+      <artifactId>openide-util</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.netbeans.mdr</groupId>
+      <artifactId>nbmdr</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Other test stuff -->
+    <dependency>
+      <groupId>easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <version>1.2_Java1.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>jdepend</groupId>
+      <artifactId>jdepend</artifactId>
+      <version>2.9.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
