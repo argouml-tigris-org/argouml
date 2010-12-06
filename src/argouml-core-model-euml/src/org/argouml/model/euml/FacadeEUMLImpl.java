@@ -1035,23 +1035,18 @@ class FacadeEUMLImpl implements Facade {
             StringBuffer name = new StringBuffer();
             EClass c = ((DynamicEObjectImpl) handle).eClass();
             if (c != null) {
+                name.append('<').append('<');
                 EObject p = c.eContainer();
                 if (p instanceof EPackage) {
                     name.append(((EPackage)p).getName()).append(':');
                 } else {
                     name.append("(null):");
                 }
-                name.append('<').append('<').append(c.getName()).append('>').append('>');
-                /*
-                char sep = '<';
-                for (EStructuralFeature o : c.getEAllStructuralFeatures()) {
-                    name.append(sep).append(o.getName());
-                    sep = ',';
+                name.append(c.getName()).append('>').append('>');
+                Element e = UMLUtil.getBaseElement((DynamicEObjectImpl) handle);
+                if (e != null && e instanceof NamedElement) {
+                    name.append(((NamedElement) e).getName());
                 }
-                if (sep == ',') {
-                    name.append('>');
-                }
-                */
                 return name.toString();
             }
             return handle.toString();
