@@ -105,15 +105,7 @@ Building this requires:
     <!-- In order to use ant optional tasks which use jars that are not -->
     <!-- copied into ANT_HOME/lib, we must declare the tasks ourselves. -->
 
-    <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-
-    <property name="argo.build.version" value="${argo.core.version}"/>
-
-    <property name="argo.timestamp.version" 
-              value="${argo.build.version}-${DSTAMP}-${TSTAMP}"/>
-
-    <property name="version.package" value="org/argouml/application"/>
 
     <property name="cobertura.dir" value="${argo.tools.dir}/cobertura-1.9" />
     <property name="cobertura.datafile" value="${build.dir}/cobertura.ser" />
@@ -169,7 +161,7 @@ Building this requires:
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
 
-  <target name="prepare" depends="init,check-version">
+  <target name="prepare" depends="init">
     <!-- create directories -->
     <echo message="Preparing the build directories in argouml-app"/>
     <mkdir dir="${build.dir}"/>
@@ -214,36 +206,10 @@ Building this requires:
   </target>
 
   <!-- =================================================================== -->
-  <!-- Updates the version source file if necessary                        -->
-  <!-- =================================================================== -->
-  <target name="check-version" depends="init">
-    <uptodate property="version.is.current"
-              targetfile="src/${version.package}/ArgoVersion.java">
-      <srcfiles dir="src/templates">
-        <include name="ArgoVersion.template"/>
-      </srcfiles>
-      <srcfiles dir="src">
-        <include name="default.properties"/>
-        <include name="build.properties"/>
-      </srcfiles>
-    </uptodate>
-  </target>
-
-  <target name="update-version" depends="check-version"
-          unless="version.is.current">
-    <echo message="Creating ArgoVersion.java for version ${argo.build.version} in argouml-app"/>
-    <filter token="ARGO_RELEASE_VERSION" value="${argo.build.version}"/>
-    <copy file="src/templates/ArgoVersion.template"
-          filtering="on" 
-          overwrite="on"
-          tofile="src/${version.package}/ArgoVersion.java"/>
-  </target>
-
-  <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
   <target name="compile"
-      depends="prepare,update-version"
+      depends="prepare"
       description="Compile the sources.">
 
     <echo message="Compiling the sources in argouml-app"/>
@@ -271,8 +237,7 @@ Building this requires:
   <!-- =================================================================== -->
   <target name="jar" depends="compile"
           description="Build the main jar file.">
-    <filter token="version" value="${argo.build.version}"/>
-    <copy file="src/templates/manifest.template" filtering="on" 
+    <copy file="src/templates/manifest.template"
           overwrite="on"
           tofile="${build.classes}/manifest.mf"/>
     <jar basedir="${build.classes}"
@@ -303,7 +268,6 @@ Building this requires:
           description="Clean out all built files.">
 
     <delete dir="${build.dir}"/>
-    <delete file="src/${version.package}/ArgoVersion.java"/>
 
     <antcall target="coverage-clean"/>
     <antcall target="pde-clean" />

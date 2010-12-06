@@ -4,8 +4,6 @@ Created-By: 1.2 (Sun Microsystems Inc.)
 
 Name: org/argouml/application/
 Specification-Title: ArgoUML
-Specification-Version: @version@
 Specification-Vendor: University of California
 Implementation-Vendor: University of California
-Implementation-Version: @version@
 Implementation-Title: ArgoUML
