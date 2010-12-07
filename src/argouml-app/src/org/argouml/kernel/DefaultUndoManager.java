@@ -123,7 +123,12 @@ class DefaultUndoManager implements UndoManager {
     
     public synchronized void addCommand(Command command) {
 
-        ProjectManager.getManager().setSaveEnabled(true);
+        // TODO: Once the default constructor is deleted we only set dirty flag
+        if (project != null) {
+            project.setDirty(true);
+        } else {
+            ProjectManager.getManager().setSaveEnabled(true);
+        }
         
         if (undoMax == 0) {
             return;
