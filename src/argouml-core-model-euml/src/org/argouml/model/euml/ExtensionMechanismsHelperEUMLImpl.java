@@ -86,10 +86,12 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
 
     public void applyProfile(Object handle, Object profile) {
         if (profile instanceof Profile) {
-            if (handle instanceof Model) {
-                ((Model) handle).applyProfile((Profile) profile);
-            } else if (handle instanceof Profile) {
-                ((Profile) handle).applyProfile((Profile) profile);
+            if (((Profile) profile).isDefined()) {
+                if (handle instanceof Model) {
+                    ((Model) handle).applyProfile((Profile) profile);
+                } else if (handle instanceof Profile) {
+                    ((Profile) handle).applyProfile((Profile) profile);
+                }
             }
             // also apply subprofiles:
             Iterator<Package> iter = ((Profile) profile).getNestedPackages()
