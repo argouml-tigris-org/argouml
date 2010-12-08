@@ -136,6 +136,8 @@ public class ActionDeployProfile extends AbstractAction {
         if (result == JFileChooser.APPROVE_OPTION) {
             theFile = chooser.getSelectedFile();
             if (theFile != null) {
+                Model.getExtensionMechanismsHelper().makeProfileApplicable(
+                    undeployedProfile);
                 String name = theFile.getName();
                 name = pm.fixXmiExtension(name);
                 theFile = new File(theFile.getParent(), name);

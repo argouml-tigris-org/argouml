@@ -458,10 +458,11 @@ public class UserDefinedProfile extends Profile {
         
         for (Object object: packages) {
             if (Model.getFacade().isAPackage(object)) {
-                if (Model.getFacade().isAProfile(object)) {
-                    object = Model.getExtensionMechanismsHelper()
-                            .makeProfileApplicable(object);
-                }
+                // For now, this must only be done in ActionDeployProfile: (thn)
+                //if (Model.getFacade().isAProfile(object)) {
+                //    object = Model.getExtensionMechanismsHelper()
+                //            .makeProfileApplicable(object);
+                //}
                 ret.add(object);
             }
         }
