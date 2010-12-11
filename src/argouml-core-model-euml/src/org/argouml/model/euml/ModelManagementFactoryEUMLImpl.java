@@ -14,9 +14,13 @@
 
 package org.argouml.model.euml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.ModelManagementFactory;
 import org.argouml.model.NotImplementedException;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
@@ -164,14 +168,24 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
                     "The rootModel supplied must be a Package. Got a " //$NON-NLS-1$
                     + rootModel.getClass().getName());
         }
+        List<EObject> restoreList = new ArrayList<EObject>();
 	if (theRootModel != null && theRootModel.eResource() != null) {
+	    if (theRootModel.eResource().getContents().contains(theRootModel)
+	            && rootModel == theRootModel) {
+	        for (EObject o : theRootModel.eResource().getContents()) {
+	            if (o != theRootModel) {
+	                restoreList.add(o);
+	            }
+	        }
+	    }
 	    EcoreUtil.remove(theRootModel);
 	}
         theRootModel = (org.eclipse.uml2.uml.Package) rootModel;
-	if (rootModel != null) {
+	if (rootModel != null && theRootModel.eResource() == null) {
+            restoreList.add(0, theRootModel);
             Resource r = UMLUtil.getResource(modelImpl, UMLUtil.DEFAULT_URI, 
                     Boolean.FALSE);
-            r.getContents().add(theRootModel);
+            r.getContents().addAll(restoreList);
 	}
         modelImpl.getModelEventPump().setRootContainer(theRootModel);
     }
