@@ -269,6 +269,7 @@ class XmiFilePersister extends AbstractFilePersister
             
             p.setRoot(model);
             p.setRoots(modelPersister.getElementsRead());
+            p.updateRoots();
             File defaultProjectFile = new File(file.getPath() + ".zargo");
             // Make sure the file doesn't exist so the user will 
             // get prompted to choose a new name
