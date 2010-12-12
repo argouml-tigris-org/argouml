@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.argouml.model.ModelManagementHelper;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Element;
@@ -204,16 +205,16 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public List<Object> getRootElements(Object model) {
-        if (model instanceof Model) {
+        if (model instanceof EObject) {
             List<Object> contents = new ArrayList<Object>();
-            contents.addAll(((Model) model).eResource().getContents());
+            contents.addAll(((EObject) model).eResource().getContents());
             if (!contents.contains(model)) {
                 contents.add(model);
             }
             return contents;
         }
         throw new IllegalArgumentException(
-                "model must be instance of Model"); //$NON-NLS-1$
+                "model must be instance of EObject"); //$NON-NLS-1$
     }
 
     public boolean isCyclicOwnership(Object parent, Object child) {
