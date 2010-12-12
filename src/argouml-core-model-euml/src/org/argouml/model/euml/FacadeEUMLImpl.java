@@ -1050,6 +1050,8 @@ class FacadeEUMLImpl implements Facade {
                 return name.toString();
             }
             return handle.toString();
+        } else if (handle instanceof EPackage) {
+            return ((EPackage) handle).getName();
         } else {
             // TODO: Some elements such as Generalization are
             // no longer named.  For a transitional period we'll
@@ -1060,9 +1062,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getNamespace(Object handle) {
-        Object o = ((Element) handle).getOwner();
-        if (o instanceof Namespace) {
-            return o;
+        if (handle instanceof Element) {
+            Object o = ((Element) handle).getOwner();
+            if (o instanceof Namespace) {
+                return o;
+            }
+        } else if (handle instanceof DynamicEObjectImpl) {
+            EClass c = ((DynamicEObjectImpl) handle).eClass();
+            if (c != null) {
+                return c.eContainer();
+            }
         }
         return null;
     }
