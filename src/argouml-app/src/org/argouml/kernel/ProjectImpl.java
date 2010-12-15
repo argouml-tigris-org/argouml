@@ -994,7 +994,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             for (Object e : Model.getModelManagementHelper().getRootElements(m)) {
                 if (!roots.contains(e)) {
                     roots.add(e);
-                    checkProfileFor(e);
+                    checkProfileFor(e, m);
                 }
             }
         }
@@ -1150,7 +1150,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         ProjectManager.getManager().setSaveEnabled(isDirty);
     }
 
-    private void checkProfileFor(Object o) {
+    private void checkProfileFor(Object o, Object m) {
         Profile profile = null;
         if (Model.getFacade().isAAppliedProfileElement(o)) {
             Object pkg = Model.getFacade().getNamespace(o);
@@ -1161,7 +1161,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
             }
         }
         if (profile != null) {
-            getProfileConfiguration().addProfile(profile, null);
+            getProfileConfiguration().addProfile(profile, m);
         }
     }
 }
