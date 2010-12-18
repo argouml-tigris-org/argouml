@@ -73,10 +73,6 @@ class ExpressionBodyField extends JTextArea
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         setRows(2); // make it stretch vertically
 
-        update();
-    }
-
-    void update() {
         String oldText = getText();
         String newText = model.getBody();
 

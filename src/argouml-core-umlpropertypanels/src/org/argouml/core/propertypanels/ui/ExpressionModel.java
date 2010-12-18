@@ -38,9 +38,6 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
@@ -61,19 +58,20 @@ import org.argouml.model.Model;
  *
  * @author mkl, penyaskito, mvw, thn
  */
-class ExpressionModel implements PropertyChangeListener {
+class ExpressionModel {
 
     private static final Logger LOG =
         Logger.getLogger(ExpressionModel.class);
 
+    /**
+     * The target model element
+     * In UML1.x this is the element that owns the expression.
+     * In UML2.x this is the expression itself
+     * TODO: This makes behaviour different enough that separate subclasses
+     * should be considered.
+     */
     private Object target;
     private String propertyName;
-
-    /** This member is only used when we set the expression ourselves.
-     * In this case, we do not wish to receive UML model change events
-     * for this self-inflicted change.
-     * So, this member is used to detect this situation. */
-    private Object rememberExpression;
 
     private final GetterSetterManager getterSetterManager;
     
@@ -97,40 +95,20 @@ class ExpressionModel implements PropertyChangeListener {
             final Object umlElement,
             final GetterSetterManager getterSetterManager) {
         this.target = umlElement;
+        LOG.info("Creating ExpressionModel with target " + target);
         this.propertyName = propertyName;
         this.getterSetterManager = getterSetterManager;
         this.type = type;
-        addModelEventListener();
     }
     
-
-    public void addModelEventListener() {
-        Model.getPump().addModelEventListener(this, target, propertyName);
-    }
-
-    public void removeModelEventListener() {
-        Model.getPump().removeModelEventListener(this, target, propertyName);
-    }
-
-    public void propertyChange(PropertyChangeEvent e) {
-	if (propertyName.equals(e.getPropertyName())) {
-	    if (rememberExpression != e.getNewValue()) {
-		fireStateChanged();
-	    }
-	}
-    }
-
-    protected Object getTarget() {
-        return target;
-    }
-
     /**
      * @return the expression
      */
-    public Object getExpression() {
+    private Object getExpression() {
         Object expression = null;
         if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
             expression = getterSetterManager.get(target, propertyName, type);
+            LOG.info("Got the expression " + expression);
         } else {
             // in UML2, the target is already the "expression" (Opaque...)
             expression = target;
@@ -142,6 +120,7 @@ class ExpressionModel implements PropertyChangeListener {
      * @param expr the expression
      */
     public void setExpression(Object expr) {
+	LOG.info("Setting the expression to " + expr);
         getterSetterManager.set(target, expr, propertyName);
     }
 
@@ -236,8 +215,8 @@ class ExpressionModel implements PropertyChangeListener {
             // Expressions are DataTypes, not independent model elements
             // be careful not to reuse them
             final Object currentExpression = getExpression();
-            removeModelEventListener();
             if (currentExpression != null) {
+        	LOG.info("Deleting the current expression " + currentExpression);
                 Model.getUmlFactory().delete(currentExpression);
             }
             final Object newExpression;
@@ -247,7 +226,6 @@ class ExpressionModel implements PropertyChangeListener {
                 newExpression = newExpression(lang, body);
             }
             setExpression(newExpression);
-            addModelEventListener();
 	} else {
 	    // reuse Opaque..., just set it's attributes
 	    Object expression = getExpression();
@@ -267,16 +245,6 @@ class ExpressionModel implements PropertyChangeListener {
     public void addChangeListener(ChangeListener l) {
         listenerList.add(ChangeListener.class, l);
         LOG.debug(">>Add listener");
-    }
-
-    /**
-     * Removes a <code>ChangeListener</code>.
-     *
-     * @param l the <code>ChangeListener</code> to remove
-     * @see #addChangeListener
-     */
-    public void removeChangeListener(ChangeListener l) {
-        listenerList.remove(ChangeListener.class, l);
     }
 
     /**

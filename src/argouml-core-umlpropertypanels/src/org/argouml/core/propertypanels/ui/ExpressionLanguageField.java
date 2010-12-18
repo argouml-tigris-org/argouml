@@ -62,10 +62,6 @@ class ExpressionLanguageField extends JTextField implements
         getDocument().addDocumentListener(this);
         setToolTipText(Translator.localize("label.language.tooltip"));
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
-        update();
-    }
-
-    void update() {
         String oldText = getText();
         String newText = model.getLanguage();
         if (oldText == null || newText == null || !oldText.equals(newText)) {

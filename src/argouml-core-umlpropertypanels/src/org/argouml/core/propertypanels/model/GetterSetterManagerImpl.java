@@ -1895,6 +1895,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
       
         @Override
         public void set(Object modelElement, Object value) {
+            LOG.info("About to call setBody " + modelElement + " / " + value);
             Model.getCoreHelper().setBody(modelElement, value);
         }
 
