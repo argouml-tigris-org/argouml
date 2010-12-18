@@ -2684,10 +2684,11 @@ class CoreHelperMDRImpl implements CoreHelper {
                 && (expr == null || expr instanceof ProcedureExpression)) {
             ProcedureExpression oldPe = ((Method)handle).getBody();
             if (!equal(oldPe, (ProcedureExpression) expr)) {
-                ((Method) handle).setBody((ProcedureExpression) expr);
+                ((Method) handle).setBody(null);
                 if (oldPe != null) {
                     Model.getUmlFactory().delete(oldPe);
                 }
+                ((Method) handle).setBody((ProcedureExpression) expr);
             }
             return;
         }
