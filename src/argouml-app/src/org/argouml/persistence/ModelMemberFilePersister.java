@@ -164,13 +164,6 @@ class ModelMemberFilePersister extends MemberFilePersister
 
         ProjectMemberModel pmm = (ProjectMemberModel) member;
         Object model = pmm.getModel();
-        // For now, this must only be done in ActionDeployProfile: (thn)
-        /*
-        if (Model.getFacade().getUmlVersion().charAt(0) == '2' &&
-            Model.getFacade().isAProfile(model)) {
-            Model.getExtensionMechanismsHelper().makeProfileApplicable(model);
-        }
-        */
 
         try {
             XmiWriter xmiWriter = 

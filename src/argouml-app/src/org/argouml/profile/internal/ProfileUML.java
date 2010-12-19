@@ -154,11 +154,6 @@ public class ProfileUML extends Profile {
                 model = new ArrayList();
                 model.add(Model.getModelManagementFactory().createProfile());
             }
-
-            // For now, this must only be done in ActionDeployProfile: (thn)
-            //for (Object p : model) {
-            //    Model.getExtensionMechanismsHelper().makeProfileApplicable(p);
-            //}
         }
         return model;
     }
