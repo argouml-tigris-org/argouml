@@ -195,17 +195,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         Object end0 = null;
         Object end1 = null;
 
-        if (Model.getFacade().isATransition(edge)) {
-            end0 = Model.getFacade().getSource(edge);
-            end1 = Model.getFacade().getTarget(edge);
-            // it's not allowed to directly draw a transition
-            // from a composite state to one of it's substates.
-            if (Model.getFacade().isACompositeState(end0)
-                    && Model.getStateMachinesHelper().getAllSubStates(end0)
-                                                        .contains(end1)) {
-                return false;
-            }
-        } else if (edge instanceof CommentEdge) {
+        if (edge instanceof CommentEdge) {
             end0 = ((CommentEdge) edge).getSource();
             end1 = ((CommentEdge) edge).getDestination();
         } else {
