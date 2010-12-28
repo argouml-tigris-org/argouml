@@ -135,4 +135,11 @@
     </dependency>
   </dependencies>
 
+  <name>argouml-app</name>
+  <description>
+This is the project containing most of the application or
+the parts of the application that are not (yet) moved into their
+own projects.
+  </description>
+
 </project>

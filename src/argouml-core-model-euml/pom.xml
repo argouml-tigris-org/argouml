@@ -146,4 +146,10 @@
     </dependency>
   </dependencies>
 
+  <name>argouml-core-model-euml</name>
+  <description>
+This is the project containing the euml/uml2/ecore version 
+of the model subsystem.
+  </description>
+
 </project>

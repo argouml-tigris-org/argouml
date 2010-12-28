@@ -97,4 +97,9 @@
     </dependency>
   </dependencies>
 
+  <name>argouml-core-model</name>
+  <description>
+This is the project containing the general part of the model subsystem.
+  </description>
+
 </project>

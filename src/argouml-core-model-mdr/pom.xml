@@ -89,4 +89,9 @@
     </dependency>
   </dependencies>
 
+  <name>argouml-core-model-mdr</name>
+  <description>
+This is the project containing the mdr of the model subsystem.
+  </description>
+
 </project>

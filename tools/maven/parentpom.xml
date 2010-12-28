@@ -51,6 +51,18 @@
           <target>1.5</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.5</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.argouml</groupId>
+            <artifactId>tools</artifactId>
+            <version>0.1</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
 
@@ -61,7 +73,7 @@
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>2.5</version>
         <configuration>
-          <configLocation>${basedir}/../../tools/checkstyle/checkstyle5_argouml.xml</configLocation>
+          <configLocation>checkstyle/checkstyle5_argouml.xml</configLocation>
         </configuration>
       </plugin>
       <plugin>
@@ -108,7 +120,7 @@
 
   <ciManagement>
     <system>Hudson</system>
-    <url>http://closettop.homelinux.org:8080/</url>
+    <url>http://closettop.homelinux.org:8080/jobs/maven-build/</url>
   </ciManagement>
 
 

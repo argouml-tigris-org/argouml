@@ -9,20 +9,22 @@
   -->
 
   <groupId>org.argouml</groupId>
-  <artifactId>allCoreArgoUMLProjects</artifactId>
+  <artifactId>tools</artifactId>
   <version>0.1</version>
-  <packaging>pom</packaging>
 
-  <modules>
-    <module>src/argouml-core-model</module>
-    <module>src/argouml-core-model-mdr</module>
-    <module>src/argouml-core-model-euml</module>
-    <module>src/argouml-app</module>
-  </modules>
+  <build>
+    <resources>
+      <resource>
+        <directory>${project.basedir}</directory>
+        <includes>
+          <include>checkstyle/*</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
 
-  <name>argouml-core</name>
+  <name>argouml-tools</name>
   <description>
-The group of core argouml projects.
-This project is the virtual project that includes all core subprojects.
+Project that contains the configuration of ArgoUML tools.
   </description>
 </project>

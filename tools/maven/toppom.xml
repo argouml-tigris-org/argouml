@@ -14,11 +14,12 @@
   <packaging>pom</packaging>
 
   <modules>
+    <module>..</module>
     <module>../..</module>
     <module>../../../argouml-actionscript3</module>
   </modules>
   
-  <name>ManyArgoUMLProjects</name>
+  <name>argouml-all</name>
   <description>
 The ArgoUML project contains separate projects for plugins.
 This project is the virtual project that includes them all.
