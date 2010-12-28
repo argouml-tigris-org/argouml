@@ -13,18 +13,22 @@
   <version>0.1</version>
   <packaging>pom</packaging>
 
-  <repositories>
-    <repository>
-      <id>argouml</id>
-      <name>ArgoUML Release Repository</name>
-      <layout>default</layout>
-      <url>http://argouml-downloads.tigris.org/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <type>jar</type>
+      <scope>test</scope>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <!-- Build Settings -->
   <build>
     <sourceDirectory>${project.basedir}/src</sourceDirectory>
     <testSourceDirectory>${project.basedir}/tests</testSourceDirectory>
@@ -49,17 +53,6 @@
       </plugin>
     </plugins>
   </build>
-
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.8.1</version>
-      <type>jar</type>
-      <scope>test</scope>
-      <optional>true</optional>
-    </dependency>
-  </dependencies>
 
   <reporting>
     <plugins>
@@ -106,5 +99,29 @@
 
     </plugins>
   </reporting>
+
+  <!-- Environment Settings -->
+  <issueManagement>
+    <system>Issuezilla</system>
+    <url>http://argouml.tigris.org/project_bugs.html</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>Hudson</system>
+    <url>http://closettop.homelinux.org:8080/</url>
+  </ciManagement>
+
+
+  <repositories>
+    <repository>
+      <id>argouml</id>
+      <name>ArgoUML Release Repository</name>
+      <layout>default</layout>
+      <url>http://argouml-downloads.tigris.org/maven2</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
 </project>

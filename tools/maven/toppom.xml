@@ -17,4 +17,10 @@
     <module>../..</module>
     <module>../../../argouml-actionscript3</module>
   </modules>
+  
+  <name>ManyArgoUMLProjects</name>
+  <description>
+The ArgoUML project contains separate projects for plugins.
+This project is the virtual project that includes them all.
+  </description>
 </project>
