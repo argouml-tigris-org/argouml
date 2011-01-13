@@ -223,6 +223,7 @@ class ZipFilePersister extends XmiFilePersister {
                 new ModelMemberFilePersister();
             
             modelPersister.readModels(is);
+            // TODO Handle multiple top level packages
             Object model = modelPersister.getCurModel();
             Model.getUmlHelper().addListenersToModel(model);
             p.setUUIDRefs(modelPersister.getUUIDRefs());

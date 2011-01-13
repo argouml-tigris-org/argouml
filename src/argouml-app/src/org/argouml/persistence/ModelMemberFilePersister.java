@@ -73,12 +73,14 @@ import org.xml.sax.InputSource;
 class ModelMemberFilePersister extends MemberFilePersister 
     implements XmiExtensionParser {
 
-    /**
-     * Logger.
-     */
     private static final Logger LOG =
         Logger.getLogger(ModelMemberFilePersister.class);
 
+    private Object curModel;
+    private HashMap<String, Object> uUIDRefs;
+
+    private Collection elementsRead;
+    
     /**
      * Loads a model (XMI only) from a URL. BE ADVISED this
      * method has a side effect. It sets _UUIDREFS to the model.<p>
@@ -137,6 +139,7 @@ class ModelMemberFilePersister extends MemberFilePersister
         // the listener.  Until then, do it here.
         Model.getUmlHelper().addListenersToModel(mmodel);
 
+        // TODO Add all top level packages
         project.addMember(mmodel);
 
         project.setUUIDRefs(new HashMap<String, Object>(getUUIDRefs()));
@@ -184,16 +187,13 @@ class ModelMemberFilePersister extends MemberFilePersister
     public void parse(String label, String xmiExtensionString) {
         LOG.info("Parsing an extension for " + label);
     }
-    
-    private Object curModel;
-    private HashMap<String, Object> uUIDRefs;
-
-    private Collection elementsRead;
 
 
     /**
      * @return the current model
+     * @deprecated by tfmorris for 0.33.1
      */
+    @Deprecated
     public Object getCurModel() {
         return curModel;
     }

@@ -263,6 +263,7 @@ class XmiFilePersister extends AbstractFilePersister
             progressMgr.nextPhase();
             Model.getUmlHelper().addListenersToModel(model);
             p.setUUIDRefs(modelPersister.getUUIDRefs());
+            // TODO Handle multiple top level packages
             p.addMember(model);
             parseXmiExtensions(p);
             modelPersister.registerDiagrams(p);

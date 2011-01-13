@@ -65,7 +65,7 @@ public class GoProjectToModel extends AbstractPerspectiveRule {
 	if (parent instanceof Project) {
 	    return ((Project) parent).getUserDefinedModelList();
 	}
-	return Collections.EMPTY_SET;
+	return Collections.emptyList();
     }
 
     /*
@@ -73,6 +73,6 @@ public class GoProjectToModel extends AbstractPerspectiveRule {
      */
     public Set getDependencies(Object parent) {
         // TODO: What?
-	return Collections.EMPTY_SET;
+	return Collections.emptySet();
     }
 }
