@@ -42,6 +42,8 @@ import java.util.Collections;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
@@ -58,6 +60,7 @@ import org.tigris.gef.presentation.Fig;
 public class TestUMLClassDiagram extends TestCase {
 
     private static Object[] nodeTypes;
+    private Project project;
 
     /**
      * The constructor.
@@ -80,6 +83,9 @@ public class TestUMLClassDiagram extends TestCase {
 
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        
+        project = ProjectManager.getManager().makeEmptyProject();
+        
         nodeTypes =
                 new Object[] {
                         Model.getCoreFactory().createClass(),
@@ -103,6 +109,11 @@ public class TestUMLClassDiagram extends TestCase {
                 };
     }
 
+    @Override
+    protected void tearDown() throws Exception {
+        ProjectManager.getManager().removeProject(project);
+        super.tearDown();
+    }
     /**
      * Test the UMLClassDiagram empty constructor. The graph model should always
      * be a ClassDiagramGraphModel

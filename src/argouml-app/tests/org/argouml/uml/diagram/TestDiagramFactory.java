@@ -39,6 +39,8 @@
 package org.argouml.uml.diagram;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
@@ -55,11 +57,20 @@ public class TestDiagramFactory extends TestCase {
 
     private static final Logger LOG = 
         Logger.getLogger(TestDiagramFactory.class);
+    private Project project;
     
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        
+        project = ProjectManager.getManager().makeEmptyProject();
+    }
+    
+    @Override
+    protected void tearDown() throws Exception {
+        ProjectManager.getManager().removeProject(project);
+        super.tearDown();
     }
 
     /**
@@ -90,7 +101,8 @@ public class TestDiagramFactory extends TestCase {
             ArgoDiagram diagram;
             if (type == DiagramType.Sequence) {
                 // TODO: Fix this so that new sequence diagrams are tested
-                LOG.warn("Skipping Sequence Diagram test because they are in a separate module");
+                LOG.warn("Skipping Sequence Diagram test " 
+                         + "because they are in a separate module");
                 return;
             } else if (type == DiagramType.State) {
                 Object context = Model.getCoreFactory().buildClass(model);

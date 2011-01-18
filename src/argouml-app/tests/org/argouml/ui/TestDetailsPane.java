@@ -47,6 +47,8 @@ import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.cognitive.checklist.ui.InitCheckListUI;
 import org.argouml.cognitive.ui.InitCognitiveUI;
 import org.argouml.cognitive.ui.TabToDo;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
@@ -70,6 +72,8 @@ import org.tigris.swidgets.Horizontal;
  */
 public class TestDetailsPane extends TestCase {
 
+    private Project project;
+
     /**
      * @param arg0 is the name of the test case.
      */
@@ -84,6 +88,9 @@ public class TestDetailsPane extends TestCase {
 	super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        
+        project = ProjectManager.getManager().makeEmptyProject();
+
         new InitUmlUI().init();
         new InitCheckListUI().init();
         new InitCognitiveUI().init();
@@ -96,15 +103,24 @@ public class TestDetailsPane extends TestCase {
         (new InitUseCaseDiagram()).init();
     }
 
+    @Override
+    protected void tearDown() throws Exception {
+        ProjectManager.getManager().removeProject(project);
+        super.tearDown();
+    }
+
     /**
      * Test setting a target.
+     * 
+     * @exception Exception if the intTestTargetSet() encounters an error.
      */
     public void testTargetSet() throws Exception {
         // Make sure this test happens on the AWT event thread
         SwingUtilities.invokeAndWait(new Runnable() {
             public void run() {
                 intTestTargetSet();
-            }});
+            }
+        });
     }
     
     /**

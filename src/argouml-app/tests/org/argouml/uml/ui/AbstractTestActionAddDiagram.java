@@ -43,6 +43,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
@@ -74,6 +76,8 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      */
     private List validNamespaces;
 
+    private Project project;
+
     /**
      * Constructor for AbstractTestActionAddDiagram.
      * @param arg0 test case name
@@ -92,6 +96,8 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
         (new InitNotationJava()).init();
         (new InitProfileSubsystem()).init();
 
+        project = ProjectManager.getManager().makeEmptyProject();
+
 	action = getAction();
 
 	ns = getNamespace();
@@ -105,6 +111,8 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
         action = null;
         ns = null;
         validNamespaces = null;
+
+        ProjectManager.getManager().removeProject(project);
     }
 
     /**

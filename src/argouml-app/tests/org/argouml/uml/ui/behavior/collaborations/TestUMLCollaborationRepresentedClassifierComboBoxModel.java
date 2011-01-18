@@ -86,14 +86,15 @@ public class TestUMLCollaborationRepresentedClassifierComboBoxModel
     protected void setUp() throws Exception {
         super.setUp();
 
+        Project p = ProjectManager.getManager().makeEmptyProject();
+
         elem = Model.getCollaborationsFactory().createCollaboration();
         Model.getCoreHelper().setName(elem, "collaboration elem");
         model = new UMLCollaborationRepresentedClassifierComboBoxModel();
         TargetManager.getInstance().setTarget(elem);
         ThreadHelper.synchronize();
         
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Object m = p.getRoot();
+        Object m = p.getRoots().iterator().next();
         clazz = Model.getCoreFactory().buildClass(m);
         Model.getCoreHelper().setName(clazz, "clazz");
         Model.getCollaborationsHelper().setRepresentedClassifier(elem, clazz);
@@ -126,6 +127,7 @@ public class TestUMLCollaborationRepresentedClassifierComboBoxModel
 
     /**
      * Test removing the represented operation.
+     * @throws Exception if we were interrupted waiting for the awt thread.
      */
     public void testExtraRepresentedOperation() throws Exception {
 	Object cl2 = Model.getCoreFactory().createClass();

@@ -44,6 +44,8 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
@@ -76,6 +78,8 @@ public class TestActionCollaborationDiagram extends TestCase {
      * created.
      */
     private List validNamespaces;
+
+    private Project project;
 
     /**
      * Constructor for TestActionCollaborationDiagram.
@@ -117,6 +121,9 @@ public class TestActionCollaborationDiagram extends TestCase {
     protected void setUp() {
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        
+        project = ProjectManager.getManager().makeEmptyProject();
+
         action = getAction();
         ns = getNamespace();
         validNamespaces = getValidNamespaceClasses();
@@ -124,6 +131,10 @@ public class TestActionCollaborationDiagram extends TestCase {
         TargetManager.getInstance().setTarget(ns);
     }
 
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
     /**
      * Test if the namespace is correct for the diagram.<p>
      *
