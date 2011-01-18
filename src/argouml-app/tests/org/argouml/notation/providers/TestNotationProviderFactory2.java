@@ -78,7 +78,7 @@ public class TestNotationProviderFactory2 extends TestCase {
                     null,
                     ResourceLoaderWrapper.lookupIconResource("JavaNotation"));
         Notation.setDefaultNotation(name);
-        proj = ProjectManager.getManager().getCurrentProject();
+        proj = ProjectManager.getManager().makeEmptyProject(true);
         proj.getProjectSettings().setNotationLanguage(name);
     }
 
