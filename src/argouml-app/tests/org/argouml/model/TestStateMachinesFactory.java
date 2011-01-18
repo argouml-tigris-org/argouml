@@ -44,8 +44,6 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.profile.init.InitProfileSubsystem;
 
 /**
@@ -137,11 +135,10 @@ public class TestStateMachinesFactory extends TestCase {
      */
     public void testDeleteTransition()  {
         new InitProfileSubsystem().init();
-        Project p = ProjectManager.getManager().getCurrentProject();
         Object model =
             Model.getModelManagementFactory().createModel();
         aClass = Model.getCoreFactory().buildClass(model);
-        Object returnType = p.getDefaultReturnType();
+        Object returnType = null;
         Model.getCoreFactory().buildOperation2(aClass, returnType, "myOper");
         aStateMachine =
             Model.getStateMachinesFactory().buildStateMachine(aClass);
