@@ -95,6 +95,7 @@ public class TestMessageNotationUml extends TestCase {
         (new InitNotationUml()).init();
         
         npSettings = new SDNotationSettings();
+        ProjectManager.getManager().makeEmptyProject();
     }
 
     

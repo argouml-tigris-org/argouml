@@ -81,12 +81,14 @@ public class TestTransitionNotationUml extends TestCase {
         InitializeModel.initializeDefault();
         assertTrue("Model subsystem init failed.", Model.isInitiated());
         new InitProfileSubsystem().init();
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().makeEmptyProject();
         returnType = p.getDefaultReturnType();
 
         model = Model.getModelManagementFactory().createModel();
         aClass = Model.getCoreFactory().buildClass("A", model);
-        aOper = Model.getCoreFactory().buildOperation2(aClass, returnType, "myOper");
+        aOper = 
+            Model.getCoreFactory().buildOperation2(
+                    aClass, returnType, "myOper");
         aStateMachine =
             Model.getStateMachinesFactory().buildStateMachine(aClass);
         Object top = Model.getFacade().getTop(aStateMachine);
@@ -117,7 +119,8 @@ public class TestTransitionNotationUml extends TestCase {
         Object trigger2s = Model.getFacade().getTrigger(t2s);
         Object trigger3s = Model.getFacade().getTrigger(t3s);
         assertTrue("No reuse of a signal event.", trigger1s == trigger2s);
-        assertTrue("Unexpected reuse of a signal event.",  trigger1s != trigger3s);
+        assertTrue("Unexpected reuse of a signal event.",
+                trigger1s != trigger3s);
         
         // reuse call event:
         Object t1c = checkGenerated(aState, "trigger1()[guard]/effect", 
@@ -156,7 +159,8 @@ public class TestTransitionNotationUml extends TestCase {
         Object trigger2g = Model.getFacade().getTrigger(t2g);
         Object trigger3g = Model.getFacade().getTrigger(t3g);
         assertTrue("No reuse of a change event.", trigger1g == trigger2g);
-        assertTrue("Unexpected reuse of a change event.", trigger1g != trigger3g);
+        assertTrue("Unexpected reuse of a change event.", 
+                trigger1g != trigger3g);
     }
 
     /**
@@ -458,7 +462,9 @@ public class TestTransitionNotationUml extends TestCase {
         Object aPack = Model.getModelManagementFactory().buildPackage("pack1");
         Model.getCoreHelper().setNamespace(aPack, model);
         aClass = Model.getCoreFactory().buildClass("A", aPack);
-        aOper = Model.getCoreFactory().buildOperation2(aClass, returnType, "myOper");
+        aOper = 
+            Model.getCoreFactory().buildOperation2(
+                    aClass, returnType, "myOper");
         aStateMachine =
             Model.getActivityGraphsFactory().buildActivityGraph(aPack);
        
@@ -525,7 +531,8 @@ public class TestTransitionNotationUml extends TestCase {
     /**
      * This method only uses the "aState" variable.
      */
-    private void checkLinkingOfOperationToCallEvent(String text, Object operation) {
+    private void checkLinkingOfOperationToCallEvent(
+            String text, Object operation) {
         Object trans;
         Object trig;
         Object myOp;

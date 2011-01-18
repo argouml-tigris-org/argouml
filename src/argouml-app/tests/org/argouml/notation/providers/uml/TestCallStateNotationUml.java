@@ -80,7 +80,7 @@ public class TestCallStateNotationUml extends TestCase {
         new InitProfileSubsystem().init();
         Object model =
             Model.getModelManagementFactory().createModel();
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().makeEmptyProject(true);
         p.addModel(model);
         aClass = Model.getCoreFactory().buildClass(model);
         aClass2 = Model.getCoreFactory().buildClass(model);
