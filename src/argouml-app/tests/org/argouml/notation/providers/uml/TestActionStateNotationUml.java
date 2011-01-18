@@ -79,8 +79,6 @@ public class TestActionStateNotationUml extends TestCase {
         new InitProfileSubsystem().init();
         Object model =
             Model.getModelManagementFactory().createModel();
-        Project p = ProjectManager.getManager().getCurrentProject();
-        p.addModel(model);
         aClass = Model.getCoreFactory().buildClass(model);
         aStateMachine =
             Model.getStateMachinesFactory().buildStateMachine(aClass);
@@ -95,8 +93,6 @@ public class TestActionStateNotationUml extends TestCase {
     
     @Override
     protected void tearDown() throws Exception {
-        ProjectManager.getManager().removeProject(
-                ProjectManager.getManager().getCurrentProject());
         ProfileFacade.reset();
         super.tearDown();
     }
@@ -188,8 +184,7 @@ public class TestActionStateNotationUml extends TestCase {
     public void testActionType() {
         ActionStateNotationUml notation = 
             new ActionStateNotationUml(aActionState);
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Object returnType = p.getDefaultReturnType();
+        Object returnType = null;
         aOper = Model.getCoreFactory().buildOperation2(aClass, returnType,
             "testUA");
         notation.parse(aActionState, "testUA()");
