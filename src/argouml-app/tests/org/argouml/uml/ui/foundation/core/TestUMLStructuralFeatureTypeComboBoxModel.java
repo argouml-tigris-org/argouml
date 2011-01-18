@@ -43,6 +43,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
@@ -78,6 +79,8 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
     
     private Object dummy;
 
+    private Project project;
+
     /**
      * Constructor for TestUMLStructuralFeatureTypeComboBoxModel.
      * @param arg0 is the name of the test case.
@@ -94,6 +97,9 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+
+        project = ProjectManager.getManager().makeEmptyProject();
+        
         Object mmodel =
             Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(mmodel, "untitledModel");
@@ -128,10 +134,13 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
             Model.getUmlFactory().delete(types[i]);
         }
         model = null;
+        ProjectManager.getManager().removeProject(project);
     }
 
     /**
      * Test the test set up.
+     * 
+     * @throws Exception If interrupted no awk thread.
      */
     public void testSetUp() throws Exception {
         ThreadHelper.synchronize();
@@ -154,6 +163,8 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
 
     /**
      * Test the setType function.
+     * 
+     * @throws Exception If interrupted no awk thread.
      */
     public void testSetType() throws Exception {
         Model.getCoreHelper().setType(elem, types[0]);
@@ -167,6 +178,8 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      * the model cannot present null types. therefore until
      * the combobox model is changed itself, we test for
      * a not null value.
+     * 
+     * @throws Exception If interrupted no awk thread.
      */
     public void testSetTypeToNull() throws Exception {
         Model.getCoreHelper().setType(elem, types[0]);
@@ -177,6 +190,8 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
 
     /**
      * The test for removing types.
+     * 
+     * @throws Exception If interrupted no awk thread.
      */
     public void testRemoveType() throws Exception {
         Model.getUmlFactory().delete(types[NO_OF_ELEMENTS - 1]);
