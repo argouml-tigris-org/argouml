@@ -39,14 +39,14 @@
 package org.argouml.sequence2.diagram;
 
 
+import junit.framework.TestCase;
+
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
-import org.argouml.sequence2.diagram.SequenceDiagramFactory;
 import org.argouml.uml.diagram.ArgoDiagram;
-
-import junit.framework.TestCase;
 
 /**
  * Tests the TestSequenceDiagramFactory class.
@@ -56,11 +56,20 @@ public class TestSequenceDiagramFactory extends TestCase {
 
     private Class sequence2DiagramClass = 
         org.argouml.sequence2.diagram.UMLSequenceDiagram.class;
+    private Project project;
         
     protected void setUp() throws Exception {        
         super.setUp();
         InitializeModel.initializeDefault();
         (new InitProfileSubsystem()).init();
+
+        project = ProjectManager.getManager().makeEmptyProject();
+    }
+    
+    @Override
+    protected void tearDown() throws Exception {
+        ProjectManager.getManager().removeProject(project);
+        super.tearDown();
     }
     
     /**
