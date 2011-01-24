@@ -39,6 +39,9 @@
 package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 
 import org.argouml.model.Model;
@@ -60,6 +63,8 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
      */
     private Object elem;
 
+    private Project project;
+
     /**
      * Constructor for TestUMLFeatureOwnerScopeCheckBox.
      * @param arg0 is the name of the test case.
@@ -75,6 +80,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
         super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        project = ProjectManager.getManager().makeEmptyProject(); 
         elem = Model.getCoreFactory().createAttribute();
 
 	box = new UMLFeatureOwnerScopeCheckBox();
@@ -90,6 +96,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
         Model.getUmlFactory().delete(elem);
         elem = null;
         box = null;
+        ProjectManager.getManager().removeProject(project);
     }
 
     /**

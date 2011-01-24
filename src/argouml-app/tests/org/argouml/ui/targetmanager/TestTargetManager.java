@@ -80,6 +80,7 @@ public class TestTargetManager extends TestCase {
     private Fig     targetRemovedFigTarget;
     private Object  targetRemovedModelTarget;
     private Object  targetRemovedObjects[];
+    private Project project;
 
     private class TestTargetListener implements TargetListener {
 
@@ -470,8 +471,9 @@ public class TestTargetManager extends TestCase {
 	Object test = new Object();
 	ArgoDiagram diag = new ArgoDiagramImpl() {
 	    public Fig getContainingFig(Object obj) {
-		if (obj == owner)
+		if (obj == owner) {
 		    return fig;
+		}
 		return null;
 	    }
 	    public void encloserChanged(FigNode enclosed, 
@@ -581,8 +583,12 @@ public class TestTargetManager extends TestCase {
 	Object test = new Object();
 
 	List<Object> list1 = new ArrayList<Object>();
-	List<Object> list2 = new ArrayList<Object>(); list2.add(test);
-	List<Object> list3 = new ArrayList<Object>(); list3.add(fig); list3.add(test);
+	
+	List<Object> list2 = new ArrayList<Object>(); 
+	list2.add(test);
+	
+	List<Object> list3 = new ArrayList<Object>(); 
+	list3.add(fig); list3.add(test);
 
 	TargetListener listener = new TestTargetListener();
 	TargetManager.getInstance().addTargetListener(listener);
@@ -907,6 +913,8 @@ public class TestTargetManager extends TestCase {
     protected void setUp() {
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        
+        project = ProjectManager.getManager().makeEmptyProject();
 
 	TargetManager.getInstance().setTarget(null);
     }
@@ -916,5 +924,6 @@ public class TestTargetManager extends TestCase {
      */
     protected void tearDown() {
 	TargetManager.getInstance().setTarget(null);
+	ProjectManager.getManager().removeProject(project);
     }
 }

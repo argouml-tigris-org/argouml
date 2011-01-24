@@ -57,6 +57,7 @@ import org.argouml.profile.init.InitProfileSubsystem;
  */
 public class TestModelEventPump extends TestCase {
     private Object elem;
+    private Object model;
     private boolean eventcalled;
     private TestListener listener;
 
@@ -98,8 +99,7 @@ public class TestModelEventPump extends TestCase {
 
         elem = Model.getCoreFactory().createClass();
         new InitProfileSubsystem().init();
-        Project project = ProjectManager.getManager().getCurrentProject();
-        Object model = project.getRoot();
+        model = Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().addOwnedElement(model, elem);
         eventcalled = false;
         listener = new TestListener();
@@ -114,6 +114,10 @@ public class TestModelEventPump extends TestCase {
         ProfileFacade.reset();
         if (elem != null) {
             Model.getUmlFactory().delete(elem);
+            elem = null;
+
+            Model.getUmlFactory().delete(model);
+            model = null;
         }
         listener = null;
         super.tearDown();

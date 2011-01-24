@@ -82,6 +82,7 @@ public class TestClassifierRoleNotationUml extends TestCase {
 	super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        ProjectManager.getManager().makeEmptyProject();
     }
     
 

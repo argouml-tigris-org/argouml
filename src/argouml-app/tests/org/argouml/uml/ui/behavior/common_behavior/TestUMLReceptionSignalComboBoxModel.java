@@ -78,6 +78,8 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
      */
     private Object elem;
 
+    private Project project;
+
     /**
      * Constructor for TestUMLReceptionSignalComboBoxModel.
      *
@@ -96,13 +98,13 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
-        Project p = ProjectManager.getManager().getCurrentProject();
+        project = ProjectManager.getManager().makeEmptyProject();
         elem = Model.getCommonBehaviorFactory().createReception();
         signals = new Object[NO_OF_ELEMENTS];
         Object m = Model.getModelManagementFactory().createModel();
         Collection roots = new ArrayList();
         roots.add(m);
-        p.setRoots(roots);
+        project.setRoots(roots);
         Model.getCoreHelper().setNamespace(elem, m);
         for (int i = 0; i < NO_OF_ELEMENTS; i++) {
             signals[i] = Model.getCommonBehaviorFactory().createSignal();
@@ -125,6 +127,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
             Model.getUmlFactory().delete(signals[i]);
         }
         model = null;
+        ProjectManager.getManager().removeProject(project);
     }
 
     /**

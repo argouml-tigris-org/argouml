@@ -91,8 +91,11 @@ public final class ProjectActions
         redoAction.setEnabled(false);
         
         TargetManager.getInstance().addTargetListener(this);
-        ProjectManager.getManager().getCurrentProject().getUndoManager()
-            .addPropertyChangeListener(this);
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p != null) {
+            p.getUndoManager().addPropertyChangeListener(this);
+        }
+            
     }
 
     /**

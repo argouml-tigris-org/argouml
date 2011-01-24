@@ -110,8 +110,6 @@ public class TestNotationProvider extends TestCase
     public void testListener() throws InterruptedException {
         Object model =
             Model.getModelManagementFactory().createModel();
-        Project p = ProjectManager.getManager().getCurrentProject();
-        p.addModel(model);
         aClass = Model.getCoreFactory().buildClass(model);
         
         NotationProvider np = new NPImpl();

@@ -97,7 +97,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
 
-        Project p = ProjectManager.getManager().getCurrentProject();
+        Project p = ProjectManager.getManager().makeEmptyProject();
         model = new UMLAssociationRoleBaseComboBoxModel();
         Object class1 = Model.getCoreFactory().createClass();
         Object class2 = Model.getCoreFactory().createClass();

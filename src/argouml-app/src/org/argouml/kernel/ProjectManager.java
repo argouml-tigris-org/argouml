@@ -267,10 +267,8 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      *             renderings in diagrams use
      *             {@link org.argouml.uml.diagram.ui.ArgoFig#getSettings()}.
      */
+    @Deprecated
     public Project getCurrentProject() {
-        if (currentProject == null && !creatingCurrentProject) {
-            makeEmptyProject();
-        }
         return currentProject;
     }
     

@@ -114,10 +114,10 @@ public class ExplorerTree extends DisplayTextTree {
             bgImage = ResourceLoaderWrapper.lookupIconResource(
                     "uml2explorerbg").getImage();
         }
-
-        ProjectSettings ps = p.getProjectSettings();
-        setShowStereotype(ps.getShowStereotypesValue());
-
+        if (p != null) {
+            ProjectSettings ps = p.getProjectSettings();
+            setShowStereotype(ps.getShowStereotypesValue());
+        }
         this.addMouseListener(new ExplorerMouseListener(this));
         this.addTreeSelectionListener(new ExplorerTreeSelectionListener());
         this.addTreeWillExpandListener(new ExplorerTreeWillExpandListener());

@@ -45,6 +45,7 @@ import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
@@ -92,6 +93,8 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
      */
     private Object namespace;
 
+    private Project project;
+
     /**
      * Logger.
      */
@@ -114,6 +117,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        project = ProjectManager.getManager().makeEmptyProject();
         Object mmodel =
             Model.getModelManagementFactory().createModel();
         Model.getCoreHelper().setName(mmodel, "untitledModel");
@@ -143,6 +147,8 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
 
     /*
      * @see junit.framework.TestCase#tearDown()
+     * 
+     * @throws Exception If interrupted no awk thread.
      */
     @Override
     protected void tearDown() throws Exception {
@@ -155,10 +161,13 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
             Model.getUmlFactory().delete(types[i]);
         }
         model = null;
+        ProjectManager.getManager().removeProject(project);
     }
 
     /**
      * Test setup.
+     * 
+     * @throws Exception If interrupted no awk thread.
      */
     public void testSetUp() throws Exception {
         ThreadHelper.synchronize();
@@ -169,6 +178,8 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
 
     /**
      * Test setPowertype().
+     * 
+     * @throws Exception If interrupted no awk thread.
      */
     public void testSetPowertype() throws Exception {
         LOG.info("Setting powertype");
@@ -189,6 +200,8 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
 
     /**
      * Test setPowertype() with null argument.
+     * 
+     * @throws Exception If interrupted no awk thread.
      */
     public void testSetPowertypeToNull() throws Exception {
         Model.getCoreHelper().setPowertype(elem, types[0]);
@@ -208,6 +221,8 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
 
     /**
      * Test deletion.
+     * 
+     * @throws Exception If interrupted no awk thread.
      */
     public void testRemovePowertype() throws Exception {
         Model.getUmlFactory().delete(types[NO_OF_ELEMENTS - 1]);

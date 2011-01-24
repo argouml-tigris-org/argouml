@@ -42,6 +42,8 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
@@ -64,6 +66,8 @@ public class TestActionActivityGraphDiagram extends TestCase {
      * The namespace a created diagram should have.
      */
     private Object ns;
+
+    private Project project;
 
     
     /**
@@ -89,6 +93,7 @@ public class TestActionActivityGraphDiagram extends TestCase {
 
     @Override
     protected void setUp() {
+        project = ProjectManager.getManager().makeEmptyProject();
         action = getAction();
         ns = getNamespace();
         TargetManager.getInstance().setTarget(ns);

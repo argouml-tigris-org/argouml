@@ -107,11 +107,11 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     public List getPorts(Object nodeOrEdge) {
         List res = new ArrayList();
         if (Model.getFacade().isAState(nodeOrEdge)) {
-	    res.add(nodeOrEdge);
-	}
+            res.add(nodeOrEdge);
+        }
         if (Model.getFacade().isAPseudostate(nodeOrEdge)) {
-	    res.add(nodeOrEdge);
-	}
+            res.add(nodeOrEdge);
+        }
         return res;
     }
 
@@ -127,8 +127,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public List getInEdges(Object port) {
         if (Model.getFacade().isAStateVertex(port)) {
-	    return new ArrayList(Model.getFacade().getIncomings(port));
-	}
+            return new ArrayList(Model.getFacade().getIncomings(port));
+        }
         LOG.debug("TODO: getInEdges of MState");
         return Collections.EMPTY_LIST;
     }
@@ -138,8 +138,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public List getOutEdges(Object port) {
         if (Model.getFacade().isAStateVertex(port)) {
-	    return new ArrayList(Model.getFacade().getOutgoings(port));
-	}
+            return new ArrayList(Model.getFacade().getOutgoings(port));
+        }
         LOG.debug("TODO: getOutEdges of MState");
         return Collections.EMPTY_LIST;
     }
@@ -195,7 +195,10 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         Object end0 = null;
         Object end1 = null;
 
-        if (edge instanceof CommentEdge) {
+        if (Model.getFacade().isATransition(edge)) {
+            end0 = Model.getFacade().getSource(edge);
+            end1 = Model.getFacade().getTarget(edge);
+        } else if (edge instanceof CommentEdge) {
             end0 = ((CommentEdge) edge).getSource();
             end1 = ((CommentEdge) edge).getDestination();
         } else {
@@ -329,17 +332,17 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      *      java.lang.Object, java.lang.Class)
      */
     public Object connect(Object fromPort, Object toPort,
-			  Object edgeClass) {
+                          Object edgeClass) {
 
         if (Model.getFacade().isAFinalState(fromPort)) {
-	    return null;
-	}
+            return null;
+        }
 
         if (Model.getFacade().isAPseudostate(toPort)
                 && Model.getPseudostateKind().getInitial().equals(
-			Model.getFacade().getKind(toPort))) {
+                        Model.getFacade().getKind(toPort))) {
             return null;
-	}
+        }
 
         if (Model.getMetaTypes().getTransition().equals(edgeClass)) {
             Object tr = null;
@@ -426,10 +429,10 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 
         // check parameter types:
         if (!(Model.getFacade().isAState(newNode)
-	      || Model.getFacade().isAState(oldNode)
-	      || Model.getFacade().isATransition(edge))) {
-	    return false;
-	}
+              || Model.getFacade().isAState(oldNode)
+              || Model.getFacade().isATransition(edge))) {
+            return false;
+        }
 
         // it's not allowed to move a transition
         // so that it will go from a composite to its substate

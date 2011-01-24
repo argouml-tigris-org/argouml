@@ -43,7 +43,6 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
@@ -79,9 +78,9 @@ public class TestStateBodyNotationUml extends TestCase {
         new InitProfileSubsystem().init();
         Object model =
             Model.getModelManagementFactory().createModel();
-        Project p = ProjectManager.getManager().getCurrentProject();
+        ProjectManager.getManager().makeEmptyProject(true);
         aClass = Model.getCoreFactory().buildClass(model);
-        Object returnType = p.getDefaultReturnType();
+        Object returnType = null;
         Model.getCoreFactory().buildOperation2(aClass, returnType, "myOper");
         aStateMachine =
             Model.getStateMachinesFactory().buildStateMachine(aClass);

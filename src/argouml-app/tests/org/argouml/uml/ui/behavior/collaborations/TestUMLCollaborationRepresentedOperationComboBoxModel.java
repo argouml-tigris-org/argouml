@@ -38,13 +38,11 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.lang.reflect.InvocationTargetException;
-
 import junit.framework.TestCase;
-import org.argouml.model.InitializeModel;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -79,13 +77,14 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
     protected void setUp() throws Exception {
         super.setUp();
 
+        Project p = ProjectManager.getManager().makeEmptyProject();
+
         elem = Model.getCollaborationsFactory().createCollaboration();
         model = new UMLCollaborationRepresentedOperationComboBoxModel();
         TargetManager.getInstance().setTarget(elem);
         ThreadHelper.synchronize();
         
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Object m = p.getRoot();
+        Object m = p.getRoots().iterator().next();
         Object clazz = Model.getCoreFactory().buildClass(m);
         oper = Model.getCoreFactory().createOperation();
         Model.getCoreHelper().setOwner(oper, clazz);
@@ -119,8 +118,11 @@ public class TestUMLCollaborationRepresentedOperationComboBoxModel
 
     /**
      * Test removing the represented operation.
+     * 
+     * @throws Exception interupted by awt thread.
      */
     public void testExtraRepresentedOperation() throws Exception {
+        assertEquals(2, model.getSize());
         Object op = Model.getCoreFactory().createOperation();
         Model.getCollaborationsHelper().setRepresentedOperation(elem, op);
         /* Simulate a target change. */

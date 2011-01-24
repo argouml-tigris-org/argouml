@@ -44,6 +44,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.profile.init.InitProfileSubsystem;
@@ -127,6 +128,8 @@ public class TestActionStateDiagram extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
+        ProjectManager.getManager().makeEmptyProject();
+
         action = getAction();
         ns = getNamespace();
         validNamespaces = getValidNamespaceClasses();

@@ -14,7 +14,6 @@
  * Some portions of this file were previously release using the BSD License:
  */
 
-// $Id$
 // Copyright (c) 2007-2008 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,7 +39,6 @@
 
 package org.argouml.kernel;
 
-import java.beans.VetoableChangeSupport;
 import java.io.File;
 import java.net.URI;
 import java.util.Collection;
@@ -496,7 +494,7 @@ public interface Project {
      * 
      * @return the Package which is the root
      * @deprecated for 0.25.4 by tfmorris - use {@link #getRoots()} to
-     *             packages/model elements which are at the top level.
+     *             get packages/model elements which are at the top level.
      *             <p>
      *             TODO: We probably need a getDefaultNamespace() method or
      *             something similar to replace some uses of this.
@@ -532,6 +530,12 @@ public interface Project {
      * Updates the top level ModelElements for all projects. In UML2, each
      * model knows it's root elements, so this could make setRoots(...)
      * obsolete. E.g., applying a stereotype in UML2 adds a new root.
+     * 
+     * TODO: This is redundant with setRoots/getRoots.  There are already too
+     * many ways this stuff is managed without adding an additional one.
+     * All current model subsystem implementations know their top level
+     * elements.  Responsibility can be moved to the model subsystem, but
+     * let's choose *one* way of managing this.
      */
     public void updateRoots();
     

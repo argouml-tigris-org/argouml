@@ -54,11 +54,17 @@ import org.argouml.profile.init.InitProfileSubsystem;
  */
 public class TestModelElementNameNotationJava extends TestCase {
     private Object theClass;
+    private Object model;
+
+    private Object getModel() {
+        return model;
+    }
 
     protected void setUp() throws Exception {
         super.setUp();
         InitializeModel.initializeDefault();
         new InitProfileSubsystem().init();
+        model = Model.getModelManagementFactory().createModel();
         theClass = Model.getCoreFactory().buildClass("TheClass", getModel());
     }
     
@@ -143,10 +149,6 @@ public class TestModelElementNameNotationJava extends TestCase {
                 theClass, theBaseClass);
         assertToStringForUnnamedRelationshipIsEmpty(generalization);
         assertToStringForNamedRelationshipEqualsItsName(generalization);
-    }
-
-    private Object getModel() {
-        return ProjectManager.getManager().getCurrentProject().getModel();
     }
 
     /**
