@@ -24,6 +24,24 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-mdr</artifactId>
+      <version>0.32</version>
+      <type>jar</type>
+      <scope>test</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>java-interfaces</artifactId>
+      <version>0.32</version>
+      <type>jar</type>
+      <scope>test</scope>
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
       <groupId>jmi</groupId>
       <artifactId>jmi</artifactId>
       <version>1.0-5</version>
@@ -35,14 +53,6 @@
       <groupId>jmi</groupId>
       <artifactId>mof</artifactId>
       <version>0.0-5</version>
-      <type>jar</type>
-      <scope>test</scope>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.argouml</groupId>
-      <artifactId>java-interfaces</artifactId>
-      <version>0.30.0</version>
       <type>jar</type>
       <scope>test</scope>
       <optional>true</optional>
@@ -79,14 +89,7 @@
       <scope>test</scope>
       <optional>true</optional>
     </dependency>
-    <dependency>
-      <groupId>org.argouml</groupId>
-      <artifactId>argouml-mdr</artifactId>
-      <version>0.31.5</version>
-      <type>jar</type>
-      <scope>test</scope>
-      <optional>true</optional>
-    </dependency>
+
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>

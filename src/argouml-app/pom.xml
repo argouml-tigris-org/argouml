@@ -70,6 +70,15 @@
       <version>0.2-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>java-interfaces</artifactId>
+      <version>0.32</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>jmi</groupId>
       <artifactId>jmi</artifactId>
@@ -81,13 +90,6 @@
       <groupId>jmi</groupId>
       <artifactId>mof</artifactId>
       <version>0.0-5</version>
-      <type>jar</type>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.argouml</groupId>
-      <artifactId>java-interfaces</artifactId>
-      <version>0.30.0</version>
       <type>jar</type>
       <scope>test</scope>
     </dependency>
