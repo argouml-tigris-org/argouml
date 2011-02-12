@@ -89,8 +89,8 @@ public class TabStereotype extends PropPanel implements TabModelTarget {
         Configuration.getString(Configuration
             .makeKey("layout", "tabstereotype"));
 
-    private UMLModelElementListModel2 selectedListModel;
-    private UMLModelElementListModel2 availableListModel;
+    private UMLModelElementStereotypeListModel selectedListModel;
+    private UMLModelStereotypeListModel availableListModel;
 
     private JScrollPane selectedScroll;
     private JScrollPane availableScroll;
