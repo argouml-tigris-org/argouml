@@ -124,7 +124,7 @@ public class TabStereotype extends PropPanel implements TabModelTarget {
     private JPanel makePanel() {
         // make lists
         selectedListModel = new UMLModelElementStereotypeListModel();
-        selectedList = new UMLLinkedList(selectedListModel);
+        selectedList = new UMLStereotypeList(selectedListModel);
         selectedScroll = new JScrollPane(selectedList);
         selectedScroll.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
@@ -132,7 +132,7 @@ public class TabStereotype extends PropPanel implements TabModelTarget {
                 Translator.localize("label.applied-stereotypes")));
 
         availableListModel = new UMLModelStereotypeListModel();
-        availableList = new UMLLinkedList(availableListModel);
+        availableList = new UMLStereotypeList(availableListModel);
         availableScroll = new JScrollPane(availableList);
         availableScroll.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));

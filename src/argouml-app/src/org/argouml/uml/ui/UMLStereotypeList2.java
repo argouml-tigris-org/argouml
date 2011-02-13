@@ -66,18 +66,18 @@ import org.argouml.ui.targetmanager.TargettableModelView;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-abstract class UMLList2
+abstract class UMLStereotypeList2
     extends JList
     implements TargettableModelView, MouseListener {
 
-    private static final Logger LOG = Logger.getLogger(UMLList2.class);
+    private static final Logger LOG = Logger.getLogger(UMLStereotypeList2.class);
     /**
      * Constructor for UMLList2. Used by subclasses that want to add their own
      * renderer to the list.
      * @param dataModel the data model
      * @param renderer the renderer
      */
-    protected UMLList2(ListModel dataModel, ListCellRenderer renderer) {
+    protected UMLStereotypeList2(ListModel dataModel, ListCellRenderer renderer) {
         super(dataModel);
         setDoubleBuffered(true);
         if (renderer != null) {

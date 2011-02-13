@@ -56,7 +56,7 @@ import javax.swing.ListSelectionModel;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-class UMLLinkedList extends UMLList2 {
+class UMLStereotypeList extends UMLStereotypeList2 {
 
 
     /**
@@ -66,7 +66,7 @@ class UMLLinkedList extends UMLList2 {
      * @param showIcon true if an icon should be shown
      * @param showPath true if containment path should be shown
      */
-    public UMLLinkedList(ListModel dataModel,
+    public UMLStereotypeList(ListModel dataModel,
             boolean showIcon, boolean showPath) {
         super(dataModel, new UMLLinkedListCellRenderer(showIcon, showPath));
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -82,7 +82,7 @@ class UMLLinkedList extends UMLList2 {
      *
      * @param dataModel the data model
      */
-    public UMLLinkedList(ListModel dataModel) {
+    public UMLStereotypeList(ListModel dataModel) {
         this(dataModel, true);
     }
 
@@ -92,7 +92,7 @@ class UMLLinkedList extends UMLList2 {
      * @param dataModel the data model
      * @param showIcon true if an icon should be shown
      */
-    public UMLLinkedList(ListModel dataModel,
+    public UMLStereotypeList(ListModel dataModel,
             boolean showIcon) {
         this(dataModel, showIcon, true);
     }

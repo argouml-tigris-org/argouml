@@ -267,9 +267,9 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
         component.setFont(stdFont);
         add(jlabel);
         add(component);
-        if (component instanceof UMLLinkedList) {
+        if (component instanceof UMLStereotypeList) {
             UMLModelElementListModel2 list =
-                (UMLModelElementListModel2) ((UMLLinkedList) component).getModel();
+                (UMLModelElementListModel2) ((UMLStereotypeList) component).getModel();
             ActionCreateContainedModelElement newAction =
                 new ActionCreateContainedModelElement(
                         list.getMetaType(),
