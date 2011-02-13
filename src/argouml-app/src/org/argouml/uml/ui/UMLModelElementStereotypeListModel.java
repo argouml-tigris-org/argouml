@@ -36,7 +36,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.foundation.core;
+package org.argouml.uml.ui;
 
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -46,15 +46,14 @@ import javax.swing.SwingConstants;
 
 import org.argouml.model.Model;
 import org.argouml.uml.StereotypeUtility;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * The swing List Model for displaying stereotypes.
  * @since Oct 24, 2005
  * @author Bob Tarling
  */
-public class UMLModelElementStereotypeListModel
-    extends UMLModelElementListModel2 {
+class UMLModelElementStereotypeListModel
+    extends UMLStereotypeListModel {
 
     /**
      * Constructor for UMLModelElementNamespaceListModel.

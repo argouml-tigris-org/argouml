@@ -66,7 +66,6 @@ import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.StereotypeUtility;
-import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeListModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Vertical;
@@ -262,7 +261,7 @@ public class TabStereotype extends PropPanel implements TabModelTarget {
      * the ones already applied.
      */
     private static class UMLModelStereotypeListModel
-        extends UMLModelElementListModel2 {
+        extends UMLStereotypeListModel {
 
         /**
          * Constructor for UMLModelElementNamespaceListModel.
