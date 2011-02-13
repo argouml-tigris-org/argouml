@@ -282,20 +282,50 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      *                The notification event
      */
     public void notifyChanged(Notification notification) {
+        
         if (notification.getEventType() == Notification.REMOVING_ADAPTER) {
             return;
         }
-
-        ENamedElement feature = (ENamedElement) notification.getFeature();
-        String featureName =
+        
+        final ENamedElement feature = (ENamedElement) notification.getFeature();
+        
+        final String featureName =
             feature == null ? "" : feature.getName(); //$NON-NLS-1$
-        Object oldValue = notification.getOldValue();
-        Object newValue = notification.getNewValue();
+
+        final EReference oppositeRef;
+        if (feature instanceof EReference) {
+            oppositeRef = ((EReference) feature).getEOpposite();
+        } else {
+            oppositeRef = null;
+        }
+
+        fireEvent(
+                notification.getNotifier(), 
+                notification.getOldValue(), 
+                notification.getNewValue(), 
+                notification.getEventType(), 
+                featureName,
+                oppositeRef);
+    }
+
+    /**
+     * @see org.eclipse.emf.common.notify.Adapter#notifyChanged(Notification)
+     * @param notification
+     *                The notification event
+     */
+    void fireEvent(
+            Object notifier, 
+            Object oldValue, 
+            Object newValue, 
+            int eventType, 
+            String featureName,
+            EReference oppositeRef) {
+
         LOG.debug("event  - Property: " //$NON-NLS-1$
                 + featureName 
                 + " Old: " + oldValue //$NON-NLS-1$
                 + " New: " + newValue //$NON-NLS-1$
-                + " From: " + notification.getNotifier()); //$NON-NLS-1$
+                + " From: " + notifier); //$NON-NLS-1$
         
         class EventAndListeners {
             public EventAndListeners(PropertyChangeEvent e,
@@ -311,101 +341,94 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
         List<EventAndListeners> events = new ArrayList<EventAndListeners>();
 
-        if (notification.getEventType() == Notification.SET) {
-            if (notification.getFeature() instanceof ENamedElement) {
-                String propName =
-                        mapPropertyName(((ENamedElement) notification
-                                .getFeature()).getName());
+        if (eventType == Notification.SET) {
+            String propName =
+                    mapPropertyName(featureName);
+            events.add(new EventAndListeners(new AttributeChangeEvent(
+                    notifier, propName,
+                    oldValue, newValue,
+                    null), getListeners(
+                            notifier, propName)));
+        } else if (eventType == Notification.ADD
+                || eventType == Notification.REMOVE) {
+            String propName = mapPropertyName(featureName);
+            if (eventType == Notification.ADD) {
+                events.add(new EventAndListeners(new AddAssociationEvent(
+                        notifier, propName, null,
+                        newValue,
+                        newValue, null), getListeners(
+                                notifier, propName)));
                 events.add(new EventAndListeners(new AttributeChangeEvent(
-                        notification.getNotifier(), propName,
-                        notification.getOldValue(), notification.getNewValue(),
-                        null), getListeners(
-                                notification.getNotifier(), propName)));
-            }
-        } else if (notification.getEventType() == Notification.ADD
-                || notification.getEventType() == Notification.REMOVE) {
-            if (notification.getFeature() instanceof EReference) {
-                EReference ref = (EReference) notification.getFeature();
-                String propName = mapPropertyName(ref.getName());
-                if (notification.getEventType() == Notification.ADD) {
-                    events.add(new EventAndListeners(new AddAssociationEvent(
-                            notification.getNotifier(), propName, null,
-                            notification.getNewValue(),
-                            notification.getNewValue(), null), getListeners(
-                                    notification.getNotifier(), propName)));
-                    events.add(new EventAndListeners(new AttributeChangeEvent(
-                            notification.getNotifier(), propName, null,
-                            notification.getNewValue(), null), getListeners(
-                                    notification.getNotifier(), propName)));
-                } else {
-                    if (isDeleteEventRequired(oldValue)) {
-                        // Changing of a property can result in the property
-                        // being removed and added again (eclipse behaviour)
-                        // we don't want to mistake this for deletion of the
-                        // property. See issue 5853
-                        events.add(new EventAndListeners(
-                                new DeleteInstanceEvent(
-                                        notification.getOldValue(),
-                                        "remove",  //$NON-NLS-1$
-                                        null, null, null),
-                                        getListeners(
-                                            notification.getOldValue())));
-                    }
+                        notifier, propName, null,
+                        newValue, null), getListeners(
+                                notifier, propName)));
+            } else {
+                if (isDeleteEventRequired(oldValue)) {
+                    // Changing of a property can result in the property
+                    // being removed and added again (eclipse behaviour)
+                    // we don't want to mistake this for deletion of the
+                    // property. See issue 5853
                     events.add(new EventAndListeners(
-                            new RemoveAssociationEvent(
-                                    notification.getNotifier(), propName,
-                                    notification.getOldValue(), null,
-                                    notification.getOldValue(), null),
+                            new DeleteInstanceEvent(
+                                    oldValue,
+                                    "remove",  //$NON-NLS-1$
+                                    null, null, null),
+                                    getListeners(
+                                        oldValue)));
+                }
+                events.add(new EventAndListeners(
+                        new RemoveAssociationEvent(
+                                notifier, propName,
+                                oldValue, null,
+                                oldValue, null),
+                        getListeners(
+                                notifier, propName)));
+                events.add(new EventAndListeners(
+                        new AttributeChangeEvent(
+                                notifier, propName,
+                                oldValue, null, null),
+                        getListeners(
+                                notifier, propName)));
+            }
+
+            if (oppositeRef != null) {
+                propName = mapPropertyName(oppositeRef.getName());
+                if (eventType == Notification.ADD) {
+                    events.add(new EventAndListeners(
+                            new AddAssociationEvent(
+                                    newValue,
+                                    propName, null,
+                                    notifier,
+                                    notifier, null),
                             getListeners(
-                                    notification.getNotifier(), propName)));
+                                    newValue,
+                                    propName)));
                     events.add(new EventAndListeners(
                             new AttributeChangeEvent(
-                                    notification.getNotifier(), propName,
-                                    notification.getOldValue(), null, null),
+                                    newValue,
+                                    propName, null,
+                                    notifier, null),
                             getListeners(
-                                    notification.getNotifier(), propName)));
-                }
-
-                EReference oppositeRef = ref.getEOpposite();
-                if (oppositeRef != null) {
-                    propName = mapPropertyName(oppositeRef.getName());
-                    if (notification.getEventType() == Notification.ADD) {
-                        events.add(new EventAndListeners(
-                                new AddAssociationEvent(
-                                        notification.getNewValue(),
-                                        propName, null,
-                                        notification.getNotifier(),
-                                        notification.getNotifier(), null),
-                                getListeners(
-                                        notification.getNewValue(),
-                                        propName)));
-                        events.add(new EventAndListeners(
-                                new AttributeChangeEvent(
-                                        notification.getNewValue(),
-                                        propName, null,
-                                        notification.getNotifier(), null),
-                                getListeners(
-                                        notification.getNewValue(),
-                                        propName)));
-                    } else {
-                        events.add(new EventAndListeners(
-                                new AddAssociationEvent(
-                                        notification.getOldValue(),
-                                        propName,
-                                        notification.getNotifier(), null,
-                                        notification.getNotifier(), null),
-                                getListeners(
-                                        notification.getOldValue(),
-                                        propName)));
-                        events.add(new EventAndListeners(
-                                new AttributeChangeEvent(
-                                        notification.getOldValue(),
-                                        propName,
-                                        notification.getNotifier(), null, null),
-                                getListeners(
-                                        notification.getOldValue(),
-                                        propName)));
-                    }
+                                    newValue,
+                                    propName)));
+                } else {
+                    events.add(new EventAndListeners(
+                            new AddAssociationEvent(
+                                    oldValue,
+                                    propName,
+                                    notifier, null,
+                                    notifier, null),
+                            getListeners(
+                                    oldValue,
+                                    propName)));
+                    events.add(new EventAndListeners(
+                            new AttributeChangeEvent(
+                                    oldValue,
+                                    propName,
+                                    notifier, null, null),
+                            getListeners(
+                                    oldValue,
+                                    propName)));
                 }
             }
         }
@@ -418,6 +441,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             }
         }
     }
+    
+    
     
     /**
      * Determine if we should create a delete event for the given property

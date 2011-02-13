@@ -28,6 +28,7 @@ import org.argouml.model.CoreHelper;
 import org.argouml.model.Model;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.common.command.Command;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.CommandParameter;
@@ -125,9 +126,32 @@ class CoreHelperEUMLImpl implements CoreHelper {
         RunnableClass run = new RunnableClass() {
             public void run() {
                 for (Object o : stereos) {
-                    ((Element) modelElement).applyStereotype((Stereotype) o);
+                    Stereotype stereotype = (Stereotype) o;
+                    ((Element) modelElement).applyStereotype(stereotype);
+                    fireApplyStereotypeEvent(modelElement, stereotype);
                 }
             }
+            /**
+             * Call the model event pump and ask it to fire an event indicating a
+             * stereotype has been added. This is a stop-gap until we have
+             * determined how the event pump can detect itself that a stereotype
+             * has been added.
+             *  
+             * @param modelElement
+             * @param stereotype
+             */
+            private void fireApplyStereotypeEvent(Object modelElement, Object stereotype) {
+                final ModelEventPumpEUMLImpl pump =
+                    (ModelEventPumpEUMLImpl) Model.getPump();
+                pump.fireEvent(
+                        modelElement, 
+                        null, 
+                        stereotype, 
+                        Notification.ADD, 
+                        "stereotype",  //$NON-NLS-1$ 
+                        null);
+            }
+            
         };
         ChangeCommand cmd;
         if (stereos.size() == 1) {
@@ -1193,21 +1217,44 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
 
-    public void removeStereotype(final Object handle, final Object stereo) {
-        UMLUtil.checkArgs(new Object[] {handle, stereo},
+    public void removeStereotype(final Object modelElement, final Object stereo) {
+        UMLUtil.checkArgs(new Object[] {modelElement, stereo},
                 new Class[] {Element.class, Stereotype.class});
         RunnableClass run = new RunnableClass() {
             public void run() {
-                ((Element) handle).unapplyStereotype((Stereotype) stereo);
-        }
+                Stereotype stereotype = (Stereotype) stereo;
+                ((Element) modelElement).unapplyStereotype(stereotype);
+                fireUnapplyStereotypeEvent(modelElement, stereotype);
+            }
+            /**
+             * Call the model event pump and ask it to fire an event indicating a
+             * stereotype has been removed. This is a stop-gap until we have
+             * determined how the event pump can detect itself that a stereotype
+             * has been removed.
+             *  
+             * @param modelElement
+             * @param stereotype
+             */
+            private void fireUnapplyStereotypeEvent(Object modelElement, Object stereotype) {
+                final ModelEventPumpEUMLImpl pump =
+                    (ModelEventPumpEUMLImpl) Model.getPump();
+                pump.fireEvent(
+                        modelElement, 
+                        stereotype, 
+                        null, 
+                        Notification.REMOVE, 
+                        "stereotype", //$NON-NLS-1$
+                        null);
+            }
+
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
                         modelImpl, run,
                         "Remove the stereotype # from the element #",
-                        stereo, handle));
+                        stereo, modelElement));
     }
-
+    
     public void removeSupplierDependency(final Object supplier,
             final Object dependency) {
         if (!(supplier instanceof NamedElement)) {
