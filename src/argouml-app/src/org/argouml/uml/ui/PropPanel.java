@@ -728,15 +728,4 @@ public abstract class PropPanel extends AbstractArgoJPanel implements
     public void componentResized(ComponentEvent e) {
         // ignored        
     }
-    
-    /**
-     * Create a single row scroll pane backed by a ListModel.
-     *
-     * @param model the ListModel to be used to back the scroll pane
-     * @return a scrollpane with a single row
-     */
-    protected UMLSingleRowSelector getSingleRowScroll(ListModel model) {
-        UMLSingleRowSelector pane = new UMLSingleRowSelector(model);
-        return pane;
-    }
 }

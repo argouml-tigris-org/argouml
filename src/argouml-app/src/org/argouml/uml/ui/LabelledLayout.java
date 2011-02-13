@@ -339,9 +339,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
         for (int i = 0; i < componentCount; ++i) {
             final Component childComp = (Component) components.get(i);
             final int childHeight;
-            if (childComp instanceof JToolBar && previousComp instanceof ScrollList) {
-                // Ignore toolbars belonging to ScrollList
-            } else if (childComp instanceof JLabel) {
+            if (childComp instanceof JLabel) {
                 final JLabel jlabel = (JLabel) childComp;
                 final Component labelledComp = jlabel.getLabelFor();
                 
@@ -389,58 +387,54 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
         for (int i = 0; i < componentCount; ++i) {
             Component childComp = (Component) components.get(i);
             if (childComp.isVisible()) {
-                if (childComp instanceof JToolBar && previousComp instanceof ScrollList) {
-                    childComp.setLocation(previousComp.getY(), previousComp.getX() - childComp.getWidth());
-                } else {
-                    int rowHeight;
-                    int componentWidth = sectionWidth;
-                    int componentX = sectionX;
-                    // If the component is a JLabel which has another
-                    // component assigned then position/size the label and
-                    // calculate the size of the registered component
-                    if (childComp instanceof JLabel
-                            && ((JLabel) childComp).getLabelFor() != null) {
-                        i++; // Assumes the next child is the labelled component
-                        final JLabel jlabel = (JLabel) childComp;
-                        childComp = jlabel.getLabelFor();
-                        jlabel.setBounds(sectionX, y, labelWidth,
-                                         getPreferredHeight(jlabel));
-                        componentWidth = sectionWidth - (labelWidth);
-                        componentX = sectionX + labelWidth;
-                    }
-                    rowHeight = rowHeights.get(row).intValue();
-                    if (rowHeight == 0) {
-                        try {
-                            rowHeight = calculateHeight(
-                                    parentHeight, 
-                                    totalHeight, 
-                                    unknownHeightCount--, 
-                                    childComp);
-                        } catch (ArithmeticException e) {
-                            String lookAndFeel = 
-                                UIManager.getLookAndFeel().getClass().getName();
-                            throw new IllegalStateException(
-                                    "Division by zero laying out "
-                                    + childComp.getClass().getName()
-                                    + " on " + parent.getClass().getName()
-                                    + " in section " + sectionNo
-                                    + " using "
-                                    + lookAndFeel,
-                                    e);
-                        }
-                        totalHeight += rowHeight;
-                    }
-                    // Make sure the component width isn't any greater
-                    // than its maximum allowed width
-                    if (childComp.getMaximumSize() != null
-                            && getMaximumWidth(childComp) < componentWidth) {
-                        componentWidth = getMaximumWidth(childComp);
-                    }
-                    childComp.setBounds(componentX, y, componentWidth, rowHeight);
-                    y += rowHeight + this.vgap;
-                    ++row;
-                    previousComp = childComp;
+                int rowHeight;
+                int componentWidth = sectionWidth;
+                int componentX = sectionX;
+                // If the component is a JLabel which has another
+                // component assigned then position/size the label and
+                // calculate the size of the registered component
+                if (childComp instanceof JLabel
+                        && ((JLabel) childComp).getLabelFor() != null) {
+                    i++; // Assumes the next child is the labelled component
+                    final JLabel jlabel = (JLabel) childComp;
+                    childComp = jlabel.getLabelFor();
+                    jlabel.setBounds(sectionX, y, labelWidth,
+                                     getPreferredHeight(jlabel));
+                    componentWidth = sectionWidth - (labelWidth);
+                    componentX = sectionX + labelWidth;
                 }
+                rowHeight = rowHeights.get(row).intValue();
+                if (rowHeight == 0) {
+                    try {
+                        rowHeight = calculateHeight(
+                                parentHeight, 
+                                totalHeight, 
+                                unknownHeightCount--, 
+                                childComp);
+                    } catch (ArithmeticException e) {
+                        String lookAndFeel = 
+                            UIManager.getLookAndFeel().getClass().getName();
+                        throw new IllegalStateException(
+                                "Division by zero laying out "
+                                + childComp.getClass().getName()
+                                + " on " + parent.getClass().getName()
+                                + " in section " + sectionNo
+                                + " using "
+                                + lookAndFeel,
+                                e);
+                    }
+                    totalHeight += rowHeight;
+                }
+                // Make sure the component width isn't any greater
+                // than its maximum allowed width
+                if (childComp.getMaximumSize() != null
+                        && getMaximumWidth(childComp) < componentWidth) {
+                    componentWidth = getMaximumWidth(childComp);
+                }
+                childComp.setBounds(componentX, y, componentWidth, rowHeight);
+                y += rowHeight + this.vgap;
+                ++row;
+                previousComp = childComp;
             }
         }
     }
