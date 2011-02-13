@@ -104,20 +104,6 @@ public class ScrollList extends JScrollPane implements KeyListener {
     }
     
     /**
-     * Builds a ScrollList from a given list model and wraps
-     * in a scrollable view.
-     * @param list The JList to wrap in a scroll
-     * @deprecated in 0.27.2 use any other ScrollList constructor
-     */
-    @Deprecated
-    public ScrollList(JList alist) {
-        setHorizontalScrollBarPolicy(
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        this.list = (UMLLinkedList) alist;
-        setViewportView(list);
-    }
-    
-    /**
      * Examine key event to scroll left or right depending on key press
      * @param e the key event to examine
      */
