@@ -74,7 +74,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
