@@ -66,7 +66,7 @@ import org.argouml.ui.targetmanager.TargettableModelView;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class UMLList2
+abstract class UMLList2
     extends JList
     implements TargettableModelView, MouseListener {
 

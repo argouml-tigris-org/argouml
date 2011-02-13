@@ -56,7 +56,7 @@ import javax.swing.ListSelectionModel;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLLinkedList extends UMLList2 {
+class UMLLinkedList extends UMLList2 {
 
 
     /**
