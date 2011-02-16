@@ -1,13 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel ven der Wulp
+ *    Laurent Braud
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -43,7 +44,10 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -60,7 +64,10 @@ import javax.swing.event.ListSelectionListener;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.swingext.UpArrowIcon;
 import org.argouml.ui.TabModelTarget;
@@ -281,6 +288,107 @@ public class TabStereotype extends PropPanel implements TabModelTarget {
                 // now remove the ones already applied.
                 s.removeAll(Model.getFacade().getStereotypes(getTarget()));
                 addAll(s);
+            }
+        }
+        
+        
+        /**
+         * @param e
+         * @return
+         * @see org.argouml.uml.ui.UMLStereotypeListModel#isValidEvent(java.beans.PropertyChangeEvent)
+         * @since 20110215
+         */
+        private boolean isValidEventRemove(PropertyChangeEvent e) {
+            boolean valid = false;
+            if (!(getChangedElement(e) instanceof Collection)) {
+               
+                if ((e.getNewValue() != null && e.getOldValue() == null) 
+                        || isValidElement(getChangedElement(e))) {
+                    valid = true; // we tried to remove a value
+                }
+            } else {
+                Collection col = (Collection) getChangedElement(e);
+                Iterator it = col.iterator();
+                if (!col.isEmpty()) {
+                    valid = true;
+                    while (it.hasNext()) {
+                        Object o = it.next();
+                        if (!isValidElement(o)) {
+                            valid = false;
+                            break;
+                        }
+                    }
+                } else {
+                    if (e.getOldValue() instanceof Collection
+                        && !((Collection) e.getOldValue()).isEmpty()) {
+                        valid = true;
+                    }
+                }
+            }
+            return valid;
+        }
+        
+        /**
+         * Must be different from the extends class because 
+         * when we add a sterotype=> remove from available
+         *         remove a stereotype=> add to available
+         * Called twices: with a AttributeChangeEvent, and with AddAssociationEvent or RemoveAssociationEvent
+         * 
+         * @param e
+         * 
+         * @see org.argouml.uml.ui.UMLStereotypeListModel#propertyChange(PropertyChangeEvent)
+         * @since 20110215
+         */
+        public void propertyChange(PropertyChangeEvent e) {
+            if (e instanceof AttributeChangeEvent) {
+               // ignored this event
+            } else if (e instanceof AddAssociationEvent) {
+                //Remove the element from Available List
+                boolean valid = false;
+                if (!(getChangedElement(e) instanceof Collection)) {
+                    valid = contains(getChangedElement(e));
+                } else {
+                    Collection col = (Collection) getChangedElement(e);
+                    Iterator it = col.iterator();
+                    valid = true;
+                    while (it.hasNext()) {
+                        Object o = it.next();
+                        if (!contains(o)) {
+                            valid = false;
+                            break;
+                        }
+                    }
+                }
+                if (valid) {
+                    Object o = getChangedElement(e);
+                    if (o instanceof Collection) {
+                        Iterator it = ((Collection) o).iterator();
+                        while (it.hasNext()) {
+                            Object o3 = it.next();
+                            removeElement(o3);
+                        }
+                    } else {
+                        removeElement(o);
+                    }
+                }
+                
+               
+                
+            } else if (e instanceof RemoveAssociationEvent) {
+                if (isValidEventRemove(e)) {
+                    Object o = getChangedElement(e);
+                    if (o instanceof Collection) {
+                        ArrayList tempList = new ArrayList((Collection) o);
+                        Iterator it = tempList.iterator();
+                        while (it.hasNext()) {
+                            Object o2 = it.next();
+                            addElement(o2);
+                        }
+                    } else {
+                        addElement(o); 
+                    }
+                }
+                
             }
         }
 
