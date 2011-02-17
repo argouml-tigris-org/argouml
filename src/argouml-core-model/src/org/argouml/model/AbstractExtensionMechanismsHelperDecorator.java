@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Thomas Neustupny
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -102,6 +102,10 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
 
     public Collection getStereotypes(Collection models) {
         return impl.getStereotypes(models);
+    }
+
+    public Collection getCommonTaggedValueTypes() {
+        return impl.getCommonTaggedValueTypes();
     }
 
     public void addCopyStereotype(Object modelElement, Object stereotype) {
