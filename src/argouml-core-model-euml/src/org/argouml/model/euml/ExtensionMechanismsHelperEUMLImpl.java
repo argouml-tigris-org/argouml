@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    Tom Morris - initial framework 
- *    thn
+ *    Thomas Neustupny
  *****************************************************************************/
 
 package org.argouml.model.euml;
@@ -33,6 +33,7 @@ import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Stereotype;
+import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 
@@ -45,6 +46,11 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
      * The model implementation.
      */
     private EUMLModelImplementation modelImpl;
+
+    /**
+     * Lazily initialized collection of common tagged value types.
+     */
+    private Collection commonTaggedValueTypes;
 
     /**
      * Constructor.
@@ -80,8 +86,16 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public void addTaggedValue(Object handle, Object taggedValue) {
-        // TODO: Auto-generated method stub
-
+        if (!(handle instanceof Element)) {
+            return;
+        }
+        if (!(taggedValue instanceof Property)) {
+            return;
+        }
+        Element elem = (Element) handle;
+        Property property = (Property) taggedValue;
+        Stereotype stereotype = (Stereotype) property.eContainer();
+        elem.setValue(stereotype, property.getName(), null);
     }
 
     public void applyProfile(Object handle, Object profile) {
@@ -212,6 +226,27 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
             }
         }
         return l;
+    }
+
+    /*
+     * @see org.argouml.model.ExtensionMechanismsHelper#getCommonTaggedValueTypes()
+     */
+    public Collection<Type> getCommonTaggedValueTypes() {
+        // TODO: still not used, because in ArgoUML String is "hardwired"
+        if (commonTaggedValueTypes == null) {
+            commonTaggedValueTypes = new ArrayList<Type>();
+            //commonTaggedValueTypes.add(org.eclipse.uml2.uml.resource.UMLResource.)
+            URI uri = URI.createURI(UMLResource.UML_PRIMITIVE_TYPES_LIBRARY_URI);
+            ResourceSet rs = modelImpl.getEditingDomain().getResourceSet();
+            Resource res = rs.getResource(uri, true);
+            Model m = (Model) (org.eclipse.uml2.uml.Package) EcoreUtil.getObjectByType(
+                    res.getContents(), UMLPackage.Literals.MODEL);
+            commonTaggedValueTypes.add(m.getOwnedMember("Boolean"));
+            commonTaggedValueTypes.add(m.getOwnedMember("Integer"));
+            commonTaggedValueTypes.add(m.getOwnedMember("String"));
+            commonTaggedValueTypes.add(m.getOwnedMember("UnlimitedNatural"));
+        }
+        return commonTaggedValueTypes;
     }
 
     public boolean hasStereotype(Object handle, String name) {

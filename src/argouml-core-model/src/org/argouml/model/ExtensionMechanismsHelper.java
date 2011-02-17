@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Thomas Neustupny
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -139,6 +139,18 @@ public interface ExtensionMechanismsHelper {
      * @param models the models to search
      */
     Collection getStereotypes(Collection models);
+
+    /**
+     * Get commonly used tagged value types. <p>
+     * While in early UML 1.x versions only String was provided, in UML 2.x
+     * tagged values are stereotype properties with any possible type. However
+     * even in UML 2.x only primitive types are used in most cases. The client
+     * of the model subsystem should be able to handle at least the returned
+     * types, but is still free to provide support for any type.
+     * 
+     * @return a collection of types
+     */
+    Collection getCommonTaggedValueTypes();
 
     /**
      * Sets the stereotype of some modelelement. The method also

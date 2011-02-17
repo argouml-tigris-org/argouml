@@ -219,6 +219,13 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
         return ret;
     }
 
+    /*
+     * @see org.argouml.model.ExtensionMechanismsHelper#getCommonTaggedValueTypes()
+     */
+    public Collection getCommonTaggedValueTypes() {
+        // TODO: still not used, because in ArgoUML String is "hardwired"
+        return null;
+    }
 
 
     /**
