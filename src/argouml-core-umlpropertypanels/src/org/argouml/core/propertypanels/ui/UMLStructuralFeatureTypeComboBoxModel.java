@@ -55,12 +55,11 @@ import org.argouml.uml.util.PathComparator;
 
 /**
  * The combobox model for the type belonging to some attribute.
- *
+ * 
  * @since Nov 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
-
 
     /**
      * The class uid
@@ -70,22 +69,21 @@ class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
     /**
      * Constructor for UMLStructuralFeatureTypeComboBoxModel.
      */
-    public UMLStructuralFeatureTypeComboBoxModel(
-            final String propertyName,
-            final Object target) {
-        super(target, propertyName, true); // Allow null
+    public UMLStructuralFeatureTypeComboBoxModel(final String propertyName,
+	    final Object target) {
+	super(target, propertyName, true); // Allow null
     }
 
     /*
-     * This is explained by WFR 2 of a StructuralFeature: 
-     * The type of a StructuralFeature must be a Class, DataType, or Interface.
+     * This is explained by WFR 2 of a StructuralFeature: The type of a
+     * StructuralFeature must be a Class, DataType, or Interface.
      * 
      * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return Model.getFacade().isAClass(element)
-                || Model.getFacade().isAInterface(element)
-                || Model.getFacade().isADataType(element);
+	return Model.getFacade().isAClass(element)
+		|| Model.getFacade().isAInterface(element)
+		|| Model.getFacade().isADataType(element);
     }
 
     /*
@@ -93,137 +91,145 @@ class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
      */
     @SuppressWarnings("unchecked")
     protected void buildModelList() {
-        Set<Object> elements = new TreeSet<Object>(new PathComparator());
+	Set<Object> elements = new TreeSet<Object>(new PathComparator());
 
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p == null) {
-            return;
-        }
-        
-        for (Object model : p.getUserDefinedModelList()) {
-            elements.addAll(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKind(
-                            model, Model.getMetaTypes().getUMLClass()));
-            elements.addAll(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKind(
-                            model, Model.getMetaTypes().getInterface()));
-            elements.addAll(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKind(
-                            model, Model.getMetaTypes().getDataType()));
-        }
+	Project p = ProjectManager.getManager().getCurrentProject();
+	if (p == null) {
+	    return;
+	}
 
-        elements.addAll(p.getProfileConfiguration().findByMetaType(
-                        Model.getMetaTypes().getClassifier()));
+	if (Model.getFacade().getUmlVersion().charAt(0) != '1'
+		&& Model.getFacade().isAStereotype(
+			Model.getFacade().getOwner(getTarget()))) {
+	    // restricting types for tagged values
+	    elements.addAll(Model.getExtensionMechanismsHelper()
+		    .getCommonTaggedValueTypes());
+	} else {
+	    for (Object model : p.getUserDefinedModelList()) {
+		elements.addAll(Model.getModelManagementHelper()
+			.getAllModelElementsOfKind(model,
+				Model.getMetaTypes().getUMLClass()));
+		elements.addAll(Model.getModelManagementHelper()
+			.getAllModelElementsOfKind(model,
+				Model.getMetaTypes().getInterface()));
+		elements.addAll(Model.getModelManagementHelper()
+			.getAllModelElementsOfKind(model,
+				Model.getMetaTypes().getDataType()));
+	    }
+	    elements.addAll(p.getProfileConfiguration().findByMetaType(
+		    Model.getMetaTypes().getClassifier()));
+	}
 
-        setElements(elements);
+	setElements(elements);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     protected void buildMinimalModelList() {
-        Collection list = new ArrayList(1);
-        Object element = getSelectedModelElement();
-        if (element != null) {
-            list.add(element);
-        }
-        setElements(list);
+	Collection list = new ArrayList(1);
+	Object element = getSelectedModelElement();
+	if (element != null) {
+	    list.add(element);
+	}
+	setElements(list);
     }
-    
+
     @Override
     protected boolean isLazy() {
-        return true;
+	return true;
     }
-    
+
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        Object o = null;
-        if (getTarget() != null) {
-            o = Model.getFacade().getType(getTarget());
-        }
-        return o;
+	Object o = null;
+	if (getTarget() != null) {
+	    o = Model.getFacade().getType(getTarget());
+	}
+	return o;
     }
 
     @Override
     protected void addOtherModelEventListeners(Object newTarget) {
-        super.addOtherModelEventListeners(newTarget);
-        
-        Model.getPump().addClassModelEventListener(this,
-              Model.getMetaTypes().getNamespace(), "ownedElement");
-        Model.getPump().addClassModelEventListener(this,
-                Model.getMetaTypes().getUMLClass(), "name");
-        Model.getPump().addClassModelEventListener(this,
-                Model.getMetaTypes().getInterface(), "name");
-        Model.getPump().addClassModelEventListener(this,
-                Model.getMetaTypes().getDataType(), "name");
+	super.addOtherModelEventListeners(newTarget);
+
+	Model.getPump().addClassModelEventListener(this,
+		Model.getMetaTypes().getNamespace(), "ownedElement");
+	Model.getPump().addClassModelEventListener(this,
+		Model.getMetaTypes().getUMLClass(), "name");
+	Model.getPump().addClassModelEventListener(this,
+		Model.getMetaTypes().getInterface(), "name");
+	Model.getPump().addClassModelEventListener(this,
+		Model.getMetaTypes().getDataType(), "name");
     }
 
     @Override
     protected void removeOtherModelEventListeners(Object oldTarget) {
-        super.removeOtherModelEventListeners(oldTarget);
+	super.removeOtherModelEventListeners(oldTarget);
 
-        Model.getPump().removeClassModelEventListener(this,
-                Model.getMetaTypes().getNamespace(), "ownedElement");
-        Model.getPump().removeClassModelEventListener(this,
-                Model.getMetaTypes().getUMLClass(), "name");
-        Model.getPump().removeClassModelEventListener(this,
-                Model.getMetaTypes().getInterface(), "name");
-        Model.getPump().removeClassModelEventListener(this,
-                Model.getMetaTypes().getDataType(), "name");
+	Model.getPump().removeClassModelEventListener(this,
+		Model.getMetaTypes().getNamespace(), "ownedElement");
+	Model.getPump().removeClassModelEventListener(this,
+		Model.getMetaTypes().getUMLClass(), "name");
+	Model.getPump().removeClassModelEventListener(this,
+		Model.getMetaTypes().getInterface(), "name");
+	Model.getPump().removeClassModelEventListener(this,
+		Model.getMetaTypes().getDataType(), "name");
     }
-    
+
     public Action getAction() {
-        return new ActionSetStructuralFeatureType();
+	return new ActionSetStructuralFeatureType();
     }
-    
+
     /**
      * @since Nov 3, 2002
      * @author jaap.branderhorst@xs4all.nl
      */
     class ActionSetStructuralFeatureType extends UndoableAction {
 
-        /**
-         * The class uid
-         */
-        private static final long serialVersionUID = 8227201276430122294L;
-        
-        /**
-         * Constructor for ActionSetStructuralFeatureType.
-         */
-        protected ActionSetStructuralFeatureType() {
-            super(Translator.localize("Set"), null);
-            // Set the tooltip string:
-            putValue(Action.SHORT_DESCRIPTION, 
-                    Translator.localize("Set"));
-        }
+	/**
+	 * The class uid
+	 */
+	private static final long serialVersionUID = 8227201276430122294L;
 
-        /*
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-            assert (e.getSource() instanceof UMLComboBox);
-            Object oldClassifier = null;
-            final UMLComboBox box = (UMLComboBox) e.getSource();
-            final Object feature = box.getTarget();
-            assert (feature != null);
-            
-            oldClassifier = Model.getFacade().getType(feature);
-            
-            Object selectedClassifier = box.getSelectedItem();
-            
-            final Object newClassifier;
-            if (Model.getFacade().isAElement(selectedClassifier)) {
-                newClassifier = selectedClassifier;
-            } else {
-                newClassifier = null;
-            }
-            
-            if (newClassifier != oldClassifier) {
-                Model.getCoreHelper().setType(feature, newClassifier);
-            }
-        }
+	/**
+	 * Constructor for ActionSetStructuralFeatureType.
+	 */
+	protected ActionSetStructuralFeatureType() {
+	    super(Translator.localize("Set"), null);
+	    // Set the tooltip string:
+	    putValue(Action.SHORT_DESCRIPTION, Translator.localize("Set"));
+	}
+
+	/*
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
+	 * )
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	    super.actionPerformed(e);
+	    assert (e.getSource() instanceof UMLComboBox);
+	    Object oldClassifier = null;
+	    final UMLComboBox box = (UMLComboBox) e.getSource();
+	    final Object feature = box.getTarget();
+	    assert (feature != null);
+
+	    oldClassifier = Model.getFacade().getType(feature);
+
+	    Object selectedClassifier = box.getSelectedItem();
+
+	    final Object newClassifier;
+	    if (Model.getFacade().isAElement(selectedClassifier)) {
+		newClassifier = selectedClassifier;
+	    } else {
+		newClassifier = null;
+	    }
+
+	    if (newClassifier != oldClassifier) {
+		Model.getCoreHelper().setType(feature, newClassifier);
+	    }
+	}
     }
 }
