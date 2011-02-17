@@ -10,7 +10,7 @@
  *    Tom Morris - initial implementation
  *    Bogdan Pistol - initial implementation
  *    Bob Tarling
- 
+ *    Thomas Neustupny 
  *****************************************************************************/
 
 package org.argouml.model.euml;
@@ -1476,8 +1476,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getTagDefinition(Object handle) {
-        throw new NotYetImplementedException();
-
+        // in UML2, the tag definition is the attribute itself
+        return handle;
     }
 
     public Collection<Property> getTagDefinitions(Object handle) {
@@ -1488,18 +1488,27 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getTagOfTag(Object handle) {
-        // TODO: not implemented
-        return null;
+        // usage differs from UML1
+        return handle != null ? handle.toString() : null;
     }
 
     public Object getTaggedValue(Object handle, String name) {
-        // TODO: not implemented
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException();
+        }
+        Element elem = (Element) handle;
+        for (Stereotype st : elem.getAppliedStereotypes()) {
+            if (elem.hasValue(st, name)) {
+                return elem.getValue(st, name);
+            }
+        }
         return null;
     }
 
     public String getTaggedValueValue(Object handle, String name) {
-        // TODO: not implemented
-        return null;
+        // usage differs from UML1
+        Object tv = getTaggedValue(handle, name);
+        return tv != null ? tv.toString() : null;
     }
 
     public Iterator getTaggedValues(Object handle) {
@@ -1507,7 +1516,24 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getTaggedValuesCollection(Object handle) {
-        return new ArrayList();
+        if (!(handle instanceof Element)) {
+            throw new IllegalArgumentException();
+        }
+        Element elem = (Element) handle;
+        List result = new ArrayList();
+        
+        for (EObject sta : elem.getStereotypeApplications()) {
+            Iterator<EObject> iter = sta.eAllContents();
+            while (iter.hasNext()) {
+                EObject o = iter.next();
+                if (o instanceof EStructuralFeature) {
+                    result.add(o);
+                }
+            }
+            //elem.isStereotypeApplied(stereotype);
+            //elem.setValue(stereotype, propertyName, newValue);
+        }
+        return result;
     }
 
     public Vertex getTarget(Object handle) {
@@ -1620,7 +1646,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getValueOfTag(Object handle) {
-        throw new NotYetImplementedException();
+        return null;
     }
 
     public VisibilityKind getVisibility(Object handle) {
