@@ -1,13 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    linus
+ *    Linus Tolke
+ *    Laurant Braud
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -41,11 +42,19 @@ package org.argouml.uml.ui;
 
 import java.awt.Color;
 
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 
+import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargettableModelView;
+
 /**
- * An UMLList2 that implements 'jump' behaviour. As soon as the user
+ * A JList for display stereotypes to the user.
+ * 
+ * This implements 'jump' behaviour. As soon as the user
  * doubleclicks on an element in the list, that element is selected in
  * argouml. <p>
  *
@@ -56,7 +65,7 @@ import javax.swing.ListSelectionModel;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-class UMLStereotypeList extends UMLStereotypeList2 {
+class UMLStereotypeList extends JList implements TargettableModelView {
 
 
     /**
@@ -66,16 +75,26 @@ class UMLStereotypeList extends UMLStereotypeList2 {
      * @param showIcon true if an icon should be shown
      * @param showPath true if containment path should be shown
      */
-    public UMLStereotypeList(ListModel dataModel,
-            boolean showIcon, boolean showPath) {
-        super(dataModel, new UMLLinkedListCellRenderer(showIcon, showPath));
+    public UMLStereotypeList(ListModel dataModel, boolean showIcon, boolean showPath) {
+        super(dataModel);
+        //
+        ListCellRenderer renderer = new UMLLinkedListCellRenderer(showIcon, showPath);
+        setDoubleBuffered(true);
+        if (renderer != null) {
+            setCellRenderer(renderer);
+        }
+        setFont(LookAndFeelMgr.getInstance().getStandardFont());
+        
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
         // TODO: Can we find a better way to do this than hard coding colour?
         setForeground(Color.blue);
         setSelectionForeground(Color.blue.darker());
+        
         UMLLinkMouseListener mouseListener = new UMLLinkMouseListener(this);
         addMouseListener(mouseListener);
     }
+    
 
     /**
      * The constructor.
@@ -97,4 +116,19 @@ class UMLStereotypeList extends UMLStereotypeList2 {
         this(dataModel, showIcon, true);
     }
     
+    /**
+     * Getter for the target. First approach to get rid of the container.
+     * @return Object
+     */
+    public Object getTarget() {
+        
+        return ((UMLStereotypeListModel) getModel()).getTarget();
+    }
+    
+    /*
+     * @see TargettableModelView#getTargettableModel()
+     */
+    public TargetListener getTargettableModel() {
+        return (TargetListener) getModel();
+    }
 }
