@@ -165,6 +165,10 @@ public abstract class AbstractExtensionMechanismsHelperDecorator
         impl.setTaggedValue(handle, taggedValues);
     }
 
+    public void setTaggedValue(Object handle, Object property, Object value) {
+        impl.setTaggedValue(handle, property, value);
+    }
+
     public boolean hasStereotype(Object handle, String name) {
         return impl.hasStereotype(handle, name);
     }

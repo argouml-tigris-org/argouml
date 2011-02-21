@@ -53,6 +53,7 @@ import javax.jmi.reflect.InvalidObjectException;
 import org.apache.log4j.Logger;
 import org.argouml.model.ExtensionMechanismsHelper;
 import org.argouml.model.InvalidElementException;
+import org.argouml.model.NotImplementedException;
 import org.omg.uml.foundation.core.ModelElement;
 import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Stereotype;
@@ -471,6 +472,10 @@ class ExtensionMechanismsHelperMDRImpl implements ExtensionMechanismsHelper {
                 + " or taggedValues: " + taggedValues);
     }
 
+    public void setTaggedValue(Object handle, Object property, Object value) {
+        throw new NotImplementedException();
+    }
+ 
     public void setTagType(Object handle, String tagType) {
         if (handle instanceof TagDefinition) {
             // TODO: What type of validation can we do here on tagType?

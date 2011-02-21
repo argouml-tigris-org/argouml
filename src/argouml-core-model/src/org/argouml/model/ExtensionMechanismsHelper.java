@@ -255,7 +255,7 @@ public interface ExtensionMechanismsHelper {
     void setValueOfTag(Object handle, String value);
 
     /**
-     * Sets the dataValues of the given TaggedValue.
+     * Sets the dataValues of the given TaggedValue. UML1 only.
      *
      * @param handle is the tagged value
      * @param values an array of String values
@@ -289,12 +289,23 @@ public interface ExtensionMechanismsHelper {
     void removeTaggedValue(Object handle, Object taggedValue);
 
     /**
-     * Set the list of tagged values for a model element.
+     * Set the list of tagged values for a model element. UML1 only.
      *
      * @param handle The model element to set for.
      * @param taggedValues A Collection of tagged values.
      */
     void setTaggedValue(Object handle, Collection taggedValues);
+
+    /**
+     * Set tagged value (bound to a stereotype) for a model element.
+     * The value might be an List, depending on the multiplicity of the
+     * property.
+     *
+     * @param handle The model element to set for.
+     * @param property The property of the applied stereotype.
+     * @param value Single value or a List value to set to.
+     */
+    void setTaggedValue(Object handle, Object property, Object value);
 
     /**
      * Unapply a profile to a model or another profile.
