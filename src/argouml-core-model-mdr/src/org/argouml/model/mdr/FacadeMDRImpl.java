@@ -4124,7 +4124,10 @@ class FacadeMDRImpl implements Facade {
         }
         return illegalArgumentString(handle);
     }
-    
+
+    public Object getValueOfTag(Object handle, Object property) {
+        throw new NotImplementedException();
+    }
 
     public Collection getReferenceValue(Object taggedValue) {
         try {

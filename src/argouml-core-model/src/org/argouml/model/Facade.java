@@ -3157,12 +3157,22 @@ public interface Facade {
     Object getValue(Object handle);
 
     /**
-     * Return the value of some tagged value.
+     * Return the value of some tagged value. UML1 only.
      *
      * @param handle The tagged value.
      * @return The found value as String.
      */
     String getValueOfTag(Object handle);
+
+    /**
+     * Return the value of some tagged value. The value can be an object or a
+     * List, depending on the multiplicity of the property.
+     *
+     * @param handle The owning element.
+     * @param property The property (tagged value).
+     * @return The found value as Object or List.
+     */
+    Object getValueOfTag(Object handle, Object property);
 
     /**
      * Return the referenceValue collection for a taggedValue.

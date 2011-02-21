@@ -1522,16 +1522,19 @@ class FacadeEUMLImpl implements Facade {
         Element elem = (Element) handle;
         List result = new ArrayList();
         
-        for (EObject sta : elem.getStereotypeApplications()) {
-            Iterator<EObject> iter = sta.eAllContents();
-            while (iter.hasNext()) {
-                EObject o = iter.next();
-                if (o instanceof EStructuralFeature) {
-                    result.add(o);
+        for (Stereotype st : elem.getAppliedStereotypes()) {
+            for (Property p : st.getAttributes()) {
+                Object v = UMLUtil.getTaggedValue(elem, st.getQualifiedName(), p.getName());
+                if (v != null && v != handle) {
+                    if (v instanceof Collection) {
+                        for (Object o : (Collection) v) {
+                            result.add(p);
+                        }
+                    } else {
+                        result.add(p);
+                    }
                 }
             }
-            //elem.isStereotypeApplied(stereotype);
-            //elem.setValue(stereotype, propertyName, newValue);
         }
         return result;
     }
@@ -1646,7 +1649,21 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getValueOfTag(Object handle) {
-        return null;
+        throw new NotYetImplementedException();
+    }
+
+    public Object getValueOfTag(Object handle, Object property) {
+        if (!(handle instanceof Element)) {
+            return null;
+        }
+        if (!(property instanceof Property)) {
+            return null;
+        }
+        Element elem = (Element) handle;
+        Property prop = (Property) property;
+        Stereotype stereotype = (Stereotype) prop.eContainer();
+        return UMLUtil.getTaggedValue(elem, stereotype.getQualifiedName(),
+                prop.getName());
     }
 
     public VisibilityKind getVisibility(Object handle) {
