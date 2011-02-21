@@ -67,8 +67,8 @@ import org.argouml.model.Model;
 public class TabTaggedValuesModel extends AbstractTableModel implements
         VetoableChangeListener, DelayedVChangeListener, PropertyChangeListener {
 
-    private static final Logger LOG =
-        Logger.getLogger(TabTaggedValuesModel.class);
+    private static final Logger LOG = Logger
+            .getLogger(TabTaggedValuesModel.class);
 
     /**
      * The ModelElement that is the current target.
@@ -80,12 +80,11 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
      */
     public TabTaggedValuesModel() {
     }
-    
+
     /**
      * Set the current target to the given model element.
      * 
-     * @param t
-     *            the target modelelement
+     * @param t the target modelelement
      */
     public void setTarget(Object t) {
         if (LOG.isDebugEnabled()) {
@@ -100,7 +99,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             }
             target = t;
             if (t != null) {
-                Model.getPump().addModelEventListener(this, t, 
+                Model.getPump().addModelEventListener(this, t,
                         new String[] {"taggedValue", "referenceTag"});
             }
         }
@@ -108,7 +107,6 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         // composition of the taggedValues collection.
         fireTableDataChanged();
     }
-
 
     /*
      * @see javax.swing.table.TableModel#getColumnCount()
@@ -162,8 +160,8 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             return 0;
         }
         try {
-            Collection tvs = 
-                Model.getFacade().getTaggedValuesCollection(target);
+            Collection tvs = Model.getFacade()
+                    .getTaggedValuesCollection(target);
             // if (tvs == null) return 1;
             return tvs.size() + 1;
         } catch (InvalidElementException e) {
@@ -180,7 +178,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         if (row > tvs.size() || col > 1) {
             throw new IllegalArgumentException();
         }
-        // If the row is past the end of our current collection, 
+        // If the row is past the end of our current collection,
         // return an empty string so they can add a new value
         if (row == tvs.size()) {
             return "";
@@ -194,11 +192,17 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             return n;
         }
         if (col == 1) {
-            String be = Model.getFacade().getValueOfTag(tv);
-            if (be == null) {
-                return "";
+            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                String be = Model.getFacade().getValueOfTag(tv);
+                if (be == null) {
+                    return "";
+                }
+                return be;
+            } else {
+                Object value = Model.getFacade().getValueOfTag(target, tv);
+                // TODO: handle list
+                return value;
             }
-            return be;
         }
         return "TV-" + row * 2 + col; // for debugging
     }
@@ -215,12 +219,12 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             // TODO: Use default value of appropriate type here
             aValue = "";
         }
-        
+
         if ((aValue == null || "".equals(aValue)) && columnIndex == 0) {
             removeRow(rowIndex);
             return;
         }
-        
+
         Collection tvs = Model.getFacade().getTaggedValuesCollection(target);
         if (tvs.size() <= rowIndex) {
             if (columnIndex == 0) {
@@ -234,47 +238,65 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             if (columnIndex == 0) {
                 Model.getExtensionMechanismsHelper().setType(tv, aValue);
             } else if (columnIndex == 1) {
-                Model.getExtensionMechanismsHelper().setDataValues(tv,
-                        new String[] {(String) aValue });
+                if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                    Model.getExtensionMechanismsHelper().setDataValues(tv,
+                            new String[] {(String) aValue});
+                } else {
+                    // TODO: handle list
+                    Object value = aValue;
+                    Model.getExtensionMechanismsHelper().setTaggedValue(
+                            target, tv, value);
+                }
             }
-            fireTableChanged(
-                    new TableModelEvent(this, rowIndex, rowIndex, columnIndex));
+            fireTableChanged(new TableModelEvent(this, rowIndex, rowIndex,
+                    columnIndex));
         }
     }
 
     /**
      * Add a tagged value to the model with the given type and value.
      * 
-     * @param values values for the columns:
-     *  values[0] contains type for new TaggedValue
-     *  values[1] contains value for new TaggedValue
+     * @param values values for the columns: values[0] contains type for new
+     *            TaggedValue values[1] contains value for new TaggedValue
      */
     public void addRow(Object[] values) {
         Object tagType = values[0];
-        String tagValue = (String) values[1];
-        
-        if (tagType == null) {
-            tagType = "";
-        }
-        if (tagValue == null) {
-            // TODO: Use default value of appropriate type for TD
-            tagValue = "";
-//            tagValue = true;
-        }
-        Object tv = Model.getExtensionMechanismsFactory().createTaggedValue();
-        
-        // We really shouldn't add it until after it is set up, but we
-        // need it to have an owner for the following method calls
-        Model.getExtensionMechanismsHelper().addTaggedValue(target, tv);
 
-        Model.getExtensionMechanismsHelper().setType(tv, tagType);
-        Model.getExtensionMechanismsHelper().setDataValues(tv,
-                new String[] {tagValue});
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            if (tagType == null) {
+                tagType = "";
+            }
+            String tagValue = (String) values[1];
+            if (tagValue == null) {
+                // TODO: Use default value of appropriate type for TD
+                tagValue = "";
+                // tagValue = true;
+            }
+            Object tv = Model.getExtensionMechanismsFactory()
+                    .createTaggedValue();
+
+            // We really shouldn't add it until after it is set up, but we
+            // need it to have an owner for the following method calls
+            Model.getExtensionMechanismsHelper().addTaggedValue(target, tv);
+
+            Model.getExtensionMechanismsHelper().setType(tv, tagType);
+            Model.getExtensionMechanismsHelper().setDataValues(tv,
+                    new String[] {tagValue});
+        } else {
+            if (tagType == null) {
+                return;
+            }
+            Object tagValue = values[1];
+            Model.getExtensionMechanismsHelper()
+                    .addTaggedValue(target, tagType);
+            // Model.getExtensionMechanismsHelper().setDataValues(tagType,
+            // new String[] {tagValue});
+        }
 
         // Since we aren't sure of ordering, fire event for whole table
         fireTableChanged(new TableModelEvent(this));
     }
-    
+
     /**
      * Remove the TaggedValue at the given row from the ModelElement.
      * 
@@ -288,12 +310,14 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             fireTableChanged(new TableModelEvent(this));
         }
     }
-    
+
     /*
      * Return the ith element from a Collection.
      * 
      * @param collection collection to get element from
+     * 
      * @param index index of the element to be returned
+     * 
      * @return the object
      */
     static Object getFromCollection(Collection collection, int index) {
@@ -304,28 +328,29 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             throw new IndexOutOfBoundsException();
         }
         Iterator it = collection.iterator();
-        for (int i = 0; i < index; i++ ) {
+        for (int i = 0; i < index; i++) {
             it.next();
         }
         return it.next();
     }
 
     /*
-     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.
+     * PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("taggedValue".equals(evt.getPropertyName()) 
+        if ("taggedValue".equals(evt.getPropertyName())
                 || "referenceTag".equals(evt.getPropertyName())) {
-            fireTableChanged(new TableModelEvent(this));            
+            fireTableChanged(new TableModelEvent(this));
         }
-        if (evt instanceof DeleteInstanceEvent
-                && evt.getSource() == target) {
+        if (evt instanceof DeleteInstanceEvent && evt.getSource() == target) {
             setTarget(null);
         }
     }
 
     /*
-     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.
+     * PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {
         DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
@@ -333,7 +358,9 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
     }
 
     /*
-     * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
+     * @see
+     * org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.
+     * beans.PropertyChangeEvent)
      */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         fireTableDataChanged();
