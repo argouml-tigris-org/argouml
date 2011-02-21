@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.ExtensionMechanismsHelper;
+import org.argouml.model.UmlHelper;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -41,6 +42,12 @@ import org.eclipse.uml2.uml.resource.UMLResource;
  * The implementation of the ExtensionMechanismsHelper for EUML2.
  */
 class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
+
+    // maybe UML2 has these as constants somewhere
+    private static final String PTYPE_BOOLEAN_NAME = "Boolean";
+    private static final String PTYPE_INTEGER_NAME = "Integer";
+    private static final String PTYPE_STRING_NAME = "String";
+    private static final String PTYPE_UNATURAL_NAME = "UnlimitedNatural";
 
     /**
      * The model implementation.
@@ -92,10 +99,8 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         if (!(taggedValue instanceof Property)) {
             return;
         }
-        Element elem = (Element) handle;
-        Property property = (Property) taggedValue;
-        Stereotype stereotype = (Stereotype) property.eContainer();
-        elem.setValue(stereotype, property.getName(), null);
+        Object value = getDefaultValueFor((Property) taggedValue);
+        setTaggedValue(handle, taggedValue, value);
     }
 
     public void applyProfile(Object handle, Object profile) {
@@ -241,10 +246,10 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
             Resource res = rs.getResource(uri, true);
             Model m = (Model) (org.eclipse.uml2.uml.Package) EcoreUtil.getObjectByType(
                     res.getContents(), UMLPackage.Literals.MODEL);
-            commonTaggedValueTypes.add(m.getOwnedMember("Boolean"));
-            commonTaggedValueTypes.add(m.getOwnedMember("Integer"));
-            commonTaggedValueTypes.add(m.getOwnedMember("String"));
-            commonTaggedValueTypes.add(m.getOwnedMember("UnlimitedNatural"));
+            commonTaggedValueTypes.add(m.getOwnedMember(PTYPE_BOOLEAN_NAME));
+            commonTaggedValueTypes.add(m.getOwnedMember(PTYPE_INTEGER_NAME));
+            commonTaggedValueTypes.add(m.getOwnedMember(PTYPE_STRING_NAME));
+            commonTaggedValueTypes.add(m.getOwnedMember(PTYPE_UNATURAL_NAME));
         }
         return commonTaggedValueTypes;
     }
@@ -352,6 +357,19 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         // TODO: Auto-generated method stub
     }
 
+    public void setTaggedValue(Object handle, Object property, Object value) {
+        if (!(handle instanceof Element)) {
+            return;
+        }
+        if (!(property instanceof Property)) {
+            return;
+        }
+        Element elem = (Element) handle;
+        Property prop = (Property) property;
+        Stereotype stereotype = (Stereotype) prop.eContainer();
+        UMLUtil.setTaggedValue(elem, stereotype, prop.getName(), value);
+    }
+
     public void setTagType(Object handle, String tagType) {
         // TODO: Auto-generated method stub
     }
@@ -365,7 +383,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public void setDataValues(Object handle, String[] value) {
-        // TODO: Auto-generated method stub
+        // not implementable in UML2, because property is missing
     }
 
     public void unapplyProfile(Object handle, Object profile) {
@@ -432,5 +450,23 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
             metaclass = (org.eclipse.uml2.uml.Class) baseClass;
         }
         return metaclass;
+    }
+
+    private Object getDefaultValueFor(Property property) {
+        Object value = null;
+        Type type = property.getType();
+        if (type != null) {
+            String tname = type.getName();
+            if (PTYPE_BOOLEAN_NAME.equals(tname)) {
+                value = Boolean.FALSE;
+            } else if (PTYPE_INTEGER_NAME.equals(tname)) {
+                value = new Integer(0);
+            } else if (PTYPE_STRING_NAME.equals(tname)) {
+                value = new String();
+            } else if (PTYPE_UNATURAL_NAME.equals(tname)) {
+                value = new Integer(0);
+            }
+        }
+        return value;
     }
 }
