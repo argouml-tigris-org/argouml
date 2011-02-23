@@ -116,10 +116,15 @@ class SwingUIFactory {
                     panel.add(LabelledLayout.getSeparator());
                 }
             } catch (Exception e) {
-                throw new IllegalStateException(
-            		"Exception caught building control " + prop.getControlType()
-            		+ " for property " + prop.getPropertyName() + " on panel for "
-            		+ target, e);
+        	String message = "Exception caught building control " + prop.getControlType()
+    		+ " for property " + prop.getPropertyName() + " on panel for "
+    		+ target;
+        	LOG.error(message, e);
+        	try {
+                    panel.add(new JLabel(message));
+        	} catch (Exception ex) {
+        	    throw e;
+        	}
             }
         }
     }
@@ -274,7 +279,7 @@ class SwingUIFactory {
         } else {
             final GetterSetterManager getterSetter = 
             	GetterSetterManager.getGetterSetter(prop.getType());
-
+            
             if (getterSetter.contains(propertyName)) {
                 ExpressionModel model =
                 	new ExpressionModel(propertyName, prop.getTypes().get(0), target, getterSetter);

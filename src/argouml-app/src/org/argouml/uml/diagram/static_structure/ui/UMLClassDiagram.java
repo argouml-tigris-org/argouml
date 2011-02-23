@@ -638,7 +638,9 @@ public class UMLClassDiagram extends UMLDiagram {
     
     @Override
     public boolean doesAccept(Object objectToAccept) {
-        if (Model.getFacade().isAClass(objectToAccept)) {
+        if (objectToAccept instanceof CommentEdge) {
+            return true;
+        } else if (Model.getFacade().isAClass(objectToAccept)) {
             return true;
         } else if (Model.getFacade().isAInterface(objectToAccept)) {
             return true;
@@ -815,7 +817,17 @@ public class UMLClassDiagram extends UMLDiagram {
             figEdge.setDestFigNode(supFN);
             figEdge.getFig().setLayer(getLayer());
         } else if (modelElement instanceof CommentEdge) {
+            CommentEdge ce = (CommentEdge) modelElement;
+            Object source = ce.getSource();
+            Object dest = ce.getDestination();
+            FigNode sourceFN = (FigNode) getLayer().presentationFor(source);
+            FigNode destFN = (FigNode) getLayer().presentationFor(dest);
             figEdge = new FigEdgeNote(modelElement, settings);
+            figEdge.setSourcePortFig(sourceFN);
+            figEdge.setSourceFigNode(sourceFN);
+            figEdge.setDestPortFig(destFN);
+            figEdge.setDestFigNode(destFN);
+            figEdge.getFig().setLayer(getLayer());
         }
         
         if (figEdge != null) {

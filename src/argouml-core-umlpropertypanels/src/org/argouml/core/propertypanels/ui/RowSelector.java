@@ -516,10 +516,23 @@ class RowSelector extends UmlControl
     
     public JComponent getExpansion() {
 	
+	List<Action> flatActions = new ArrayList<Action>();
+	for (Object o : actions) {
+            if (o instanceof Action) {
+        	flatActions.add((Action) o);
+            } else {
+		Object[] oa = (Object[]) o;
+		for (int j = 0; j < oa.length; ++j) {
+		    flatActions.add((Action) oa[j]);
+		}
+            }
+	}
+	
+	
 	final ToolBox tb =
-	    new ToolBox(2, actions.size() / 2 + actions.size() % 2, true);
-	for (int i = 0; i < actions.size() / 2 + actions.size() % 2; ++i) {
-            tb.add((Action) actions.get(i));
+	    new ToolBox(2, flatActions.size() / 2 + flatActions.size() % 2, true);
+	for (int i = 0; i < flatActions.size() / 2 + flatActions.size() % 2; ++i) {
+            tb.add((Action) flatActions.get(i));
 	}
         if (moveUpAction != null) {
             tb.add(moveUpAction);
@@ -527,11 +540,11 @@ class RowSelector extends UmlControl
         if (moveTopAction != null) {
             tb.add(moveTopAction);
         }
-	if (actions.size() % 2 == 1) {
+	if (flatActions.size() % 2 == 1) {
 	    tb.add(new JPanel());
 	}
-	for (int i = actions.size() / 2 + actions.size() % 2; i < actions.size(); ++i) {
-            tb.add((Action) actions.get(i));
+	for (int i = flatActions.size() / 2 + flatActions.size() % 2; i < flatActions.size(); ++i) {
+            tb.add((Action) flatActions.get(i));
 	}
         if (moveDownAction != null) {
             tb.add(moveDownAction);
