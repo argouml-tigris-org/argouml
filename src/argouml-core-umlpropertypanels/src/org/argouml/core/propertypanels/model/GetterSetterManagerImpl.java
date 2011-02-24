@@ -40,7 +40,6 @@ import org.argouml.profile.ProfileException;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.util.ArgoFrame;
-import org.eclipse.uml2.uml.Property;
 
 /**
  * Property getters and setters for UML1.4
@@ -321,7 +320,11 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
         
         public Object getMetaType() {
-            return Property.class;
+            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                return Model.getMetaTypes().getTagDefinition();
+            } else {
+                return Model.getMetaTypes().getProperty();
+            }
         }
     }
 
