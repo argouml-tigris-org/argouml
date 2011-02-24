@@ -2,7 +2,10 @@
 <metamodel>
 <!-- The classes section lists all the model element types and allocates them 
 a name that can be used as an identifier rather than using the fully qualified
-name
+name.
+Authors:
+    Bob Tarling
+    Thomas Neustupny
  -->
 <classes>
   <class name="AcceptEventAction">org.eclipse.uml2.uml.AcceptEventAction</class>
@@ -1298,13 +1301,11 @@ name
       <checkbox name="isLeaf" type="Boolean" />
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
-    <list name="templateParameter" type="TemplateParameter" new="true" label="label.template-parameters" />
     <separator />
+	<list name="baseClass" type="Name" label="label.base-class" />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
     <list name="definedTag" type="TagDefinition" label="label.tagdefinitions" />
-    <separator />
-	<list name="baseClass" type="Name" label="label.base-class" />
 
 	<debug />
     <attribute name="clientDependency" type="Dependency" />
@@ -1317,7 +1318,6 @@ name
     <attribute name="elementResidence" type="ModelElement" />
     <attribute name="parameterTemplate" type="ModelElement" />
     <attribute name="referenceTag" type="ModelElement" />
-    <attribute name="templateArgument" type="ModelElement" />
     <attribute name="behavior" type="ModelElement" />
     <attribute name="classifierRole" type="ModelElement" />
     <attribute name="collaboration" type="ModelElement" />
