@@ -1417,11 +1417,10 @@ The combination of the above allows the GUI to distinguish between
       <checkbox name="isAbstract" type="Boolean" />
     </checkgroup>
     <separator />
+	<list name="baseClass" type="Name" label="label.base-class" />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
     <list name="definedTag" type="TagDefinition" label="label.tagdefinitions" />
-    <separator />
-	<list name="baseClass" type="Name" label="label.base-class" />
 
 	<debug />
     <attribute name="clientDependency" type="Dependency" />
