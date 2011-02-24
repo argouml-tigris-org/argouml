@@ -475,6 +475,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     public Object getProfile() {
         return Profile.class;
     }
+
+    public Object getProperty() {
+        return Property.class;
+    }
     
     public Object getPseudostate() {
         return Pseudostate.class;

@@ -447,6 +447,12 @@ public interface MetaTypes {
      * @since UML 2.0
      */
     Object getProfile();
+
+    /**
+     * @return Return the Property type.
+     * @since UML 2.0
+     */
+    Object getProperty();
     
     /**
      * @return Returns the Pseudostate.
