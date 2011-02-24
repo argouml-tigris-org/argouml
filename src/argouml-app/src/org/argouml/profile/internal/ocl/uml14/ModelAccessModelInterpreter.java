@@ -780,7 +780,6 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
                             .getExtendedElements(subject));
                 }
                 if (feature.equals("definedTag")) {
-                    // TODO check this
                     return new HashSet<Object>(Model.getFacade()
                             .getTagDefinitions(subject));
                 }
