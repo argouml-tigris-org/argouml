@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -86,12 +87,21 @@ public class ActionNewTagDefinition extends UndoableAction {
         } else {
             namespace = Model.getFacade().getInnerContainingModel(t);
         }
-        Object newTagDefinition = Model.getExtensionMechanismsFactory()
-            .buildTagDefinition(
-                    (String) null,
-                    owner,
-                    namespace
-            );
+        Object newTagDefinition = null;
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            newTagDefinition = Model.getExtensionMechanismsFactory()
+                .buildTagDefinition((String) null, owner, namespace);
+        } else {
+            Object type = null;
+            for (Object aType : Model.getExtensionMechanismsHelper()
+                    .getCommonTaggedValueTypes()) {
+                if ("String".equals(Model.getFacade().getName(aType))) {
+                    type = aType;
+                    break;
+                }
+            }
+            newTagDefinition = Model.getCoreFactory().buildAttribute2(t, type);
+        }
         TargetManager.getInstance().setTarget(newTagDefinition);
         super.actionPerformed(e);
     }
