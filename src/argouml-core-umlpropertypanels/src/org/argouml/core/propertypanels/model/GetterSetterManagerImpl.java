@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Bob Tarling - Original implementation
+ *    Thomas Neustupny
  *******************************************************************************
  */
 
@@ -22,7 +23,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.StringTokenizer;
 
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
@@ -34,13 +34,13 @@ import org.argouml.kernel.Command;
 import org.argouml.kernel.NonUndoableCommand;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.MetaTypes;
 import org.argouml.model.Model;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.util.ArgoFrame;
+import org.eclipse.uml2.uml.Property;
 
 /**
  * Property getters and setters for UML1.4
@@ -71,6 +71,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("classifier", new ClassifierGetterSetter());
         addGetterSetter("concurrency", new ConcurrencyGetterSetter());
         addGetterSetter("deferrableEvent", new DeferrableEventGetterSetter());
+        addGetterSetter("definedTag", new TagDefinitionGetterSetter());
         addGetterSetter("derived", new DerivedGetterSetter());
         addGetterSetter("doActivity", new DoActivityActionGetterSetter());
         addGetterSetter("entry", new EntryActionGetterSetter());
@@ -296,7 +297,34 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             Model.getCoreHelper().setStatic(modelElement, (Boolean) value);
         }
     }
-    
+
+    private class TagDefinitionGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
+            LinkedList<String> list = new LinkedList<String>(
+                    Model.getFacade().getTagDefinitions(modelElement));
+            Collections.sort(list);
+            return list;
+        }
+      
+        public Object get(Object modelElement, Class<?> type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Property.class;
+        }
+    }
+
     private class TargetScopeGetterSetter extends BaseGetterSetter {
         // Have we handled UML2 here?
         public Object get(Object modelElement, Class<?> type) {
