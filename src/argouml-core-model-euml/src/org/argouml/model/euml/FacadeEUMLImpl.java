@@ -85,6 +85,7 @@ import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.LiteralBoolean;
 import org.eclipse.uml2.uml.LiteralInteger;
 import org.eclipse.uml2.uml.LiteralString;
+import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.MultiplicityElement;
@@ -1662,8 +1663,14 @@ class FacadeEUMLImpl implements Facade {
         Element elem = (Element) handle;
         Property prop = (Property) property;
         Stereotype stereotype = (Stereotype) prop.eContainer();
-        return UMLUtil.getTaggedValue(elem, stereotype.getQualifiedName(),
+        Object value = UMLUtil.getTaggedValue(elem, stereotype.getQualifiedName(),
                 prop.getName());
+        if (prop.getType() != null
+                && "UnlimitedNatural".equals(prop.getType().getName())
+                && (new Integer(LiteralUnlimitedNatural.UNLIMITED)).equals(value)) {
+            value = "*";
+        }
+        return value;
     }
 
     public VisibilityKind getVisibility(Object handle) {

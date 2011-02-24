@@ -20,7 +20,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.ExtensionMechanismsHelper;
-import org.argouml.model.UmlHelper;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -29,6 +28,7 @@ import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Extension;
+import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Profile;
@@ -366,6 +366,11 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         }
         Element elem = (Element) handle;
         Property prop = (Property) property;
+        if (prop.getType() != null
+                && "UnlimitedNatural".equals(prop.getType().getName())
+                && "*".equals(value)) {
+            value = LiteralUnlimitedNatural.UNLIMITED;
+        }
         Stereotype stereotype = (Stereotype) prop.eContainer();
         UMLUtil.setTaggedValue(elem, stereotype, prop.getName(), value);
     }
