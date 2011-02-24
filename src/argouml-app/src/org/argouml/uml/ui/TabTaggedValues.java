@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
