@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -201,7 +202,7 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             } else {
                 Object value = Model.getFacade().getValueOfTag(target, tv);
                 // TODO: handle list
-                return value;
+                return value.toString();
             }
         }
         return "TV-" + row * 2 + col; // for debugging
