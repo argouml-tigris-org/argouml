@@ -138,8 +138,7 @@ class ExtensionMechanismsFactoryEUMLImpl implements
     }
 
     public Object createTagDefinition() {
-        // TODO: Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createProperty();
     }
 
     public Object createTaggedValue() {

@@ -288,6 +288,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         Object o = null;
         if (elementType == metaTypes.getActor()) {
             o = modelImpl.getUseCasesFactory().createActor();
+        } else if (elementType == metaTypes.getTagDefinition()) {
+            o = modelImpl.getExtensionMechanismsFactory().createTagDefinition();
         } else if (elementType == metaTypes.getUseCase()) {
             o = modelImpl.getUseCasesFactory().createUseCase();
         } else if (elementType == metaTypes.getUMLClass()) {
@@ -387,6 +389,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = modelImpl.getUseCasesFactory().createExtensionPoint();
         } else if (elementType == metaTypes.getReception()) {
             o = modelImpl.getCommonBehaviorFactory().createReception();
+        } else if (elementType == metaTypes.getProperty()) {
+            o = modelImpl.getCoreFactory().createAttribute();
         } else if (elementType == metaTypes.getSubsystem()) {
             // in UML2 subsystem is a Component with <<subsystem>> stereotype
             // so this must occur after the metaTypes.getComponent() case
@@ -580,6 +584,12 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                 Interface.class, Component.class,
                 Node.class, Enumeration.class, DataType.class,
                 Signal.class
+            });
+                
+        // specifies valid elements for a Package to contain
+        validContainmentMap.put(Stereotype.class, 
+            new Class<?>[] { 
+                Property.class
             });
                 
         // valid elements for a Profile to contain
