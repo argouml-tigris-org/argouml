@@ -87,8 +87,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLPartitionContentListModel(modelElement);
         } else if ("context".equals(propName)) {
             model = new UMLSignalContextListModel(modelElement);
-        } else if ("definedTag".equals(propName)) {
-            model = new UMLStereotypeTagDefinitionListModel(modelElement);
         } else if ("deployedComponent".equals(propName)) {
             model = new UMLNodeDeployedComponentListModel(modelElement);
         } else if ("extend".equals(propName)) {

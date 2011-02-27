@@ -1305,7 +1305,7 @@ Authors:
 	<list name="baseClass" type="Name" label="label.base-class" />
     <list name="generalization" type="Generalization" />
     <list name="specialization" type="GeneralizableElement" />
-    <list name="definedTag" type="TagDefinition" label="label.tagdefinitions" />
+    <list name="definedTag" type="Property" new="true" label="label.tagdefinitions" />
 
 	<debug />
     <attribute name="clientDependency" type="Dependency" />
