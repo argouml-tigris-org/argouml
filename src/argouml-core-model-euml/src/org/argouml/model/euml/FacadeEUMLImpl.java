@@ -1650,9 +1650,17 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getValueOfTag(Object handle) {
-        throw new NotYetImplementedException();
+        // This doesn't work in UML2: both owner and property needed!
+        throw new UnsupportedOperationException(); 
     }
 
+    /*
+     * Returns the value of an element's property (tagged value). This method
+     * makes sure that a Collection of values is returned if and only if the
+     * property is multivalued (upper multiplicity value greater 1).
+     * 
+     * @see org.argouml.model.Facade#getValueOfTag(java.lang.Object, java.lang.Object)
+     */
     public Object getValueOfTag(Object handle, Object property) {
         if (!(handle instanceof Element)) {
             return null;
@@ -1665,9 +1673,29 @@ class FacadeEUMLImpl implements Facade {
         Stereotype stereotype = (Stereotype) prop.eContainer();
         Object value = UMLUtil.getTaggedValue(elem, stereotype.getQualifiedName(),
                 prop.getName());
+        if (prop.isMultivalued() && !(value instanceof Collection)) {
+            Collection newValue = new ArrayList();
+            newValue.add(value);
+            value = newValue;
+        }
+        // workaround for missing ability to parse "*"
+        if (value instanceof Collection) {
+            Collection newValue = new ArrayList();
+            for (Object v : ((Collection) value)) {
+                newValue.add(postprocessPropertyValue(prop, v));
+            }
+            value = newValue;
+        } else {
+            value = postprocessPropertyValue(prop, value);
+        }
+        return value;
+    }
+
+    private Object postprocessPropertyValue(Property prop, Object value) {
+        // workaround for missing ability to parse "*"
         if (prop.getType() != null
                 && "UnlimitedNatural".equals(prop.getType().getName())
-                && (new Integer(LiteralUnlimitedNatural.UNLIMITED)).equals(value)) {
+                && ((Integer) value).intValue() == LiteralUnlimitedNatural.UNLIMITED) {
             value = "*";
         }
         return value;
