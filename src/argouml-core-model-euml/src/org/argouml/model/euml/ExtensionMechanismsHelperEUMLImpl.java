@@ -99,8 +99,25 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         if (!(taggedValue instanceof Property)) {
             return;
         }
-        Object value = getDefaultValueFor((Property) taggedValue);
-        setTaggedValue(handle, taggedValue, value);
+        Element elem = (Element) handle;
+        Property prop = (Property) taggedValue;
+        Stereotype stereotype = (Stereotype) prop.eContainer();
+        Object value = null;
+        if (prop.isMultivalued()) {
+            value = UMLUtil.getTaggedValue(elem, stereotype.getQualifiedName(),
+                    prop.getName());
+            Collection newValue = new ArrayList();
+            if (value instanceof Collection) {
+                newValue.addAll((Collection) value);
+            } else if (value != null) {
+                newValue.add(value);
+            }
+            newValue.add(getDefaultValueFor((Property) taggedValue));
+            value = newValue;
+        } else {
+            value = getDefaultValueFor((Property) taggedValue);
+        }
+        setTaggedValue(elem, prop, value);
     }
 
     public void applyProfile(Object handle, Object profile) {
@@ -354,9 +371,18 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public void setTaggedValue(Object handle, Collection taggedValues) {
-        // TODO: Auto-generated method stub
+        // This doesn't work in UML2: both owner and property needed!
+        throw new UnsupportedOperationException(); 
     }
 
+    /*
+     * Sets the value of an element#s property (tagged value). This method
+     * makes sure that a Collection of values is set if and only if the
+     * property is multivalued (upper multiplicity value greater 1), so passing
+     * a collection is safe.
+     * 
+     * @see org.argouml.model.ExtensionMechanismsHelper#setValueOfTag(java.lang.Object, java.lang.Object, java.lang.Object)
+     */
     public void setTaggedValue(Object handle, Object property, Object value) {
         if (!(handle instanceof Element)) {
             return;
@@ -366,13 +392,43 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
         }
         Element elem = (Element) handle;
         Property prop = (Property) property;
+        // consider the property multiplicity
+        if (prop.isMultivalued() && !(value instanceof Collection)) {
+            Collection newValue = new ArrayList();
+            newValue.add(value);
+            value = newValue;
+        } else if (!prop.isMultivalued() && value instanceof Collection) {
+            Collection col = (Collection) value;
+            if (col.isEmpty()) {
+                value = null; // or getDefaultValueFor(prop)?
+            } else {
+                // too bad, we choose to take the first value
+                value = col.iterator().next();
+            }
+        }
+        // workaround for missing ability to parse "*"
+        if (value instanceof Collection) {
+            Collection newValue = new ArrayList();
+            for (Object v : ((Collection) value)) {
+                newValue.add(postprocessPropertyValue(prop, v));
+            }
+            value = newValue;
+        } else {
+            value = postprocessPropertyValue(prop, value);
+        }
+        // ready to set the value finally
+        Stereotype stereotype = (Stereotype) prop.eContainer();
+        UMLUtil.setTaggedValue(elem, stereotype, prop.getName(), value);
+    }
+
+    private Object postprocessPropertyValue(Property prop, Object value) {
+        // workaround for missing ability to parse "*"
         if (prop.getType() != null
                 && "UnlimitedNatural".equals(prop.getType().getName())
                 && "*".equals(value)) {
             value = LiteralUnlimitedNatural.UNLIMITED;
         }
-        Stereotype stereotype = (Stereotype) prop.eContainer();
-        UMLUtil.setTaggedValue(elem, stereotype, prop.getName(), value);
+        return value;
     }
 
     public void setTagType(Object handle, String tagType) {
@@ -380,7 +436,7 @@ class ExtensionMechanismsHelperEUMLImpl implements ExtensionMechanismsHelper {
     }
 
     public void setType(Object handle, Object type) {
-        // TODO: Auto-generated method stub
+        // in case of a tagged value, the type shouldn't be set here
     }
 
     public void setValueOfTag(Object handle, String value) {
