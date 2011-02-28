@@ -302,7 +302,9 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
             LinkedList<String> list = new LinkedList<String>(
                     Model.getFacade().getTagDefinitions(modelElement));
-            Collections.sort(list);
+            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                Collections.sort(list);
+            }
             return list;
         }
       
