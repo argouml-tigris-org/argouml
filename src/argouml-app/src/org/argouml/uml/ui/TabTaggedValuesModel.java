@@ -42,6 +42,7 @@ package org.argouml.uml.ui;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -184,7 +185,8 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
         if (row == tvs.size()) {
             return "";
         }
-        Object tv = tvs.toArray()[row];
+        Object[] tva = tvs.toArray();
+        Object tv = tva[row];
         if (col == 0) {
             Object n = Model.getFacade().getTagDefinition(tv);
             if (n == null) {
@@ -201,7 +203,20 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
                 return be;
             } else {
                 Object value = Model.getFacade().getValueOfTag(target, tv);
-                // TODO: handle list
+                if (value instanceof Collection) {
+                    // handle multivalued tagged value
+                    int n = -1;
+                    for (int i = 0; i <= row; i++) {
+                        if (tva[i] == tv) {
+                            n++;
+                        }
+                    }
+                    if (n != -1) {
+                        value = ((Collection) value).toArray()[n];
+                    } else {
+                        value = "";
+                    }
+                }
                 return value.toString();
             }
         }
@@ -243,8 +258,28 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
                     Model.getExtensionMechanismsHelper().setDataValues(tv,
                             new String[] {(String) aValue});
                 } else {
-                    // TODO: handle list
-                    Object value = aValue;
+                    Object[] tva = tvs.toArray();
+                    Object value = Model.getFacade().getValueOfTag(target, tv);
+                    if (value instanceof Collection) {
+                        // handle multivalued tagged value
+                        Iterator iter = ((Collection) value).iterator();
+                        Collection values = new ArrayList();
+                        for (int i = 0; i < tva.length; i++) {
+                            if (tva[i] == tva[rowIndex]) {
+                                if (i == rowIndex) {
+                                    values.add(aValue);
+                                    if (iter.hasNext()) {
+                                        iter.next();
+                                    }
+                                } else if (iter.hasNext()) {
+                                    values.add(iter.next());
+                                }
+                            }
+                            value = values;
+                        }
+                    } else {
+                        value = aValue;
+                    }
                     Model.getExtensionMechanismsHelper().setTaggedValue(
                             target, tv, value);
                 }
@@ -290,8 +325,6 @@ public class TabTaggedValuesModel extends AbstractTableModel implements
             Object tagValue = values[1];
             Model.getExtensionMechanismsHelper()
                     .addTaggedValue(target, tagType);
-            // Model.getExtensionMechanismsHelper().setDataValues(tagType,
-            // new String[] {tagValue});
         }
 
         // Since we aren't sure of ordering, fire event for whole table
