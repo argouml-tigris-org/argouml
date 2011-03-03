@@ -91,8 +91,7 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
 
     public Collection getAllModelElementsOfKind(Object nsa, Object type) {
         if (!(nsa instanceof Element)) {
-            throw new IllegalArgumentException(
-                    "nsa must be instance of Element"); //$NON-NLS-1$
+            return new ArrayList<Element>();
         }
         Class theType = null;
         if (type instanceof String) {
