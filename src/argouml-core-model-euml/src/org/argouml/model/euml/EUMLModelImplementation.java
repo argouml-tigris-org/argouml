@@ -36,6 +36,7 @@ import org.argouml.model.UmlException;
 import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.provider.EcoreItemProviderAdapterFactory;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -48,9 +49,11 @@ import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.edit.providers.UMLItemProviderAdapterFactory;
 import org.eclipse.uml2.uml.edit.providers.UMLReflectiveItemProviderAdapterFactory;
 import org.eclipse.uml2.uml.edit.providers.UMLResourceItemProviderAdapterFactory;
+import org.eclipse.uml2.uml.resource.UML212UMLResource;
 import org.eclipse.uml2.uml.resource.UML22UMLExtendedMetaData;
 import org.eclipse.uml2.uml.resource.UML22UMLResource;
 import org.eclipse.uml2.uml.resource.UMLResource;
+import org.eclipse.uml2.uml.resource.XMI212UMLResource;
 import org.eclipse.uml2.uml.resource.XMI2UMLExtendedMetaData;
 import org.eclipse.uml2.uml.resource.XMI2UMLResource;
 
@@ -231,10 +234,21 @@ public class EUMLModelImplementation implements ModelImplementation {
             URI uri = URI.createURI("jar:file:" + path + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
             LOG.debug("eUML.resource URI --> " + uri); //$NON-NLS-1$
 
-            resourceSet.getPackageRegistry().put(
-                    UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-            resourceSet.getPackageRegistry().put(
-                    EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+            Registry packageRegistry = resourceSet.getPackageRegistry();
+            packageRegistry.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
+            packageRegistry.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
+            // for other xmi files with further namespaces:
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_1_NS_URI, UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_1_URI, UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_NS_URI, UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_URI, UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_2_NS_URI, UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_NS_URI, UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_URI, UMLPackage.eINSTANCE);
+            // eclipse namespaces:
+            packageRegistry.put(UML212UMLResource.UML_METAMODEL_NS_URI, UMLPackage.eINSTANCE);
+            packageRegistry.put("http://www.eclipse.org/uml2/2.0.0/UML", UMLPackage.eINSTANCE);
+
             // For the .uml files in the eclipse jar files, we need this:
             extensionToFactoryMap.put(
                     UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
