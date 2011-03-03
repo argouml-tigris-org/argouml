@@ -71,6 +71,7 @@ public class UserDefinedProfileHelper {
                 String s = file.getName().toLowerCase();
                 return file.isDirectory() || (file.isFile() && (
                     s.endsWith(".xmi") || s.endsWith(".xml")
+                    || s.endsWith(".uml") // for AndroMDA
                     || s.endsWith(".xmi.zip") || s.endsWith(".xml.zip")));
             }
 
@@ -130,7 +131,8 @@ public class UserDefinedProfileHelper {
                         }
                     } else {
                         String s = curFile.getName().toLowerCase();
-                        if (s.endsWith(".xmi") || s.endsWith(".xml")
+                        if (s.endsWith(".xmi")
+                                || s.endsWith(".uml") // for AndroMDA profiles
                                 || s.endsWith(".xmi.zip")
                                 || s.endsWith(".xml.zip")) {
                             results.add(curFile);
