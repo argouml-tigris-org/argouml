@@ -163,7 +163,8 @@ public class UMLUtil extends org.eclipse.uml2.uml.util.UMLUtil {
     static Resource getResource(
             EUMLModelImplementation modelImplementation, URI uri,
             boolean readOnly) {
-        if (!"xmi".equals(uri.fileExtension())) { //$NON-NLS-1$
+        if (!"xmi".equals(uri.fileExtension()) //$NON-NLS-1$
+                && !"uml".equals(uri.fileExtension())) { //$NON-NLS-1$
             // Make sure we have a recognized file extension
             uri = uri.appendFileExtension("xmi"); //$NON-NLS-1$
         }
