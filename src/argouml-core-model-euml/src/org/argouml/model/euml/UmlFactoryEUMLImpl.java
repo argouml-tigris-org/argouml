@@ -28,6 +28,7 @@ import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.UmlFactory;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -702,7 +703,16 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     }
 
     public Collection getExtentPackages(String extentName) {
-        // TODO: Auto-generated method stub
+        if (extentName != null && extentName.startsWith("pathmap://UML_")) {
+            // trying to get a built-in standard profile from eclipse UML2
+            try {
+                URI uri = URI.createURI(extentName);
+                Resource res = UMLUtil.getResource(modelImpl, uri, true);
+                return res.getContents();
+            } catch (IllegalArgumentException ex) {
+                LOG.warn("failed to get resource: " + extentName); //$NON-NLS-1$
+            }
+        }
         return null;
     }
 
