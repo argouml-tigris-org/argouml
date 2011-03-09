@@ -130,7 +130,7 @@ public class ProfileUML extends Profile {
                 profileReference =
                     new CoreProfileReference(PROFILE_UML14_FILE);
             } else {
-                //TODO: reference should be handled better
+                //TODO: this profile isn't used anymore, see getModel()
                 CoreProfileReference.setProfileDirectory("uml22");
                 profileReference =
                     new CoreProfileReference(PROFILE_UML22_FILE);
@@ -143,11 +143,21 @@ public class ProfileUML extends Profile {
 
     private Collection getModel() {
         if (model == null) {
-            profileModelLoader = new ResourceModelLoader();
-            try {
-                model = profileModelLoader.loadModel(profileReference);
-           } catch (ProfileException e) {
-                LOG.error("Error loading UML profile", e);
+            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                profileModelLoader = new ResourceModelLoader();
+                try {
+                    model = profileModelLoader.loadModel(profileReference);
+                } catch (ProfileException e) {
+                    LOG.error("Error loading UML profile", e);
+                }
+            } else {
+                // We have our own UML2 profile, but it is not used. Instead,
+                // by the following line the build-in eclipse UML2 standard
+                // profile and primitive types implementation are used.
+                model = Model.getUmlFactory().getExtentPackages(
+                        "pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml");
+                model.addAll(Model.getUmlFactory().getExtentPackages(
+                        "pathmap://UML_PROFILES/Standard.profile.uml"));
             }
 
             if (model == null) {
@@ -496,19 +506,33 @@ public class ProfileUML extends Profile {
         return new DefaultTypeStrategy() {
             private Collection model = getModel();
             public Object getDefaultAttributeType() {
-                return ModelUtils.findTypeInModel("Integer", model.iterator()
-                        .next());
+                return getDefaultType();
             }
 
             public Object getDefaultParameterType() {
-                return ModelUtils.findTypeInModel("Integer", model.iterator()
-                        .next());
+                return getDefaultType();
             }
 
             public Object getDefaultReturnType() {
                 return null;
             }
 
+            private Object getDefaultType() {
+                if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                    return ModelUtils.findTypeInModel("Integer", model
+                            .iterator().next());
+                } else {
+                    // why Integer, better let's use String
+                    // TODO: has nothing to do with tagged values
+                    for (Object t : Model.getExtensionMechanismsHelper().getCommonTaggedValueTypes()) {
+                        if ("String".equals(Model.getFacade().getName(t))) {
+                            return t;
+                        }
+                    }
+                }
+                // this must not happen
+                return null;
+            }
         };
     }
 }
