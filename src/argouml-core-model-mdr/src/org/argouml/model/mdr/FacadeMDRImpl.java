@@ -901,6 +901,10 @@ class FacadeMDRImpl implements Facade {
                 ChangeableKind ck = (ChangeableKind) handle;
                 return ChangeableKindEnum.CK_FROZEN.equals(ck);
             }
+            if (handle instanceof AssociationEnd) {
+                return ChangeableKindEnum.CK_FROZEN
+                        .equals(((AssociationEnd) handle).getChangeability());
+            }
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
