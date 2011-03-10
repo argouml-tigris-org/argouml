@@ -519,16 +519,8 @@ public class ProfileUML extends Profile {
                 if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
                     return ModelUtils.findTypeInModel("Integer", model
                             .iterator().next());
-                //} else {
-                    // why Integer, better let's use String
-                    // TODO: has nothing to do with tagged values
-                //    for (Object t : Model.getExtensionMechanismsHelper().getCommonTaggedValueTypes()) {
-                //        if ("String".equals(Model.getFacade().getName(t))) {
-                //            return t;
-                //        }
-                //    }
                 }
-                // this must not happen
+                // no default type for UML2
                 return null;
             }
         };
