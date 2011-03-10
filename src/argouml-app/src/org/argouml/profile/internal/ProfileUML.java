@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    maurelio1234 - Initial implementation
- *    thn
+ *    Thomas Neustupny
  *    Tom Morris - lazy loading
  *****************************************************************************
  *
@@ -155,9 +155,7 @@ public class ProfileUML extends Profile {
                 // by the following line the build-in eclipse UML2 standard
                 // profile and primitive types implementation are used.
                 model = Model.getUmlFactory().getExtentPackages(
-                        "pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml");
-                model.addAll(Model.getUmlFactory().getExtentPackages(
-                        "pathmap://UML_PROFILES/Standard.profile.uml"));
+                        "pathmap://UML_PROFILES/Standard.profile.uml");
             }
 
             if (model == null) {
@@ -521,14 +519,14 @@ public class ProfileUML extends Profile {
                 if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
                     return ModelUtils.findTypeInModel("Integer", model
                             .iterator().next());
-                } else {
+                //} else {
                     // why Integer, better let's use String
                     // TODO: has nothing to do with tagged values
-                    for (Object t : Model.getExtensionMechanismsHelper().getCommonTaggedValueTypes()) {
-                        if ("String".equals(Model.getFacade().getName(t))) {
-                            return t;
-                        }
-                    }
+                //    for (Object t : Model.getExtensionMechanismsHelper().getCommonTaggedValueTypes()) {
+                //        if ("String".equals(Model.getFacade().getName(t))) {
+                //            return t;
+                //        }
+                //    }
                 }
                 // this must not happen
                 return null;
