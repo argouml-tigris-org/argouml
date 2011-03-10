@@ -435,9 +435,13 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
 
 
     public Property buildAttribute2(final Object handle, final Object type) {
-        if (!(handle instanceof Type) || !(type instanceof Type)) {
+        if (!(handle instanceof Type)) {
             throw new IllegalArgumentException(
-                    "handle and type must be instances of Type."); //$NON-NLS-1$
+                    "handle must be instance of Type."); //$NON-NLS-1$
+        }
+        if (type != null && !(type instanceof Type)) {
+            throw new IllegalArgumentException(
+                    "type must be instance of Type."); //$NON-NLS-1$
         }
         if (UMLUtil.getOwnedAttributes((Type) handle) == null) {
             throw new UnsupportedOperationException(
@@ -448,7 +452,9 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             public void run() {
                 Property property = createAttribute();
                 UMLUtil.getOwnedAttributes((Type) handle).add(property);
-                property.setType((Type) type);
+                if (type != null) {
+                    property.setType((Type) type);
+                }
                 property.setName("newAttr");
                 getParams().add(property);
             }

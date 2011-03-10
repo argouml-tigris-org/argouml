@@ -1882,12 +1882,16 @@ class CoreHelperEUMLImpl implements CoreHelper {
             throw new IllegalArgumentException(
                     "handle must be instance of TypedElement"); //$NON-NLS-1$
         }
-        if (!(type instanceof Type)) {
+        if (type != null && !(type instanceof Type)) {
             throw new IllegalArgumentException("type must be instance of Type"); //$NON-NLS-1$
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
-                ((TypedElement) handle).setType((Type) type);
+                if (type != null) {
+                    ((TypedElement) handle).setType((Type) type);
+                } else {
+                    ((TypedElement) handle).setType(null);
+                }
             }
         };
         editingDomain.getCommandStack().execute(
