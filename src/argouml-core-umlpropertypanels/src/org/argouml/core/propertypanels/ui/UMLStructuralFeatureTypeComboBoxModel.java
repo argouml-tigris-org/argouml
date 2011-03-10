@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Bob Tarling
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -116,8 +117,17 @@ class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel {
 			.getAllModelElementsOfKind(model,
 				Model.getMetaTypes().getDataType()));
 	    }
-	    elements.addAll(p.getProfileConfiguration().findByMetaType(
-		    Model.getMetaTypes().getClassifier()));
+	    if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                elements.addAll(p.getProfileConfiguration().findByMetaType(
+                        Model.getMetaTypes().getClassifier()));
+	    } else {
+		// classifier is way too much in UML 2.x
+                elements.addAll(p.getProfileConfiguration().findByMetaType(
+                        Model.getMetaTypes().getDataType()));
+                // the minimum set of standard types
+                elements.addAll(Model.getExtensionMechanismsHelper()
+                        .getCommonTaggedValueTypes());
+	    }
 	}
 
 	setElements(elements);
