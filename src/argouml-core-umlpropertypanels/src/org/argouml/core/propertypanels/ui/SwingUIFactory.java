@@ -213,6 +213,7 @@ class SwingUIFactory {
         JComponent control = null;
         
         final String propertyName = prop.getPropertyName();
+        final Class<?> type = prop.getType();
         
         if ("initialValue".equals(prop.getPropertyName())) {        
             UMLExpressionModel model = 
@@ -230,8 +231,8 @@ class SwingUIFactory {
             UMLTextArea osta = new UMLTextArea(document);
             osta.setRows(3);
             control = new JScrollPane(osta);
-        } else if ("body".equals(prop.getPropertyName()) && "String".equals(prop.getType())) {
-            UMLPlainTextDocument document = new UMLCommentBodyDocument(prop.getPropertyName(), target);
+        } else if ("body".equals(propertyName) && type == String.class) {
+            UMLPlainTextDocument document = new UMLCommentBodyDocument(propertyName, target);
             UMLTextArea text = new UMLTextArea(document);
             text.setLineWrap(true);
             text.setRows(5);
