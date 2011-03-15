@@ -207,14 +207,14 @@ class SwingUIFactory {
         // instantiated when its not always needed.
         JPanel p = new JPanel();
         
-        final TitledBorder border = new TitledBorder(prop.getPropertyName());        
-        p.setBorder(border);
-
         JComponent control = null;
         
         final String propertyName = prop.getPropertyName();
         final Class<?> type = prop.getType();
         
+        final TitledBorder border = new TitledBorder(propertyName);        
+        p.setBorder(border);
+
         if ("initialValue".equals(propertyName)) {        
             UMLExpressionModel model = 
                 new UMLInitialValueExpressionModel(target);
