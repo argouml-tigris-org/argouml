@@ -215,19 +215,19 @@ class SwingUIFactory {
         final String propertyName = prop.getPropertyName();
         final Class<?> type = prop.getType();
         
-        if ("initialValue".equals(prop.getPropertyName())) {        
+        if ("initialValue".equals(propertyName)) {        
             UMLExpressionModel model = 
                 new UMLInitialValueExpressionModel(target);
-            p  = new UMLExpressionPanel(model, prop.getPropertyName());
+            p  = new UMLExpressionPanel(model, propertyName);
             control = p;
-        } else if ("defaultValue".equals(prop.getPropertyName())) {
+        } else if ("defaultValue".equals(propertyName)) {
             UMLExpressionModel model = 
                 new UMLDefaultValueExpressionModel(target);
-            p  = new UMLExpressionPanel(model, prop.getPropertyName());
+            p  = new UMLExpressionPanel(model, propertyName);
             control = p;
-        } else if ("specification".equals(prop.getPropertyName())) {
+        } else if ("specification".equals(propertyName)) {
             UMLPlainTextDocument document = 
-                new UMLOperationSpecificationDocument(prop.getPropertyName(), target);
+                new UMLOperationSpecificationDocument(propertyName, target);
             UMLTextArea osta = new UMLTextArea(document);
             osta.setRows(3);
             control = new JScrollPane(osta);
@@ -237,34 +237,34 @@ class SwingUIFactory {
             text.setLineWrap(true);
             text.setRows(5);
             control = new JScrollPane(text);
-        } else if ("condition".equals(prop.getPropertyName())) {
+        } else if ("condition".equals(propertyName)) {
             UMLExpressionModel conditionModel =
                 new UMLConditionExpressionModel(target);
             JTextArea conditionArea =
                 new UMLExpressionBodyField(conditionModel, true);
             conditionArea.setRows(5);
             control = new JScrollPane(conditionArea);
-        } else if ("script".equals(prop.getPropertyName())) {
+        } else if ("script".equals(propertyName)) {
             UMLExpressionModel scriptModel =
                 new UMLScriptExpressionModel(target);            
             p  = new UMLExpressionPanel(scriptModel, prop.getPropertyName());
             control = p;
-        } else if ("recurrence".equals(prop.getPropertyName())) {
+        } else if ("recurrence".equals(propertyName)) {
             UMLExpressionModel recurrenceModel =
                 new UMLRecurrenceExpressionModel(target);            
-            p  = new UMLExpressionPanel(recurrenceModel, prop.getPropertyName());
+            p  = new UMLExpressionPanel(recurrenceModel, propertyName);
             control = p;
-        } else if ("expression".equals(prop.getPropertyName())) {
+        } else if ("expression".equals(propertyName)) {
             UMLExpressionModel model = new UMLExpressionExpressionModel(target);
-            p = new UMLExpressionPanel(model, prop.getPropertyName());
+            p = new UMLExpressionPanel(model, propertyName);
             control = p;
-        } else if ("changeExpression".equals(prop.getPropertyName())) {
+        } else if ("changeExpression".equals(propertyName)) {
             UMLExpressionModel model = new UMLChangeExpressionModel(target);
-            p = new UMLExpressionPanel(model, prop.getPropertyName());
+            p = new UMLExpressionPanel(model, propertyName);
             control = p;
-        } else if ("when".equals(prop.getPropertyName())) {
+        } else if ("when".equals(propertyName)) {
             UMLExpressionModel model = new UMLTimeExpressionModel(target);
-            p = new UMLExpressionPanel(model, prop.getPropertyName());
+            p = new UMLExpressionPanel(model, propertyName);
             control = p;
         }
         
