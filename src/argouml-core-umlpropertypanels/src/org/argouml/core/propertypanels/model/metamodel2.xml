@@ -72,6 +72,7 @@ Authors:
   <class name="Package">org.eclipse.uml2.uml.Package</class>
   <class name="Model">org.eclipse.uml2.uml.Model</class>
   <class name="Profile">org.eclipse.uml2.uml.Profile</class>
+  <class name="String">java.lang.String</class>
 </classes>
 <panels>
   <panel name="Multiplicity">
@@ -1099,8 +1100,7 @@ Authors:
     <list name="supplier" type="ModelElement" label="label.suppliers" />
   </panel>
   <panel name="Comment">
-    <text name="name" type="Name" />
-    <list name="annotatedElement" type="ModelElement" label="label.annotated-elements" />
+    <list name="annotatedElement" type="Element" label="label.annotated-elements" />
     <separator />
     <textarea name="body" type="String" />
     
