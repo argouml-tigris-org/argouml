@@ -34,6 +34,21 @@
    connector - A connection point required for some nodes to attach edges.
 -->
 <diagram-elements>
+  <classes>
+    <class name="AcceptEventAction">org.eclipse.uml2.uml.AcceptEventAction</class>
+    <class name="ActivityParameterNode">org.eclipse.uml2.uml.ActivityParameterNode</class>
+    <class name="CallBehaviorAction">org.eclipse.uml2.uml.CallBehaviorAction</class>
+    <class name="CentralBufferNode">org.eclipse.uml2.uml.CentralBufferNode</class>
+    <class name="ControlFlow">org.eclipse.uml2.uml.ControlFlow</class>
+    <class name="CreateObjectAction">org.eclipse.uml2.uml.CreateObjectAction</class>
+    <class name="DataStoreNode">org.eclipse.uml2.uml.DataStoreNode</class>
+    <class name="DataType">org.eclipse.uml2.uml.DataType</class>
+    <class name="DestroyObjectAction">org.eclipse.uml2.uml.DestroyObjectAction</class>
+    <class name="InputPin">org.eclipse.uml2.uml.InputPin</class>
+    <class name="ObjectFlow">org.eclipse.uml2.uml.ObjectFlow</class>
+    <class name="OutputPin">org.eclipse.uml2.uml.OutputPin</class>
+    <class name="SendSignalAction">org.eclipse.uml2.uml.SendSignalAction</class>
+  </classes>
   <rrect type="CallBehaviorAction" />
   <rrect type="CreateObjectAction" />
   <rrect type="DestroyObjectAction" />
