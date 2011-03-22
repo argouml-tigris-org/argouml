@@ -1,13 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -45,6 +46,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
@@ -56,6 +58,9 @@ import org.argouml.model.Model;
  */
 public class GoStateMachineToState extends AbstractPerspectiveRule {
 
+    private static final Logger LOG =
+        Logger.getLogger(GoStateMachineToState.class);
+    
     /*
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
@@ -91,9 +96,19 @@ public class GoStateMachineToState extends AbstractPerspectiveRule {
         if (Model.getFacade().isAStateMachine(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
-	    if (Model.getFacade().getTop(parent) != null) {
-                set.add(Model.getFacade().getTop(parent));
-            }
+	    try {
+	        if (Model.getFacade().getTop(parent) != null) {
+	            set.add(Model.getFacade().getTop(parent));
+	        }
+	    } catch (RuntimeException e) {
+	        if (Model.getFacade().getUmlVersion().startsWith("2")) {
+                    // TODO: Ignore and report exception until getTop
+	            // implemented.
+                    LOG.error("Explorer caught exception ", e);
+	        } else {
+                    throw e;
+	        }
+	    }
 	    return set;
 	}
 	return Collections.EMPTY_SET;
