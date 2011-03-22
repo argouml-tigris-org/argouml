@@ -1,0 +1,45 @@
+<!--
+ *******************************************************************************
+ * Copyright (c) 2011 Contributors - see below
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Bob Tarling
+ *******************************************************************************
+-->
+
+<!--
+   This file defines the types of diagram elements to be made available in
+   the UML2 activity diagram.
+   
+   Each element within the diagram "root" element represents a toolbar button
+   that will be made available to the user. Elements within the toolbar can be
+   grouped with the "dropdown" element to place thjem within a dropdown
+   toolbutton.
+   
+   The other element types indicates the representation used to display
+   diagram element when it is created.
+   
+   poly-edge - an edge to join two nodes, the edge can be multiple parts
+               (essentially an unconnected polygon)
+   rect - a rectangular node
+   rrect - a rectangular node with rounded corners
+   pentagon - a pentagon that is formed by a combined rectangle and a triangle much
+               like a direction sign on a signpost.
+   concave-pentagon - similar to a pentagon but with the triangle forms a notch into
+                      the rectangle.
+   connector - A connection point required for some nodes to attach edges.
+-->
+<diagram-elements>
+  <rrect type="CallBehaviorAction" />
+  <rrect type="CreateObjectAction" />
+  <rrect type="DestroyObjectAction" />
+  <pentagon type="SendSignalAction" />
+  <concave-pentagon type="AcceptEventAction" />
+  <rect type="ActivityParameterNode" />
+  <rect type="CentralBufferNode" />
+  <rect type="DataStoreNode" />
+</diagram-elements>
