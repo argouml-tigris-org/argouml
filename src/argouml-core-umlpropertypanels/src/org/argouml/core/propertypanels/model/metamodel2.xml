@@ -417,48 +417,6 @@ Authors:
     <attribute name="ordering" type="OrderingKind" />
     <attribute name="type" type="Classifier" />
   </panel>
-  <panel name="AssociationEnd">
-    <text name="name" type="Name" />
-    <combo name="participant" type="Classifier" label="label.type" />
-    <combo name="multiplicity" type="Multiplicity" />
-	<singlerow name="association" type="Association" />
-	<separator />
-	<checkgroup name="modifiers">
-      <checkbox name="isSpecification" type="Boolean" />
-      <checkbox name="isNavigable" type="Boolean" />
-      <checkbox name="targetScope" type="ScopeKind" label="label.static" />
-      <checkbox name="ordering" type="OrderingKind" label="label.ordered" />
-    </checkgroup>
-    <list name="qualifier" type="Attribute" label="label.qualifiers" />
-    <list name="specification" type="Classifier" />
-	<separator />
-    <optionbox name="aggregation" type="AggregationKind" />
-    <optionbox name="changeability" type="ChangeableKind" />
-    <optionbox name="visibility" type="VisibilityKind" />
-    
-    <debug />
-    <attribute name="namespace" type="Namespace" />
-    <attribute name="clientDependency" type="Dependency" />
-    <attribute name="targetFlow" type="Flow" />
-    <attribute name="sourceFlow" type="Flow" />
-    <attribute name="comment" type="Comment" />
-    <attribute name="templateParameter" type="TemplateParameter" />
-    <attribute name="supplierDependency" type="ModelElement" />
-    <attribute name="presentation" type="ModelElement" />
-    <attribute name="defaultedParameter" type="ModelElement" />
-    <attribute name="elementResidence" type="ModelElement" />
-    <attribute name="parameterTemplate" type="ModelElement" />
-    <attribute name="referenceTag" type="ModelElement" />
-    <attribute name="templateArgument" type="ModelElement" />
-    <attribute name="behavior" type="ModelElement" />
-    <attribute name="classifierRole" type="ModelElement" />
-    <attribute name="collaboration" type="ModelElement" />
-    <attribute name="collaborationInstanceSet" type="ModelElement" />
-    <attribute name="partition" type="ModelElement" />
-    <attribute name="elementImport" type="ModelElement" />    
-    <attribute name="linkEnd" type="AssociationEnd" />
-    <attribute name="associationEndRole" type="AssociationEnd" />
-  </panel>
   <panel name="Interface">
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
@@ -607,6 +565,7 @@ Authors:
     <combo name="multiplicity" type="Multiplicity" />
     <singlerow name="owner" type="Classifier" />
     <singlerow name="association" type="Association" />
+    <optionbox name="aggregation" type="AggregationKind" />
     <separator />
     <optionbox name="visibility" type="VisibilityKind" />
     <checkgroup name="modifiers">
