@@ -9,6 +9,7 @@
  * Contributors:
  *    Bob Tarling - Post GSOC improvements
  *    Christian López Espínola
+ *    Thomas Neustupny
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -331,6 +332,15 @@ class SwingUIFactory {
             ControlData prop) {
         
         final String propertyName = prop.getPropertyName();
+
+        // TODO: consider a conditional feature in the xml panel def for this:
+        if (Model.getFacade().getUmlVersion().charAt(0) != '1') {
+            if ("aggregation".equals(propertyName) &&
+        	    !Model.getFacade().isAAssociationEnd(target)) {
+        	// only association end has an aggregation option box
+        	return;
+            }
+        }
 
         final GetterSetterManager getterSetter = GetterSetterManager.getGetterSetter(prop.getType());
 
