@@ -165,9 +165,8 @@ public class FigEdgeNote extends FigEdgePoly
      */
     @Override
     public final void removeFromDiagram() {
-        Object o = getOwner();
-        if (o != null) {
-            removeElementListener(o);
+        if (comment != null) {
+            removeElementListener(comment);
         }
 
         super.removeFromDiagram();
