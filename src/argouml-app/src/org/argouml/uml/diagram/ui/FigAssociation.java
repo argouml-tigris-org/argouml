@@ -832,15 +832,13 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
                    new ArrowHeadGreater());
 
-    // These are a list of arrow types. Positioning is important as we subtract
-    // 3 to convert a navigable arrow to a non navigable with the same
-    // aggregation
+    // These are a list of arrow types.
     private static final int NONE = 0;
     private static final int AGGREGATE = 1;
     private static final int COMPOSITE = 2;
-    private static final int NAV_NONE = 3;
-    private static final int NAV_AGGREGATE = 4;
-    private static final int NAV_COMPOSITE = 5;
+    
+    // Added to the arrow type for navigable
+    private static final int NAV = 3;
     
     /**
      * All the arrow head types.
@@ -850,9 +848,9 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         ARROW_HEADS[NONE] = ArrowHeadNone.TheInstance;
         ARROW_HEADS[AGGREGATE] = ArrowHeadDiamond.WhiteDiamond;
         ARROW_HEADS[COMPOSITE] = ArrowHeadDiamond.BlackDiamond;
-        ARROW_HEADS[NAV_NONE] = new ArrowHeadGreater();
-        ARROW_HEADS[NAV_AGGREGATE] = NAV_AGGR;
-        ARROW_HEADS[NAV_COMPOSITE] = NAV_COMP;
+        ARROW_HEADS[NAV + NONE] = new ArrowHeadGreater();
+        ARROW_HEADS[NAV + AGGREGATE] = NAV_AGGR;
+        ARROW_HEADS[NAV + COMPOSITE] = NAV_COMP;
     }
     
     private FigRole role;
@@ -933,28 +931,15 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         final Object ak = getAggregateKind();
         boolean nav = Model.getFacade().isNavigable(getOwner());
 
-        if (nav) {
-            if (Model.getAggregationKind().getNone().equals(ak)
-                    || (ak == null)) {
-                arrowType = NAV_NONE;
-            } else if (Model.getAggregationKind().getAggregate()
-                    .equals(ak)) {
-                arrowType = NAV_AGGREGATE;
-            } else if (Model.getAggregationKind().getComposite()
-                    .equals(ak)) {
-                arrowType = NAV_COMPOSITE;
-            }
+        if (Model.getAggregationKind().getAggregate().equals(ak)) {
+            arrowType = AGGREGATE;
+        } else if (Model.getAggregationKind().getComposite().equals(ak)) {
+            arrowType = COMPOSITE;
         } else {
-            if (Model.getAggregationKind().getNone().equals(ak)
-                    || (ak == null)) {
-                arrowType = NONE;
-            } else if (Model.getAggregationKind().getAggregate()
-                    .equals(ak)) {
-                arrowType = AGGREGATE;
-            } else if (Model.getAggregationKind().getComposite()
-                    .equals(ak)) {
-                arrowType = COMPOSITE;
-            }
+            arrowType = NONE;
+        }
+        if (nav) {
+            arrowType += 3;
         }
     }
     
