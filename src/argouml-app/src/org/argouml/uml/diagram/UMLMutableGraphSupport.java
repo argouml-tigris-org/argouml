@@ -401,7 +401,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
      */
     public void addNodeRelatedEdges(Object node) {
-        if (Model.getFacade().isAModelElement(node)) {
+        if (Model.getFacade().isANamedElement(node)) {
             List specs =
                 new ArrayList(Model.getFacade().getClientDependencies(node));
             specs.addAll(Model.getFacade().getSupplierDependencies(node));
