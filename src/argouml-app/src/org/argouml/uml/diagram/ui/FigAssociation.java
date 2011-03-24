@@ -930,7 +930,7 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     void determineArrowHead() {
         assert getOwner() != null;
 
-        Object ak =  Model.getFacade().getAggregation(getOwner());
+        final Object ak = getAggregateKind();
         boolean nav = Model.getFacade().isNavigable(getOwner());
 
         if (nav) {
@@ -955,6 +955,28 @@ class FigAssociationEndAnnotation extends FigTextGroup {
                     .equals(ak)) {
                 arrowType = COMPOSITE;
             }
+        }
+    }
+    
+    /**
+     * Get the aggregation kind to display at this end
+     * @return the aggregation kind or null if this is not a binary association
+     */
+    private Object getAggregateKind() {
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            return Model.getFacade().getAggregation(getOwner());
+        }
+        Object ass = Model.getFacade().getAssociation(getOwner());
+        Collection ends = Model.getFacade().getConnections(ass);
+        if (ends.size() != 2) {
+            return null;
+        }
+        Iterator it = ends.iterator();
+        Object aggEnd = it.next();
+        if (aggEnd != getOwner()) {
+            return Model.getFacade().getAggregation(aggEnd);
+        } else {
+            return Model.getFacade().getAggregation(it.next());
         }
     }
     
