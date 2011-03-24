@@ -151,8 +151,6 @@ public class FigAssociation extends FigEdgeModelElement {
         if (Model.getFacade().getUmlVersion().charAt(0) == '2'
                 && pce instanceof AssociationChangeEvent
                 && pce.getPropertyName().equals("navigableOwnedEnd")) {
-            srcEnd.getGroup().determineArrowHead();
-            destEnd.getGroup().determineArrowHead();
             applyArrowHeads();
             damage();
         }
@@ -855,7 +853,6 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     
     private FigRole role;
     private FigOrdering ordering;
-    private int arrowType = 0;
     private FigEdgeModelElement figEdge;
 
     FigAssociationEndAnnotation(FigEdgeModelElement edge, Object owner,
@@ -869,7 +866,6 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         ordering = new FigOrdering(owner, settings);
         addFig(ordering);
 
-        determineArrowHead();
         Model.getPump().addModelEventListener(this, owner, 
                 new String[] {"isNavigable", "aggregation", "participant"});
     }
@@ -893,7 +889,6 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         if (pce instanceof AttributeChangeEvent
             && (pce.getPropertyName().equals("isNavigable")
                 || pce.getPropertyName().equals("aggregation"))) {
-            determineArrowHead();
             ((FigAssociation) figEdge).applyArrowHeads();
             damage();
         }
@@ -923,27 +918,6 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     }
 
     /**
-     * Decide which arrow head should appear
-     */
-    void determineArrowHead() {
-        assert getOwner() != null;
-
-        final Object ak = getAggregateKind();
-        boolean nav = Model.getFacade().isNavigable(getOwner());
-
-        if (Model.getAggregationKind().getAggregate().equals(ak)) {
-            arrowType = AGGREGATE;
-        } else if (Model.getAggregationKind().getComposite().equals(ak)) {
-            arrowType = COMPOSITE;
-        } else {
-            arrowType = NONE;
-        }
-        if (nav) {
-            arrowType += 3;
-        }
-    }
-    
-    /**
      * Get the aggregation kind to display at this end
      * @return the aggregation kind or null if this is not a binary association
      */
@@ -954,7 +928,9 @@ class FigAssociationEndAnnotation extends FigTextGroup {
         Object ass = Model.getFacade().getAssociation(getOwner());
         Collection ends = Model.getFacade().getConnections(ass);
         if (ends.size() != 2) {
-            return null;
+            // Aggregation is meaningless in a n-ary association
+            // so always assume none.
+            return Model.getAggregationKind().getNone();
         }
         Iterator it = ends.iterator();
         Object aggEnd = it.next();
@@ -969,6 +945,23 @@ class FigAssociationEndAnnotation extends FigTextGroup {
      * @return the current arrow type of this end of the association
      */
     public int getArrowType() {
+        assert getOwner() != null;
+        
+
+        final Object ak = getAggregateKind();
+        boolean nav = Model.getFacade().isNavigable(getOwner());
+
+        int arrowType;
+        if (Model.getAggregationKind().getAggregate().equals(ak)) {
+            arrowType = AGGREGATE;
+        } else if (Model.getAggregationKind().getComposite().equals(ak)) {
+            arrowType = COMPOSITE;
+        } else {
+            arrowType = NONE;
+        }
+        if (nav) {
+            arrowType += NAV;
+        }
         return arrowType;
     }
 
