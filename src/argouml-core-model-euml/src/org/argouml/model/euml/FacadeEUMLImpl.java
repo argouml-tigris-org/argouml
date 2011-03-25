@@ -469,11 +469,15 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection<Dependency> getClientDependencies(Object handle) {
-        if (!(handle instanceof NamedElement)) {
+        // Element is allowed, but only NamedElement can return nonempty list
+        if (!(handle instanceof Element)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of NamedElement"); //$NON-NLS-1$
+                    "handle must be instance of Element"); //$NON-NLS-1$
         }
-        return ((NamedElement) handle).getClientDependencies();
+        if (handle instanceof NamedElement) {
+            return ((NamedElement) handle).getClientDependencies();
+        }
+        return Collections.emptyList();
     }
 
     public Collection<NamedElement> getClients(Object handle) {
