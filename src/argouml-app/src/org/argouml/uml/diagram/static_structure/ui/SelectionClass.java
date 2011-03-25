@@ -183,7 +183,7 @@ public class SelectionClass extends SelectionNodeClarifiers2 {
             Collection assocEnds = Model.getFacade().getConnections(newEdge);
             Object firstAE = assocEnds.iterator().next();
             Object aggregationKind = Model.getAggregationKind().getComposite();
-            Model.getCoreHelper().setAggregation(firstAE, aggregationKind);
+            Model.getCoreHelper().setAggregation1(firstAE, aggregationKind);
         }
     }
 

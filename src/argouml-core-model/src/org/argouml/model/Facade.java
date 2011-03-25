@@ -3046,11 +3046,33 @@ public interface Facade {
 
     /**
      * Return the AggregationKind of a given AssociationEnd.
+     * This is implementation dependent regarding whether the UML version
+     * considers aggregation on the container or aggregated item
      *
      * @param handle the AssociationEnd
      * @return the AggregationKind
      */
     Object getAggregation(Object handle);
+
+    /**
+     * Return the AggregationKind of a given AssociationEnd.
+     * This assumes UML1 style where the aggregation is held on the
+     * containing part of the association rather than the aggregate.
+     *
+     * @param handle the AssociationEnd
+     * @return the AggregationKind
+     */
+    Object getAggregation1(Object handle);
+
+    /**
+     * Return the AggregationKind of a given AssociationEnd.
+     * This assumes UML2 style where the aggregation is held on the
+     * aggregate part of the association rather than the container.
+     *
+     * @param handle the AssociationEnd
+     * @return the AggregationKind
+     */
+    Object getAggregation2(Object handle);
 
     /**
      * Return the alias of an ElementImport.

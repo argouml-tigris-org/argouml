@@ -419,109 +419,118 @@ public class FigAssociation extends FigEdgeModelElement {
     @Override
     public Vector getPopUpActions(MouseEvent me) {
 	Vector popUpActions = super.getPopUpActions(me);
-        /* Check if multiple items are selected: */
-        boolean ms = TargetManager.getInstance().getTargets().size() > 1;
-        /* None of the menu-items below apply
-         * when multiple modelelements are selected:*/
-        if (ms) {
+        if (TargetManager.getInstance().getTargets().size() > 1) {
             return popUpActions;
         }
 
-	// x^2 + y^2 = r^2  (equation of a circle)
-	Point firstPoint = this.getFirstPoint();
-	Point lastPoint = this.getLastPoint();
-	int length = getPerimeterLength();
-
-	int rSquared = (int) (.3 * length);
-
-	// max distance is set at 100 pixels, (rSquared = 100^2)
-	if (rSquared > 100) {
-	    rSquared = 10000;
-        } else {
-	    rSquared *= rSquared;
-        }
-
-	int srcDeterminingFactor =
-	    getSquaredDistance(me.getPoint(), firstPoint);
-	int destDeterminingFactor =
-	    getSquaredDistance(me.getPoint(), lastPoint);
-
-	if (srcDeterminingFactor < rSquared
-	    && srcDeterminingFactor < destDeterminingFactor) {
-
-            ArgoJMenu multMenu =
-		new ArgoJMenu("menu.popup.multiplicity");
-
-            multMenu.add(ActionMultiplicity.getSrcMultOne());
-            multMenu.add(ActionMultiplicity.getSrcMultZeroToOne());
-            multMenu.add(ActionMultiplicity.getSrcMultOneToMany());
-            multMenu.add(ActionMultiplicity.getSrcMultZeroToMany());
-            popUpActions.add(popUpActions.size() - getPopupAddOffset(),
-                    multMenu);
-
-            ArgoJMenu aggMenu = new ArgoJMenu("menu.popup.aggregation");
-
-	    aggMenu.add(ActionAggregation.getSrcAggNone());
-	    aggMenu.add(ActionAggregation.getSrcAgg());
-	    aggMenu.add(ActionAggregation.getSrcAggComposite());
-	    popUpActions.add(popUpActions.size() - getPopupAddOffset(),
-                    aggMenu);
-	} else if (destDeterminingFactor < rSquared) {
-            ArgoJMenu multMenu =
-		new ArgoJMenu("menu.popup.multiplicity");
-	    multMenu.add(ActionMultiplicity.getDestMultOne());
-	    multMenu.add(ActionMultiplicity.getDestMultZeroToOne());
-	    multMenu.add(ActionMultiplicity.getDestMultOneToMany());
-	    multMenu.add(ActionMultiplicity.getDestMultZeroToMany());
-	    popUpActions.add(popUpActions.size() - getPopupAddOffset(),
-                    multMenu);
-
-            ArgoJMenu aggMenu = new ArgoJMenu("menu.popup.aggregation");
-	    aggMenu.add(ActionAggregation.getDestAggNone());
-	    aggMenu.add(ActionAggregation.getDestAgg());
-	    aggMenu.add(ActionAggregation.getDestAggComposite());
-	    popUpActions
-                    .add(popUpActions.size() - getPopupAddOffset(), aggMenu);
+	if (isPointCloseToEdgeEnd(me.getPoint())) {
+            buildMultiplicityMenu(popUpActions);
 	}
-	// else: No particular options for right click in middle of line
 
-	// Options available when right click anywhere on line
 	Object association = getOwner();
-	if (association != null) {
-	    // Navigability menu with suboptions built dynamically to
-	    // allow navigability from atart to end, from end to start
-	    // or bidirectional
-	    Collection ascEnds = Model.getFacade().getConnections(association);
-            Iterator iter = ascEnds.iterator();
-	    Object ascStart = iter.next();
-	    Object ascEnd = iter.next();
+        Collection ascEnds = Model.getFacade().getConnections(association);
+        Iterator iter = ascEnds.iterator();
+        Object ascStart = iter.next();
+        Object ascEnd = iter.next();
 
-	    if (Model.getFacade().isAClassifier(
-	            Model.getFacade().getType(ascStart))
-                    && Model.getFacade().isAClassifier(
-                            Model.getFacade().getType(ascEnd))) {
-                ArgoJMenu navMenu =
-		    new ArgoJMenu("menu.popup.navigability");
-
-		navMenu.add(ActionNavigability.newActionNavigability(
-                    ascStart,
-		    ascEnd,
-		    ActionNavigability.BIDIRECTIONAL));
-		navMenu.add(ActionNavigability.newActionNavigability(
-                    ascStart,
-		    ascEnd,
-		    ActionNavigability.STARTTOEND));
-		navMenu.add(ActionNavigability.newActionNavigability(
-                    ascStart,
-                    ascEnd,
-                    ActionNavigability.ENDTOSTART));
-
-		popUpActions.add(popUpActions.size() - getPopupAddOffset(),
-                        navMenu);
-	    }
-	}
+        buildNavigationMenu(popUpActions, ascStart, ascEnd);
+        buildAggregationMenu(popUpActions, ascStart, ascEnd);
 
 	return popUpActions;
+    }
+
+    private boolean isPointCloseToEdgeEnd(Point p) {
+        // x^2 + y^2 = r^2  (equation of a circle)
+        Point firstPoint = this.getFirstPoint();
+        Point lastPoint = this.getLastPoint();
+        int length = getPerimeterLength();
+
+        int rSquared = (int) (.3 * length);
+
+        // max distance is set at 100 pixels, (rSquared = 100^2)
+        if (rSquared > 100) {
+            rSquared = 10000;
+        } else {
+            rSquared *= rSquared;
+        }
+
+        int srcDeterminingFactor =
+            getSquaredDistance(p, firstPoint);
+        int destDeterminingFactor =
+            getSquaredDistance(p, lastPoint);
+
+        return destDeterminingFactor < rSquared || (srcDeterminingFactor < rSquared
+                && srcDeterminingFactor < destDeterminingFactor);
+    }
+    
+    private void buildMultiplicityMenu(
+            final Vector popUpActions) {
+        ArgoJMenu menu =
+            new ArgoJMenu("menu.popup.multiplicity");
+        menu.add(ActionMultiplicity.getDestMultOne());
+        menu.add(ActionMultiplicity.getDestMultZeroToOne());
+        menu.add(ActionMultiplicity.getDestMultOneToMany());
+        menu.add(ActionMultiplicity.getDestMultZeroToMany());
+        popUpActions.add(popUpActions.size() - getPopupAddOffset(),
+                menu);
+    }
+    
+    
+    private void buildNavigationMenu(
+            final Vector popUpActions,
+            final Object ascStart,
+            final Object ascEnd) {
+        ArgoJMenu menu =
+            new ArgoJMenu("menu.popup.navigability");
+
+        menu.add(ActionNavigability.newActionNavigability(
+            ascStart,
+            ascEnd,
+            ActionNavigability.BIDIRECTIONAL));
+        menu.add(ActionNavigability.newActionNavigability(
+            ascStart,
+            ascEnd,
+            ActionNavigability.STARTTOEND));
+        menu.add(ActionNavigability.newActionNavigability(
+            ascStart,
+            ascEnd,
+            ActionNavigability.ENDTOSTART));
+
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                menu);
+    }
+    
+    private void buildAggregationMenu(
+            final Vector popUpActions,
+            final Object ascStart,
+            final Object ascEnd) {
+        ArgoJMenu menu =
+            new ArgoJMenu("menu.popup.aggregation");
+
+        menu.add(ActionAggregation.newActionAggregation(
+            ascStart,
+            ascEnd,
+            ActionAggregation.NONE));
+        menu.add(ActionAggregation.newActionAggregation(
+            ascStart,
+            ascEnd,
+            ActionAggregation.AGGREGATE_END1));
+        menu.add(ActionAggregation.newActionAggregation(
+            ascStart,
+            ascEnd,
+            ActionAggregation.AGGREGATE_END2));
+        menu.add(ActionAggregation.newActionAggregation(
+            ascStart,
+            ascEnd,
+            ActionAggregation.COMPOSITE_END1));
+        menu.add(ActionAggregation.newActionAggregation(
+            ascStart,
+            ascEnd,
+            ActionAggregation.COMPOSITE_END2));
+        popUpActions.add(
+                popUpActions.size() - getPopupAddOffset(),
+                menu);
     }
 
     /**
@@ -918,38 +927,14 @@ class FigAssociationEndAnnotation extends FigTextGroup {
     }
 
     /**
-     * Get the aggregation kind to display at this end
-     * @return the aggregation kind or null if this is not a binary association
-     */
-    private Object getAggregateKind() {
-        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
-            return Model.getFacade().getAggregation(getOwner());
-        }
-        Object ass = Model.getFacade().getAssociation(getOwner());
-        Collection ends = Model.getFacade().getConnections(ass);
-        if (ends.size() != 2) {
-            // Aggregation is meaningless in a n-ary association
-            // so always assume none.
-            return Model.getAggregationKind().getNone();
-        }
-        Iterator it = ends.iterator();
-        Object aggEnd = it.next();
-        if (aggEnd != getOwner()) {
-            return Model.getFacade().getAggregation(aggEnd);
-        } else {
-            return Model.getFacade().getAggregation(it.next());
-        }
-    }
-    
-    /**
      * @return the current arrow type of this end of the association
      */
     public int getArrowType() {
         assert getOwner() != null;
         
 
-        final Object ak = getAggregateKind();
-        boolean nav = Model.getFacade().isNavigable(getOwner());
+        final Object ak = Model.getFacade().getAggregation1(getOwner());
+        final boolean nav = Model.getFacade().isNavigable(getOwner());
 
         int arrowType;
         if (Model.getAggregationKind().getAggregate().equals(ak)) {

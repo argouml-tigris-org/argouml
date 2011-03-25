@@ -208,10 +208,10 @@ public class WizBreakCircularComp extends UMLWizard {
 		Object ae0 = conns.get(0);
 		Object ae1 = conns.get(1);
 		try {
-		    Model.getCoreHelper().setAggregation(
+		    Model.getCoreHelper().setAggregation1(
 		            ae0,
 		            Model.getAggregationKind().getNone());
-		    Model.getCoreHelper().setAggregation(
+		    Model.getCoreHelper().setAggregation1(
 		            ae1,
 		            Model.getAggregationKind().getNone());
 		} catch (Exception pve) {

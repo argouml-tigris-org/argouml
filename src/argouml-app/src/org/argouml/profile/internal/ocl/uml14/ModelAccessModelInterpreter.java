@@ -104,7 +104,7 @@ public class ModelAccessModelInterpreter implements ModelInterpreter {
         if (Model.getFacade().isAAssociationEnd(subject)) {
             if (type.equals(".")) {
                 if (feature.equals("aggregation")) {
-                    return Model.getFacade().getAggregation(subject);
+                    return Model.getFacade().getAggregation1(subject);
                 }
                 if (feature.equals("changeability")) {
                     return Model.getFacade().getChangeability(subject);

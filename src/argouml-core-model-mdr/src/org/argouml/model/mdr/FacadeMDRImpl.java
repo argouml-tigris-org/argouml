@@ -3786,6 +3786,10 @@ class FacadeMDRImpl implements Facade {
 
 
     public Object getAggregation(Object handle) {
+        return getAggregation1(handle);
+    }
+    
+    public Object getAggregation1(Object handle) {
         try {
             if (handle instanceof AssociationEnd) {
                 return ((AssociationEnd) handle).getAggregation();
@@ -3796,6 +3800,26 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentObject(handle);
     }
 
+    public Object getAggregation2(Object handle) {
+        try {
+            if (handle instanceof AssociationEnd) {
+                // Simulates UML2 getting the aggregation from the opposite end
+                AssociationEnd assEnd = (AssociationEnd) handle;
+                Collection<AssociationEnd> assEnds = assEnd.getAssociation().getConnection();
+                Iterator<AssociationEnd> it = assEnds.iterator();
+                AssociationEnd other = it.next();
+                if (other != assEnd) {
+                    return other.getAggregation();
+                } else {
+                    other = it.next();
+                    return other.getAggregation();
+                }
+            }
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+        return illegalArgumentObject(handle);
+    }
 
     public String getAlias(Object handle) {
         try {

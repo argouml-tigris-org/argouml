@@ -95,7 +95,7 @@ public class GenCompositeClasses2 implements
         while (assocEnds.hasNext()) {
             Object ae = assocEnds.next();
             if (Model.getAggregationKind().getComposite().equals(
-                    Model.getFacade().getAggregation(ae))) {
+                    Model.getFacade().getAggregation1(ae))) {
                 Object asc = Model.getFacade().getAssociation(ae);
                 ArrayList conn =
                     new ArrayList(Model.getFacade().getConnections(asc));

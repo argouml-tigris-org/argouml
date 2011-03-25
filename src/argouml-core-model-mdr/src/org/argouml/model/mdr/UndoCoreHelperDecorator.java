@@ -235,6 +235,22 @@ class UndoCoreHelperDecorator extends AbstractCoreHelperDecorator {
         }, aggregationKind, Model.getFacade().getAggregation(handle));
     }
 
+    public void setAggregation1(final Object handle, Object aggregationKind) {
+        createCommand(new ObjectSetter() {
+            public void set(Object value) {
+                getComponent().setAggregation1(handle, value);
+            }
+        }, aggregationKind, Model.getFacade().getAggregation1(handle));
+    }
+
+    
+    public void setAggregation2(final Object handle, Object aggregationKind) {
+        createCommand(new ObjectSetter() {
+            public void set(Object value) {
+                getComponent().setAggregation2(handle, value);
+            }
+        }, aggregationKind, Model.getFacade().getAggregation2(handle));
+    }
 
     public void setLeaf(final Object handle, boolean flag) {
         createCommand(new BooleanSetter() {

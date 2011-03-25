@@ -219,8 +219,28 @@ class FacadeEUMLImpl implements Facade {
     public Object getAddition(Object handle) {
         return ((Include) handle).getAddition();
     }
-
+    
     public Object getAggregation(Object handle) {
+        return getAggregation2(handle);
+    }
+    
+
+    public Object getAggregation1(Object handle) {
+        Property p = (Property) handle;
+        Association ass = p.getAssociation();
+        Collection assEnds = getConnections(ass);
+        Iterator it = assEnds.iterator();
+        if (!it.hasNext()) {
+            return null;
+        }
+        Object other = it.next();
+        if (other == handle) {
+            other = it.next();
+        }
+        return getAggregation2(other);
+    }
+
+    public Object getAggregation2(Object handle) {
         if (!(handle instanceof Property)) {
             throw new IllegalArgumentException(
                     "handle must be instance of Property"); //$NON-NLS-1$

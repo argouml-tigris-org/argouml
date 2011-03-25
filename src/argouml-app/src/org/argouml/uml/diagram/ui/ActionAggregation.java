@@ -57,9 +57,19 @@ import org.argouml.ui.UndoableAction;
  *
  */
 public class ActionAggregation extends UndoableAction {
+    
+    public static final int NONE = 0;
+    public static final int AGGREGATE_END1 = 1;
+    public static final int AGGREGATE_END2 = 2;
+    public static final int COMPOSITE_END1 = 3;
+    public static final int COMPOSITE_END2 = 4;
+    
     private String str = "";
     private Object agg = null;
 
+    Object associationEnd1;
+    Object associationEnd2;
+    int aggr;
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -88,11 +98,120 @@ public class ActionAggregation extends UndoableAction {
 
     ////////////////////////////////////////////////////////////////
     // constructors
+    
+    /**
+     * The <code>ActionNavigability</code> constructor.
+     *
+     * @param assocStart a <code>MAssociationEnd</code> object at the start
+     * of an association.
+     * @param assocEnd a <code>MAssociationEnd</code> object at the end of
+     * an association.
+     * @param nav the type of navigation required in the association
+     * being either <ul> <li>BIDIRECTIONAL <li>STARTTOEND
+     * <li>ENDTOSTART </ul>
+     *
+     * @return the constructed class
+     */
+    public static ActionAggregation newActionAggregation(Object assocStart,
+                                                           Object assocEnd,
+                                                           int aggr) {
+        return new ActionAggregation(getDescription(assocStart, assocEnd, aggr),
+                                      assocStart,
+                                      assocEnd,
+                                      aggr);
+    }
 
+    /**
+     * The constructor.
+     *
+     * @param label   the description as build in <code>getDescription</code>
+     * @param associationEnd1 association end 1
+     * @param associationEnd2   association end 2
+     * @param aggr     the aggregation: one of
+     *                            NONE, AGGREGATE_END1, AGGREGATE_END2,
+     *                            COMPOSITE_END1, COMPOSITE_END  
+     */
+    private ActionAggregation(
+            final String label,
+            final Object associationEnd1,
+            final Object associationEnd2,
+            final int aggr) {
+        super(label, null);
+        // Set the tooltip string:
+        putValue(Action.SHORT_DESCRIPTION, label);
+        this.aggr = aggr;
+        this.associationEnd1 = associationEnd1;
+        this.associationEnd2 = associationEnd2;
+    }
+    
+    /**
+     * Build a description string from the given association ends,
+     * and the navigability.
+     *
+     * @param assocStart association end 1
+     * @param assocEnd   association end 2
+     * @param nav        the navigability
+     * @return           the string containing a human-readible indication
+     *                   of the navigability
+     */
+    private static String getDescription(final Object assocEnd1,
+                                         final Object assocEnd2,
+                                         final int aggr) {
+        String startName =
+            Model.getFacade().getName(Model.getFacade().getType(assocEnd1));
+        String endName =
+            Model.getFacade().getName(Model.getFacade().getType(assocEnd2));
+
+        if (startName == null || startName.length() == 0) {
+            startName = Translator.localize("action.navigation.anon");
+        }
+        if (endName == null || endName.length() == 0) {
+            endName = Translator.localize("action.navigation.anon");
+        }
+        
+        if (aggr == COMPOSITE_END1) {
+            return Translator.messageFormat(
+                    "action.aggregation.composite",
+                    new Object[] {
+                        startName,
+                        endName,
+                    }
+            );
+        } else if (aggr == COMPOSITE_END2) {
+            return Translator.messageFormat(
+                    "action.aggregation.composite",
+                    new Object[] {
+                        endName,
+                        startName,
+                    }
+            );
+        } else if (aggr == AGGREGATE_END1) {
+            return Translator.messageFormat(
+                    "action.aggregation.aggregate",
+                    new Object[] {
+                        startName,
+                        endName,
+                    }
+            );
+        } else if (aggr == AGGREGATE_END2) {
+            return Translator.messageFormat(
+                    "action.aggregation.aggregate",
+                    new Object[] {
+                        endName,
+                        startName,
+                    }
+            );
+        } else {
+            return Translator.localize("action.aggregation.none");
+        }
+    }
+    
     /**
      * The constructor.
      * @param a the aggregation kind object
      * @param s "src" or "dest". Anything else is interpreted as "dest".
+     * @deprecated by Bob Tarling in 0.33.1 by Bob Tarling use
+     * ActionAggregation.newActionAggregation
      */
     protected ActionAggregation(Object a, String s) {
         super(Translator.localize(Model.getFacade().getName(a)),
@@ -109,26 +228,51 @@ public class ActionAggregation extends UndoableAction {
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-    	super.actionPerformed(ae);
-	List sels = Globals.curEditor().getSelectionManager().selections();
-	if (sels.size() == 1) {
-	    Selection sel = (Selection) sels.get(0);
-	    Fig f = sel.getContent();
-	    Object owner = ((FigEdgeModelElement) f).getOwner();
-	    Collection ascEnds = Model.getFacade().getConnections(owner);
+        if (agg != null) {
+            oldActionPerformed(ae);
+        } else {
+            super.actionPerformed(ae);
+            if (aggr == AGGREGATE_END1) {
+                Model.getCoreHelper().setAggregation2(associationEnd1, Model.getAggregationKind().getAggregate());
+                Model.getCoreHelper().setAggregation2(associationEnd2, Model.getAggregationKind().getNone());
+            } else if (aggr == AGGREGATE_END2) {
+                Model.getCoreHelper().setAggregation2(associationEnd1, Model.getAggregationKind().getNone());
+                Model.getCoreHelper().setAggregation2(associationEnd2, Model.getAggregationKind().getAggregate());
+            } else if (aggr == COMPOSITE_END1) {
+                Model.getCoreHelper().setAggregation2(associationEnd1, Model.getAggregationKind().getComposite());
+                Model.getCoreHelper().setAggregation2(associationEnd2, Model.getAggregationKind().getNone());
+            } else if (aggr == COMPOSITE_END2) {
+                Model.getCoreHelper().setAggregation2(associationEnd1, Model.getAggregationKind().getNone());
+                Model.getCoreHelper().setAggregation2(associationEnd2, Model.getAggregationKind().getComposite());
+            } else {
+                Model.getCoreHelper().setAggregation2(associationEnd1, Model.getAggregationKind().getNone());
+                Model.getCoreHelper().setAggregation2(associationEnd2, Model.getAggregationKind().getNone());
+            }
+        }
+    }
+
+    public void oldActionPerformed(ActionEvent ae) {
+        super.actionPerformed(ae);
+        List sels = Globals.curEditor().getSelectionManager().selections();
+        if (sels.size() == 1) {
+            Selection sel = (Selection) sels.get(0);
+            Fig f = sel.getContent();
+            Object owner = ((FigEdgeModelElement) f).getOwner();
+            Collection ascEnds = Model.getFacade().getConnections(owner);
             Iterator iter = ascEnds.iterator();
-	    Object ascEnd = null;
-	    if (str.equals("src")) {
-		ascEnd = iter.next();
+            Object ascEnd = null;
+            if (str.equals("src")) {
+                ascEnd = iter.next();
             } else {
                 while (iter.hasNext()) {
                     ascEnd = iter.next();
                 }
             }
-	    Model.getCoreHelper().setAggregation(ascEnd, agg);
-	}
+            Model.getCoreHelper().setAggregation(ascEnd, agg);
+        }
     }
-
+    
+    
     /*
      * @see org.tigris.gef.undo.UndoableAction#isEnabled()
      */

@@ -333,9 +333,9 @@ public class WizAssocComposite extends UMLWizard {
 
                     // Start is a composite aggregation of end
 
-                    Model.getCoreHelper().setAggregation(ae0,
+                    Model.getCoreHelper().setAggregation1(ae0,
                             Model.getAggregationKind().getComposite());
-                    Model.getCoreHelper().setAggregation(ae1,
+                    Model.getCoreHelper().setAggregation1(ae1,
                             Model.getAggregationKind().getNone());
                     break;
 
@@ -343,9 +343,9 @@ public class WizAssocComposite extends UMLWizard {
 
                     // Start is a shared aggregation of end
 
-                    Model.getCoreHelper().setAggregation(ae0,
+                    Model.getCoreHelper().setAggregation1(ae0,
                             Model.getAggregationKind().getAggregate());
-                    Model.getCoreHelper().setAggregation(ae1,
+                    Model.getCoreHelper().setAggregation1(ae1,
                             Model.getAggregationKind().getNone());
                     break;
 
@@ -353,27 +353,27 @@ public class WizAssocComposite extends UMLWizard {
 
                     // End is a composite aggregation of start
 
-                    Model.getCoreHelper().setAggregation(ae0,
+                    Model.getCoreHelper().setAggregation1(ae0,
                             Model.getAggregationKind().getNone());
-                    Model.getCoreHelper().setAggregation(ae1,
+                    Model.getCoreHelper().setAggregation1(ae1,
                             Model.getAggregationKind().getComposite());
                     break;
 
                 case 3:
 
                     // End is a shared aggregation of start
-                    Model.getCoreHelper().setAggregation(ae0,
+                    Model.getCoreHelper().setAggregation1(ae0,
                             Model.getAggregationKind().getNone());
-                    Model.getCoreHelper().setAggregation(ae1,
+                    Model.getCoreHelper().setAggregation1(ae1,
                             Model.getAggregationKind().getAggregate());
                     break;
 
                 case 4:
 
                     // No aggregation
-                    Model.getCoreHelper().setAggregation(ae0,
+                    Model.getCoreHelper().setAggregation1(ae0,
                             Model.getAggregationKind().getNone());
-                    Model.getCoreHelper().setAggregation(ae1,
+                    Model.getCoreHelper().setAggregation1(ae1,
                             Model.getAggregationKind().getNone());
                     break;
 

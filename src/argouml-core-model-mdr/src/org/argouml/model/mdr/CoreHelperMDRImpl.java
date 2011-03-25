@@ -2592,8 +2592,11 @@ class CoreHelperMDRImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle);
     }
 
-
     public void setAggregation(Object handle, Object aggregationKind) {
+        setAggregation1(handle, aggregationKind);
+    }
+
+    public void setAggregation1(Object handle, Object aggregationKind) {
         if (handle instanceof AssociationEnd
                 && aggregationKind instanceof AggregationKind) {
             AggregationKind ak = (AggregationKind) aggregationKind;
@@ -2618,6 +2621,20 @@ class CoreHelperMDRImpl implements CoreHelper {
                 }
             }
             return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or aggregationKind: " + aggregationKind);
+    }
+
+    public void setAggregation2(Object handle, Object aggregationKind) {
+        if (handle instanceof AssociationEnd
+                && aggregationKind instanceof AggregationKind) {
+            // Simulates UML2 getting the aggregation from the opposite end
+            AssociationEnd assEnd = (AssociationEnd) handle;
+            Collection<AssociationEnd> assEnds = assEnd.getAssociation().getConnection();
+            Iterator<AssociationEnd> it = assEnds.iterator();
+            AssociationEnd other = it.next();
+            setAggregation1(other, aggregationKind);
         }
         throw new IllegalArgumentException("handle: " + handle
                 + " or aggregationKind: " + aggregationKind);

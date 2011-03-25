@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -1326,7 +1327,28 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         handle));
     }
 
-    public void setAggregation(final Object handle, final Object aggregationKind) {
+    public void setAggregation(
+            final Object handle,
+            final Object aggregationKind) {
+        setAggregation2(handle, aggregationKind);
+    }
+
+    public void setAggregation1(
+            final Object handle,
+            final Object aggregationKind) {
+        Property p = (Property) handle;
+        Association ass = p.getAssociation();
+        Collection assEnds = modelImpl.getFacade().getConnections(ass);
+        Iterator it = assEnds.iterator();
+        Object other = it.next();
+        if (other == handle) {
+            other = it.next();
+        }
+        
+        setAggregation2(handle, aggregationKind);
+    }
+
+    public void setAggregation2(final Object handle, final Object aggregationKind) {
         if (!(handle instanceof Property)) {
             throw new IllegalArgumentException(
                     "handle must be instance of Property"); //$NON-NLS-1$
@@ -1358,7 +1380,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         "Set the aggregation # to the association end #",
                         aggregationKind, handle));
     }
-
+    
+    
     public void setAnnotatedElements(final Object handle, final Collection elems) {
         if (!(handle instanceof Comment)) {
             throw new IllegalArgumentException(

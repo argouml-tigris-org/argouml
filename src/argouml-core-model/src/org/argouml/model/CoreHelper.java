@@ -875,6 +875,8 @@ public interface CoreHelper {
 
     /**
      * Set the aggregation attribute of an AssociationEnd.
+     * This is implementation dependent regarding whether the UML version
+     * considers aggregation on the container or aggregated item
      * 
      * @param handle
      *            the AssociationEnd
@@ -884,6 +886,34 @@ public interface CoreHelper {
      */
     void setAggregation(Object handle, Object aggregationKind);
 
+    /**
+     * Set the aggregation attribute of an AssociationEnd.
+     * This assumes UML1 style where the aggregation is held on the
+     * containing part of the association rather than the aggregate.
+     * 
+     * @param handle
+     *            the AssociationEnd
+     * @param aggregationKind
+     *            an {@link AggregationKind} of Aggregate, Composite, or None
+     *            returned from {@link Model#getAggregationKind()}.
+     */
+    void setAggregation1(Object handle, Object aggregationKind);
+
+
+    /**
+     * Set the aggregation attribute of an AssociationEnd.
+     * This assumes UML2 style where the aggregation is held on the
+     * aggregate part of the association rather than the container.
+     * 
+     * @param handle
+     *            the AssociationEnd
+     * @param aggregationKind
+     *            an {@link AggregationKind} of Aggregate, Composite, or None
+     *            returned from {@link Model#getAggregationKind()}.
+     */
+    void setAggregation2(Object handle, Object aggregationKind);
+    
+    
     /**
      * Set the list of annotated elements for the given comment.
      *
