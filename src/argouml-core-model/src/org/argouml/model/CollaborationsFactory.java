@@ -64,6 +64,13 @@ public interface CollaborationsFactory extends Factory {
     Object createClassifierRole();
 
     /**
+     * Create an empty but initialized instance of a UML ClassifierRole.
+     *
+     * @return an initialized UML ClassifierRole instance.
+     */
+    Object createLifeline();
+    
+    /**
      * Create an empty but initialized instance of a UML Collaboration.
      *
      * @return an initialized UML Collaboration instance.
@@ -198,6 +205,15 @@ public interface CollaborationsFactory extends Factory {
      * @return the newly created association role (an Object)
      */
     Object buildAssociationRole(Object link);
+    
+    /**
+     * Creates a lifeline and adds it to the given interaction.
+     *
+     * @param interaction the given interaction
+     * @return the created lifeline
+     */
+    Object buildLifeline(Object interaction);
+
 
     /**
      * Builds a message within some collaboration or interaction.

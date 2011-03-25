@@ -684,6 +684,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         return null /*InteractionInstanceSet.class*/;
     }
 
+    public Object getLifeline() {
+        return Lifeline.class;
+    }
+
     public Object getLinkEnd() {
         // TODO: Need UML 2.x equivalent
         return null /*LinkEnd.class*/;

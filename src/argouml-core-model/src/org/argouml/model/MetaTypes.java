@@ -352,6 +352,11 @@ public interface MetaTypes {
     Object getInterface();
 
     /**
+     * @return Returns the Lifeline.
+     */
+    Object getLifeline();
+
+    /**
      * @return Returns the Link.
      */
     Object getLink();

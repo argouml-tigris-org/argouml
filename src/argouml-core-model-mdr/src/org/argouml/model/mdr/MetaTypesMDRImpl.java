@@ -432,6 +432,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return Interface.class;
     }
 
+    public Object getLifeline() {
+        return ClassifierRole.class;
+    }
+    
     public Object getLink() {
         return Link.class;
     }

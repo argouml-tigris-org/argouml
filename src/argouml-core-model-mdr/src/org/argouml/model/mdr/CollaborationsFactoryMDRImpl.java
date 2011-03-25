@@ -111,10 +111,7 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
 
 
     public ClassifierRole createClassifierRole() {
-        ClassifierRole myClassifierRole =
-            getCollabPkg().getClassifierRole().createClassifierRole();
-        super.initialize(myClassifierRole);
-        return myClassifierRole;
+        return createLifeline();
     }
 
 
@@ -149,6 +146,13 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
                 .createInteractionInstanceSet();
         super.initialize(obj);
         return obj;
+    }
+
+    public ClassifierRole createLifeline() {
+        ClassifierRole myClassifierRole =
+            getCollabPkg().getClassifierRole().createClassifierRole();
+        super.initialize(myClassifierRole);
+        return myClassifierRole;
     }
 
     
@@ -216,7 +220,15 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         inter.setName("newInteraction");
         return inter;
     }
-
+    
+    public ClassifierRole buildLifeline(Object collaboration) {
+        Collaboration myCollaboration = (Collaboration) collaboration;
+        ClassifierRole classifierRole = createClassifierRole();
+        classifierRole.setNamespace(myCollaboration);
+        modelImpl.getCoreHelper().setMultiplicity(classifierRole, 1, 1);
+        return classifierRole;
+    }
+    
 
     public AssociationEndRole buildAssociationEndRole(Object atype) {
         ClassifierRole type = (ClassifierRole) atype;
@@ -224,8 +236,6 @@ class CollaborationsFactoryMDRImpl extends AbstractUmlModelFactoryMDR
         end.setParticipant(type);
         return end;
     }
-
-    
 
     public AssociationRole buildAssociationRole(Object from, Object to) {
         return buildAssociationRole((ClassifierRole) from, (ClassifierRole) to);

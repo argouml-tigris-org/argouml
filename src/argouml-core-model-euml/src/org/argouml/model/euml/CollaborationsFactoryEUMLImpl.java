@@ -17,6 +17,7 @@ import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Interaction;
+import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.UMLFactory;
 
@@ -78,10 +79,16 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
     }
 
     public Object buildClassifierRole(Object collaboration) {
-        // TODO: Auto-generated method stub
-        return null;
+        throw new IllegalArgumentException(
+                "No such thing as ClassifierRole in UML2"); //$NON-NLS-1$
     }
-
+    
+    public Object buildLifeline(Object interaction) {
+        Lifeline lifeline = createLifeline();
+        lifeline.setInteraction((Interaction) interaction);
+        return lifeline;
+    }
+    
     // TODO: All build/create methods need Undo support - tfm
 
     public Collaboration buildCollaboration(Object handle) {
@@ -92,16 +99,14 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
 
     public Collaboration buildCollaboration(Object namespace, 
             Object representedElement) {
-        Collaboration collab = buildCollaboration(namespace);
-        Classifier cls = (Classifier) representedElement;
-
-        // TODO: Auto-generated method stub
-        return collab;
+        throw new IllegalArgumentException("A collaboration is only attached to a namespace in UML2");
     }
 
-    public Object buildInteraction(Object handle) {
-        // TODO: Auto-generated method stub
-        return null;
+    public Object buildInteraction(Object collaboration) {
+        Interaction interaction = createInteraction();
+        Collaboration collab = (Collaboration) collaboration;
+        modelImpl.getCoreHelper().addOwnedElement(collab, interaction);
+        return interaction;
     }
 
     public Message buildMessage(Object acollab, Object arole) {
@@ -120,8 +125,7 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
     }
 
     public Object createClassifierRole() {
-        // TODO: Auto-generated method stub
-        return null;
+        return UMLFactory.eINSTANCE.createLifeline();
     }
 
     public Collaboration createCollaboration() {
@@ -140,6 +144,10 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
     public Object createInteractionInstanceSet() {
         // TODO: Auto-generated method stub
         return null;
+    }
+    
+    public Lifeline createLifeline() {
+        return UMLFactory.eINSTANCE.createLifeline();
     }
 
     public Message createMessage() {

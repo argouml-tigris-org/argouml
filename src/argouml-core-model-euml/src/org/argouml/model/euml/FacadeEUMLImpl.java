@@ -37,106 +37,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.DynamicEObjectImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.uml2.uml.Abstraction;
-import org.eclipse.uml2.uml.AcceptEventAction;
-import org.eclipse.uml2.uml.Action;
-import org.eclipse.uml2.uml.ActivityEdge;
-import org.eclipse.uml2.uml.ActivityNode;
-import org.eclipse.uml2.uml.ActivityPartition;
-import org.eclipse.uml2.uml.Actor;
-import org.eclipse.uml2.uml.AggregationKind;
-import org.eclipse.uml2.uml.Artifact;
-import org.eclipse.uml2.uml.Association;
-import org.eclipse.uml2.uml.AssociationClass;
-import org.eclipse.uml2.uml.Behavior;
-import org.eclipse.uml2.uml.BehavioralFeature;
-import org.eclipse.uml2.uml.CallAction;
-import org.eclipse.uml2.uml.CallEvent;
-import org.eclipse.uml2.uml.ChangeEvent;
+import org.eclipse.uml2.uml.*;
 import org.eclipse.uml2.uml.Class;
-import org.eclipse.uml2.uml.Classifier;
-import org.eclipse.uml2.uml.Collaboration;
-import org.eclipse.uml2.uml.CollaborationUse;
-import org.eclipse.uml2.uml.Comment;
-import org.eclipse.uml2.uml.Component;
-import org.eclipse.uml2.uml.Constraint;
-import org.eclipse.uml2.uml.CreateObjectAction;
-import org.eclipse.uml2.uml.DataType;
-import org.eclipse.uml2.uml.Dependency;
-import org.eclipse.uml2.uml.DestroyObjectAction;
-import org.eclipse.uml2.uml.DirectedRelationship;
-import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.ElementImport;
-import org.eclipse.uml2.uml.Enumeration;
-import org.eclipse.uml2.uml.EnumerationLiteral;
-import org.eclipse.uml2.uml.Event;
-import org.eclipse.uml2.uml.Expression;
-import org.eclipse.uml2.uml.Extend;
-import org.eclipse.uml2.uml.Extension;
-import org.eclipse.uml2.uml.ExtensionPoint;
-import org.eclipse.uml2.uml.Feature;
-import org.eclipse.uml2.uml.FinalState;
-import org.eclipse.uml2.uml.Generalization;
-import org.eclipse.uml2.uml.GeneralizationSet;
-import org.eclipse.uml2.uml.Include;
-import org.eclipse.uml2.uml.InputPin;
-import org.eclipse.uml2.uml.InstanceSpecification;
-import org.eclipse.uml2.uml.Interface;
-import org.eclipse.uml2.uml.LiteralBoolean;
-import org.eclipse.uml2.uml.LiteralInteger;
-import org.eclipse.uml2.uml.LiteralString;
-import org.eclipse.uml2.uml.LiteralUnlimitedNatural;
-import org.eclipse.uml2.uml.Message;
-import org.eclipse.uml2.uml.Model;
-import org.eclipse.uml2.uml.MultiplicityElement;
-import org.eclipse.uml2.uml.NamedElement;
-import org.eclipse.uml2.uml.Namespace;
-import org.eclipse.uml2.uml.Node;
-import org.eclipse.uml2.uml.ObjectFlow;
-import org.eclipse.uml2.uml.ObjectNode;
-import org.eclipse.uml2.uml.OpaqueBehavior;
-import org.eclipse.uml2.uml.OpaqueExpression;
-import org.eclipse.uml2.uml.Operation;
-import org.eclipse.uml2.uml.OutputPin;
-import org.eclipse.uml2.uml.PackageImport;
-import org.eclipse.uml2.uml.PackageableElement;
-import org.eclipse.uml2.uml.Parameter;
-import org.eclipse.uml2.uml.ParameterDirectionKind;
-import org.eclipse.uml2.uml.PrimitiveType;
-import org.eclipse.uml2.uml.Profile;
-import org.eclipse.uml2.uml.ProfileApplication;
-import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Pseudostate;
-import org.eclipse.uml2.uml.PseudostateKind;
-import org.eclipse.uml2.uml.Reception;
-import org.eclipse.uml2.uml.RedefinableElement;
-import org.eclipse.uml2.uml.Region;
-import org.eclipse.uml2.uml.Relationship;
-import org.eclipse.uml2.uml.SendObjectAction;
-import org.eclipse.uml2.uml.SendSignalAction;
-import org.eclipse.uml2.uml.Signal;
-import org.eclipse.uml2.uml.SignalEvent;
-import org.eclipse.uml2.uml.State;
-import org.eclipse.uml2.uml.StateMachine;
-import org.eclipse.uml2.uml.Stereotype;
-import org.eclipse.uml2.uml.StructuralFeature;
-import org.eclipse.uml2.uml.TemplateBinding;
-import org.eclipse.uml2.uml.TemplateParameter;
-import org.eclipse.uml2.uml.TemplateParameterSubstitution;
-import org.eclipse.uml2.uml.TemplateableElement;
-import org.eclipse.uml2.uml.TimeEvent;
-import org.eclipse.uml2.uml.Transition;
-import org.eclipse.uml2.uml.Trigger;
-import org.eclipse.uml2.uml.Type;
-import org.eclipse.uml2.uml.TypedElement;
-import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.Usage;
-import org.eclipse.uml2.uml.UseCase;
-import org.eclipse.uml2.uml.ValueSpecification;
-import org.eclipse.uml2.uml.Vertex;
-import org.eclipse.uml2.uml.VisibilityKind;
 import org.eclipse.uml2.uml.resource.UMLResource;
-
 
 /**
  * The implementation of the Facade for EUML2.
@@ -364,8 +267,16 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getBases(Object handle) {
-        throw new NotYetImplementedException();
-
+        if (!(handle instanceof Lifeline)) {
+            throw new IllegalArgumentException(
+                    "Lifeline expected - got " + handle); //$NON-NLS-1$
+        }
+        Lifeline lifeline = (Lifeline) handle;
+        List bases = new ArrayList(1);
+        if (lifeline.getRepresents() != null) {
+            bases.add(lifeline.getRepresents());
+        }
+        return bases;
     }
 
     public Object getBehavioralFeature(Object handle) {
@@ -1882,10 +1793,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAClassifierRole(Object handle) {
-        // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
-        // AssociationEndRole have been replaced by the internal 
-        // structure of the Collaboration
-        return false;
+        return handle instanceof Lifeline;
     }
 
     public boolean isACollaboration(Object handle) {
@@ -2041,6 +1949,10 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof Interface;
     }
 
+    public boolean isALifeline(Object handle) {
+        return handle instanceof Lifeline;
+    }
+    
     public boolean isALink(Object handle) {
         // TODO: check semantics here - tfm
         if (!(handle instanceof InstanceSpecification)) {

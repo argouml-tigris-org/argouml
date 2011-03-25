@@ -75,16 +75,10 @@ public class ActionAddClassifierRole extends CmdCreateNode {
         Editor ce = Globals.curEditor();
         GraphModel gm = ce.getGraphModel();
         if (gm instanceof SequenceDiagramGraphModel) {
-            Object collaboration =
-                ((SequenceDiagramGraphModel) gm).getCollaboration();
+            Object owner =
+                ((SequenceDiagramGraphModel) gm).getOwner();
             node =
-                Model.getCollaborationsFactory().buildClassifierRole(
-                        collaboration);
-            /*
-            Model.getCoreHelper().setNamespace(
-                node,
-                Model.getFacade().getNamespace( collaboration));
-            */
+                Model.getCollaborationsFactory().buildLifeline(owner);
         } else {
             throw new IllegalStateException("Graphmodel is not a "
                                             + "sequence diagram graph model");

@@ -526,6 +526,10 @@ class FacadeMDRImpl implements Facade {
     public boolean isAInterface(Object handle) {
         return handle instanceof Interface;
     }
+    
+    public boolean isALifeline(Object handle) {
+        return handle instanceof ClassifierRole;
+    }
 
     public boolean isALink(Object handle) {
         return handle instanceof Link;

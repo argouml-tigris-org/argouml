@@ -355,6 +355,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                     "Attempt to instantiate abstract type"); //$NON-NLS-1$
         } else if (elementType == metaTypes.getClassifierRole()) {
             o = modelImpl.getCollaborationsFactory().createClassifierRole();
+        } else if (elementType == metaTypes.getLifeline()) {
+            o = modelImpl.getCollaborationsFactory().createLifeline();
         } else if (elementType == metaTypes.getComponent()) {
             o = modelImpl.getCoreFactory().createComponent();
         } else if (elementType == metaTypes.getComponentInstance()) {

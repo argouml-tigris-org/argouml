@@ -233,7 +233,9 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
      */
     @Override
     public boolean doesAccept(Object objectToAccept) {
-        if (Model.getFacade().isAClassifier(objectToAccept)) {
+        if (Model.getFacade().isALifeline(objectToAccept)) {
+            return true;
+        } else if (Model.getFacade().isAClassifier(objectToAccept)) {
             return true;
         } else if (Model.getFacade().isAComment(objectToAccept)) {
             return true;

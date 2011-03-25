@@ -674,6 +674,15 @@ public interface Facade {
     boolean isAInterface(Object handle);
 
     /**
+     * Recognizer for Lifeline.
+     *
+     * @param handle candidate
+     * @return true if handle is a Lifeline
+     */
+    boolean isALifeline(Object handle);
+
+    
+    /**
      * Recognizer for Link.
      *
      * @param handle candidate

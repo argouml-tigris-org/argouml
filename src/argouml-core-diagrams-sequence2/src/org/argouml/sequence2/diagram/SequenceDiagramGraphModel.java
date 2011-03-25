@@ -201,6 +201,20 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         return interaction;
     }
     
+    /**
+     * In UML1.4 the sequence diagram is owned by a collaboration.
+     * In UML2 it is owned by an Interaction (which might itself be owned by a
+     * collaboration or some other namespace)
+     * @return the owner of the sequence diagram
+     */
+    public Object getOwner() {
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            return getCollaboration();
+        } else {
+            return getInteraction();
+        }
+    }
+    
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
