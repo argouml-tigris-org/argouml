@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Bogdan Pistol - initial implementation
+ *    Thomas Neustupny
  *******************************************************************************/
 package org.argouml.model.euml;
 
@@ -236,9 +237,6 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
-        if (!(modelelement instanceof EObject)) {
-            throw new IllegalArgumentException();
-        }
         unregisterListener(
                 modelelement, listener, propertyNames, registerForElements);
     }
