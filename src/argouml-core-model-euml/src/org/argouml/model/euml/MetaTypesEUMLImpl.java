@@ -61,6 +61,7 @@ import org.eclipse.uml2.uml.InstanceSpecification;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.InteractionConstraint;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.MultiplicityElement;
@@ -232,10 +233,7 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getClassifierRole() {
-        // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
-        // AssociationEndRole have been replaced by the internal 
-        // structure of the Collaboration
-        return Classifier.class;
+        return Lifeline.class;
     }
 
     public Object getCollaboration() {

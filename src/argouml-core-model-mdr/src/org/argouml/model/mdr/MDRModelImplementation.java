@@ -75,6 +75,7 @@ import org.argouml.model.DirectionKind;
 import org.argouml.model.ExtensionMechanismsFactory;
 import org.argouml.model.ExtensionMechanismsHelper;
 import org.argouml.model.Facade;
+import org.argouml.model.MessageSort;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.ModelEventPump;
 import org.argouml.model.ModelImplementation;
@@ -94,6 +95,7 @@ import org.argouml.model.UseCasesHelper;
 import org.argouml.model.VisibilityKind;
 import org.argouml.model.XmiReader;
 import org.argouml.model.XmiWriter;
+import org.argouml.model.MessageSort;
 import org.netbeans.api.mdr.CreationFailedException;
 import org.netbeans.api.mdr.MDRManager;
 import org.netbeans.api.mdr.MDRepository;
@@ -121,6 +123,8 @@ public class MDRModelImplementation implements ModelImplementation {
     private ActivityGraphsHelper theActivityGraphsHelper;
 
     private CoreHelper theCoreHelper;
+    
+    private MessageSort theMessageSort;
 
     private MetaTypes theMetaTypes = new MetaTypesMDRImpl();
 
@@ -526,6 +530,7 @@ public class MDRModelImplementation implements ModelImplementation {
         theDataTypesHelper = new DataTypesHelperMDRImpl(this);
 
         theKindsObject = new KindsMDRImpl(this);
+        theMessageSort = new MessageSortMDRImpl();
         theModelManagementFactory = new ModelManagementFactoryMDRImpl(this);
         theExtensionMechanismsHelper =
             new ExtensionMechanismsHelperMDRImpl(this);
@@ -835,6 +840,13 @@ public class MDRModelImplementation implements ModelImplementation {
      */
     public OrderingKind getOrderingKind() {
         return theKindsObject;
+    }
+
+    /*
+     * @see org.argouml.model.ModelImplementation#getMessageSort()
+     */
+    public MessageSort getMessageSort() {
+        return theMessageSort;
     }
 
 

@@ -363,6 +363,15 @@ public final class Model {
     }
 
     /**
+     * Getter for the ConcurrencyKind object.
+     *
+     * @return The object implementing the interface.
+     */
+    public static MessageSort getMessageSort() {
+        return impl.getMessageSort();
+    }
+    
+    /**
      * Getter for the MetaTypes object.
      *
      * @return the MetaTypes object.

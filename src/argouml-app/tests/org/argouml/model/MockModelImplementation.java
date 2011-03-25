@@ -187,6 +187,11 @@ class MockModelImplementation implements ModelImplementation {
      * Control object.
      */
     private MockControl controlMT;
+    
+    /**
+     * Control object.
+     */
+    private MockControl controlMS;
 
     /**
      * Control object.
@@ -575,6 +580,13 @@ class MockModelImplementation implements ModelImplementation {
      */
     public UseCasesHelper getUseCasesHelper() {
         return (UseCasesHelper) controlUCH.getMock();
+    }
+
+    /*
+     * @see org.argouml.model.ModelImplementation#getMessageSort()
+     */
+    public MessageSort getMessageSort() {
+        return (MessageSort) controlMS.getMock();
     }
 
     /*

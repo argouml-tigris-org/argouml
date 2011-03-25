@@ -208,7 +208,13 @@ public interface ModelImplementation {
      */
     UseCasesHelper getUseCasesHelper();
 
-
+    /**
+     * Getter for MessageSort
+     *
+     * @return the MessageSort object.
+     */
+    MessageSort getMessageSort();
+    
     /**
      * Getter for the MetaTypes object.
      *

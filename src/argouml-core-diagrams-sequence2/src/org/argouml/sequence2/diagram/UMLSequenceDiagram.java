@@ -41,6 +41,7 @@ package org.argouml.sequence2.diagram;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -153,28 +154,36 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
     @Override
     protected Object[] getUmlActions() {
         if (actions == null) {
+            List actionList = new ArrayList();
+            actionList.add(new RadioAction(new ActionAddClassifierRole()));
+            getMessageActions(actionList);
+            actionList.add(new RadioAction(new ActionSetMode(
+                    ModeBroomMessages.class,
+                    "button.broom-messages")));
             actions = new Object[8];
             int i = 0;
-            actions[i++] = new RadioAction(new ActionAddClassifierRole());
-            actions[i++] = new RadioAction(new ActionSetAddMessageMode(
-                    Model.getMetaTypes().getCallAction(),
-                    "button.new-callaction"));
-            actions[i++] = new RadioAction(new ActionSetAddMessageMode(
-                    Model.getMetaTypes().getSendAction(),
-                    "button.new-sendaction"));
-            actions[i++] = new RadioAction(new ActionSetAddMessageMode(
-                    Model.getMetaTypes().getReturnAction(),
-                    "button.new-returnaction"));
-            actions[i++] = new RadioAction(new ActionSetAddMessageMode(
-                    Model.getMetaTypes().getCreateAction(),
-                    "button.new-createaction"));
-            actions[i++] = new RadioAction(new ActionSetAddMessageMode(
-                    Model.getMetaTypes().getDestroyAction(),
-                    "button.new-destroyaction"));
-            actions[i++] = new RadioAction(new ActionSetMode(
-                    ModeBroomMessages.class,
-                    "button.broom-messages"));
+            actions = actionList.toArray();
+
         }
+        return actions;
+    }
+    
+    private List getMessageActions(List actions) {
+        actions.add(new RadioAction(new ActionSetAddMessageMode(
+                Model.getMessageSort().getSynchCall(),
+                "button.new-callaction")));
+        actions.add(new RadioAction(new ActionSetAddMessageMode(
+                Model.getMessageSort().getASynchCall(),
+                "button.new-sendaction")));
+        actions.add(new RadioAction(new ActionSetAddMessageMode(
+                Model.getMessageSort().getReply(),
+                "button.new-returnaction")));
+        actions.add(new RadioAction(new ActionSetAddMessageMode(
+                Model.getMessageSort().getCreateMessage(),
+                "button.new-createaction")));
+        actions.add(new RadioAction(new ActionSetAddMessageMode(
+                Model.getMessageSort().getDeleteMessage(),
+                "button.new-destroyaction")));
         return actions;
     }
     

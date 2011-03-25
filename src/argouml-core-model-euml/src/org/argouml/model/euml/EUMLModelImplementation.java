@@ -31,6 +31,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.DiagramInterchangeModel;
+import org.argouml.model.MessageSort;
 import org.argouml.model.ModelImplementation;
 import org.argouml.model.UmlException;
 import org.eclipse.emf.common.command.BasicCommandStack;
@@ -119,6 +120,8 @@ public class EUMLModelImplementation implements ModelImplementation {
 
     private FacadeEUMLImpl theFacade;
 
+    private MessageSort theMessageSort;
+    
     private MetaTypesEUMLImpl theMetaTypes;
 
     private ModelEventPumpEUMLImpl theModelEventPump;
@@ -454,6 +457,13 @@ public class EUMLModelImplementation implements ModelImplementation {
             theOrderingKind = new OrderingKindEUMLImpl();
         }
         return theOrderingKind;
+    }
+
+    public MessageSort getMessageSort() {
+        if (theMessageSort == null) {
+            theMessageSort = new MessageSortEUMLImpl();
+        }
+        return theMessageSort;
     }
 
     public PseudostateKindEUMLImpl getPseudostateKind() {
