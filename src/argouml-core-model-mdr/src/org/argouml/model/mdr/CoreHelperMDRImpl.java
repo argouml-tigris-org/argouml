@@ -2593,51 +2593,55 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
     public void setAggregation(Object handle, Object aggregationKind) {
-        setAggregation1(handle, aggregationKind);
+        if (!(handle instanceof AssociationEnd)) {
+            throw new IllegalArgumentException("An association end was expected got " + handle);
+        }
+        if (!(aggregationKind instanceof AggregationKind)) {
+            throw new IllegalArgumentException("An aggregation kind was expected got " + aggregationKind);
+        }
+        AggregationKind ak = (AggregationKind) aggregationKind;
+        AssociationEnd ae = (AssociationEnd) handle;
+        // We silently ignore requests which conflict with 
+        // UML 1.4 WFR 2.5.3.1 #3 - no aggregation for n-ary associations
+        if (ak == AggregationKindEnum.AK_NONE
+                || ae.getAssociation().getConnection().size() < 3) {
+            ae.setAggregation(ak);
+        } else {
+            ae.setAggregation(AggregationKindEnum.AK_NONE);
+        }
+        // If we made something aggregate, make sure the other ends conform
+        // to UML 1.4 WFR 2.5.3.1 #2 - no more than one aggregate end
+        if (ak == AggregationKindEnum.AK_AGGREGATE
+                || ak == AggregationKindEnum.AK_COMPOSITE) {
+            for (AssociationEnd end : ae.getAssociation().getConnection()) {
+                if (!end.equals(ae)
+                        && end.getAggregation() != AggregationKindEnum.AK_NONE) {
+                    end.setAggregation(AggregationKindEnum.AK_NONE);
+                }
+            }
+        }
+        return;
     }
 
     public void setAggregation1(Object handle, Object aggregationKind) {
-        if (handle instanceof AssociationEnd
-                && aggregationKind instanceof AggregationKind) {
-            AggregationKind ak = (AggregationKind) aggregationKind;
-            AssociationEnd ae = (AssociationEnd) handle;
-            // We silently ignore requests which conflict with 
-            // UML 1.4 WFR 2.5.3.1 #3 - no aggregation for n-ary associations
-            if (ak == AggregationKindEnum.AK_NONE
-                    || ae.getAssociation().getConnection().size() < 3) {
-                ae.setAggregation(ak);
-            } else {
-                ae.setAggregation(AggregationKindEnum.AK_NONE);
-            }
-            // If we made something aggregate, make sure the other ends conform
-            // to UML 1.4 WFR 2.5.3.1 #2 - no more than one aggregate end
-            if (ak == AggregationKindEnum.AK_AGGREGATE
-                    || ak == AggregationKindEnum.AK_COMPOSITE) {
-                for (AssociationEnd end : ae.getAssociation().getConnection()) {
-                    if (!end.equals(ae)
-                            && end.getAggregation() != AggregationKindEnum.AK_NONE) {
-                        end.setAggregation(AggregationKindEnum.AK_NONE);
-                    }
-                }
-            }
-            return;
-        }
-        throw new IllegalArgumentException("handle: " + handle
-                + " or aggregationKind: " + aggregationKind);
+        setAggregation(handle, aggregationKind);
     }
 
     public void setAggregation2(Object handle, Object aggregationKind) {
-        if (handle instanceof AssociationEnd
-                && aggregationKind instanceof AggregationKind) {
-            // Simulates UML2 getting the aggregation from the opposite end
-            AssociationEnd assEnd = (AssociationEnd) handle;
-            Collection<AssociationEnd> assEnds = assEnd.getAssociation().getConnection();
-            Iterator<AssociationEnd> it = assEnds.iterator();
-            AssociationEnd other = it.next();
-            setAggregation1(other, aggregationKind);
+        if (!(handle instanceof AssociationEnd)) {
+            throw new IllegalArgumentException("An association end was expected got " + handle);
         }
-        throw new IllegalArgumentException("handle: " + handle
-                + " or aggregationKind: " + aggregationKind);
+        if (!(aggregationKind instanceof AggregationKind)) {
+            throw new IllegalArgumentException("An aggregation kind was expected got " + aggregationKind);
+        }
+        AssociationEnd assEnd = (AssociationEnd) handle;
+        Collection<AssociationEnd> assEnds = assEnd.getAssociation().getConnection();
+        Iterator<AssociationEnd> it = assEnds.iterator();
+        AssociationEnd other = it.next();
+        if (other == handle) {
+            other = it.next();
+        }
+        setAggregation(other, aggregationKind);
     }
 
 
