@@ -1333,7 +1333,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         if (!(aggregationKind instanceof AggregationKind)) {
             throw new IllegalArgumentException(
-                    "aggregationKind must be instance of AggregationKind"); //$NON-NLS-1$
+                    "aggregationKind must be instance of AggregationKind " //$NON-NLS-1$
+                    + aggregationKind + " recieved"); //$NON-NLS-1$
         }
         final Property property = (Property) handle;
         final AggregationKind aggregation = (AggregationKind) aggregationKind;
