@@ -77,8 +77,11 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getAction(Object handle) {
+        if (handle instanceof Message) {
+            // In UML a message could have an Action. In UML2 it never does.
+            return null;
+        }
         throw new NotYetImplementedException();
-
     }
 
     public Object getActionSequence(Object handle) {
@@ -878,6 +881,11 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
+    public Object getMessageSort(Object handle) {
+        Message message = (Message) handle;
+        return message.getMessageSort();
+    }
+
     public Collection getMethods(Object handle) {
         if (handle instanceof BehavioralFeature) {
             return ((BehavioralFeature)handle).getMethods();
@@ -1201,7 +1209,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getReceiver(Object handle) {
-        throw new NotYetImplementedException();
+        Message message = (Message) handle;
+        MessageOccurrenceSpecification mos =
+            (MessageOccurrenceSpecification) message.getReceiveEvent();
+        return mos.getCovereds().get(0);
     }
 
     public Collection getReceptions(Object handle) {
@@ -1262,7 +1273,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getSender(Object handle) {
-        throw new NotYetImplementedException();
+        Message message = (Message) handle;
+        MessageOccurrenceSpecification mos =
+            (MessageOccurrenceSpecification) message.getSendEvent();
+        return mos.getCovereds().get(0);
     }
 
     public Collection getSentMessages(Object handle) {
@@ -2255,7 +2269,12 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAsynchronous(Object handle) {
-        return !((CallAction) handle).isSynchronous();
+        if (handle == MessageSort.ASYNCH_CALL_LITERAL) return true;
+        if (handle == MessageSort.ASYNCH_SIGNAL_LITERAL) return true;
+        if (handle instanceof CallAction) {
+            return !((CallAction) handle).isSynchronous();
+        }
+        return false;
     }
 
     public boolean isComposite(Object handle) {

@@ -16,9 +16,12 @@ import org.argouml.model.CollaborationsFactory;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.Gate;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Message;
+import org.eclipse.uml2.uml.MessageEnd;
+import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
 import org.eclipse.uml2.uml.UMLFactory;
 
 /**
@@ -109,9 +112,24 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
         return interaction;
     }
 
-    public Message buildMessage(Object acollab, Object arole) {
-        // TODO: Auto-generated method stub
-        return createMessage();
+    public Message buildMessage(Object from, Object to) {
+        
+        Lifeline l1 = (Lifeline) from;
+        Lifeline l2 = (Lifeline) to;
+
+        Message message = UMLFactory.eINSTANCE.createMessage();
+        
+        MessageOccurrenceSpecification receive = 
+            UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
+        MessageOccurrenceSpecification send = 
+            UMLFactory.eINSTANCE.createMessageOccurrenceSpecification();
+        
+        message.setReceiveEvent(receive);
+        message.setSendEvent(send);
+        
+        l1.getCoveredBys().add(send);
+        l2.getCoveredBys().add(receive);
+        return message;
     }
 
     public Object createAssociationEndRole() {

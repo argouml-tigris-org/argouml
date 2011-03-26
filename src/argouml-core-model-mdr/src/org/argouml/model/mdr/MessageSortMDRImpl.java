@@ -26,7 +26,7 @@ import org.omg.uml.behavioralelements.commonbehavior.SendAction;
 class MessageSortMDRImpl implements MessageSort {
 
     public Object getASynchCall() {
-        return SendAction.class;
+        return CallAction.class;
     }
 
     public Object getCreateMessage() {
@@ -43,5 +43,9 @@ class MessageSortMDRImpl implements MessageSort {
 
     public Object getSynchCall() {
         return CallAction.class;
+    }
+    
+    public Object getASynchSignal() {
+        return SendAction.class;
     }
 }

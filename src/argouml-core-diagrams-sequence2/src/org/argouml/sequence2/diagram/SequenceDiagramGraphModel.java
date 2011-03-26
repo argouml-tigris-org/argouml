@@ -337,7 +337,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
         Mode mode = modeManager.top();
         Hashtable args = mode.getArgs();
         Object actionType = args.get("action");
-        return connect(fromPort, toPort, edgeType, actionType);
+        return connectMessage(fromPort, toPort, actionType);
     }
     
     /**
@@ -350,34 +350,45 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
      * @see org.tigris.gef.graph.MutableGraphModel#connect(
      *          Object, Object, Class)
      */
-    public Object connect(Object fromPort, Object toPort, Object edgeType, 
-    		Object actionType) {
+    public Object connectMessage(Object fromPort, Object toPort, Object messageSort) {
+        // TODO: Lets move this behind the model interface
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            return createMessage1(fromPort, toPort, messageSort);
+        } else {
+            return createMessage2(fromPort, toPort, messageSort);
+        }
+    }
+
+    private Object createMessage1(Object fromPort, Object toPort, Object messageSort) {
         Object edge = null;
         Object action = null;
-        if (Model.getMetaTypes().getCallAction().equals(actionType)) {
+        if (Model.getMessageSort().getSynchCall().equals(messageSort)) {
             action = Model.getCommonBehaviorFactory().createCallAction();
             Model.getCommonBehaviorHelper().setAsynchronous(action, false);
-        } else if (Model.getMetaTypes().getCreateAction()
-                .equals(actionType)) {
+        } else if (Model.getMessageSort().getASynchCall().equals(messageSort)) {
+            action = Model.getCommonBehaviorFactory().createCallAction();
+            Model.getCommonBehaviorHelper().setAsynchronous(action, true);
+        } else if (Model.getMessageSort().getCreateMessage()
+                .equals(messageSort)) {
             action = Model.getCommonBehaviorFactory().createCreateAction();
             Model.getCommonBehaviorHelper().setAsynchronous(action, false);
-        } else if (Model.getMetaTypes().getReturnAction()
-                .equals(actionType)) {
+        } else if (Model.getMessageSort().getReply()
+                .equals(messageSort)) {
             action = Model.getCommonBehaviorFactory().createReturnAction();
             Model.getCommonBehaviorHelper().setAsynchronous(action, true);
-        } else if (Model.getMetaTypes().getDestroyAction()
-                .equals(actionType)) {
+        } else if (Model.getMessageSort().getDeleteMessage()
+                .equals(messageSort)) {
             action = Model.getCommonBehaviorFactory().createDestroyAction();
             Model.getCommonBehaviorHelper().setAsynchronous(action, false);
-        } else if (Model.getMetaTypes().getSendAction()
-                .equals(actionType)) {
+        } else if (Model.getMessageSort().getASynchSignal()
+                .equals(messageSort)) {
             action = Model.getCommonBehaviorFactory().createSendAction();
             Model.getCommonBehaviorHelper().setAsynchronous(action, true);
         } else if (Model.getMetaTypes().getTerminateAction()
-                .equals(actionType)) {
+                .equals(messageSort)) {
             // not implemented yet
         }
-        if (fromPort != null && toPort != null && action != null) {
+        if (fromPort != null && toPort != null) {
             Object associationRole =
                 Model.getCollaborationsHelper().getAssociationRole(
                     fromPort,
@@ -387,7 +398,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
                     Model.getCollaborationsFactory().buildAssociationRole(
                             fromPort, toPort);
             }
-
+    
             Object message =
                 Model.getCollaborationsFactory().buildMessage(
                     getInteraction(),
@@ -400,7 +411,7 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
                 .setSender(message, fromPort);
             Model.getCommonBehaviorHelper()
                 .setReceiver(message, toPort);
-
+    
             addEdge(message);
             edge = message;
         }
@@ -408,8 +419,27 @@ class SequenceDiagramGraphModel extends UMLMutableGraphSupport implements
             LOG.debug("Incorrect edge");
         }
         return edge;
-
+    
     }
+    
+    private Object createMessage2(Object fromPort, Object toPort, Object messageSort) {
+        if (fromPort != null && toPort != null) {
+    
+            Object message =
+                Model.getCollaborationsFactory().buildMessage(
+                    fromPort,
+                    toPort);
+            Model.getCollaborationsHelper().setMessageSort(message, messageSort);
+    
+            addEdge(message);
+            return message;
+        }
+        LOG.debug("Incorrect edge");
+        return null;
+    
+    }
+
+    
     
     /*
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)

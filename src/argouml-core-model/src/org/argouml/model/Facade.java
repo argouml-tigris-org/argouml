@@ -1946,6 +1946,14 @@ public interface Facade {
     Collection getMessages(Object handle);
 
     /**
+     * Return the MessageSort of the Message
+     * 
+     * @param handle the message
+     * @return the MessageSort
+     */
+    Object getMessageSort(Object handle);
+
+    /**
      * Return the Messages which are successors to the given Message.
      *
      * @param handle the message

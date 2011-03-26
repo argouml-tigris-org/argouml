@@ -42,4 +42,9 @@ public interface MessageSort {
      * @return Returns the Reply MessageSort
      */
     Object getReply();
+    
+    /**
+     * @return Returns the ASynchSignal MessageSort
+     */
+    Object getASynchSignal();    
 }

@@ -871,7 +871,10 @@ class CollaborationsHelperMDRImpl implements CollaborationsHelper {
         throw new IllegalArgumentException("predecessor: " + handle
                 + " or messages: " + messages);
     }
-
+    
+    public void setMessageSort(Object message, Object messageSort) {
+        setAction(message, messageSort);
+    }
 
     public void setPredecessors(Object handle, Collection predecessors) {
         if (handle instanceof Message) {

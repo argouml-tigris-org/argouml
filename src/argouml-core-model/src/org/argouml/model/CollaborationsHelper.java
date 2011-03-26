@@ -307,6 +307,14 @@ public interface CollaborationsHelper {
     void setAction(Object handle, Object action);
 
     /**
+     * Sets the MessageSort to a message.
+     *
+     * @param message is the Message
+     * @param messageSort is the MessageSort
+     */
+    void setMessageSort(Object message, Object messageSort);
+
+    /**
      * Set the context of an interaction.
      *
      * @param interaction The interaction.

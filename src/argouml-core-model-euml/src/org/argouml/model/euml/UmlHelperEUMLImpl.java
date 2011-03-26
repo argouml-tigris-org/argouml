@@ -28,6 +28,7 @@ import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Extend;
 import org.eclipse.uml2.uml.ExtensionPoint;
 import org.eclipse.uml2.uml.Feature;
+import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterSet;
@@ -84,8 +85,12 @@ class UmlHelperEUMLImpl implements UmlHelper {
         } else if (relationship instanceof Property) {
             // TODO: We expect an association end here - check more carefully? - tfm
             return modelImpl.getCoreHelper().getSource(relationship);
+        } else if (relationship instanceof Message) {
+            return modelImpl.getFacade().getSender(relationship);
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException(
+                "Getting source of this object is not implemented" //$NON-NLS-1$
+                + relationship);
     }
 
     /*
@@ -104,8 +109,12 @@ class UmlHelperEUMLImpl implements UmlHelper {
         } else if (relationship instanceof Property) {
             // TODO: We expect an association end here - check more carefully? - tfm
             return modelImpl.getCoreHelper().getDestination(relationship);
+        } else if (relationship instanceof Message) {
+            return modelImpl.getFacade().getReceiver(relationship);
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException(
+                "Getting destination of this object is not implemented" //$NON-NLS-1$
+                + relationship);
     }
 
    /*

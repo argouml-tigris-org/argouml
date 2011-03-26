@@ -181,7 +181,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         if (!(modelElement instanceof EObject)) {
             throw new IllegalArgumentException(
                     "The modelelement must be instance " //$NON-NLS-1$
-                            + "of EObject."); //$NON-NLS-1$
+                            + "of EObject. We got " //$NON-NLS-1$
+                            + modelElement);
         }
         registerListener(
                 modelElement, listener, propertyNames, registerForElements);

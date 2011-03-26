@@ -14,6 +14,8 @@ package org.argouml.model.euml;
 import java.util.Collection;
 
 import org.argouml.model.CollaborationsHelper;
+import org.eclipse.uml2.uml.Message;
+import org.eclipse.uml2.uml.MessageSort;
 
 /**
  * Eclipse UML2 implementation of CollaborationsHelper.
@@ -149,9 +151,8 @@ class CollaborationsHelperEUMLImpl implements CollaborationsHelper {
         
     }
 
-    public void setAction(Object handle, Object action) {
-        // TODO: Auto-generated method stub
-        
+    public void setAction(Object message, Object action) {
+        setMessageSort(message, action);
     }
 
     public void setActivator(Object ames, Object anactivator) {
@@ -172,6 +173,12 @@ class CollaborationsHelperEUMLImpl implements CollaborationsHelper {
     public void setContext(Object handle, Object col) {
         // TODO: Auto-generated method stub
         
+    }
+    
+    public void setMessageSort(Object message, Object messageSort) {
+        MessageSort ms = (MessageSort) messageSort;
+        Message m = (Message) message;
+        m.setMessageSort(ms);
     }
 
     public void setPredecessors(Object handle, Collection predecessors) {

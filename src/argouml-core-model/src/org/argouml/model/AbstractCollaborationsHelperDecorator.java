@@ -186,6 +186,10 @@ public abstract class AbstractCollaborationsHelperDecorator
         impl.setContext(handle, col);
     }
 
+    public void setMessageSort(Object handle, Object messageSort) {
+        impl.setAction(handle, messageSort);
+    }
+
     public void setSuccessors(Object handle, Collection messages) {
         impl.setSuccessors(handle, messages);
     }

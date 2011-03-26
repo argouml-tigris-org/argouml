@@ -2036,6 +2036,15 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentCollection(handle);
     }
 
+    /**
+     * @see org.argouml.model.Facade#getMessageSort(java.lang.Object)
+     */
+    public Object getMessageSort(Object handle) {
+        return getAction(handle);
+    }
+    
+    
+    
     public Collection getSuccessors(Object handle) {
         try {
             if (handle instanceof Message) {

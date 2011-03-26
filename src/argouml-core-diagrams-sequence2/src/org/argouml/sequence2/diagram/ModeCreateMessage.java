@@ -119,10 +119,9 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             
             // create the return message modelelement with the interaction
             // and the collaboration
-            final Object returnMessage = gm.connect(
+            final Object returnMessage = gm.connectMessage(
                     returnMessageSource,
                     returnMessageDest, 
-                    Model.getMetaTypes().getMessage(),
                     Model.getMetaTypes().getReturnAction());
             
             // Correct the activator value
