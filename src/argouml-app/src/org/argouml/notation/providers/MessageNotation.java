@@ -65,34 +65,35 @@ public abstract class MessageNotation extends NotationProvider {
 
     @Override
     public void initialiseListener(Object umlMessage) {
-        addElementListener(umlMessage,
-                new String[] {"activator", "predecessor", "successor", 
-                    "sender", "receiver", "action", "name"});
-        Object action = Model.getFacade().getAction(umlMessage);
-        if (action != null) {
-            addElementListener(action,
-                    new String[] {"remove", "recurrence", "script", 
-                        "actualArgument", "signal", "operation"});
-            List args = Model.getFacade().getActualArguments(action);
-            for (Object argument : args) {
-                addElementListener(argument,
-                        new String[] {"remove", "value"});
-            }
-            if (Model.getFacade().isACallAction(action)) {
-                Object operation = Model.getFacade().getOperation(action);
-                if (Model.getFacade().isAOperation(operation)) {
-                    addElementListener(operation,
-                            new String[] {"name"});
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            addElementListener(umlMessage,
+                    new String[] {"activator", "predecessor", "successor", 
+                        "sender", "receiver", "action", "name"});
+            Object action = Model.getFacade().getAction(umlMessage);
+            if (action != null) {
+                addElementListener(action,
+                        new String[] {"remove", "recurrence", "script", 
+                            "actualArgument", "signal", "operation"});
+                List args = Model.getFacade().getActualArguments(action);
+                for (Object argument : args) {
+                    addElementListener(argument,
+                            new String[] {"remove", "value"});
                 }
-            }
-            if (Model.getFacade().isASendAction(action)) {
-                Object signal = Model.getFacade().getSignal(action);
-                if (Model.getFacade().isASignal(signal)) {
-                    addElementListener(signal,
-                            new String[] {"name"});
+                if (Model.getFacade().isACallAction(action)) {
+                    Object operation = Model.getFacade().getOperation(action);
+                    if (Model.getFacade().isAOperation(operation)) {
+                        addElementListener(operation,
+                                new String[] {"name"});
+                    }
+                }
+                if (Model.getFacade().isASendAction(action)) {
+                    Object signal = Model.getFacade().getSignal(action);
+                    if (Model.getFacade().isASignal(signal)) {
+                        addElementListener(signal,
+                                new String[] {"name"});
+                    }
                 }
             }
         }
     }
-
 }
