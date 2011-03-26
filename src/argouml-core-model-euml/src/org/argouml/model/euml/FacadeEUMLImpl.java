@@ -1,6 +1,6 @@
 // $Id$
 /*******************************************************************************
- * Copyright (c) 2007,2010 Tom Morris and other contributors
+ * Copyright (c) 2007,2011 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -2536,5 +2536,35 @@ class FacadeEUMLImpl implements Facade {
     
     public boolean isADirectedRelationship(Object handle) {
         return handle instanceof DirectedRelationship;
+    }
+
+    public boolean isAASynchCallMessage(Object handle) {
+        Message m = (Message) handle;
+        return m.getMessageSort() == MessageSort.ASYNCH_CALL_LITERAL;
+    }
+
+    public boolean isAASynchSignalMessage(Object handle) {
+        Message m = (Message) handle;
+        return m.getMessageSort() == MessageSort.ASYNCH_SIGNAL_LITERAL;
+    }
+
+    public boolean isACreateMessage(Object handle) {
+        Message m = (Message) handle;
+        return m.getMessageSort() == MessageSort.CREATE_MESSAGE_LITERAL;
+    }
+
+    public boolean isADeleteMessage(Object handle) {
+        Message m = (Message) handle;
+        return m.getMessageSort() == MessageSort.DELETE_MESSAGE_LITERAL;
+    }
+
+    public boolean isAReplyMessage(Object handle) {
+        Message m = (Message) handle;
+        return m.getMessageSort() == MessageSort.REPLY_LITERAL;
+    }
+
+    public boolean isASynchCallMessage(Object handle) {
+        Message m = (Message) handle;
+        return m.getMessageSort() == MessageSort.SYNCH_CALL_LITERAL;
     }
 }

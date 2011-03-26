@@ -159,7 +159,7 @@ class FigActivation extends ArgoFigGroup {
             throw new IllegalArgumentException(
                     "An instance of FigMessage is required");
         }
-        if (!messageFig.isReturnAction()) {
+        if (!messageFig.isReplyMessage()) {
             return false;
         }
         if (activatingMessage == null) {

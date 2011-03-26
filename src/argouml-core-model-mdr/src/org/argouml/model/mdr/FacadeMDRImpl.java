@@ -4645,4 +4645,46 @@ class FacadeMDRImpl implements Facade {
     public boolean isADirectedRelationship(Object handle) {
         return false;
     }
+
+    public boolean isAASynchCallMessage(Object handle) {
+        Message message = (Message) handle;
+        if (message.getAction() instanceof CallAction) {
+            CallAction ca = (CallAction) message.getAction();
+            return ca.isAsynchronous();
+        }
+        return false;
+    }
+
+    public boolean isAASynchSignalMessage(Object handle) {
+        Message message = (Message) handle;
+        if (message.getAction() instanceof SendAction) {
+            SendAction sa = (SendAction) message.getAction();
+            return sa.isAsynchronous();
+        }
+        return false;
+    }
+
+    public boolean isACreateMessage(Object handle) {
+        Message message = (Message) handle;
+        return (message.getAction() instanceof CreateAction);
+    }
+
+    public boolean isADeleteMessage(Object handle) {
+        Message message = (Message) handle;
+        return (message.getAction() instanceof DestroyAction);
+    }
+
+    public boolean isAReplyMessage(Object handle) {
+        Message message = (Message) handle;
+        return (message.getAction() instanceof ReturnAction);
+    }
+
+    public boolean isASynchCallMessage(Object handle) {
+        Message message = (Message) handle;
+        if (message.getAction() instanceof CallAction) {
+            CallAction ca = (CallAction) message.getAction();
+            return !ca.isAsynchronous();
+        }
+        return false;
+    }
 }

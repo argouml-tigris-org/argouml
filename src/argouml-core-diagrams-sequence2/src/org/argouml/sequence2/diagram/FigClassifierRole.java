@@ -221,7 +221,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         FigMessage createMessage = null;
         for (FigMessage message : messages) {
             if (message.getDestFigNode().equals(this)
-                    && message.isCreateAction()) {
+                    && message.isCreateMessage()) {
                 
                 createMessage = message;
                 break;
@@ -338,7 +338,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     void positionHead(final FigMessage message) {
         // if the added edge is a Create Message it will affect the position
         // of the ClassifierRole so it should be repositioned
-        if (message.isCreateAction()
+        if (message.isCreateMessage()
                 && equals(message.getDestFigNode())
                 && !equals(message.getSourceFigNode())) {
             updateHeadOffset();

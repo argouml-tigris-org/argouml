@@ -327,6 +327,55 @@ public interface Facade {
     boolean isACallAction(Object handle);
 
     /**
+     * Recognizer for Message or sort ASynchCall.
+     *
+     * @param handle candidate
+     * @return true if handle is a CallAction
+     */
+    boolean isAASynchCallMessage(Object handle);
+    
+    /**
+     * Recognizer for Message or sort ASynchSignal.
+     *
+     * @param handle candidate
+     * @return true if handle is a CallAction
+     */
+    boolean isAASynchSignalMessage(Object handle);
+
+    /**
+     * Recognizer for Message or sort Delete.
+     *
+     * @param handle candidate
+     * @return true if handle is a CallAction
+     */
+    boolean isADeleteMessage(Object handle);
+
+    /**
+     * Recognizer for Message or sort Create
+     *
+     * @param handle candidate
+     * @return true if handle is a CallAction
+     */
+    boolean isACreateMessage(Object handle);
+
+    /**
+     * Recognizer for Message or sort SynchCall.
+     *
+     * @param handle candidate
+     * @return true if handle is a CallAction
+     */
+    boolean isASynchCallMessage(Object handle);
+    
+    /**
+     * Recognizer for Message or sort Reply.
+     *
+     * @param handle candidate
+     * @return true if handle is a CallAction
+     */
+    boolean isAReplyMessage(Object handle);
+    
+    
+    /**
      * Recognizer for CallEvent.
      *
      * @param handle candidate

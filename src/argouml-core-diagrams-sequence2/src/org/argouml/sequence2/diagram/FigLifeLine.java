@@ -150,7 +150,7 @@ class FigLifeLine extends ArgoFigGroup {
             if (!figMessage.isSelfMessage()) {
                 if (isIncoming(figMessage)) {
                     if (currentActivation == null) {
-                        if (figMessage.isCallAction()) {
+                        if (figMessage.isSynchCallMessage()) {
                             // if we are the dest and is a call action, create the 
                             // activation, but don't add it until the height is set.
                             ySender = figMessage.getFinalY();
@@ -163,7 +163,7 @@ class FigLifeLine extends ArgoFigGroup {
                                     getSettings(),
                                     figMessage);
                             activationsCount++;
-                        } else if (figMessage.isCreateAction()) {
+                        } else if (figMessage.isCreateMessage()) {
                             // if we are the destination of a create action,
                             // create the entire activation
                             currentActivation = createActivationFig(
@@ -177,12 +177,12 @@ class FigLifeLine extends ArgoFigGroup {
                             activationsCount++;
                         }
                     } else {
-                        if (figMessage.isCallAction()
+                        if (figMessage.isSynchCallMessage()
                                 && isSameClassifierRoles(
                                         currentActivation.getActivatingMessage(),
                                         figMessage)) {
                             activationsCount++;
-                        } else if (figMessage.isDestroyAction()) {
+                        } else if (figMessage.isDeleteMessage()) {
                             // if we are the target of a destroy action
                             // the figlifeline ends here and we add the activation
                             ySender = figMessage.getFinalY();
@@ -277,14 +277,14 @@ class FigLifeLine extends ArgoFigGroup {
             // if we are the dest and is a call action, create the 
             // activation, but don't add it until the height is set.
             if (figMessage.isSelfMessage()) {
-                if (figMessage.isCallAction()) {
+                if (figMessage.isSynchCallMessage()) {
                     ySender = figMessage.getFinalY();
                     currentAct = new FigActivation(figMessage.getOwner(),
                             new Rectangle(lineFig.getX()
                                     + FigActivation.DEFAULT_WIDTH / 2, ySender,
                                     0, 0), getSettings(), figMessage, false);
                 } else if (currentAct != null
-                        && figMessage.isReturnAction()) {
+                        && figMessage.isReplyMessage()) {
                     ySender = figMessage.getStartY();
                     currentAct.setHeight(ySender - currentAct.getY());
                     newActivations.add(currentAct);
@@ -306,7 +306,7 @@ class FigLifeLine extends ArgoFigGroup {
         FigMessage figMessage = figMessages.get(0);
         if (cr.equals(figMessage.getDestFigNode())
                 && !cr.equals(figMessage.getSourceFigNode())
-                && figMessage.isCallAction()) {
+                && figMessage.isSynchCallMessage()) {
             return true;
         }
         return false;
@@ -329,7 +329,11 @@ class FigLifeLine extends ArgoFigGroup {
     }
     
     @Override
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    // TODO: synchronized is required here as there can be some 
+    // concurrent modification problems when drawing a call message and
+    // having that automatically draw the reply. Maybe fixing the TODO
+    // below will resolve this and the synch can go.
+    protected synchronized void setBoundsImpl(int x, int y, int w, int h) {
         final Rectangle oldBounds = getBounds();
         
         rectFig.setBounds(x, y, w, h);

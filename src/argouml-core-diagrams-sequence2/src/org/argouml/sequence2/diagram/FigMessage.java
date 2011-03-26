@@ -149,24 +149,28 @@ public class FigMessage extends FigEdgeModelElement {
         return notationSettings;
     }
     
-    boolean isCallAction() {
-    	return Model.getFacade().isACallAction(getAction());
+    boolean isSynchCallMessage() {
+    	return Model.getFacade().isASynchCallMessage(getOwner());
     }
 
-    boolean isCreateAction() {
-    	return Model.getFacade().isACreateAction(getAction());
+    boolean isASynchCallMessage() {
+        return Model.getFacade().isAASynchCallMessage(getOwner());
     }
 
-    boolean isDestroyAction() {
-    	return Model.getFacade().isADestroyAction(getAction());
+    boolean isCreateMessage() {
+    	return Model.getFacade().isACreateMessage(getOwner());
     }
 
-    boolean isReturnAction() {
-    	return Model.getFacade().isAReturnAction(getAction());
+    boolean isDeleteMessage() {
+    	return Model.getFacade().isADeleteMessage(getOwner());
     }
 
-    boolean isSendAction() {
-        return Model.getFacade().isASendAction(getAction());
+    boolean isReplyMessage() {
+    	return Model.getFacade().isAReplyMessage(getOwner());
+    }
+
+    boolean isASynchSignalMessage() {
+        return Model.getFacade().isAASynchSignalMessage(getOwner());
     }
     
     /**
@@ -174,7 +178,10 @@ public class FigMessage extends FigEdgeModelElement {
      * to the action type..
      */
     private void updateArrow() {
-        getFig().setDashed(isReturnAction());
+        if (getOwner() == null) {
+            return;
+        }
+        getFig().setDashed(isReplyMessage());
         Object act = getAction();
         if (act != null && Model.getFacade().isAsynchronous(getAction())) {
             setDestArrowHead(new ArrowHeadGreater());
@@ -297,7 +304,7 @@ public class FigMessage extends FigEdgeModelElement {
     public void convertToArc() {
         if (getPoints().length > 0) {
             FigMessageSpline spline = new FigMessageSpline(getPoint(0));
-            spline.setDashed(isReturnAction());
+            spline.setDashed(isReplyMessage());
             super.setFig(spline);
             computeRoute();
         }        
@@ -329,7 +336,7 @@ public class FigMessage extends FigEdgeModelElement {
             final Point startPoint = new Point(x, getYs()[0]);
             final FigMessageSpline spline = new FigMessageSpline(startPoint);
             spline.setComplete(true);
-            spline.setDashed(isReturnAction());
+            spline.setDashed(isReplyMessage());
             super.setFig(spline);
         }
         super.calcBounds();
@@ -456,14 +463,14 @@ public class FigMessage extends FigEdgeModelElement {
         Object activator = null;
         while (it.hasNext()) {
             FigMessage messageFig = it.next();
-            if ((messageFig.isCreateAction() || messageFig.isCallAction())
+            if ((messageFig.isCreateMessage() || messageFig.isSynchCallMessage())
                     && messageFig.getDestFigNode() == fcr) {
                 activator = messageFig.getOwner();
             } else if (messageFig == this) {
                 Model.getCollaborationsHelper().setActivator(
                         getOwner(), activator);
                 return activator;
-            } else if (messageFig.isReturnAction()) {
+            } else if (messageFig.isReplyMessage()) {
                 activator = null;
             }
         }

@@ -103,7 +103,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
         
         ensureSpace(figMessage);
         
-        if (figMessage.isCallAction()) {
+        if (figMessage.isSynchCallMessage()) {
             // Auto-create a return message for a call message
             
             // TODO: Maybe a return message already exists. Check first and
@@ -122,7 +122,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             final Object returnMessage = gm.connectMessage(
                     returnMessageSource,
                     returnMessageDest, 
-                    Model.getMetaTypes().getReturnAction());
+                    Model.getMessageSort().getReply());
             
             // Correct the activator value
             Model.getCollaborationsHelper().setActivator(
@@ -166,7 +166,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             // contained poly
             FigPoly poly = (FigPoly) returnEdge.getFig();
             poly.setComplete(true);
-        } else if (figMessage.isReturnAction()) {
+        } else if (figMessage.isReplyMessage()) {
             figMessage.determineActivator();
         }
         FigPoly poly = (FigPoly) fe.getFig();
@@ -210,7 +210,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
                 true);
         
         final int heightPlusGap;
-        if (figMessage.isCallAction()) {
+        if (figMessage.isSynchCallMessage()) {
             heightPlusGap = 
                 DEFAULT_ACTIVATION_HEIGHT + DEFAULT_MESSAGE_GAP;
         } else {
@@ -229,7 +229,7 @@ public class ModeCreateMessage extends ModeCreatePolyEdge {
             
             for (FigMessage fig : getMessagesBelow(figMessage)) {
                 fig.translateEdge(0, dy);
-                if (fig.isCreateAction()) {
+                if (fig.isCreateMessage()) {
                     FigClassifierRole fcr =
                         (FigClassifierRole) fig.getDestFigNode();
                     fcr.positionHead(fig);
