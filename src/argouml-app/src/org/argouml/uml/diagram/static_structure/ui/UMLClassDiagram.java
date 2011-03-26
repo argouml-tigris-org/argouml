@@ -807,7 +807,6 @@ public class UMLClassDiagram extends UMLDiagram {
                 ((Model.getFacade().getSuppliers(modelElement).toArray())[0]);
             Object client =
                 ((Model.getFacade().getClients(modelElement).toArray())[0]);
-            figEdge = new FigDependency(modelElement, settings);
             FigNode supFN = (FigNode) getLayer().presentationFor(supplier);
             FigNode cliFN = (FigNode) getLayer().presentationFor(client);
 
