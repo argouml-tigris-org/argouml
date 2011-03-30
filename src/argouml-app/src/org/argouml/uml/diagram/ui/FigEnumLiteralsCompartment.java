@@ -95,16 +95,6 @@ public class FigEnumLiteralsCompartment extends FigCompartment {
         return NotationProviderFactory2.TYPE_ENUMERATION_LITERAL;
     }
 
-    /**
-     * @see org.argouml.uml.diagram.ui.FigCompartment#createModelElement()
-     */
-    protected void createModelElement() {
-        Object enumeration = getGroup().getOwner();
-        Object literal = Model.getCoreFactory().buildEnumerationLiteral(
-                "literal",  enumeration);
-        TargetManager.getInstance().setTarget(literal);
-    }
-
     @Override
     protected FigSingleLineTextWithNotation createFigText(Object owner,
             Rectangle bounds, DiagramSettings settings) {

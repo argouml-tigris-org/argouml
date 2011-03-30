@@ -87,13 +87,6 @@ public class FigExtensionPointsCompartment extends FigCompartment {
     }
 
     @Override
-    protected void createModelElement() {
-        Object usecase = getGroup().getOwner(); //TODO: check!
-        Object ep = Model.getUseCasesFactory().buildExtensionPoint(usecase);
-        TargetManager.getInstance().setTarget(ep);
-    }
-
-    @Override
     public String getName() {
          return "extension points";
     }

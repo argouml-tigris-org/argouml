@@ -99,20 +99,6 @@ public class FigOperationsCompartment extends FigCompartment {
         return new FigOperation(owner, bounds, settings);
     }
 
-    /*
-     * By default, when double-clicking on the compartment,
-     * we create an Operation (not a Reception).
-     */
-    protected void createModelElement() {
-        Object classifier = getGroup().getOwner();
-        Project project = getProject();
-
-        Object returnType = project.getDefaultReturnType();
-        Object oper = Model.getCoreFactory().buildOperation(classifier,
-                returnType);
-        TargetManager.getInstance().setTarget(oper);
-    }
-
     @Override
     public String getName() {
         return "operations";

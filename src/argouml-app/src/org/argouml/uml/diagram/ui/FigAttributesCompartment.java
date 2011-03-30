@@ -43,6 +43,7 @@ import java.util.Collection;
 
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
+import org.argouml.model.UmlFactoryDefaults;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -83,19 +84,6 @@ public class FigAttributesCompartment extends FigCompartment {
      */
     protected int getNotationType() {
         return NotationProviderFactory2.TYPE_ATTRIBUTE;
-    }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEditableCompartment#createFeature()
-     */
-    protected void createModelElement() {
-        Object classifier = getGroup().getOwner();
-        Project project = getProject();
-        Object attrType = project.getDefaultAttributeType();
-        Object attr = Model.getCoreFactory().buildAttribute2(
-                classifier,
-                attrType);
-        TargetManager.getInstance().setTarget(attr);
     }
 
     @Override
