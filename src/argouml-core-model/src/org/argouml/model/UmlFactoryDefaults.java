@@ -26,4 +26,11 @@ public interface UmlFactoryDefaults {
      * @return the type instance to apply to the newly created object
      */
     Object getDefaultType(Object metaType);
+    
+    /**
+     * Get the default name to apply when creating on object of the given meta type.
+     * @param metaType that is to be created
+     * @return the name to apply to the newly created object
+     */
+    String getDefaultName(Object metaType);
 }

@@ -288,9 +288,15 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     
     public Object buildNode(Object elementType, Object container, String property, UmlFactoryDefaults defaults) {
         Object element = buildNode(elementType, container, property);
-        if (defaults != null && defaults.getDefaultType(elementType) != null) {
-            Object type = defaults.getDefaultType(elementType);
-            modelImpl.getCoreHelper().setType(element, type);
+        if (defaults != null) {
+            final Object type = defaults.getDefaultType(elementType);
+            final String name = defaults.getDefaultName(elementType);
+            if (type != null) {
+                modelImpl.getCoreHelper().setType(element, type);
+            }
+            if (name != null) {
+                modelImpl.getCoreHelper().setName(element, name);
+            }
         }
         return element;
     }

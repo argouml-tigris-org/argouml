@@ -48,6 +48,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
+import org.argouml.model.UmlFactoryDefaults;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -103,7 +104,6 @@ public class ActionAddOperation extends UndoableAction {
 
         super.actionPerformed(ae);
 
-        Project project = ProjectManager.getManager().getCurrentProject();
         Object target =  TargetManager.getInstance().getModelTarget();
         Object classifier = null;
 
@@ -114,12 +114,11 @@ public class ActionAddOperation extends UndoableAction {
         } else {
             return;
         }
-
-        Object returnType = project.getDefaultReturnType();
-        Object oper = 
-            Model.getCoreFactory().buildOperation(classifier, returnType);
-        TargetManager.getInstance().setTarget(oper);
-
+        
+        Project project = ProjectManager.getManager().getCurrentProject();
+        UmlFactoryDefaults defaults = project.getUmlFactoryDefaults();
+        Object attr = Model.getUmlFactory().buildNode(Model.getMetaTypes().getOperation(), classifier, null, defaults);
+        TargetManager.getInstance().setTarget(attr);
     }
 
     /**

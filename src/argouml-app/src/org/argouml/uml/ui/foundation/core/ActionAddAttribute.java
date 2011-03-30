@@ -48,6 +48,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.UmlModelMutator;
 import org.argouml.model.Model;
+import org.argouml.model.UmlFactoryDefaults;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -118,11 +119,8 @@ public class ActionAddAttribute extends UndoableAction {
         }
 
         Project project = ProjectManager.getManager().getCurrentProject();
-        Object attrType = project.getDefaultAttributeType();
-        Object attr =
-            Model.getCoreFactory().buildAttribute2(
-                classifier,
-                attrType);
+        UmlFactoryDefaults defaults = project.getUmlFactoryDefaults();
+        Object attr = Model.getUmlFactory().buildNode(Model.getMetaTypes().getAttribute(), classifier, null, defaults);
         TargetManager.getInstance().setTarget(attr);
     }
 

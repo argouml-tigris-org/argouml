@@ -597,6 +597,16 @@ public class ProjectImpl implements java.io.Serializable, Project {
                 }
                 return null;
             }
+            public String getDefaultName(Object metaType) {
+                if (Model.getMetaTypes().getOperation() == metaType) {
+                    return "newOperation";
+                } else if (Model.getMetaTypes().getAttribute() == metaType) {
+                    return "newAttr";
+                } else if (Model.getMetaTypes().getEnumerationLiteral() == metaType) {
+                    return "newLiteral";
+                }
+                return null;
+            }
         };
     }
 

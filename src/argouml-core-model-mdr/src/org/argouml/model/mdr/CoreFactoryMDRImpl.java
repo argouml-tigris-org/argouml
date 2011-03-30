@@ -797,7 +797,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
      */
     Attribute buildAttribute() {
         Attribute attr = createAttribute();
-        attr.setName("newAttr");
         attr.setMultiplicity(getMultiplicity11());
         attr.setVisibility(VisibilityKindEnum.VK_PUBLIC);
         attr.setOwnerScope(ScopeKindEnum.SK_INSTANCE);
@@ -1096,7 +1095,6 @@ class CoreFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         }
         Classifier cls = (Classifier) classifier;
         Operation oper = createOperation();
-        oper.setName("newOperation");
         oper.setOwner(cls);
         oper.setVisibility(VisibilityKindEnum.VK_PUBLIC);
         oper.setAbstract(false);
