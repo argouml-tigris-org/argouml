@@ -28,7 +28,7 @@ import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.UmlFactory;
-import org.argouml.model.UmlFactoryDefaults;
+import org.argouml.model.Defaults;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -286,7 +286,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         return buildNode(elementType, container, (String) null);
     }
     
-    public Object buildNode(Object elementType, Object container, String property, UmlFactoryDefaults defaults) {
+    public Object buildNode(Object elementType, Object container, String property, Defaults defaults) {
         Object element = buildNode(elementType, container, property);
         if (defaults != null) {
             final Object type = defaults.getDefaultType(elementType);

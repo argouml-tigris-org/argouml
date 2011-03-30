@@ -12,7 +12,6 @@
  *
  * Some portions of this file was previously release using the BSD License:
  */
-// $Id$
 // Copyright (c) 1996-2009 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -49,7 +48,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.model.UmlFactoryDefaults;
+import org.argouml.model.Defaults;
 import org.argouml.notation.NotationProvider;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -219,7 +218,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
      */
     protected void createModelElement() {
         Project project = getProject();
-        UmlFactoryDefaults defaults = project.getUmlFactoryDefaults();
+        Defaults defaults = project.getUmlFactoryDefaults();
         Object attr = Model.getUmlFactory().buildNode(getCompartmentType(), getOwner(), null, defaults);
         TargetManager.getInstance().setTarget(attr);
     }

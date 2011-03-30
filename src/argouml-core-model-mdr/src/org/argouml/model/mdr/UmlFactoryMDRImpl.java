@@ -57,7 +57,7 @@ import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.Model;
 import org.argouml.model.UmlFactory;
-import org.argouml.model.UmlFactoryDefaults;
+import org.argouml.model.Defaults;
 import org.omg.uml.behavioralelements.activitygraphs.ActionState;
 import org.omg.uml.behavioralelements.activitygraphs.ActivityGraph;
 import org.omg.uml.behavioralelements.activitygraphs.CallState;
@@ -794,7 +794,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 + elementType);
     }
     
-    public Object buildNode(Object elementType, Object container, String property, UmlFactoryDefaults defaults) {
+    public Object buildNode(Object elementType, Object container, String property, Defaults defaults) {
         Object element = buildNode(elementType, container, property);
         if (defaults != null) {
             final Object type = defaults.getDefaultType(elementType);

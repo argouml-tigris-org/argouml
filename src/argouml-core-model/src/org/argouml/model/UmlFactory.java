@@ -107,7 +107,7 @@ public interface UmlFactory {
      * @param defaults the default values to apply to the new element
      * @return the model element
      */
-    Object buildNode(Object elementType, Object container, String property, UmlFactoryDefaults defaults);
+    Object buildNode(Object elementType, Object container, String property, Defaults defaults);
 
     
     /**
