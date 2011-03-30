@@ -218,7 +218,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
      */
     protected void createModelElement() {
         Project project = getProject();
-        Defaults defaults = project.getUmlFactoryDefaults();
+        Defaults defaults = project.getDefaults();
         Object attr = Model.getUmlFactory().buildNode(getCompartmentType(), getOwner(), null, defaults);
         TargetManager.getInstance().setTarget(attr);
     }

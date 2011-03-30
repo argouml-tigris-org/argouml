@@ -576,7 +576,7 @@ public class ProjectImpl implements java.io.Serializable, Project {
         return null;
     }
 
-    public Defaults getUmlFactoryDefaults() {
+    public Defaults getDefaults() {
         return new Defaults() {
             public Object getDefaultType(Object metaType) {
                 if (Model.getMetaTypes().getOperation() == metaType) {

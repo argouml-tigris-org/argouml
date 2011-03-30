@@ -119,7 +119,7 @@ public class ActionAddAttribute extends UndoableAction {
         }
 
         Project project = ProjectManager.getManager().getCurrentProject();
-        Defaults defaults = project.getUmlFactoryDefaults();
+        Defaults defaults = project.getDefaults();
         Object attr = Model.getUmlFactory().buildNode(Model.getMetaTypes().getAttribute(), classifier, null, defaults);
         TargetManager.getInstance().setTarget(attr);
     }

@@ -285,7 +285,7 @@ public interface Project {
     @Deprecated
     public Object getModel();
 
-    public Defaults getUmlFactoryDefaults();
+    public Defaults getDefaults();
 
     /**
      * Return the default type for an attribute.

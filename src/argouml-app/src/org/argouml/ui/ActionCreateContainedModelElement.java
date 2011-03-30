@@ -124,7 +124,7 @@ public class ActionCreateContainedModelElement
                     metaType,
                     getTarget(),
                     property,
-                    project.getUmlFactoryDefaults());
+                    project.getDefaults());
             
         TargetManager.getInstance().setTarget(newElement);                
     }
