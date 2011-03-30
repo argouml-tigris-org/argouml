@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,8 +46,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
+import org.argouml.model.UmlFactoryDefaults;
 import org.argouml.notation.NotationProvider;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
@@ -213,7 +217,12 @@ public abstract class FigCompartment extends ArgoFigGroup {
     /**
      * Create a new model element for the compartment.
      */
-    protected abstract void createModelElement();
+    protected void createModelElement() {
+        Project project = getProject();
+        UmlFactoryDefaults defaults = project.getUmlFactoryDefaults();
+        Object attr = Model.getUmlFactory().buildNode(getCompartmentType(), getOwner(), null, defaults);
+        TargetManager.getInstance().setTarget(attr);
+    }
 
     @Override
     public void setFilled(boolean f) {
