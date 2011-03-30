@@ -64,6 +64,7 @@ import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.model.UmlFactoryDefaults;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -575,6 +576,29 @@ public class ProjectImpl implements java.io.Serializable, Project {
         return null;
     }
 
+    public UmlFactoryDefaults getUmlFactoryDefaults() {
+        return new UmlFactoryDefaults() {
+            public Object getDefaultType(Object metaType) {
+                if (Model.getMetaTypes().getOperation() == metaType) {
+                    if (profileConfiguration.getDefaultTypeStrategy() != null) {
+                        return profileConfiguration.getDefaultTypeStrategy()
+                                .getDefaultReturnType();
+                    }
+                } else if (Model.getMetaTypes().getAttribute() == metaType) {
+                    if (profileConfiguration.getDefaultTypeStrategy() != null) {
+                        return profileConfiguration.getDefaultTypeStrategy()
+                                .getDefaultAttributeType();
+                    }
+                } else if (Model.getMetaTypes().getParameter() == metaType) {
+                    if (profileConfiguration.getDefaultTypeStrategy() != null) {
+                        return profileConfiguration.getDefaultTypeStrategy()
+                                .getDefaultParameterType();
+                    }
+                }
+                return null;
+            }
+        };
+    }
 
     public Object getDefaultParameterType() {
         if (profileConfiguration.getDefaultTypeStrategy() != null) {

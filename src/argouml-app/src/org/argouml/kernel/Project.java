@@ -45,6 +45,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.argouml.model.UmlFactoryDefaults;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.tigris.gef.presentation.Fig;
 
@@ -284,6 +285,7 @@ public interface Project {
     @Deprecated
     public Object getModel();
 
+    public UmlFactoryDefaults getUmlFactoryDefaults();
 
     /**
      * Return the default type for an attribute.

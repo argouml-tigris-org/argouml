@@ -40,8 +40,11 @@ package org.argouml.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
@@ -64,8 +67,8 @@ public class ActionCreateContainedModelElement
      */
     public ActionCreateContainedModelElement(
             Object theMetaType, 
-            Object target) {
-        this(theMetaType, target,
+            Object container) {
+        this(theMetaType, container,
                 "button.new-"
                 + Model.getMetaTypes().getName(theMetaType).toLowerCase());
     }
@@ -75,31 +78,33 @@ public class ActionCreateContainedModelElement
      * Construct the action.
      * 
      * @param theMetaType the element to be created
-     * @param target the container that will own the new element
+     * @param container the container that will own the new element
      * @param menuDescr the description for the menu item label.
      */
     public ActionCreateContainedModelElement(
             Object theMetaType, 
-            Object target,
+            Object container,
             String menuDescr) {
         super(menuDescr);
         
         metaType = theMetaType;
         property = null;
         
-        setTarget(target);
+        setTarget(container);
     }
 
     /**
      * Construct the action.
      * 
      * @param theMetaType the element to be created
-     * @param target the container that will own the new element
+     * @param container the container that will own the new element
+     * @param property the property name that represents the new element with
+     *        the container
      * @param menuDescr the description for the menu item label.
      */
     public ActionCreateContainedModelElement(
             Object theMetaType, 
-            Object target,
+            Object container,
             String property,
             String menuDescr) {
         super(menuDescr);
@@ -107,12 +112,19 @@ public class ActionCreateContainedModelElement
         metaType = theMetaType;
         this.property = property;
         
-        setTarget(target);
+        setTarget(container);
     }
 
-    public void actionPerformed(ActionEvent e) {            
+    public void actionPerformed(ActionEvent e) {
+        // TODO - lets pass in Project as a constructor argument
+        Project project = ProjectManager.getManager().getCurrentProject();
+        
         Object newElement =
-            Model.getUmlFactory().buildNode(metaType, getTarget(), property);
+            Model.getUmlFactory().buildNode(
+                    metaType,
+                    getTarget(),
+                    property,
+                    project.getUmlFactoryDefaults());
             
         TargetManager.getInstance().setTarget(newElement);                
     }
