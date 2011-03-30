@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2007,2010 Tom Morris and other contributors
+ * Copyright (c) 2007-2011 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.UmlFactory;
+import org.argouml.model.UmlFactoryDefaults;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -282,7 +283,16 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     }
 
     public Object buildNode(Object elementType, Object container) {
-        return buildNode(elementType, container, null);
+        return buildNode(elementType, container, (String) null);
+    }
+    
+    public Object buildNode(Object elementType, Object container, String property, UmlFactoryDefaults defaults) {
+        Object element = buildNode(elementType, container, property);
+        if (defaults != null && defaults.getDefaultType(elementType) != null) {
+            Object type = defaults.getDefaultType(elementType);
+            modelImpl.getCoreHelper().setType(element, type);
+        }
+        return element;
     }
 
     public Object buildNode(Object elementType) {

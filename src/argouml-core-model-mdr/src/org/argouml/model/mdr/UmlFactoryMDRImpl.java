@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -57,6 +57,7 @@ import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.Model;
 import org.argouml.model.UmlFactory;
+import org.argouml.model.UmlFactoryDefaults;
 import org.omg.uml.behavioralelements.activitygraphs.ActionState;
 import org.omg.uml.behavioralelements.activitygraphs.ActivityGraph;
 import org.omg.uml.behavioralelements.activitygraphs.CallState;
@@ -792,6 +793,16 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
                 "Attempted to create unsupported model element type: " 
                 + elementType);
     }
+    
+    public Object buildNode(Object elementType, Object container, String property, UmlFactoryDefaults defaults) {
+        Object element = buildNode(elementType, container, property);
+        if (defaults != null && defaults.getDefaultType(elementType) != null) {
+            Object type = defaults.getDefaultType(elementType);
+            modelImpl.getCoreHelper().setType(element, type);
+        }
+        return element;
+    }
+    
 
     public Object buildNode(Object elementType, Object container, String properyName) {
         
@@ -958,7 +969,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
     }
 
     public Object buildNode(Object elementType, Object container) {
-        return buildNode(elementType, container, null);
+        return buildNode(elementType, container, (String) null);
     }
     
     

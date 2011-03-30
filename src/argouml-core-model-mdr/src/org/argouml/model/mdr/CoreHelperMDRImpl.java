@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  *    Thomas Neustupny
  *    Michiel van der Wulp
  *    Tom Morris
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -3392,6 +3393,13 @@ class CoreHelperMDRImpl implements CoreHelper {
             }
             if (handle instanceof StructuralFeature) {
                 ((StructuralFeature) handle).setType((Classifier) type);
+                return;
+            }
+            if (handle instanceof Operation) {
+                if (!getReturnParameters(handle).isEmpty()) {
+                    Parameter p = getReturnParameters(handle).get(0);
+                    p.setType((Classifier) type);
+                }
                 return;
             }
         }

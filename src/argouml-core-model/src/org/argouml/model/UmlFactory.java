@@ -1,13 +1,14 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
+ *    Bob Tarling
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -96,6 +97,19 @@ public interface UmlFactory {
      */
     Object buildNode(Object elementType, Object container);
 
+    /**
+     * Creates a UML model element of the given type and adds 
+     * it to the passed in container.
+     * 
+     * @param elementType the type of model element to build
+     * @param container the model element that will contain the 
+     * newly built model element
+     * @param defaults the default values to apply to the new element
+     * @return the model element
+     */
+    Object buildNode(Object elementType, Object container, String property, UmlFactoryDefaults defaults);
+
+    
     /**
      * Creates a UML model element of the given type and adds 
      * it to the passed in container.

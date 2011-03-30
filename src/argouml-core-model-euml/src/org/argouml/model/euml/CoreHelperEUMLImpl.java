@@ -1,6 +1,6 @@
 // $Id$
 /*******************************************************************************
- * Copyright (c) 2007,2010 Tom Morris and other contributors
+ * Copyright (c) 2007-2011 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *    Bogdan Pistol - initial implementation
  *    Thomas Neustupny
  *    Michiel van der Wulp
+ *    Bob Tarling
  *****************************************************************************/
 
 package org.argouml.model.euml;
@@ -1902,20 +1903,23 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setType(final Object handle, final Object type) {
-        if (!(handle instanceof TypedElement)) {
+        if (!(handle instanceof TypedElement) && !(handle instanceof Operation)) {
             throw new IllegalArgumentException(
                     "handle must be instance of TypedElement"); //$NON-NLS-1$
         }
         if (type != null && !(type instanceof Type)) {
             throw new IllegalArgumentException("type must be instance of Type"); //$NON-NLS-1$
         }
+        final TypedElement typedElement;
+        if (handle instanceof Operation) {
+            typedElement = (TypedElement) getReturnParameters(handle).get(0);
+        } else {
+            typedElement = (TypedElement) handle;
+        }
+
         RunnableClass run = new RunnableClass() {
             public void run() {
-                if (type != null) {
-                    ((TypedElement) handle).setType((Type) type);
-                } else {
-                    ((TypedElement) handle).setType(null);
-                }
+                typedElement.setType((Type) type);
             }
         };
         editingDomain.getCommandStack().execute(
