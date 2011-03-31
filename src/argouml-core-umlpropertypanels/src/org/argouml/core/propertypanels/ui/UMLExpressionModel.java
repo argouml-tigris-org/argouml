@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    mvw
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -155,7 +156,14 @@ abstract class UMLExpressionModel
         if (expression == null) {
             return EMPTYSTRING;
         }
-        return Model.getDataTypesHelper().getLanguage(expression);
+        String language = null;
+        try {
+            language = Model.getDataTypesHelper().getLanguage(expression);
+        } catch (Exception ex) {
+            // if it has no language, then we assume it is not an instance of
+            // OpaqueExpression, so we leave it null and handle elsewhere
+        }
+        return language;
     }
 
     /**
@@ -166,7 +174,7 @@ abstract class UMLExpressionModel
         if (expression == null) {
             return EMPTYSTRING;
         }
-        return Model.getDataTypesHelper().getBody(expression);
+        return Model.getFacade().getBody(expression).toString();
     }
 
     /**
@@ -202,7 +210,7 @@ abstract class UMLExpressionModel
 	Object expression = getExpression();
         boolean mustChange = true;
         if (expression != null) {
-            Object oldValue = Model.getDataTypesHelper().getBody(expression);
+            Object oldValue = Model.getFacade().getBody(expression).toString();
             if (oldValue != null && oldValue.equals(body)) {
                 mustChange = false;
             }

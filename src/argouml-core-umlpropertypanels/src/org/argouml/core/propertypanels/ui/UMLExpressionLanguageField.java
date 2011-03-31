@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    mvw
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -78,6 +79,9 @@ class UMLExpressionLanguageField extends JTextField implements
             if (oldText != newText) {
                 setText(newText);
             }
+        }
+        if (newText == null) {
+            setEditable(false);
         }
     }
 

@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    mvw
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -78,7 +79,12 @@ class UMLExpressionPanel extends JPanel
         this.bodyField = new UMLExpressionBodyField(
                 model, true);
 
-        add(languageField);
+        boolean isReadOnly = !languageField.isEditable();
+        if (isReadOnly) {
+            bodyField.setEditable(false);
+        } else {
+            add(languageField);
+        }
         add(new JScrollPane(bodyField));
 
         model.addChangeListener(this);
