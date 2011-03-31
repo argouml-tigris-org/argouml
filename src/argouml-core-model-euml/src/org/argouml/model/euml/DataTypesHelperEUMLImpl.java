@@ -89,7 +89,8 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
             langs = ((OpaqueBehavior) handle).getLanguages();
         } else {
             throw new IllegalArgumentException(
-                    "handle must be instance of OpaqueExpression or OpaqueBehavior"); //$NON-NLS-1$
+                    "handle must be instance of OpaqueExpression" //$NON-NLS-1$
+                    + " or OpaqueBehavior. We got " + handle); //$NON-NLS-1$
         }
         return (langs.size() < 1) ? null : langs.get(0);
     }
