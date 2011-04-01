@@ -216,10 +216,16 @@ class SwingUIFactory {
         final TitledBorder border = new TitledBorder(propertyName);        
         p.setBorder(border);
 
-        if ("initialValue".equals(propertyName)) {        
-            UMLExpressionModel model = 
-                new UMLInitialValueExpressionModel(target);
-            p  = new UMLExpressionPanel(model, propertyName);
+        if ("initialValue".equals(propertyName)) {
+            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+                UMLExpressionModel model = 
+                    new UMLInitialValueExpressionModel(target);
+                p  = new UMLExpressionPanel(model, propertyName);
+            } else {
+        	UMLValueSpecificationModel model = 
+                    new UMLValueSpecificationModel(target, "initialValue");
+                p  = new UMLValueSpecificationPanel(model, propertyName);
+            }
             control = p;
         } else if ("defaultValue".equals(propertyName)) {
             UMLExpressionModel model = 
