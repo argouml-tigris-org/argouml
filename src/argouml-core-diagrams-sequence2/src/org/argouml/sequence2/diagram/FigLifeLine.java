@@ -329,7 +329,7 @@ class FigLifeLine extends ArgoFigGroup {
     }
     
     @Override
-    protected void setBoundsImpl(int x, int y, int w, int h) {
+    protected synchronized void setBoundsImpl(int x, int y, int w, int h) {
         final Rectangle oldBounds = getBounds();
         
         rectFig.setBounds(x, y, w, h);
