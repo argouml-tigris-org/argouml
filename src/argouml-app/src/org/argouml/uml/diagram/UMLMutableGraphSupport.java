@@ -253,7 +253,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         ModeManager modeManager = curEditor.getModeManager();
         Mode mode = modeManager.top();
         Dictionary args = mode.getArgs();
-        Object style = args.get("aggregation"); //MAggregationKind
+        Object style = args.get("aggregation");
         Boolean unidirectional = (Boolean) args.get("unidirectional");
         Object model = getProject().getModel();
 
