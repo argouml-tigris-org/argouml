@@ -200,9 +200,10 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         Object connection = null;
 
         if (elementType == metaTypes.getAssociation()) {
+            // Note for UML2 the aggregation ends are swapped
             connection = modelImpl.getCoreFactory().buildAssociation(
-                    (Classifier) fromElement, (AggregationKind) fromStyle,
-                    (Classifier) toElement, (AggregationKind) toStyle,
+                    (Classifier) fromElement, (AggregationKind) toStyle,
+                    (Classifier) toElement, (AggregationKind) fromStyle,
                     (Boolean) unidirectional);
         } else if (elementType == metaTypes.getAssociationEnd()) {
             if (fromElement instanceof Association) {
