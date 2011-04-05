@@ -10,7 +10,8 @@
  *    Tom Morris - initial implementation
  *    Bogdan Pistol - initial implementation
  *    Bob Tarling
- *    Thomas Neustupny 
+ *    Thomas Neustupny
+ *    Laurent Braud
  *****************************************************************************/
 
 package org.argouml.model.euml;
@@ -681,9 +682,29 @@ class FacadeEUMLImpl implements Facade {
 //        return result;
     }
 
-    public Collection getExtenders(Object handle) {
-        throw new NotYetImplementedException();
-
+    /**
+     * 
+     * @param handle
+     * @see org.argouml.model.Facade#getExtenders(java.lang.Object)
+     */
+    public Collection<Extend> getExtenders(Object handle) {
+        if (isAUseCase(handle)) {
+            ArrayList<Extend> extenders = new ArrayList<Extend>();
+            Model oModel=((Element) handle).getModel();
+            EList<Element> allElement = oModel.allOwnedElements();
+            for (Element element : allElement) {
+                if(isAExtend(element)){
+                    Extend aExtend = (Extend) element;
+                    
+                    if(aExtend.getExtendedCase().equals(handle)){
+                        extenders.add(aExtend);    
+                    }
+                }
+            }
+            return extenders;
+        }
+        
+        throw new IllegalArgumentException();
     }
 
     public Collection<Extend> getExtends(Object handle) {
@@ -789,9 +810,29 @@ class FacadeEUMLImpl implements Facade {
 
     }
 
-    public Collection getIncluders(Object handle) {
-        throw new NotYetImplementedException();
-
+    /**
+     * 
+     * @param handle
+     * @see org.argouml.model.Facade#getIncluders(java.lang.Object)
+     */
+    public Collection<Include> getIncluders(Object handle) {
+        
+        if (isAUseCase(handle)) {
+            ArrayList<Include> includers = new ArrayList<Include>();
+            Model oModel = ((Element) handle).getModel();
+            EList<Element> allElement=oModel.allOwnedElements();
+            for (Element element : allElement) {
+                if(isAInclude(element)){
+                    Include aInclude = (Include) element;
+                    if(aInclude.getAddition().equals(handle)){
+                       includers.add(aInclude);    
+                   }
+                }
+            }
+            return includers;
+        }
+        
+        throw new IllegalArgumentException();
     }
 
     public Collection<Include> getIncludes(Object handle) {
