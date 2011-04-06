@@ -709,8 +709,12 @@ public class FigAssociation extends FigEdgeModelElement {
 class FigMultiplicity extends FigSingleLineTextWithNotation {
 
     FigMultiplicity(Object owner, DiagramSettings settings) {
-        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false,
-                "multiplicity");
+        super(owner, new Rectangle(X0, Y0, 90, 20), settings, false, 
+                new String[] {"multiplicity", "upperValue"});
+        // Note that "multiplicity" is what is the notation is listening
+        // for in UML1.4 "uppervalue" are listened to in UML2. It is not
+        // currently why it is not required to register for "lowerValue"
+        // also.
         setTextFilled(false);
         setJustification(FigText.JUSTIFY_CENTER);
     }
