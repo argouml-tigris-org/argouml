@@ -645,7 +645,14 @@ public abstract class UMLDiagram
             bounds = new Rectangle(location.x, location.y, 0, 0);
         }
 
-        return createDiagramElement(droppedObject, bounds);
+        DiagramElement de = createDiagramElement(droppedObject, bounds);
+        if (de instanceof FigEdgeModelElement) {
+            // Issue 6221 - we need to force the edge to redraw after a drop on
+            // the diagram from explorer or Add to Diagram
+            FigEdgeModelElement fe = (FigEdgeModelElement) de;
+            fe.renderingChanged();
+        }
+        return de;
     }
     
     /**
