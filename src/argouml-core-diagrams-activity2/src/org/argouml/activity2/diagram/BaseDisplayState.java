@@ -20,9 +20,7 @@ import java.awt.Rectangle;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigSingleLineText;
 import org.argouml.uml.diagram.ui.FigStereotypesGroup;
-import org.tigris.gef.base.CreateNodeAction;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigRRect;
 
 abstract class BaseDisplayState implements StereotypeDisplayer, NameDisplayer {
 
