@@ -39,13 +39,10 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Editor;
@@ -114,48 +111,5 @@ public class ActionAddExistingNodes extends UndoableAction {
                 instructions);
 
         Globals.mode(placeMode, false);
-    }
-    
-    /**
-     * @param modelElements the modelelements to add Nodes for
-     * @param location the point where to drop the node.
-     *               Also <code>null</code> is acceptable.
-     * @param diagram the diagram to add the nodes to
-     */
-    public static void addNodes(Collection modelElements, 
-            Point location, ArgoDiagram diagram) {
-        MutableGraphModel gm = (MutableGraphModel) diagram.getGraphModel();
-        Collection oldTargets = TargetManager.getInstance().getTargets();
-        int count = 0;
-        for (Object me : modelElements) {
-            if (diagram instanceof UMLDiagram 
-                    && ((UMLDiagram) diagram).doesAccept(me)) {
-                ((UMLDiagram) diagram).drop(me, location);
-            } else if (Model.getFacade().isANaryAssociation(me)) {
-                AddExistingNodeCommand cmd =
-                    new AddExistingNodeCommand(me, location,
-                            count++);
-                cmd.execute();
-            } else if (Model.getFacade().isAUMLElement(me)) {
-                if (gm.canAddEdge(me)) {
-                    gm.addEdge(me);
-                    // TODO: An AssociationClass should be possible to add
-                    // as a side effect of adding a node and its related
-                    // edges, but that doesn't work as things are currently
-                    // structured. - tfm 20061208
-                    if (Model.getFacade().isAAssociationClass(me)) {
-                        ModeCreateAssociationClass.buildInActiveLayer(
-                                Globals.curEditor(), 
-                                me);
-                    }
-                } else if (gm.canAddNode(me)) {
-                    AddExistingNodeCommand cmd =
-                        new AddExistingNodeCommand(me, location,
-                                count++);
-                    cmd.execute();
-                }
-            }
-        }
-        TargetManager.getInstance().setTargets(oldTargets);
     }
 }
