@@ -213,11 +213,18 @@ class DnDJGraph
             final MutableGraphModel gm =
                 (MutableGraphModel) diagram.getGraphModel();
             final Point point = dropTargetDropEvent.getLocation();
+            final double scale = editor.getScale();
             
             int dx = getViewPosition().x;
             int dy = getViewPosition().y;
             point.translate(dx, dy);
             
+            double xp = point.getX();
+            double yp = point.getY();
+            point.translate(
+                    (int) Math.round((xp / scale) - point.x),
+                    (int) Math.round((yp / scale) - point.y));
+
             //get the model elements that are being transfered.
             Collection modelElements =
                 (Collection) tr.getTransferData(
@@ -244,9 +251,9 @@ class DnDJGraph
 
             dropTargetDropEvent.getDropTargetContext().dropComplete(true);
         } catch (UnsupportedFlavorException e) {
-            LOG.debug("Exception caught", e);
+            LOG.error("Exception caught", e);
         } catch (IOException e) {
-            LOG.debug("Exception caught", e);
+            LOG.error("Exception caught", e);
         }
     }
 
