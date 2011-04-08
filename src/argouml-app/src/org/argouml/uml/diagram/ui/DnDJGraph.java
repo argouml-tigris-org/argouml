@@ -39,6 +39,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Point;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
@@ -60,6 +61,7 @@ import org.argouml.uml.diagram.DiagramUtils;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.ConnectionConstrainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
@@ -194,8 +196,8 @@ class DnDJGraph
      *         java.awt.dnd.DropTargetDropEvent)
      */
     public void drop(DropTargetDropEvent dropTargetDropEvent) {
+        
         Transferable tr = dropTargetDropEvent.getTransferable();
-        //if the flavor is not supported, then reject the drop:
         if (!tr.isDataFlavorSupported(
                      TransferableModelElements.UML_COLLECTION_FLAVOR)) {
             dropTargetDropEvent.rejectDrop();
@@ -203,11 +205,21 @@ class DnDJGraph
         }
 
         dropTargetDropEvent.acceptDrop(dropTargetDropEvent.getDropAction());
-        //get the model elements that are being transfered.
-        Collection modelElements; 
         try {
-            ArgoDiagram diagram = DiagramUtils.getActiveDiagram();
-            modelElements =
+            final UMLDiagram diagram =
+                (UMLDiagram) DiagramUtils.getActiveDiagram();
+            final Editor editor = Globals.curEditor();
+            final Layer layer = editor.getLayerManager().getActiveLayer();
+            final MutableGraphModel gm =
+                (MutableGraphModel) diagram.getGraphModel();
+            final Point point = dropTargetDropEvent.getLocation();
+            
+            int dx = getViewPosition().x;
+            int dy = getViewPosition().y;
+            point.translate(dx, dy);
+            
+            //get the model elements that are being transfered.
+            Collection modelElements =
                 (Collection) tr.getTransferData(
                     TransferableModelElements.UML_COLLECTION_FLAVOR);
             
@@ -215,19 +227,15 @@ class DnDJGraph
             while (i.hasNext()) {
                 /* TODO: Why not call UMLDiagram.doesAccept() first, 
                  * like in ClassDiagramRenderer?  */
-                DiagramElement figNode = ((UMLDiagram ) diagram).drop(i.next(),
-                        dropTargetDropEvent.getLocation());
+                final DiagramElement figNode = diagram.drop(i.next(), point);
                 
                 if (figNode != null && figNode instanceof Owned) {
-                    MutableGraphModel gm =
-                        (MutableGraphModel) diagram.getGraphModel();
                     Object owner = ((Owned) figNode).getOwner();
                     if (!gm.getNodes().contains(owner)) {
                         gm.getNodes().add(owner);
                     }
                     
-                    Globals.curEditor().getLayerManager().getActiveLayer()
-                            .add((Fig) figNode);
+                    layer.add((Fig) figNode);
                     if (figNode instanceof FigNode && figNode instanceof Owned) {
                         gm.addNodeRelatedEdges(((Owned) figNode).getOwner());
                     }
