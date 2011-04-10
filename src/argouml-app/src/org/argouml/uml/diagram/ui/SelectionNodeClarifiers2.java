@@ -125,7 +125,7 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
     /*
      * @see org.tigris.gef.base.SelectionButtons#paintButtons(Graphics)
      */
-    public final void paintButtons(Graphics g) {
+    public void paintButtons(Graphics g) {
         final Mode topMode = Globals.curEditor().getModeManager().top();
         if (!(topMode instanceof ModePlace)) {
             // If the user has selected ModePlace either by a diagram

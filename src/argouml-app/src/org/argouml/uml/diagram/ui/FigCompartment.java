@@ -46,9 +46,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
+import org.argouml.model.Defaults;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
-import org.argouml.model.Defaults;
 import org.argouml.notation.NotationProvider;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -88,7 +88,11 @@ public abstract class FigCompartment extends ArgoFigGroup {
      */
     private Fig externalSeparatorFig = new FigSeparator(X0, Y0, 11, LINE_WIDTH);
 
-
+    /**
+     * If true the last element will be editable when the populate method completes
+     */
+    private boolean editOnRedraw;
+    
     private void constructFigs(int x, int y, int w, int h) {
         bigPort = new FigPort(X0, Y0, w, h);
         bigPort.setFilled(false);
@@ -344,7 +348,24 @@ public abstract class FigCompartment extends ArgoFigGroup {
 
         if (comp != null) {
             comp.setBotMargin(6); // the last one needs extra space below it
+            
+            if (editOnRedraw) {
+                comp.startTextEditor(null);
+                editOnRedraw = false;
+            }
         }
+    }
+
+    /**
+     * Set the editOnRedraw state. When this mode is turned on the compartment
+     * will place the last element in edit mode the next time the component
+     * draws (typically as the result of some event such as having a new item
+     * added)
+     * 
+     * @param editOnRedraw
+     */
+    public void setEditOnRedraw(final boolean editOnRedraw) {
+        this.editOnRedraw = editOnRedraw;
     }
     
     

@@ -51,11 +51,13 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.ModeCreateEdgeAndNode;
 import org.tigris.gef.presentation.Fig;
+import org.argouml.uml.diagram.ui.SelectionNodeClarifierWithAttributeButtons;
+
 
 /**
  * @author jrobbins@ics.uci.edu
  */
-public class SelectionClass extends SelectionNodeClarifiers2 {
+public class SelectionClass extends SelectionNodeClarifierWithAttributeButtons {
 
     private static Icon inherit =
         ResourceLoaderWrapper.lookupIconResource("Generalization");
