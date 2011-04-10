@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Bob Tarling
+ *    Katharina Fahnenbruck
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:

@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    katharina
+ *    Katharina Fahnenbruck
  *******************************************************************************
  */
 
@@ -27,10 +27,10 @@ import org.tigris.gef.presentation.Handle;
 
 /**
  * This class adds two buttons to the class-element. They are shown when the
- * mouse is over the selelected element. The upper button is for adding new
+ * mouse is over the selected element. The upper button is for adding new
  * attributes. The lower button is for adding new operations.
  * 
- * @author katharina
+ * @author Katharina Fahnenbruck
  */
 public abstract class SelectionNodeClarifierWithAttributeButtons extends
         SelectionNodeClarifiers2 {
