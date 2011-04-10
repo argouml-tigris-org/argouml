@@ -32,7 +32,7 @@ import org.tigris.gef.presentation.Handle;
  * 
  * @author Katharina Fahnenbruck
  */
-public abstract class SelectionNodeClarifierWithAttributeButtons extends
+public abstract class SelectionClassifierBox extends
         SelectionNodeClarifiers2 {
 
     /** Upper right corner Handle */
@@ -50,7 +50,7 @@ public abstract class SelectionNodeClarifierWithAttributeButtons extends
      * @param f
      *            the given Fig
      */
-    public SelectionNodeClarifierWithAttributeButtons(Fig f) {
+    public SelectionClassifierBox(Fig f) {
        
         super(f);
     }

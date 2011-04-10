@@ -45,13 +45,13 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 import org.tigris.gef.presentation.Fig;
-import org.argouml.uml.diagram.ui.SelectionNodeClarifierWithAttributeButtons;
+import org.argouml.uml.diagram.ui.SelectionClassifierBox;
 
 /**
  * @author jrobbins@ics.uci.edu
  */
 public class SelectionInterface extends
-        SelectionNodeClarifierWithAttributeButtons {
+        SelectionClassifierBox {
 
     private static Icon realiz =
         ResourceLoaderWrapper.lookupIconResource("Realization");
