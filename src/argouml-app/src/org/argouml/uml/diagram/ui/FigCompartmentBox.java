@@ -99,11 +99,6 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             X0, Y0 + 20 /* 20 = height of name fig ?*/, 
             WIDTH, ROWHEIGHT + 2 /* 2*LINE_WIDTH?  or extra padding? */ );
     
-    /**
-     * Text highlighted by mouse actions on the diagram.<p>
-     */
-    private static CompartmentFigText highlightedFigText = null;
-
     private List<FigCompartment> compartments = 
         new ArrayList<FigCompartment>();
 
@@ -494,7 +489,6 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
                 ((SelectionButtons) sel).hideButtons();
             }
         }
-        unhighlight();
 
         Rectangle r =
             new Rectangle(
@@ -508,61 +502,9 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
             FigCompartment figCompartment = (FigCompartment) f;
             f = figCompartment.hitFig(r);
             if (f instanceof CompartmentFigText) {
-                if (highlightedFigText != null && highlightedFigText != f) {
-                    highlightedFigText.setHighlighted(false);
-                    if (highlightedFigText.getGroup() != null) {
-                        /* Preventing NullPointerException. */
-                        highlightedFigText.getGroup().damage();
-                    }
-                }
-                ((CompartmentFigText) f).setHighlighted(true);
-                highlightedFigText = (CompartmentFigText) f;
                 TargetManager.getInstance().setTarget(f);
             }
         }
-    }
-
-    /**
-     * Remove the highlight from the currently highlit FigText.
-     *
-     * @return the FigText that had highlight removed
-     */
-    protected CompartmentFigText unhighlight() {
-        Fig fc;
-        // Search all feature compartments for a text fig to unhighlight
-        for (int i = 1; i < getFigs().size(); i++) {
-            fc = getFigAt(i);
-            if (fc instanceof FigCompartment) {
-                CompartmentFigText ft = 
-                    unhighlight((FigCompartment) fc);
-                if (ft != null) {
-                    return ft;
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Search the given compartment for a highlighted CompartmentFigText
-     * and unhighlight it.
-     * 
-     * @param fc compartment to search for highlight item
-     * @return item that was unhighlighted or null if no action was taken
-     */
-    protected final CompartmentFigText unhighlight(
-            FigCompartment fc) {
-        Fig ft;
-        for (int i = 1; i < fc.getFigs().size(); i++) {
-            ft = fc.getFigAt(i);
-            if (ft instanceof CompartmentFigText
-                    && ((CompartmentFigText) ft).isHighlighted()) {
-                ((CompartmentFigText) ft).setHighlighted(false);
-                ft.getGroup().damage();
-                return ((CompartmentFigText) ft);
-            }
-        }
-        return null;
     }
 
     protected void createContainedModelElement(FigGroup fg, InputEvent ie) {
@@ -585,17 +527,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         if (figList.size() > 0) {
             Fig fig = (Fig) figList.get(figList.size() - 1);
             if (fig != null && fig instanceof CompartmentFigText) {
-                if (highlightedFigText != null) {
-                    highlightedFigText.setHighlighted(false);
-                    if (highlightedFigText.getGroup() != null) {
-                        /* Preventing NullPointerException. */
-                        highlightedFigText.getGroup().damage();
-                    }
-                }
                 CompartmentFigText ft = (CompartmentFigText) fig;
                 ft.startTextEditor(ie);
-                ft.setHighlighted(true);
-                highlightedFigText = ft;
             }
         }
         ie.consume();

@@ -167,16 +167,6 @@ public class FigStereotypeDeclaration extends FigCompartmentBox {
     }
 
     @Override
-    protected CompartmentFigText unhighlight() {
-        CompartmentFigText fc = super.unhighlight();
-        if (fc == null) {
-            // TODO: Try unhighlighting our child compartments
-//            fc = unhighlight(getAttributesFig());
-        }
-        return fc;
-    }
-
-    @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
         
         Set<Object[]> listeners = new HashSet<Object[]>();

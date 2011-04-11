@@ -41,13 +41,8 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.Arrays;
-
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
@@ -56,15 +51,11 @@ import org.tigris.gef.presentation.FigText;
  * A single line FigText class extension for editable 
  * FigClass/FigInterface/FigUseCase
  * compartments that use notation. 
- * When selected, this compartment is highlighted.<p>
- *
- * This implementation now supports the extension point compartment in
- * a use case.
  *
  * @author thn
  */
 public abstract class CompartmentFigText extends FigSingleLineTextWithNotation
-        implements TargetListener {
+        implements Clarifiable {
     
     private static final int MARGIN = 3;
 
@@ -77,11 +68,6 @@ public abstract class CompartmentFigText extends FigSingleLineTextWithNotation
     private Fig refFig;
 
     /**
-     * Set if the user has selected this component Fig inside the FigNode.
-     */
-    private boolean highlighted;
-    
-    /**
      * Construct a CompartmentFigText.
      * 
      * @param element owning uml element
@@ -91,7 +77,6 @@ public abstract class CompartmentFigText extends FigSingleLineTextWithNotation
     public CompartmentFigText(Object element, Rectangle bounds,
             DiagramSettings settings) {
         super(element, bounds, settings, true);
-        TargetManager.getInstance().addTargetListener(this);
 
         setJustification(FigText.JUSTIFY_LEFT);
         setRightMargin(MARGIN);
@@ -133,7 +118,6 @@ public abstract class CompartmentFigText extends FigSingleLineTextWithNotation
     public CompartmentFigText(Object owner, Rectangle bounds, 
             DiagramSettings settings, String[] properties) {
         super(owner, bounds, settings, true, properties);
-        TargetManager.getInstance().addTargetListener(this);
     }
     
     /*
@@ -147,7 +131,6 @@ public abstract class CompartmentFigText extends FigSingleLineTextWithNotation
             ((FigGroup) fg).removeFig(this);
             setGroup(null);
         }
-        TargetManager.getInstance().removeTargetListener(this);
     }
 
     /**
@@ -175,19 +158,6 @@ public abstract class CompartmentFigText extends FigSingleLineTextWithNotation
     }
 
     /**
-     * This is actually used to mark this Fig as selected, however setSelected
-     * is set final in GEF.
-     * TODO: Can setSelected be used without side-effect if GEF is adjusted?
-     * Otherwise consider renaming as setSelectedChild and try to make
-     * protected.
-     * @param flag  <code>true</code> if the entry is to be highlighted,
-     *              <code>false</code> otherwise.
-     */
-    public void setHighlighted(boolean flag) {
-        highlighted = flag;
-    }
-    
-    /**
      * Extends the normal paint function in order to display a similar
      * selection-box to that given for a non-resizable FigNode.
      * @param g the graphics object
@@ -196,55 +166,8 @@ public abstract class CompartmentFigText extends FigSingleLineTextWithNotation
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        if (highlighted) {
-            final int x = getX();
-            final int y = getY();
-            final int w = getWidth();
-            final int h = getHeight();
-            g.setColor(Globals.getPrefs().handleColorFor(this));
-            
-            g.drawRect(x - 1, y - 1, w + 2, h + 2);
-            g.drawRect(x, y, w, h);
-        }
     }
 
-    /**
-     * Return whether this item is highlighted.<p>
-     *
-     * @return  <code>true</code> if the entry is highlighted,
-     *          <code>false</code> otherwise.
-     */
-    public boolean isHighlighted() {
-        return highlighted;
-    }
-    
-    /**
-     * Called when text editing has completed on this Fig.
-     */
-    protected void textEdited() {
-        setHighlighted(true);
-        super.textEdited();
-    }
-    
-    public void targetAdded(TargetEvent e) {
-        if (Arrays.asList(e.getNewTargets()).contains(getOwner())) {
-            setHighlighted(true);
-            this.damage();
-        }
-    }
-
-    public void targetRemoved(TargetEvent e) {
-        if (e.getRemovedTargetCollection().contains(getOwner())) {
-            setHighlighted(false);
-            this.damage();
-        }
-    }
-
-    public void targetSet(TargetEvent e) {
-        /* This is needed for when the selection changes from 
-         * one compartment fig to an other object. 
-         * Without this, the selection indicators would stay on the screen.
-         * See issue 5681. */
-        setHighlighted((Arrays.asList(e.getNewTargets()).contains(getOwner())));
+    public void paintClarifiers(Graphics g) {
     }
 }

@@ -60,6 +60,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.configuration.Configuration;
+import org.argouml.model.Model;
 import org.argouml.ui.TabModelTarget;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -410,6 +411,11 @@ public class TabDiagram
         }
     }
     
+    /**
+     * If the model element targets have changed then make sure the selection
+     * on the diagram changes to match.
+     * @param targets
+     */
     private void select(Object[] targets) {
         LayerManager manager = graph.getEditor().getLayerManager();
         List<Fig> figList = new ArrayList<Fig>();
@@ -420,7 +426,28 @@ public class TabDiagram
 		        && manager.getActiveLayer().getContents().contains(
 		                targets[i])) {
 		    theTarget = (Fig) targets[i];
+                } else if (Model.getFacade().isAAttribute(targets[i])
+                        || Model.getFacade().isAEnumerationLiteral(targets[i])
+                        || Model.getFacade().isAOperation(targets[i])) {
+                    // Assuming the target is some model element.
+                    Object container = Model.getFacade().getModelElementContainer(targets[i]);
+                    FigCompartmentBox theContainer =
+                        (FigCompartmentBox) manager.presentationFor(container);
+                    if (theContainer != null) {
+                        for (FigCompartment fc : theContainer.getCompartments()) {
+                            for (Object o : fc.getFigs()) {
+                                if (((Fig) o).getOwner() == targets[i]) {
+                                    theTarget = (Fig) o;
+                                    break;
+                                }
+                            }
+                            if (theTarget != null) {
+                                break;
+                            }
+                        }
+                    }
                 } else {
+                    // Assuming the target is some model element.
 		    theTarget = manager.presentationFor(targets[i]);
                 }
 
