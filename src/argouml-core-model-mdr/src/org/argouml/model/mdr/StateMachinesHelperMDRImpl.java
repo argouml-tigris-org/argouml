@@ -220,7 +220,8 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
     public void setStatemachineAsSubmachine(Object oSubmachineState,
             Object oStatemachine) {
         if (oSubmachineState instanceof SubmachineState
-                && oStatemachine instanceof StateMachine) {
+                && (oStatemachine instanceof StateMachine
+                        || oStatemachine == null)) {
             SubmachineState mss = (SubmachineState) oSubmachineState;
             mss.setSubmachine((StateMachine) oStatemachine);
             return;
