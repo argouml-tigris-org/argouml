@@ -66,38 +66,6 @@ public abstract class FigFeature extends CompartmentFigText {
     // TODO: for UML 2.x this is isStatic
     private static final String EVENT_NAME = "ownerScope";
     
-    private static class SelectionFeature extends Selection {
-        /**
-         * Constructor for SelectionFeature.
-         *
-         * @param f The Fig.
-         */
-        public SelectionFeature(Fig f) {
-            super(f);
-        }
-
-        /*
-         * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
-         *      org.tigris.gef.presentation.Handle)
-         */
-        public void dragHandle(int mx, int my, int anX, int anY, Handle h) {
-            // Does nothing.
-        }
-
-        /*
-         * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
-         *      org.tigris.gef.presentation.Handle)
-         */
-        public void hitHandle(Rectangle r, Handle h) {
-           // Does nothing.
-        }
-
-        /**
-         * The UID.
-         */
-        private static final long serialVersionUID = 7437255966804296937L;
-    }
-
     /**
      * Construct a Feature fig
      * 
@@ -134,14 +102,6 @@ public abstract class FigFeature extends CompartmentFigText {
             updateOwnerScope(Model.getScopeKind().getClassifier().equals(
                     pce.getNewValue()));    
         }
-    }
-
-    /*
-     * @see org.tigris.gef.presentation.Fig#makeSelection()
-     */
-    @Override
-    public Selection makeSelection() {
-        return new SelectionFeature(this);
     }
 
     /*
