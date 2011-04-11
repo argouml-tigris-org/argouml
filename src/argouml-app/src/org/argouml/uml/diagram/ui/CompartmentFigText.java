@@ -41,7 +41,6 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
