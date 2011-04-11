@@ -45,6 +45,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
@@ -59,11 +60,9 @@ import org.argouml.model.UmlChangeEvent;
 import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
 import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
-import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
@@ -77,8 +76,7 @@ import org.tigris.gef.presentation.Fig;
  * 
  * This abstract Fig adds an Operations compartment.
  */
-public abstract class FigClassifierBox extends FigCompartmentBox
-        implements OperationsCompartmentContainer {
+public abstract class FigClassifierBox extends FigCompartmentBox {
 
     /**
      * The Fig for the operations compartment (if any).
@@ -126,20 +124,6 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         return figClone;
     }
 
-    /**
-     * @deprecated by Bob Tarling in 0.29.3 use
-     * updateCompartment(Model.getMetaTypes().getAttribute())
-     */
-    protected void updateOperations() {
-        if (!isOperationsVisible()) {
-            return;
-        }
-        operationsFigCompartment.populate();
-
-        setBounds(getBounds());
-        damage();
-    }
-    
     /*
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
@@ -147,12 +131,12 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         super.renderingChanged();
         // TODO: We should be able to just call renderingChanged on the child
         // figs here instead of doing an updateOperations...
-        updateOperations();
+        updateCompartment(Model.getMetaTypes().getOperation());
         
         // TODO: Taken from FigClassifierBoxWithAttribute to handle events
         // on an attribute. All this event handling should eventually be moved
         // to the compartment Fig for attributes
-        if (isAttributesVisible()) {
+        if (isCompartmentVisible(Model.getMetaTypes().getAttribute())) {
             // TODO: We shouldn't actually have to do all this work
             updateCompartment(Model.getMetaTypes().getAttribute());
         }
@@ -192,9 +176,13 @@ public abstract class FigClassifierBox extends FigCompartmentBox
             } else if (event instanceof RemoveAssociationEvent) {
                 o = event.getOldValue();
             }
-            if (Model.getFacade().isAOperation(o) 
-                    || Model.getFacade().isAReception(o)) {
-                updateOperations();
+            if ((Model.getFacade().isAOperation(o) 
+                    || Model.getFacade().isAReception(o))
+                    && isCompartmentVisible(
+                            Model.getMetaTypes().getOperation())) {
+                operationsFigCompartment.populate();
+                setBounds(getBounds());
+                damage();
             }
         }
         
@@ -235,7 +223,7 @@ public abstract class FigClassifierBox extends FigCompartmentBox
     @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
        
-        if (isAttributesVisible()) {
+        if (isCompartmentVisible(Model.getMetaTypes().getAttribute())) {
             Set<Object[]> listeners = new HashSet<Object[]>();
 
             // Collect the set of model elements that we want to listen to
@@ -305,90 +293,6 @@ public abstract class FigClassifierBox extends FigCompartmentBox
         setBounds(getBounds());
     }
 
-    /**
-     * @return The graphics for the UML operations (if any).
-     * @deprecated in 0.29.3 use
-     * getCompartment(Model.getUmlFactory(Model.getMetaTypes(),getOperation()))
-     * to determine if an operation compartment exists and return it.
-     * The operationsCompartment should be created by the concrete class
-     */
-    protected FigOperationsCompartment getOperationsFig() {
-        return operationsFigCompartment;
-    }
-
-    /**
-     * @deprecated by Bob Tarling in 0.29.3 use
-     * getCompartment(Model.getMetaTypes().getOperation()).getBounds()
-     * @return the bounds
-     */
-    public Rectangle getOperationsBounds() {
-        return operationsFigCompartment.getBounds();
-    }
-
-    /**
-     * @deprecated by Bob Tarling in 0.29.2 use
-     * isCompartmentVisible(Model.getMetaTypes().getOperation())
-     * @return the visibility
-     */
-    public boolean isOperationsVisible() {
-        return operationsFigCompartment != null && operationsFigCompartment.isVisible();
-    }
-
-    /**
-     * TODO: Should not be on this class as we don't know if we'll have
-     * operations
-     * @param isVisible true if the operation compartment is visible
-     * @deprecated by Bob Tarling in 0.29.2 use setCompartmentVisible
-     */
-    public void setOperationsVisible(boolean isVisible) {
-        setCompartmentVisible(operationsFigCompartment, isVisible);
-    }
-    
-    /**
-     * @return The graphics for the UML attributes (if any).
-     * @deprecated in 0.29.1 use
-     * getCompartment(Model.getUmlFactory(Model.getMetaTypes(),getAttribute()))
-     * to determine if an attribute compartment exists and return it.
-     * The attributesCompartment should be created by the concrete class
-     */
-    protected FigAttributesCompartment getAttributesFig() {
-        FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());
-        return (FigAttributesCompartment) fc;
-    }
-    
-    /**
-     * @deprecated by Bob Tarling in 0.29.2 use
-     * getCompartment(Model.getMetaTypes().getAttribute()).getBounds()
-     * @return the bounds
-     */
-    @Deprecated
-    public Rectangle getAttributesBounds() {
-        return getAttributesFig().getBounds();
-    }
-
-    /**
-     * @deprecated by Bob Tarling in 0.29.2 use
-     * isCompartmentVisible(Model.getMetaTypes().getAttribute())
-     * @return the visibility
-     */
-    @Deprecated
-    public boolean isAttributesVisible() {
-        FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());
-        return fc != null && fc.isVisible();
-    }
-    
-    /**
-     * TODO: Should not be on this class as we don't know if we'll have
-     * attributes
-     * @param isVisible true if the attribute compartment is visible
-     * @deprecated by Bob Tarling in 0.29.2 use setCompartmentVisible
-     */
-    public void setAttributesVisible(boolean isVisible) {
-        final FigCompartment afc =
-            getCompartment(Model.getMetaTypes().getAttribute());
-        setCompartmentVisible(afc, isVisible);
-    }
-    
     /*
      * @see org.tigris.gef.presentation.Fig#translate(int, int)
      */
@@ -469,7 +373,8 @@ public abstract class FigClassifierBox extends FigCompartmentBox
      */
     public String classNameAndBounds() {
         String classNameAndBounds =  super.classNameAndBounds()
-            + "operationsVisible=" + isOperationsVisible() + ";";
+            + "operationsVisible="
+            + isCompartmentVisible(Model.getMetaTypes().getOperation()) + ";";
         FigCompartment fc = getCompartment(Model.getMetaTypes().getAttribute());
         if (fc != null) {
             classNameAndBounds += 

@@ -43,8 +43,10 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
+import org.argouml.uml.diagram.ui.FigCompartment;
 import org.tigris.gef.base.Selection;
 
 /**
@@ -88,11 +90,7 @@ public class FigSignal extends FigClassifierBox {
         /* Stereotype covers NameFig: */
         addFig(getStereotypeFig());
         /* Compartments from top to bottom: */
-        addFig(new FigAttributesCompartment(
-                getOwner(),
-                DEFAULT_COMPARTMENT_BOUNDS, 
-                getSettings()));
-        addFig(getOperationsFig());
+        createCompartments();
 
         // Make all the parts match the main fig
         setFilled(true);
@@ -101,8 +99,10 @@ public class FigSignal extends FigClassifierBox {
         setLineWidth(LINE_WIDTH);
         
         // by default, do not show operations nor attributes:
-        setOperationsVisible(false);
-        setAttributesVisible(false);
+        FigCompartment ops = getCompartment(Model.getMetaTypes().getOperation());
+        setCompartmentVisible(ops, false);
+        FigCompartment atts = getCompartment(Model.getMetaTypes().getAttribute());
+        setCompartmentVisible(atts, false);
 
         /* Set the drop location in the case of D&D: */
         if (bounds != null) {

@@ -42,14 +42,9 @@ import java.awt.Rectangle;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.Action;
-
 import org.argouml.model.Model;
-import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.EnumLiteralsCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
-import org.argouml.uml.ui.foundation.core.ActionAddEnumerationLiteral;
 import org.tigris.gef.base.Selection;
 
 /**
@@ -59,13 +54,7 @@ import org.tigris.gef.base.Selection;
  * The Fig for an Enumeration has a compartment for Literals 
  * above the Operations compartment.
  */
-public class FigEnumeration extends FigDataType 
-    implements EnumLiteralsCompartmentContainer {
-
-    /**
-     * The Fig that represents the literals compartment.
-     */
-    private FigEnumLiteralsCompartment literalsCompartment;
+public class FigEnumeration extends FigDataType {
 
     /**
      * Constructor.
@@ -86,32 +75,8 @@ public class FigEnumeration extends FigDataType
     }
     
     @Override
-    protected void addExtraCompartments() {
-        // This creates the compartment.
-        addFig(getLiteralsCompartment());
-        setEnumLiteralsVisible(true);
-        literalsCompartment.populate();
-    }
-
-    @Override
     public Selection makeSelection() {
         return new SelectionEnumeration(this);
-    }
-
-    @Override
-    public Object clone() {
-        FigEnumeration clone = (FigEnumeration) super.clone();
-        clone.literalsCompartment = 
-            (FigEnumLiteralsCompartment) literalsCompartment.clone();
-        return clone;
-    }
-
-    @Override
-    public void renderingChanged() {
-        super.renderingChanged();
-        if (getOwner() != null) {
-            updateEnumLiterals();
-        }
     }
 
     @Override
@@ -144,53 +109,6 @@ public class FigEnumeration extends FigDataType
     }
 
     /**
-     * Update (i.e. redraw) the compartment with the literals.
-     */
-    protected void updateEnumLiterals() {
-        if (!literalsCompartment.isVisible()) {
-            return;
-        }
-        literalsCompartment.populate();
-
-        // TODO: make setBounds, calcBounds and updateBounds consistent
-        setBounds(getBounds());
-    }
-
-    /**
-     * @return the Fig for the EnumerationLiterals compartment
-     */
-    public FigEnumLiteralsCompartment getLiteralsCompartment() {
-        // Set bounds will be called from our superclass constructor before
-        // our constructor has run, so make sure this gets set up if needed.
-        if (literalsCompartment == null) {
-            literalsCompartment = new FigEnumLiteralsCompartment(getOwner(),
-                    DEFAULT_COMPARTMENT_BOUNDS, getSettings());
-        }
-        return literalsCompartment;
-    }
-    
-    /**
-     * @return true if the literals compartment is visible
-     */
-    public boolean isEnumLiteralsVisible() {
-        return literalsCompartment.isVisible();
-    }
-
-    /**
-     * @param isVisible true will show the enumeration literal compartment
-     */
-    public void setEnumLiteralsVisible(boolean isVisible) {
-        setCompartmentVisible(literalsCompartment, isVisible);
-    }
-    
-    /**
-     * @return the bounds of the EnumerationLiterals compartment
-     */
-    public Rectangle getEnumLiteralsBounds() {
-        return literalsCompartment.getBounds();
-    }
-
-    /**
      * USED BY PGML.tee.
      * @return the class name and bounds together with compartment
      * visibility.
@@ -198,6 +116,8 @@ public class FigEnumeration extends FigDataType
     @Override
     public String classNameAndBounds() {
         return super.classNameAndBounds()
-                + "enumerationLiteralsVisible=" + isEnumLiteralsVisible();
+                + "enumerationLiteralsVisible="
+                + isCompartmentVisible(
+                        Model.getMetaTypes().getEnumerationLiteral());
     }
 } 

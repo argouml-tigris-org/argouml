@@ -92,11 +92,7 @@ public class FigClass extends FigClassifierBox {
         /* Stereotype covers NameFig: */
         addFig(getStereotypeFig());
         /* Compartments from top to bottom: */
-        addFig(new FigAttributesCompartment(
-                getOwner(),
-                DEFAULT_COMPARTMENT_BOUNDS, 
-                getSettings()));
-        addFig(getOperationsFig());
+        createCompartments();
         
         // Make all the parts match the main fig
         setFilled(true);
@@ -153,10 +149,10 @@ public class FigClass extends FigClassifierBox {
         do {
             i--;
             while (i < 1) {
-                if (fgVec == getAttributesFig()) {
-                    fgVec = getOperationsFig();
+                if (fgVec == getCompartment(Model.getMetaTypes().getAttribute())) {
+                    fgVec = getCompartment(Model.getMetaTypes().getOperation());
                 } else {
-                    fgVec = getAttributesFig();
+                    fgVec = getCompartment(Model.getMetaTypes().getAttribute());
                 }
                 figs = fgVec.getFigs();
                 i = figs.size() - 1;
@@ -187,10 +183,10 @@ public class FigClass extends FigClassifierBox {
         do {
             i++;
             while (i >= v.size()) {
-                if (fgVec == getAttributesFig()) {
-                    fgVec = getOperationsFig();
+                if (fgVec == getCompartment(Model.getMetaTypes().getAttribute())) {
+                    fgVec = getCompartment(Model.getMetaTypes().getOperation());
                 } else {
-                    fgVec = getAttributesFig();
+                    fgVec = getCompartment(Model.getMetaTypes().getAttribute());
                 }
                 v = new ArrayList(fgVec.getFigs());
                 i = 1;

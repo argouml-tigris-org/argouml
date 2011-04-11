@@ -86,8 +86,7 @@ public class FigDataType extends FigClassifierBox {
         addFig(getBigPort());
         addFig(getNameFig());
         addFig(getStereotypeFig());
-        addExtraCompartments();
-        addFig(getOperationsFig());
+        createCompartments();
         
         // Make all the parts match the main fig
         setFilled(true);

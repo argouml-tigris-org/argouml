@@ -42,7 +42,9 @@ import java.awt.event.ItemEvent;
 
 import javax.swing.JCheckBox;
 
+import org.argouml.model.Model;
 import org.argouml.ui.StylePanelFigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigCompartment;
 
 /**
  * Stylepanel which adds an operation checkbox and depends on FigInterface.
@@ -81,7 +83,8 @@ public class StylePanelFigInterface extends StylePanelFigNodeModelElement {
         refreshTransaction = true;
         super.refresh();
         FigInterface ti = (FigInterface) getPanelTarget();
-        operCheckBox.setSelected(ti.isOperationsVisible());
+        operCheckBox.setSelected(
+                ti.isCompartmentVisible(Model.getMetaTypes().getOperation()));
         refreshTransaction = false;
     }
 
@@ -96,8 +99,9 @@ public class StylePanelFigInterface extends StylePanelFigNodeModelElement {
             Object src = e.getSource();
 
             if (src == operCheckBox) {
-                ((FigInterface) getPanelTarget())
-                    .setOperationsVisible(operCheckBox.isSelected());
+                FigInterface fi = ((FigInterface) getPanelTarget());
+                FigCompartment comp = fi.getCompartment(Model.getMetaTypes().getOperation());
+                fi.setCompartmentVisible(comp, operCheckBox.isSelected());
             } else {
                 super.itemStateChanged(e);
             }

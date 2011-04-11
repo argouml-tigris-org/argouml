@@ -51,6 +51,7 @@ import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
+import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.LayerPerspective;
@@ -314,9 +315,19 @@ public class DiagramInterface {
             currentGM.addNode(classifier);
             currentLayer.putInPosition(newFig);
 
-            newFig.setOperationsVisible(!minimise);
-            if (Model.getFacade().isAClass(classifier)) {
-                newFig.setAttributesVisible(!minimise);
+            if (Model.getUmlFactory().isContainmentValid(
+                    Model.getMetaTypes().getOperation(),
+                    classifier)) {
+                FigCompartment ops =
+                    newFig.getCompartment(Model.getMetaTypes().getOperation());
+                newFig.setCompartmentVisible(ops, !minimise);
+            }
+            if (Model.getUmlFactory().isContainmentValid(
+                    Model.getMetaTypes().getAttribute(),
+                    classifier)) {
+                FigCompartment atts =
+                    newFig.getCompartment(Model.getMetaTypes().getAttribute());
+                newFig.setCompartmentVisible(atts, !minimise);
             }
 
             newFig.renderingChanged();

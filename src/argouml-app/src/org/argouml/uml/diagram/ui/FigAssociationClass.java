@@ -40,7 +40,6 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.List;
 
@@ -180,22 +179,6 @@ public class FigAssociationClass
     public void setPathVisible(boolean visible) {
         if (getAssociationClass() != null) {
             getAssociationClass().setPathVisible(visible);
-        }
-    }
-
-    public Rectangle getOperationsBounds() {
-        if (getAssociationClass() != null) {
-            return getAssociationClass().getOperationsBounds();
-        } else {
-            return new Rectangle(0, 0, 0, 0);
-        }
-    }
-
-    public boolean isOperationsVisible() {
-        if (getAssociationClass() != null) {
-            return getAssociationClass().isOperationsVisible();
-        } else {
-            return true;
         }
     }
 

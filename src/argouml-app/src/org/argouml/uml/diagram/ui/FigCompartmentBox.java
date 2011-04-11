@@ -54,6 +54,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.Editor;
@@ -87,6 +88,8 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
 
     private static final Logger LOG = Logger.getLogger(
             FigCompartmentBox.class);
+    
+    
 
     /**
      * Default bounds for a compartment.
@@ -194,7 +197,33 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
         addFig(c.getSeparatorFig());
         compartments.add(c);
     }
-
+    
+    protected void createCompartments() {
+        Object owner = getOwner();
+        if (Model.getUmlFactory().isContainmentValid(
+                Model.getMetaTypes().getAttribute(),
+                getOwner())) {
+            FigCompartment fc = new FigAttributesCompartment(
+                    owner, DEFAULT_COMPARTMENT_BOUNDS, getSettings());
+            addFig(fc);
+        }
+        if (Model.getUmlFactory().isContainmentValid(
+                Model.getMetaTypes().getEnumerationLiteral(),
+                getOwner())) {
+            FigCompartment fc = new FigEnumLiteralsCompartment(
+                    owner, DEFAULT_COMPARTMENT_BOUNDS, getSettings());
+            addFig(fc);
+        }
+        if (Model.getUmlFactory().isContainmentValid(
+                Model.getMetaTypes().getOperation(),
+                getOwner())) {
+            FigCompartment fc = new FigOperationsCompartment(
+                    owner, DEFAULT_COMPARTMENT_BOUNDS, getSettings());
+            addFig(fc);
+        }
+    }
+    
+    
     protected int getVisibleCompartmentCount() {
         int result = 0;
         for (int i = 0; i < compartments.size(); i++) {
