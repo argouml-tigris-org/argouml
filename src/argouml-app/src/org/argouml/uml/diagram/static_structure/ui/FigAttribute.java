@@ -7,7 +7,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,12 +39,10 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.base.Selection;
 
 /**
  * Fig with specific knowledge of Attribute display. <p>
@@ -72,13 +71,5 @@ public class FigAttribute extends FigFeature {
     @Override
     protected int getNotationProviderType() {
         return NotationProviderFactory2.TYPE_ATTRIBUTE;
-    }
-    
-    public Selection makeSelection() {
-        return new SelectionAttribute(this);
-    }
-
-    public boolean isResizable() {
-        return false;
     }
 }

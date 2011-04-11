@@ -1,14 +1,13 @@
-/* $Id: SelectionClass.java 19205 2011-04-10 21:31:56Z bobtarling $
+/* $Id: SelectionCompartmentText.java 19205 2011-04-10 21:31:56Z bobtarling $
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Michiel van der Wulp
- *    Katharina Fahnenbruck
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -41,21 +40,20 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import javax.swing.Icon;
 
-import org.argouml.model.Model;
 import org.tigris.gef.presentation.Fig;
 import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
 
 /**
- * @author jrobbins@ics.uci.edu
+ * @author Bob Tarling
  */
-public class SelectionAttribute extends SelectionNodeClarifiers2 {
+public class SelectionCompartmentText extends SelectionNodeClarifiers2 {
 
     /**
      * Construct a new SelectionClass for the given Fig.
      *
      * @param f The given Fig.
      */
-    public SelectionAttribute(Fig f) { 
+    public SelectionCompartmentText(Fig f) { 
         super(f);
     }
 
@@ -71,7 +69,7 @@ public class SelectionAttribute extends SelectionNodeClarifiers2 {
 
     @Override
     protected Object getNewNodeType(int i) {
-        return Model.getMetaTypes().getAttribute();
+        return null;
     }
 
     @Override

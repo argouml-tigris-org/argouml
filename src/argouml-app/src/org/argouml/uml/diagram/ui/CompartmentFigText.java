@@ -42,6 +42,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.static_structure.ui.SelectionCompartmentText;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
@@ -133,5 +135,13 @@ public abstract class CompartmentFigText extends FigSingleLineTextWithNotation
     }
 
     public void paintClarifiers(Graphics g) {
+    }
+    
+    public Selection makeSelection() {
+        return new SelectionCompartmentText(this);
+    }
+
+    public boolean isResizable() {
+        return false;
     }
 }
