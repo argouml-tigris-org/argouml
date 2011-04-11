@@ -78,13 +78,6 @@ abstract class UMLComboBoxModel extends AbstractListModel
     private static final long serialVersionUID = 6038919811554379037L;
 
     private static final Logger LOG = Logger.getLogger(UMLComboBoxModel.class);
-
-    /**
-     * The string that represents a null or cleared choice.
-     */
-    // TODO: I18N
-    // Don't use the empty string for this or it won't show in the list
-    protected static final String CLEARED = "<none>";
     
     /**
      * The target of the comboboxmodel. This is some UML modelelement
@@ -182,14 +175,14 @@ abstract class UMLComboBoxModel extends AbstractListModel
         buildMinimalModelList();
         // Do not set buildingModel = false here, 
         // otherwise the action for selection is performed.
-        setSelectedItem(external2internal(getSelectedModelElement()));
+        setSelectedItem(getSelectedModelElement());
         buildingModel = false;
 
         if (getSize() > 0) {
             fireIntervalAdded(this, 0, getSize() - 1);
         }
         if (getSelectedItem() != null && isClearable) {
-            addElement(CLEARED); // makes sure we can select 'none'
+            addElement(null); // makes sure we can select 'none'
         }
     }
 
@@ -259,9 +252,9 @@ abstract class UMLComboBoxModel extends AbstractListModel
         } else if (evt instanceof RemoveAssociationEvent && isValidEvent(evt)) {
             if (evt.getPropertyName().equals(propertySetName) 
                     && (evt.getSource() == getTarget())) {
-                if (evt.getOldValue() == internal2external(getSelectedItem())) {
+                if (evt.getOldValue() == getSelectedItem()) {
                     /* TODO: Here too? */
-                    setSelectedItem(external2internal(evt.getNewValue()));
+                    setSelectedItem(evt.getNewValue());
                 }
             } else {
                 Object o = getChangedElement(evt);
@@ -300,7 +293,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
             String name = (n != null ? (String) n : "");
             return name;
         } catch (InvalidElementException e) {
-            return "";
+            return "<invalid>";
         }
     }
 
@@ -321,15 +314,15 @@ abstract class UMLComboBoxModel extends AbstractListModel
                                 // compatibility.  Don't remove without 
                                 // checking subclasses and warning downstream
                                 // developers - tfm - 20081211
-                                && ("".equals(o) || CLEARED.equals(o)))) {
+                                && (o == null || "".equals(o)))) {
                     toBeRemoved.add(o);
                 }
             }
             removeAll(toBeRemoved);
             addAll(elements);
             
-            if (isClearable && !elements.contains(CLEARED)) {
-                addElement(CLEARED);
+            if (isClearable && !elements.contains(null)) {
+                addElement(null);
             }
             if (!objects.contains(selectedObject)) {
                 selectedObject = null;
@@ -397,7 +390,7 @@ abstract class UMLComboBoxModel extends AbstractListModel
                 addElement(o);
             }
         }
-        setSelectedItem(external2internal(selected));
+        setSelectedItem(selected);
         fireListEvents = true;
         if (objects.size() != oldSize) {
             fireIntervalAdded(this, oldSize == 0 ? 0 : oldSize - 1, 
@@ -450,14 +443,14 @@ abstract class UMLComboBoxModel extends AbstractListModel
         buildMinimalModelList();
         // Do not set buildingModel = false here, 
         // otherwise the action for selection is performed.
-        setSelectedItem(external2internal(getSelectedModelElement()));
+        setSelectedItem(getSelectedModelElement());
         buildingModel = false;
 
         if (getSize() > 0) {
             fireIntervalAdded(this, 0, getSize() - 1);
         }
         if (getSelectedItem() != null && isClearable) {
-            addElement(CLEARED); // makes sure we can select 'none'
+            addElement(null); // makes sure we can select 'none'
         }
     }
     
@@ -608,14 +601,6 @@ abstract class UMLComboBoxModel extends AbstractListModel
      */
     public Object getSelectedItem() {
         return selectedObject;
-    }
-    
-    private Object external2internal(Object o) {
-        return o == null && isClearable ? CLEARED : o;
-    }
-
-    private Object internal2external(Object o) {
-        return isClearable && CLEARED.equals(o) ? null : o;
     }
     
     /**
