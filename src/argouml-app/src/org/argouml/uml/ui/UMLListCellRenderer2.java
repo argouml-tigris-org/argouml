@@ -57,18 +57,11 @@ import org.argouml.model.Model;
  * children.
  *
  * This class must be efficient as it is called many 1000's of times.
- * 
- * TODO: MVW: Since this class is the only one that knows 
- * which UML objects influence the rendering, should it 
- * not be listening to model change events?
  *
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 2, 2003
  */
 public class UMLListCellRenderer2 extends DefaultListCellRenderer {
-
-//    private static final Logger LOG =
-//        Logger.getLogger(UMLListCellRenderer2.class);
 
     /**
      * True if the icon for the modelelement should be shown. The icon is, for
@@ -154,7 +147,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             return super.getListCellRendererComponent(list, value, index,
                     isSelected, cellHasFocus);
         } else if (value == null || value.equals("")) {
-            JLabel label = new JLabel(" ");
+            JLabel label = new JLabel("<none>");
             label.setIcon(null);
             return label;
         }
