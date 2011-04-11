@@ -45,7 +45,6 @@ import java.util.Vector;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigCompartment;
 import org.tigris.gef.base.Selection;
 
