@@ -102,7 +102,7 @@ public class FigSubmachineState extends FigState {
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
                         LINE_COLOR);
 
-        include.setText(placeString());
+        include.setText(generateSubmachine(getOwner()));
         include.setBounds(getInitialX() + 2, getInitialY() + 2,
                 getInitialWidth() - 4, include.getBounds().height);
         include.setEditable(false);
