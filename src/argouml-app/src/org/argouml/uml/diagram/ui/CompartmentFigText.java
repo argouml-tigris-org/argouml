@@ -59,14 +59,6 @@ public abstract class CompartmentFigText extends FigSingleLineTextWithNotation
     private static final int MARGIN = 3;
 
     /**
-     * The bounding figure of the compartment containing this fig text.
-     * @deprecated for 0.27.3 by tfmorris.  Only used for line color which we
-     * can get from the render settings or GEF.
-     */
-    @Deprecated
-    private Fig refFig;
-
-    /**
      * Construct a CompartmentFigText.
      * 
      * @param element owning uml element
@@ -138,33 +130,6 @@ public abstract class CompartmentFigText extends FigSingleLineTextWithNotation
     @Override
     public boolean isFilled() {
         return false;
-    }
-
-    /**
-     * Override for correct graphical behaviour.<p>
-     *
-     * @return  Current fill colour&mdash;always the fill colour of the
-     *          associated compartment fig.
-     */
-    @Override
-    public Color getLineColor() {
-        if (refFig != null) {
-            return refFig.getLineColor();
-        } else {
-            // Get the right color from our settings
-            return super.getLineColor();
-        }
-    }
-
-    /**
-     * Extends the normal paint function in order to display a similar
-     * selection-box to that given for a non-resizable FigNode.
-     * @param g the graphics object
-     * @see org.tigris.gef.presentation.FigText#paint(java.awt.Graphics)
-     */
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
     }
 
     public void paintClarifiers(Graphics g) {
