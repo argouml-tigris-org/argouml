@@ -1395,7 +1395,15 @@ public final class ProjectBrowser
             /*
              * notification of menu bar
              */
-            saveAction.setEnabled(false);
+            if (saveAction != null) {
+                // Bob says - not sure how saveAction could be null here but
+                // NPE has been reported. See issue 6233. As Tom comments
+                // elsewhere we should be listening for file save events.
+                // That would allow us to have a final saveAction instance
+                // that can never be null
+                saveAction.setEnabled(false);
+            }
+            
             addFileSaved(file);
 
             Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
