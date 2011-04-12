@@ -1,0 +1,12 @@
+Manifest-Version: 2.0
+Class-Path: argouml.jar
+Created-By: 1.2 (Sun Microsystems Inc.) 
+
+Name: org/argouml/transformer/TransformerModule.class
+Extension-name: org.argouml.transformer.TransformerModule
+Specification-Title: Transformer Module
+Specification-Version: 0.1
+Specification-Vendor: ArgoUML Team
+Implementation-Title: Transformer Module
+Implementation-Version: 0.1
+Implementation-Vendor: ArgoUML Team
