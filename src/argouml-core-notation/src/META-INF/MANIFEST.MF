@@ -2,11 +2,11 @@ Manifest-Version: 2.0
 Class-Path: argouml.jar
 Created-By: 1.2 (Sun Microsystems Inc.) 
 
-Name: org/argouml/transformer/TransformerModule.class
-Extension-name: org.argouml.transformer.TransformerModule
-Specification-Title: Transformer Module
+Name: org/argouml/notation/NotationModule.class
+Extension-name: org.argouml.notation2.NotationModule
+Specification-Title: Notation Module
 Specification-Version: 0.1
 Specification-Vendor: ArgoUML Team
-Implementation-Title: Transformer Module
+Implementation-Title: Notation Module
 Implementation-Version: 0.1
 Implementation-Vendor: ArgoUML Team

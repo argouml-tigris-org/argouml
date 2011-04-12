@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.argouml.transformer
+Bundle-SymbolicName: org.argouml.notation2
 Bundle-Version: 0.29.3.qualifier
 Bundle-ClassPath: .
 Export-Package: org.argouml.notation2
