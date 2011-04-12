@@ -16,6 +16,7 @@ package org.argouml.activity2.diagram;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
@@ -25,10 +26,10 @@ public class ConcavePentagonDisplayState extends BaseDisplayState implements Ste
 
     private static final int PADDING = 8;
     
-    public ConcavePentagonDisplayState(int x, int y, int w, int h, Color lineColor,
+    public ConcavePentagonDisplayState(Rectangle rect, Color lineColor,
             Color fillColor, Object modelElement, DiagramSettings settings) {
-        super(x, y, w, h, lineColor, fillColor, modelElement, settings);
-        createBigPort(x, y, w, h, lineColor, fillColor);
+        super(rect, lineColor, fillColor, modelElement, settings);
+        createBigPort(rect, lineColor, fillColor);
     }
 
     @Override
@@ -44,17 +45,20 @@ public class ConcavePentagonDisplayState extends BaseDisplayState implements Ste
         return new Dimension(w, h);
     }
     
-    protected Fig createBigPort(int x, int y, int w, int h, Color lineColor, Color fillColor) {
+    protected Fig createBigPort(Rectangle rect, Color lineColor, Color fillColor) {
         final FigPoly polyFig = new FigPoly();
         final int[] xs = new int[6];
         final int[] ys = new int[6];
-        
-        xs[0] = x;              ys[0] = y;
-        xs[1] = x + w;      ys[1] = y;
-        xs[2] = x + w;      ys[2] = y + h;
-        xs[3] = x;              ys[3] = y + h;
+        final int x = rect.x;
+        final int y = rect.y;
+        final int w = rect.width;
+        final int h = rect.height;        
+        xs[0] = x;         ys[0] = y;
+        xs[1] = x + w;     ys[1] = y;
+        xs[2] = x + w;     ys[2] = y + h;
+        xs[3] = x;         ys[3] = y + h;
         xs[4] = x + h / 2; ys[4] = y + h / 2;
-        xs[5] = x;              ys[5] = y;
+        xs[5] = x;         ys[5] = y;
         final Polygon p = new Polygon(xs, ys, 6);
         polyFig.setPolygon(p);
         

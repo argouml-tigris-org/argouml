@@ -14,6 +14,7 @@ package org.argouml.activity2.diagram;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
@@ -23,11 +24,12 @@ public class RectDisplayState extends BaseDisplayState implements StereotypeDisp
 
     private static final int PADDING = 8;
     
-    public RectDisplayState(int x, int y, int w, int h, Color lineColor,
+    public RectDisplayState(
+            final Rectangle rect, Color lineColor,
             Color fillColor, Object modelElement, DiagramSettings settings) {
-        super(x, y, w, h, lineColor,
+        super(rect, lineColor,
                 fillColor, modelElement, settings);
-        createBigPort(x, y, w, h, lineColor, fillColor);
+        createBigPort(rect, lineColor, fillColor);
     }
 
     @Override
@@ -43,7 +45,8 @@ public class RectDisplayState extends BaseDisplayState implements StereotypeDisp
         return new Dimension(w, h);
     }
     
-    Fig createBigPort(int x, int y, int w, int h, Color lineColor, Color fillColor) {
-        return new FigRect(x, y, w, h, lineColor, fillColor);
+    Fig createBigPort(Rectangle rect, Color lineColor, Color fillColor) {
+        return new FigRect(
+                rect.x, rect.y, rect.width, rect.height, lineColor, fillColor);
     }
 }

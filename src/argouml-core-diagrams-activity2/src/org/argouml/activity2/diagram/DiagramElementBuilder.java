@@ -13,6 +13,8 @@
 
 package org.argouml.activity2.diagram;
 
+import java.awt.Rectangle;
+
 import org.argouml.uml.diagram.DiagramSettings;
 
 class DiagramElementBuilder {
@@ -21,16 +23,20 @@ class DiagramElementBuilder {
     private static final int HEIGHT = 25;
     
     static void buildDiagramElement(
-            final FigBaseNode fig, String style, Object owner, DiagramSettings settings) {
+            final FigBaseNode fig,
+            final String style,
+            final Object owner,
+            final DiagramSettings settings) {
+        
+        final Rectangle bounds =
+            new Rectangle(fig.getX(), fig.getX(), WIDTH, HEIGHT);
+        
         if (style.equals("compartmentbox")) {
-            
+            // For classifiers
         } else if (style.equals("rect")) {
             fig.setDisplayState(
                     new RectDisplayState(
-                            fig.getX(), 
-                            fig.getX(), 
-                            WIDTH, 
-                            HEIGHT, 
+                            bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),
                             owner,
@@ -38,10 +44,7 @@ class DiagramElementBuilder {
         } else if (style.equals("rrect")) {
             fig.setDisplayState(
                     new RRectDisplayState(
-                            fig.getX(), 
-                            fig.getX(), 
-                            WIDTH, 
-                            HEIGHT, 
+                            bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),
                             owner,
@@ -49,10 +52,7 @@ class DiagramElementBuilder {
         } else if (style.equals("pentagon")) {
             fig.setDisplayState(
                     new PentagonDisplayState(
-                            fig.getX(), 
-                            fig.getX(), 
-                            WIDTH, 
-                            HEIGHT, 
+                            bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),
                             owner,
@@ -60,10 +60,7 @@ class DiagramElementBuilder {
         } else if (style.equals("concave-pentagon")) {
             fig.setDisplayState(
                     new ConcavePentagonDisplayState(
-                            fig.getX(), 
-                            fig.getX(), 
-                            WIDTH, 
-                            HEIGHT, 
+                            bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),
                             owner,
