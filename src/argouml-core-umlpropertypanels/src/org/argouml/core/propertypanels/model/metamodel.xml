@@ -1403,7 +1403,6 @@ The combination of the above allows the GUI to distinguish between
     <list name="classifierRole" type="ModelElement" />
     <list name="collaboration" type="ModelElement" />
     <list name="collaborationInstanceSet" type="ModelElement" />
-    <list name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />   
   </panel>
   <panel name="Stereotype">
