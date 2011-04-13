@@ -73,23 +73,6 @@ class UMLMetaClassComboBoxModel extends UMLComboBoxModel {
             final String propertyName,
             final Object target) {
         super(target, propertyName, true);
-        
-        Collection<String> tmpMetaClasses =
-                Model.getCoreHelper().getAllMetatypeNames();
-        
-        if (tmpMetaClasses instanceof List) {
-            metaClasses = (List<String>) tmpMetaClasses;
-        } else {
-            metaClasses = new LinkedList<String>(tmpMetaClasses);
-        }
-        tmpMetaClasses.addAll(Model.getCoreHelper().getAllMetaDatatypeNames());
-        try {
-            Collections.sort(metaClasses);
-        } catch (UnsupportedOperationException e) {
-            // We got passed an unmodifiable List.  Copy it and sort the result
-            metaClasses = new LinkedList<String>(tmpMetaClasses);
-            Collections.sort(metaClasses);
-        }
     }
 
     /*
@@ -107,14 +90,37 @@ class UMLMetaClassComboBoxModel extends UMLComboBoxModel {
      * @see org.argouml.uml.ui.UMLComboBoxModel#buildModelList()
      */
     protected void buildModelList() {
-        setElements(metaClasses);
+        setElements(getMetaClassNames());
+    }
+    
+    private List<String> getMetaClassNames() {
+        
+	if (metaClasses == null) {
+            Collection<String> tmpMetaClasses =
+                    Model.getCoreHelper().getAllMetatypeNames();
+            
+            if (tmpMetaClasses instanceof List) {
+                metaClasses = (List<String>) tmpMetaClasses;
+            } else {
+                metaClasses = new LinkedList<String>(tmpMetaClasses);
+            }
+            tmpMetaClasses.addAll(Model.getCoreHelper().getAllMetaDatatypeNames());
+            try {
+                Collections.sort(metaClasses);
+            } catch (UnsupportedOperationException e) {
+                // We got passed an unmodifiable List.  Copy it and sort the result
+                metaClasses = new LinkedList<String>(tmpMetaClasses);
+                Collections.sort(metaClasses);
+            }
+	}
+	return metaClasses;
     }
 
     /*
      * @see org.argouml.uml.ui.UMLComboBoxModel#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return metaClasses.contains(element);
+        return getMetaClassNames().contains(element);
     }
     
     public Action getAction() {
