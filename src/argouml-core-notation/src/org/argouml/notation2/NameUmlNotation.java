@@ -27,8 +27,6 @@ class NameUmlNotation implements NotationText, PropertyChangeListener {
     
     NameUmlNotation(NotatedItem item) {
         notatedItem = item;
-        Model.getPump().addModelEventListener(
-                this, notatedItem.getOwner(), "name");
     }
 
     @Override
@@ -47,7 +45,8 @@ class NameUmlNotation implements NotationText, PropertyChangeListener {
             final Object owner = notatedItem.getOwner();
             final String name = Model.getFacade().getName(owner);
             final boolean isAbstract = Model.getFacade().isAbstract(owner);
-            final boolean isStatic = Model.getFacade().isStatic(owner);
+            final boolean isStatic =
+                Model.getFacade().isAFeature(owner) && Model.getFacade().isStatic(owner);
             
             Runnable doWorkRunnable = new Runnable() {
                 public void run() {

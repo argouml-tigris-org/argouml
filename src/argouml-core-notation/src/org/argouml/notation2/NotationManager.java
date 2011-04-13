@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author Bob Tarling
  */
-final class NotationManager {
+public final class NotationManager {
 
     /**
      * The singleton instance.
@@ -41,17 +41,20 @@ final class NotationManager {
         return instance;
     }
 
-    void addNotationLanguage(NotationLanguage language) {
+    public void addNotationLanguage(NotationLanguage language) {
         languages.add(language);
     }
     
-    void addListener(NotatedItem item) {
+    public void addListener(NotatedItem item) {
         NotationLanguage nl = item.getNotationLanguage();
+        if (nl == null) {
+            nl = languages.get(0);
+        }
         nl.createNotationText(item);
         items.add(item);
     }
     
-    void removeListener(NotatedItem item) {
+    public void removeListener(NotatedItem item) {
         items.remove(item);
     }
 }

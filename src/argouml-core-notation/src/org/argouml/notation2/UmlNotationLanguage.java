@@ -13,6 +13,8 @@
 
 package org.argouml.notation2;
 
+import org.argouml.model.Model;
+
 class UmlNotationLanguage implements NotationLanguage {
 
     @Override
@@ -22,7 +24,12 @@ class UmlNotationLanguage implements NotationLanguage {
 
     @Override
     public NotationText createNotationText(NotatedItem item) {
-        return new NameUmlNotation(item);
+        
+        NameUmlNotation nt = new NameUmlNotation(item);
+        Model.getPump().addModelEventListener(
+                nt, item.getOwner());
+        
+        return nt;
     }
 
 }
