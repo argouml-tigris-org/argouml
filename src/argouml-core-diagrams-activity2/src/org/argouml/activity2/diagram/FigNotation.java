@@ -19,6 +19,7 @@ import java.awt.Rectangle;
 
 import org.argouml.notation2.NotatedItem;
 import org.argouml.notation2.NotationLanguage;
+import org.argouml.notation2.NotationManager;
 import org.argouml.notation2.NotationTextEvent;
 import org.argouml.notation2.NotationType;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -45,11 +46,14 @@ public class FigNotation extends FigText implements NotatedItem {
             final DiagramSettings settings,
             final NotationType notationType) {
         super(bounds.x, bounds.y, bounds.width, bounds.height , true);
+        setOwner(owner);
+        setFont(settings.getFontPlain());
         this.notationType = notationType;
         setTabAction(FigText.END_EDITING);
         setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
         super.setFilled(false);
+        NotationManager.getInstance().addListener(this);
     }
 
     /**
@@ -60,15 +64,19 @@ public class FigNotation extends FigText implements NotatedItem {
     
     @Override
     public Dimension getMinimumSize() {
-        final FontMetrics fontMetrics = getFontMetrics();
+        
+//        int w = getFontMetrics().stringWidth(getText());
+//        int h = getFontMetrics().getHeight();
+        int w = 0;
+        int h = getFont().getSize();
         
         final int minWidth = 
-            fontMetrics.stringWidth(getText())
+            w
             + getLeftMargin()
             + getRightMargin()
             + 2 * getLineWidth();
         final int minHeight = 
-            fontMetrics.getHeight()
+            h
             + getTopMargin()
             + getBotMargin()
             + 2 * getLineWidth();

@@ -70,7 +70,8 @@ public class ModePlaceDiagramElement extends FigModifyingModeImpl {
         // TODO: Something might go wrong during processing. We don't really
         // want to create the model element until the user releases the mouse
         // in the place expected.
-        modelElement = Model.getUmlFactory().buildNode(metaType);
+        modelElement = Model.getUmlFactory().buildNode(metaType, diagram.getNamespace());
+        LOG.info("Created " + modelElement);
         //
         start();
         editor = Globals.curEditor();
@@ -81,9 +82,9 @@ public class ModePlaceDiagramElement extends FigModifyingModeImpl {
     }
     
     private GraphNode createDiagramElement(Layer lay, Object owner, DiagramSettings settings) {
-        FigBaseNode fig = new FigBaseNode(modelElement, new Rectangle(0, 0, 0, 0), settings);
-        fig.setLayer(lay);
+        FigBaseNode fig = new FigBaseNode(owner, new Rectangle(0, 0, 0, 0), settings);
         DiagramElementBuilder.buildDiagramElement(fig, style, owner, settings);
+        fig.setLayer(lay);
         return fig;
     }
 
