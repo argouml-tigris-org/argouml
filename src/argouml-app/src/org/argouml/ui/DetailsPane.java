@@ -506,11 +506,12 @@ public class DetailsPane
         }
         Object target = TargetManager.getInstance().getSingleTarget();
         
-        // If sel is the ToDo Tab (i.e. is an instance of TabToDoTarget), we 
-        // don't need to do anything, because the ToDo Tab is already dealt 
-        // with by it's own listener. TabProps is also deals with itself.
-        // TODO: Do we really need this for anything?
         if (!(sel instanceof TabToDoTarget) && !(sel instanceof TabProps)) {
+            // TODO: Bob says - tabs that listen for target changes should register themselves
+            // not expect DetailsPane to listen and pass on the event. Otherwise these tabs
+            // always rely on DetailsPane. TabToDoTarget and TabProps currently
+            // listen directly.
+            
             // The other tabs need to be updated depending on the selection.
             if (sel instanceof TabTarget) {
                 ((TabTarget) sel).setTarget(target);
@@ -674,22 +675,28 @@ public class DetailsPane
         for (int i = 0; i < tabPanelList.size(); i++) {
             JPanel tab = tabPanelList.get(i);
             boolean shouldEnable = false;
-            if (tab instanceof TargetListener) {
-                if (tab instanceof TabTarget) {
-                    shouldEnable = ((TabTarget) tab).shouldBeEnabled(target);
-                } else {
-                    if (tab instanceof TabToDoTarget) {
-                        shouldEnable = true;
+            if (!(tab instanceof TabToDoTarget) && !(tab instanceof TabProps)) {
+                // TODO: Bob says - tabs that listen for target changes should register themselves
+                // not expect DetailsPane to listen and pass on the event. Otherwise these tabs
+                // always rely on DetailsPane. TabToDoTarget and TabProps currently
+                // listen directly.
+                if (tab instanceof TargetListener) {
+                    if (tab instanceof TabTarget) {
+                        shouldEnable = ((TabTarget) tab).shouldBeEnabled(target);
+                    } else {
+                        if (tab instanceof TabToDoTarget) {
+                            shouldEnable = true;
+                        }
                     }
+                    // TODO: Do we want all enabled tabs to listen or only the one
+                    // that is selected/visible? - tfm
+                    removeTargetListener((TargetListener) tab);
+                    if (shouldEnable) {
+                        addTargetListener((TargetListener) tab);
+                    }
+    
+                    topLevelTabbedPane.setEnabledAt(i, shouldEnable);
                 }
-                // TODO: Do we want all enabled tabs to listen or only the one
-                // that is selected/visible? - tfm
-                removeTargetListener((TargetListener) tab);
-                if (shouldEnable) {
-                    addTargetListener((TargetListener) tab);
-                }
-
-                topLevelTabbedPane.setEnabledAt(i, shouldEnable);
             }
         }
     }
