@@ -173,7 +173,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelElement, String[] propertyNames) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Adding a listener to " //$NON-NLS-1$
+            LOG.debug("Adding a listener " //$NON-NLS-1$
+                    + listener + " to " //$NON-NLS-1$
                     + modelElement
                     + " for " //$NON-NLS-1$
                     + propertyNames);
