@@ -2995,10 +2995,19 @@ class CoreHelperMDRImpl implements CoreHelper {
     }
 
     public void setMultiplicity(Object handle, String arg) {
-        setMultiplicity(handle,createMultiplicity(arg));
+        if (arg == null) {
+            setMultiplicityInternal(handle, null);
+        } else {
+            setMultiplicityInternal(handle,createMultiplicity(arg));
+        }
     }
 
-    private void setMultiplicity(Object handle, Multiplicity arg) {
+    /**
+     * @param handle shall not be null. Shall be one of AssociationRole, 
+     * ClassifierRole, StructuralFeature, AssociationEnd, TagDefinition.
+     * @param arg null is allowed
+     */
+    private void setMultiplicityInternal(Object handle, Multiplicity arg) {
         Multiplicity previousMult =
             (Multiplicity) Model.getFacade().getMultiplicity(handle);
         if (handle instanceof AssociationRole) {
@@ -3012,9 +3021,8 @@ class CoreHelperMDRImpl implements CoreHelper {
         } else if (handle instanceof TagDefinition) {
             ((TagDefinition) handle).setMultiplicity(arg);
         }
-        if (previousMult != null &&
-                Model.getFacade().getModelElementContainer(previousMult)
-                == null) {
+        /* See issue 6038 for the reason behind the next statements: */
+        if (previousMult != null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Previous multiplicity of " + handle + " will be deleted." + arg);
             }
@@ -3029,13 +3037,16 @@ class CoreHelperMDRImpl implements CoreHelper {
             return;
         }
         if (arg == null || arg instanceof Multiplicity) {
-            setMultiplicity(handle, (Multiplicity) arg);
+            setMultiplicityInternal(handle, (Multiplicity) arg);
         } else {
             throw new IllegalArgumentException("handle: " + handle + " or arg: "
                     + arg);
         }
     }
 
+    /**
+     * @param sarg may not be null
+     */
     private Multiplicity createMultiplicity(String sarg) {
         boolean allDigits = true;
         for (int i=0; i < sarg.length(); ++i) {
@@ -3065,7 +3076,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         Multiplicity arg = modelImpl.getDataTypesFactoryInternal()
                 .createMultiplicityInternal(lower, upper);
         
-        setMultiplicity(handle, arg);
+        setMultiplicityInternal(handle, arg);
     }
 
     public void setName(final Object handle, final String name) {
