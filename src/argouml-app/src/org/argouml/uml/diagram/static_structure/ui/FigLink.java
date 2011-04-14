@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -39,6 +39,8 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import org.argouml.model.Model;
+import org.argouml.model.UmlChangeEvent;
+import org.argouml.notation.NotationProvider;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
@@ -86,6 +88,7 @@ public class FigLink extends FigEdgeModelElement {
         super(element, settings);
         middleGroup = new FigTextGroup(element, settings);
         initialize();
+        updateListeners(null, getOwner());
     }
 
     /*
@@ -115,12 +118,23 @@ public class FigLink extends FigEdgeModelElement {
         }
         if (newOwner != null) {
             addElementListener(newOwner, 
-                    new String[] {"remove", "name", "association"});
+                    new String[] {"remove", "association"});
             Object newAssociation = Model.getFacade().getAssociation(newOwner);
             if (newAssociation != null) {
                 addElementListener(newAssociation, "name");
             }
         }
+    }
+
+    @Override
+    public void notationRenderingChanged(NotationProvider np, String rendering) {
+        /* Do nothing. */
+    }
+
+    @Override
+    protected void updateLayout(UmlChangeEvent event) {
+        super.updateLayout(event);
+        updateNameText();
     }
 
     /**
