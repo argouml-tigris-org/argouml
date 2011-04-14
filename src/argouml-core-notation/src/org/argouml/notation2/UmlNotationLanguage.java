@@ -17,12 +17,10 @@ import org.argouml.model.Model;
 
 class UmlNotationLanguage implements NotationLanguage {
 
-    @Override
     public String getName() {
         return "UML";
     }
 
-    @Override
     public NotationText createNotationText(NotatedItem item) {
         
         NameUmlNotation nt = new NameUmlNotation(item);
@@ -31,5 +29,4 @@ class UmlNotationLanguage implements NotationLanguage {
         
         return nt;
     }
-
 }

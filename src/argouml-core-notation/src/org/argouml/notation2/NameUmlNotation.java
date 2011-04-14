@@ -29,17 +29,14 @@ class NameUmlNotation implements NotationText, PropertyChangeListener {
         notatedItem = item;
     }
 
-    @Override
     public Object getMetaType() {
         return notatedItem.getMetaType();
     }
 
-    @Override
     public NotationType getNotationType() {
         return notatedItem.getNotationType();
     }
 
-    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         try {
             final Object owner = notatedItem.getOwner();

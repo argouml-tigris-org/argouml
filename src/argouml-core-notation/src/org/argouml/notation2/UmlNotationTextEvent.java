@@ -30,22 +30,19 @@ class UmlNotationTextEvent implements NotationTextEvent {
         this.underlined = underlined;
         this.bold = bold;
     }
-    @Override
+    
     public String getText() {
         return text;
     }
 
-    @Override
     public boolean isUnderlined() {
         return underlined;
     }
 
-    @Override
     public boolean isItalic() {
         return italic;
     }
 
-    @Override
     public boolean isBold() {
         return bold;
     }
