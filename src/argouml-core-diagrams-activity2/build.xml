@@ -36,6 +36,9 @@ Building this requires:
       <fileset dir="../argouml-core-model/build/">
         <include name="*.jar"/>
       </fileset>
+      <fileset dir="../argouml-core-notation/build/">
+        <include name="*.jar"/>
+      </fileset>
       <fileset dir="../argouml-app/build/">
         <include name="*.jar"/>
       </fileset>
