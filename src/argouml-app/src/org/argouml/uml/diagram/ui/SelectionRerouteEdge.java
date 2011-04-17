@@ -56,6 +56,7 @@ import org.tigris.gef.base.FigModifyingMode;
 
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * A general class for rerouting edges, achieved by delegating
@@ -75,13 +76,13 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
      * Used to determine if the association is now to self,
      * in which case The association needs automatic layout.
      */
-    private FigNodeModelElement sourceFig;
+    private FigNode sourceFig;
 
     /**
      * Used to determine if the association is now to self,
      * in which case The association needs automatic layout.
      */
-    private FigNodeModelElement destFig;
+    private FigNode destFig;
 
     /**
      * The re-routing capability it armed if the mouse was previously
@@ -122,9 +123,9 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
 
         // calculate the source and dest figs for to self assoc
         sourceFig =
-	    (FigNodeModelElement) ((FigEdge) getContent()).getSourceFigNode();
+	    ((FigEdge) getContent()).getSourceFigNode();
         destFig = 
-            (FigNodeModelElement) ((FigEdge) getContent()).getDestFigNode();
+            ((FigEdge) getContent()).getDestFigNode();
 
         final Rectangle mousePosition =
 	    new Rectangle(me.getX() - 5, me.getY() - 5, 10, 10);
@@ -212,7 +213,7 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
 
         UMLMutableGraphSupport mgm =
             (UMLMutableGraphSupport) editor.getGraphModel();
-        FigNodeModelElement oldFig = null;
+        FigNode oldFig = null;
         boolean isSource = false;
         if (pointIndex == 0) {
             oldFig = sourceFig;
