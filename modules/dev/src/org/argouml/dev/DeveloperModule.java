@@ -55,6 +55,7 @@ import org.argouml.ui.AboutBox;
 import org.argouml.ui.ContextActionFactoryManager;
 import org.argouml.ui.DetailsPane;
 import org.argouml.ui.ProjectBrowser;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.undo.UndoManager;
 
 /**
@@ -110,6 +111,9 @@ public final class DeveloperModule implements ModuleInterface {
         JComponent eventPumpPanel = EventPumpInspectorPanel.getInstance();
         devPanel.add("Model Listeners", eventPumpPanel);
 
+        ModeInspectorPanel modesPanel = ModeInspectorPanel.getInstance();
+        devPanel.add("Modes", modesPanel);
+
         ProjectBrowser.getInstance().addPanel(devPanel, 
                 ProjectBrowser.Position.East);
 
@@ -129,6 +133,8 @@ public final class DeveloperModule implements ModuleInterface {
         
         ContextActionFactoryManager.addContextPopupFactory(
                 new DevActionFactory());
+        
+        Globals.curEditor().getModeManager().addModeChangeListener(modesPanel);
 
         return true;
     }
