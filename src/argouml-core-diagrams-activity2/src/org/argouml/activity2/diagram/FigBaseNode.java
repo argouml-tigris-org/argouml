@@ -62,7 +62,5 @@ class FigBaseNode extends FigNode implements DiagramNode {
     }
 
     public void setNameDiagramElement(DiagramElement name) {
-        // TODO Auto-generated method stub
-        
     }
 }

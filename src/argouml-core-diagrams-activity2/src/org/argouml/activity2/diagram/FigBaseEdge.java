@@ -13,17 +13,38 @@
 
 package org.argouml.activity2.diagram;
 
+import java.awt.Color;
+
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.PathItemPlacement;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdgePoly;
 
 /**
  * The Fig for all edge diagram elements. All specialist edge diagram elements
  * decorate this to get specialist behaviour 
  * @author Bob Tarling
  */
-class FigBaseEdge extends FigEdgeModelElement {
+class FigBaseEdge extends FigEdgePoly {
 
+    private final DiagramSettings settings;
+    private DiagramElement nameDiagramElement;
+    
     FigBaseEdge(Object owner, DiagramSettings settings) {
-        super(owner, settings);
+        super();
+        _useNearest = true;
+        setOwner(owner);
+        this.settings = settings;
+        if (nameDiagramElement != null) {
+            addPathItem((Fig) nameDiagramElement,
+                    new PathItemPlacement(this, (Fig) nameDiagramElement, 50, 10));
+        }
+        getFig().setLineColor(Color.black);
     }
+    
+
+    public DiagramElement getNameDiagramElement() {
+        return nameDiagramElement;
+    }
+    
 }

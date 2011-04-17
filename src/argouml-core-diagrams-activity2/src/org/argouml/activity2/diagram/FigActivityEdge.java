@@ -14,7 +14,6 @@
 package org.argouml.activity2.diagram;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.PathItemPlacement;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 
@@ -25,9 +24,6 @@ class FigActivityEdge extends FigBaseEdge {
     FigActivityEdge(Object owner, DiagramSettings settings) {
         super(owner, settings);
         
-        addPathItem(getNameFig(),
-                new PathItemPlacement(this, getNameFig(), 50, 10));
-        getFig().setLineColor(LINE_COLOR);
         setDestArrowHead(endArrow);
     }
 }
