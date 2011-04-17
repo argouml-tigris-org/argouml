@@ -179,7 +179,7 @@ abstract class BaseDiagram extends UMLDiagram implements Owned {
                 metaTypeByName.put(name, clazz);
                 nameByMetaType.put(clazz, name);
             } catch (ClassNotFoundException e) {
-                    LOG.error("Class not found " + className, e);
+                LOG.error("Class not found " + className, e);
             }
         }
     }
