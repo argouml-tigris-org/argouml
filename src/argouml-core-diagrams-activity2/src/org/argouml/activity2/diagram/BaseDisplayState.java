@@ -1,6 +1,6 @@
 /* $Id: $
  *****************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,6 @@ import java.awt.Rectangle;
 
 import org.argouml.notation2.NotationType;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.FigStereotypesGroup;
 
 abstract class BaseDisplayState implements StereotypeDisplayer, NameDisplayer {
 
@@ -49,7 +48,10 @@ abstract class BaseDisplayState implements StereotypeDisplayer, NameDisplayer {
     }
 
     abstract Dimension getMinimumSize();
-    abstract DiagramElement createBigPort(Rectangle rect, Color lineColor, Color fillColor);
+    abstract DiagramElement createBigPort(
+            final Rectangle rect,
+            final Color lineColor,
+            final Color fillColor);
     
     DiagramElement getPort() {
         return bigPort;

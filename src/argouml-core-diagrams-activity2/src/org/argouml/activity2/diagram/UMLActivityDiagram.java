@@ -1,6 +1,6 @@
 /* $Id: $
  *****************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,13 +48,6 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
     }
 
     @Override
-    public void initialize(Object owner) {
-        super.initialize(owner);
-        ActivityDiagramGraphModel gm =
-            (ActivityDiagramGraphModel) getGraphModel();
-    }
-
-    @Override
     public String getLabelName() {
         return Translator.localize("label.activity-diagram");
     }
@@ -85,15 +78,16 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
             figNode = new FigBaseNode(modelElement, bounds, settings);
             final String style;
             if (Model.getFacade().isAObjectNode(modelElement)) {
-                style="rect";
+                style = "rect";
             } else if (Model.getFacade().isASendSignalAction(modelElement)) {
-                style="pentagon";
+                style = "pentagon";
             } else if (Model.getFacade().isAAcceptEventAction(modelElement)) {
-                style="concave-pentagon";
+                style = "concave-pentagon";
             } else {
-                style="rrect";
+                style = "rrect";
             }
-            DiagramElementBuilder.buildDiagramElement((FigBaseNode) figNode, style, modelElement, settings);
+            DiagramElementBuilder.buildDiagramElement(
+                    (FigBaseNode) figNode, style, modelElement, settings);
         }
         
         return figNode;

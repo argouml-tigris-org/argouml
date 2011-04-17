@@ -19,7 +19,6 @@ import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigRRect;
-import org.tigris.gef.presentation.FigRect;
 
 /**
  * The state for displaying a node as a rounded rectangle

@@ -1,6 +1,6 @@
 /* $Id: $
  *****************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 
 package org.argouml.activity2.diagram;
 
-import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -36,12 +35,10 @@ import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.graph.MutableGraphModel;
-import org.tigris.gef.presentation.FigNode;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

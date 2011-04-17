@@ -1,6 +1,6 @@
 /* $Id: $
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,6 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.util.List;
-
-import org.tigris.gef.base.Geometry;
-import org.tigris.gef.presentation.FigPoly;
 
 /**
  * A FigPoly to which edges gravitate to the perimeter instead of the points
@@ -54,12 +51,16 @@ class FigAcceptEventPoly extends FigGravityPoly {
      */
     @Override
     public Point getClosestPoint(Point anotherPt) {
-        if (anotherPt.x < getX() && anotherPt.y >= getY() && anotherPt.y < getY() + getHeight()) {
+        if (anotherPt.x < getX()
+                && anotherPt.y >= getY()
+                && anotherPt.y < getY() + getHeight()) {
+            final int x;
             if (anotherPt.y < getY() + getHeight() / 2) {
-                return new Point(getX() + (anotherPt.y - getY()), anotherPt.y); 
+                x = getX() + (anotherPt.y - getY());
             } else {
-                return new Point(getX() + ((getY() + getHeight()) - anotherPt.y), anotherPt.y); 
+                x = getX() + ((getY() + getHeight()) - anotherPt.y);
             }
+            return new Point(x, anotherPt.y); 
         } else {
             return super.getClosestPoint(anotherPt);
         }
