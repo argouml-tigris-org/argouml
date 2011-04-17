@@ -20,13 +20,11 @@ import java.awt.Rectangle;
 import org.argouml.notation2.NotationType;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigStereotypesGroup;
-import org.tigris.gef.presentation.Fig;
 
 abstract class BaseDisplayState implements StereotypeDisplayer, NameDisplayer {
 
-    private final Fig bigPort;
-    private final Fig stereotypeFig;
-    private final Fig nameFig;
+    private final DiagramElement bigPort;
+    private final DiagramElement nameDisplay;
     
     public BaseDisplayState(
             final Rectangle rect,
@@ -34,8 +32,7 @@ abstract class BaseDisplayState implements StereotypeDisplayer, NameDisplayer {
             final Color fillColor,
             final Object modelElement,
             final DiagramSettings settings) {
-        stereotypeFig = new FigStereotypesGroup(modelElement, new Rectangle(0, 0, 0, 0), settings);
-        nameFig = new FigNotation(
+        nameDisplay = new FigNotation(
                 modelElement,
                 new Rectangle(0, 0, 0, 0),
                 settings,
@@ -43,18 +40,18 @@ abstract class BaseDisplayState implements StereotypeDisplayer, NameDisplayer {
         bigPort = createBigPort(rect, lineColor, fillColor);
     }
     
-    public Fig getStereotypeDisplay() {
-        return stereotypeFig;
+    public DiagramElement getStereotypeDisplay() {
+        return null;
     }
 
-    public Fig getNameDisplay() {
-        return nameFig;
+    public DiagramElement getNameDisplay() {
+        return nameDisplay;
     }
 
     abstract Dimension getMinimumSize();
-    abstract Fig createBigPort(Rectangle rect, Color lineColor, Color fillColor);
+    abstract DiagramElement createBigPort(Rectangle rect, Color lineColor, Color fillColor);
     
-    Fig getBigPort() {
+    DiagramElement getPort() {
         return bigPort;
     }
 }

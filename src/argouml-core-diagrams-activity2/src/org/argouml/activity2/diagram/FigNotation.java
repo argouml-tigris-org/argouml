@@ -13,8 +13,8 @@
 
 package org.argouml.activity2.diagram;
 
+import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.Rectangle;
 
 import org.argouml.notation2.NotatedItem;
@@ -28,7 +28,7 @@ import org.tigris.gef.presentation.FigText;
 /**
  * @author Bob Tarling
  */
-public class FigNotation extends FigText implements NotatedItem {
+public class FigNotation extends FigText implements NotatedItem, DiagramElement {
 
     private final NotationType notationType;
     
@@ -52,7 +52,8 @@ public class FigNotation extends FigText implements NotatedItem {
         setTabAction(FigText.END_EDITING);
         setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
-        super.setFilled(false);
+        super.setFilled(true);
+        setFillColor(Color.red);
         NotationManager.getInstance().addListener(this);
     }
 

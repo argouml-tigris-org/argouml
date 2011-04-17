@@ -18,12 +18,12 @@ import java.awt.Rectangle;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ActivityDiagram;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * Diagram class for UML2 Activity Diagram
@@ -31,6 +31,10 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
  */
 public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
     
+    /**
+     * A UML2 activity diagram is owned by an activity
+     * @param activity
+     */
     UMLActivityDiagram(Object activity) {
         super(activity);
     }
@@ -75,7 +79,7 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
             final Object modelElement,
             final Rectangle bounds) {
         
-        FigNodeModelElement figNode = null;
+        DiagramElement figNode = null;
         
         DiagramSettings settings = getDiagramSettings();
         
@@ -92,10 +96,15 @@ public class UMLActivityDiagram extends BaseDiagram implements ActivityDiagram {
                 style="rrect";
             }
             DiagramElementBuilder.buildDiagramElement((FigBaseNode) figNode, style, modelElement, settings);
-        } else if (Model.getFacade().isAComment(modelElement)) {
-            figNode = new FigComment(modelElement, bounds, settings);
         }
         
         return figNode;
+    }
+
+    @Override
+    public void encloserChanged(FigNode enclosed, FigNode oldEncloser,
+            FigNode newEncloser) {
+        // TODO Auto-generated method stub
+        
     }
 }

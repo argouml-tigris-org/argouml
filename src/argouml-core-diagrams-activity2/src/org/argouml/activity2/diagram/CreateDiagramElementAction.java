@@ -24,9 +24,9 @@ class CreateDiagramElementAction extends UndoableAction {
     
     final Object metaType;
     final String style;
-    final ArgoDiagram diagram;
+    final BaseDiagram diagram;
 
-    CreateDiagramElementAction(Object metaType, String style, String name, ArgoDiagram diagram) {
+    CreateDiagramElementAction(Object metaType, String style, String name, BaseDiagram diagram) {
         super(name, ResourceLoaderWrapper.lookupIconResource(
                 ResourceLoaderWrapper.getImageBinding(name)));
         this.diagram = diagram;

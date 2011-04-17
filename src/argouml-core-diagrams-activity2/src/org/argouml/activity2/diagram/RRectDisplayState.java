@@ -18,8 +18,8 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRRect;
+import org.tigris.gef.presentation.FigRect;
 
 /**
  * The state for displaying a node as a rounded rectangle
@@ -53,8 +53,20 @@ public class RRectDisplayState extends BaseDisplayState
         return new Dimension(w, h);
     }
     
-    Fig createBigPort(Rectangle rect, Color lineColor, Color fillColor) {
-        return new FigRRect(
+    DiagramElement createBigPort(Rectangle rect, Color lineColor, Color fillColor) {
+        return new RRect(
                 rect.x, rect.y, rect.width, rect.height, lineColor, fillColor);
     }
+    
+    private class RRect extends FigRRect implements DiagramElement {
+        RRect(
+                final int x, 
+                final int y, 
+                final int w, 
+                final int h, 
+                final Color lineColor, 
+                final Color fillColor) {
+            super(x, y, w, h, lineColor, fillColor);
+        }
+    }    
 }

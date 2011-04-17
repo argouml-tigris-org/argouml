@@ -29,12 +29,14 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Owned;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
@@ -48,13 +50,16 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-abstract class BaseDiagram extends UMLDiagram {
+abstract class BaseDiagram extends UMLDiagram implements Owned {
     
     private static final Logger LOG = Logger
         .getLogger(BaseDiagram.class);
     
+    final Object owner;
+    
     BaseDiagram(Object owner) {
-        super(owner);
+        super();
+        this.owner = owner;
         MutableGraphModel gm = createGraphModel();
         setGraphModel(gm);
         
@@ -70,11 +75,10 @@ abstract class BaseDiagram extends UMLDiagram {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Constructing diagram for " + owner);
         }
-        try {
-            this.setName(getNewDiagramName());
-        } catch (PropertyVetoException e) {
-            LOG.error("Exception", e);
-        }
+    }
+    
+    public Object getOwner() {
+        return owner;
     }
     
     abstract UmlDiagramRenderer createDiagramRenderer();
@@ -83,7 +87,6 @@ abstract class BaseDiagram extends UMLDiagram {
     private Map<String, Class<?>> metaTypeByName;
     private Map<Class<?>, String> nameByMetaType;
     
-    @Override
     protected Object[] getUmlActions() {
         try {
             final Document doc = getDocument();
@@ -215,12 +218,6 @@ abstract class BaseDiagram extends UMLDiagram {
                         metaType,
                         label));
     }    
-    
-    @Override
-    public void encloserChanged(FigNode enclosed, FigNode oldEncloser,
-            FigNode newEncloser) {
-    	// Do nothing.        
-    }
     
     /*
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)

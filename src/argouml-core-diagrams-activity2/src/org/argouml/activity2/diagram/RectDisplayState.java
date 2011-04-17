@@ -17,7 +17,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRect;
 
 public class RectDisplayState extends BaseDisplayState implements StereotypeDisplayer, NameDisplayer {
@@ -45,8 +45,23 @@ public class RectDisplayState extends BaseDisplayState implements StereotypeDisp
         return new Dimension(w, h);
     }
     
-    Fig createBigPort(Rectangle rect, Color lineColor, Color fillColor) {
-        return new FigRect(
+    
+    
+    DiagramElement createBigPort(Rectangle rect, Color lineColor, Color fillColor) {
+        return new Rect(
                 rect.x, rect.y, rect.width, rect.height, lineColor, fillColor);
+    }
+    
+    
+    private class Rect extends FigRect implements DiagramElement {
+        Rect(
+                final int x, 
+                final int y, 
+                final int w, 
+                final int h, 
+                final Color lineColor, 
+                final Color fillColor) {
+            super(x, y, w, h, lineColor, fillColor);
+        }
     }
 }

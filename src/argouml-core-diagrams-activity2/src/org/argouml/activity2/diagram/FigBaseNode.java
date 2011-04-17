@@ -17,16 +17,19 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
 
 /**
  * The Fig for all node diagram elements. All specialist diagram elements
  * decorate this to get specialist behaviour 
  * @author Bob Tarling
  */
-class FigBaseNode extends FigNodeModelElement {
+class FigBaseNode extends FigNode implements DiagramNode {
 
     private BaseDisplayState displayState;
+    private final DiagramSettings settings;
+    private DiagramElement nameDiagramElement;
     
     /**
      * Constructor a new FigBaseNode
@@ -37,21 +40,29 @@ class FigBaseNode extends FigNodeModelElement {
      */
     FigBaseNode(final Object owner, final Rectangle bounds,
             final DiagramSettings settings) {
-        super(owner, bounds, settings);
-        addFig(getBigPort());
+        super(owner);
+        this.settings = settings;
     }
     
     void setDisplayState(BaseDisplayState displayState) {
         this.displayState = displayState;
-        if (getBigPort() != null) {
-            removeFig(getBigPort());
-        }
-        setBigPort(displayState.getBigPort());
-        addFig(displayState.getBigPort());
+        Fig port = (Fig) displayState.getPort();
+        port.setOwner(getOwner());
+        addFig(port);
+    }
+    
+    @Override
+    public boolean isDragConnectable() {
+        return false;
     }
     
     @Override
     public Dimension getMinimumSize() {
         return displayState.getMinimumSize();
+    }
+
+    public void setNameDiagramElement(DiagramElement name) {
+        // TODO Auto-generated method stub
+        
     }
 }

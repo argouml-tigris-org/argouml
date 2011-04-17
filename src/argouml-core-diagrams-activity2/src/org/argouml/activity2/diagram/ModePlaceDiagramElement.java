@@ -6,23 +6,16 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
-import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.base.FigModifyingModeImpl;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.di.GraphNode;
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeHooks;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.undo.UndoManager;
 
 public class ModePlaceDiagramElement extends FigModifyingModeImpl {
@@ -31,7 +24,7 @@ public class ModePlaceDiagramElement extends FigModifyingModeImpl {
     private final Object metaType;
     private final String style;
     private final String instructions;
-    private final ArgoDiagram diagram;
+    private final BaseDiagram diagram;
     
     private Object modelElement;
     private GraphNode graphNode;
@@ -40,7 +33,7 @@ public class ModePlaceDiagramElement extends FigModifyingModeImpl {
     private static final int HEIGHT = 25;
     
     public ModePlaceDiagramElement(
-            ArgoDiagram diagram,
+            BaseDiagram diagram,
             Object metaType,
             String style,
             String instructions) {
@@ -70,7 +63,7 @@ public class ModePlaceDiagramElement extends FigModifyingModeImpl {
         // TODO: Something might go wrong during processing. We don't really
         // want to create the model element until the user releases the mouse
         // in the place expected.
-        modelElement = Model.getUmlFactory().buildNode(metaType, diagram.getNamespace());
+        modelElement = Model.getUmlFactory().buildNode(metaType, diagram.getOwner());
         LOG.info("Created " + modelElement);
         //
         start();

@@ -13,9 +13,8 @@
 
 package org.argouml.activity2.diagram;
 
-import org.tigris.gef.presentation.Fig;
 
 interface NameDisplayer {
 
-    Fig getStereotypeDisplay();
+    DiagramElement getStereotypeDisplay();
 }

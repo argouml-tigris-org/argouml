@@ -19,7 +19,6 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 
 public class ConcavePentagonDisplayState extends BaseDisplayState implements StereotypeDisplayer, NameDisplayer {
@@ -45,8 +44,8 @@ public class ConcavePentagonDisplayState extends BaseDisplayState implements Ste
         return new Dimension(w, h);
     }
     
-    protected Fig createBigPort(Rectangle rect, Color lineColor, Color fillColor) {
-        final FigPoly polyFig = new FigPoly();
+    protected DiagramElement createBigPort(Rectangle rect, Color lineColor, Color fillColor) {
+        final Poly poly = new Poly();
         final int[] xs = new int[6];
         final int[] ys = new int[6];
         final int x = rect.x;
@@ -60,8 +59,15 @@ public class ConcavePentagonDisplayState extends BaseDisplayState implements Ste
         xs[4] = x + h / 2; ys[4] = y + h / 2;
         xs[5] = x;         ys[5] = y;
         final Polygon p = new Polygon(xs, ys, 6);
-        polyFig.setPolygon(p);
+        poly.setPolygon(p);
         
-        return polyFig;
+        return poly;
+    }
+    
+    
+    private class Poly extends FigPoly implements DiagramElement {
+        Poly() {
+            super();
+        }
     }
 }
