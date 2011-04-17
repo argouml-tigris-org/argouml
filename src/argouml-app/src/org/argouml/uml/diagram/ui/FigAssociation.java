@@ -562,19 +562,6 @@ public class FigAssociation extends FigEdgeModelElement {
         super.paint(g);
     }
 
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#paintClarifiers(java.awt.Graphics)
-     */
-    @Override
-    public void paintClarifiers(Graphics g) {
-        indicateBounds(getNameFig(), g);
-        indicateBounds(srcEnd.getMult(), g);
-        indicateBounds(srcEnd.getRole(), g);
-        indicateBounds(destEnd.getMult(), g);
-        indicateBounds(destEnd.getRole(), g);
-        super.paintClarifiers(g);
-    }
-
     /**
      * @return Returns the middleGroup.
      */

@@ -292,14 +292,4 @@ public class FigTransition extends FigEdgeModelElement {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
     }
-
-    /*
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#paintClarifiers(java.awt.Graphics)
-     */
-    @Override
-    public void paintClarifiers(Graphics g) {
-        indicateBounds(getNameFig(), g);
-        super.paintClarifiers(g);
-    }
-
 }

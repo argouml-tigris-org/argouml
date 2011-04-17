@@ -483,19 +483,6 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * This is used to draw a box round the edge of any editable FigText
-     * annotations of the edge when the edge is selected.
-     * TODO: This logic probably belongs in our base selection class
-     * SelectionEdgeClarifiers and could be written to discover what FigText
-     * annotations exist rather than hard code in subclasses.
-     * @param f the fig to indicate the bounds of
-     * @param g the graphics
-     */
-    protected void indicateBounds(FigText f, Graphics g) {
-        // No longer necessary, see issue 1048.
-    }
-    
-    /**
      * The user clicked on the clarifier.
      *
      * @param x the x of the point clicked

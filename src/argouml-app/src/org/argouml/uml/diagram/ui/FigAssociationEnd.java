@@ -187,14 +187,6 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         /* There is none... */
     }
 
-    @Override
-    public void paintClarifiers(Graphics g) {
-        indicateBounds(getNameFig(), g);
-        indicateBounds(destMult, g);
-        indicateBounds(destGroup.getRole(), g);
-        super.paintClarifiers(g);
-    }
-
     /**
      * Updates the multiplicity field.
      */
