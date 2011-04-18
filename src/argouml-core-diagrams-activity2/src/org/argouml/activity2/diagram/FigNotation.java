@@ -53,7 +53,6 @@ public class FigNotation extends FigText implements NotatedItem, DiagramElement 
         setReturnAction(FigText.END_EDITING);
         setLineWidth(0);
         super.setFilled(true);
-        setFillColor(Color.red);
         NotationManager.getInstance().addListener(this);
     }
 
@@ -97,7 +96,10 @@ public class FigNotation extends FigText implements NotatedItem, DiagramElement 
     }
 
     public void notationTextChanged(NotationTextEvent event) {
+        System.out.println("Notation=" + event.getText());
         this.setText(event.getText());
         this.setUnderline(event.isUnderlined());
+        this.setUnderline(event.isBold());
+        this.setItalic(event.isBold());
     }
 }

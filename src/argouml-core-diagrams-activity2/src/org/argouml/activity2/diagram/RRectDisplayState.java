@@ -41,13 +41,20 @@ public class RRectDisplayState extends BaseDisplayState
 
     @Override
     public Dimension getMinimumSize() {
-        final Dimension stereoDim = getStereotypeDisplay().getMinimumSize();
+        
         final Dimension nameDim = getNameDisplay().getMinimumSize();
-
-        int w = Math.max(stereoDim.width, nameDim.width) + PADDING * 2;
+        int width = nameDim.width;
+        int height = nameDim.width;
+        if (getStereotypeDisplay() != null) {
+            final Dimension stereoDim = getStereotypeDisplay().getMinimumSize();
+            width += Math.max(stereoDim.width, nameDim.width);
+            height += (stereoDim.height - 2);
+        }
+        
+        int w = width + PADDING * 2;
         /* The stereoDim has height=2, even if it is empty, 
          * hence the -2 below: */
-        final int h = stereoDim.height - 2 + nameDim.height + PADDING;
+        final int h = height + PADDING;
         w = Math.max(w, h + 44); // the width needs to be > the height
         return new Dimension(w, h);
     }

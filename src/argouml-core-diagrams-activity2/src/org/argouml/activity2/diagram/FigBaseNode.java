@@ -46,9 +46,8 @@ class FigBaseNode extends FigNode implements DiagramNode {
     
     void setDisplayState(BaseDisplayState displayState) {
         this.displayState = displayState;
-        Fig port = (Fig) displayState.getPort();
-        port.setOwner(getOwner());
-        addFig(port);
+        displayState.setOwner(getOwner());
+        addFig(displayState);
     }
     
     @Override

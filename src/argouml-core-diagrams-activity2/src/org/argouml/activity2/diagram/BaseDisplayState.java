@@ -14,13 +14,14 @@
 package org.argouml.activity2.diagram;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import org.argouml.notation2.NotationType;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
 
-abstract class BaseDisplayState implements StereotypeDisplayer, NameDisplayer {
+abstract class BaseDisplayState extends FigGroup implements StereotypeDisplayer, NameDisplayer {
 
     private final DiagramElement bigPort;
     private final DiagramElement nameDisplay;
@@ -37,6 +38,8 @@ abstract class BaseDisplayState implements StereotypeDisplayer, NameDisplayer {
                 settings,
                 NotationType.NAME);
         bigPort = createBigPort(rect, lineColor, fillColor);
+        addFig((Fig) bigPort);
+        addFig((Fig) getNameDisplay());
     }
     
     public DiagramElement getStereotypeDisplay() {
@@ -47,7 +50,6 @@ abstract class BaseDisplayState implements StereotypeDisplayer, NameDisplayer {
         return nameDisplay;
     }
 
-    abstract Dimension getMinimumSize();
     abstract DiagramElement createBigPort(
             final Rectangle rect,
             final Color lineColor,
