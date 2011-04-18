@@ -56,6 +56,10 @@ public class FigNotation extends FigText implements NotatedItem, DiagramElement 
         NotationManager.getInstance().addListener(this);
     }
 
+    public void setLineWidth(int lw) {
+        super.setLineWidth(0);
+    }
+    
     /**
      * Notation is always transparent
      */
@@ -96,10 +100,10 @@ public class FigNotation extends FigText implements NotatedItem, DiagramElement 
     }
 
     public void notationTextChanged(NotationTextEvent event) {
-        System.out.println("Notation=" + event.getText());
         this.setText(event.getText());
         this.setUnderline(event.isUnderlined());
         this.setUnderline(event.isBold());
         this.setItalic(event.isBold());
+        this.damage();
     }
 }
