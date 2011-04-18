@@ -18,9 +18,10 @@ import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.undo.UndoManager;
 
-public class ModePlaceDiagramElement extends FigModifyingModeImpl {
+class ModePlaceDiagramElement extends FigModifyingModeImpl {
 
-    private static final Logger LOG = Logger.getLogger(ModePlaceDiagramElement.class);
+    private static final Logger LOG =
+        Logger.getLogger(ModePlaceDiagramElement.class);
     private final Object metaType;
     private final String style;
     private final String instructions;
@@ -33,10 +34,10 @@ public class ModePlaceDiagramElement extends FigModifyingModeImpl {
     private static final int HEIGHT = 25;
     
     public ModePlaceDiagramElement(
-            BaseDiagram diagram,
-            Object metaType,
-            String style,
-            String instructions) {
+            final BaseDiagram diagram,
+            final Object metaType,
+            final String style,
+            final String instructions) {
         this.diagram = diagram;
         this.metaType = metaType;
         this.style = style;

@@ -19,7 +19,7 @@ import java.awt.Rectangle;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigRect;
 
-public class RectDisplayState extends BaseDisplayState
+class RectDisplayState extends BaseDisplayState
         implements StereotypeDisplayer, NameDisplayer {
 
     private static final int PADDING = 8;

@@ -13,7 +13,6 @@
 
 package org.argouml.activity2.diagram;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
@@ -28,7 +27,7 @@ import org.tigris.gef.presentation.FigText;
 /**
  * @author Bob Tarling
  */
-public class FigNotation extends FigText implements NotatedItem, DiagramElement {
+class FigNotation extends FigText implements NotatedItem, DiagramElement {
 
     private final NotationType notationType;
     

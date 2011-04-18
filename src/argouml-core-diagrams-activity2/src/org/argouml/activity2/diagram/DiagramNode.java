@@ -7,7 +7,7 @@ import java.awt.Rectangle;
  * move to the diagrams module
  * @author Bob Tarling
  */
-public interface DiagramNode extends DiagramElement {
+interface DiagramNode extends DiagramElement {
 
     Rectangle getBounds();
     void setNameDiagramElement(DiagramElement name);

@@ -24,7 +24,7 @@ import org.tigris.gef.presentation.FigRRect;
  * The state for displaying a node as a rounded rectangle
  * @author Bob Tarling
  */
-public class RRectDisplayState extends BaseDisplayState
+class RRectDisplayState extends BaseDisplayState
             implements StereotypeDisplayer, NameDisplayer {
 
     private static final int PADDING = 8;

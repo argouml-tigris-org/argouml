@@ -20,7 +20,7 @@ import java.awt.Rectangle;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigPoly;
 
-public class PentagonDisplayState extends BaseDisplayState
+class PentagonDisplayState extends BaseDisplayState
         implements StereotypeDisplayer, NameDisplayer {
 
     private static final int PADDING = 8;
