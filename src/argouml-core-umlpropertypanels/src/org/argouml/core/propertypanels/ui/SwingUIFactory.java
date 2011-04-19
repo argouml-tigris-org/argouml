@@ -40,7 +40,6 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.util.Collection;
-import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -224,7 +223,8 @@ class SwingUIFactory {
             } else {
         	UMLValueSpecificationModel model = 
                     new UMLValueSpecificationModel(target, "initialValue");
-                p  = new UMLValueSpecificationPanel(model, propertyName);
+                //p  = new UMLValueSpecificationPanel(model, propertyName);
+        	p  = new UMLValueSpecificationPanelOptional(model, propertyName);
             }
             control = p;
         } else if ("defaultValue".equals(propertyName)) {

@@ -8,31 +8,69 @@
  *
  * Contributors:
  *    Thomas Neustupny
+ *    Laurent Braud
  *******************************************************************************
  */
 
 package org.argouml.core.propertypanels.ui;
 
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collection;
+
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.tigris.swidgets.LabelledLayout;
 
 /**
  * The panel that shows a value specification for an other UML element.
+ * 
+ * 
+ * TODO: Do we need to implements ChangeListener If yes => ok If no => Can't be
+ * use without *Optional class, or the *Optional don't need to !
+ * 
  */
-class UMLValueSpecificationPanel extends JPanel implements ChangeListener {
+class UMLValueSpecificationPanel extends JPanel {
+
+    /**
+     * Generated UID.
+     */
+    private static final long serialVersionUID = 1494398250907085817L;
 
     private static final Logger LOG = Logger
 	    .getLogger(UMLValueSpecificationPanel.class);
 
+    /**
+     * 
+     */
     private final UMLValueSpecificationModel model;
-    private final UMLValueSpecificationValueField valueField;
 
+    /**
+     * The component for view/change the type.
+     */
+    private JComboBox typeInstanceValueList;
+
+    /**
+     * This contains a panel to display (A checkbox for boolean, ...)
+     */
+    private UMLValueSpecificationValueField valueField;
+
+    /**
+     * 
+     * TODO: Try to use valueField.getComponent()
+     */
+    private Component scrollPane;
+
+    /**
+     * 
+     * @param model
+     * @param title
+     */
     public UMLValueSpecificationPanel(UMLValueSpecificationModel model,
 	    String title) {
 
@@ -43,21 +81,126 @@ class UMLValueSpecificationPanel extends JPanel implements ChangeListener {
 	this.setBorder(border);
 
 	this.model = model;
-	this.valueField = new UMLValueSpecificationValueField(model, true);
 
-	add(new JScrollPane(valueField));
+	JComboBox combo = uiSelect();
+	add(combo);
 
-	model.addChangeListener(this);
+	this.valueField = createField((String) combo.getSelectedItem());
+
     }
 
-    @Override
-    public void removeNotify() {
-	model.removeChangeListener(this);
-	super.removeNotify();
+    /**
+     * 
+     * @param sType
+     * @return
+     */
+    private UMLValueSpecificationValueField createField(String sType) {
+
+	if (scrollPane != null) {
+	    remove(scrollPane);
+	}
+
+	UMLValueSpecificationValueField ret = null;
+
+	// TODO: All type. Use Introspection ?
+	if (sType.equals(UMLValueSpecificationModel.LITERAL_BOOLEAN)) {
+	    ret = new UMLValueSpecificationValueFieldLiteralBoolean(model, true);
+	} else if (sType.equals(UMLValueSpecificationModel.LITERAL_STRING)) {
+	    ret = new UMLValueSpecificationValueFieldLiteralString(model, true);
+	} else {
+	    // Opaque Expression (default)
+	    ret = new UMLValueSpecificationValueFieldOpaqueExpression(model,
+		    true);
+	}
+
+	scrollPane = ret.getComponent();
+	add(scrollPane);
+
+	return ret;
     }
 
-    public void stateChanged(ChangeEvent e) {
-	LOG.debug(">>Values shown on panel are changed");
-	valueField.update();
+    /**
+     * Create the combobox wich display available ValueSpecification (type)
+     * 
+     * TODO LiteralNull,Expression, InstanceValue,... TODO ? Use something else
+     * that a combobox. TODO ? If combobox, can we restrict list ? For instance,
+     * can we create a Boolean for a Integer Value ?
+     * 
+     * TODO
+     * 
+     * @return
+     */
+    private JComboBox uiSelect() {
+
+	// Get the list: OpaqueExpression, LiteralString,...
+	Collection<String> listVS = Model.getDataTypesHelper()
+		.getValueSpecifications();
+	Object[] typeInstanceValue = listVS.toArray();
+
+	typeInstanceValueList = new JComboBox(typeInstanceValue);
+
+	int iSel = 0;// By default, the first value of the combobox is selected.
+
+	if (model != null) {
+	    // Get current InitialValue
+	    Object expression = this.model.getExpression();
+
+	    if (expression != null) {
+		// Select the Current type in the combobox
+
+		// if "expression" implements one of the combobox, select it
+		// TODO ? Do it in eUML module project ?
+		Class<?>[] interfaces = expression.getClass().getInterfaces();
+		iSel = -1;
+		for (int iInterf = 0; iInterf < interfaces.length && iSel == -1; iInterf++) {
+		    for (int iVS = 0; iVS < typeInstanceValue.length
+			    && iSel == -1; iVS++) {
+			if (interfaces[iInterf].getSimpleName().equals(
+				typeInstanceValue[iVS])) {
+			    iSel = iVS;
+			}
+		    }
+		}
+	    }
+
+	}
+
+	typeInstanceValueList.setSelectedIndex(iSel);
+
+	/**
+	 * When we change the type, we need to create a new Initial Value. And
+	 * to display the Panel
+	 * 
+	 * TODO: if we select the same type that the current, do nothing.
+	 */
+	typeInstanceValueList.addActionListener(new ActionListener() {
+
+	    public void actionPerformed(ActionEvent ae) {
+
+		if (ae.getActionCommand().equals("comboBoxChanged")) {
+
+		    JComboBox lst = (JComboBox) ae.getSource();
+		    String sTypeVS = (String) lst.getSelectedItem();
+		    model.createValueSpecification(sTypeVS);
+		    createField(sTypeVS);
+		    // TODO: When the attribute isn't in the diagram
+		    // , for exemple: select attribut by Explorer
+		    // Then, the refresh isn't auto: we had to click !!
+		}
+
+	    }
+	});
+
+	return typeInstanceValueList;
     }
+
+    /**
+     * Select element in a combo.
+     */
+    public void selectDefaultVS() {
+	// default : 0 => OpaqueExpression
+	// set to 1 for test
+	typeInstanceValueList.setSelectedIndex(0);
+    }
+
 }

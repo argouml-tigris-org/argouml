@@ -8,88 +8,87 @@
  *
  * Contributors:
  *    Thomas Neustupny
+ *    Laurent Braud
  *******************************************************************************
  */
 
 package org.argouml.core.propertypanels.ui;
 
-import javax.swing.JTextArea;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import java.awt.Component;
 
 import org.apache.log4j.Logger;
-import org.argouml.i18n.Translator;
-import org.argouml.ui.LookAndFeelMgr;
 
-/**
- * This text field shows the value of a UML value specification.
- * 
- */
-class UMLValueSpecificationValueField extends JTextArea implements
-	DocumentListener {
+public abstract class UMLValueSpecificationValueField {
 
     /**
-     * Logger.
+     * TODO: see if protected or need to be present in each subclass
      */
-    private static final Logger LOG = Logger
+    protected static final Logger LOG = Logger
 	    .getLogger(UMLValueSpecificationValueField.class);
 
+    /**
+     * 
+     */
     private UMLValueSpecificationModel model;
-    private boolean notifyModel;
 
     /**
-     * The constructor.
+     * TODO: Use it notify Set to true to forward events to model. Only one of
+     * Language and Body fields should have this set to true.
+     */
+    private boolean notifyModel;
+
+    protected Component allField;
+
+    /**
+     * Constructor which create the Component
      * 
      * @param model
-     *            ValueSpecification model, should be shared between the fields
      * @param notify
-     *            Set to true to forward events to model. Only one of Language
-     *            and Body fields should have this set to true.
      */
-    public UMLValueSpecificationValueField(UMLValueSpecificationModel model,
+    public UMLValueSpecificationValueField(UMLValueSpecificationModel aModel,
 	    boolean notify) {
-	this.model = model;
+	this.model = aModel;
 	this.notifyModel = notify;
-	getDocument().addDocumentListener(this);
-	setToolTipText(Translator.localize("label.body.tooltip"));
-	setFont(LookAndFeelMgr.getInstance().getStandardFont());
-	setRows(2); // make it stretch vertically
 
-	update();
+	buildPanel();
+	updateFields();
+
     }
 
-    void update() {
-	String oldText = getText();
-	String newText = model.getText();
-
-	if (oldText == null || newText == null || !oldText.equals(newText)) {
-	    if (oldText != newText) {
-		setText(newText);
-	    }
-	}
-    }
-
-    /*
-     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.
-     * DocumentEvent)
+    /**
+     * Update all the Field in the Component "allField", which are display, with
+     * the value of the model
+     * 
      */
-    public void changedUpdate(final DocumentEvent p1) {
-	model.setText(getText());
+    protected abstract void updateFields();
+
+    /**
+     * Update the model with the field If field aren't display, need to get the
+     * current value before update
+     */
+    protected abstract void updateModel();
+
+    /**
+     * build the panel for the ValueSpecification's type
+     */
+    public abstract void buildPanel();
+
+    /**
+     * Return a component with all field need to display and modify this
+     * ValueSpecification
+     * 
+     * @return
+     */
+    public Component getComponent() {
+	return allField;
     }
 
-    /*
-     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.
-     * DocumentEvent)
-     */
-    public void removeUpdate(final DocumentEvent p1) {
-	model.setText(getText());
+    public boolean isNotifyModel() {
+	return notifyModel;
     }
 
-    /*
-     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.
-     * DocumentEvent)
-     */
-    public void insertUpdate(final DocumentEvent p1) {
-	model.setText(getText());
+    public UMLValueSpecificationModel getModel() {
+	return model;
     }
+
 }

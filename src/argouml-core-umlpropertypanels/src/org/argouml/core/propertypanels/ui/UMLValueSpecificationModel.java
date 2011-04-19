@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Thomas Neustupny
+ *    Laurent Braud
  *******************************************************************************
  */
 
@@ -37,6 +38,15 @@ import org.argouml.model.Model;
  class UMLValueSpecificationModel
 	implements PropertyChangeListener {
 
+     /*
+      * TODO: Don't use them find an other way to do this
+      */
+    public final static String LITERAL_BOOLEAN =" LiteralBoolean";
+    public final static String LITERAL_NULL = "LiteralNull";
+    public final static String LITERAL_STRING = "LiteralString";
+    public final static String LITERAL_INTEGER = "LiteralInteger";
+    public final static String LITERAL_UNATURAL = "LiteralUnlimitedNatural";
+    
     private static final Logger LOG =
         Logger.getLogger(UMLValueSpecificationModel.class);
 
@@ -110,7 +120,7 @@ import org.argouml.model.Model;
     /**
      * @return the expression
      */
-    private Object getExpression() {
+    public Object getExpression() {
         return Model.getFacade().getInitialValue(getTarget());
     }
 
@@ -134,6 +144,7 @@ import org.argouml.model.Model;
 
     /**
      * @return The value text of the value specification.
+     * @deprecated I don't use it.
      */
     public String getText() {
         Object expression = getExpression();
@@ -143,58 +154,57 @@ import org.argouml.model.Model;
         return Model.getFacade().getBody(expression).toString();
     }
 
+    
     /**
-     * @param text the value text of the value specification
+     * Get the ValueSpecification
+     * @return
      */
-    public void setText(String text) {
-
-	Object expression = getExpression();
-        boolean mustChange = true;
-        if (expression != null) {
-            Object oldValue = Model.getFacade().getBody(expression).toString();
-            if (oldValue != null && oldValue.equals(text)) {
-                mustChange = false;
-            }
-        }
-        if (mustChange) {
-            String lang = null;
-            if (expression != null) {
-                lang = Model.getDataTypesHelper().getLanguage(expression);
-            }
-            if (lang == null) {
-                lang = EMPTYSTRING;
-            }
-
-            setExpression(lang, text);
-        }
+    public Object[] getValue(){
+	return Model.getDataTypesHelper().getValueSpecificationValues(getExpression());
     }
-
     /**
-     * This is only called if we already know that the values differ.
-     *
-     * @param lang the language of the expression
-     * @param body the body text of the expression
+     * Set ValueSpecification
+     * 
+     * @param tabValues: A formated array depends on type of ValueSpecification.
      */
-    private void setExpression(String lang, String body) {
-	assert lang != null;
-	assert body != null;
-
+    public void setValue(Object tabValues[]) {
         // Expressions are DataTypes, not independent model elements
         // be careful not to reuse them
 	rememberExpression = getExpression();
+	
+	//
 	stopListeningForModelChanges();
-	if (rememberExpression != null) {
-	    Model.getUmlFactory().delete(rememberExpression);
-	}
-	if (lang.length() == 0 && body.length()==0) {
+	if (tabValues == null) {
+	    if (rememberExpression != null) {
+		    Model.getUmlFactory().delete(rememberExpression);
+	    }
 	    rememberExpression = null;
+	    
+	    setExpression(rememberExpression);
 	} else {
-	    rememberExpression = newExpression(lang, body);
+	    Model.getDataTypesHelper().modifyValueSpecification(rememberExpression, tabValues);
+	    // We need to to this otherwise there is no notification
+	    // and diagram isn't change 
+	    Model.getCoreHelper().setInitialValue(target, rememberExpression);
+	    
+	    
 	}
-	setExpression(rememberExpression);
+	
 	startListeningForModelChanges();
     }
 
+    /**
+    *
+    * @param sType 
+    */
+   public void createValueSpecification(String sType) {
+	
+	Object exp=Model.getDataTypesHelper().createValueSpecification(getTarget(),sType);
+	// needed for notification 
+	Model.getCoreHelper().setInitialValue(target,exp);	
+	
+   }
+   
     /**
      * Adds a <code>ChangeListener</code>.
      * The change listeners are run each
