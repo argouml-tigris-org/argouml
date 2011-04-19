@@ -7,7 +7,9 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
+ *    Thomas Neustupny
+ *    Laurent Braud
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -37,6 +39,8 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.model;
+
+import java.util.Collection;
 
 /**
  * An abstract Decorator for the {@link DataTypesHelper}.
@@ -115,4 +119,19 @@ public abstract class AbstractDataTypesHelperDecorator
         return impl.getLanguage(handle);
     }
 
+    public Collection<String> getValueSpecifications(){
+        return impl.getValueSpecifications();
+    }
+    
+    public Object createValueSpecification(Object handle, String type) {
+        return impl.createValueSpecification(handle, type);
+    }
+    
+    public void modifyValueSpecification(Object handle, Object[] tabValues) {
+        impl.modifyValueSpecification(handle, tabValues);
+    }
+
+    public Object[] getValueSpecificationValues(Object handle) {
+        return impl.getValueSpecificationValues(handle);
+    }    
 }

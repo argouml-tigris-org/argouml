@@ -7,7 +7,9 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
+ *    Thomas Neustupny
+ *    Laurent Braud
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -37,6 +39,8 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.model;
+
+import java.util.Collection;
 
 
 /**
@@ -145,4 +149,38 @@ public interface DataTypesHelper {
      */
     String getLanguage(Object handle);
 
+    /**
+     * Return the list of implemented ValueSpecification
+     * @return All the type of ValueSpecification  
+     */
+    Collection<String> getValueSpecifications();
+    
+    /**
+     * Creates a value specification object of a given type.
+     * TODO move to DataTypesFactory?
+     * 
+     * @param handle The element that will own the value specification.
+     * @param type "OpaqueExpression", "LiteralBoolean",...
+     * @return The ValueSpecification created for handle.
+     * @since 20110407
+     */
+    Object createValueSpecification(Object handle, String type);
+
+    /**
+     * Modifies a value specification object.
+     * 
+     * @param handle The instance to modify.
+     * @param tabValues One ore more object in order to get the values.
+     * @since 20110407
+     */
+    void modifyValueSpecification(Object handle, Object[] tabValues);
+    
+    /**
+     * Gets the value specification values as an array.
+     * 
+     * @param handle
+     * @return The existing ValueSpecification for handle
+     * @since 20110412
+     */
+    Object[] getValueSpecificationValues(Object handle); 
 }

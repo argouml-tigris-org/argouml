@@ -7,7 +7,9 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
+ *    Thomas Neustupny
+ *    Laurent Braud
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,6 +40,7 @@
 
 package org.argouml.model.mdr;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import javax.jmi.reflect.InvalidObjectException;
@@ -235,5 +238,34 @@ class DataTypesHelperMDRImpl implements DataTypesHelper {
         }
         throw new IllegalArgumentException("handle: " + handle);
     }
-	
+    
+    /**
+     * @see org.argouml.model.DataTypesHelper#getValueSpecifications()
+     */
+    public Collection<String> getValueSpecifications() {
+        return null;
+    }
+
+    /**
+     * @see org.argouml.model.DataTypesHelper#createValueSpecification(java.lang.Object,java.lang.String)
+     */
+    public Object createValueSpecification(Object handle,
+            String type) {
+        return null;
+    }
+
+    /**
+     * @see org.argouml.model.DataTypesHelper#modifyValueSpecification(java.lang.Object, java.lang.Object[])
+     */
+    public void modifyValueSpecification(Object handle, Object[] tabValues) {
+        // Not implemented in MDR 
+    }
+    
+    /**
+     * @see org.argouml.model.DataTypesHelper#getValueSpecificationValues(java.lang.Object)
+     */
+    public Object[] getValueSpecificationValues(Object handle) {
+        return null;
+    }
+    
 }
