@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -51,6 +51,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
+import org.argouml.model.Facade;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationSettings;
@@ -185,10 +186,12 @@ public class AttributeNotationUml extends AttributeNotation {
 
     /**
      * Parse a line on the form:<pre>
-     *      visibility name [: type-expression] [= initial-value]
+     *      [/] visibility name [: type-expression] [= initial-value]
      * </pre>
      *
      * <ul>
+     * <li>The / for derived is optional but has to be the first non-white 
+     * character.
      * <li>If only one of visibility and name is given, then it is assumed to
      * be the name and the visibility is left unchanged.
      * <li>Type and initial value can be given in any order.
@@ -234,12 +237,21 @@ public class AttributeNotationUml extends AttributeNotation {
         String type = null;
         StringBuilder value = null;
         String visibility = null;
+        boolean derived = false;
         boolean hasColon = false;
         boolean hasEq = false;
         int multindex = -1;
         MyTokenizer st;
 
         text = text.trim();
+        /* Handle Derived: */
+        if (text.length() > 0 && "/".indexOf(text.charAt(0)) >= 0) {
+            derived = true;
+            text = text.substring(1);
+            text = text.trim();
+        }
+
+        /* Handle Visibility: */
         if (text.length() > 0 
                 && NotationUtilityUml.VISIBILITYCHARS.indexOf(text.charAt(0)) 
                     >= 0) {
@@ -432,6 +444,7 @@ public class AttributeNotationUml extends AttributeNotation {
             }
         }
 
+        dealWithDerived(attribute, derived);
         dealWithVisibility(attribute, visibility);
         dealWithName(attribute, name);
         dealWithType(attribute, type);
@@ -439,6 +452,10 @@ public class AttributeNotationUml extends AttributeNotation {
         dealWithMultiplicity(attribute, multiplicity, multindex);
         dealWithProperties(attribute, properties);
         StereotypeUtility.dealWithStereotypes(attribute, stereotype, true);
+    }
+
+    private void dealWithDerived(Object umlObject, boolean derived) {
+        NotationUtilityUml.setDerived(umlObject, derived);
     }
 
     private void dealWithProperties(Object attribute, List<String> properties) {
@@ -531,6 +548,16 @@ public class AttributeNotationUml extends AttributeNotation {
             boolean showVisibility, boolean showMultiplicity, boolean showTypes,
             boolean showInitialValues, boolean showProperties) {
         try {
+            String derived = "";
+            Object tv = Model.getFacade().getTaggedValue(modelElement, 
+                    Facade.DERIVED_TAG);
+            if (tv != null) {
+                String tag = Model.getFacade().getValueOfTag(tv);
+                if ("true".equalsIgnoreCase(tag)) {
+                    derived = "/";
+                }
+            }
+            
             String stereo = NotationUtilityUml.generateStereotype(modelElement, 
                     useGuillemets);
             String name = Model.getFacade().getName(modelElement);
@@ -543,6 +570,8 @@ public class AttributeNotationUml extends AttributeNotation {
             }
 
             StringBuilder sb = new StringBuilder(20);
+            sb.append(derived);
+
             if ((stereo != null) && (stereo.length() > 0)) {
                 sb.append(stereo).append(" ");
             }

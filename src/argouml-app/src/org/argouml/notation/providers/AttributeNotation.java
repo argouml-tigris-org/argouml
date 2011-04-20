@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -77,6 +77,10 @@ public abstract class AttributeNotation extends NotationProvider {
             if (type != null) {
                 addElementListener(type);
             }
+            // We also show tagged values (the / for derived)
+            for (Object uml : Model.getFacade().getTaggedValuesCollection(modelElement)) {
+                addElementListener(uml);
+            }
         }
     }
 
@@ -84,6 +88,7 @@ public abstract class AttributeNotation extends NotationProvider {
     public void updateListener(Object modelElement, PropertyChangeEvent pce) {
         if (pce.getSource() == modelElement
                 && ("stereotype".equals(pce.getPropertyName())
+                        || ("taggedValue".equals(pce.getPropertyName()))
                         || ("type".equals(pce.getPropertyName())))) {
             if (pce instanceof AddAssociationEvent) {
                 addElementListener(pce.getNewValue());

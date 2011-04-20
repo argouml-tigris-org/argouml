@@ -1,14 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
- *    mvw
+ *    Tom Morris
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -49,6 +49,9 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ExtensionMechanismsFactory;
+import org.argouml.model.ExtensionMechanismsHelper;
+import org.argouml.model.Facade;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.InitNotation;
@@ -84,6 +87,12 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     private static final String ATTR13 =
         "<<attrstereo1,attrstereo2>> +name : String = a[15]";
     private static final String ATTR14 = "a : int; b : Foo";
+    private static final String ATTR15 = " / name";
+    private static final String ATTR16 = " /name";
+    private static final String ATTR17 = "/-name : void";
+    private static final String ATTR18 =
+        "/ private name {a=b, c = d } [0..*] : int = 15 {frozen}";
+    private static final String ATTR19 = "x2 : Integer {frozen}";
     
     private static final String NATTR01 = "too many string in an attribute";
     private static final String NATTR02 = "+vis name";
@@ -98,6 +107,8 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     private static final String NATTR11 = "(vis) name";
     private static final String NATTR12 = "vis name : \"type\"";
     private static final String NATTR13 = "vis name : (type)";
+    private static final String NATTR14 =
+        "private / name {a=b, c = d } [0..*] : int = 15 {frozen}";
 
     private static final String OPER01 = "name()";
     private static final String OPER02 =
@@ -109,6 +120,8 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         + "{leaf,query} : String";
     private static final String OPER04 = "<<>> # name2()";
     private static final String OPER05 = "<< opstereo1, opstereo2 >>  name5()";
+    private static final String OPER06 = "/name";
+    private static final String OPER07 = "/<<stereo>>#name(a:Integer=1,b:String):Boolean{query, x=1,y=2,z}";
 
     private static final String NOPER01 = "name(";
     private static final String NOPER02 = "\"name\"()";
@@ -195,6 +208,21 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         Model.getCoreHelper().setNamespace(attr, model);
 
         checkName(attr, ATTR06, "name");
+        
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
+        Model.getCoreHelper().setNamespace(attr, model);
+
+        checkName(attr, ATTR15, "name");
+        
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
+        Model.getCoreHelper().setNamespace(attr, model);
+
+        checkName(attr, ATTR16, "name");
+        
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
+        Model.getCoreHelper().setNamespace(attr, model);
+
+        checkName(attr, ATTR17, "name");
     }
 
 
@@ -227,6 +255,11 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         Model.getCoreHelper().setNamespace(attr, model);
 
         checkType(attr, ATTR06, "int");
+        
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
+        Model.getCoreHelper().setNamespace(attr, model);
+
+        checkType(attr, ATTR17, "void");
     }
     
     /**
@@ -310,6 +343,11 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         Model.getCoreHelper().setNamespace(attr, model);
 
         checkVisibility(attr, ATTR11, "public");
+        
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
+        Model.getCoreHelper().setNamespace(attr, model);
+
+        checkVisibility(attr, ATTR17, "private");
     }
 
     /**
@@ -376,6 +414,65 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
     }
 
     /**
+     * Test the parsing of derived for an attribute.
+     *
+     * @throws ParseException if the parsing fails.
+     */
+    public void testAttributeDerived()
+        throws ParseException {
+        Object attr;
+        Object tv;
+        Object attrType = project.getDefaultAttributeType();
+        ExtensionMechanismsFactory emFactory =
+            Model.getExtensionMechanismsFactory();
+        ExtensionMechanismsHelper emHelper =
+            Model.getExtensionMechanismsHelper();
+        Object stereo = emFactory.buildStereotype("mystereo", model);
+        
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
+        Model.getCoreHelper().setNamespace(attr, model);
+
+        checkDerived(attr, ATTR15, true);
+        checkDerived(attr, ATTR01, false);
+        checkDerived(attr, ATTR15, true);
+        
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
+        Model.getCoreHelper().setNamespace(attr, model);
+
+        checkDerived(attr, ATTR16, true);
+        
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
+        Model.getCoreHelper().setNamespace(attr, model);
+
+        checkDerived(attr, ATTR17, true);
+        
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
+        Model.getCoreHelper().setNamespace(attr, model);
+
+        checkDerived(attr, ATTR18, true);
+        
+        attr = Model.getCoreFactory().buildAttribute2(attrType);
+        Model.getCoreHelper().setNamespace(attr, model);
+
+        checkDerived(attr, ATTR19, false);
+        
+        Object td = emFactory.buildTagDefinition(
+                Facade.DERIVED_TAG, stereo, null);
+        
+        tv = emFactory.buildTaggedValue(td, 
+                new String[] {"true"});
+        emHelper.addTaggedValue(attr, tv);
+
+        checkDerived(attr, ATTR19, false);
+
+        tv = emFactory.buildTaggedValue(td, 
+                new String[] {"false"});
+        emHelper.addTaggedValue(attr, tv);
+
+        checkDerived(attr, ATTR15, true);
+    }
+
+    /**
      * Test that the parser throws the correct exceptions.
      */
     public void testAttributeParseExceptions() {
@@ -399,6 +496,7 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         checkThrows(attr, NATTR11, true);
         checkThrows(attr, NATTR12, true);
         checkThrows(attr, NATTR13, true);
+        checkThrows(attr, NATTR14, true);
     }
 
     /**
@@ -527,6 +625,12 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkName(op, OPER03, "name2");
+        
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkName(op, OPER06, "name");
+
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkName(op, OPER07, "name");
     }
 
     /**
@@ -552,6 +656,9 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkType(op, OPER03, "String");
+
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkType(op, OPER07, "Boolean");
     }
 
     /**
@@ -581,6 +688,9 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkVisibility(op, OPER04, "protected");
+        
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkVisibility(op, OPER07, "protected");
     }
 
     /**
@@ -611,7 +721,11 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
             "String",
             "\"\"some\"\"",
         };
-
+        String[] res4 = {
+                "in", "a", "Integer", "1",
+                "in", "b", "String", null,
+        };
+        
         op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkParameters(op, OPER01, res1);
 
@@ -622,6 +736,9 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         checkParameters(op, OPER03, res3);
         checkParameters(op, OPER01, res1);
         checkParameters(op, OPER02, res2);
+
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkParameters(op, OPER07, res4);
     }
 
     /**
@@ -645,7 +762,23 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
             "query", null,
             "root", null,
             "sequential", null,
+            "derived", null,
         };
+        
+        String[] res7 = {
+                "abstract", null,
+                "concurrency", null,
+                "concurrent", null,
+                "guarded", null,
+                "leaf", null,
+                "query", null,
+                "root", null,
+                "sequential", null,
+                "derived", "true",
+                "x", "1",
+                "y", "2",
+                "z", "",
+            };
 
         op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkProperties(op, OPER01, res1);
@@ -655,6 +788,70 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkProperties(op, OPER03, res1);
+
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkProperties(op, OPER07, res7);
+    }
+    /**
+     * Test the parsing of derived for an operation.
+     *
+     * @throws ParseException if the parsing fails.
+     */
+    public void testOperationDerived()
+        throws ParseException {
+        Object tv;
+        Object op;
+        Object returnType = project.getDefaultReturnType();
+        Object cl = Model.getCoreFactory().buildClass();
+        ExtensionMechanismsFactory emFactory =
+            Model.getExtensionMechanismsFactory();
+        ExtensionMechanismsHelper emHelper =
+            Model.getExtensionMechanismsHelper();
+
+        Model.getCoreHelper().setNamespace(cl, model);
+        Object stereo = emFactory.buildStereotype("mystereo", model);
+
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkDerived(op, OPER01, false);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkDerived(op, OPER02, false);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkDerived(op, OPER03, false);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkDerived(op, OPER04, false);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkDerived(op, OPER05, false);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkDerived(op, OPER06, true);
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkDerived(op, OPER07, true);
+
+        Object td = emFactory.buildTagDefinition(
+                Facade.DERIVED_TAG, stereo, null);
+        
+        op = Model.getCoreFactory().buildOperation(cl, returnType);        
+        tv = emFactory.buildTaggedValue(td, 
+                new String[] {"true"});
+        emHelper.addTaggedValue(op, tv);
+        checkDerived(op, OPER01, false);
+
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        tv = emFactory.buildTaggedValue(td, 
+                new String[] {"false"});
+        emHelper.addTaggedValue(op, tv);
+        checkDerived(op, OPER06, true);
+
+        op = Model.getCoreFactory().buildOperation(cl, returnType);        
+        tv = emFactory.buildTaggedValue(td, 
+                new String[] {"foo"});
+        emHelper.addTaggedValue(op, tv);
+        checkDerived(op, OPER01, false);
+        
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        tv = emFactory.buildTaggedValue(td, 
+                new String[] {"bar"});
+        emHelper.addTaggedValue(op, tv);
+        checkDerived(op, OPER06, true);
     }
 
     /**
@@ -686,6 +883,9 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         checkStereotype(op, OPER03, new String [] {"opstereo2"});
         checkStereotype(op, OPER04, new String[] {});
         checkStereotype(op, OPER05, new String [] {"opstereo1", "opstereo2"});
+
+        op = Model.getCoreFactory().buildOperation(cl, returnType);
+        checkStereotype(op, OPER07, new String[] {"stereo"});
     }
 
     /**
@@ -895,6 +1095,8 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
                 } else {
                     Object tv =
                         Model.getFacade().getTaggedValue(feature, props[i]);
+                    assertTrue("TaggedValue " + props[i] + " does not exist!", 
+                            tv != null);
                     Object tvValue = Model.getFacade().getValueOfTag(tv);
                     assertTrue(
                             "TaggedValue " + props[i] + " wrong!",
@@ -922,6 +1124,41 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
                         (lower == l && upper == u));
         
     }
+    
+    private void checkDerived(
+            Object feature,
+            String text,
+            boolean derived)
+        throws ParseException {
+
+        if (Model.getFacade().isAAttribute(feature)) {
+            AttributeNotationUml anu = new AttributeNotationUml(feature);
+            anu.parseAttribute(text, feature);
+        } else if (Model.getFacade().isAOperation(feature)) {
+            OperationNotationUml onu = new OperationNotationUml(feature);
+            onu.parseOperation(text, feature);
+        }
+        
+        Object tv =
+            Model.getFacade().getTaggedValue(feature, Facade.DERIVED_TAG);
+        if (derived) {
+            assertTrue(
+                    "TaggedValue " + Facade.DERIVED_TAG + " does not exist!",
+                    tv != null);
+            String tvValue = Model.getFacade().getValueOfTag(tv);
+            assertTrue(
+                    "TaggedValue " + Facade.DERIVED_TAG + " wrong!",
+                    "true".equalsIgnoreCase(tvValue));
+        } else {
+            if (tv != null) {
+                String tvValue = Model.getFacade().getValueOfTag(tv);
+                assertFalse(
+                        "TaggedValue " + Facade.DERIVED_TAG + " wrong!",
+                        "true".equalsIgnoreCase(tvValue));
+            }
+        }
+    }
+
 
     private void checkThrows(
                  Object element,

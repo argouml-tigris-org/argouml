@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectSettings;
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.uml.StereotypeUtility;
 import org.argouml.util.CustomSeparator;
@@ -778,6 +779,51 @@ public final class NotationUtilityUml {
         }
     }
 
+    /**
+     * Make the given UML object derived or not. The UML standard 
+     * defines "derived" as a tagged value for any ModelElement.
+     * 
+     * @param umlObject the UML ModelElement to be adapted (null is not 
+     * allowed)
+     * @param derived boolean flag for derived according the UML standard
+     */
+    static void setDerived(Object umlObject, boolean derived) {
+        /* This code was copied from ActionBooleanTaggedValue: */
+        String tagName = Facade.DERIVED_TAG;
+        Object taggedValue = Model.getFacade().getTaggedValue(umlObject, tagName);
+        if (derived) {
+            if (taggedValue == null) {
+                /* This automatically pulls in a TagDefinition from the profile: */
+                taggedValue =
+                        Model.getExtensionMechanismsFactory().buildTaggedValue(
+                                tagName, "true");
+                /* We need to extend the ExtensionMechanismsFactory so that 
+                 * we can replace the above deprecated call with something like this: */
+//                Model.getExtensionMechanismsFactory().buildTaggedValue(
+//                        tagName, new String[] {"true"}, Model.getFacade().getRoot(umlObject));
+
+                Model.getExtensionMechanismsHelper().addTaggedValue(
+                        umlObject, taggedValue);
+            } else {
+                /* The TV existed, but maybe it was not "true": */
+                /* TODO: For UML2: Check if the type of the TV is String. */
+                Model.getExtensionMechanismsHelper().setDataValues(
+                        taggedValue, new String[] {"true"});
+            }
+        } else {
+            if (taggedValue != null) {
+                /* There are 2 possibilities: either (1) we follow the traditional notation 
+                 * philosophy, and set the tagged value to false, or (2) we restore to 
+                 * the pristine situation and delete the taggedValue (whatever the 
+                 * value was). I chose the latter (mvw).*/
+                /* This would be solution (1): 
+                 * Model.getExtensionMechanismsHelper().setDataValues(
+                 *      taggedValue, new String[] {"false"});
+                 */
+                Model.getUmlFactory().delete(taggedValue);
+            }
+        }
+    }
 
     /**
      * Interface specifying the operation to take when a
