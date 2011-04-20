@@ -70,8 +70,9 @@ class FigNotation extends FigText implements NotatedItem, DiagramElement {
         
 //        int w = getFontMetrics().stringWidth(getText());
 //        int h = getFontMetrics().getHeight();
-        int w = 0;
-        int h = getFont().getSize();
+        
+        int w = getFontMetrics().stringWidth(getText());
+        int h = getFontMetrics().getHeight();
         
         final int minWidth = 
             w
@@ -103,6 +104,9 @@ class FigNotation extends FigText implements NotatedItem, DiagramElement {
         this.setUnderline(event.isUnderlined());
         this.setBold(event.isBold());
         this.setItalic(event.isItalic());
+        if (getMinimumSize().width > getWidth()) {
+            setWidth(getMinimumSize().width);
+        }
         this.damage();
     }
 }

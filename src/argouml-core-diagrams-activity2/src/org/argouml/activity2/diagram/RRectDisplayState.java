@@ -17,6 +17,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
+import org.argouml.uml.diagram.DiagramAppearance;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigRRect;
 
@@ -28,6 +29,7 @@ class RRectDisplayState extends BaseDisplayState
             implements StereotypeDisplayer, NameDisplayer {
 
     private static final int PADDING = 8;
+    private static int RADIUS = 16;
     
     public RRectDisplayState(
             final Rectangle rect,
@@ -44,14 +46,14 @@ class RRectDisplayState extends BaseDisplayState
         
         final Dimension nameDim = getNameDisplay().getMinimumSize();
         int width = nameDim.width;
-        int height = nameDim.width;
+        int height = nameDim.height;
         if (getStereotypeDisplay() != null) {
             final Dimension stereoDim = getStereotypeDisplay().getMinimumSize();
             width += Math.max(stereoDim.width, nameDim.width);
             height += (stereoDim.height - 2);
         }
         
-        int w = width + PADDING * 2;
+        int w = width + RADIUS * 2;
         /* The stereoDim has height=2, even if it is empty, 
          * hence the -2 below: */
         final int h = height + PADDING;
@@ -73,6 +75,7 @@ class RRectDisplayState extends BaseDisplayState
                 final Color lineColor, 
                 final Color fillColor) {
             super(x, y, w, h, lineColor, fillColor);
+            this.setCornerRadius(RADIUS);
         }
     }    
 }
