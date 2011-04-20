@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009,2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Tom Morris
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -49,7 +50,6 @@ import org.omg.uml.foundation.core.Namespace;
 import org.omg.uml.foundation.core.Stereotype;
 import org.omg.uml.foundation.core.TagDefinition;
 import org.omg.uml.foundation.core.TaggedValue;
-import org.omg.uml.foundation.datatypes.Multiplicity;
 
 /**
  * Factory to create UML classes for the UML ExtensionMechanisms
@@ -230,7 +230,9 @@ class ExtensionMechanismsFactoryMDRImpl extends
     @Deprecated
     public TaggedValue buildTaggedValue(String tag, String value) {
         TaggedValue tv = buildTaggedValue(getTagDefinition(tag));
-        tv.getDataValue().add(value);
+        if (value != null) {
+            tv.getDataValue().add(value);
+        }
         return tv;
     }
 
