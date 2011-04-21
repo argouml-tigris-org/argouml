@@ -83,6 +83,11 @@ class FigBaseNode extends FigNode implements DiagramNode {
         final Rectangle oldBounds = getBounds();
         
         bounds = new Rectangle(x, y, w, h);
+        
+        if (oldBounds.equals(bounds)) {
+            return;
+        }
+        
         _x = x;
         _y = y;
         _w = w;
@@ -90,9 +95,7 @@ class FigBaseNode extends FigNode implements DiagramNode {
         
         positionChildren();
         
-        if (!oldBounds.equals(getBounds())) {
-            firePropChange("bounds", oldBounds, bounds);
-        }
+        firePropChange("bounds", oldBounds, bounds);
     }
 
     protected Rectangle getBoundsImpl() {

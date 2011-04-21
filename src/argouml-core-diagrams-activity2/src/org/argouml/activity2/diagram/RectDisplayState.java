@@ -32,21 +32,6 @@ class RectDisplayState extends BaseDisplayState
         createBigPort(rect, lineColor, fillColor);
     }
 
-    @Override
-    public Dimension getMinimumSize() {
-        final Dimension stereoDim = getStereotypeDisplay().getMinimumSize();
-        final Dimension nameDim = getNameDisplay().getMinimumSize();
-
-        int w = Math.max(stereoDim.width, nameDim.width) + PADDING * 2;
-        /* The stereoDim has height=2, even if it is empty, 
-         * hence the -2 below: */
-        final int h = stereoDim.height - 2 + nameDim.height + PADDING;
-        w = Math.max(w, h + 44); // the width needs to be > the height
-        return new Dimension(w, h);
-    }
-    
-    
-    
     DiagramElement createBigPort(
             final Rectangle rect,
             final Color lineColor,

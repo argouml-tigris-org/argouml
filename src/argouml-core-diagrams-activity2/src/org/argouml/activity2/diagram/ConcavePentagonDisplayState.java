@@ -14,7 +14,6 @@
 package org.argouml.activity2.diagram;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
@@ -24,27 +23,12 @@ import org.tigris.gef.presentation.FigPoly;
 class ConcavePentagonDisplayState extends BaseDisplayState
         implements StereotypeDisplayer, NameDisplayer {
 
-    private static final int PADDING = 8;
-    
     public ConcavePentagonDisplayState(Rectangle rect, Color lineColor,
             Color fillColor, Object modelElement, DiagramSettings settings) {
         super(rect, lineColor, fillColor, modelElement, settings);
         createBigPort(rect, lineColor, fillColor);
     }
 
-    @Override
-    public Dimension getMinimumSize() {
-        final Dimension stereoDim = getStereotypeDisplay().getMinimumSize();
-        final Dimension nameDim = getNameDisplay().getMinimumSize();
-
-        int w = Math.max(stereoDim.width, nameDim.width) + PADDING * 2;
-        /* The stereoDim has height=2, even if it is empty, 
-         * hence the -2 below: */
-        final int h = stereoDim.height - 2 + nameDim.height + PADDING;
-        w = Math.max(w, h + 44); // the width needs to be > the height
-        return new Dimension(w, h);
-    }
-    
     protected DiagramElement createBigPort(
             final Rectangle rect,
             final Color lineColor,

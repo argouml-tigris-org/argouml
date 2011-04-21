@@ -27,7 +27,6 @@ import org.tigris.gef.presentation.FigRRect;
 class RRectDisplayState extends BaseDisplayState
             implements StereotypeDisplayer, NameDisplayer {
 
-    private static final int PADDING = 8;
     private static int RADIUS = 16;
     
     public RRectDisplayState(
@@ -40,26 +39,6 @@ class RRectDisplayState extends BaseDisplayState
         createBigPort(rect, lineColor, fillColor);
     }
 
-    @Override
-    public Dimension getMinimumSize() {
-        
-        final Dimension nameDim = getNameDisplay().getMinimumSize();
-        int width = nameDim.width;
-        int height = nameDim.height;
-        if (getStereotypeDisplay() != null) {
-            final Dimension stereoDim = getStereotypeDisplay().getMinimumSize();
-            width += Math.max(stereoDim.width, nameDim.width);
-            height += (stereoDim.height - 2);
-        }
-        
-        int w = width + RADIUS * 2;
-        /* The stereoDim has height=2, even if it is empty, 
-         * hence the -2 below: */
-        final int h = height + PADDING;
-        w = Math.max(w, h + 44); // the width needs to be > the height
-        return new Dimension(w, h);
-    }
-    
     DiagramElement createBigPort(Rectangle rect, Color lineColor, Color fillColor) {
         return new RRect(
                 rect.x, rect.y, rect.width, rect.height, lineColor, fillColor);
@@ -78,4 +57,12 @@ class RRectDisplayState extends BaseDisplayState
         }
     }
     
+    
+    protected int getRightMargin() {
+        return RADIUS;
+    }
+    
+    protected int getLeftMargin() {
+        return RADIUS;
+    }
 }
