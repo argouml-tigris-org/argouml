@@ -17,7 +17,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
-import org.argouml.uml.diagram.DiagramAppearance;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigRRect;
 
@@ -77,5 +76,6 @@ class RRectDisplayState extends BaseDisplayState
             super(x, y, w, h, lineColor, fillColor);
             this.setCornerRadius(RADIUS);
         }
-    }    
+    }
+    
 }

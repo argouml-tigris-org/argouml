@@ -16,6 +16,7 @@ package org.argouml.activity2.diagram;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
+import org.apache.log4j.Logger;
 import org.argouml.notation2.NotatedItem;
 import org.argouml.notation2.NotationLanguage;
 import org.argouml.notation2.NotationManager;
@@ -28,6 +29,8 @@ import org.tigris.gef.presentation.FigText;
  * @author Bob Tarling
  */
 class FigNotation extends FigText implements NotatedItem, DiagramElement {
+
+    private static final Logger LOG = Logger.getLogger(FigNotation.class);
 
     private final NotationType notationType;
     
@@ -68,9 +71,6 @@ class FigNotation extends FigText implements NotatedItem, DiagramElement {
     @Override
     public Dimension getMinimumSize() {
         
-//        int w = getFontMetrics().stringWidth(getText());
-//        int h = getFontMetrics().getHeight();
-        
         int w = getFontMetrics().stringWidth(getText());
         int h = getFontMetrics().getHeight();
         
@@ -108,5 +108,58 @@ class FigNotation extends FigText implements NotatedItem, DiagramElement {
             setWidth(getMinimumSize().width);
         }
         this.damage();
+    }
+    
+    public void setText(String s) {
+        final String oldText = getText();
+        if (s.equals(oldText)) {
+            return;
+        }
+        final Rectangle oldBounds = getBounds();
+        super.setText(s);
+        // TODO: This should happen in GEF
+        firePropChange("text", oldText, s);
+        // TODO: setText in GEF should call setBounds instead of directly
+        // changing x, y, w, h - then we will have an event generated
+        // correctly in GEF
+        firePropChange("bounds", oldBounds, getBounds());
+        if (!oldBounds.equals(getBounds())) {
+            LOG.info("notation Fig firing bounds changed");
+            firePropChange("bounds changed", oldBounds, getBounds());
+        }
+    }
+    
+    /**
+     * Prevent underline events if underline does not change.
+     * TODO: GEF should manage this after GEF 0.13.4 is included.
+     */
+    public void setUnderline(boolean u) {
+        if (getUnderline() == u) {
+            return;
+        }
+        super.setUnderline(u);
+    }
+    
+    
+    /**
+     * Prevent bold events if bold does not change.
+     * TODO: GEF should manage this after GEF 0.13.4 is included.
+     */
+    public void setBold(boolean b) {
+        if (getBold() == b) {
+            return;
+        }
+        super.setBold(b);
+    }
+    
+    /**
+     * Prevent italic events if italic does not change.
+     * TODO: GEF should manage this after GEF 0.13.4 is included.
+     */
+    public void setItalic(boolean i) {
+        if (getItalic() == i) {
+            return;
+        }
+        super.setItalic(i);
     }
 }
