@@ -19,7 +19,6 @@ import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.apache.log4j.Logger;
 import org.argouml.notation2.NotationType;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
@@ -28,11 +27,11 @@ import org.tigris.gef.presentation.FigGroup;
 abstract class BaseDisplayState extends FigGroup
         implements StereotypeDisplayer, NameDisplayer, PropertyChangeListener {
     
-    private static final Logger LOG = Logger.getLogger(BaseDisplayState.class);
-
     private final DiagramElement bigPort;
     private final DiagramElement nameDisplay;
     private Rectangle bounds;
+    private static final int PADDING = 2;
+    private static final int MIN_WIDTH = 90;
     
     public BaseDisplayState(
             final Rectangle rect,
@@ -70,19 +69,30 @@ abstract class BaseDisplayState extends FigGroup
     }
     
     public void propertyChange(PropertyChangeEvent pce) {
-        if (pce.getSource() == getNameDisplay() && pce.getPropertyName().equals("bounds")) {
+        if (pce.getSource() == getNameDisplay()
+                && pce.getPropertyName().equals("bounds")) {
             // The size of the name has changed. Check if we need to make the
             // node bigger so that it contains all its children.
             Rectangle textBounds = (Rectangle) pce.getNewValue();
-            int notationEndX = textBounds.x + textBounds.width;
-            int thisEndX = getBounds().x + getBounds().width;
-            LOG.debug("Got the event notation right = " + notationEndX + " container right = " + thisEndX);
+            Rectangle thisBounds = getBounds();
+            int notationEndX =
+                textBounds.x + textBounds.width + getRightMargin();
+            int thisEndX = thisBounds.x + thisBounds.width;
             if (notationEndX > thisEndX) {
-                // TODO: Why do we not get here?
-                // The container seems to be growing by itself but we don't see that visibly.
-                LOG.info("text has grown too wide so redrawing parent");
-                // TODO: layout our children and calculate our bounds.
-                calcBounds();
+                thisBounds.width =
+                    getLeftMargin() + textBounds.width + getRightMargin();
+                setBounds(thisBounds);
+                // TODO: We have noticed that the child fig inside for notation
+                // has grown beyond our bounds so we change the size of ourself
+                // to encompass it. We should now inform our own parent that we
+                // have changed size so that it can fit us.
+                // Maybe we need a separate event mechanism for this as
+                // property change with bounds can happen for many reasons and
+                // may cause problems with cycles (e.g. our parent changes
+                // size so we change, we tell our parent we changed so it
+                // redraws and tells us to change, we change and tell our
+                // parent we changed.....) Events are maybe OTT - we could just
+                // call our parent directly.
             }
         }
         super.propertyChange(pce);
@@ -91,17 +101,55 @@ abstract class BaseDisplayState extends FigGroup
     // TODO: Move an empty implementation to FigGroup in GEF
     protected void positionChildren() {
         Rectangle myBounds = getBounds();
+        
         getPort().setBounds(myBounds);
         
         final Dimension nameDim = getNameDisplay().getMinimumSize();
         final int nameWidth = nameDim.width;
         final int nameHeight = nameDim.height;
         
-        final int nx = bounds.x + (bounds.width - nameWidth) /2;
-        final int ny = bounds.y + (bounds.height - nameHeight) /2;
+        final int nx = bounds.x + getLeftMargin()
+            + (bounds.width - (nameWidth + getLeftMargin() + getRightMargin()))
+            / 2;
+        final int ny = bounds.y + getTopMargin()
+            + (bounds.height - nameHeight - getTopMargin() - getBottomMargin())
+            / 2;
         getNameDisplay().setLocation(nx, ny);
     }
     
+    @Override
+    public Dimension getMinimumSize() {
+        
+        final Dimension nameDim = getNameDisplay().getMinimumSize();
+        int width = nameDim.width;
+        int height = nameDim.height;
+        if (getStereotypeDisplay() != null) {
+            final Dimension stereoDim = getStereotypeDisplay().getMinimumSize();
+            width += Math.max(stereoDim.width, nameDim.width);
+            height += (stereoDim.height - 2);
+        }
+        
+        int w = width + getRightMargin() + getLeftMargin();
+        final int h = height + getTopMargin() + getBottomMargin();
+        w = Math.max(w, MIN_WIDTH); // the width needs to be > the height
+        return new Dimension(w, h);
+    }
+    
+    protected int getRightMargin() {
+        return PADDING;
+    }
+    
+    protected int getLeftMargin() {
+        return PADDING;
+    }
+    
+    protected int getTopMargin() {
+        return PADDING;
+    }
+    
+    protected int getBottomMargin() {
+        return PADDING;
+    }
     
     //
     // !! TODO: All code below here is duplicated in FigBaseNode. The reason
@@ -116,19 +164,37 @@ abstract class BaseDisplayState extends FigGroup
             final int w,
             final int h) {
 
-        final Rectangle oldBounds = getBounds();
+        final int ww;
+        // Refuse to set bounds below the minimum width
+        final int minWidth = getMinimumSize().width;
+        if (w < minWidth) {
+            ww = minWidth;
+        } else {
+            ww = w;
+        }
+        final int hh;
+        final int minHeight = getMinimumSize().height;
+        if (h < minHeight) {
+            hh = minHeight;
+        } else {
+            hh = h;
+        }
         
-        bounds = new Rectangle(x, y, w, h);
+        final Rectangle oldBounds = getBounds();
+        bounds = new Rectangle(x, y, ww, hh);
+        
+        if (oldBounds.equals(bounds)) {
+            return;
+        }
+        
         _x = x;
         _y = y;
-        _w = w;
-        _h = h;
+        _w = ww;
+        _h = hh;
         
         positionChildren();
         
-        if (!oldBounds.equals(getBounds())) {
-            firePropChange("bounds", oldBounds, bounds);
-        }
+        firePropChange("bounds", oldBounds, bounds);
     }
     
     protected Rectangle getBoundsImpl() {
@@ -155,4 +221,3 @@ abstract class BaseDisplayState extends FigGroup
         setBounds(newBounds);
     }
 }
-
