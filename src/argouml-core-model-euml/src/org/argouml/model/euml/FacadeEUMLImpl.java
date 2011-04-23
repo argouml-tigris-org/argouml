@@ -1207,7 +1207,7 @@ class FacadeEUMLImpl implements Facade {
     }
     
     public Collection getPartitions(Object container) {
-        throw new NotYetImplementedException();
+        return ((Activity) container).getPartitions();
     }
 
     public Object getPowertype(Object handle) {
