@@ -40,7 +40,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Vector;
 
 
 /**
@@ -59,7 +58,7 @@ public interface ModelManagementHelper {
      */
     String IMPORT_STEREOTYPE = "import";
     /**
-     * Name of stereotype applied to Permission which is an package access.
+     * Name of stereotype applied to Permission which is a package access.
      */
     String ACCESS_STEREOTYPE = "access";
     
@@ -169,7 +168,7 @@ public interface ModelManagementHelper {
      * element will be the name of element itself.
      * <p>
      * <em>COMPATIBILITY WARNING</em> - The previous version of this method
-     * {@link #getPath(Object)} would only return the path to the <em>first</em>
+     * getPath(Object) would only return the path to the <em>first</em>
      * enclosing Model, not the root, and it would not include the name of the
      * model itself. This version will keep going up until it finds an element
      * with no parent and it includes the name of that top level element which
@@ -359,9 +358,9 @@ public interface ModelManagementHelper {
 
     /**
      * Return the true if the model element is read only (ie not modifiable).
-     * Note that this differs from
-     * {@link Facade#isReadOnly(Object)) which refers to <em>instances</em> of a
-     * given model (M0 level) as opposed to the model itself (M1).
+     * Note that this differs from {@link Facade#isReadOnly(Object)} which
+     * refers to <em>instances</em> of a given model (M0 level) as opposed to
+     * the model itself (M1).
      * 
      * @param element a UML Element
      * @return true if the element is readonly
