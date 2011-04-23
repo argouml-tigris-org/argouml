@@ -50,7 +50,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
-import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
