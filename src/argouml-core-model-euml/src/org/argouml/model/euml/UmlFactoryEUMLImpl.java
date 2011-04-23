@@ -393,6 +393,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = modelImpl.getCoreFactory().createOperation();
         } else if (elementType == metaTypes.getEnumeration()) {
             o = modelImpl.getCoreFactory().createEnumeration();
+        } else if (elementType == metaTypes.getEnumerationLiteral()) {
+            o = modelImpl.getCoreFactory().createEnumerationLiteral();
         } else if (elementType == metaTypes.getStereotype()) {
             o = modelImpl.getExtensionMechanismsFactory().createStereotype();
         } else if (elementType == metaTypes.getAttribute()) {
@@ -418,7 +420,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         }
         if (!(o instanceof EObject)) {
             throw new IllegalArgumentException(
-                    "Attempted to create unsupported model element type: " //$NON-NLS-1$
+                    "Attempted to create unsupported element type: " //$NON-NLS-1$
                             + elementType);
         }
         return o;

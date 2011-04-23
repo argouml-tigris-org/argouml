@@ -280,7 +280,7 @@ public interface MetaTypes {
     Object getEnumeration();
 
     /**
-     * @return Returns the Enumeration.
+     * @return Returns the EnumerationLiteral.
      */
     Object getEnumerationLiteral();
     
