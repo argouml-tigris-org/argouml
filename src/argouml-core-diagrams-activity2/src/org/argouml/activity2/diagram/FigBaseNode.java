@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 
 /**
@@ -119,5 +120,24 @@ class FigBaseNode extends FigNode implements DiagramNode {
                 oldBounds.width,
                 oldBounds.height);
         setBounds(newBounds);
+    }
+    
+    /**
+     * This is called to rearrange the contents of the Fig when a childs
+     * minimum size means it will no longer fit. If this group also has
+     * a parent and it will no longer fit that parent then control is
+     * delegated to that parent.
+     */
+    public void calcBounds() {
+        final Dimension min = getMinimumSize();
+        if (getGroup() != null
+                && (getBounds().height < min.height
+                        || getBounds().width < min.width)) {
+            ((FigGroup) getGroup()).calcBounds();
+        } else {
+            int maxw = Math.max(getWidth(), min.width);
+            int maxh = Math.max(getHeight(), min.height);
+            setSize(maxw, maxh);
+        }
     }
 }

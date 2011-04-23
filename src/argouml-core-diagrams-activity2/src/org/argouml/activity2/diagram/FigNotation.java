@@ -23,6 +23,7 @@ import org.argouml.notation2.NotationManager;
 import org.argouml.notation2.NotationTextEvent;
 import org.argouml.notation2.NotationType;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -122,10 +123,11 @@ class FigNotation extends FigText implements NotatedItem, DiagramElement {
         // TODO: setText in GEF should call setBounds instead of directly
         // changing x, y, w, h - then we will have an event generated
         // correctly in GEF
-        firePropChange("bounds", oldBounds, getBounds());
-        if (!oldBounds.equals(getBounds())) {
-            LOG.info("notation Fig firing bounds changed");
-            firePropChange("bounds changed", oldBounds, getBounds());
+        final FigGroup group = (FigGroup) getGroup();
+        if (group != null
+                && ( oldBounds.width < getBounds().width
+                        || oldBounds.height < getBounds().height)) {
+            group.calcBounds();
         }
     }
     

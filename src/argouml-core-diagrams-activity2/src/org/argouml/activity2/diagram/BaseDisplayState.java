@@ -17,7 +17,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import org.argouml.notation2.NotationType;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -25,7 +24,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
 abstract class BaseDisplayState extends FigGroup
-        implements StereotypeDisplayer, NameDisplayer, PropertyChangeListener {
+        implements StereotypeDisplayer, NameDisplayer {
     
     private final DiagramElement bigPort;
     private final DiagramElement nameDisplay;
@@ -47,7 +46,6 @@ abstract class BaseDisplayState extends FigGroup
         bigPort = createBigPort(rect, lineColor, fillColor);
         addFig((Fig) bigPort);
         addFig((Fig) getNameDisplay());
-        ((Fig) nameDisplay).addPropertyChangeListener(this);
         setBounds(rect);
     }
     
@@ -123,15 +121,15 @@ abstract class BaseDisplayState extends FigGroup
         final Dimension nameDim = getNameDisplay().getMinimumSize();
         int width = nameDim.width;
         int height = nameDim.height;
-        if (getStereotypeDisplay() != null) {
-            final Dimension stereoDim = getStereotypeDisplay().getMinimumSize();
-            width += Math.max(stereoDim.width, nameDim.width);
-            height += (stereoDim.height - 2);
-        }
+//        if (getStereotypeDisplay() != null) {
+//            final Dimension stereoDim = getStereotypeDisplay().getMinimumSize();
+//            width += Math.max(stereoDim.width, nameDim.width);
+//            height += (stereoDim.height - 2);
+//        }
         
         int w = width + getRightMargin() + getLeftMargin();
         final int h = height + getTopMargin() + getBottomMargin();
-        w = Math.max(w, MIN_WIDTH); // the width needs to be > the height
+        w = Math.max(w, MIN_WIDTH);
         return new Dimension(w, h);
     }
     
@@ -219,5 +217,25 @@ abstract class BaseDisplayState extends FigGroup
                 oldBounds.width,
                 oldBounds.height);
         setBounds(newBounds);
+    }
+    
+    
+    /**
+     * This is called to rearrange the contents of the Fig when a childs
+     * minimum size means it will no longer fit. If this group also has
+     * a parent and it will no longer fit that parent then control is
+     * delegated to that parent.
+     */
+    public void calcBounds() {
+        final Dimension min = getMinimumSize();
+        if (getGroup() != null
+                && (getBounds().height < min.height
+                        || getBounds().width < min.width)) {
+            ((FigGroup) getGroup()).calcBounds();
+        } else {
+            int maxw = Math.max(getWidth(), min.width);
+            int maxh = Math.max(getHeight(), min.height);
+            setSize(maxw, maxh);
+        }
     }
 }
