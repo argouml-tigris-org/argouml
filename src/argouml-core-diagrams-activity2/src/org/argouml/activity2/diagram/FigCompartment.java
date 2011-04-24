@@ -76,10 +76,10 @@ class FigCompartment extends FigGroup {
     public Dimension getMinimumSize() {
         int minWidth = 0;
         int minHeight = 0;
-        for (org.tigris.gef.di.DiagramElement de : getDiagramElements()) {
-            Fig f = (Fig) de;
-            minWidth = Math.max(f.getMinimumSize().width, minWidth);
-            minHeight += f.getMinimumSize().height;
+        for (Object f : getFigs()) {
+            Fig fig = (Fig) f;
+            minWidth = Math.max(fig.getMinimumSize().width, minWidth);
+            minHeight += fig.getMinimumSize().height;
         }
 
         minHeight += getTopMargin() + getBottomMargin();
@@ -104,10 +104,10 @@ class FigCompartment extends FigGroup {
 
         y += getTopMargin();
         
-        for (org.tigris.gef.di.DiagramElement de : getDiagramElements()) {
-            Fig f = (Fig) de;
-            f.setBounds(x, y, w, f.getHeight());
-            y += f.getHeight();
+        for (Object f : getFigs()) {
+            Fig fig = (Fig) f;
+            fig.setBounds(x, y, w, fig.getHeight());
+            y += fig.getHeight();
         }
         firePropChange("bounds", oldBounds, getBounds());
     }
