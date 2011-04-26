@@ -36,10 +36,10 @@ class FigNamedRRect extends FigBasePresentation
             final Object modelElement,
             final DiagramSettings settings) {
         super(rect, lineColor, fillColor, modelElement, settings);
-        createBigPort(rect, lineColor, fillColor);
+        createBorder(rect, lineColor, fillColor);
     }
 
-    DiagramElement createBigPort(Rectangle rect, Color lineColor, Color fillColor) {
+    DiagramElement createBorder(Rectangle rect, Color lineColor, Color fillColor) {
         return new RRect(
                 rect.x, rect.y, rect.width, rect.height, lineColor, fillColor);
     }

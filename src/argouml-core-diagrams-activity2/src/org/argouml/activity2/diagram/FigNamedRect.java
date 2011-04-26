@@ -29,10 +29,10 @@ class FigNamedRect extends FigBasePresentation
             Color fillColor, Object modelElement, DiagramSettings settings) {
         super(rect, lineColor,
                 fillColor, modelElement, settings);
-        createBigPort(rect, lineColor, fillColor);
+        createBorder(rect, lineColor, fillColor);
     }
 
-    DiagramElement createBigPort(
+    DiagramElement createBorder(
             final Rectangle rect,
             final Color lineColor,
             final Color fillColor) {

@@ -34,11 +34,7 @@ import org.tigris.gef.presentation.FigGroup;
  * 
  * @author Bob Tarling
  */
-class FigCompartment extends FigGroup {
-    
-    private static final int MARGIN = 0;
-
-    private Rectangle bounds;
+class FigCompartment extends FigComposite {
     
     public FigCompartment(Object owner, Rectangle bounds,
             DiagramSettings settings, List elements) {
@@ -54,22 +50,6 @@ class FigCompartment extends FigGroup {
             } catch (InvalidElementException e) {
             } 
         }
-    }
-    
-    int getRightMargin() {
-        return MARGIN;
-    }
-
-    int getLeftMargin() {
-        return MARGIN;
-    }
-    
-    int getTopMargin() {
-        return MARGIN;
-    }
-    
-    int getBottomMargin() {
-        return MARGIN;
     }
     
     @Override
@@ -97,7 +77,7 @@ class FigCompartment extends FigGroup {
         w = Math.max(w, minimumSize.width);
         h = Math.max(h, minimumSize.height);
         
-        bounds = new Rectangle(x, y, w, h);
+        super.setBoundsImpl(x, y, w, h);
 
         w -= getLeftMargin() + getRightMargin();
         h -= getTopMargin() + getBottomMargin();
@@ -109,10 +89,5 @@ class FigCompartment extends FigGroup {
             fig.setBounds(x, y, w, fig.getHeight());
             y += fig.getHeight();
         }
-        firePropChange("bounds", oldBounds, getBounds());
-    }
-
-    protected Rectangle getBoundsImpl() {
-        return bounds;
     }
 }

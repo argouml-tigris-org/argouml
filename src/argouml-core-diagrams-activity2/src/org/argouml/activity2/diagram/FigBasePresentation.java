@@ -23,10 +23,10 @@ import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
-abstract class FigBasePresentation extends FigGroup
+abstract class FigBasePresentation extends FigComposite
         implements StereotypeDisplayer, NameDisplayer {
     
-    private final DiagramElement bigPort;
+    private final DiagramElement border;
     private final DiagramElement nameDisplay;
     private Rectangle bounds;
     private static final int PADDING = 2;
@@ -43,8 +43,8 @@ abstract class FigBasePresentation extends FigGroup
                 new Rectangle(0, 0, 0, 0),
                 settings,
                 NotationType.NAME);
-        bigPort = createBigPort(rect, lineColor, fillColor);
-        addFig((Fig) bigPort);
+        border = createBorder(rect, lineColor, fillColor);
+        addFig((Fig) border);
         addFig((Fig) getNameDisplay());
         setBounds(rect);
     }
@@ -57,13 +57,13 @@ abstract class FigBasePresentation extends FigGroup
         return nameDisplay;
     }
 
-    abstract DiagramElement createBigPort(
+    abstract DiagramElement createBorder(
             final Rectangle rect,
             final Color lineColor,
             final Color fillColor);
     
-    DiagramElement getPort() {
-        return bigPort;
+    DiagramElement getBorder() {
+        return border;
     }
     
     public void propertyChange(PropertyChangeEvent pce) {
@@ -100,7 +100,7 @@ abstract class FigBasePresentation extends FigGroup
     protected void positionChildren() {
         Rectangle myBounds = getBounds();
         
-        getPort().setBounds(myBounds);
+        getBorder().setBounds(myBounds);
         
         final Dimension nameDim = getNameDisplay().getMinimumSize();
         final int nameWidth = nameDim.width;

@@ -28,10 +28,10 @@ class FigNamedPentagon extends FigBasePresentation
     public FigNamedPentagon(Rectangle rect, Color lineColor,
             Color fillColor, Object modelElement, DiagramSettings settings) {
         super(rect, lineColor, fillColor, modelElement, settings);
-        createBigPort(rect, lineColor, fillColor);
+        createBorder(rect, lineColor, fillColor);
     }
 
-    protected DiagramElement createBigPort(
+    protected DiagramElement createBorder(
             final Rectangle rect,
             final Color lineColor,
             final Color fillColor) {
