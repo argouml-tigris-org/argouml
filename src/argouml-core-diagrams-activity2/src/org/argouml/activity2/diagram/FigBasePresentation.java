@@ -16,7 +16,6 @@ package org.argouml.activity2.diagram;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.beans.PropertyChangeEvent;
 
 import org.argouml.notation2.NotationType;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -64,36 +63,6 @@ abstract class FigBasePresentation extends FigComposite
     
     DiagramElement getBorder() {
         return border;
-    }
-    
-    public void propertyChange(PropertyChangeEvent pce) {
-        if (pce.getSource() == getNameDisplay()
-                && pce.getPropertyName().equals("bounds")) {
-            // The size of the name has changed. Check if we need to make the
-            // node bigger so that it contains all its children.
-            Rectangle textBounds = (Rectangle) pce.getNewValue();
-            Rectangle thisBounds = getBounds();
-            int notationEndX =
-                textBounds.x + textBounds.width + getRightMargin();
-            int thisEndX = thisBounds.x + thisBounds.width;
-            if (notationEndX > thisEndX) {
-                thisBounds.width =
-                    getLeftMargin() + textBounds.width + getRightMargin();
-                setBounds(thisBounds);
-                // TODO: We have noticed that the child fig inside for notation
-                // has grown beyond our bounds so we change the size of ourself
-                // to encompass it. We should now inform our own parent that we
-                // have changed size so that it can fit us.
-                // Maybe we need a separate event mechanism for this as
-                // property change with bounds can happen for many reasons and
-                // may cause problems with cycles (e.g. our parent changes
-                // size so we change, we tell our parent we changed so it
-                // redraws and tells us to change, we change and tell our
-                // parent we changed.....) Events are maybe OTT - we could just
-                // call our parent directly.
-            }
-        }
-        super.propertyChange(pce);
     }
     
     // TODO: Move an empty implementation to FigGroup in GEF
