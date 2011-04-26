@@ -37,7 +37,7 @@ abstract class FigBasePresentation extends FigComposite
             final Object modelElement,
             final DiagramSettings settings) {
         
-        super(owner, rect, settings);
+        super(owner, settings);
         nameDisplay = new FigNotation(
                 modelElement,
                 new Rectangle(0, 0, 0, 0),

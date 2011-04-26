@@ -39,7 +39,7 @@ class FigCompartment extends FigComposite {
     public FigCompartment(Object owner, Rectangle bounds,
             DiagramSettings settings, List elements) {
         
-        super(owner, bounds, settings);
+        super(owner, settings);
         
         for (Object element : elements) {
             try {

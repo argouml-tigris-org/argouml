@@ -8,15 +8,11 @@ import org.tigris.gef.presentation.FigGroup;
 
 public class FigComposite extends FigGroup {
     
-    private Rectangle bounds;
-    
     private static final int MARGIN = 0;
     
     public FigComposite(
             final Object owner,
-            final Rectangle bounds,
             final DiagramSettings settings) {
-        this.bounds = bounds;
         setOwner(owner);
     }
     
@@ -54,64 +50,13 @@ public class FigComposite extends FigGroup {
             final int w,
             final int h) {
 
-        final int ww;
-        // Refuse to set bounds below the minimum width
-        final int minWidth = getMinimumSize().width;
-        if (w < minWidth) {
-            ww = minWidth;
-        } else {
-            ww = w;
-        }
-        final int hh;
-        final int minHeight = getMinimumSize().height;
-        if (h < minHeight) {
-            hh = minHeight;
-        } else {
-            hh = h;
-        }
-        
-        final Rectangle oldBounds = getBounds();
-        bounds = new Rectangle(x, y, ww, hh);
-        
-        if (oldBounds.equals(bounds)) {
-            return;
-        }
-        
         _x = x;
         _y = y;
-        _w = ww;
-        _h = hh;
+        _w = w;
+        _h = h;
         
         positionChildren();
     }
-    
-    protected Rectangle getBoundsImpl() {
-        return bounds;
-    }
-    
-    
-    /**
-     * Change the position of the object from where it is to where it is plus dx
-     * and dy. Often called when an object is dragged. This could be very useful
-     * if local-coordinate systems are used because deltas need less
-     * transforming... maybe.
-     * @param dx the x delta
-     * @param dy the y delta
-     */
-    @Override
-    protected void translateImpl(int dx, int dy) {
-        if (dx ==0 || dy == 0) {
-            return;
-        }
-        Rectangle oldBounds = getBounds();
-        Rectangle newBounds = new Rectangle(
-                oldBounds.x + dx,
-                oldBounds.y + dy,
-                oldBounds.width,
-                oldBounds.height);
-        setBounds(newBounds);
-    }
-    
     
     /**
      * This is called to rearrange the contents of the Fig when a childs
