@@ -36,6 +36,7 @@ class DiagramElementBuilder {
         } else if (style.equals("rect")) {
             fig.setDisplayState(
                     new FigNamedRect(
+                            owner, 
                             bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),
@@ -44,6 +45,7 @@ class DiagramElementBuilder {
         } else if (style.equals("rrect")) {
             fig.setDisplayState(
                     new FigNamedRRect(
+                            owner, 
                             bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),
@@ -52,6 +54,7 @@ class DiagramElementBuilder {
         } else if (style.equals("pentagon")) {
             fig.setDisplayState(
                     new FigNamedPentagon(
+                            owner, 
                             bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),
@@ -60,6 +63,7 @@ class DiagramElementBuilder {
         } else if (style.equals("concave-pentagon")) {
             fig.setDisplayState(
                     new FigNamedConcavePentagon(
+                            owner, 
                             bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),

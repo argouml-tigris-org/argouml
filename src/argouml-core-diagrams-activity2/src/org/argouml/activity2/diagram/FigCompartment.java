@@ -38,6 +38,9 @@ class FigCompartment extends FigComposite {
     
     public FigCompartment(Object owner, Rectangle bounds,
             DiagramSettings settings, List elements) {
+        
+        super(owner, bounds, settings);
+        
         for (Object element : elements) {
             try {
                 int y = bounds.y + getTopMargin();

@@ -95,8 +95,6 @@ class FigBaseNode extends FigNode implements DiagramNode {
         _h = h;
         
         positionChildren();
-        
-        firePropChange("bounds", oldBounds, bounds);
     }
 
     protected Rectangle getBoundsImpl() {

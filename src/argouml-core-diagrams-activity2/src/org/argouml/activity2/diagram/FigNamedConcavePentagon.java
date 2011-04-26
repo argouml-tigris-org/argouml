@@ -23,9 +23,10 @@ import org.tigris.gef.presentation.FigPoly;
 class FigNamedConcavePentagon extends FigBasePresentation
         implements StereotypeDisplayer, NameDisplayer {
 
-    public FigNamedConcavePentagon(Rectangle rect, Color lineColor,
+    public FigNamedConcavePentagon(
+            final Object owner, Rectangle rect, Color lineColor,
             Color fillColor, Object modelElement, DiagramSettings settings) {
-        super(rect, lineColor, fillColor, modelElement, settings);
+        super(owner, rect, lineColor, fillColor, modelElement, settings);
         createBorder(rect, lineColor, fillColor);
     }
 

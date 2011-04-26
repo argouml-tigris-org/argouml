@@ -25,9 +25,9 @@ class FigNamedPentagon extends FigBasePresentation
 
     private static final int PADDING = 8;
     
-    public FigNamedPentagon(Rectangle rect, Color lineColor,
+    public FigNamedPentagon(final Object owner, Rectangle rect, Color lineColor,
             Color fillColor, Object modelElement, DiagramSettings settings) {
-        super(rect, lineColor, fillColor, modelElement, settings);
+        super(owner, rect, lineColor, fillColor, modelElement, settings);
         createBorder(rect, lineColor, fillColor);
     }
 

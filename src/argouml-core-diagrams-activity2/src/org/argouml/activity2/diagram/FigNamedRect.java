@@ -25,9 +25,9 @@ class FigNamedRect extends FigBasePresentation
     private static final int PADDING = 8;
     
     public FigNamedRect(
-            final Rectangle rect, Color lineColor,
+            final Object owner, final Rectangle rect, Color lineColor,
             Color fillColor, Object modelElement, DiagramSettings settings) {
-        super(rect, lineColor,
+        super(owner, rect, lineColor,
                 fillColor, modelElement, settings);
         createBorder(rect, lineColor, fillColor);
     }

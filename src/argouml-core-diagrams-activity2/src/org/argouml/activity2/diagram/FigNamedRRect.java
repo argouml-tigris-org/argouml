@@ -30,12 +30,13 @@ class FigNamedRRect extends FigBasePresentation
     private static int RADIUS = 16;
     
     public FigNamedRRect(
+            final Object owner,
             final Rectangle rect,
             final Color lineColor,
             final Color fillColor,
             final Object modelElement,
             final DiagramSettings settings) {
-        super(rect, lineColor, fillColor, modelElement, settings);
+        super(owner, rect, lineColor, fillColor, modelElement, settings);
         createBorder(rect, lineColor, fillColor);
     }
 
