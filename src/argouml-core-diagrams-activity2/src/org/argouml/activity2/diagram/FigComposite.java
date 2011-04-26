@@ -94,8 +94,11 @@ public class FigComposite extends FigGroup {
      * Change the position of the object from where it is to where it is plus dx
      * and dy. Often called when an object is dragged. This could be very useful
      * if local-coordinate systems are used because deltas need less
-     * transforming... maybe. Fires property "bounds".
+     * transforming... maybe.
+     * @param dx the x delta
+     * @param dy the y delta
      */
+    @Override
     protected void translateImpl(int dx, int dy) {
         if (dx ==0 || dy == 0) {
             return;

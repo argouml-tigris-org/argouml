@@ -27,6 +27,7 @@ abstract class FigBasePresentation extends FigComposite
     private final DiagramElement border;
     private final DiagramElement nameDisplay;
     private static final int MIN_WIDTH = 90;
+    private static final int MARGIN = 1;
     
     public FigBasePresentation(
             final Object owner,
@@ -102,5 +103,21 @@ abstract class FigBasePresentation extends FigComposite
         final int h = height + getTopMargin() + getBottomMargin();
         w = Math.max(w, MIN_WIDTH);
         return new Dimension(w, h);
+    }
+    
+    int getRightMargin() {
+        return MARGIN;
+    }
+
+    int getLeftMargin() {
+        return MARGIN;
+    }
+    
+    int getTopMargin() {
+        return MARGIN;
+    }
+    
+    int getBottomMargin() {
+        return MARGIN;
     }
 }

@@ -13,7 +13,6 @@
 package org.argouml.activity2.diagram;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
@@ -22,8 +21,6 @@ import org.tigris.gef.presentation.FigRect;
 class FigNamedRect extends FigBasePresentation
         implements StereotypeDisplayer, NameDisplayer {
 
-    private static final int PADDING = 8;
-    
     public FigNamedRect(
             final Object owner, final Rectangle rect, Color lineColor,
             Color fillColor, Object modelElement, DiagramSettings settings) {
