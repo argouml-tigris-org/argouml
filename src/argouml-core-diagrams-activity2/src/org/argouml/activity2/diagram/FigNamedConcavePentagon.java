@@ -20,10 +20,10 @@ import java.awt.Rectangle;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigPoly;
 
-class ConcavePentagonDisplayState extends BaseDisplayState
+class FigNamedConcavePentagon extends FigBasePresentation
         implements StereotypeDisplayer, NameDisplayer {
 
-    public ConcavePentagonDisplayState(Rectangle rect, Color lineColor,
+    public FigNamedConcavePentagon(Rectangle rect, Color lineColor,
             Color fillColor, Object modelElement, DiagramSettings settings) {
         super(rect, lineColor, fillColor, modelElement, settings);
         createBigPort(rect, lineColor, fillColor);

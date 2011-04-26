@@ -23,7 +23,7 @@ import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
-abstract class BaseDisplayState extends FigGroup
+abstract class FigBasePresentation extends FigGroup
         implements StereotypeDisplayer, NameDisplayer {
     
     private final DiagramElement bigPort;
@@ -32,7 +32,7 @@ abstract class BaseDisplayState extends FigGroup
     private static final int PADDING = 2;
     private static final int MIN_WIDTH = 90;
     
-    public BaseDisplayState(
+    public FigBasePresentation(
             final Rectangle rect,
             final Color lineColor,
             final Color fillColor,

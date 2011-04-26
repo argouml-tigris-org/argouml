@@ -35,7 +35,7 @@ class DiagramElementBuilder {
             // For classifiers
         } else if (style.equals("rect")) {
             fig.setDisplayState(
-                    new RectDisplayState(
+                    new FigNamedRect(
                             bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),
@@ -43,7 +43,7 @@ class DiagramElementBuilder {
                             settings));
         } else if (style.equals("rrect")) {
             fig.setDisplayState(
-                    new RRectDisplayState(
+                    new FigNamedRRect(
                             bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),
@@ -51,7 +51,7 @@ class DiagramElementBuilder {
                             settings));
         } else if (style.equals("pentagon")) {
             fig.setDisplayState(
-                    new PentagonDisplayState(
+                    new FigNamedPentagon(
                             bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),
@@ -59,7 +59,7 @@ class DiagramElementBuilder {
                             settings));
         } else if (style.equals("concave-pentagon")) {
             fig.setDisplayState(
-                    new ConcavePentagonDisplayState(
+                    new FigNamedConcavePentagon(
                             bounds, 
                             fig.getLineColor(), 
                             fig.getFillColor(),

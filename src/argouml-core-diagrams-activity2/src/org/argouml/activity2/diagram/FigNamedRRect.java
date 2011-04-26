@@ -10,6 +10,7 @@
  *    Bob Tarling
  *****************************************************************************
  */
+
 package org.argouml.activity2.diagram;
 
 import java.awt.Color;
@@ -17,32 +18,34 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 
 import org.argouml.uml.diagram.DiagramSettings;
-import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigRRect;
 
-class RectDisplayState extends BaseDisplayState
-        implements StereotypeDisplayer, NameDisplayer {
+/**
+ * The state for displaying a node as a rounded rectangle
+ * @author Bob Tarling
+ */
+class FigNamedRRect extends FigBasePresentation
+            implements StereotypeDisplayer, NameDisplayer {
 
-    private static final int PADDING = 8;
+    private static int RADIUS = 16;
     
-    public RectDisplayState(
-            final Rectangle rect, Color lineColor,
-            Color fillColor, Object modelElement, DiagramSettings settings) {
-        super(rect, lineColor,
-                fillColor, modelElement, settings);
+    public FigNamedRRect(
+            final Rectangle rect,
+            final Color lineColor,
+            final Color fillColor,
+            final Object modelElement,
+            final DiagramSettings settings) {
+        super(rect, lineColor, fillColor, modelElement, settings);
         createBigPort(rect, lineColor, fillColor);
     }
 
-    DiagramElement createBigPort(
-            final Rectangle rect,
-            final Color lineColor,
-            final Color fillColor) {
-        return new Rect(
+    DiagramElement createBigPort(Rectangle rect, Color lineColor, Color fillColor) {
+        return new RRect(
                 rect.x, rect.y, rect.width, rect.height, lineColor, fillColor);
     }
     
-    
-    private class Rect extends FigRect implements DiagramElement {
-        Rect(
+    private class RRect extends FigRRect implements DiagramElement {
+        RRect(
                 final int x, 
                 final int y, 
                 final int w, 
@@ -50,6 +53,16 @@ class RectDisplayState extends BaseDisplayState
                 final Color lineColor, 
                 final Color fillColor) {
             super(x, y, w, h, lineColor, fillColor);
+            this.setCornerRadius(RADIUS);
         }
+    }
+    
+    
+    protected int getRightMargin() {
+        return RADIUS;
+    }
+    
+    protected int getLeftMargin() {
+        return RADIUS;
     }
 }

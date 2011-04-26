@@ -20,12 +20,12 @@ import java.awt.Rectangle;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigPoly;
 
-class PentagonDisplayState extends BaseDisplayState
+class FigNamedPentagon extends FigBasePresentation
         implements StereotypeDisplayer, NameDisplayer {
 
     private static final int PADDING = 8;
     
-    public PentagonDisplayState(Rectangle rect, Color lineColor,
+    public FigNamedPentagon(Rectangle rect, Color lineColor,
             Color fillColor, Object modelElement, DiagramSettings settings) {
         super(rect, lineColor, fillColor, modelElement, settings);
         createBigPort(rect, lineColor, fillColor);

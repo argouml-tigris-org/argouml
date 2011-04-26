@@ -27,7 +27,7 @@ import org.tigris.gef.presentation.FigNode;
  */
 class FigBaseNode extends FigNode implements DiagramNode {
 
-    private BaseDisplayState displayState;
+    private FigBasePresentation displayState;
     private final DiagramSettings settings;
     private DiagramElement nameDiagramElement;
     
@@ -47,7 +47,7 @@ class FigBaseNode extends FigNode implements DiagramNode {
         this.settings = settings;
     }
     
-    void setDisplayState(BaseDisplayState displayState) {
+    void setDisplayState(FigBasePresentation displayState) {
         this.displayState = displayState;
         displayState.setOwner(getOwner());
         addFig(displayState);
