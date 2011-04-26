@@ -115,8 +115,4 @@ class FigCompartment extends FigGroup {
     protected Rectangle getBoundsImpl() {
         return bounds;
     }
-    
-    public void populate() {
-
-    }
 }
