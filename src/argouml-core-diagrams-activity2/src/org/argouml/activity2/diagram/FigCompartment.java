@@ -15,9 +15,13 @@ package org.argouml.activity2.diagram;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.argouml.model.InvalidElementException;
+import org.argouml.model.Model;
 import org.argouml.notation2.NotationType;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
@@ -35,23 +39,37 @@ import org.tigris.gef.presentation.FigGroup;
  * @author Bob Tarling
  */
 class FigCompartment extends FigComposite {
-    
+
     public FigCompartment(Object owner, Rectangle bounds,
-            DiagramSettings settings, List elements) {
+            DiagramSettings settings, Object metaType) {
+        this(owner, bounds, settings, Arrays.asList(new Object[] {metaType}));
+    }
+    
+    /**
+     * @param owner the model element that owns the compartment
+     * @param bounds the initial bounds of the compartment
+     * @param settings the diagram settings
+     * @param metaType the different metatype that can be displayed in the compartment
+     */
+    public FigCompartment(Object owner, Rectangle bounds,
+            DiagramSettings settings, List<Object> metaTypes) {
         
         super(owner, settings);
         
-        for (Object element : elements) {
-            try {
-                int y = bounds.y + getTopMargin();
-                int x = bounds.x + getLeftMargin();
-                Rectangle childBounds = new Rectangle(x, y, 0, 0);
-                FigNotation fn =
-                    new FigNotation(element, childBounds, settings, NotationType.NAME);
-                addFig(fn);
-                y += fn.getHeight();
-            } catch (InvalidElementException e) {
-            } 
+        Model.getFacade().getModelElementContents(owner);
+        for (Object element : Model.getFacade().getModelElementContents(owner)) {
+            if (metaTypes.contains(element.getClass())) {
+                try {
+                    int y = bounds.y + getTopMargin();
+                    int x = bounds.x + getLeftMargin();
+                    Rectangle childBounds = new Rectangle(x, y, 0, 0);
+                    FigNotation fn =
+                        new FigNotation(element, childBounds, settings, NotationType.NAME);
+                    addFig(fn);
+                    y += fn.getHeight();
+                } catch (InvalidElementException e) {
+                }
+            }
         }
     }
     
