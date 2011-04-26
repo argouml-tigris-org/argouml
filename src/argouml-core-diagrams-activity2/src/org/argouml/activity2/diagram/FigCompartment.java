@@ -68,7 +68,16 @@ class FigCompartment extends FigComposite {
                 }
             }
         }
+        
+        // TODO: Add listeners for add/remove events
     }
+    
+    public FigCompartment(
+            final Object owner,
+            final DiagramSettings settings) {
+        super(owner, settings);
+    }
+    
     
     @Override
     public Dimension getMinimumSize() {

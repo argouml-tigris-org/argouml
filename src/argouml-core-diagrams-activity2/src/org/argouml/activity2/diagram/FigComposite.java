@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.FigGroup;
 
-public class FigComposite extends FigGroup {
+public class FigComposite extends FigGroup implements DiagramElement {
     
     private static final int MARGIN = 0;
     

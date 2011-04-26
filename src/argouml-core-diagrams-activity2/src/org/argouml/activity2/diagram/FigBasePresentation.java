@@ -25,7 +25,7 @@ abstract class FigBasePresentation extends FigComposite
         implements StereotypeDisplayer, NameDisplayer {
     
     private final DiagramElement border;
-    private final DiagramElement nameDisplay;
+    private final FigNameCompartment nameDisplay;
     private static final int MIN_WIDTH = 90;
     private static final int MARGIN = 1;
     
@@ -38,11 +38,10 @@ abstract class FigBasePresentation extends FigComposite
             final DiagramSettings settings) {
         
         super(owner, settings);
-        nameDisplay = new FigNotation(
+        nameDisplay = new FigNameCompartment(
                 modelElement,
                 new Rectangle(0, 0, 0, 0),
-                settings,
-                NotationType.NAME);
+                settings);
         border = createBorder(rect, lineColor, fillColor);
         addFig((Fig) border);
         addFig((Fig) getNameDisplay());
