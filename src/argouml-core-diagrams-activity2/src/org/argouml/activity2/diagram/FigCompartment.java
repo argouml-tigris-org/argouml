@@ -15,9 +15,7 @@ package org.argouml.activity2.diagram;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.argouml.model.InvalidElementException;
@@ -25,7 +23,6 @@ import org.argouml.model.Model;
 import org.argouml.notation2.NotationType;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 
 /**
  * The UML defines a Name Compartment, and a List Compartment. 
