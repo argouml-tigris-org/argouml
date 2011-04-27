@@ -25,7 +25,9 @@ public class FigNameCompartment extends FigCompartment {
     public FigNameCompartment(Object owner, Rectangle bounds,
             DiagramSettings settings) {
         super(owner, settings);
-        addFig(new FigCompartment(owner, bounds, settings, Model.getMetaTypes().getStereotype()));
+        addFig(new FigCompartment(
+                owner, bounds, settings, 
+                Model.getMetaTypes().getStereotype(), "stereotype"));
         Fig nameDisplay = new FigNotation(
                 owner,
                 new Rectangle(0, 0, 0, 0),

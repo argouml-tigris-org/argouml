@@ -9,13 +9,18 @@ import org.tigris.gef.presentation.FigGroup;
 public class FigComposite extends FigGroup implements DiagramElement {
     
     private static final int MARGIN = 0;
+    private final DiagramSettings diagramSettings;
     
     public FigComposite(
             final Object owner,
             final DiagramSettings settings) {
         setOwner(owner);
+        diagramSettings = settings;
     }
     
+    protected DiagramSettings getDiagramSettings() {
+        return diagramSettings;
+    }
     
     int getRightMargin() {
         return MARGIN;

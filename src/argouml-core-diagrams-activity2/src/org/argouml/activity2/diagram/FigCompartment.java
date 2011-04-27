@@ -18,8 +18,11 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 import java.util.List;
 
+import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeListener;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation2.NotationType;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
@@ -35,11 +38,17 @@ import org.tigris.gef.presentation.Fig;
  * 
  * @author Bob Tarling
  */
-class FigCompartment extends FigComposite {
+class FigCompartment extends FigComposite implements AssociationChangeListener {
 
-    public FigCompartment(Object owner, Rectangle bounds,
-            DiagramSettings settings, Object metaType) {
-        this(owner, bounds, settings, Arrays.asList(new Object[] {metaType}));
+    public FigCompartment(
+            final Object owner,
+            final Rectangle bounds,
+            final DiagramSettings settings,
+            final Object metaType,
+            final String propertyName) {
+        this(owner, bounds, settings,
+                Arrays.asList(new Object[] {metaType}),
+                propertyName);
     }
     
     /**
@@ -48,20 +57,25 @@ class FigCompartment extends FigComposite {
      * @param settings the diagram settings
      * @param metaType the different metatype that can be displayed in the compartment
      */
-    public FigCompartment(Object owner, Rectangle bounds,
-            DiagramSettings settings, List<Object> metaTypes) {
+    public FigCompartment(
+            final Object owner,
+            final Rectangle bounds,
+            final DiagramSettings settings,
+            final List<Object> metaTypes,
+            final String propertyName) {
         
         super(owner, settings);
         
         Model.getFacade().getModelElementContents(owner);
-        for (Object element : Model.getFacade().getModelElementContents(owner)) {
+        for (Object element
+                : Model.getFacade().getModelElementContents(owner)) {
             if (metaTypes.contains(element.getClass())) {
                 try {
                     int y = bounds.y + getTopMargin();
                     int x = bounds.x + getLeftMargin();
                     Rectangle childBounds = new Rectangle(x, y, 0, 0);
-                    FigNotation fn =
-                        new FigNotation(element, childBounds, settings, NotationType.NAME);
+                    FigNotation fn = new FigNotation(
+                            element, childBounds, settings, NotationType.NAME);
                     addFig(fn);
                     y += fn.getHeight();
                 } catch (InvalidElementException e) {
@@ -69,7 +83,9 @@ class FigCompartment extends FigComposite {
             }
         }
         
-        // TODO: Add listeners for add/remove events
+        Model.getPump().addModelEventListener(
+                (AssociationChangeListener) this, owner, propertyName);
+        // TODO: Remove listeners for add/remove events
     }
     
     public FigCompartment(
@@ -116,5 +132,18 @@ class FigCompartment extends FigComposite {
             fig.setBounds(x, y, w, fig.getHeight());
             y += fig.getHeight();
         }
+    }
+
+    public void elementAdded(AddAssociationEvent evt) {
+        Object element = evt.getNewValue();
+        Rectangle childBounds = new Rectangle(getX() + getHeight(), getY(), 0, 0);
+        FigNotation fn = new FigNotation(
+                element, childBounds, getDiagramSettings(), NotationType.NAME);
+        addFig(fn);
+    }
+
+    public void elementRemoved(RemoveAssociationEvent evt) {
+        // TODO Auto-generated method stub
+        
     }
 }
