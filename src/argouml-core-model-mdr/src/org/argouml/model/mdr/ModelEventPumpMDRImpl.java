@@ -70,8 +70,10 @@ import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
+import org.argouml.model.NotImplementedException;
 import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.model.UmlChangeEvent;
+import org.argouml.model.UmlChangeListener;
 import org.netbeans.api.mdr.MDRManager;
 import org.netbeans.api.mdr.MDRepository;
 import org.netbeans.api.mdr.events.AssociationEvent;
@@ -184,6 +186,15 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
 
     /*
      * @see org.argouml.model.AbstractModelEventPump#addModelEventListener(java.beans.PropertyChangeListener,
+     *      java.lang.Object, java.lang.String[])
+     */
+    public void addModelEventListener(UmlChangeListener listener,
+            Object modelElement, String[] propertyNames) {
+        throw new NotImplementedException();
+    }
+
+    /*
+     * @see org.argouml.model.AbstractModelEventPump#addModelEventListener(java.beans.PropertyChangeListener,
      *      java.lang.Object)
      */
     public void addModelEventListener(PropertyChangeListener listener,
@@ -207,6 +218,15 @@ class ModelEventPumpMDRImpl extends AbstractModelEventPump implements
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement, String[] propertyNames) {
         unregisterModelEvent(listener, modelelement, propertyNames);
+    }
+
+    /*
+     * @see org.argouml.model.AbstractModelEventPump#removeModelEventListener(java.beans.PropertyChangeListener,
+     *      java.lang.Object, java.lang.String[])
+     */
+    public void removeModelEventListener(UmlChangeListener listener,
+            Object modelelement, String[] propertyNames) {
+        throw new NotImplementedException();
     }
 
     /*

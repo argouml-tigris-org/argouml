@@ -72,6 +72,18 @@ public abstract class AbstractModelEventPump implements ModelEventPump {
 
     /*
      * @see org.argouml.model.ModelEventPump#addModelEventListener(
+     *          java.beans.PropertyChangeListener, java.lang.Object,
+     *          java.lang.String)
+     */
+    public void addModelEventListener(UmlChangeListener listener,
+            Object modelelement, String eventName) {
+        addModelEventListener(listener,
+                              modelelement,
+                              new String[] {eventName });
+    }
+
+    /*
+     * @see org.argouml.model.ModelEventPump#addModelEventListener(
      *          java.beans.PropertyChangeListener, java.lang.Object)
      */
     public abstract void addModelEventListener(PropertyChangeListener listener,
@@ -97,6 +109,19 @@ public abstract class AbstractModelEventPump implements ModelEventPump {
         removeModelEventListener(listener,
                 		 modelelement,
                 		 new String[] {eventName, });
+    }
+
+    /*
+     * @see org.argouml.model.ModelEventPump#removeModelEventListener(
+     *          java.beans.PropertyChangeListener, java.lang.Object,
+     *          java.lang.String)
+     */
+    public void removeModelEventListener(UmlChangeListener listener,
+                                         Object modelelement,
+                                         String eventName) {
+        removeModelEventListener(listener,
+                                 modelelement,
+                                 new String[] {eventName, });
     }
 
     /*

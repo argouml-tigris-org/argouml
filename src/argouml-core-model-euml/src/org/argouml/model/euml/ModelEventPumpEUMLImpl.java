@@ -1,6 +1,6 @@
 // $Id$
 /*******************************************************************************
- * Copyright (c) 2007,2010 Bogdan Pistol and other contributors
+ * Copyright (c) 2007,2011 Bogdan Pistol and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,12 +9,14 @@
  * Contributors:
  *    Bogdan Pistol - initial implementation
  *    Thomas Neustupny
+ *    Bob Tarling
  *******************************************************************************/
 package org.argouml.model.euml;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,9 +30,11 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
 import org.argouml.model.AddAssociationEvent;
+import org.argouml.model.AssociationChangeListener;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.RemoveAssociationEvent;
+import org.argouml.model.UmlChangeListener;
 import org.eclipse.emf.common.command.CommandStackListener;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.Notifier;
@@ -58,11 +62,11 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      */
     private class Listener {
 
-        private PropertyChangeListener listener;
+        private EventListener listener;
 
         private Set<String> props;
 
-        Listener(PropertyChangeListener listener, String[] properties) {
+        Listener(EventListener listener, String[] properties) {
             this.listener = listener;
             if (properties != null) {
                 setProperties(properties);
@@ -91,7 +95,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             }
         }
 
-        PropertyChangeListener getListener() {
+        EventListener getListener() {
             return listener;
         }
 
@@ -189,13 +193,32 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                 modelElement, listener, propertyNames, registerForElements);
     }
 
+    public void addModelEventListener(UmlChangeListener listener,
+            Object modelElement, String[] propertyNames) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Adding a listener " //$NON-NLS-1$
+                    + listener + " to " //$NON-NLS-1$
+                    + modelElement
+                    + " for " //$NON-NLS-1$
+                    + propertyNames);
+        }
+        if (!(modelElement instanceof EObject)) {
+            throw new IllegalArgumentException(
+                    "The modelelement must be instance " //$NON-NLS-1$
+                            + "of EObject. We got " //$NON-NLS-1$
+                            + modelElement);
+        }
+        registerListener(
+                modelElement, listener, propertyNames, registerForElements);
+    }
+
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
         addModelEventListener(listener, modelelement, (String[]) null);
     }
 
     private void registerListener(Object notifier,
-            PropertyChangeListener listener, String[] propertyNames,
+            EventListener listener, String[] propertyNames,
             Map<Object, List<Listener>> register) {
         if (notifier == null || listener == null) {
             throw new NullPointerException(
@@ -243,13 +266,19 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                 modelelement, listener, propertyNames, registerForElements);
     }
 
+    public void removeModelEventListener(UmlChangeListener listener,
+            Object modelelement, String[] propertyNames) {
+        unregisterListener(
+                modelelement, listener, propertyNames, registerForElements);
+    }
+
     public void removeModelEventListener(PropertyChangeListener listener,
             Object modelelement) {
         removeModelEventListener(listener, modelelement, (String[]) null);
     }
 
     private void unregisterListener(Object notifier,
-            PropertyChangeListener listener, String[] propertyNames,
+            EventListener listener, String[] propertyNames,
             Map<Object, List<Listener>> register) {
         if (notifier == null || listener == null) {
             throw new NullPointerException(
@@ -329,14 +358,14 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         
         class EventAndListeners {
             public EventAndListeners(PropertyChangeEvent e,
-                    List<PropertyChangeListener> l) {
+                    List<EventListener> l) {
                 event = e;
                 listeners = l;
             }
 
             private PropertyChangeEvent event;
 
-            private List<PropertyChangeListener> listeners;
+            private List<EventListener> listeners;
         }
 
         List<EventAndListeners> events = new ArrayList<EventAndListeners>();
@@ -435,8 +464,16 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
         for (EventAndListeners e : events) {
             if (e.listeners != null) {
-                for (PropertyChangeListener l : e.listeners) {
-                    l.propertyChange(e.event);
+                for (EventListener l : e.listeners) {
+                    if (l instanceof AssociationChangeListener) {
+                        if (e.event instanceof AddAssociationEvent) {
+                            ((AssociationChangeListener) l).elementAdded((AddAssociationEvent) e.event);
+                        } else if (e.event instanceof RemoveAssociationEvent) {
+                            ((AssociationChangeListener) l).elementAdded((AddAssociationEvent) e.event);
+                        }
+                    } else if (l instanceof PropertyChangeListener) {
+                        ((PropertyChangeListener) l).propertyChange(e.event);
+                    }
                 }
             }
         }
@@ -477,15 +514,15 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         }
     }
 
-    private List<PropertyChangeListener> getListeners(Object element) {
+    private List<EventListener> getListeners(Object element) {
         return getListeners(element, null);
     }
 
     @SuppressWarnings("unchecked")
-    private List<PropertyChangeListener> getListeners(Object element,
+    private List<EventListener> getListeners(Object element,
             String propName) {
-        List<PropertyChangeListener> returnedList =
-                new ArrayList<PropertyChangeListener>();
+        List<EventListener> returnedList =
+                new ArrayList<EventListener>();
 
         synchronized (mutex) {
             addListeners(returnedList, element, propName, registerForElements);
@@ -502,7 +539,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
         return returnedList.isEmpty() ? null : returnedList;
     }
 
-    private void addListeners(List<PropertyChangeListener> listeners,
+    private void addListeners(List<EventListener> listeners,
             Object element, String propName,
             Map<Object, List<Listener>> register) {
         List<Listener> list = register.get(element);
@@ -559,10 +596,10 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                                 listener.getListener().getClass().getName());
                     }
                 } else {
-                    if (!map.containsKey("")) {
-                        map.put("", new LinkedList<String>());
+                    if (!map.containsKey("")) { //$NON-NLS-1$
+                        map.put("", new LinkedList<String>()); //$NON-NLS-1$
                     }
-                    map.get("")
+                    map.get("") //$NON-NLS-1$
                             .add(listener.getListener().getClass().getName());
                 }
             }

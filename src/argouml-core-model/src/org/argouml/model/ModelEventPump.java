@@ -90,6 +90,32 @@ public interface ModelEventPump {
      * @param propertyNames The array of property names the listener wishes to
      * receive events for
      */
+    void addModelEventListener(UmlChangeListener listener,
+                               Object modelelement,
+                               String[] propertyNames);
+
+    /**
+     * Adds a listener to modelevents that are fired by some given modelelement
+     * and that have the name in eventName.<p>
+     *
+     * @param listener The listener to add
+     * @param modelelement The modelelement the listener should be added too
+     * @param propertyName The property name the listener wishes to
+     * receive events for
+     */
+    void addModelEventListener(UmlChangeListener listener,
+                               Object modelelement,
+                               String propertyName);
+
+    /**
+     * Adds a listener to modelevents that are fired by some given modelelement
+     * and that have any of the names in eventNames.<p>
+     *
+     * @param listener The listener to add
+     * @param modelelement The modelelement the listener should be added too
+     * @param propertyNames The array of property names the listener wishes to
+     * receive events for
+     */
     void addModelEventListener(PropertyChangeListener listener,
             		       Object modelelement,
 			       String[] propertyNames);
@@ -115,6 +141,34 @@ public interface ModelEventPump {
      */
     void addModelEventListener(PropertyChangeListener listener,
             		       Object modelelement);
+
+    /**
+     * Removes a listener that listens to modelevents with name
+     * eventNames that are fired by the given modelelement.<p>
+     *
+     * @param listener The listener to remove
+     * @param modelelement The modelelement that fires the events the
+     * listener is listening to.
+     * @param propertyNames The property names the listener no longer wishes to
+     * receive events for
+     */
+    void removeModelEventListener(UmlChangeListener listener,
+                                  Object modelelement,
+                                  String[] propertyNames);
+
+    /**
+     * Removes a listener that listens to modelevents with name
+     * eventName that are fired by the given modelelement.<p>
+     *
+     * @param listener The listener to remove.
+     * @param modelelement The modelelement that fires the events the
+     * listener is listening to.
+     * @param propertyName The property name the listener no longer wishes to
+     * receive events for
+     */
+    void removeModelEventListener(UmlChangeListener listener,
+                                  Object modelelement,
+                                  String propertyName);
 
     /**
      * Removes a listener that listens to modelevents with name
