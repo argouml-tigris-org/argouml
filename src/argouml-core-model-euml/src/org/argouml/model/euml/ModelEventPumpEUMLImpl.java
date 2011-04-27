@@ -467,9 +467,11 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                 for (EventListener l : e.listeners) {
                     if (l instanceof AssociationChangeListener) {
                         if (e.event instanceof AddAssociationEvent) {
-                            ((AssociationChangeListener) l).elementAdded((AddAssociationEvent) e.event);
+                            ((AssociationChangeListener) l).elementAdded(
+                                    (AddAssociationEvent) e.event);
                         } else if (e.event instanceof RemoveAssociationEvent) {
-                            ((AssociationChangeListener) l).elementAdded((AddAssociationEvent) e.event);
+                            ((AssociationChangeListener) l).elementRemoved(
+                                    (RemoveAssociationEvent) e.event);
                         }
                     } else if (l instanceof PropertyChangeListener) {
                         ((PropertyChangeListener) l).propertyChange(e.event);
