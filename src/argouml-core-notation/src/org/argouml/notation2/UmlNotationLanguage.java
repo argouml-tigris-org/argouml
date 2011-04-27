@@ -13,6 +13,8 @@
 
 package org.argouml.notation2;
 
+import java.beans.PropertyChangeListener;
+
 import org.argouml.model.Model;
 
 class UmlNotationLanguage implements NotationLanguage {
@@ -23,9 +25,14 @@ class UmlNotationLanguage implements NotationLanguage {
 
     public NotationText createNotationText(NotatedItem item) {
         
-        NameUmlNotation nt = new NameUmlNotation(item);
+        final NotationText nt;
+        if (Model.getMetaTypes().getStereotype().equals(item.getMetaType())) {
+            nt = new StereotypeUmlNotation(item);
+        } else {
+            nt = new NameUmlNotation(item);
+        }
         Model.getPump().addModelEventListener(
-                nt, item.getOwner());
+                (PropertyChangeListener) nt, item.getOwner());
         
         return nt;
     }
