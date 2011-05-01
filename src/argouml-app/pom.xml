@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.tigris.gef</groupId>
       <artifactId>gef</artifactId>
-      <version>0.13.2</version>
+      <version>0.13.3-1</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -74,7 +74,7 @@
     <dependency>
       <groupId>org.argouml</groupId>
       <artifactId>java-interfaces</artifactId>
-      <version>0.32</version>
+      <version>0.33.1</version>
       <type>jar</type>
       <scope>test</scope>
     </dependency>

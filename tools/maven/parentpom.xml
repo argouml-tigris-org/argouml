@@ -56,6 +56,29 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>always</forkMode>
+          <!-- systemPropertyValues does not work. Wrong version of maven? -->
+          <systemProperties>
+            <property>
+              <name>test.model.uml</name>
+              <value>../argouml-core-model-mdr/src/org/argouml/model/mdr/mof/01-02-15.xml</value>
+            </property>
+            <property>
+              <name>java.awt.headless</name>
+              <value>true</value>
+            </property>
+            <property>
+              <name>log4j.configuration</name>
+              <value>org/argouml/resource/default_console.lcf</value>
+            </property>
+          </systemProperties>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <version>2.5</version>
         <dependencies>

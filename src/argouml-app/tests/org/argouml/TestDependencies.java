@@ -77,22 +77,39 @@ public class TestDependencies extends TestCase {
     public static Test suite() {
         JDepend jdepend = new JDepend();
 
+        boolean directoryFound = false;
+
+        // For eclipse setup
         try {
 	    jdepend.addDirectory("build-eclipse");
+            directoryFound = true;
 	} catch (IOException e) {
 	    // Ignore if the directory does not exist.
 	    // This error will throw when running from the ant setup.
-	    System.out.println("Assuming running from ant!");
 	}
 
+        // For ant setup
 	try {
 	    jdepend.addDirectory("build/classes");
+            directoryFound = true;
 	} catch (IOException e) {
 	    // Ignore if the directory does not exist.
 	    // This error will throw when running from the Eclipse setup.
-	    System.out.println("Assuming running from Eclipse!");
 	}
         
+        // When running from maven
+	try {
+	    jdepend.addDirectory("target/classes");
+            directoryFound = true;
+	} catch (IOException e) {
+	    // Ignore if the directory does not exist.
+	    // This error will throw when running from the Eclipse setup.
+	}
+        
+        if (!directoryFound) {
+            System.out.println("Did not find directory with compiled classes");
+        }
+
         jdepend.analyze();
 
         TestSuite suite =
