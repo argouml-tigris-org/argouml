@@ -173,14 +173,12 @@ public class OperationNotationUml extends OperationNotation {
     /**
      * Parse a line of text and aligns the Operation to the specification
      * given. The line should be on the following form:<ul>
-     * <li> / visibility name (parameter list) : return-type-expression
+     * <li> visibility name (parameter list) : return-type-expression
      * {property-string}
      * </ul>
      *
      * All elements are optional and, if left unspecified, will preserve their
      * old values.<p>
-     *
-     * The / for derived has to be the first non-white character. <p>
      * 
      * <em>Stereotypes</em> can be given between any element in the line on the
      * form: &lt;&lt;stereotype1,stereotype2,stereotype3&gt;&gt;<p>
@@ -210,19 +208,10 @@ public class OperationNotationUml extends OperationNotation {
         String token;
         String type = null;
         String visibility = null;
-        boolean derived = false;
         List<String> properties = null;
         int paramOffset = 0;
 
         s = s.trim();
-
-        /* Handle Derived: */
-        if (s.length() > 0 && "/".indexOf(s.charAt(0)) >= 0) {
-            derived = true;
-            s = s.substring(1);
-            s = s.trim();
-        }
-
         if (s.length() > 0 
                 && NotationUtilityUml.VISIBILITYCHARS.indexOf(s.charAt(0)) 
                     >= 0) {
@@ -327,8 +316,6 @@ public class OperationNotationUml extends OperationNotation {
         } catch (ParseException pre) {
             throw pre;
         }
-
-        NotationUtilityUml.setDerived(op, derived);
         
         if (parameterlist != null) {
             // parameterlist is guaranteed to contain at least "("

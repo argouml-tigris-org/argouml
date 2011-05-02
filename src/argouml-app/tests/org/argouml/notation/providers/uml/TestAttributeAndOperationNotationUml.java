@@ -120,8 +120,8 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
         + "{leaf,query} : String";
     private static final String OPER04 = "<<>> # name2()";
     private static final String OPER05 = "<< opstereo1, opstereo2 >>  name5()";
-    private static final String OPER06 = "/name";
-    private static final String OPER07 = "/<<stereo>>#name(a:Integer=1,b:String):Boolean{query, x=1,y=2,z}";
+    private static final String OPER06 = "name";
+    private static final String OPER07 = "<<stereo>>#name(a:Integer=1,b:String):Boolean{query, x=1,y=2,z}";
 
     private static final String NOPER01 = "name(";
     private static final String NOPER02 = "\"name\"()";
@@ -774,7 +774,6 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
                 "query", null,
                 "root", null,
                 "sequential", null,
-                "derived", "true",
                 "x", "1",
                 "y", "2",
                 "z", "",
@@ -791,67 +790,6 @@ public class TestAttributeAndOperationNotationUml extends TestCase {
 
         op = Model.getCoreFactory().buildOperation(cl, returnType);
         checkProperties(op, OPER07, res7);
-    }
-    /**
-     * Test the parsing of derived for an operation.
-     *
-     * @throws ParseException if the parsing fails.
-     */
-    public void testOperationDerived()
-        throws ParseException {
-        Object tv;
-        Object op;
-        Object returnType = project.getDefaultReturnType();
-        Object cl = Model.getCoreFactory().buildClass();
-        ExtensionMechanismsFactory emFactory =
-            Model.getExtensionMechanismsFactory();
-        ExtensionMechanismsHelper emHelper =
-            Model.getExtensionMechanismsHelper();
-
-        Model.getCoreHelper().setNamespace(cl, model);
-        Object stereo = emFactory.buildStereotype("mystereo", model);
-
-        op = Model.getCoreFactory().buildOperation(cl, returnType);
-        checkDerived(op, OPER01, false);
-        op = Model.getCoreFactory().buildOperation(cl, returnType);
-        checkDerived(op, OPER02, false);
-        op = Model.getCoreFactory().buildOperation(cl, returnType);
-        checkDerived(op, OPER03, false);
-        op = Model.getCoreFactory().buildOperation(cl, returnType);
-        checkDerived(op, OPER04, false);
-        op = Model.getCoreFactory().buildOperation(cl, returnType);
-        checkDerived(op, OPER05, false);
-        op = Model.getCoreFactory().buildOperation(cl, returnType);
-        checkDerived(op, OPER06, true);
-        op = Model.getCoreFactory().buildOperation(cl, returnType);
-        checkDerived(op, OPER07, true);
-
-        Object td = emFactory.buildTagDefinition(
-                Facade.DERIVED_TAG, stereo, null);
-        
-        op = Model.getCoreFactory().buildOperation(cl, returnType);        
-        tv = emFactory.buildTaggedValue(td, 
-                new String[] {"true"});
-        emHelper.addTaggedValue(op, tv);
-        checkDerived(op, OPER01, false);
-
-        op = Model.getCoreFactory().buildOperation(cl, returnType);
-        tv = emFactory.buildTaggedValue(td, 
-                new String[] {"false"});
-        emHelper.addTaggedValue(op, tv);
-        checkDerived(op, OPER06, true);
-
-        op = Model.getCoreFactory().buildOperation(cl, returnType);        
-        tv = emFactory.buildTaggedValue(td, 
-                new String[] {"foo"});
-        emHelper.addTaggedValue(op, tv);
-        checkDerived(op, OPER01, false);
-        
-        op = Model.getCoreFactory().buildOperation(cl, returnType);
-        tv = emFactory.buildTaggedValue(td, 
-                new String[] {"bar"});
-        emHelper.addTaggedValue(op, tv);
-        checkDerived(op, OPER06, true);
     }
 
     /**
