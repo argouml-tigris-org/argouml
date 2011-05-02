@@ -116,6 +116,10 @@ Building this requires:
   <target name="prepare" depends="init">
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.classes}"/>
+
+    <copy todir="${build.classes}">
+      <fileset dir="src" includes="**/*.xml"/>
+    </copy>
   </target>
 
   <!-- =================================================================== -->
