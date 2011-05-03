@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -68,7 +68,7 @@ public abstract class AssociationNameNotation extends NotationProvider {
     public void initialiseListener(Object modelElement) {
         /* Listen to the modelelement itself: */
         addElementListener(modelElement, 
-                new String[] {"name", "visibility", "stereotype"});
+                new String[] {"name", "visibility", "stereotype", "taggedValue"});
         Collection stereotypes =
             Model.getFacade().getStereotypes(modelElement);
         Iterator iter = stereotypes.iterator();
@@ -77,6 +77,10 @@ public abstract class AssociationNameNotation extends NotationProvider {
             addElementListener(
                     oneStereoType, 
                     new String[] {"name", "remove"});
+        }
+        // We also show tagged values (the / for derived)
+        for (Object uml : Model.getFacade().getTaggedValuesCollection(modelElement)) {
+            addElementListener(uml);
         }
     }
 }

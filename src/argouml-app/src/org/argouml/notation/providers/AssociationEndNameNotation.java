@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -71,7 +71,7 @@ public abstract class AssociationEndNameNotation extends NotationProvider {
     public void initialiseListener(Object modelElement) {
         addElementListener(
                 modelElement, 
-                new String[] {"name", "visibility", "stereotype"});
+                new String[] {"name", "visibility", "stereotype", "taggedValue"});
         Collection stereotypes =
                 Model.getFacade().getStereotypes(modelElement);
         Iterator iter = stereotypes.iterator();
@@ -81,6 +81,10 @@ public abstract class AssociationEndNameNotation extends NotationProvider {
                     o, 
                     new String[] {"name", "remove"});
         }
+        // We also show tagged values (the / for derived)
+        for (Object uml : Model.getFacade().getTaggedValuesCollection(modelElement)) {
+            addElementListener(uml);
+        }
     }
 
     @Override
@@ -88,7 +92,8 @@ public abstract class AssociationEndNameNotation extends NotationProvider {
             PropertyChangeEvent pce) {
         Object obj = pce.getSource();
         if ((obj == modelElement) 
-                && "stereotype".equals(pce.getPropertyName())) {
+                && ("stereotype".equals(pce.getPropertyName())
+                || "taggedValue".equals(pce.getPropertyName()))) {
             if (pce instanceof AddAssociationEvent 
                     && Model.getFacade().isAStereotype(pce.getNewValue())) {
                 // new stereotype
@@ -101,6 +106,14 @@ public abstract class AssociationEndNameNotation extends NotationProvider {
                 // removed stereotype
                 removeElementListener(
                         pce.getOldValue());
+            }
+            if (pce instanceof AddAssociationEvent
+                    && Model.getFacade().isATaggedValue(pce.getNewValue())) {
+                addElementListener(pce.getNewValue());
+            }
+            if (pce instanceof RemoveAssociationEvent
+                    && Model.getFacade().isATaggedValue(pce.getOldValue())) {
+                removeElementListener(pce.getOldValue());
             }
         }
     }

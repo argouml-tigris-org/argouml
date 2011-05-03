@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -45,6 +45,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.AssociationEndNameNotation;
@@ -102,6 +103,14 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
     }
 
     /**
+     * Parse a line of the form: <pre>
+     *          [/] [visibility] name
+     * </pre><p>
+     * 
+     * Stereotypes can be given between any element. It must be given 
+     * in the form: 
+     * &lt;&lt;stereotype1,stereotype2,stereotype3&gt;&gt;
+     * 
      * @param role   The AssociationEnd <em>text</em> describes.
      * @param text A String on the above format.
      * @throws ParseException
@@ -115,7 +124,16 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
         String name = null;
         StringBuilder stereotype = null;
         String token;
+        boolean derived = false;
 
+        text = text.trim();
+        /* Handle Derived: */
+        if (text.length() > 0 && "/".indexOf(text.charAt(0)) >= 0) {
+            derived = true;
+            text = text.substring(1);
+            text = text.trim();
+        }
+        
         try {
             st = new MyTokenizer(text, "<<,\u00AB,\u00BB,>>");
             while (st.hasMoreTokens()) {
@@ -155,6 +173,8 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
             throw pre;
         }
 
+        dealWithDerived(role, derived);
+
         if (name != null) {
             name = name.trim();
         }
@@ -186,8 +206,22 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
         StereotypeUtility.dealWithStereotypes(role, stereotype, true);
     }
 
+    private void dealWithDerived(Object umlObject, boolean derived) {
+        NotationUtilityUml.setDerived(umlObject, derived);
+    }
+
     private String toString(Object modelElement, boolean showVisibility,
             boolean useGuillemets) {
+        String derived = "";
+        Object tv = Model.getFacade().getTaggedValue(modelElement, 
+                Facade.DERIVED_TAG);
+        if (tv != null) {
+            String tag = Model.getFacade().getValueOfTag(tv);
+            if ("true".equalsIgnoreCase(tag)) {
+                derived = "/";
+            }
+        }   
+        
         String name = Model.getFacade().getName(modelElement);
         if (name == null) {
             name = "";
@@ -210,7 +244,7 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
             stereoString += " ";
         }
 
-        return stereoString + visibility + name;
+        return derived + stereoString + visibility + name;
     }
 
     @Override

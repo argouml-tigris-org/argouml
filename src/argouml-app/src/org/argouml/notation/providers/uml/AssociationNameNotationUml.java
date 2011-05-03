@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -44,6 +44,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoHelpEvent;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationSettings;
 import org.argouml.notation.providers.AssociationNameNotation;
@@ -51,7 +52,7 @@ import org.argouml.notation.providers.AssociationNameNotation;
 /**
  * Handles the notation of the name of an association modelelement in UML,
  * ie a string on the format:<pre>
- *     [ &lt;&lt; stereotype &gt;&gt;] [+|-|#|~] [name]
+ *     [/] [ &lt;&lt; stereotype &gt;&gt;] [+|-|#|~] [name]
  * </pre>
  *
  * @author Michiel
@@ -80,7 +81,7 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
      */
     public void parse(Object modelElement, String text) {
         try {
-            NotationUtilityUml.parseModelElement(modelElement, text);
+            parseAssociationName(modelElement, text);
         } catch (ParseException pe) {
             String msg = "statusmsg.bar.error.parsing.association-name";
             Object[] args = {
@@ -91,6 +92,22 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
                     ArgoEventTypes.HELP_CHANGED, this,
                 Translator.messageFormat(msg, args)));
         }
+    }
+    
+    protected void parseAssociationName(Object modelElement, String text)
+    throws ParseException {
+        boolean derived = false;
+
+        text = text.trim();
+        /* Handle Derived: */
+        if (text.length() > 0 && "/".indexOf(text.charAt(0)) >= 0) {
+            derived = true;
+            text = text.substring(1);
+            text = text.trim();
+        }
+        NotationUtilityUml.setDerived(modelElement, derived);
+        
+        NotationUtilityUml.parseModelElement(modelElement, text);
     }
 
     /*
@@ -111,9 +128,20 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
         if (showAssociationName == Boolean.FALSE) {
             return "";
         }
+        
+        String derived = "";
+        Object tv = Model.getFacade().getTaggedValue(modelElement, 
+                Facade.DERIVED_TAG);
+        if (tv != null) {
+            String tag = Model.getFacade().getValueOfTag(tv);
+            if ("true".equalsIgnoreCase(tag)) {
+                derived = "/";
+            }
+        }
 
         String name = Model.getFacade().getName(modelElement);
         StringBuffer sb = new StringBuffer("");
+        sb.append(derived);
         if (fullyHandleStereotypes) {
             sb.append(NotationUtilityUml.generateStereotype(modelElement, 
                     useGuillemets));
