@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2010 Contributors - see below
+ * Copyright (c) 2010-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  *    Linus Tolke - initial implementation
  *    <see source control change log for other early contributors>
  *    Tom Morris - UML 1.4 and UML 2.x additions
+ *    Michiel van der Wulp
  *    
  *******************************************************************************
  */
@@ -3208,7 +3209,11 @@ public interface Facade {
     Collection getTaggedValuesCollection(Object handle);
 
     /**
-     * Return the tagged value with a specific tag.
+     * Return the tagged value with a specific tag. <p>
+     * 
+     * Warning: this method returns only the first TaggedValue found
+     *  with the given name. Hence, this method is a simplification of 
+     *  the real problem and should be avoided.
      *
      * @param handle The model element the tagged value belongs to.
      * @param name The tag name.
