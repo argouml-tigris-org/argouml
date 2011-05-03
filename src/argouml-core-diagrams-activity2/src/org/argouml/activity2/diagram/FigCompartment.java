@@ -113,13 +113,6 @@ class FigCompartment extends FigComposite implements AssociationChangeListener {
 
     @Override
     protected void setBoundsImpl(int x, int y, int w, int h) {
-        Rectangle oldBounds = getBounds();
-
-        Dimension minimumSize = getMinimumSize();
-        
-        w = Math.max(w, minimumSize.width);
-        h = Math.max(h, minimumSize.height);
-        
         super.setBoundsImpl(x, y, w, h);
 
         w -= getLeftMargin() + getRightMargin();
