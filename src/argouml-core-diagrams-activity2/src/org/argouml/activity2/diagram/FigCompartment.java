@@ -112,13 +112,11 @@ class FigCompartment extends FigComposite implements AssociationChangeListener {
     }
 
     @Override
-    protected void setBoundsImpl(int x, int y, int w, int h) {
-        super.setBoundsImpl(x, y, w, h);
+    protected void positionChildren() {
 
-        w -= getLeftMargin() + getRightMargin();
-        h -= getTopMargin() + getBottomMargin();
-
-        y += getTopMargin();
+        int w = _w - (getLeftMargin() + getRightMargin());
+        int x = _x + getLeftMargin();
+        int y = _y + getTopMargin();
         
         for (Object f : getFigs()) {
             Fig fig = (Fig) f;
@@ -133,10 +131,18 @@ class FigCompartment extends FigComposite implements AssociationChangeListener {
         FigNotation fn = new FigNotation(
                 element, childBounds, getDiagramSettings(), NotationType.NAME);
         addFig(fn);
+        calcBounds();
     }
 
     public void elementRemoved(RemoveAssociationEvent evt) {
-        // TODO Auto-generated method stub
-        
+        Object element = evt.getOldValue();
+        for (Object f : getFigs()) {
+            Fig fig = (Fig) f;
+            if (fig.getOwner() == element) {
+                removeFig(fig);
+                calcBounds();
+                return;
+            }
+        }
     }
 }
