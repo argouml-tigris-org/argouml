@@ -81,10 +81,6 @@ class FigBaseNode extends FigNode implements DiagramNode {
             final int w,
             final int h) {
 
-        final Rectangle oldBounds = getBounds();
-        
-        Rectangle bounds = new Rectangle(x, y, w, h);
-        
         _x = x;
         _y = y;
         _w = w;
