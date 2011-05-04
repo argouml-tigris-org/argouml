@@ -67,23 +67,12 @@ abstract class FigBasePresentation extends FigComposite
     
     // TODO: Move an empty implementation to FigGroup in GEF
     protected void positionChildren() {
-        Rectangle myBounds = getBounds();
-        
-        getBorder().setBounds(myBounds);
-        
-        final Dimension nameDim = getNameDisplay().getMinimumSize();
-        final int nameWidth = nameDim.width;
-        final int nameHeight = nameDim.height;
-        
         final Rectangle bounds = getBounds();
         
-        final int nx = bounds.x + getLeftMargin()
-            + (bounds.width - (nameWidth + getLeftMargin() + getRightMargin()))
-            / 2;
-        final int ny = bounds.y + getTopMargin()
-            + (bounds.height - nameHeight - getTopMargin() - getBottomMargin())
-            / 2;
-        getNameDisplay().setLocation(nx, ny);
+        getBorder().setBounds(bounds);
+        
+        getNameDisplay().setBounds(
+                new Rectangle(bounds.x + getLeftMargin(), bounds.y + getTopMargin(), bounds.width - (getLeftMargin() + getRightMargin()), bounds.height - (getTopMargin() + getBottomMargin())));
     }
     
     @Override
@@ -92,11 +81,6 @@ abstract class FigBasePresentation extends FigComposite
         final Dimension nameDim = getNameDisplay().getMinimumSize();
         int width = nameDim.width;
         int height = nameDim.height;
-//        if (getStereotypeDisplay() != null) {
-//            final Dimension stereoDim = getStereotypeDisplay().getMinimumSize();
-//            width += Math.max(stereoDim.width, nameDim.width);
-//            height += (stereoDim.height - 2);
-//        }
         
         int w = width + getRightMargin() + getLeftMargin();
         final int h = height + getTopMargin() + getBottomMargin();

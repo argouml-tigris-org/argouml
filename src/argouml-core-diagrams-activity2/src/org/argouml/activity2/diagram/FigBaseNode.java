@@ -102,15 +102,13 @@ class FigBaseNode extends FigNode implements DiagramNode {
      * delegated to that parent.
      */
     public void calcBounds() {
-        final Dimension min = getMinimumSize();
-        if (getGroup() != null
-                && (getBounds().height < min.height
-                        || getBounds().width < min.width)) {
+        if (getGroup() != null) {
             ((FigGroup) getGroup()).calcBounds();
         } else {
+            final Dimension min = getMinimumSize();
             int maxw = Math.max(getWidth(), min.width);
             int maxh = Math.max(getHeight(), min.height);
-            setSize(maxw, maxh);
+            setBounds(_x, _y, maxw, maxh);
         }
     }
 }

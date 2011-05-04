@@ -120,7 +120,7 @@ class FigCompartment extends FigComposite implements AssociationChangeListener {
         
         for (Object f : getFigs()) {
             Fig fig = (Fig) f;
-            fig.setBounds(x, y, w, fig.getHeight());
+            fig.setBounds(x, y, w, fig.getMinimumSize().height);
             y += fig.getHeight();
         }
     }
