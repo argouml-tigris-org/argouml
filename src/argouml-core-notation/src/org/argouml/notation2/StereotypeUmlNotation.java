@@ -41,13 +41,14 @@ public class StereotypeUmlNotation implements NotationText,
     public void propertyChange(PropertyChangeEvent arg0) {
         try {
             final Object owner = notatedItem.getOwner();
-            final String name = Model.getFacade().getName(owner);
+            final String name = "<<" + Model.getFacade().getName(owner) + ">>";
+            final boolean isAbstract = Model.getFacade().isAbstract(owner);
             
             Runnable doWorkRunnable = new Runnable() {
                 public void run() {
                         NotationTextEvent event = new UmlNotationTextEvent(
-                                "<<" + name + ">>", 
-                                false, 
+                                name, 
+                                isAbstract, 
                                 false, 
                                 false);
                         notatedItem.notationTextChanged(event);

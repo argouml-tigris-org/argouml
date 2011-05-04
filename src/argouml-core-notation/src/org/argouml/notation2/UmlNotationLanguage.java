@@ -26,13 +26,18 @@ class UmlNotationLanguage implements NotationLanguage {
     public NotationText createNotationText(NotatedItem item) {
         
         final NotationText nt;
-        if (Model.getMetaTypes().getStereotype().equals(item.getMetaType())) {
+        if (Model.getCoreHelper().isSubType(
+                Model.getMetaTypes().getStereotype(), item.getMetaType())) {
             nt = new StereotypeUmlNotation(item);
         } else {
             nt = new NameUmlNotation(item);
         }
         Model.getPump().addModelEventListener(
                 (PropertyChangeListener) nt, item.getOwner());
+        
+        // As soon as we've created a notation and have registered it listener
+        // force an event to go to the listener so it draws for the first time.
+        ((PropertyChangeListener) nt).propertyChange(null);
         
         return nt;
     }
