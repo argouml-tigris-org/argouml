@@ -36,18 +36,28 @@
       <version>0.13.3-1</version>
       <scope>compile</scope>
     </dependency>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.2-6</version>
+      <scope>test</scope>
+    </dependency>
+
     <dependency>
       <groupId>org.tigris.swidgets</groupId>
       <artifactId>swidgets</artifactId>
       <version>0.1.4-5</version>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>org.tigris.toolbar</groupId>
       <artifactId>toolbar</artifactId>
       <version>1.4.1-20071227-1</version>
       <scope>compile</scope>
     </dependency>
+
     <dependency>
       <groupId>tudresden.ocl</groupId>
       <artifactId>ocl-argo</artifactId>
