@@ -186,6 +186,7 @@ public final class Translator {
             Locale.ITALIAN,
             new Locale("nb", ""),
             new Locale("pt", ""),
+            new Locale("pt", "BR"),
             new Locale("ru", ""),
             Locale.SIMPLIFIED_CHINESE,
             Locale.TRADITIONAL_CHINESE,
