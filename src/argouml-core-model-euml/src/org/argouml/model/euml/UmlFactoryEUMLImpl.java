@@ -728,9 +728,10 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             // trying to get a built-in standard profile from eclipse UML2
             try {
                 URI uri = URI.createURI(extentName);
-                Resource res = UMLUtil.getResource(modelImpl, uri, true);
-                return res.getContents();
-            } catch (IllegalArgumentException ex) {
+                Resource r = modelImpl.getEditingDomain().getResourceSet().getResource(uri, true);
+                modelImpl.getReadOnlyMap().put(r, Boolean.TRUE);
+                return r.getContents();
+            } catch (Exception ex) {
                 LOG.warn("failed to get resource: " + extentName); //$NON-NLS-1$
             }
         }
