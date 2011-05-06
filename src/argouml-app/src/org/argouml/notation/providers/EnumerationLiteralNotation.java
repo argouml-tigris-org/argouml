@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -67,10 +67,10 @@ public abstract class EnumerationLiteralNotation extends NotationProvider {
     @Override
     public void initialiseListener(Object modelElement) {
         addElementListener(modelElement, 
-                new String[] {"remove", "stereotype"} );
+                new String[] {"name", "remove", "stereotype"} );
         Collection c = Model.getFacade().getStereotypes(modelElement);
         for (Object st : c) {
-            addElementListener(st, "name");
+            addElementListener(st, new String[] {"name", "remove"});
         }
     }
 

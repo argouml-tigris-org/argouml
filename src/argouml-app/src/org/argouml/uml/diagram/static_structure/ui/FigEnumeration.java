@@ -1,13 +1,14 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -44,7 +45,6 @@ import java.util.Set;
 
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.ui.FigEnumLiteralsCompartment;
 import org.tigris.gef.base.Selection;
 
 /**
@@ -73,7 +73,16 @@ public class FigEnumeration extends FigDataType {
     protected String getKeyword() {
         return "enumeration";
     }
-    
+
+    @Override
+    public void renderingChanged() {
+        super.renderingChanged();
+
+        if (isCompartmentVisible(Model.getMetaTypes().getEnumerationLiteral())) {
+            updateCompartment(Model.getMetaTypes().getEnumerationLiteral());
+        }
+    }
+
     @Override
     public Selection makeSelection() {
         return new SelectionEnumeration(this);
@@ -81,30 +90,30 @@ public class FigEnumeration extends FigDataType {
 
     @Override
     protected void updateListeners(Object oldOwner, Object newOwner) {
-        Set<Object[]> l = new HashSet<Object[]>();
+        Set<Object[]> lst = new HashSet<Object[]>();
         if (newOwner != null) {
             // add the listeners to the newOwner
-            l.add(new Object[] {newOwner, null});
+            lst.add(new Object[] {newOwner, null});
             // and its stereotypes
             for (Object stereo : Model.getFacade().getStereotypes(newOwner)) {
-                l.add(new Object[] {stereo, null});                
+                lst.add(new Object[] {stereo, null});                
             }
             // and its features
             for (Object feat : Model.getFacade().getFeatures(newOwner)) {
-                l.add(new Object[] {feat, null});
+                lst.add(new Object[] {feat, null});
                 // and the stereotypes of its features
                 for (Object stereo : Model.getFacade().getStereotypes(feat)) {
-                    l.add(new Object[] {stereo, null});
+                    lst.add(new Object[] {stereo, null});
                 }
             }
             // and its enumerationLiterals
             for (Object literal : Model.getFacade().getEnumerationLiterals(
                     newOwner)) {
-                l.add(new Object[] {literal, null});
+                lst.add(new Object[] {literal, null});
             }
         }
         // And now add listeners to them all:
-        updateElementListeners(l);
+        updateElementListeners(lst);
 
     }
 
