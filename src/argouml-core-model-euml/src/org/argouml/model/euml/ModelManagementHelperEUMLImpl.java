@@ -123,7 +123,11 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     }
 
     public Collection getAllModelElementsOfKind(Object nsa, String kind) {
-        return getAllModelElementsOfKind(nsa, kind);
+        try {
+            return getAllModelElementsOfKind(nsa, Class.forName(kind));
+        } catch (ClassNotFoundException cnfe) {
+            throw new IllegalArgumentException(cnfe);
+        }
     }
 
     public Collection getAllModelElementsOfKindWithModel(Object model,
