@@ -148,7 +148,8 @@ public class FigFinalState extends FigStateVertex {
         Object pstate = getOwner();
         Selection sel = null;
         if ( pstate != null) {
-            if (Model.getFacade().isAActivityGraph(
+            if (Model.getFacade().getUmlVersion().startsWith("1")
+                    && Model.getFacade().isAActivityGraph(
                             Model.getFacade().getStateMachine(
                             Model.getFacade().getContainer(pstate)))) {
                 sel = new SelectionActionState(this);

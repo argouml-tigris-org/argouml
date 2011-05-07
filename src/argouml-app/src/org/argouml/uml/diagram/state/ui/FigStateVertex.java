@@ -101,9 +101,11 @@ public abstract class FigStateVertex extends FigNodeModelElement {
             compositeState = encloser.getOwner();
             ((FigStateVertex) encloser).redrawEnclosedFigs();
         } else {
-            compositeState = Model.getStateMachinesHelper().getTop(
-                    Model.getStateMachinesHelper()
-                            .getStateMachine(stateVertex));
+            if (Model.getFacade().getUmlVersion().startsWith("1")) {
+                compositeState = Model.getStateMachinesHelper().getTop(
+                        Model.getStateMachinesHelper()
+                                .getStateMachine(stateVertex));
+            }
         }
         if (compositeState != null) {
             /* Do not change the model unless needed - avoids issue 4446: */
@@ -150,7 +152,8 @@ public abstract class FigStateVertex extends FigNodeModelElement {
 
         if (pstate != null) {
 
-            if (Model.getFacade().isAActivityGraph(
+            if (Model.getFacade().getUmlVersion().startsWith("1")
+                    && Model.getFacade().isAActivityGraph(
                     Model.getFacade().getStateMachine(
                             Model.getFacade().getContainer(pstate)))) {
                 return new SelectionActionState(this);

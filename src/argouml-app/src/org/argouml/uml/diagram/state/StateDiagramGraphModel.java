@@ -243,8 +243,10 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 
         getNodes().add(node);
 
-        if (Model.getFacade().isAStateVertex(node)) {
-            Object top = Model.getStateMachinesHelper().getTop(getMachine());
+        if (Model.getFacade().getUmlVersion().startsWith("1")
+                && Model.getFacade().isAStateVertex(node)) {
+            final Object stateMachine = getMachine();
+            Object top = Model.getStateMachinesHelper().getTop(stateMachine);
             Model.getStateMachinesHelper().addSubvertex(top, node);
         }
 
