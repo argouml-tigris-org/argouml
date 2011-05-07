@@ -12,12 +12,14 @@
 package org.argouml.model.euml;
 
 import java.util.Collection;
-
-import org.argouml.model.InvalidElementException;
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
 import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
+import org.eclipse.uml2.uml.Transition;
+import org.eclipse.uml2.uml.Vertex;
 
 /**
  * The implementation of the StateMachinesHelper for EUML2.
@@ -29,6 +31,9 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
      */
     private EUMLModelImplementation modelImpl;
 
+    private static final Logger LOG =
+        Logger.getLogger(StateMachinesHelperEUMLImpl.class);
+    
     /**
      * Constructor.
      * 
@@ -46,9 +51,13 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
     }
 
     public void addSubvertex(Object handle, Object subvertex) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        if (handle instanceof Region
+                && subvertex instanceof Vertex) {
+            ((Vertex) subvertex).setContainer((Region) handle);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle //$NON-NLS-1$
+                + " or subvertex: " + subvertex); //$NON-NLS-1$
     }
 
     public Object findNamespaceForEvent(Object trans, Object model) {
@@ -83,9 +92,10 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
     }
 
     public Object getDestination(Object trans) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        if (trans instanceof Transition) {
+            return ((Transition) trans).getTarget();
+        }
+        throw new IllegalArgumentException();
     }
 
     public Collection getOutgoingStates(Object ostatevertex) {
@@ -101,9 +111,10 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
     }
 
     public Object getSource(Object trans) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        if (trans instanceof Transition) {
+            return ((Transition) trans).getTarget();
+        }
+        throw new IllegalArgumentException();
     }
 
     public Object getStateMachine(Object handle) {
@@ -134,9 +145,9 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
     }
 
     public Object getTop(Object sm) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        // TODO: how do we manage this? Ignore?
+        LOG.warn("Not implemented - how do we manage this in UML2?");
+        return null;
     }
 
     public boolean isAddingStatemachineAllowed(Object context) {
