@@ -145,9 +145,8 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
     }
 
     public Object getTop(Object sm) {
-        // TODO: how do we manage this? Ignore?
-        LOG.warn("Not implemented - how do we manage this in UML2?");
-        return null;
+        // TODO: Auto-generated method stub
+        throw new NotYetImplementedException();
     }
 
     public boolean isAddingStatemachineAllowed(Object context) {
