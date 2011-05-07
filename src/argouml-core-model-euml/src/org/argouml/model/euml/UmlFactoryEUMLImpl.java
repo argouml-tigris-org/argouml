@@ -456,8 +456,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     }
 
     public boolean isConnectionType(Object connectionType) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
+        // If our map has any entries for this type, it's a connection type
+        return (validConnectionMap.get(connectionType) != null);
     }
 
 
