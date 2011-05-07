@@ -101,9 +101,9 @@ public class ActionAddClientDependencyAction extends
         Object model =
             ProjectManager.getManager().getCurrentProject().getModel();
         if (getTarget() != null) {
+            Object modelElementType = Model.getMetaTypes().getModelElement();
             ret.addAll(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKind(model, 
-                            "org.omg.uml.foundation.core.ModelElement"));
+                    .getAllModelElementsOfKind(model, modelElementType));
             ret.remove(getTarget());
         }
         return ret;
