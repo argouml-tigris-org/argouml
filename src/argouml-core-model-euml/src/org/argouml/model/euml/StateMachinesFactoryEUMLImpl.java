@@ -14,11 +14,10 @@ package org.argouml.model.euml;
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.StateMachinesFactory;
 import org.eclipse.uml2.uml.BehavioredClassifier;
-import org.eclipse.uml2.uml.Classifier;
-import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.ProtocolStateMachine;
 import org.eclipse.uml2.uml.StateMachine;
+import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.UMLFactory;
+import org.eclipse.uml2.uml.Vertex;
 
 /**
  * The implementation of the StateMachinesFactory for EUML2.
@@ -164,9 +163,13 @@ class StateMachinesFactoryEUMLImpl implements StateMachinesFactory,
     }
 
     public Object buildTransition(Object source, Object target) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        if (source instanceof Vertex && target instanceof Vertex) {
+            Transition trans = createTransition();
+            trans.setSource((Vertex) source);
+            trans.setTarget((Vertex) target);
+            return trans;
+        }
+        throw new IllegalArgumentException();
     }
 
     public Object createCallEvent() {
@@ -235,7 +238,7 @@ class StateMachinesFactoryEUMLImpl implements StateMachinesFactory,
         return UMLFactory.eINSTANCE.createTimeEvent();
     }
 
-    public Object createTransition() {
+    public Transition createTransition() {
         return UMLFactory.eINSTANCE.createTransition();
     }
 
