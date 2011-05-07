@@ -2864,8 +2864,17 @@ public interface Facade {
      *
      * @param handle the transition
      * @return the trigger
+     * @deprecated use getTriggers
      */
     Object getTrigger(Object handle);
+
+    /**
+     * Get the triggers of a transition.
+     *
+     * @param handle the transition
+     * @return the trigger
+     */
+    List getTriggers(Object handle);
 
     /**
      * The type of a StructuralFeature, AssociationEnd, Parameter,

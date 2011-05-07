@@ -3457,6 +3457,22 @@ class FacadeMDRImpl implements Facade {
         }
     }
 
+    public List getTriggers(Object handle) {
+        try {
+            if (handle instanceof Transition) {
+                ArrayList l = new ArrayList();
+                Event trig = ((Transition) handle).getTrigger();
+                if (trig != null) {
+                    l.add(trig);
+                }
+                return l;
+            }
+            return illegalArgumentList(handle);
+        } catch (InvalidObjectException e) {
+            throw new InvalidElementException(e);
+        }
+    }
+
 
     public Object getType(Object handle) {
         try {

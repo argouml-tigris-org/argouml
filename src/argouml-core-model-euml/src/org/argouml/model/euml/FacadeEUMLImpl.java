@@ -789,8 +789,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getGuard(Object handle) {
-        throw new NotYetImplementedException();
-
+        if (isATransition(handle)) {
+            return ((Transition) handle).getGuard();
+        }
+        throw new IllegalArgumentException();
     }
 
     public Object getIcon(Object handle) {
@@ -849,8 +851,26 @@ class FacadeEUMLImpl implements Facade {
         return ((UseCase) handle).getIncludes();
     }
 
-    public Collection getIncomings(Object handle) {
-        throw new NotYetImplementedException();
+    public List getIncomings(Object handle) {
+        if (isAGuard(handle) || isAAction(handle)) {
+            return getIncomings(getTransition(handle));
+        }
+        if (isAEvent(handle)) {
+            Iterator trans = getTransitions(handle).iterator();
+            List incomings = new ArrayList();
+            while (trans.hasNext()) {
+                incomings.addAll(getIncomings(trans.next()));
+            }
+            return incomings;
+        }
+        if (isAStateVertex(handle)) {
+            return ((Vertex) handle).getIncomings();
+        }
+        // For a Transition use indirection through source StateVertex
+        if (isATransition(handle)) {
+            return ((Transition) handle).getSource().getIncomings();
+        }
+        throw new IllegalArgumentException();
     }
 
     public Object getInitialValue(Object handle) {
@@ -1150,8 +1170,26 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
-    public Collection getOutgoings(Object handle) {
-        throw new NotYetImplementedException();
+    public List getOutgoings(Object handle) {
+        if (isAGuard(handle) || isAAction(handle)) {
+            return getOutgoings(getTransition(handle));
+        }
+        if (isAEvent(handle)) {
+            Iterator trans = getTransitions(handle).iterator();
+            List outgoings = new ArrayList();
+            while (trans.hasNext()) {
+                outgoings.addAll(getOutgoings(trans.next()));
+            }
+            return outgoings;
+        }
+        if (isAStateVertex(handle)) {
+            return ((Vertex) handle).getOutgoings();
+        }
+        // For a Transition use indirection through source StateVertex
+        if (isATransition(handle)) {
+            return ((Transition) handle).getSource().getOutgoings();
+        }
+        throw new IllegalArgumentException();
     }
 
     public Collection<Element> getOwnedElements(Object handle) {
@@ -1598,6 +1636,13 @@ class FacadeEUMLImpl implements Facade {
         // TODO: Transitions can have multiple Triggers now?
         // Need API change to handle - tfm
         return ((Transition) handle).getTriggers().get(0);
+    }
+
+    public List<Trigger> getTriggers(Object handle) {
+        if (!(handle instanceof Transition)) {
+            throw new IllegalArgumentException();
+        }
+        return ((Transition) handle).getTriggers();
     }
 
     public Object getType(Object handle) {
