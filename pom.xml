@@ -17,6 +17,14 @@
     <module>src/argouml-core-model</module>
     <module>src/argouml-core-model-mdr</module>
     <module>src/argouml-core-model-euml</module>
+    <module>src/argouml-core-notation</module>
+    <module>src/argouml-core-transformer</module>
+    <module>src/argouml-core-umlpropertypanels</module>
+    <module>src/argouml-core-diagrams-activity2</module>
+    <module>src/argouml-core-diagrams-class2</module>
+    <module>src/argouml-core-diagrams-sequence2</module>
+    <module>src/argouml-core-diagrams-state2</module>
+    <module>src/argouml-core-diagrams-structure2</module>
     <module>src/argouml-app</module>
   </modules>
 

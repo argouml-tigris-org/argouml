@@ -15,8 +15,8 @@
     <relativePath>../../tools/maven/parentpom.xml</relativePath>
   </parent>
 
-  <artifactId>argouml-core-model-mdr</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <artifactId>argouml-core-diagrams-sequence2</artifactId>
+  <version>0.1</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,55 +25,32 @@
   <dependencies>
     <dependency>
       <groupId>org.argouml</groupId>
-      <artifactId>argouml-core-model</artifactId>
+      <artifactId>argouml-app</artifactId>
       <version>0.2-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.argouml</groupId>
-      <artifactId>java-interfaces</artifactId>
-      <version>0.32</version>
-      <type>jar</type>
+      <artifactId>argouml-core-model</artifactId>
+      <version>0.2-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.tigris.gef</groupId>
+      <artifactId>gef</artifactId>
+      <version>0.13.3-1</version>
+      <scope>compile</scope>
+    </dependency>
 
     <dependency>
-      <groupId>jmi</groupId>
-      <artifactId>jmi</artifactId>
-      <version>1.0-5</version>
-      <type>jar</type>
-      <scope>compile</scope>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.0.2-6</version>
+      <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>jmi</groupId>
-      <artifactId>mof</artifactId>
-      <version>0.0-5</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.netbeans.mdr</groupId>
-      <artifactId>jmiutils</artifactId>
-      <version>0.0-5</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.netbeans.mdr</groupId>
-      <artifactId>mdrapi</artifactId>
-      <version>0.0-5</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.netbeans.mdr</groupId>
-      <artifactId>openide-util</artifactId>
-      <version>0.0-5</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
+
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
@@ -82,6 +59,57 @@
       <scope>compile</scope>
     </dependency>
 
+    <!-- MDR things -->
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>argouml-core-model-mdr</artifactId>
+      <version>0.2-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.argouml</groupId>
+      <artifactId>java-interfaces</artifactId>
+      <version>0.33.1</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>jmi</groupId>
+      <artifactId>jmi</artifactId>
+      <version>1.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>jmi</groupId>
+      <artifactId>mof</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.netbeans.mdr</groupId>
+      <artifactId>jmiutils</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.netbeans.mdr</groupId>
+      <artifactId>mdrapi</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.netbeans.mdr</groupId>
+      <artifactId>openide-util</artifactId>
+      <version>0.0-5</version>
+      <type>jar</type>
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.netbeans.mdr</groupId>
       <artifactId>nbmdr</artifactId>
@@ -89,11 +117,27 @@
       <type>jar</type>
       <scope>test</scope>
     </dependency>
+
+    <!-- Other test stuff -->
+    <dependency>
+      <groupId>easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <version>2.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>jdepend</groupId>
+      <artifactId>jdepend</artifactId>
+      <version>2.9.1</version>
+      <scope>test</scope>
+    </dependency>
+
+
   </dependencies>
 
-  <name>argouml-core-model-mdr</name>
+  <name>argouml-core-diagrams-sequence2</name>
   <description>
-This is the project containing the mdr of the model subsystem.
+Sequence diagrams.
   </description>
 
 </project>
