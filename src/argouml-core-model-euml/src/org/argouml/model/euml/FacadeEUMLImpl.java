@@ -573,7 +573,11 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getDeferrableEvents(Object handle) {
-        throw new NotYetImplementedException();
+        if (handle instanceof State) {
+            return ((State) handle).getDeferrableTriggers();
+        }
+        
+        throw new IllegalArgumentException();
     }
 
     public Collection getDeployedComponents(Object handle) {
