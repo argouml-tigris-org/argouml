@@ -52,11 +52,10 @@
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;argouml-core-diagrams-sequence2&quot; type=&quot;1&quot;/&gt;&#13;&#10;"/>
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;argouml-core-umlpropertypanels&quot; type=&quot;1&quot;/&gt;&#13;&#10;"/>
 <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;argouml-core-notation&quot; type=&quot;1&quot;/&gt;&#13;&#10;"/>
-<listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;argouml-core-diagrams-state2&quot; type=&quot;1&quot;/&gt;&#13;&#10;"/>
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.argouml.application.Main"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-nouml2warning"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="argouml-app"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx400M -ea -Dargouml.modules=org.argouml.notation2.NotationModule;org.argouml.state2.StateDiagramModule;org.argouml.activity2.ActivityDiagramModule;org.argouml.sequence2.SequenceDiagramModule;org.argouml.core.propertypanels.module.XmlPropertyPanelsModule -Dlog4j.configuration=org/argouml/resource/full_console.lcf  -DeUML.resources=../argouml-core-model-euml/lib/uml2/org.eclipse.uml2.uml.resources_3.1.1.v201008191505.jar -Dargouml.model.implementation=org.argouml.model.euml.EUMLModelImplementation"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xmx400M -ea -Dargouml.modules=org.argouml.notation2.NotationModule;org.argouml.activity2.ActivityDiagramModule;org.argouml.sequence2.SequenceDiagramModule;org.argouml.core.propertypanels.module.XmlPropertyPanelsModule -Dlog4j.configuration=org/argouml/resource/full_console.lcf  -DeUML.resources=../argouml-core-model-euml/lib/uml2/org.eclipse.uml2.uml.resources_3.1.1.v201008191505.jar -Dargouml.model.implementation=org.argouml.model.euml.EUMLModelImplementation"/>
 </launchConfiguration>
