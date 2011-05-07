@@ -109,6 +109,9 @@ public interface ModelManagementHelper {
      *            name of class to find (without implementation-specific
      *            additions)
      * @return a Collection.
+     * @deprecated in 0.33.4 by Bob Tarling. This assumes knowledge of class
+     * names outside of the model implementation. Use
+     * getAllModelElementsOfKind(Object, Object) instead.
      */
     Collection getAllModelElementsOfKind(Object namespace, String kind);
 
