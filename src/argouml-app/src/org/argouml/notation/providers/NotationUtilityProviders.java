@@ -15,6 +15,7 @@ package org.argouml.notation.providers;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProvider;
@@ -38,8 +39,11 @@ class NotationUtilityProviders {
             /* We are not interested in the name. */
         }
 
-        Object trigger = Model.getFacade().getTrigger(transition);
-        addListenersForEvent(np, trigger);
+        List triggers = Model.getFacade().getTriggers(transition);
+        
+        for (Object trigger : triggers) {
+            addListenersForEvent(np, trigger);
+        }
 
         Object effect = Model.getFacade().getEffect(transition);
         addListenersForAction(np, effect);
