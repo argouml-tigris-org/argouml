@@ -2237,8 +2237,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAStateVertex(Object handle) {
-        // TODO: Changed for UML2
-        return handle instanceof State;
+        return handle instanceof Vertex;
     }
 
     public boolean isAStereotype(Object handle) {
