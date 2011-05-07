@@ -2748,7 +2748,6 @@ Authors:
     <separator />
     <attribute name="exit" type="Action" />
     <list name="deferrableEvent" type="Event" label="label.deferrable" />
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
     <list name="classifierInState" type="State" label="label.instate" />
@@ -2896,7 +2895,6 @@ Authors:
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
 	<separator />
     <list name="subvertex" type="StateVertex" />
     <list name="deferrableEvent" type="Event" label="label.deferrable" />
@@ -3036,9 +3034,7 @@ Authors:
     <list name="doActivity" type="Action" label="label.do-activity" />
     <list name="deferrableEvent" type="Event" label="label.deferrable" />
     <list name="outgoing" type="Transition" />
-    <list name="incoming" type="Transition" />    
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
-    
+    <list name="incoming" type="Transition" />
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
@@ -3076,7 +3072,6 @@ Authors:
     <separator />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />    
     <separator />    
     <list name="subvertex" type="StateVertex" />    
     
@@ -3182,8 +3177,6 @@ Authors:
     <list name="doActivity" type="Action" label="label.do-activity" />
     <separator />
     <list name="incoming" type="Transition" />
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
-  
   	<debug />
     <attribute name="outgoing" type="Transition" />    
     <attribute name="visibility" type="VisibilityKind" />
@@ -3614,7 +3607,6 @@ Authors:
     <separator />
     <attribute name="exit" type="Action" />
     <list name="deferrableEvent" type="Event" label="label.deferrable" />
-    <list name="internalTransition" type="Transition" label="label.internal-transitions" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
     <list name="classifierInState" type="State" label="label.classifier-in-state" />
@@ -3659,7 +3651,6 @@ Authors:
     <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="exit" type="Action" />
-    <attribute name="internalTransition" type="Transition" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
     <attribute name="classifierInState" type="State" />
@@ -3701,7 +3692,6 @@ Authors:
     <attribute name="partition" type="ModelElement" />
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="exit" type="Action" />
-    <attribute name="internalTransition" type="Transition" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
     <attribute name="classifierInState" type="State" />
@@ -3745,7 +3735,6 @@ Authors:
     <attribute name="elementImport" type="ModelElement" />
     <attribute name="exit" type="Action" />
     <attribute name="deferrableEvent" type="Event" />
-    <attribute name="internalTransition" type="Transition" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
     <attribute name="entry" type="Action" />
