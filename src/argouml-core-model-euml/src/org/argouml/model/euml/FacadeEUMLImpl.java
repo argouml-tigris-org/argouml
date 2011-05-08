@@ -1930,12 +1930,11 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isACompositeState(Object handle) {
-        // TODO: changed in UML2
-        return false;
+        return (handle instanceof State && ((State) handle).isComposite());
     }
 
     public boolean isAConcurrentRegion(Object handle) {
-        return false;
+        return (handle instanceof Region);
     }
 
     public boolean isAConstraint(Object handle) {
