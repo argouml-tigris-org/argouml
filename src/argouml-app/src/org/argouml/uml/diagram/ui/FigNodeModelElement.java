@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -1065,9 +1065,9 @@ public abstract class FigNodeModelElement
         if (!checkSize) {
             return;
         }
-        Rectangle bbox = getBounds();
-        Dimension minSize = getMinimumSize();
+        final Rectangle bbox = getBounds();
         if (isResizable()) {
+            final Dimension minSize = getMinimumSize();
             bbox.width = Math.max(bbox.width, minSize.width);
             bbox.height = Math.max(bbox.height, minSize.height);
         }
