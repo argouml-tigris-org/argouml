@@ -262,19 +262,6 @@ public class FigCompositeState extends FigState {
     /**
      * To resize only when a new concurrent region is added,
      * changing the height.
-     * TODO: Badly named method, it actually sets height. 
-     * @deprecated by mvw in V0.28alpha, 
-     * replaced by better named method.
-     * @param h the new height
-     */
-    @Deprecated
-    public void setBounds(int h) {
-        setCompositeStateHeight(h);
-    }
-
-    /**
-     * To resize only when a new concurrent region is added,
-     * changing the height.
      * TODO: Probably shouldn't
      * exist as this class should be listening for added concurrent regions
      * and call this internally itself.
