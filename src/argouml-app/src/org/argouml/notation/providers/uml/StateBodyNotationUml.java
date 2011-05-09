@@ -126,16 +126,18 @@ public class StateBodyNotationUml extends StateBodyNotation {
             }
             s.append("exit /").append(exitStr);
         }
-        Collection internaltrans =
-            Model.getFacade().getInternalTransitions(modelElement);
-        if (internaltrans != null) {
-            for (Object trans : internaltrans) {
-                if (s.length() > 0) {
-                    s.append("\n");
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            Collection internaltrans =
+                Model.getFacade().getInternalTransitions(modelElement);
+            if (internaltrans != null) {
+                for (Object trans : internaltrans) {
+                    if (s.length() > 0) {
+                        s.append("\n");
+                    }
+                    /* TODO: Is this a good way of handling nested notation? */
+                    s.append((new TransitionNotationUml(trans)).toString(trans,
+                            settings));
                 }
-                /* TODO: Is this a good way of handling nested notation? */
-                s.append((new TransitionNotationUml(trans)).toString(trans,
-                        settings));
             }
         }
         return s.toString();
