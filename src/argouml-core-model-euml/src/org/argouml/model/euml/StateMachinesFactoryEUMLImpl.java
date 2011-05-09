@@ -17,6 +17,7 @@ import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesFactory;
 import org.eclipse.uml2.uml.BehavioredClassifier;
+import org.eclipse.uml2.uml.FinalState;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
@@ -215,15 +216,15 @@ class StateMachinesFactoryEUMLImpl implements StateMachinesFactory,
     }
 
     public Object createCompositeState() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        // A composite state contains at least one region
+        State state = UMLFactory.eINSTANCE.createState();
+        Region region = UMLFactory.eINSTANCE.createRegion();
+        state.getRegions().add(region);
+        return state;
     }
 
     public Object createFinalState() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        return UMLFactory.eINSTANCE.createFinalState();
     }
 
     public Object createGuard() {
@@ -241,9 +242,7 @@ class StateMachinesFactoryEUMLImpl implements StateMachinesFactory,
     }
 
     public Object createSimpleState() {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        return UMLFactory.eINSTANCE.createState();
     }
 
     public Object createStateMachine() {
