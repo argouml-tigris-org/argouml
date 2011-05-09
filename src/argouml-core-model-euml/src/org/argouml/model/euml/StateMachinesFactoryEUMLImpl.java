@@ -17,7 +17,6 @@ import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesFactory;
 import org.eclipse.uml2.uml.BehavioredClassifier;
-import org.eclipse.uml2.uml.FinalState;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
