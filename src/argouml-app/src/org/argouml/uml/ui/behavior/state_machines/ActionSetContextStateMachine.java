@@ -50,7 +50,10 @@ import org.argouml.ui.UndoableAction;
 /**
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used.
  */
+@Deprecated
+
 public class ActionSetContextStateMachine extends UndoableAction {
     /**
      * The Instance.

@@ -49,7 +49,10 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 /**
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used
+ * ActionCreateContainedModelElement can be used instead.
  */
+@Deprecated
 public class ActionNewFinalState extends AbstractActionNewModelElement {
 
     private static ActionNewFinalState singleton = new ActionNewFinalState();

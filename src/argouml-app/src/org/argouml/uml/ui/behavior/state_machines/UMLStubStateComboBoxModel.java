@@ -46,7 +46,10 @@ import java.util.Iterator;
 
 /**
  * @author pepargouml@yahoo.es
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used
+ * ActionCreateContainedModelElement can be used instead.
  */
+@Deprecated
 public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
 
     /**

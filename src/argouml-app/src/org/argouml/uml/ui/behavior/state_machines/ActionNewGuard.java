@@ -54,7 +54,10 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  * 
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used
+ * ActionCreateContainedModelElement can be used instead.
  */
+@Deprecated
 public class ActionNewGuard extends AbstractActionNewModelElement {
 
     private static ActionNewGuard singleton = new ActionNewGuard();

@@ -46,7 +46,9 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 /**
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used
  */
+@Deprecated
 public class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel2 {
 
     /**

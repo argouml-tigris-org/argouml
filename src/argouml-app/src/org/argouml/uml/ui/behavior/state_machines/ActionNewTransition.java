@@ -51,7 +51,10 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  * between two states.
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used
+ * ActionCreateEdgeModelElement can be used instead.
  */
+@Deprecated
 public class ActionNewTransition extends AbstractActionNewModelElement {
 
     /**

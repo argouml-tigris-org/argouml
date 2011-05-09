@@ -52,7 +52,9 @@ import javax.swing.Action;
  * Action to set the reference state of a stubstate.
  *
  * @author pepargouml@yahoo.es
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used
  */
+@Deprecated
 public class ActionSetStubStateReferenceState extends UndoableAction {
 
     private static final ActionSetStubStateReferenceState SINGLETON =
