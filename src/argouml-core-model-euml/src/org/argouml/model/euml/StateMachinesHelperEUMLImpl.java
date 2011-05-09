@@ -112,11 +112,12 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
     
     public List getRegions(Object handle) {
         if (handle instanceof StateMachine) {
-            ((StateMachine) handle).getRegions();
+            return ((StateMachine) handle).getRegions();
         } else if (handle instanceof State) {
-            ((State) handle).getRegions();
+            return ((State) handle).getRegions();
         }
-        throw new IllegalArgumentException();
+        throw new IllegalArgumentException(
+                "getRegions call not valid for a " + handle); //$NON-NLS-1$
     }
 
     public Object getSource(Object trans) {
@@ -198,10 +199,29 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
 
     }
 
-    public void setContainer(Object handle, Object compositeState) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+    public void setContainer(Object handle, Object region) {
+        if (!(handle instanceof Vertex)) {
+            throw new IllegalArgumentException(
+                    "Expected a vertext, got a " + handle); //$NON-NLS-1$
+        }
+        
+        if (region instanceof State) {
+            List<Region> regions = ((State) region).getRegions();
+            if (regions.isEmpty()) {
+                region = Model.getUmlFactory().buildNode(
+                        Model.getMetaTypes().getRegion(), region);
+            } else {
+                region = regions.get(0);
+            }
+        }
+                        
+        if (region == null || region instanceof Region) {
+            ((Vertex) handle).setContainer((Region) region);
+            return;
+        }
+                        
+        throw new IllegalArgumentException(
+                "Expected a State or Region, got a " + handle); //$NON-NLS-1$
     }
 
     public void setContext(Object statemachine, Object modelElement) {

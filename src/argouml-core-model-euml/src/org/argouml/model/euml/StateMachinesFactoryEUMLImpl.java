@@ -11,9 +11,14 @@
  *******************************************************************************/
 package org.argouml.model.euml;
 
+import java.util.List;
+
 import org.argouml.model.AbstractModelFactory;
+import org.argouml.model.Model;
 import org.argouml.model.StateMachinesFactory;
 import org.eclipse.uml2.uml.BehavioredClassifier;
+import org.eclipse.uml2.uml.Region;
+import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.UMLFactory;
@@ -156,20 +161,49 @@ class StateMachinesFactoryEUMLImpl implements StateMachinesFactory,
 
     }
 
-    public Object buildTransition(Object owningState, Object source, Object dest) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+    public Object buildTransition(
+            Object owningState, Object source, Object dest) {
+        
+        if (!(source instanceof Vertex) || !(dest instanceof Vertex)) {
+            throw new IllegalArgumentException(
+                    "The source and dest must both be vertices. Source=" //$NON-NLS-1$
+                    + source + " dest=" + dest); //$NON-NLS-1$
+        }
+        
+        if (!(owningState instanceof StateMachine)
+                && !(owningState instanceof State)
+                && !(owningState instanceof Region)) {
+            throw new IllegalArgumentException(
+                    "Did not expect a " + owningState); //$NON-NLS-1$
+        }
+        
+        final Object region;
+        if (owningState instanceof StateMachine || owningState instanceof State) {
+            List regions = Model.getStateMachinesHelper().getRegions(owningState);
+            if (regions.isEmpty()) {
+                region = Model.getUmlFactory().buildNode(
+                        Model.getMetaTypes().getRegion(), owningState);
+            } else {
+                region = regions.get(0);
+            }
+        } else {
+            region = (Region) owningState;
+        }
+        
+        Transition transition = createTransition();
+        transition.setSource((Vertex) source);
+        transition.setTarget((Vertex) dest);
+        transition.setContainer((Region) region);
+        return transition;
     }
 
     public Object buildTransition(Object source, Object target) {
-        if (source instanceof Vertex && target instanceof Vertex) {
-            Transition trans = createTransition();
-            trans.setSource((Vertex) source);
-            trans.setTarget((Vertex) target);
-            return trans;
+        if (!(source instanceof Vertex) || !(target instanceof Vertex)) {
+            throw new IllegalArgumentException();
         }
-        throw new IllegalArgumentException();
+        
+        Region region = ((Vertex) source).getContainer();
+        return buildTransition(region, source, target);
     }
 
     public Object createCallEvent() {

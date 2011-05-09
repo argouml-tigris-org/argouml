@@ -475,6 +475,11 @@ public interface MetaTypes {
     Object getReception();
 
     /**
+     * @return Returns the Region.
+     */
+    Object getRegion();
+
+    /**
      * @return Returns the ReturnAction.
      */
     Object getReturnAction();

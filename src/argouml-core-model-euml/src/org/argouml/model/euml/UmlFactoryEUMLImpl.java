@@ -67,9 +67,12 @@ import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Pin;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.Reception;
+import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.Signal;
 import org.eclipse.uml2.uml.State;
+import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.Transition;
@@ -77,6 +80,7 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.UseCase;
+import org.eclipse.uml2.uml.Vertex;
 
 /**
  * The implementation of the UmlFactory for EUML2.
@@ -353,6 +357,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = UMLFactory.eINSTANCE.createState();
         } else if (elementType == metaTypes.getFinalState()) {
             o = UMLFactory.eINSTANCE.createFinalState();
+        } else if (elementType == metaTypes.getRegion()) {
+            o = UMLFactory.eINSTANCE.createRegion();
         } else if (elementType == metaTypes.getPseudostate()) {
             o = modelImpl.getStateMachinesFactory().createPseudostate();
         } else if (elementType == metaTypes.getActionState()) {
@@ -599,6 +605,29 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         validContainmentMap.put(Element.class,
                 new Class<?>[] {
                 });
+
+        // specifies valid elements for a Region to contain
+        validContainmentMap.put(Region.class, 
+            new Class<?>[] { 
+                State.class, Pseudostate.class
+            });
+                
+        // specifies valid elements for a Region to contain
+        validContainmentMap.put(StateMachine.class, 
+            new Class<?>[] { 
+                Region.class
+            });
+                
+        // specifies valid elements for a Package to contain
+        validContainmentMap.put(Package.class, 
+            new Class<?>[] { 
+                Package.class, Actor.class,
+                UseCase.class, org.eclipse.uml2.uml.Class.class,
+                Interface.class, Component.class,
+                Node.class, Enumeration.class, DataType.class,
+                Signal.class
+            });
+                
         
         // specifies valid elements for a Package to contain
         validContainmentMap.put(Package.class, 

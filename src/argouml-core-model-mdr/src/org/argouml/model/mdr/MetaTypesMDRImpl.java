@@ -528,6 +528,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return Reception.class;
     }
 
+    public Object getRegion() {
+        throw new NotImplementedException("Not a UML 1.4 element");
+    }
+
     public Object getReturnAction() {
         return ReturnAction.class;
     }

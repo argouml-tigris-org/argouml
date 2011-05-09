@@ -13,6 +13,8 @@
 
 package org.argouml.model.euml;
 
+import javax.swing.plaf.synth.Region;
+
 import org.argouml.model.MetaTypes;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.uml2.uml.Abstraction;
@@ -490,6 +492,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         return Reception.class;
     }
 
+    public Object getRegion() {
+        return Region.class;
+    }
+    
     public Object getReturnAction() {
         // TODO: Auto-generated method stub
         throw new NotYetImplementedException();
