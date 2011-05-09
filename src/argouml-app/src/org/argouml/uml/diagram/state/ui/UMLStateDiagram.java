@@ -337,11 +337,11 @@ public class UMLStateDiagram extends UMLDiagram {
     // TODO: Needs to be tidied up after stable release. Graph model
     // should be created in constructor
     private StateDiagramGraphModel createGraphModel() {
-	if ((getGraphModel() instanceof StateDiagramGraphModel)) {
-	    return (StateDiagramGraphModel) getGraphModel();
-	} else {
-	    return new StateDiagramGraphModel();
-	}
+        if ((getGraphModel() instanceof StateDiagramGraphModel)) {
+            return (StateDiagramGraphModel) getGraphModel();
+        } else {
+            return new StateDiagramGraphModel();
+        }
     }
 
     /*
@@ -774,11 +774,11 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#isRelocationAllowed(java.lang.Object)
      */
     public boolean isRelocationAllowed(Object base)  {
-    	return false;
-    	/* TODO: We may return the following when the
-    	 * relocate() has been implemented. */
-//    	Model.getStateMachinesHelper()
-//        	.isAddingStatemachineAllowed(base);
+        return false;
+        /* TODO: We may return the following when the
+         * relocate() has been implemented. */
+//      Model.getStateMachinesHelper()
+//              .isAddingStatemachineAllowed(base);
     }
 
     @SuppressWarnings("unchecked")
@@ -839,11 +839,19 @@ public class UMLStateDiagram extends UMLDiagram {
         } else if (Model.getFacade().isASubmachineState(droppedObject)) {
             figNode = new FigSubmachineState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isACompositeState(droppedObject)) {
-            figNode = new FigCompositeState(droppedObject, bounds, settings);
+            if (Model.getFacade().getUmlVersion().startsWith("1")) {
+                figNode = new FigCompositeState(droppedObject, bounds, settings);
+            } else {
+                figNode = new FigVertex(droppedObject, bounds, settings);
+            }
         } else if (Model.getFacade().isASynchState(droppedObject)) {
             figNode = new FigSynchState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAState(droppedObject)) {
-            figNode = new FigSimpleState(droppedObject, bounds, settings);
+            if (Model.getFacade().getUmlVersion().startsWith("1")) {
+                figNode = new FigSimpleState(droppedObject, bounds, settings);
+            } else {
+                figNode = new FigVertex(droppedObject, bounds, settings);
+            }
         } else if (Model.getFacade().isAComment(droppedObject)) {
             figNode = new FigComment(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAPseudostate(droppedObject)) {
