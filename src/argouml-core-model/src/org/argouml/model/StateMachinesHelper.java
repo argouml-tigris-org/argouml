@@ -40,6 +40,7 @@
 package org.argouml.model;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * The interface for the helper for StateMachines.<p>
@@ -158,6 +159,15 @@ public interface StateMachinesHelper {
      */
     Object getTop(Object sm);
 
+    /**
+     * Get the regions of a state or statemachine.<p>
+     *
+     * @param hanlde the given state or statemachine
+     * @return the regions
+     */
+    List getRegions(Object handle);
+
+    
     /**
      * Gets all statevertices that are a target to transitions
      * outgoing from the given statevertex.<p>

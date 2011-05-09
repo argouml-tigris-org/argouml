@@ -73,6 +73,7 @@ import org.omg.uml.foundation.datatypes.BooleanExpression;
 import org.omg.uml.foundation.datatypes.Expression;
 import org.omg.uml.foundation.datatypes.TimeExpression;
 import org.omg.uml.modelmanagement.UmlPackage;
+import org.openide.util.NotImplementedException;
 
 /**
  * The State Machines Helper Implementation for MDR.
@@ -241,6 +242,10 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
+    }
+
+    public List getRegions(Object handle) {
+        throw new NotImplementedException("Region is not a UML1.4 metatype");
     }
 
 

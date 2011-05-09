@@ -1,6 +1,6 @@
 // $Id$
 /*******************************************************************************
- * Copyright (c) 2007,2010 Tom Morris and other contributors
+ * Copyright (c) 2007-2011 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,16 +8,19 @@
  *
  * Contributors:
  *    Tom Morris - initial framework 
+ *    Bob Tarling
  *******************************************************************************/
 package org.argouml.model.euml;
 
 import java.util.Collection;
-import org.apache.log4j.Logger;
+import java.util.List;
+
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
+import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Vertex;
 
@@ -31,9 +34,6 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
      */
     private EUMLModelImplementation modelImpl;
 
-    private static final Logger LOG =
-        Logger.getLogger(StateMachinesHelperEUMLImpl.class);
-    
     /**
      * Constructor.
      * 
@@ -109,6 +109,15 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
         throw new NotYetImplementedException();
 
     }
+    
+    public List getRegions(Object handle) {
+        if (handle instanceof StateMachine) {
+            ((StateMachine) handle).getRegions();
+        } else if (handle instanceof State) {
+            ((State) handle).getRegions();
+        }
+        throw new IllegalArgumentException();
+    }
 
     public Object getSource(Object trans) {
         if (trans instanceof Transition) {
@@ -119,8 +128,9 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
 
     public Object getStateMachine(Object handle) {
         if (handle == null) {
-            throw new IllegalArgumentException("bad argument to "
-                    + "getStateMachine() - " + handle);
+            throw new IllegalArgumentException(
+                    "bad argument to getStateMachine() - " //$NON-NLS-1$
+                    + handle);
         }
         Object container =
             modelImpl.getFacade().getModelElementContainer(handle);

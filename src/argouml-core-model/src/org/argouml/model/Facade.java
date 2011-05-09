@@ -1361,6 +1361,14 @@ public interface Facade {
      * @return true if handle is navigable
      */
     boolean isNavigable(Object handle);
+    
+    /**
+     * Recognizer for orthogonal state.
+     *
+     * @param handle the state
+     * @return true if orthogonal.
+     */
+    boolean isOrthogonal(Object handle);
 
     /**
      * Recognizer for primary objects. A primary object is an object that is

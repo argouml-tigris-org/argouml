@@ -39,6 +39,7 @@
 package org.argouml.model;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * An abstract Decorator for the {@link StateMachinesHelper}.
@@ -103,6 +104,10 @@ public abstract class AbstractStateMachinesHelperDecorator
 
     public Collection getAllPossibleSubvertices(Object oState) {
         return impl.getAllPossibleSubvertices(oState);
+    }
+    
+    public List getRegions(Object handle) {
+        return impl.getRegions(handle);
     }
 
     public void setStatemachineAsSubmachine(Object oSubmachineState,

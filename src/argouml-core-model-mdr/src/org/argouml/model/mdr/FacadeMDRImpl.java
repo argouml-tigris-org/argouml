@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2005,2010 Contributors - see below
+ * Copyright (c) 2005-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,8 @@
  *    Linus Tolke - initial framework implementation
  *    <see source control change log for other early contributors>
  *    Ludovic Maitre - UML 1.4
- *    Tom Morris - UML 1.4 
+ *    Tom Morris - UML 1.4
+ *    Bob Tarling
  *    
  *******************************************************************************
  */
@@ -1046,6 +1047,10 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentBoolean(handle);
     }
 
+    public boolean isOrthogonal(Object handle) {
+        throw new NotImplementedException(
+                "Orthogonal is not a UML1.4 property");
+    }
 
     public boolean isPrimaryObject(Object handle) {
         try {

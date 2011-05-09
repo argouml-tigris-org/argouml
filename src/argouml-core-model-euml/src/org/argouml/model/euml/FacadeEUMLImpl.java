@@ -2383,6 +2383,10 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
+    public boolean isOrthogonal(Object handle) {
+        return ((State) handle).isOrthogonal();
+    }
+
     public boolean isConstructor(Object handle) {
         if (handle instanceof Operation) {
             final Operation operation = (Operation) handle;
