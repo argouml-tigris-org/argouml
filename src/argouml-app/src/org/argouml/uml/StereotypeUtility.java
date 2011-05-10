@@ -7,7 +7,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    thn
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -67,21 +67,21 @@ public class StereotypeUtility {
     }
 
     /**
-     * Returns an array of all applicable actions for adding stereotypes
-     * for a given model element.
+     * Returns an array of all applicable actions for adding stereotypes for a
+     * given model element.
      * 
      * @param modelElement the given model element
      * @return the array with actions for adding stereotype UML objects
      */
     public static Action[] getApplyStereotypeActions(Object modelElement) {
         Set availableStereotypes = getAvailableStereotypes(modelElement);
-        
+
         if (!availableStereotypes.isEmpty()) {
             Action[] menuActions = new Action[availableStereotypes.size()];
 
             Iterator it = availableStereotypes.iterator();
             for (int i = 0; it.hasNext(); ++i) {
-                menuActions[i] = new ActionAddStereotype(modelElement, 
+                menuActions[i] = new ActionAddStereotype(modelElement,
                         it.next());
             }
             return menuActions;
@@ -90,22 +90,21 @@ public class StereotypeUtility {
     }
 
     /**
-     * Returns an array of all applicable actions for adding stereotypes
-     * for a given collection of model elements.
+     * Returns an array of all applicable actions for adding stereotypes for a
+     * given collection of model elements.
      * 
      * @param elements the given collection of model elements
      * @return the array with actions for adding stereotype UML objects
      */
     public static Action[] getApplyStereotypeActions(Collection elements) {
         Set availableStereotypes = getAvailableStereotypes(elements);
-        
+
         if (!availableStereotypes.isEmpty()) {
             Action[] menuActions = new Action[availableStereotypes.size()];
 
             Iterator it = availableStereotypes.iterator();
             for (int i = 0; it.hasNext(); ++i) {
-                menuActions[i] = new ActionAddStereotype(elements, 
-                        it.next());
+                menuActions[i] = new ActionAddStereotype(elements, it.next());
             }
             return menuActions;
         }
@@ -113,40 +112,42 @@ public class StereotypeUtility {
     }
 
     /**
-     * Returns a set of all unique applicable stereotypes 
-     * for a given modelelement.
+     * Returns a set of all unique applicable stereotypes for a given
+     * modelelement.
      * 
      * @param modelElement the given modelelement
      * @return the set with stereotype UML objects
      */
     public static Set<Object> getAvailableStereotypes(Object modelElement) {
         Set<List> paths = new HashSet<List>();
-        Set<Object> availableStereotypes = 
-            new TreeSet<Object>(new PathComparator());
-        Collection models =
-            ProjectManager.getManager().getCurrentProject().getModels();
-        
-        Collection topLevelModels =
-            ProjectManager.getManager().getCurrentProject().getModels();
-        
-        // adds all stereotypes defined at the top level namespaces        
+        Set<Object> availableStereotypes = new TreeSet<Object>(
+                new PathComparator());
+        Collection models = ProjectManager.getManager().getCurrentProject()
+                .getModels();
+
+        Collection topLevelModels = ProjectManager.getManager()
+                .getCurrentProject().getModels();
+
+        // adds all stereotypes defined at the top level namespaces
         Collection topLevelStereotypes = getTopLevelStereotypes(topLevelModels);
-        
+
         Collection validTopLevelStereotypes = new ArrayList();
-            
-        addAllUniqueModelElementsFrom(availableStereotypes, paths, Model
-                .getExtensionMechanismsHelper().getAllPossibleStereotypes(
+
+        addAllUniqueModelElementsFrom(
+                availableStereotypes,
+                paths,
+                Model.getExtensionMechanismsHelper().getAllPossibleStereotypes(
                         models, modelElement));
         for (Object stereotype : topLevelStereotypes) {
             if (Model.getExtensionMechanismsHelper().isValidStereotype(
                     modelElement, stereotype)) {
                 validTopLevelStereotypes.add(stereotype);
-            }            
+            }
         }
 
         addAllUniqueModelElementsFrom(availableStereotypes, paths,
                 validTopLevelStereotypes);
-        
+
         // adds all stereotypes defined at the profiles applied to the
         // current namespace
         Object namespace = Model.getFacade().getNamespace(modelElement);
@@ -163,28 +164,28 @@ public class StereotypeUtility {
                 namespace = newNamespace;
             }
         }
-        
-        // adds all stereotypes defined at the profiles applied 
+
+        // adds all stereotypes defined at the profiles applied
         // to the current project
         addAllUniqueModelElementsFrom(availableStereotypes, paths,
                 ProjectManager.getManager().getCurrentProject()
                         .getProfileConfiguration()
                         .findAllStereotypesForModelElement(modelElement));
-        
+
         return availableStereotypes;
     }
 
     /**
-     * Returns a set (union) of all unique applicable stereotypes 
-     * for a given collection of model elements.
-     * TODO: This is not optimized for performance.
+     * Returns a set (union) of all unique applicable stereotypes for a given
+     * collection of model elements. TODO: This is not optimized for
+     * performance.
      * 
      * @param elements the given collection of model elements
      * @return the set with stereotype UML objects
      */
     public static Set<Object> getAvailableStereotypes(Collection elements) {
-        Set<Object> availableStereotypes = 
-            new TreeSet<Object>(new PathComparator());
+        Set<Object> availableStereotypes = new TreeSet<Object>(
+                new PathComparator());
         if (elements != null) {
             for (Object element : elements) {
                 availableStereotypes.addAll(getAvailableStereotypes(element));
@@ -207,15 +208,15 @@ public class StereotypeUtility {
         }
         return ret;
     }
-    
+
     private static void getApplicableStereotypesInNamespace(
             Object modelElement, Set<List> paths,
             Set<Object> availableStereotypes, Object namespace) {
-        
+
         Collection allProfiles = getAllProfilePackages(Model.getFacade()
                 .getRoot(modelElement));
         Collection<Object> allAppliedProfiles = new ArrayList<Object>();
-        
+
         for (Object profilePackage : allProfiles) {
             Collection allDependencies = Model.getCoreHelper().getDependencies(
                     profilePackage, namespace);
@@ -228,11 +229,11 @@ public class StereotypeUtility {
                 }
             }
         }
-        
+
         addAllUniqueModelElementsFrom(availableStereotypes, paths,
                 getApplicableStereotypes(modelElement, allAppliedProfiles));
     }
-    
+
     private static Collection<Object> getApplicableStereotypes(
             Object modelElement, Collection<Object> allAppliedProfiles) {
         Collection<Object> ret = new ArrayList<Object>();
@@ -254,7 +255,7 @@ public class StereotypeUtility {
                 .getAllModelElementsOfKind(model,
                         Model.getMetaTypes().getPackage());
         Collection<Object> ret = new ArrayList<Object>();
-        
+
         for (Object element : col) {
             if (Model.getFacade().isAPackage(element)
                     && Model.getExtensionMechanismsHelper().hasStereotype(
@@ -291,10 +292,10 @@ public class StereotypeUtility {
      * 
      * @param element the UML element to modify
      * @param stereotype Comma separated list of stereotype names. Empty string
-     *                or <code>null</code> represents no stereotypes.
+     *            or <code>null</code> represents no stereotypes.
      * @param removeCurrent true if all current stereotypes should be removed
-     *                before adding the new stereotypes, false if new
-     *                stereotypes should be added to existing ones.
+     *            before adding the new stereotypes, false if new stereotypes
+     *            should be added to existing ones.
      */
     public static void dealWithStereotypes(Object element,
             StringBuilder stereotype, boolean removeCurrent) {
@@ -312,9 +313,9 @@ public class StereotypeUtility {
      * 
      * @param umlobject the UML element to adapt
      * @param stereotype Comma separated list stereotype names. Empty string or
-     *                <code>null</code> represents no stereotypes.
+     *            <code>null</code> represents no stereotypes.
      * @param full false if stereotypes are only added, true if removal should
-     *                be done, too.
+     *            be done, too.
      */
     public static void dealWithStereotypes(Object umlobject, String stereotype,
             boolean full) {
@@ -322,8 +323,9 @@ public class StereotypeUtility {
         MyTokenizer mst;
         Collection<String> stereotypes = new ArrayList<String>();
 
-        /* Convert the string (e.g. "aaa,bbb,ccc")
-         * into separate stereotype-names (e.g. "aaa", "bbb", "ccc").
+        /*
+         * Convert the string (e.g. "aaa,bbb,ccc") into separate
+         * stereotype-names (e.g. "aaa", "bbb", "ccc").
          */
         if (stereotype != null) {
             mst = new MyTokenizer(stereotype, " ,\\,");
@@ -354,8 +356,8 @@ public class StereotypeUtility {
 
         // add stereotypes
         for (String stereotypename : stereotypes) {
-            if (!Model.getExtensionMechanismsHelper()
-                    .hasStereotype(umlobject, stereotypename)) {
+            if (!Model.getExtensionMechanismsHelper().hasStereotype(umlobject,
+                    stereotypename)) {
                 Object umlstereo = getStereotype(umlobject, stereotypename);
                 if (umlstereo != null) {
                     Model.getCoreHelper().addStereotype(umlobject, umlstereo);
@@ -367,8 +369,8 @@ public class StereotypeUtility {
 
     /**
      * Finds a stereotype with the given name either in the user model, or in
-     * one of the profiles' models.  If it's not found, a new stereotype will
-     * be created in the root model.
+     * one of the profiles' models. If it's not found, a new stereotype will be
+     * created in the root model.
      * 
      * @param obj A ModelElement to find a suitable stereotype for.
      * @param name The name of the stereotype to search for.
@@ -381,23 +383,22 @@ public class StereotypeUtility {
         stereo = findStereotypeContained(obj, root, name);
         // TODO: The following rather than the above is probably the correct
         // way to search
-//        stereo = findStereotype(obj, null, name);
+        // stereo = findStereotype(obj, null, name);
         if (stereo != null) {
             return stereo;
         }
 
         Project project = ProjectManager.getManager().getCurrentProject();
         stereo = project.getProfileConfiguration().findStereotypeForObject(
-                name, obj); 
+                name, obj);
 
         if (stereo != null) {
             return stereo;
         }
 
         if (root != null && name.length() > 0) {
-            stereo =
-                Model.getExtensionMechanismsFactory().buildStereotype(
-                    obj, name, root);
+            stereo = Model.getExtensionMechanismsFactory().buildStereotype(obj,
+                    name, root);
         }
 
         return stereo;
@@ -409,13 +410,12 @@ public class StereotypeUtility {
      * 
      * @param obj The model element to be suitable for.
      * @param namespace The namespace to start search at. If null, the namespace
-     *                of the given model element will be used as the starting
-     *                point.
+     *            of the given model element will be used as the starting point.
      * @param name The name of the stereotype to search for.
      * @return An stereotype named name, or null if none is found.
      */
-    private static Object findStereotype(
-            final Object obj, final Object namespace, final String name) {
+    private static Object findStereotype(final Object obj,
+            final Object namespace, final String name) {
         Object ns = namespace;
         if (ns == null) {
             ns = Model.getFacade().getNamespace(obj);
@@ -424,16 +424,14 @@ public class StereotypeUtility {
             }
         }
 
-        
-        Collection ownedElements = 
-            Model.getFacade().getOwnedElements(ns);
+        Collection ownedElements = Model.getFacade().getOwnedElements(ns);
         for (Object element : ownedElements) {
             if (Model.getFacade().isAStereotype(element)
                     && name.equals(Model.getFacade().getName(element))) {
                 return element;
             }
         }
-        
+
         // If not found, try the parent namespace
         ns = Model.getFacade().getNamespace(ns);
         if (namespace != null) {
@@ -442,28 +440,25 @@ public class StereotypeUtility {
 
         return null;
     }
-    
+
     /**
-     * Search descending recursively for a stereotype with the name given
-     * in name.  NOTE: You probably don't want to use this because it's 
-     * searching the wrong direction!
-     *
-     * @param obj
-     *            The model element to be suitable for.
-     * @param root
-     *            The model element to search from.
-     * @param name
-     *            The name of the stereotype to search for.
+     * Search descending recursively for a stereotype with the name given in
+     * name. NOTE: You probably don't want to use this because it's searching
+     * the wrong direction!
+     * 
+     * @param obj The model element to be suitable for.
+     * @param root The model element to search from.
+     * @param name The name of the stereotype to search for.
      * @return An stereotype named name, or null if none is found.
      */
-    private static Object findStereotypeContained(
-            Object obj, Object root, String name) {
+    private static Object findStereotypeContained(Object obj, Object root,
+            String name) {
         Object stereo;
 
         if (root == null) {
             return null;
         }
-        
+
         if (Model.getFacade().isAStereotype(root)
                 && name.equals(Model.getFacade().getName(root))) {
             if (Model.getExtensionMechanismsHelper().isValidStereotype(obj,
