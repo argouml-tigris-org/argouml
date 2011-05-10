@@ -534,7 +534,8 @@ public final class PerspectiveManager {
      */
     public void loadRules() {
 
-        PerspectiveRule[] ruleNamesArray = {new GoAssocRoleToMessages(),
+        PerspectiveRule[] ruleNamesArray = {
+            new GoAssocRoleToMessages(),
             new GoBehavioralFeatureToStateDiagram(),
             new GoBehavioralFeatureToStateMachine(),
             new GoClassifierToBehavioralFeature(),
@@ -604,13 +605,26 @@ public final class PerspectiveManager {
             // empty for now
         };
 
-        rules = Arrays.asList(ruleNamesArray);
         if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
-            rules.addAll(Arrays.asList(ruleNamesArray14));
+            ruleNamesArray = appendArrays(ruleNamesArray, ruleNamesArray14);
         } else {
-            rules.addAll(Arrays.asList(ruleNamesArray2));
+            ruleNamesArray = appendArrays(ruleNamesArray, ruleNamesArray2);
         }
+        
+        rules = Arrays.asList(ruleNamesArray);
     }
+    
+    private <T> T[] appendArrays(T[] first, T[] second) {
+        if (first.length == 0) {
+            return second;
+        }
+        if (second.length == 0) {
+            return first;
+        }
+        T[] result = Arrays.copyOf(first, first.length + second.length);
+        System.arraycopy(second, 0, result, first.length, second.length);
+        return result;
+    }    
 
     /**
      * Add a rule to the list of rules.
