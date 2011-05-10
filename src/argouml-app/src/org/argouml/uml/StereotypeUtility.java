@@ -122,46 +122,49 @@ public class StereotypeUtility {
         Set<List> paths = new HashSet<List>();
         Set<Object> availableStereotypes = new TreeSet<Object>(
                 new PathComparator());
-        Collection models = ProjectManager.getManager().getCurrentProject()
-                .getModels();
 
-        Collection topLevelModels = ProjectManager.getManager()
-                .getCurrentProject().getModels();
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
 
-        // adds all stereotypes defined at the top level namespaces
-        Collection topLevelStereotypes = getTopLevelStereotypes(topLevelModels);
+            Collection models = ProjectManager.getManager().getCurrentProject()
+                    .getModels();
 
-        Collection validTopLevelStereotypes = new ArrayList();
+            Collection topLevelModels = ProjectManager.getManager()
+                    .getCurrentProject().getModels();
 
-        addAllUniqueModelElementsFrom(
-                availableStereotypes,
-                paths,
-                Model.getExtensionMechanismsHelper().getAllPossibleStereotypes(
-                        models, modelElement));
-        for (Object stereotype : topLevelStereotypes) {
-            if (Model.getExtensionMechanismsHelper().isValidStereotype(
-                    modelElement, stereotype)) {
-                validTopLevelStereotypes.add(stereotype);
-            }
-        }
+            // adds all stereotypes defined at the top level namespaces
+            Collection topLevelStereotypes = getTopLevelStereotypes(topLevelModels);
 
-        addAllUniqueModelElementsFrom(availableStereotypes, paths,
-                validTopLevelStereotypes);
+            Collection validTopLevelStereotypes = new ArrayList();
 
-        // adds all stereotypes defined at the profiles applied to the
-        // current namespace
-        Object namespace = Model.getFacade().getNamespace(modelElement);
-        if (namespace != null) {
-            while (true) {
-                getApplicableStereotypesInNamespace(modelElement, paths,
-                        availableStereotypes, namespace);
-                Object newNamespace = Model.getFacade().getNamespace(namespace);
-
-                if (newNamespace == null) {
-                    break;
+            addAllUniqueModelElementsFrom(availableStereotypes, paths,
+                    Model.getExtensionMechanismsHelper()
+                            .getAllPossibleStereotypes(models, modelElement));
+            for (Object stereotype : topLevelStereotypes) {
+                if (Model.getExtensionMechanismsHelper().isValidStereotype(
+                        modelElement, stereotype)) {
+                    validTopLevelStereotypes.add(stereotype);
                 }
+            }
 
-                namespace = newNamespace;
+            addAllUniqueModelElementsFrom(availableStereotypes, paths,
+                    validTopLevelStereotypes);
+
+            // adds all stereotypes defined at the profiles applied to the
+            // current namespace
+            Object namespace = Model.getFacade().getNamespace(modelElement);
+            if (namespace != null) {
+                while (true) {
+                    getApplicableStereotypesInNamespace(modelElement, paths,
+                            availableStereotypes, namespace);
+                    Object newNamespace = Model.getFacade().getNamespace(
+                            namespace);
+
+                    if (newNamespace == null) {
+                        break;
+                    }
+
+                    namespace = newNamespace;
+                }
             }
         }
 
