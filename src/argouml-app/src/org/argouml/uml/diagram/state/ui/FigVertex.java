@@ -262,6 +262,8 @@ public class FigVertex extends FigNodeModelElement {
                 bodySize.height);
 
         getBigPort().setBounds(x, y, w, h);
+        
+        calcBounds(); // _x = x; _y = y; _w = w; _h = h;
     }
     
     /**
