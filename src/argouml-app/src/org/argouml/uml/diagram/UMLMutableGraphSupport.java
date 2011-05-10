@@ -155,7 +155,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 	    return;
 	}
 	nodes.remove(node);
-	fireNodeRemoved(node);
+//	fireNodeRemoved(node);
     }
 
     /**
