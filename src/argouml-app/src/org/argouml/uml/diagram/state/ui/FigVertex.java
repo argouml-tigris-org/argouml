@@ -13,25 +13,39 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
 
+import org.apache.log4j.Logger;
+import org.argouml.model.AddAssociationEvent;
 import org.argouml.model.Model;
+import org.argouml.model.RemoveAssociationEvent;
 import org.argouml.notation.Notation;
 import org.argouml.notation.NotationName;
 import org.argouml.notation.NotationProvider;
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.notation.NotationSettings;
+import org.argouml.ui.ActionCreateContainedModelElement;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.Selection;
+import org.tigris.gef.di.DiagramElement;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRRect;
+import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -41,6 +55,8 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigVertex extends FigNodeModelElement {
 
+    private static final Logger LOG = Logger.getLogger(FigVertex.class);
+    
     private static final int MARGIN = 2;
 
     private NotationProvider notationProviderBody;
@@ -49,6 +65,8 @@ public class FigVertex extends FigNodeModelElement {
      * The body for entry/exit/do actions
      */
     private FigBody bodyText;
+    
+    private FigGroup regionCompartment;
 
     /**
      * Create a new instance of FigVertex
@@ -68,6 +86,9 @@ public class FigVertex extends FigNodeModelElement {
                 .getNotationProvider(NotationProviderFactory2.TYPE_STATEBODY,
                         getOwner(), this, notation);
         updateNameText();
+        
+        LOG.info("Registering as listener");
+        Model.getPump().addModelEventListener(this, getOwner(), "region");
     }
 
     @Override
@@ -127,10 +148,12 @@ public class FigVertex extends FigNodeModelElement {
         getNameFig().setFilled(false);
 
         bodyText = new FigBody(0,0,0,0);
+        regionCompartment = new FigRegionCompartment(0,0,0,0);
         
         addFig(getBigPort());
         addFig(getNameFig());
         addFig(getBodyText());
+        addFig(regionCompartment);
 
         setBounds(getBounds());
     }
@@ -154,6 +177,49 @@ public class FigVertex extends FigNodeModelElement {
                             NotationProviderFactory2.TYPE_STATEBODY, own, this,
                             notation);
         }
+    }
+
+    // Temporary start
+    private static final Color[] COLOR_ARRAY = {
+        Color.RED, Color.BLUE, Color.CYAN, Color.YELLOW, Color.GREEN}; 
+    private int nextColor = 0;
+    // Temporary end
+    
+    @Override
+    protected void modelChanged(PropertyChangeEvent mee) {
+        super.modelChanged(mee);
+        
+        assert(mee.getPropertyName().equals("region"));
+        
+        if (mee instanceof AddAssociationEvent) {
+            // TODO: Before adding a new region make the last region
+            // its minimum size (smallest size that will still
+            // contain all enclosed)
+            
+            Object newRegion = mee.getNewValue();
+            FigRegion rg = new FigRegion(newRegion);
+            rg.setBounds(
+                    regionCompartment.getX(), regionCompartment.getY(),
+                    rg.getMinimumSize().width, rg.getMinimumSize().height);
+            
+            // Temporary start
+            rg.setFillColor(COLOR_ARRAY[nextColor++]);
+            if (nextColor >= COLOR_ARRAY.length) {
+                nextColor = 0;
+            }
+            // Temporary end
+            
+            regionCompartment.addFig(rg);
+            
+            // TODO: After adding a new region resize the node to
+            // include it.
+        }
+        if (mee instanceof RemoveAssociationEvent) {
+            Object oldRegion = mee.getNewValue();
+            LOG.debug("Removing region " + oldRegion);
+        }
+        renderingChanged();
+        damage();
     }
 
     /*
@@ -226,8 +292,12 @@ public class FigVertex extends FigNodeModelElement {
         final Dimension bodySize = getBodyText().getMinimumSize();
 
         int h = getTopMargin()
-            + nameSize.height + bodySize.height
+            + nameSize.height
             + getBottomMargin();
+
+        if (getBodyText().getText().length() > 0) {
+            h += bodySize.height;
+        }
         
         int w = getLeftMargin()
             + Math.max(nameSize.width, bodySize.width)
@@ -248,6 +318,20 @@ public class FigVertex extends FigNodeModelElement {
         return true;
     }
 
+    public List<Rectangle> getTrapRects() {
+        List regions = Model.getStateMachinesHelper().getRegions(getOwner());
+        
+        ArrayList<Rectangle> rects = new ArrayList<Rectangle>(regions.size());
+        if (regions.isEmpty()) {
+            rects.add(regionCompartment.getBounds());
+        } else {
+            for (DiagramElement f : regionCompartment.getDiagramElements()) {
+                rects.add(((Fig) f).getBounds());
+            }
+        }
+        return rects;
+    }
+    
     protected void setStandardBounds(int x, int y, int w, int h) {
         Dimension nameSize = getNameFig().getMinimumSize();
         Dimension bodySize = getBodyText().getMinimumSize();
@@ -256,14 +340,62 @@ public class FigVertex extends FigNodeModelElement {
                 x + getLeftMargin(), y + getTopMargin(),
                 w - getLeftMargin() - getRightMargin(), nameSize.height);
 
-        getBodyText().setBounds(
-                x + getLeftMargin(), y + getTopMargin() + nameSize.height,
-                bodySize.width,
-                bodySize.height);
+
+        
+        if (getBodyText().getText().length() > 0) {
+            getBodyText().setBounds(
+                    x + getLeftMargin(), y + getTopMargin() + nameSize.height,
+                    bodySize.width,
+                    bodySize.height);
+        } else {
+            getBodyText().setBounds(
+                    x + getLeftMargin(), y + getTopMargin() + nameSize.height,
+                    bodySize.width,
+                    1);
+        }
+        
+        regionCompartment.setBounds(
+                x + getLeftMargin(),
+                getBodyText().getY() + getBodyText().getHeight(),
+                w - getLeftMargin() - getRightMargin(),
+                h - getTopMargin() - getBottomMargin()
+                    - getNameFig().getHeight() - getBodyText().getHeight());
 
         getBigPort().setBounds(x, y, w, h);
         
         calcBounds(); // _x = x; _y = y; _w = w; _h = h;
+    }
+    
+    
+    
+    int getRightMargin() {
+        return MARGIN;
+    }
+
+    int getLeftMargin() {
+        return MARGIN;
+    }
+    
+    int getTopMargin() {
+        return MARGIN;
+    }
+    
+    int getBottomMargin() {
+        return MARGIN;
+    }
+    
+    /*
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
+     */
+    public Vector getPopUpActions(MouseEvent me) {
+        Vector popUpActions = super.getPopUpActions(me);
+        if (TargetManager.getInstance().getTargets().size() == 1) {
+            popUpActions.add(
+                    popUpActions.size() - getPopupAddOffset(),
+                    new ActionCreateContainedModelElement(
+                            Model.getMetaTypes().getRegion(), getOwner()));
+        }
+        return popUpActions;
     }
     
     /**
@@ -284,20 +416,37 @@ public class FigVertex extends FigNodeModelElement {
         }
     }
     
-    
-    int getRightMargin() {
-        return MARGIN;
-    }
+    /**
+     * The text Fig that displays the body of the actions on the state
+     *
+     * @author Bob Tarling
+     */
+    private class FigRegionCompartment extends FigGroup {
+        public FigRegionCompartment(int x, int y, int width, int height) {
+            super();
+        }
+        
+        @Override
+        protected void setBoundsImpl(
+                final int x,
+                int y,
+                final int w,
+                final int h) {
 
-    int getLeftMargin() {
-        return MARGIN;
-    }
-    
-    int getTopMargin() {
-        return MARGIN;
-    }
-    
-    int getBottomMargin() {
-        return MARGIN;
+            _x = x;
+            _y = y;
+            _w = w;
+            _h = h;
+            
+            for (Iterator it = getFigs().iterator(); it.hasNext(); ) {
+                Fig fig = (Fig) it.next();
+                if (it.hasNext()) {
+                    fig.setBounds(x, y, w, fig.getMinimumSize().height);
+                } else {
+                    fig.setBounds(x, y, w, h - y);
+                }
+                y += fig.getHeight();
+            }
+        }
     }
 }
