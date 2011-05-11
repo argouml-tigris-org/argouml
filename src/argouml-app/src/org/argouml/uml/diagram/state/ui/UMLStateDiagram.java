@@ -403,7 +403,9 @@ public class UMLStateDiagram extends UMLDiagram {
         ArrayList actions = new ArrayList();
         
         actions.add(getActionState());
-        actions.add(getActionCompositeState());
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            actions.add(getActionCompositeState());
+        }
         actions.add(getActionTransition());
         
         if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
