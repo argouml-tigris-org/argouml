@@ -32,6 +32,8 @@ import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.command.AddCommand;
 import org.eclipse.emf.edit.command.CommandParameter;
 import org.eclipse.emf.edit.command.RemoveCommand;
@@ -129,8 +131,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
             public void run() {
                 for (Object o : stereos) {
                     Stereotype stereotype = (Stereotype) o;
-                    ((Element) modelElement).applyStereotype(stereotype);
-                    fireApplyStereotypeEvent(modelElement, stereotype);
+                    EObject eo = ((Element) modelElement).applyStereotype(stereotype);
+                    if (((Element) modelElement).isStereotypeApplied(stereotype)) {
+                        fireApplyStereotypeEvent(modelElement, stereotype);
+                    } else {
+                        EcoreUtil.remove(eo);
+                    }
                 }
             }
             /**
