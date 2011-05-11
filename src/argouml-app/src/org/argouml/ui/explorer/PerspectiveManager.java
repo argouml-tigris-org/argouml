@@ -404,9 +404,7 @@ public final class PerspectiveManager {
         packagePerspective.addRule(new GoStatemachineToDiagram());
         if (Model.getFacade().getUmlVersion().startsWith("1")) {
             packagePerspective.addRule(new GoStateMachineToState());
-        }
-        packagePerspective.addRule(new GoCompositeStateToSubvertex());
-        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            packagePerspective.addRule(new GoCompositeStateToSubvertex());
             packagePerspective.addRule(new GoStateToInternalTrans());
         }
         packagePerspective.addRule(new GoStateToDoActivity());
@@ -550,7 +548,7 @@ public final class PerspectiveManager {
             new GoClassToSummary(), new GoCollaborationToDiagram(),
             new GoCollaborationToInteraction(),
             new GoComponentToResidentModelElement(),
-            new GoCompositeStateToSubvertex(), new GoDiagramToEdge(),
+            new GoDiagramToEdge(),
             new GoDiagramToNode(), new GoElementToMachine(),
             new GoEnumerationToLiterals(),
             new GoGeneralizableElementToSpecialized(),
@@ -599,6 +597,7 @@ public final class PerspectiveManager {
         
         // TODO: We need a factory pattern for GoXXX classes that can determine if they are required
         PerspectiveRule[] ruleNamesArray14 = {
+            new GoCompositeStateToSubvertex(),
             new GoStateMachineToState(),
             new GoStateToInternalTrans()
         };
