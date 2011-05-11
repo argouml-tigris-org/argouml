@@ -38,7 +38,6 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
@@ -57,15 +56,12 @@ import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
-import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.ui.ActionSetAddAssociationMode;
 import org.argouml.uml.diagram.ui.ActionSetMode;
-import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.FigActor;
-import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
@@ -188,19 +184,33 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        Object[] actions = {
-            getActionMNode(),
-            getActionMNodeInstance(),
-            getActionMComponent(),
-            getActionMComponentInstance(),
-            getActionMGeneralization(),
-            getActionMAbstraction(),
-            getActionMDependency(),
-            getAssociationActions(),
-            getActionMObject(),
-            getActionMLink(),
-        };
-        return actions;
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            final Object[] actions = {
+                getActionMNode(),
+                getActionMNodeInstance(),
+                getActionMComponent(),
+                getActionMComponentInstance(),
+                getActionMGeneralization(),
+                getActionMAbstraction(),
+                getActionMDependency(),
+                getAssociationActions(),
+                getActionMObject(),
+                getActionMLink(),
+            };
+            return actions;
+        } else {
+            final Object[] actions = {
+                    getActionMNode(),
+                    getActionMComponent(),
+                    getActionMGeneralization(),
+                    getActionMAbstraction(),
+                    getActionMDependency(),
+                    getAssociationActions(),
+                    getActionMObject(),
+                    getActionMLink(),
+                };
+            return actions;
+        }
     }
 
     private Object[] getAssociationActions() {
