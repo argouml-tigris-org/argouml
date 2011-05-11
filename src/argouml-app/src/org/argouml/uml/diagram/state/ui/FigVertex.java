@@ -16,6 +16,7 @@ package org.argouml.uml.diagram.state.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -45,7 +46,6 @@ import org.tigris.gef.di.DiagramElement;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRRect;
-import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
@@ -135,9 +135,9 @@ public class FigVertex extends FigNodeModelElement {
 
     @Override
     public Selection makeSelection() {
-        return new SelectionState(this);
+        return new SelectionVertex(this);
     }
-
+    
     @Override
     protected Fig createBigPortFig() {
         return new FigRRect(0, 0, 0, 0, LINE_COLOR, FILL_COLOR);
@@ -180,9 +180,9 @@ public class FigVertex extends FigNodeModelElement {
     }
 
     // Temporary start
-    private static final Color[] COLOR_ARRAY = {
-        Color.RED, Color.BLUE, Color.CYAN, Color.YELLOW, Color.GREEN}; 
-    private int nextColor = 0;
+//    private static final Color[] COLOR_ARRAY = {
+//        Color.RED, Color.BLUE, Color.CYAN, Color.YELLOW, Color.GREEN}; 
+//    private int nextColor = 0;
     // Temporary end
     
     @Override
@@ -202,24 +202,29 @@ public class FigVertex extends FigNodeModelElement {
                     regionCompartment.getX(), regionCompartment.getY(),
                     rg.getMinimumSize().width, rg.getMinimumSize().height);
             
-            // Temporary start
-            rg.setFillColor(COLOR_ARRAY[nextColor++]);
-            if (nextColor >= COLOR_ARRAY.length) {
-                nextColor = 0;
-            }
+            // Temporary start - colour the regions so that we can see them for now
+//            rg.setFillColor(COLOR_ARRAY[nextColor++]);
+//            if (nextColor >= COLOR_ARRAY.length) {
+//                nextColor = 0;
+//            }
             // Temporary end
             
             regionCompartment.addFig(rg);
-            
-            // TODO: After adding a new region resize the node to
-            // include it.
+            setSize(getMinimumSize());
         }
         if (mee instanceof RemoveAssociationEvent) {
             Object oldRegion = mee.getNewValue();
+            for (DiagramElement de : regionCompartment.getDiagramElements()) {
+                if (de.getOwner() == oldRegion) {
+                    regionCompartment.removeFig((Fig) de);
+                    // TODO: After removing a region reset the overall
+                    // size of the node.
+                    renderingChanged();
+                    damage();
+                }
+            }
             LOG.debug("Removing region " + oldRegion);
         }
-        renderingChanged();
-        damage();
     }
 
     /*
@@ -295,6 +300,8 @@ public class FigVertex extends FigNodeModelElement {
             + nameSize.height
             + getBottomMargin();
 
+        h += regionCompartment.getMinimumSize().height;
+        
         if (getBodyText().getText().length() > 0) {
             h += bodySize.height;
         }
@@ -431,7 +438,7 @@ public class FigVertex extends FigNodeModelElement {
                 final int x,
                 int y,
                 final int w,
-                final int h) {
+                int h) {
 
             _x = x;
             _y = y;
@@ -442,11 +449,50 @@ public class FigVertex extends FigNodeModelElement {
                 Fig fig = (Fig) it.next();
                 if (it.hasNext()) {
                     fig.setBounds(x, y, w, fig.getMinimumSize().height);
+                    h -= fig.getMinimumSize().height;
                 } else {
-                    fig.setBounds(x, y, w, h - y);
+                    fig.setBounds(x, y, w, h);
                 }
                 y += fig.getHeight();
             }
+        }
+        
+        
+        @Override
+        public Dimension getMinimumSize() {
+            int minWidth = 0;
+            int minHeight = 0;
+            for (Iterator it = getFigs().iterator(); it.hasNext(); ) {
+                Fig fig = (Fig) it.next();
+                minWidth = Math.max(fig.getMinimumSize().width, minWidth);
+                if (it.hasNext()) {
+                    minHeight += fig.getHeight();
+                } else {
+                    minHeight += fig.getMinimumSize().height;
+                }
+            }
+
+            return new Dimension(minWidth, minHeight);
+        }
+        
+        public void paint(Graphics g) {
+            super.paint(g);
+            
+            for (Iterator it = getFigs().iterator(); it.hasNext(); ) {
+                Fig fig = (Fig) it.next();
+                if (it.hasNext()) {
+                    g.setColor(getLineColor());
+                    
+                    drawDashedLine(
+                            g, 1, 
+                            fig.getX(), 
+                            fig.getY() + fig.getHeight(),
+                            fig.getX() + fig.getWidth(),
+                            fig.getY() + fig.getHeight(),
+                            0, new float [] { 5.0f, 5.0f }, 10);            
+                }
+            }
+            
         }
     }
 }

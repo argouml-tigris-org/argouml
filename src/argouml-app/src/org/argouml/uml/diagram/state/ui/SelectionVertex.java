@@ -13,32 +13,31 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.awt.Dimension;
-import org.tigris.gef.presentation.FigRect;
+import java.awt.Graphics;
+
+import org.tigris.gef.presentation.Fig;
 
 /**
- * Displays a region within a composite state
+ * A selection for a vertex (which can be an orthogonal state).
+ * This acts the same as its superclass unless the vertex is in fact an
+ * orthogonal state in which case extra handles are painted for moving
+ * the region separators.
+ *
+ * @author Bob Tarling
  */
-public class FigRegion extends FigRect {
+public class SelectionVertex extends SelectionState {
 
     /**
-     * Construct a fig representing a region.
-     * 
-     * @param region owning UML element
-     * @param bounds position and size
+     * Construct a new SelectionState for the given Fig.
+     *
+     * @param f The given Fig.
      */
-    public FigRegion(
-            final Object region) {
-        super(0,0,0,0);
-        setLineWidth(0);
-        setOwner(region);
+    public SelectionVertex(Fig f) {
+	super(f);
     }
-    
-    /*
-     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
-     */
+
     @Override
-    public Dimension getMinimumSize() {
-        return new Dimension(180, 80);
+    public void paint(Graphics g) {
+        super.paint(g);
     }
 }
