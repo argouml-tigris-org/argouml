@@ -216,6 +216,9 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
         }
                         
         if (region == null || region instanceof Region) {
+            ModelEventPumpEUMLImpl pump =
+                (ModelEventPumpEUMLImpl) Model.getPump();
+            pump.addElementForDeleteEventIgnore((Vertex) handle);
             ((Vertex) handle).setContainer((Region) region);
             return;
         }

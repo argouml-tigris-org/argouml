@@ -406,7 +406,13 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         if (!(me instanceof Element)) {
             throw new IllegalArgumentException(
-                    "'me' must be instance of Element, we got a " + me); //$NON-NLS-1$
+                    "'me' must be instance of Element, we got a "//$NON-NLS-1$
+                     + me);
+        }
+        Element element = (Element) me;
+        if (element.getOwner() != null) {
+            ModelEventPumpEUMLImpl pump = (ModelEventPumpEUMLImpl) Model.getPump();
+            pump.addElementForDeleteEventIgnore(element);
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(modelImpl, getRunnableClassForAddCommand(

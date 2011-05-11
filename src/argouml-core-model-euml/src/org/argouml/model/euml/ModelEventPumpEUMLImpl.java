@@ -42,6 +42,7 @@ import org.eclipse.emf.common.notify.impl.NotificationImpl;
 import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Property;
 
 /**
@@ -54,8 +55,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      * events. See issue 
 
      */
-    final private List<Property> deleteEventIgnoreList =
-        new ArrayList<Property>();
+    final private List<Element> deleteEventIgnoreList =
+        new ArrayList<Element>();
     
     /**
      * A listener attached to a UML element
@@ -493,12 +494,10 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      */
     private boolean isDeleteEventRequired(
             final Object element) {
-        if (element instanceof Property) {
-            synchronized (deleteEventIgnoreList) {
-                if (deleteEventIgnoreList.contains(element)) {
-                    deleteEventIgnoreList.remove(element);
-                    return false;
-                }
+        synchronized (deleteEventIgnoreList) {
+            if (deleteEventIgnoreList.contains(element)) {
+                deleteEventIgnoreList.remove(element);
+                return false;
             }
         }
         return true;
@@ -510,9 +509,9 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      * 
      * @param property
      */
-    void addElementForDeleteEventIgnore(Property property) {
+    void addElementForDeleteEventIgnore(Element element) {
         synchronized (deleteEventIgnoreList) {
-            deleteEventIgnoreList.add(property);
+            deleteEventIgnoreList.add(element);
         }
     }
 
