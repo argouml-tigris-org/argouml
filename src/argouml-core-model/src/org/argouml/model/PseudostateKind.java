@@ -82,17 +82,17 @@ public interface PseudostateKind {
      * @return the EntryPoint kind.
      * @since 0.25.4 UML 2.x only
      */
-    public Object getEntryPoint();
+    Object getEntryPoint();
 
     /**
      * @return the ExitPoint kind.
      * @since 0.25.4 UML 2.x only
      */
-    public Object getExitPoint();
+    Object getExitPoint();
     
     /**
      * @return the Terminate kind.
      * @since 0.25.4 UML 2.x only
      */
-    public Object getTerminate();
+    Object getTerminate();
 }
