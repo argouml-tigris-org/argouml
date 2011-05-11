@@ -1,6 +1,6 @@
 // $Id$
 /*******************************************************************************
- * Copyright (c) 2007,2010 Tom Morris and other contributors
+ * Copyright (c) 2007-2011 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,8 @@
  *
  * Contributors:
  *    Tom Morris - initial implementation
- *    thn
+ *    Thomas Neustupny
+ *    Bob Tarling
  *****************************************************************************/
 
 package org.argouml.model.euml;
@@ -39,6 +40,7 @@ import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Component;
+import org.eclipse.uml2.uml.ComponentRealization;
 import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.ControlFlow;
 import org.eclipse.uml2.uml.CreateObjectAction;
@@ -70,7 +72,6 @@ import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.ObjectFlow;
-import org.eclipse.uml2.uml.ObjectNode;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.OutputPin;
 import org.eclipse.uml2.uml.PackageImport;
@@ -251,14 +252,18 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getComponentInstance() {
-        // TODO: Gone in UML 2.x
-        // return place holder for now
-        return InstanceSpecification.class;
+        throw new NotImplementedException(
+            "This is not a UML2 element"); //$NON-NLS-1$
+    }
+
+    public Object getComponentRealization() {
+        return ComponentRealization.class;
     }
 
     public Object getCompositeState() {
-        // TODO: no separate CompositeState in UML 2.1 - tfm
         return State.class;
+//        throw new NotImplementedException(
+//            "This is not a UML2 element"); //$NON-NLS-1$
     }
     
     public Object getConstraint() {
@@ -270,7 +275,8 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getCreateAction() {
-        throw new NotImplementedException("This is not a UML2 element"); //$NON-NLS-1$
+        throw new NotImplementedException(
+                "This is not a UML2 element"); //$NON-NLS-1$
     }
 
     public Object getCreateObjectAction() {

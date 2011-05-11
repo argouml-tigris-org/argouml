@@ -215,6 +215,11 @@ public interface MetaTypes {
     Object getComponent();
 
     /**
+     * @return Returns the Component.
+     */
+    Object getComponentRealization();
+
+    /**
      * @return Returns the ComponentInstance.
      */
     Object getComponentInstance();

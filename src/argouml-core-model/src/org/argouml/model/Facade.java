@@ -473,6 +473,14 @@ public interface Facade {
     boolean isAComponentInstance(Object handle);
 
     /**
+     * Recognizer for ComponentRealization.
+     *
+     * @param handle candidate
+     * @return true if handle is a ComponentRealization
+     */
+    boolean isAComponentRealization(Object handle);
+
+    /**
      * Recognizer for Constraint.
      *
      * @param handle candidate

@@ -328,6 +328,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return ComponentInstance.class;
     }
 
+    public Object getComponentRealization() {
+        throw new NotImplementedException("This is not a UML1.4 class");
+    }
+
     public Object getCompositeState() {
         return CompositeState.class;
     }

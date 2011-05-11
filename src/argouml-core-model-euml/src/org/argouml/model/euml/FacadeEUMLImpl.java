@@ -1932,6 +1932,10 @@ class FacadeEUMLImpl implements Facade {
         return false;
     }
 
+    public boolean isAComponentRealization(Object handle) {
+        return handle instanceof ComponentRealization;
+    }
+
     public boolean isACompositeState(Object handle) {
         return (handle instanceof State && ((State) handle).isComposite());
     }

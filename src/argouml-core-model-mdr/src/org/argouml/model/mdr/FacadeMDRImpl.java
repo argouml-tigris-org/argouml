@@ -419,6 +419,10 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof ComponentInstance;
     }
 
+    public boolean isAComponentRealization(Object handle) {
+        return false;
+    }
+
     public boolean isAConstraint(Object handle) {
         return handle instanceof Constraint;
     }

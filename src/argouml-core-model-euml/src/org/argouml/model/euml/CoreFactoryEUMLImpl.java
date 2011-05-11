@@ -31,6 +31,7 @@ import org.eclipse.uml2.uml.BehavioredClassifier;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Component;
+import org.eclipse.uml2.uml.ComponentRealization;
 import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Dependency;
@@ -716,6 +717,38 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         return (Dependency) run.getParams().get(0);
     }
 
+    public Dependency buildComponentRealization(final Object clientObj,
+            final Object supplierObj) {
+        if (!(clientObj instanceof NamedElement)
+                || !(supplierObj instanceof NamedElement)) {
+            throw new IllegalArgumentException(
+                    "The client and the supplier must be" //$NON-NLS-1$
+                            + " instances of NamedElement."); //$NON-NLS-1$
+        }
+        if (((NamedElement) clientObj).getNearestPackage() == null) {
+            throw new NullPointerException(
+                    "The containing package of the client must be non-null."); //$NON-NLS-1$
+        }
+        RunnableClass run = new RunnableClass() {
+            public void run() {
+                ComponentRealization dependency =
+                    UMLFactory.eINSTANCE.createComponentRealization();
+                dependency.getClients().add((NamedElement) clientObj);
+                dependency.getSuppliers().add((NamedElement) supplierObj);
+                ((NamedElement) clientObj).getNearestPackage()
+                        .getPackagedElements().add(dependency);
+                getParams().add(dependency);
+            }
+        };
+        ChangeCommand cmd = new ChangeCommand(
+                modelImpl, run, "Create the component realization # between the"
+                        + " client # and the supplier #");
+        editingDomain.getCommandStack().execute(cmd);
+        cmd.setObjects(run.getParams().get(0), clientObj, supplierObj);
+
+        return (ComponentRealization) run.getParams().get(0);
+    }
+    
     public Object buildElementResidence(Object me, Object component) {
         // TODO: Is this removed from UML2 ?
         throw new NotImplementedException();

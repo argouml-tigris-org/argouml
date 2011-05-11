@@ -42,6 +42,7 @@ import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.AssociationClass;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Component;
+import org.eclipse.uml2.uml.ComponentRealization;
 import org.eclipse.uml2.uml.ControlFlow;
 import org.eclipse.uml2.uml.ControlNode;
 import org.eclipse.uml2.uml.DataType;
@@ -142,6 +143,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     //       Update for UML 2.x metamodel if not replaced by reflection
     private static final Class[][] VALID_CONNECTIONS = {
         {Generalization.class,   Classifier.class, },
+        {ComponentRealization.class, Element.class, Component.class},
         {Dependency.class,       Element.class, },
         // Although Usage & Permission are Dependencies, they need to
         // be include separately because of the way lookup works
@@ -191,14 +193,11 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             Object unidirectional, Object namespace)
             throws IllegalModelElementConnectionException {
 
-        IllegalModelElementConnectionException exception = 
-            new IllegalModelElementConnectionException(
-                "Cannot make a " + elementType.getClass().getName() //$NON-NLS-1$
-                        + " between a " + fromElement.getClass().getName() //$NON-NLS-1$
-                        + " and a " + toElement.getClass().getName()); //$NON-NLS-1$
-
         if (!isConnectionValid(elementType, fromElement, toElement, true)) {
-            throw exception;
+            throw new IllegalModelElementConnectionException(
+                    "Cannot make a " + elementType.getClass().getName() //$NON-NLS-1$
+                            + " between a " + fromElement.getClass().getName() //$NON-NLS-1$
+                            + " and a " + toElement.getClass().getName()); //$NON-NLS-1$
         }
 
         Object connection = null;
@@ -232,6 +231,9 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                     fromElement, toElement);
         } else if (elementType == metaTypes.getUsage()) {
             connection = modelImpl.getCoreFactory().buildUsage(
+                    fromElement, toElement);
+        } else if (elementType == metaTypes.getComponentRealization()) {
+            connection = modelImpl.getCoreFactory().buildComponentRealization(
                     fromElement, toElement);
         } else if (elementType == metaTypes.getDependency()) {
             connection = modelImpl.getCoreFactory().buildDependency(
@@ -272,7 +274,10 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         }
 
         if (connection == null) {
-            throw exception;
+            throw new IllegalModelElementConnectionException(
+                    "Cannot make a " + elementType.getClass().getName() //$NON-NLS-1$
+                            + " between a " + fromElement.getClass().getName() //$NON-NLS-1$
+                            + " and a " + toElement.getClass().getName()); //$NON-NLS-1$
         }
 
         return connection;
