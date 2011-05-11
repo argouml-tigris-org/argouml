@@ -103,6 +103,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("raisedSignal", new RaisedExceptionGetterSetter());
         addGetterSetter("receiver", new ReceiverGetterSetter());
         addGetterSetter("reception", new ReceptionGetterSetter());
+        addGetterSetter("region", new RegionGetterSetter());
         addGetterSetter("residentElement", new ResidentElementGetterSetter());
         addGetterSetter("sender", new SenderGetterSetter());
         addGetterSetter("subvertex", new SubvertexGetterSetter());
@@ -1649,6 +1650,32 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     	        return null;
     	    }
     	}
+    }
+    
+    private class RegionGetterSetter extends ListGetterSetter {
+        
+        public Collection getOptions(
+        	final Object modelElement,
+        	final Collection<Class<?>> types) {
+            return Model.getStateMachinesHelper().getRegions(modelElement);
+        }
+      
+        public Object get(Object modelElement, Class<?> type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getRegion();
+        }
     }
     
     private class ResidentElementGetterSetter extends ListGetterSetter implements Addable, Removeable {

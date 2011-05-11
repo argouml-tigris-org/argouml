@@ -23,13 +23,15 @@ Authors:
   <class name="DestroyObjectAction">org.eclipse.uml2.uml.DestroyObjectAction</class>
   <class name="Element">org.eclipse.uml2.uml.Element</class>
   <class name="Expression">org.eclipse.uml2.uml.Expression</class>
+  <class name="Feature">org.eclipse.uml2.uml.Feature</class>
+  <class name="Interface">org.eclipse.uml2.uml.Interface</class>
   <class name="Namespace">org.eclipse.uml2.uml.Namespace</class>
   <class name="ObjectFlow">org.eclipse.uml2.uml.ObjectFlow</class>
+  <class name="Region">org.eclipse.uml2.uml.Region</class>
   <class name="SendSignalAction">org.eclipse.uml2.uml.SendSignalAction</class>
   <class name="TimeExpression">org.eclipse.uml2.uml.TimeExpression</class>
-  <class name="Feature">org.eclipse.uml2.uml.Feature</class>
+  <class name="State">org.eclipse.uml2.uml.State</class>
   <class name="StructuralFeature">org.eclipse.uml2.uml.StructuralFeature</class>
-  <class name="Interface">org.eclipse.uml2.uml.Interface</class>
   <class name="Constraint">org.eclipse.uml2.uml.Constraint</class>
   <class name="Relationship">org.eclipse.uml2.uml.Relationship</class>
   <class name="Association">org.eclipse.uml2.uml.Association</class>
@@ -58,7 +60,6 @@ Authors:
   <class name="ExtensionPoint">org.eclipse.uml2.uml.ExtensionPoint</class>
   <class name="StateMachine">org.eclipse.uml2.uml.StateMachine</class>
   <class name="Event">org.eclipse.uml2.uml.Event</class>
-  <class name="State">org.eclipse.uml2.uml.State</class>
   <class name="TimeEvent">org.eclipse.uml2.uml.TimeEvent</class>
   <class name="CallEvent">org.eclipse.uml2.uml.CallEvent</class>
   <class name="SignalEvent">org.eclipse.uml2.uml.SignalEvent</class>
@@ -75,6 +76,9 @@ Authors:
   <class name="String">java.lang.String</class>
 </classes>
 <panels>
+  <panel name="Region">
+    <text name="name" type="Name" />    
+  </panel>
   <panel name="Multiplicity">
     <list name="range" type="MultiplicityRange" />
   </panel>
@@ -2626,7 +2630,7 @@ Authors:
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
 	<combo name="context" type="ModelElement" />
-    <list name="top" type="State" label="label.top-state" />
+    <list name="region" type="Region" />
     <list name="templateParameter" type="TemplateParameter" new="true" label="label.template-parameters" />
     <separator />
     <list name="transitions" type="Transition" />
@@ -2725,6 +2729,7 @@ Authors:
     <list name="targetFlow" type="Flow" label="label.target-flows" />
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
+    <list name="region" type="Region" />
     <separator />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
