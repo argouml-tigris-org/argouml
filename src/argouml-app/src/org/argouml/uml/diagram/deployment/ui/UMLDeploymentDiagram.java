@@ -200,15 +200,15 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             return actions;
         } else {
             final Object[] actions = {
-                    getActionMNode(),
-                    getActionMComponent(),
-                    getActionMGeneralization(),
-                    getActionMAbstraction(),
-                    getActionMDependency(),
-                    getAssociationActions(),
-                    getActionMObject(),
-                    getActionMLink(),
-                };
+                getActionMNode(),
+                getActionMComponent(),
+                getActionMGeneralization(),
+                getActionMAbstraction(),
+                getActionMDependency(),
+                getAssociationActions(),
+                getActionMObject(),
+                getActionMLink(),
+            };
             return actions;
         }
     }

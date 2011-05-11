@@ -90,6 +90,7 @@ import org.argouml.model.AssociationChangeEvent;
 import org.argouml.model.AttributeChangeEvent;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.DiElement;
+import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.Model;
 import org.argouml.model.UmlChangeEvent;
@@ -845,25 +846,50 @@ public abstract class FigNodeModelElement
         assert Model.getFacade().isAComponent(component);
         assert Model.getFacade().isAUMLElement(owner);
 
-        final Collection er1 = Model.getFacade().getElementResidences(owner);
-        final Collection er2 = Model.getFacade().getResidentElements(component);
-        boolean found = false;
-        // Find all ElementResidences between the class and the component:
-        final Collection<Object> common = new ArrayList<Object>(er1);
-        common.retainAll(er2);
-        for (Object elementResidence : common) {
-            if (!found) {
-                found = true;
-                // There is already a correct ElementResidence
-            } else {
-                // There were 2 ElementResidences .. strange case.
-                Model.getUmlFactory().delete(elementResidence);
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            final Collection er1 = Model.getFacade().getElementResidences(owner);
+            final Collection er2 = Model.getFacade().getResidentElements(component);
+            boolean found = false;
+            // Find all ElementResidences between the class and the component:
+            final Collection<Object> common = new ArrayList<Object>(er1);
+            common.retainAll(er2);
+            for (Object elementResidence : common) {
+                if (!found) {
+                    found = true;
+                    // There is already a correct ElementResidence
+                } else {
+                    // There were 2 ElementResidences .. strange case.
+                    Model.getUmlFactory().delete(elementResidence);
+                }
             }
-        }
-        if (!found) {
-            // There was no ElementResidence yet, so let's create one:
-            Model.getCoreFactory().buildElementResidence(
-                    owner, component);
+            if (!found) {
+                // There was no ElementResidence yet, so let's create one:
+                Model.getCoreFactory().buildElementResidence(
+                        owner, component);
+            }
+        } else {
+            Object namespace = Model.getFacade().getNamespace(component);
+            Collection deps = Model.getFacade().getClientDependencies(owner);
+            for (Object cr : deps) {
+                if (Model.getFacade().isAComponentRealization(cr)) {
+                    Collection supps = Model.getFacade().getSuppliers(cr);
+                    for (Object supp : supps) {
+                        Object comp = Model.getFacade().getSuppliers(cr);
+                        if (supp == component) {
+                            // The owner is already linked to the component
+                            return;
+                        }
+                    }
+                }
+            }
+            try {
+                Model.getUmlFactory().buildConnection(
+                        Model.getMetaTypes().getComponentRealization(),
+                        owner, null, component,
+                        null, null, namespace);
+            } catch (IllegalModelElementConnectionException e) {
+                LOG.error("Exception", e);
+            }
         }
     }
 
