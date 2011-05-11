@@ -402,7 +402,9 @@ public final class PerspectiveManager {
         packagePerspective.addRule(new GoBehavioralFeatureToStateMachine());
         // works for both statediagram as activitygraph
         packagePerspective.addRule(new GoStatemachineToDiagram());
-        packagePerspective.addRule(new GoStateMachineToState());
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            packagePerspective.addRule(new GoStateMachineToState());
+        }
         packagePerspective.addRule(new GoCompositeStateToSubvertex());
         if (Model.getFacade().getUmlVersion().startsWith("1")) {
             packagePerspective.addRule(new GoStateToInternalTrans());
@@ -578,7 +580,7 @@ public final class PerspectiveManager {
             new GoCriticsToCritic(),
             new GoProjectToRoots(),
             new GoSignalToReception(), new GoStateMachineToTop(),
-            new GoStatemachineToDiagram(), new GoStateMachineToState(),
+            new GoStatemachineToDiagram(), 
             new GoStateMachineToTransition(), new GoStateToDoActivity(),
             new GoStateToDownstream(), new GoStateToEntry(),
             new GoStateToExit(), new GoStateToIncomingTrans(),
@@ -597,6 +599,7 @@ public final class PerspectiveManager {
         
         // TODO: We need a factory pattern for GoXXX classes that can determine if they are required
         PerspectiveRule[] ruleNamesArray14 = {
+            new GoStateMachineToState(),
             new GoStateToInternalTrans()
         };
 
