@@ -1490,8 +1490,7 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getSubvertices(Object handle) {
-        throw new NotYetImplementedException();
-
+        return ((Region) handle).allOwnedElements();
     }
 
     public Collection getSuccessors(Object handle) {
