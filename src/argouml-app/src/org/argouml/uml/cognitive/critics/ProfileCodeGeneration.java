@@ -43,6 +43,7 @@ import java.util.Set;
 
 import org.argouml.cognitive.CompoundCritic;
 import org.argouml.cognitive.Critic;
+import org.argouml.model.Model;
 import org.argouml.profile.Profile;
 
 /**
@@ -108,7 +109,9 @@ public class ProfileCodeGeneration extends Profile {
         critics.add(crDisambigClassName);
         critics.add(new CrIllegalName());
         critics.add(new CrReservedName());
-        critics.add(new CrNoInitialState());
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            critics.add(new CrNoInitialState());
+        }
         critics.add(new CrNoTriggerOrGuard());
         critics.add(new CrNoGuard());
                    

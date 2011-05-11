@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.cognitive.Critic;
+import org.argouml.model.Model;
 import org.argouml.profile.Profile;
 
 /**
@@ -80,7 +81,9 @@ public class ProfileGoodPractices extends Profile {
         critics.add(new CrTooManyAttr());
         critics.add(new CrTooManyOper());
         critics.add(new CrTooManyTransitions());
-        critics.add(new CrTooManyStates());
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            critics.add(new CrTooManyStates());
+        }
         critics.add(new CrTooManyClasses());
         critics.add(new CrWrongLinkEnds());
         critics.add(new CrUtilityViolated());
