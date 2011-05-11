@@ -12,6 +12,7 @@
  *    Bob Tarling
  *    Thomas Neustupny
  *    Laurent Braud
+ *    Michiel van der Wulp
  *****************************************************************************/
 
 package org.argouml.model.euml;
@@ -1637,9 +1638,12 @@ class FacadeEUMLImpl implements Facade {
         if (!(handle instanceof Transition)) {
             throw new IllegalArgumentException();
         }
-        // TODO: Transitions can have multiple Triggers now?
-        // Need API change to handle - tfm
-        return ((Transition) handle).getTriggers().get(0);
+        // Transitions can have multiple Triggers now
+        List<Trigger> trs = ((Transition) handle).getTriggers();
+        if (trs.isEmpty()) {
+            return null;
+        }
+        return trs.get(0);
     }
 
     public List<Trigger> getTriggers(Object handle) {
