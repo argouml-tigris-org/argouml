@@ -9,9 +9,11 @@
  * Contributors:
  *    Tom Morris - initial framework 
  *    Bob Tarling
+ *    Michiel van der Wulp
  *******************************************************************************/
 package org.argouml.model.euml;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,6 +24,7 @@ import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.State;
 import org.eclipse.uml2.uml.StateMachine;
 import org.eclipse.uml2.uml.Transition;
+import org.eclipse.uml2.uml.TransitionKind;
 import org.eclipse.uml2.uml.Vertex;
 
 /**
@@ -96,6 +99,29 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
             return ((Transition) trans).getTarget();
         }
         throw new IllegalArgumentException();
+    }
+
+    public Collection getTransitions(Object handle,
+            boolean includeInternals) {
+        if (handle instanceof StateMachine) {
+            Collection<Transition> result = new ArrayList<Transition>();
+            List<Region> regions = ((StateMachine) handle).getRegions();
+            for (Region region : regions) {
+                List<Transition> transitions =region.getTransitions();
+                if (includeInternals) {
+                    result.addAll(transitions);
+                } else {
+                    for (Transition transition : transitions) {
+                        if (!transition.getKind().equals(TransitionKind.INTERNAL_LITERAL)) {
+                            result.add(transition);
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        throw new IllegalArgumentException(
+            "Argument is not a statemachine");
     }
 
     public Collection getOutgoingStates(Object ostatevertex) {

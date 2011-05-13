@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -39,7 +40,6 @@
 package org.argouml.core.propertypanels.ui;
 
 import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * @since Dec 6, 2002
@@ -62,14 +62,14 @@ class UMLStateMachineTransitionListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(Model.getFacade().getTransitions(getTarget()));
+        setAllElements(Model.getStateMachinesHelper().getTransitions(getTarget(), true));
     }
 
     /*
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return Model.getFacade().getTransitions(getTarget()).contains(element);
+        return Model.getStateMachinesHelper().getTransitions(getTarget(), true).contains(element);
     }
 
 }

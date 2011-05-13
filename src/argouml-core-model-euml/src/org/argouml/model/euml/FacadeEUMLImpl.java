@@ -1,6 +1,6 @@
 // $Id$
 /*******************************************************************************
- * Copyright (c) 2007,2011 Tom Morris and other contributors
+ * Copyright (c) 2007-2011 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -912,7 +912,23 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getInternalTransitions(Object handle) {
-        throw new NotYetImplementedException();
+        if (isAVertex(handle)) {
+            Region region = ((Vertex) handle).getContainer();
+            if (region == null) {
+                return null;
+            }
+            List<Transition> result = new ArrayList<Transition>();
+            List<Transition> transitions = region.getTransitions();
+            for (Transition transition : transitions) {
+                if ((transition.getSource() == handle) &&
+                        (transition.getTarget() == handle) &&
+                        transition.getKind() == TransitionKind.INTERNAL_LITERAL) {
+                    result.add(transition);
+                }
+            }
+            return result;
+        }
+        throw new IllegalArgumentException();
     }
 
     public Object getKind(Object handle) {
@@ -1630,7 +1646,26 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getTransitions(Object handle) {
-        throw new NotYetImplementedException();
+        if (isAStateMachine(handle)) {
+            List<Region> regions = ((StateMachine) handle).getRegions();
+            List<Transition> result = new ArrayList<Transition>();
+            for (Region region : regions) {
+                result.addAll(region.getTransitions());
+            }
+            return result;
+        } else if (isAVertex(handle)) {
+            return getInternalTransitions(handle);
+        } else if (isARegion(handle)) {
+            return ((Region) handle).getTransitions();
+        } else if (isATrigger(handle)) {
+            List<Transition> result = new ArrayList<Transition>();
+            // TODO: not complete - how to retrieve the transitions?
+        } else if (isAEvent(handle)) {
+            // TODO: not complete
+            throw new NotYetImplementedException();
+        }
+        throw new IllegalArgumentException(
+            "handle must be instance of StateMachine, Vertex, Region, Trigger or Event"); //$NON-NLS-1$
     }
 
     public Trigger getTrigger(Object handle) {
@@ -2202,6 +2237,10 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof Reception;
     }
 
+    public boolean isARegion(Object handle) {
+        return handle instanceof Region;
+    }
+
     public boolean isARelationship(Object handle) {
         return handle instanceof Relationship;
     }
@@ -2247,6 +2286,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAStateVertex(Object handle) {
+        return handle instanceof Vertex;
+    }
+
+    public boolean isAVertex(Object handle) {
         return handle instanceof Vertex;
     }
 
@@ -2325,6 +2368,10 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isATransition(Object handle) {
         return handle instanceof Transition;
+    }
+    
+    public boolean isATrigger(Object handle) {
+        return handle instanceof Trigger;
     }
 
     public boolean isAUMLElement(Object handle) {

@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    tfmorris
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -356,6 +356,27 @@ class StateMachinesHelperMDRImpl implements StateMachinesHelper {
                 "Argument is not a composite state");
     }
 
+    public Collection<Transition> getTransitions(Object handle,
+            boolean includeInternals) {
+        if (handle instanceof StateMachine) {
+            Collection<Transition> result = new ArrayList<Transition>();
+            result.addAll(((StateMachine) handle).getTransitions());
+            if (includeInternals) {
+                State top = ((StateMachine) handle).getTop();
+                if (top != null && top instanceof CompositeState) {
+                    Collection<StateVertex> subs = getAllSubStates(top);
+                    for (StateVertex sub : subs) {
+                        if (sub instanceof State) {
+                            result.addAll(((State) sub).getInternalTransition());
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+        throw new IllegalArgumentException(
+            "Argument is not a statemachine");
+    }
 
     public void removeSubvertex(Object handle, Object subvertex) {
         try {

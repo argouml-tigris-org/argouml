@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    tfmorris
- *    mvw
+ *    Michiel van der Wulp
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -212,6 +212,18 @@ public interface StateMachinesHelper {
      * @return all substates
      */
     Collection getAllSubStates(Object compState);
+    
+    /**
+     * Return the transitions belonging to the given StateMachine. 
+     * The boolean parameter determines the kinds of Transitions returned.
+     * Never returns null. 
+     * 
+     * @param handle a StateMachine
+     * @param includeInternals include all internal transitions
+     * @return Collection of Transitions
+     */
+    Collection getTransitions(Object handle, 
+            boolean includeInternals);
 
     /**
      * Remove a given subvertex from a given composite state.

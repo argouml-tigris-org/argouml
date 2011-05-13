@@ -1934,13 +1934,14 @@ public interface Facade {
     Collection getIncluders(Object handle);
 
     /**
-     * Return the incoming Transitions for some StateVertex, Transition, Action,
-     * or Guard.  For a Transition, the incomings of its source StateVertex are
+     * Return the incoming Transitions for some StateVertex, Event, 
+     * Transition, Action, or Guard.  
+     * For a Transition, the incomings of its source StateVertex are
      * used.  For an Action or Guard, the owning Transition is found and then
      * the algorithm for Transitions is applied.
      * 
      * @param handle
-     *            a StateVertex, Transition, Action, or Guard
+     *            a StateVertex, Guard, Action, Event or Transition
      * @return Collection of Transitions
      */
     Collection getIncomings(Object handle);
@@ -1994,9 +1995,9 @@ public interface Facade {
     Collection getInteractions(Object handle);
 
     /**
-     * Return the internalTransitions belonging to a State.
+     * Return the internalTransitions belonging to a State (UML1&2) or Vertex (UML2).
      *
-     * @param handle the State
+     * @param handle the State (UML1&2) or Vertex (UML2)
      * @return Collection
      */
     Collection getInternalTransitions(Object handle);
@@ -2492,9 +2493,9 @@ public interface Facade {
 
     /**
      * Return the collection of Transitions outgoing from the given 
-     * stateVertex.
+     * stateVertex, Guard, Action, Event or Transition.
      *
-     * @param handle statevertex
+     * @param handle stateVertex, Guard, Action, Event or Transition
      * @return Collection
      */
     Collection getOutgoings(Object handle);
@@ -3017,14 +3018,22 @@ public interface Facade {
 
     /**
      * Return the transitions belonging to the given handle. The handle can be
-     * a StateMachine, CompositeState, or Event. For a StateMachine, the
-     * Transitions transitions belonging to StateMachine are returned. For a
-     * CompositeState, its internalTransitions are returned. For an Event, all
-     * transitions triggered by this event will be given back.
+     * a StateMachine, State (UML1), Region (UML2), Vertex (UML2) or Event. 
+     * For a StateMachine, the Transitions belonging to the StateMachine 
+     * are returned. 
+     * For a State, its internalTransitions are returned. 
+     * For an Event, all transitions triggered by this event will be given back. <p>
+     * 
+     * When the handle is a StateMachine: In UML1 the returned list 
+     * excludes all internal transitions. In UML2 internal transitions are included.
+     * Hence this use is deprecated - use 
+     * {@link StateMachinesHelper#getTransitions(Object, boolean)} instead,
+     * which clearly specifies whether or not to include the internal transitions.
      * 
      * @param handle
      *            a StateMachine, CompositeState, or Event
      * @return Collection of Transitions
+     * @deprecated by mvw - for a StateMachine
      */
     Collection getTransitions(Object handle);
 
