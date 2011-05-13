@@ -65,8 +65,7 @@ class UMLStateVertexIncomingListModel extends UMLModelElementListModel {
     protected void buildModelList() {
         ArrayList c =
             new ArrayList(Model.getFacade().getIncomings(getTarget()));
-        if (Model.getFacade().getUmlVersion().startsWith("1")
-        	&& Model.getFacade().isAState(getTarget())) {
+        if (Model.getFacade().isAState(getTarget())) {
             ArrayList i =
                 new ArrayList(
                         Model.getFacade().getInternalTransitions(getTarget()));
@@ -81,8 +80,7 @@ class UMLStateVertexIncomingListModel extends UMLModelElementListModel {
     protected boolean isValidElement(Object element) {
         ArrayList c =
             new ArrayList(Model.getFacade().getIncomings(getTarget()));
-        if (Model.getFacade().getUmlVersion().startsWith("1")
-        	&& Model.getFacade().isAState(getTarget())) {
+        if (Model.getFacade().isAState(getTarget())) {
             ArrayList i =
                 new ArrayList(
                         Model.getFacade().getInternalTransitions(getTarget()));
