@@ -66,12 +66,10 @@ public abstract class StateBodyNotation extends NotationProvider {
     public void initialiseListener(Object modelElement) {
         addElementListener(modelElement);
         // register for internal transitions:
-        if (Model.getFacade().getUmlVersion().startsWith("1")) {
-            Iterator it =
-                Model.getFacade().getInternalTransitions(modelElement).iterator();
-            while (it.hasNext()) {
-                NotationUtilityProviders.addListenersForTransition(this, it.next());
-            }
+        Iterator it =
+            Model.getFacade().getInternalTransitions(modelElement).iterator();
+        while (it.hasNext()) {
+            NotationUtilityProviders.addListenersForTransition(this, it.next());
         }
         // register for the doActivity etc.
         Object doActivity = Model.getFacade().getDoActivity(modelElement);
