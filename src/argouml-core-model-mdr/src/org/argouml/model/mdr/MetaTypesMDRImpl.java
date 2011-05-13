@@ -336,6 +336,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return CompositeState.class;
     }
     
+    public Object getConnector() {
+        throw new NotImplementedException("This is not a UML1.4 class");
+    }
+
     public Object getConstraint() {
         return Constraint.class;
     }

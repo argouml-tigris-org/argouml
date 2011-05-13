@@ -261,7 +261,11 @@ final class MetaTypesEUMLImpl implements MetaTypes {
 //        throw new NotImplementedException(
 //            "This is not a UML2 element"); //$NON-NLS-1$
     }
-    
+
+    public Object getConnector() {
+        return Connector.class;
+    }
+
     public Object getConstraint() {
         return Constraint.class;
     }

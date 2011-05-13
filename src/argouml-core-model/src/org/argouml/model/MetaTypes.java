@@ -240,6 +240,11 @@ public interface MetaTypes {
     Object getControlFlow();
     
     /**
+     * @return Returns the Connector class for UML2
+     */
+    Object getConnector();
+    
+    /**
      * @return Returns the CreateAction.
      */
     Object getCreateAction();

@@ -27,6 +27,7 @@ import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
+import org.argouml.model.Model;
 import org.argouml.model.UmlFactory;
 import org.argouml.model.Defaults;
 import org.eclipse.emf.common.util.URI;
@@ -43,6 +44,7 @@ import org.eclipse.uml2.uml.AssociationClass;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.ComponentRealization;
+import org.eclipse.uml2.uml.Connector;
 import org.eclipse.uml2.uml.ControlFlow;
 import org.eclipse.uml2.uml.ControlNode;
 import org.eclipse.uml2.uml.DataType;
@@ -57,6 +59,7 @@ import org.eclipse.uml2.uml.ExtensionPoint;
 import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Include;
 import org.eclipse.uml2.uml.Interface;
+import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.ObjectFlow;
@@ -142,6 +145,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
     // TODO: This should be built by reflection from the metamodel - tfm
     //       Update for UML 2.x metamodel if not replaced by reflection
     private static final Class[][] VALID_CONNECTIONS = {
+        {Connector.class,  Lifeline.class, },
         {Generalization.class,   Classifier.class, },
         {ComponentRealization.class, Element.class, Component.class},
         {Dependency.class,       Element.class, },
@@ -202,7 +206,10 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
 
         Object connection = null;
 
-        if (elementType == metaTypes.getAssociation()) {
+        if (elementType == metaTypes.getAssociationRole()) {
+            connection =
+                Model.getCollaborationsFactory().buildAssociationRole(fromElement, toElement);
+        } else if (elementType == metaTypes.getAssociation()) {
             // Note for UML2 the aggregation ends are swapped
             connection = modelImpl.getCoreFactory().buildAssociation(
                     (Classifier) fromElement, (AggregationKind) toStyle,

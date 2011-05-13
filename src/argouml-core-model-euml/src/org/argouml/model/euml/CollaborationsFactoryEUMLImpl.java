@@ -13,15 +13,17 @@ package org.argouml.model.euml;
 
 import org.argouml.model.AbstractModelFactory;
 import org.argouml.model.CollaborationsFactory;
-import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Collaboration;
+import org.eclipse.uml2.uml.ConnectableElement;
+import org.eclipse.uml2.uml.Connector;
+import org.eclipse.uml2.uml.ConnectorEnd;
 import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.Gate;
 import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Message;
-import org.eclipse.uml2.uml.MessageEnd;
 import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
+import org.eclipse.uml2.uml.Port;
+import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.UMLFactory;
 
 /**
@@ -45,18 +47,38 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
     }
 
     public Object buildActivator(Object owner, Object interaction) {
-        // TODO: Auto-generated method stub
-        return null;
+        throw new NotYetImplementedException();
     }
 
-    public Object buildAssociationEndRole(Object atype) {
-        // TODO: Auto-generated method stub
-        return null;
+    public ConnectorEnd buildAssociationEndRole(Object atype) {
+        Lifeline lifeline = (Lifeline) atype;
+        ConnectorEnd end = UMLFactory.eINSTANCE.createConnectorEnd();
+        ConnectableElement prop = lifeline.getRepresents();
+        if (prop == null) {
+            prop = UMLFactory.eINSTANCE.createProperty();
+            lifeline.setRepresents(prop);
+        }
+
+        end.setRole(prop);
+//        lifeline.setRepresents(prop);
+        return end;
     }
 
-    public Object buildAssociationRole(Object from, Object to) {
-        // TODO: Auto-generated method stub
-        return null;
+    public Connector buildAssociationRole(Object from, Object to) {
+        return buildAssociationRole((Lifeline) from, (Lifeline) to);
+    }
+    
+    /**
+     * Internal type-checked version of buildAssociationRole.
+     */
+    private Connector buildAssociationRole(Lifeline from,
+            Lifeline to) {
+        Connector connector = UMLFactory.eINSTANCE.createConnector();
+        from.getInteraction().getOwnedConnectors().add(connector);
+
+        connector.getEnds().add(buildAssociationEndRole(from));
+        connector.getEnds().add(buildAssociationEndRole(to));
+        return connector;
     }
 
     @Deprecated

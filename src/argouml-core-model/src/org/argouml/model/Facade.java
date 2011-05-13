@@ -481,6 +481,22 @@ public interface Facade {
     boolean isAComponentRealization(Object handle);
 
     /**
+     * Recognizer for Connector.
+     *
+     * @param handle candidate
+     * @return true if handle is a Connector
+     */
+    public boolean isAConnector(Object handle);
+
+    /**
+     * Recognizer for ConnectorEnd.
+     *
+     * @param handle candidate
+     * @return true if handle is a ConnectorEnd
+     */
+    public boolean isAConnectorEnd(Object handle);
+    
+    /**
      * Recognizer for Constraint.
      *
      * @param handle candidate
@@ -981,6 +997,14 @@ public interface Facade {
      * @return Instance or ClassifierRole
      */
     Object getReceiver(Object handle);
+    
+    /**
+     * Return the Lifeline belonging to the given ConnectionEnd.
+     *
+     * @param handle the ConnectionEnd
+     * @return the Lifeline
+     */
+    Object getLifeline(Object handle);
 
     /**
      * Return the Link belonging to the given LinkEnd.

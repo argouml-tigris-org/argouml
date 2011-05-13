@@ -423,10 +423,18 @@ class FacadeMDRImpl implements Facade {
         return false;
     }
 
+    public boolean isAConnector(Object handle) {
+        return false;
+    }
+
+    public boolean isAConnectorEnd(Object handle) {
+        return false;
+    }    
+    
     public boolean isAConstraint(Object handle) {
         return handle instanceof Constraint;
     }
-
+    
     public boolean isACreateAction(Object handle) {
         return handle instanceof CreateAction;
     }
@@ -685,6 +693,9 @@ class FacadeMDRImpl implements Facade {
         return illegalArgumentObject(handle);
     }
 
+    public Object getLifeline(Object handle) {
+        throw new NotImplementedException("Not a UML1.4 element");
+    }
 
     public Object getLink(Object handle) {
         try {

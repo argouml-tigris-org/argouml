@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Facade;
+import org.argouml.model.NotImplementedException;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.Enumerator;
@@ -235,9 +236,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getAssociationRoles(Object handle) {
-        // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
-        // AssociationEndRole have been replaced by the internal 
-        // structure of the Collaboration
+        // TODO: How do we get the Connectors of an Association?
+        LOG.warn("Not yet implemented - returning empty");
         return Collections.emptySet();
     }
 
@@ -497,6 +497,9 @@ class FacadeEUMLImpl implements Facade {
             // this is wrongly called with a null handle,
             // as a workaround we return an empty collection
             return Collections.emptyList();
+        }
+        if (handle instanceof Connector) {
+            return ((Connector) handle).getEnds();
         }
         if (!(handle instanceof Association)) {
             throw new IllegalArgumentException(
@@ -942,7 +945,24 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getLink(Object handle) {
-        throw new NotYetImplementedException();
+        throw new NotImplementedException("Not a UML2 element"); //$NON-NLS-1$
+    }
+    
+    public Object getLifeline(Object handle) {
+        Connector connector = (Connector) ((ConnectorEnd) handle).getOwner();
+        ConnectableElement prop = ((ConnectorEnd) handle).getRole();
+        Interaction interaction = (Interaction) connector.getOwner();
+        
+        for (Lifeline lifeline : interaction.getLifelines()) {
+            if (lifeline.getRepresents() == prop) {
+                return lifeline;
+            }
+        }
+        
+        throw new IllegalStateException(
+                "The lifeline for " + handle //$NON-NLS-1$
+                + " can't be found in the interaction " //$NON-NLS-1$
+                + interaction);
     }
 
     public Collection getLinkEnds(Object handle) {
@@ -1688,10 +1708,14 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getType(Object handle) {
-        if (!(handle instanceof TypedElement)) {
-            throw new IllegalArgumentException();
+        if (handle instanceof Connector) {
+            return ((Connector) handle).getType();
+        } else if (handle instanceof TypedElement) {
+            return ((TypedElement) handle).getType();
         }
-        return ((TypedElement) handle).getType();
+        throw new IllegalArgumentException(
+                "handle most be a TypedElement or a Connector." //$NON-NLS-1$
+                + "Got " + handle); //$NON-NLS-1$
     }
 
     public Collection getTypedValues(Object handle) {
@@ -1979,6 +2003,14 @@ class FacadeEUMLImpl implements Facade {
         return (handle instanceof Region);
     }
 
+    public boolean isAConnector(Object handle) {
+        return handle instanceof Connector;
+    }
+
+    public boolean isAConnectorEnd(Object handle) {
+        return handle instanceof ConnectorEnd;
+    }
+    
     public boolean isAConstraint(Object handle) {
         return handle instanceof Constraint;
     }
