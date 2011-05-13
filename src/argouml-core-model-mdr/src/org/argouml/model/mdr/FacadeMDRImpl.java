@@ -12,7 +12,7 @@
  *    Ludovic Maitre - UML 1.4
  *    Tom Morris - UML 1.4
  *    Bob Tarling
- *    
+ *    Michiel van der Wulp
  *******************************************************************************
  */
 // Copyright (c) 2005-2009 The Regents of the University of California. All
@@ -3640,8 +3640,8 @@ class FacadeMDRImpl implements Facade {
         try {
             if (isAStateMachine(handle)) {
                 return ((StateMachine) handle).getTransitions();
-            } else if (isACompositeState(handle)) {
-                return ((CompositeState) handle).getInternalTransition();
+            } else if (isAState(handle)) {
+                return ((State) handle).getInternalTransition();
             } else if (isAEvent(handle)) {
                 return getRefOutermostPackage(handle).getStateMachines()
                         .getATransitionTrigger().getTransition((Event) handle);
