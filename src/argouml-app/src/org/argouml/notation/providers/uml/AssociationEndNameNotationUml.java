@@ -212,6 +212,11 @@ public class AssociationEndNameNotationUml extends AssociationEndNameNotation {
 
     private String toString(Object modelElement, boolean showVisibility,
             boolean useGuillemets) {
+        // TODO: This whole block can be deleted when issue 6266 is resolved
+        if (Model.getFacade().isAConnectorEnd(modelElement)) {
+            return "";
+        }
+        // end of block
         String derived = "";
         Object tv = Model.getFacade().getTaggedValue(modelElement, 
                 Facade.DERIVED_TAG);
