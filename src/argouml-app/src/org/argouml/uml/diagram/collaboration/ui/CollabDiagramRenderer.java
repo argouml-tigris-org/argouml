@@ -139,7 +139,8 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
         DiagramSettings settings = diag.getDiagramSettings();
 
         FigEdge newEdge = null;
-        if (Model.getFacade().isAAssociationRole(edge)) {
+        if (Model.getFacade().isAAssociationRole(edge)
+                || Model.getFacade().isAConnector(edge)) {
             Object[] associationEnds = 
                 Model.getFacade().getConnections(edge).toArray();
             newEdge = new FigAssociationRole(

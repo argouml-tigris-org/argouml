@@ -95,6 +95,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     private Action actionClassifierRole;
     private Action actionGeneralize;
 
+    private Action actionConnector;
+
     private Action actionAssociation;
     private Action actionAggregation;
     private Action actionComposition;
@@ -204,16 +206,28 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * {@inheritDoc}
      */
     protected Object[] getUmlActions() {
-        Object[] actions = {
-	    getActionClassifierRole(),
-	    null,
-	    getAssociationActions(),
-	    getActionGeneralize(),
-	    getActionDepend(),
-            null,
-            getActionMessage(), //this one behaves differently, hence seperated!
-        };
-        return actions;
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            Object[] actions = {
+                getActionClassifierRole(),
+                null,
+                getAssociationActions(),
+                getActionGeneralize(),
+                getActionDepend(),
+                null,
+                getActionMessage(), //this one behaves differently, hence seperated!
+            };
+            return actions;
+        } else {
+            Object[] actions = {
+                getActionClassifierRole(),
+                getActionAssociation(),
+                getActionGeneralize(),
+                getActionDepend(),
+                null,
+                getActionMessage(), //this one behaves differently, hence seperated!
+            };
+            return actions;
+        }
     }
 
     private Object[] getAssociationActions() {
@@ -298,6 +312,23 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         }
         return actionAssociation;
     }
+    
+    /**
+     * @return Returns the actionAssociation.
+     */
+    protected Action getActionConnector() {
+        if (actionConnector == null) {
+            actionConnector =
+                new RadioAction(
+                    new ActionSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        Model.getMetaTypes().getConnector(),
+                        "button.new-connector"));
+        }
+        return actionConnector;
+    }
+    
     /**
      * @return Returns the actionComposition.
      */

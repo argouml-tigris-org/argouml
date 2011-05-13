@@ -207,7 +207,20 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
         }
 	Object end0 = null;
         Object end1 = null;
-	if (Model.getFacade().isAAssociationRole(edge)) {
+        if (Model.getFacade().isAConnector(edge)) {
+            Collection conns = Model.getFacade().getConnections(edge);
+            Iterator iter = conns.iterator();
+            if (conns.size() < 2) {
+                return false;
+            }
+            Object associationEndRole0 = iter.next();
+            Object associationEndRole1 = iter.next();
+            if (associationEndRole0 == null || associationEndRole1 == null) {
+                return false;
+            }
+            end0 = Model.getFacade().getLifeline(associationEndRole0);
+            end1 = Model.getFacade().getLifeline(associationEndRole1);
+        } else if (Model.getFacade().isAAssociationRole(edge)) {
 	    Collection conns = Model.getFacade().getConnections(edge);
             Iterator iter = conns.iterator();
 	    if (conns.size() < 2) {

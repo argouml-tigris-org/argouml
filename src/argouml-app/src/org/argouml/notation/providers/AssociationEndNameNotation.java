@@ -62,7 +62,8 @@ public abstract class AssociationEndNameNotation extends NotationProvider {
      * @param associationEnd the uml element
      */
     public AssociationEndNameNotation(Object associationEnd) {
-        if (!Model.getFacade().isAAssociationEnd(associationEnd)) {
+        if (!Model.getFacade().isAAssociationEnd(associationEnd)
+                && !Model.getFacade().isAConnectorEnd(associationEnd)) {
             throw new IllegalArgumentException("This is not an AssociationEnd.");
         }
     }

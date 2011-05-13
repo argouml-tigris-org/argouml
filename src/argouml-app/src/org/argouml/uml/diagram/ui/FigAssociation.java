@@ -553,7 +553,10 @@ public class FigAssociation extends FigEdgeModelElement {
         if (getOwner() == null ) {
             LOG.error("Trying to paint a FigAssociation without an owner. ");
         } else {
-            applyArrowHeads(); 
+            if (!Model.getFacade().isAConnector(getOwner())) {
+                // If we're a UML2 Connector then we don't need arrows
+                applyArrowHeads(); 
+            }
         }
         if (getSourceArrowHead() != null && getDestArrowHead() != null) {
             getSourceArrowHead().setLineColor(getLineColor());

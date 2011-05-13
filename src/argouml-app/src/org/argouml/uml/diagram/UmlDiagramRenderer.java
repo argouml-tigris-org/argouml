@@ -352,9 +352,15 @@ public abstract class UmlDiagramRenderer
     protected FigNode getFigNodeForAssociationEnd(
             final ArgoDiagram diagram,
             final Object associationEnd) {
-        Object classifier = 
-            Model.getFacade().getClassifier(associationEnd);
-        return getNodePresentationFor(diagram.getLayer(), classifier);
+        final Object element; 
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            element = 
+                Model.getFacade().getClassifier(associationEnd);
+        } else {
+            element = 
+                Model.getFacade().getLifeline(associationEnd);
+        }
+        return getNodePresentationFor(diagram.getLayer(), element);
     }
     
     protected void addEdge(Layer lay, FigEdge newEdge, Object edge) {
