@@ -1106,11 +1106,9 @@ class FacadeEUMLImpl implements Facade {
         } else if (handle instanceof EPackage) {
             return ((EPackage) handle).getName();
         } else {
-            // TODO: Some elements such as Generalization are
-            // no longer named.  For a transitional period we'll
-            // return a String so debug can continue, but the
-            // calling code should probably be fixed. - tfm 20070607
-            return getUMLClassName(handle) + " <not nameable>";
+            throw new IllegalArgumentException(
+                    "The element " + handle //$NON-NLS-1$
+                    + " is not named");  //$NON-NLS-1$
         }
     }
 
