@@ -913,17 +913,17 @@ class FacadeEUMLImpl implements Facade {
 
     public Collection getInternalTransitions(Object handle) {
         if (isAVertex(handle)) {
-            Region region = ((Vertex) handle).getContainer();
-            if (region == null) {
-                return null;
-            }
-            List<Transition> result = new ArrayList<Transition>();
-            List<Transition> transitions = region.getTransitions();
-            for (Transition transition : transitions) {
-                if ((transition.getSource() == handle) &&
-                        (transition.getTarget() == handle) &&
-                        transition.getKind() == TransitionKind.INTERNAL_LITERAL) {
-                    result.add(transition);
+            final List<Transition> result = new ArrayList<Transition>();
+            final Region region = ((Vertex) handle).getContainer();
+            if (region != null) {
+                final List<Transition> transitions = region.getTransitions();
+                for (Transition transition : transitions) {
+                    if ((transition.getSource() == handle)
+                            && (transition.getTarget() == handle)
+                            && transition.getKind()
+                                == TransitionKind.INTERNAL_LITERAL) {
+                        result.add(transition);
+                    }
                 }
             }
             return result;
