@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Michiel van der Wulp
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -129,6 +130,10 @@ public abstract class AbstractStateMachinesHelperDecorator
 
     public Collection getAllSubStates(Object compState) {
         return impl.getAllSubStates(compState);
+    }
+    
+    public Collection getTransitions(Object handle, boolean includeInternals) {
+        return impl.getTransitions(handle, includeInternals);
     }
 
     public void removeSubvertex(Object handle, Object subvertex) {
