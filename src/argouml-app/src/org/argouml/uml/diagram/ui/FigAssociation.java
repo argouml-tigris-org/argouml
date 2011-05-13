@@ -554,7 +554,9 @@ public class FigAssociation extends FigEdgeModelElement {
             LOG.error("Trying to paint a FigAssociation without an owner. ");
         } else {
             if (!Model.getFacade().isAConnector(getOwner())) {
-                // If we're a UML2 Connector then we don't need arrows
+                // If we're a UML2 Connector then we don't need arrows.
+                // TODO: When issue 6266 is implemented we can
+                // get rid of the condition and always call applyArrowHeads
                 applyArrowHeads(); 
             }
         }
