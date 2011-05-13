@@ -70,10 +70,9 @@ public class ActionAddClassifierRole extends CmdCreateNode {
         GraphModel gm = ce.getGraphModel();
         if (gm instanceof CollabDiagramGraphModel) {
             Object collaboration =
-                ((CollabDiagramGraphModel) gm).getHomeModel();
+                ((CollabDiagramGraphModel) gm).getOwner();
             node =
-                Model.getCollaborationsFactory().buildClassifierRole(
-                        collaboration);
+                Model.getCollaborationsFactory().buildLifeline(collaboration);
         } else {
             throw new IllegalStateException("Graphmodel is not a "
                     + "collaboration diagram graph model");

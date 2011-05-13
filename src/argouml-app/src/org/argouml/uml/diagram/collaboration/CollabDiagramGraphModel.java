@@ -39,6 +39,7 @@
 package org.argouml.uml.diagram.collaboration;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,6 +48,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
@@ -57,7 +59,13 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
  * GEF.  This class handles only UML Collaboration Diagrams.
  */
 public class CollabDiagramGraphModel extends UMLMutableGraphSupport
-    implements VetoableChangeListener {
+    implements PropertyChangeListener, VetoableChangeListener {
+    
+    /**
+     * The interaction that is shown on the communication diagram.
+     */
+    private Object interaction;
+    
     /**
      * Logger.
      */
@@ -84,7 +92,21 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
         }
         setHomeModel(collaboration);
     }
-
+    
+    /**
+     * Gets the interaction that is shown on the sequence diagram.
+     * @return the interaction of the diagram.
+     */
+    private Object getInteraction() {
+        if (interaction == null) {
+            interaction =
+                Model.getCollaborationsFactory().buildInteraction(
+                    getHomeModel());
+            LOG.debug("Interaction built.");
+            Model.getPump().addModelEventListener(this, interaction);
+        }
+        return interaction;
+    }
 
     ////////////////////////////////////////////////////////////////
     // GraphModel implementation
@@ -372,6 +394,33 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 		LOG.debug("model added " + me);
 	    }
 	}
+    }
+    
+    /**
+     * In UML1.4 the sequence diagram is owned by a collaboration.
+     * In UML2 it is owned by an Interaction (which might itself be owned by a
+     * collaboration or some other namespace)
+     * @return the owner of the sequence diagram
+     */
+    public Object getOwner() {
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            return getHomeModel();
+        } else {
+            return getInteraction();
+        }
+    }
+    
+    /**
+     * Look for delete events of the interaction that this diagram
+     * represents. Null our interaction reference if detected.
+     * @param evt the property change event
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt instanceof DeleteInstanceEvent
+                && evt.getSource() == interaction) {
+            Model.getPump().removeModelEventListener(this, interaction);
+            interaction = null;
+        }
     }
 
     /**
