@@ -41,6 +41,8 @@ import org.eclipse.uml2.uml.Collaboration;
 import org.eclipse.uml2.uml.Comment;
 import org.eclipse.uml2.uml.Component;
 import org.eclipse.uml2.uml.ComponentRealization;
+import org.eclipse.uml2.uml.Connector;
+import org.eclipse.uml2.uml.ConnectorEnd;
 import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.ControlFlow;
 import org.eclipse.uml2.uml.CreateObjectAction;
@@ -179,17 +181,11 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getAssociationEndRole() {
-        // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
-        // AssociationEndRole have been replaced by the internal 
-        // structure of the Collaboration
-        return Classifier.class;
+        return ConnectorEnd.class;
     }
 
     public Object getAssociationRole() {
-        // TODO: In UML 2.0, ClassifierRole, AssociationRole, and
-        // AssociationEndRole have been replaced by the internal 
-        // structure of the Collaboration
-        return Classifier.class;
+        return Connector.class;
     }
 
     public Object getAttribute() {
