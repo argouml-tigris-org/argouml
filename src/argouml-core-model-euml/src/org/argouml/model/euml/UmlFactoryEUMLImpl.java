@@ -396,8 +396,6 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = modelImpl.getCollaborationsFactory().createLifeline();
         } else if (elementType == metaTypes.getComponent()) {
             o = modelImpl.getCoreFactory().createComponent();
-        } else if (elementType == metaTypes.getComponentInstance()) {
-            o = modelImpl.getCommonBehaviorFactory().createComponentInstance();
         } else if (elementType == metaTypes.getNode()) {
             o = modelImpl.getCoreFactory().createNode();
         } else if (elementType == metaTypes.getNodeInstance()) {
