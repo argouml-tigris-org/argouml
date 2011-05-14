@@ -434,7 +434,7 @@ class FacadeMDRImpl implements Facade {
     public boolean isAConstraint(Object handle) {
         return handle instanceof Constraint;
     }
-    
+
     public boolean isACreateAction(Object handle) {
         return handle instanceof CreateAction;
     }
@@ -724,6 +724,10 @@ class FacadeMDRImpl implements Facade {
     public boolean isAReception(Object handle) {
         return handle instanceof Reception;
     }
+    
+    public boolean isARegion(Object handle) {
+        return false; // Not in UML1.4
+    }
 
     public boolean isAReturnAction(Object handle) {
         return handle instanceof ReturnAction;
@@ -735,6 +739,10 @@ class FacadeMDRImpl implements Facade {
 
     public boolean isASendAction(Object handle) {
         return handle instanceof SendAction;
+    }
+
+    public boolean isASendObjectAction(Object handle) {
+        return false; // Not in UML1.4
     }
 
     public boolean isASendSignalAction(Object handle) {
@@ -763,6 +771,10 @@ class FacadeMDRImpl implements Facade {
 
     public boolean isAStateVertex(Object handle) {
         return handle instanceof StateVertex;
+    }
+
+    public boolean isAVertex(Object handle) {
+        return false; // not in UML1.4
     }
 
     public boolean isAStereotype(Object handle) {
@@ -811,6 +823,10 @@ class FacadeMDRImpl implements Facade {
     
     public boolean isATransition(Object handle) {
         return handle instanceof Transition;
+    }
+
+    public boolean isATrigger(Object handle) {
+        return false; // not in UML1.4
     }
 
     public boolean isATimeEvent(Object handle) {

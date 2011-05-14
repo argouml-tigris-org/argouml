@@ -1032,6 +1032,14 @@ public interface Facade {
     boolean isAReception(Object handle);
 
     /**
+     * Recognizer for Region.
+     * 
+     * @param handle candidate
+     * @return true if handle is a Region
+     */
+    public boolean isARegion(Object handle);
+    
+    /**
      * Recognizer for ReturnAction.
      *
      * @param handle candidate
@@ -1054,6 +1062,14 @@ public interface Facade {
      * @return true if handle is a SendAction
      */
     boolean isASendAction(Object handle);
+
+    /**
+     * Recognizer for SendObjectAction.
+     * 
+     * @param handle candidate
+     * @return true if handle is a SendObject Action
+     */
+    public boolean isASendObjectAction(Object handle);
 
     /**
      * Recognizer for UML2 SendSignalAction.
@@ -1110,6 +1126,14 @@ public interface Facade {
      * @return true if handle is a StateVertex
      */
     boolean isAStateVertex(Object handle);
+
+    /**
+     * Recognizer for Vertex.
+     *
+     * @param handle candidate
+     * @return true if handle is a Vertex
+     */
+    boolean isAVertex(Object handle);
 
     /**
      * Recognizer for Stereotype.
@@ -1215,6 +1239,14 @@ public interface Facade {
      * @return true if handle is a Transition
      */
     boolean isATransition(Object handle);
+
+    /**
+     * Recognizer for Trigger.
+     *
+     * @param handle candidate
+     * @return true if handle is a Trigger
+     */
+    boolean isATrigger(Object handle);
 
     /**
      * Recognizer for TimeEvent.
