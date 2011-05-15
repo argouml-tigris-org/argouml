@@ -43,7 +43,6 @@ import org.eclipse.emf.ecore.ENamedElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.Property;
 
 /**
  * The implementation of the ModelEventPump for eUML.
