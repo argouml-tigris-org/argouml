@@ -15,8 +15,11 @@
 package org.argouml.core.propertypanels.ui;
 
 import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Constructor;
 import java.util.Collection;
 
 import javax.swing.JComboBox;
@@ -25,7 +28,6 @@ import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.tigris.swidgets.LabelledLayout;
 
 /**
  * The panel that shows a value specification for an other UML element.
@@ -74,7 +76,8 @@ class UMLValueSpecificationPanel extends JPanel {
     public UMLValueSpecificationPanel(UMLValueSpecificationModel model,
 	    String title) {
 
-	super(new LabelledLayout());
+	//super(new LabelledLayout());
+	super(new GridBagLayout());
 	LOG.debug(">>New ValueSpecification panel created");
 
 	TitledBorder border = new TitledBorder(title);
@@ -82,10 +85,21 @@ class UMLValueSpecificationPanel extends JPanel {
 
 	this.model = model;
 
+	GridBagConstraints c = new GridBagConstraints();
+	c.fill = GridBagConstraints.HORIZONTAL;
+	// c.insets = new Insets(1, 1, 1, 1);
+	c.gridx = 0;
+	c.gridy = 0;
+	c.gridwidth = GridBagConstraints.RELATIVE;
+	c.weightx = 1;
+	c.weighty = 0;
+	
 	JComboBox combo = uiSelect();
-	add(combo);
+	add(combo, c);
 
 	this.valueField = createField((String) combo.getSelectedItem());
+	
+	
 
     }
 
@@ -102,19 +116,26 @@ class UMLValueSpecificationPanel extends JPanel {
 
 	UMLValueSpecificationValueField ret = null;
 
-	// TODO: All type. Use Introspection ?
-	if (sType.equals(UMLValueSpecificationModel.LITERAL_BOOLEAN)) {
-	    ret = new UMLValueSpecificationValueFieldLiteralBoolean(model, true);
-	} else if (sType.equals(UMLValueSpecificationModel.LITERAL_STRING)) {
-	    ret = new UMLValueSpecificationValueFieldLiteralString(model, true);
-	} else {
-	    // Opaque Expression (default)
-	    ret = new UMLValueSpecificationValueFieldOpaqueExpression(model,
-		    true);
+	try {
+	    Class<?> oClass= Class.forName("org.argouml.core.propertypanels.ui.UMLValueSpecificationValueField"+sType);
+	    Constructor<?> constructeur = oClass.getConstructor (new Class [] {UMLValueSpecificationModel.class,boolean.class});
+	    ret=(UMLValueSpecificationValueField) constructeur.newInstance (new Object [] {model, true});
+	} catch (Exception e) {
+	    LOG.error("Unknow type "+sType+" : "+e, e);
+	    return null;
 	}
 
 	scrollPane = ret.getComponent();
-	add(scrollPane);
+	
+	GridBagConstraints c = new GridBagConstraints();
+	c.fill = GridBagConstraints.BOTH;
+	c.gridx = 0;
+	c.gridy = 1;
+	c.gridwidth = GridBagConstraints.RELATIVE;
+	c.gridwidth = GridBagConstraints.RELATIVE;
+	c.weightx = 1;
+	c.weighty = 1;
+	add(scrollPane, c);
 
 	return ret;
     }

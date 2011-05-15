@@ -58,7 +58,9 @@ public class UMLValueSpecificationPanelOptional extends JPanel implements
     public UMLValueSpecificationPanelOptional(
 	    UMLValueSpecificationModel aModel, String title) {
 
-	super(new LabelledLayout());
+	// super(new LabelledLayout());
+	super(new GridBagLayout());
+	
 	LOG.debug(">>New Optional ValueSpecification panel created");
 
 	TitledBorder border = new TitledBorder(title);
@@ -95,19 +97,18 @@ public class UMLValueSpecificationPanelOptional extends JPanel implements
 	uvsPanel = new UMLValueSpecificationPanel(model, "");
 	uvsPanel.setVisible(valueExists.isSelected());
 
-	this.setLayout(new GridBagLayout());
 	GridBagConstraints c = new GridBagConstraints();
-	c.fill = GridBagConstraints.HORIZONTAL;
+	c.fill = GridBagConstraints.NONE;
 	c.gridx = 0;
 	c.gridy = 0;
-	c.weightx = 5;
-	c.weighty = 1;
+	c.weightx = 0;
+	c.weighty = 0;
 	add(valueExists, c);
 
-	c.fill = GridBagConstraints.HORIZONTAL;
+	c.fill = GridBagConstraints.BOTH;
 	c.gridx = 1;
 	c.gridy = 0;
-	c.weightx = 95;
+	c.weightx = 1;
 	c.weighty = 1;
 	add(uvsPanel, c);
 

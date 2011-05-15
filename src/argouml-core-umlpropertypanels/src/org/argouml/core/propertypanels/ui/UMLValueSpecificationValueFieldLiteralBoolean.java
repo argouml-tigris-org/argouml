@@ -16,18 +16,28 @@ package org.argouml.core.propertypanels.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JCheckBox;
+import javax.swing.ButtonGroup;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
+import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
 
 public class UMLValueSpecificationValueFieldLiteralBoolean extends
 	UMLValueSpecificationValueField {
 
+    private JRadioButton trueButton;
+
+    private JRadioButton falseButton;
+
+    private ButtonGroup trueFalseGroup;
+    
     /**
-     * checkbox: Field
+     * true if we can call UpdateModele
+     * false : We have read the model, so we have to update field. Don't update Modele a new.
      */
-    private JCheckBox checkbox;
+    private boolean activeUpdateModele;
 
     /**
      * 
@@ -38,7 +48,7 @@ public class UMLValueSpecificationValueFieldLiteralBoolean extends
 	    UMLValueSpecificationModel model, boolean notify) {
 
 	super(model, notify);
-
+	activeUpdateModele = true;
     }
 
     /**
@@ -52,15 +62,27 @@ public class UMLValueSpecificationValueFieldLiteralBoolean extends
 	// Build the field
 	// ///////////////////////////////////////
 
-	checkbox = new JCheckBox();
-	// TODO ? find a Tool tips, add a label
-	// checkbox.setToolTipText(Translator.localize("label.body.tooltip"));
-	checkbox.setFont(LookAndFeelMgr.getInstance().getStandardFont());
+	trueButton = new JRadioButton(Translator.localize("misc.boolean.true"));
+	falseButton = new JRadioButton(Translator
+		.localize("misc.boolean.false"));
+
+	trueFalseGroup = new ButtonGroup();
+	trueFalseGroup.add(trueButton);
+	trueFalseGroup.add(falseButton);
+
+	trueButton.setFont(LookAndFeelMgr.getInstance().getStandardFont());
+	falseButton.setFont(LookAndFeelMgr.getInstance().getStandardFont());
 
 	/**
 	 * on change : Change the value in the model
 	 */
-	checkbox.addActionListener(new ActionListener() {
+	trueButton.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		updateModel();
+	    }
+	});
+
+	falseButton.addActionListener(new ActionListener() {
 	    public void actionPerformed(ActionEvent e) {
 		updateModel();
 	    }
@@ -69,7 +91,10 @@ public class UMLValueSpecificationValueFieldLiteralBoolean extends
 	// ///////////////////////////////////////
 	// Add field(s) to panel
 	// ///////////////////////////////////////
-	this.allField = new JScrollPane(checkbox);
+	JPanel panel = new JPanel();
+	panel.add(trueButton);
+	panel.add(falseButton);
+	this.allField = new JScrollPane(panel);
 
     }
 
@@ -78,13 +103,20 @@ public class UMLValueSpecificationValueFieldLiteralBoolean extends
      * @see org.argouml.core.propertypanels.ui.UMLValueSpecificationValueField#updateModel()
      */
     protected void updateModel() {
-	// The checkbox have only one information: the value (true or false)
-	Boolean[] values = new Boolean[1];
-	values[0] = checkbox.isSelected();
+	if (activeUpdateModele) {
+	    boolean oldSelected = trueButton.isSelected();
+	    boolean newSelected = isToCheck();
 
-	// Update the model, and then notify
-	getModel().setValue(values);
+	    // click on the already selected value must not call setValue
+	    if (oldSelected != newSelected) {
+		// The 2 Radios have only one information.
+		Boolean[] values = new Boolean[1];
+		values[0] = trueButton.isSelected();
 
+		// Update the model, and then notify
+		getModel().setValue(values);
+	    }
+	}
     }
 
     /**
@@ -92,14 +124,27 @@ public class UMLValueSpecificationValueFieldLiteralBoolean extends
      * @see org.argouml.core.propertypanels.ui.UMLValueSpecificationValueField#updateFields()
      */
     protected void updateFields() {
-	boolean oldSelected = checkbox.isSelected();
+	boolean oldSelected = trueButton.isSelected();
 	boolean newSelected = isToCheck();
 
 	if (oldSelected != newSelected) {
-	    checkbox.setSelected(isToCheck());
+	    boolean oldActiveUpdateModele = activeUpdateModele;
+	    activeUpdateModele = false;
+	    trueButton.setSelected(newSelected);
+	    falseButton.setSelected(!newSelected);
+	    activeUpdateModele = oldActiveUpdateModele;
+	} else {
+	    // When call by contructor : no one is selected
+	    oldSelected = falseButton.isSelected();
+	    if (oldSelected == false && newSelected == false) {
+		boolean oldActiveUpdateModele = activeUpdateModele;
+		activeUpdateModele = false;
+		falseButton.setSelected(true);
+		activeUpdateModele = oldActiveUpdateModele;
+	    }
 	}
     }
-
+    
     /**
      * return if the value in model is "true" or not.
      * 

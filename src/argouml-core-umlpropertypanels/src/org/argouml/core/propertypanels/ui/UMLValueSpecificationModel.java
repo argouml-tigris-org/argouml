@@ -38,15 +38,6 @@ import org.argouml.model.Model;
  class UMLValueSpecificationModel
 	implements PropertyChangeListener {
 
-     /*
-      * TODO: Don't use them find an other way to do this
-      */
-    public final static String LITERAL_BOOLEAN =" LiteralBoolean";
-    public final static String LITERAL_NULL = "LiteralNull";
-    public final static String LITERAL_STRING = "LiteralString";
-    public final static String LITERAL_INTEGER = "LiteralInteger";
-    public final static String LITERAL_UNATURAL = "LiteralUnlimitedNatural";
-    
     private static final Logger LOG =
         Logger.getLogger(UMLValueSpecificationModel.class);
 
