@@ -24,7 +24,7 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
 
-public class UMLValueSpecificationValueFieldLiteralBoolean extends
+class UMLValueSpecificationValueFieldLiteralBoolean extends
 	UMLValueSpecificationValueField {
 
     private JRadioButton trueButton;

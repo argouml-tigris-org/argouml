@@ -40,7 +40,7 @@ import org.argouml.util.ArgoDialog;
  * TODO ? Review the layout
  * 
  */
-public class UMLValueSpecificationValueFieldOpaqueExpressionDialog extends
+class UMLValueSpecificationValueFieldOpaqueExpressionDialog extends
 	ArgoDialog {
 
     /**

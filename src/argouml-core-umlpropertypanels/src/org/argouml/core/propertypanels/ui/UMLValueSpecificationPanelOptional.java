@@ -13,8 +13,7 @@
 
 package org.argouml.core.propertypanels.ui;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -25,7 +24,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
-import org.tigris.swidgets.LabelledLayout;
 
 /**
  * Checkbox creates or nulls the instance of valueSpecificationPanel
@@ -34,7 +32,7 @@ import org.tigris.swidgets.LabelledLayout;
  * 
  *         Do we need : ChangeListener
  */
-public class UMLValueSpecificationPanelOptional extends JPanel implements
+class UMLValueSpecificationPanelOptional extends JPanel implements
 	ChangeListener {
 
     private static final Logger LOG = Logger
@@ -58,8 +56,7 @@ public class UMLValueSpecificationPanelOptional extends JPanel implements
     public UMLValueSpecificationPanelOptional(
 	    UMLValueSpecificationModel aModel, String title) {
 
-	// super(new LabelledLayout());
-	super(new GridBagLayout());
+	super(new BorderLayout());
 	
 	LOG.debug(">>New Optional ValueSpecification panel created");
 
@@ -97,20 +94,8 @@ public class UMLValueSpecificationPanelOptional extends JPanel implements
 	uvsPanel = new UMLValueSpecificationPanel(model, "");
 	uvsPanel.setVisible(valueExists.isSelected());
 
-	GridBagConstraints c = new GridBagConstraints();
-	c.fill = GridBagConstraints.NONE;
-	c.gridx = 0;
-	c.gridy = 0;
-	c.weightx = 0;
-	c.weighty = 0;
-	add(valueExists, c);
-
-	c.fill = GridBagConstraints.BOTH;
-	c.gridx = 1;
-	c.gridy = 0;
-	c.weightx = 1;
-	c.weighty = 1;
-	add(uvsPanel, c);
+	add(valueExists, BorderLayout.WEST);
+	add(uvsPanel, BorderLayout.CENTER);
 
 	model.addChangeListener(this);
 

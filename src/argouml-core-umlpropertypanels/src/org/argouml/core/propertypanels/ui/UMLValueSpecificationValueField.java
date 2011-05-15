@@ -18,7 +18,7 @@ import java.awt.Component;
 
 import org.apache.log4j.Logger;
 
-public abstract class UMLValueSpecificationValueField {
+abstract class UMLValueSpecificationValueField {
 
     /**
      * TODO: see if protected or need to be present in each subclass

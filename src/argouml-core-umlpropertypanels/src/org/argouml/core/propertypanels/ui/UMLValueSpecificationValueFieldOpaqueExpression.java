@@ -39,7 +39,7 @@ import org.argouml.ui.LookAndFeelMgr;
  * 
  * @author Laurent Braud
  */
-public class UMLValueSpecificationValueFieldOpaqueExpression extends
+class UMLValueSpecificationValueFieldOpaqueExpression extends
 	UMLValueSpecificationValueField implements DocumentListener {
 
     /**

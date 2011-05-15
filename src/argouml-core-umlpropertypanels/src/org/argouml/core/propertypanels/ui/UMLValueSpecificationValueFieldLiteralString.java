@@ -20,7 +20,7 @@ import javax.swing.event.DocumentListener;
 
 import org.argouml.ui.LookAndFeelMgr;
 
-public class UMLValueSpecificationValueFieldLiteralString extends
+class UMLValueSpecificationValueFieldLiteralString extends
 	UMLValueSpecificationValueField implements DocumentListener {
 
     /**
