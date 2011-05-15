@@ -8,7 +8,7 @@ Bundle-ClassPath: argouml-module-dev.jar,
 Export-Package: org.argouml.dev,
  org.argouml.dev.figinspector,
  org.argouml.dev.test
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Localization: plugin
 Bundle-Vendor: %pluginProvider
 Require-Bundle: org.argouml.app,

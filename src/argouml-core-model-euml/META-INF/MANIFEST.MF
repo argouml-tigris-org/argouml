@@ -7,7 +7,7 @@ Bundle-Version: 0.28.0.qualifier
 Bundle-Localization: plugin
 Require-Bundle: org.argouml.core.infra,
  org.argouml.core.model
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: icons.full.ctool16,
  icons.full.dtool16,
  icons.full.etool16,
