@@ -492,6 +492,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return Operation.class;
     }
 
+    public Object getOpaqueExpression() {
+        throw new NotImplementedException("Not a UML 1.4 element");
+    }
+
     public Object getOutputPin() {
         throw new NotImplementedException("Not a UML1.4 element");
     }
@@ -706,6 +710,18 @@ final class MetaTypesMDRImpl implements MetaTypes {
 
     public Object getLinkObject() {
         return LinkObject.class;
+    }
+
+    public Object getLiteralBoolean() {
+        throw new NotImplementedException("Not a UML 1.4 element");
+    }
+
+    public Object getLiteralInteger() {
+        throw new NotImplementedException("Not a UML 1.4 element");
+    }
+
+    public Object getLiteralString() {
+        throw new NotImplementedException("Not a UML 1.4 element");
     }
 
     public Object getMethod() {

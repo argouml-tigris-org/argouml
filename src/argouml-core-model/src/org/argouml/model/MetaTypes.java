@@ -422,6 +422,11 @@ public interface MetaTypes {
     Object getObjectFlow();
 
     /**
+     * @return Returns the OpaqueExpression
+     */
+    Object getOpaqueExpression();
+
+    /**
      * @return Returns the Operation.
      */
     Object getOperation();
@@ -657,6 +662,12 @@ public interface MetaTypes {
     Object getLinkEnd();
 
     Object getLinkObject();
+
+    Object getLiteralBoolean();
+
+    Object getLiteralInteger();
+
+    Object getLiteralString();
 
     Object getMethod();
 

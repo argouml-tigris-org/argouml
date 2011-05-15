@@ -68,12 +68,16 @@ import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.InteractionConstraint;
 import org.eclipse.uml2.uml.Interface;
 import org.eclipse.uml2.uml.Lifeline;
+import org.eclipse.uml2.uml.LiteralBoolean;
+import org.eclipse.uml2.uml.LiteralInteger;
+import org.eclipse.uml2.uml.LiteralString;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.ObjectFlow;
+import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.OutputPin;
 import org.eclipse.uml2.uml.PackageImport;
@@ -450,6 +454,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         throw new NotImplementedException("This is not a UML1.4 class"); //$NON-NLS-1$
     }
 
+    public Object getOpaqueExpression() {
+        return OpaqueExpression.class;
+    }
+
     public Object getOperation() {
         return Operation.class;
     }
@@ -670,8 +678,8 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getElementResidence() {
-        // TODO: Need UML 2.x equivalent
-        return null /*ElementResidence.class*/;
+        throw new NotImplementedException(
+            "Not a UML2 model element"); //$NON-NLS-1$
     }
 
     public Object getExpression() {
@@ -687,13 +695,13 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getFlow() {
-        // TODO: Need UML 2.x equivalent
-        return null /*Flow.class*/;
+        throw new NotImplementedException(
+            "Not a UML2 model element"); //$NON-NLS-1$
     }
 
     public Object getInteractionInstanceSet() {
-        // TODO: Need UML 2.x equivalent
-        return null /*InteractionInstanceSet.class*/;
+        throw new NotImplementedException(
+            "Not a UML2 model element"); //$NON-NLS-1$
     }
 
     public Object getLifeline() {
@@ -701,20 +709,32 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getLinkEnd() {
-        // TODO: Need UML 2.x equivalent
-        return null /*LinkEnd.class*/;
+        throw new NotImplementedException(
+            "Not a UML2 model element"); //$NON-NLS-1$
     }
 
     public Object getLinkObject() {
-        // TODO: Need UML 2.x equivalent
-        return null /*LinkObject.class*/;
+        throw new NotImplementedException(
+            "Not a UML2 model element"); //$NON-NLS-1$
+    }
+
+    public Object getLiteralBoolean() {
+        return LiteralBoolean.class;
+    }
+
+    public Object getLiteralInteger() {
+        return LiteralInteger.class;
+    }
+
+    public Object getLiteralString() {
+        return LiteralString.class;
     }
 
     public Object getMethod() {
-        // TODO: Need UML 2.x equivalent
-        return null /*Method.class*/;
+        throw new NotImplementedException(
+            "Not a UML2 model element"); //$NON-NLS-1$
     }
-
+    
     public Object getMultiplicityRange() {
         return MultiplicityElement.class;
     }
@@ -736,8 +756,8 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getSubsystemInstance() {
-        // TODO: Need UML 2.x equivalent
-        return null /*SubsystemInstance.class*/;
+        throw new NotImplementedException(
+            "Not a UML2 model element"); //$NON-NLS-1$
     }
 
     public Object getTimeEvent() {

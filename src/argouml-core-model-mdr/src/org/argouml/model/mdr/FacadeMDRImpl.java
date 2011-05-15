@@ -556,6 +556,18 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof LinkObject;
     }
     
+    public boolean isALiteralBoolean(Object handle) {
+        return false;
+    }
+    
+    public boolean isALiteralInteger(Object handle) {
+        return false;
+    }
+    
+    public boolean isALiteralString(Object handle) {
+        return false;
+    }
+    
     public boolean isAMessage(Object handle) {
         return handle instanceof Message;
     }
@@ -605,6 +617,10 @@ class FacadeMDRImpl implements Facade {
 
     public boolean isAOperation(Object handle) {
         return handle instanceof Operation;
+    }
+
+    public boolean isAOpaqueExpression(Object handle) {
+        return false;
     }
 
     public boolean isAObject(Object handle) {

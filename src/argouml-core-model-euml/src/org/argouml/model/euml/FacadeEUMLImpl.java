@@ -2155,6 +2155,18 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
+    public boolean isALiteralBoolean(Object handle) {
+        return handle instanceof LiteralBoolean;
+    }
+
+    public boolean isALiteralInteger(Object handle) {
+        return handle instanceof LiteralInteger;
+    }
+
+    public boolean isALiteralString(Object handle) {
+        return handle instanceof LiteralString;
+    }
+
     public boolean isAMessage(Object handle) {
         return handle instanceof Message;
     }
@@ -2217,6 +2229,10 @@ class FacadeEUMLImpl implements Facade {
 
     public boolean isAObjectNode(Object handle) {
         return handle instanceof ObjectNode;
+    }
+
+    public boolean isAOpaqueExpression(Object handle) {
+        return handle instanceof Operation;
     }
 
     public boolean isAOperation(Object handle) {

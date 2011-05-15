@@ -790,6 +790,30 @@ public interface Facade {
     boolean isALinkObject(Object handle);
     
     /**
+     * Recognizer for LiteralBoolean
+     *
+     * @param handle candidate
+     * @return true if handle is a LiteralBoolean
+     */
+    boolean isALiteralBoolean(Object handle);
+    
+    /**
+     * Recognizer for LiteralString
+     *
+     * @param handle candidate
+     * @return true if handle is a LiteralString
+     */
+    boolean isALiteralInteger(Object handle);
+    
+    /**
+     * Recognizer for LiteralString
+     *
+     * @param handle candidate
+     * @return true if handle is a LiteralString
+     */
+    boolean isALiteralString(Object handle);
+    
+    /**
      * Recognizer for Message.
      *
      * @param handle candidate
@@ -888,6 +912,14 @@ public interface Facade {
      * @return true if handle is a NodeInstance
      */
     boolean isANodeInstance(Object handle);
+
+    /**
+     * Recognizer for OpaqueExpression.
+     *
+     * @param handle candidate
+     * @return true if handle is an OpaqueExpression
+     */
+    boolean isAOpaqueExpression(Object handle);
 
     /**
      * Recognizer for Operation.
