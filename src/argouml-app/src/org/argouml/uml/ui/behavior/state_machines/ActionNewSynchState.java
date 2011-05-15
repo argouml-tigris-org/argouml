@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,8 +49,8 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 /**
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
- * @deprecated by Bob Tarling in 0.33.4. This is no longer used
- * ActionCreateContainedModelElement can be used instead.
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used.
+ * Use {@link org.argouml.ui.ActionCreateContainedModelElement} instead.
  */
 @Deprecated
 public class ActionNewSynchState extends AbstractActionNewModelElement {
@@ -66,9 +66,7 @@ public class ActionNewSynchState extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize("button.new-synchstate"));
     }
 
-    /*
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Model.getStateMachinesFactory().buildSynchState(getTarget());

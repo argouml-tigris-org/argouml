@@ -49,8 +49,8 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 /**
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
- * @deprecated by Bob Tarling in 0.33.4. This is no longer used
- * ActionCreateContainedModelElement can be used instead.
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used.
+ * Use {@link org.argouml.ui.ActionCreateContainedModelElement} instead.
  */
 @Deprecated
 public class ActionNewFinalState extends AbstractActionNewModelElement {
@@ -65,9 +65,7 @@ public class ActionNewFinalState extends AbstractActionNewModelElement {
         putValue(Action.NAME, Translator.localize("button.new-finalstate"));
     }
 
-    /*
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Model.getStateMachinesFactory().buildFinalState(getTarget());

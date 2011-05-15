@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -65,9 +65,7 @@ public class UMLStateMachineContextComboBoxModel
         super("context", false);
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
-     */
+    @Override
     protected void buildModelList() {
         Collection elements = new ArrayList();
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -84,21 +82,18 @@ public class UMLStateMachineContextComboBoxModel
         setElements(elements);
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
-     */
+    @Override
     protected boolean isValidElement(Object element) {
         return Model.getFacade().isAClassifier(element)
                 || Model.getFacade().isABehavioralFeature(element);
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
-     */
+    @Override
     protected Object getSelectedModelElement() {
         return Model.getFacade().getContext(getTarget());
     }
 
+    @Override
     public void modelChanged(UmlChangeEvent evt) {
         /* Do nothing by design. */
     }

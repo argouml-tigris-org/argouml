@@ -54,8 +54,8 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  * 
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
- * @deprecated by Bob Tarling in 0.33.4. This is no longer used
- * ActionCreateContainedModelElement can be used instead.
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used.
+ * Use {@link org.argouml.ui.ActionCreateContainedModelElement} instead.
  */
 @Deprecated
 public class ActionNewGuard extends AbstractActionNewModelElement {
@@ -69,9 +69,7 @@ public class ActionNewGuard extends AbstractActionNewModelElement {
         super();
     }
 
-    /*
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
+    @Override
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         TargetManager.getInstance().setTarget(
@@ -85,9 +83,7 @@ public class ActionNewGuard extends AbstractActionNewModelElement {
         return singleton;
     }
 
-    /*
-     * @see javax.swing.Action#isEnabled()
-     */
+    @Override
     public boolean isEnabled() {
         Object t = getTarget();
         return t != null

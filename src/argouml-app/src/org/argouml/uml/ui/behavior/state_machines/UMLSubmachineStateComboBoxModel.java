@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -58,18 +58,14 @@ public class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel2 {
         super("submachine", true);
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
-     */
+    @Override
     protected boolean isValidElement(Object element) {
         return (Model.getFacade().isAStateMachine(element)
             && element != Model.getStateMachinesHelper()
                 .getStateMachine(getTarget()));
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
-     */
+    @Override
     protected void buildModelList() {
         removeAllElements();
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -78,9 +74,7 @@ public class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel2 {
                 .getAllPossibleStatemachines(model, getTarget()));
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
-     */
+    @Override
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
             return Model.getFacade().getSubmachine(getTarget());

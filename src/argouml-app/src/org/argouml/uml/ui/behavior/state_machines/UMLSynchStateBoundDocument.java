@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,8 +48,8 @@ import javax.swing.text.BadLocationException;
  * The Document/model for the bound of a synch state.
  *
  * @author pepargouml@yahoo.es
- * @deprecated by Bob Tarling in 0.33.4. This is no longer used
- * ActionCreateContainedModelElement can be used instead.
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used.
+ * Use {@link org.argouml.ui.ActionCreateContainedModelElement} instead.
  */
 @Deprecated
 public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
@@ -66,9 +66,7 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
         super("bound");
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
-     */
+    @Override
     protected void setProperty(String text) {
         if (text.equals("")) {
             Model.getStateMachinesHelper().setBound(getTarget(), 0);
@@ -78,9 +76,7 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
         }
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
-     */
+    @Override
     protected String getProperty() {
         int bound = Model.getFacade().getBound(getTarget());
         if (bound <= 0) {
@@ -90,10 +86,7 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
         }
     }
 
-    /*
-     * @see javax.swing.text.Document#insertString(int, java.lang.String,
-     *      javax.swing.text.AttributeSet)
-     */
+    @Override
     public void insertString(int offset, String str, AttributeSet a)
         throws BadLocationException {
         try {
@@ -103,7 +96,6 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
         } catch (NumberFormatException e) {
             // ignored - we just skipped inserting it in our document
         }
-
     }
 
 }

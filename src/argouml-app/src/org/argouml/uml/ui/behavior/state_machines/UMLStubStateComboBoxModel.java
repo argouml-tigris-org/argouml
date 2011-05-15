@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,16 +38,16 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.model.Model;
-import org.argouml.uml.ui.UMLComboBoxModel2;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.argouml.model.Model;
+import org.argouml.uml.ui.UMLComboBoxModel2;
+
 /**
  * @author pepargouml@yahoo.es
- * @deprecated by Bob Tarling in 0.33.4. This is no longer used
- * ActionCreateContainedModelElement can be used instead.
+ * @deprecated by Bob Tarling in 0.33.4. This is no longer used.
+ * Use {@link org.argouml.ui.ActionCreateContainedModelElement} instead.
  */
 @Deprecated
 public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
@@ -59,18 +59,14 @@ public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
         super("stubstate", true);
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
-     */
+    @Override
     protected boolean isValidElement(Object element) {
         return (Model.getFacade().isAStateVertex(element)
                 && !Model.getFacade().isAConcurrentRegion(element)
                 && Model.getFacade().getName(element) != null);
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
-     */
+    @Override
     protected void buildModelList() {
         removeAllElements();
         Object stateMachine = null;
@@ -95,9 +91,7 @@ public class UMLStubStateComboBoxModel extends UMLComboBoxModel2 {
         }
     }
 
-    /*
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
-     */
+    @Override
     protected Object getSelectedModelElement() {
         String objectName = null;
         Object container = null;
