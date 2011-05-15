@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2010-2011 Contributors - see below
+ * Copyright (c) 2010,2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -129,6 +129,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an AcceptEventAction
+     * @since UML 2
      */
     boolean isAAcceptEventAction(Object handle);
 
@@ -201,8 +202,10 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an applied profile element
+     * @since UML 2
      */
     boolean isAAppliedProfileElement(Object handle);
+
     /**
      * Recognizer for Artifact.
      *
@@ -284,6 +287,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is ActivityEdge.
+     * @since UML 2
      */
     boolean isAActivityEdge(Object handle);
 
@@ -300,6 +304,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is ActivityNode.
+     * @since UML 2
      */
     boolean isAActivityNode(Object handle);
 
@@ -477,6 +482,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is a ComponentRealization
+     * @since UML 2
      */
     boolean isAComponentRealization(Object handle);
 
@@ -485,6 +491,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is a Connector
+     * @since UML 2
      */
     public boolean isAConnector(Object handle);
 
@@ -541,7 +548,7 @@ public interface Facade {
      * @param handle element to test
      * @return true if Element is a DirectedRelationship
      */
-    public boolean isADirectedRelationship(Object handle);
+    boolean isADirectedRelationship(Object handle);
     
     /**
      * Recognizer for DestroyAction.
@@ -646,7 +653,8 @@ public interface Facade {
      * Recognizer for Extension. For UML2 only.
      *
      * @param handle candidate
-     * @return true if handle is an ExtensionPoint
+     * @return true if handle is an Extension
+     * @since UML 2
      */
     boolean isAExtension(Object handle);
 
@@ -752,6 +760,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is a Lifeline
+     * @since UML 2
      */
     boolean isALifeline(Object handle);
 
@@ -953,6 +962,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is a ProfileApplication
+     * @since UML 2
      */
     boolean isAProfileApplication(Object handle);
 
@@ -961,6 +971,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is a Property
+     * @since UML 2
      */
     boolean isAProperty(Object handle);
 
@@ -1003,6 +1014,7 @@ public interface Facade {
      *
      * @param handle the ConnectionEnd
      * @return the Lifeline
+     * @since UML 2
      */
     Object getLifeline(Object handle);
 
@@ -1036,6 +1048,7 @@ public interface Facade {
      * 
      * @param handle candidate
      * @return true if handle is a Region
+     * @since UML 2
      */
     public boolean isARegion(Object handle);
     
@@ -1076,6 +1089,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is a SendSignalAction
+     * @since UML 2
      */
     boolean isASendSignalAction(Object handle);
 
@@ -1267,7 +1281,7 @@ public interface Facade {
      * @return true if the given object is a UML object
      * @see #isAElement(Object)
      */
-    public boolean isAUMLElement(Object handle);
+    boolean isAUMLElement(Object handle);
 
     /**
      * Recognizer for UninterpretedAction.
@@ -1431,6 +1445,7 @@ public interface Facade {
      *
      * @param handle the state
      * @return true if orthogonal.
+     * @since UML 2
      */
     boolean isOrthogonal(Object handle);
 
@@ -1623,7 +1638,7 @@ public interface Facade {
      * following types: AssociationEndRole, AssociationRole, Extend, Include, or
      * ClassifierRoles. <em>NOTE:</em> in the case of a ClassifierRole, the
      * return value is a Collection of elements, not a single element.  If you
-     * know you are dealing with a ClassifierRole, it is prefeable to use
+     * know you are dealing with a ClassifierRole, it is preferable to use
      * {@link #getBases(Object)}.
      * <p>
      * For UML 2.x with a target of an Include element, use getIncludingCase().
@@ -1880,7 +1895,7 @@ public interface Facade {
      * @param handle stereotype for which to return extended elements
      * @return collection of model elements extended by given stereotype
      */
-    public Collection getExtendedElements(Object handle);
+    Collection getExtendedElements(Object handle);
     
     /**
      * Return all Extends of a UseCase or ExtensionPoint.
@@ -2690,7 +2705,7 @@ public interface Facade {
      * @param handle the operation
      * @return raised signals
      * @deprecated by Bob Tarling in 0.30.1 use the UML2 replacement
-     * of getRaisedExceptions
+     * {@link #getRaisedExceptions(Object)}
      */
     Collection getRaisedSignals(Object handle);
     
@@ -2699,6 +2714,7 @@ public interface Facade {
      *  
      *  @param handle the operation
      *  @return raised exceptions
+     *  @since UML 2
      */
     Collection getRaisedExceptions(Object handle);
 
@@ -2937,7 +2953,7 @@ public interface Facade {
      *
      * @param handle the transition
      * @return the trigger
-     * @deprecated use getTriggers
+     * @deprecated use {@link #getTriggers}
      */
     Object getTrigger(Object handle);
 
@@ -2946,6 +2962,7 @@ public interface Facade {
      *
      * @param handle the transition
      * @return the trigger
+     * @since UML 2
      */
     List getTriggers(Object handle);
 
@@ -3305,6 +3322,10 @@ public interface Facade {
      *  with the given name. Hence, this method is a simplification of 
      *  the real problem and should be avoided.
      *
+     *  TODO: What should be done about the above problem?  Options are
+     *  to deprecate the method, throw an exception if the name is ambiguous,
+     *  or leave the caller to figure it out themselves.
+     *  
      * @param handle The model element the tagged value belongs to.
      * @param name The tag name.
      * @return The found tag, null if not found
