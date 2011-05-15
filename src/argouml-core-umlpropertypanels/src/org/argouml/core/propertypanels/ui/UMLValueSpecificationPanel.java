@@ -117,6 +117,19 @@ class UMLValueSpecificationPanel extends JPanel {
 	UMLValueSpecificationValueField ret = null;
 
 	try {
+	    // TODO: Bob says the reflective code following should be replaced
+	    // with something more specific like this commented out code.
+	    // This would mean we need sType changed to a meta type Object
+	    // rather than a String.
+	    
+//	    if (Model.getFacade().isALiteralBoolean(sType)) {
+//		fieldControl = new UMLValueSpecificationValueFieldLiteralBoolean(model, true);
+//	    } else if (Model.getFacade().isALiteralString(sType)) {
+//		fieldControl = new UMLValueSpecificationValueFieldLiteralString(model, true);
+//	    } else if (Model.getFacade().isAOpaqueExpression(sType)) {
+//		fieldControl = new UMLValueSpecificationValueFieldLiteralString(model, true);
+//	    }	    
+	    
 	    Class<?> oClass= Class.forName("org.argouml.core.propertypanels.ui.UMLValueSpecificationValueField"+sType);
 	    Constructor<?> constructeur = oClass.getConstructor (new Class [] {UMLValueSpecificationModel.class,boolean.class});
 	    ret=(UMLValueSpecificationValueField) constructeur.newInstance (new Object [] {model, true});
