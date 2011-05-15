@@ -104,6 +104,9 @@ public class CrNameConflict extends CrUML {
         if (Model.getFacade().isANamespace(dm)) {
             HashMap<String, Object> names = new HashMap<String, Object>();
             for (Object name1Object :  Model.getFacade().getOwnedElements(dm)) {
+                if (!Model.getFacade().isANamedElement(name1Object))
+                    continue;
+                // TODO: Do we need this Generalization is not a named element                
                 if (Model.getFacade().isAGeneralization(name1Object))
                     continue;
                 String name = Model.getFacade().getName(name1Object);
