@@ -221,6 +221,7 @@ public interface StateMachinesHelper {
      * @param handle a StateMachine
      * @param includeInternals include all internal transitions
      * @return Collection of Transitions
+     * @since 0.33.4
      */
     Collection getTransitions(Object handle, 
             boolean includeInternals);

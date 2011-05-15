@@ -111,8 +111,9 @@ public interface ModelManagementHelper {
      * @return a Collection.
      * @deprecated in 0.33.4 by Bob Tarling. This assumes knowledge of class
      * names outside of the model implementation. Use
-     * getAllModelElementsOfKind(Object, Object) instead.
+     * {@link #getAllModelElementsOfKind(Object, Object)} instead.
      */
+    @Deprecated
     Collection getAllModelElementsOfKind(Object namespace, String kind);
 
     /**
