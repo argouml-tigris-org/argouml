@@ -344,14 +344,19 @@ public class DisplayTextTree extends JTree {
      * (guaranteed with length > 0)
      */
     public static final String getModelElementDisplayName(Object modelElement) {
-        String name = Model.getFacade().getName(modelElement);
-        if (name == null || name.equals("")) {
-            name = MessageFormat.format(
-        	    Translator.localize("misc.unnamed"),
-                    new Object[] {
-        		Model.getFacade().getUMLClassName(modelElement)
-                    }
-    	    );
+        String name = "";
+        if (Model.getFacade().isANamedElement(modelElement)) {
+            name = Model.getFacade().getName(modelElement);
+            if (name == null || name.equals("")) {
+                name = MessageFormat.format(
+                        Translator.localize("misc.unnamed"),
+                        new Object[] {
+                            Model.getFacade().getUMLClassName(modelElement)
+                        }
+                );
+            }
+        } else {
+            name = Model.getFacade().getUMLClassName(modelElement);
         }
         return name;
     }
