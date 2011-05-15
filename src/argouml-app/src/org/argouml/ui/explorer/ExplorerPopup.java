@@ -59,7 +59,6 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ActionList;
 import org.argouml.kernel.ProfileConfiguration;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
