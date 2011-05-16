@@ -365,6 +365,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
             "Not a UML2 model element"); //$NON-NLS-1$
     }
 
+    public Object getInstanceSpecification() {
+        return InstanceSpecification.class;
+    }
+
     public Object getInteraction() {
         return Interaction.class;
     }

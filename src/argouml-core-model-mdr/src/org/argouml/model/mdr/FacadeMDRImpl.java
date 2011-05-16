@@ -528,6 +528,10 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof Instance;
     }
 
+    public boolean isAInstanceSpecification(Object handle) {
+        return false;
+    }
+
     public boolean isAInteraction(Object handle) {
         return handle instanceof Interaction;
     }

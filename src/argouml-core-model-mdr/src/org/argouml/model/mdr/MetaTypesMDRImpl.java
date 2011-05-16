@@ -436,6 +436,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return Instance.class;
     }
 
+    public Object getInstanceSpecification() {
+        throw new NotImplementedException("Not a UML1.4 element");
+    }
+
     public Object getInterface() {
         return Interface.class;
     }

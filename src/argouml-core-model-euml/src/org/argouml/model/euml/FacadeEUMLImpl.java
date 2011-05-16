@@ -2115,6 +2115,10 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAInstance(Object handle) {
+        return false;
+    }
+
+    public boolean isAInstanceSpecification(Object handle) {
         return handle instanceof InstanceSpecification;
     }
 

@@ -731,6 +731,15 @@ public interface Facade {
     boolean isAInstance(Object handle);
 
     /**
+     * Recognizer for InstanceSpecification.
+     *
+     * @param handle candidate
+     * @return true if handle is a InstanceSpecification
+     * @since UML 2
+     */
+    boolean isAInstanceSpecification(Object handle);
+
+    /**
      * Recognizer for Interaction.
      *
      * @param handle candidate

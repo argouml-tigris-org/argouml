@@ -357,6 +357,12 @@ public interface MetaTypes {
     Object getInstance();
 
     /**
+     * @return Returns the InstanceSpecification.
+     * @since UML 2
+     */
+    Object getInstanceSpecification();
+
+    /**
      * @return Returns the Interface.
      */
     Object getInterface();
