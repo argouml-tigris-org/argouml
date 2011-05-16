@@ -162,6 +162,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an objectflow state
+     * @since UML 2
      */
     boolean isAObjectFlowState(Object handle);
 
@@ -170,6 +171,7 @@ public interface Facade {
      *
      * @param handle candidate
      * @return true if handle is an ObjectNode
+     * @since UML 2
      */
     boolean isAObjectNode(Object handle);
 
