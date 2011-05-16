@@ -361,8 +361,8 @@ final class MetaTypesEUMLImpl implements MetaTypes {
     }
 
     public Object getInstance() {
-        // TODO: Check for changed semantics - tfm
-        return InstanceSpecification.class;
+        throw new NotImplementedException(
+            "Not a UML2 model element"); //$NON-NLS-1$
     }
 
     public Object getInteraction() {
