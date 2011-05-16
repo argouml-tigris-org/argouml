@@ -2222,8 +2222,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAObject(Object handle) {
-        // TODO: Double check - tfm
-        return handle instanceof ObjectNode;
+        // TODO: not in UML 2
+        return false;
     }
 
     public boolean isAObjectFlowState(Object handle) {
