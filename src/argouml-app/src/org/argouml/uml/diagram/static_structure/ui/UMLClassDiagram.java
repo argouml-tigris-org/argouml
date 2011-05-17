@@ -193,30 +193,56 @@ public class UMLClassDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        Object[] actions = {
-            getPackageActions(),
-            getActionClass(),
-            null,
-            getAssociationActions(),
-            getAggregationActions(),
-            getCompositionActions(),
-            getActionAssociationEnd(),
-            getActionGeneralization(),
-            null,
-            getActionInterface(),
-            getActionRealization(),
-            null,
-            getDependencyActions(),
-            null,
-            ActionAddAttribute.getTargetFollower(),
-            ActionAddOperation.getTargetFollower(),
-            getActionAssociationClass(),
-            getActionInstanceSpecification(),
-            null,
-            getDataTypeActions(),
-        };
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            Object[] actions = {
+                getPackageActions(),
+                getActionClass(),
+                null,
+                getAssociationActions(),
+                getAggregationActions(),
+                getCompositionActions(),
+                getActionAssociationEnd(),
+                getActionGeneralization(),
+                null,
+                getActionInterface(),
+                getActionRealization(),
+                null,
+                getDependencyActions(),
+                null,
+                ActionAddAttribute.getTargetFollower(),
+                ActionAddOperation.getTargetFollower(),
+                getActionAssociationClass(),
+                null,
+                getDataTypeActions(),
+            };
 
-        return actions;
+            return actions;
+        } else {
+            Object[] actions = {
+                getPackageActions(),
+                getActionClass(),
+                null,
+                getAssociationActions(),
+                getAggregationActions(),
+                getCompositionActions(),
+                getActionAssociationEnd(),
+                getActionGeneralization(),
+                null,
+                getActionInterface(),
+                getActionRealization(),
+                null,
+                getDependencyActions(),
+                null,
+                ActionAddAttribute.getTargetFollower(),
+                ActionAddOperation.getTargetFollower(),
+                getActionAssociationClass(),
+                getActionInstanceSpecification(),
+                null,
+                getDataTypeActions(),
+            };
+
+            return actions;
+        }
     }
 
     /**
