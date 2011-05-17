@@ -146,5 +146,11 @@ Bundle-ClassPath: lib/commons-logging-1.0.2.jar,
  lib/ocl-argo-1.1.jar,
  lib/swidgets-0.1.4.jar,
  lib/toolbar-1.4.1-20071227.jar,
+ lib/batik-awt-util-1.7.jar,
+ lib/batik-dom-1.7.jar,
+ lib/batik-ext-1.7.jar,
+ lib/batik-svggen-1.7.jar,
+ lib/batik-util-1.7.jar,
+ lib/batik-xml-1.7.jar,
  .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
