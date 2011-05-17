@@ -32,9 +32,11 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Command;
 import org.argouml.kernel.NonUndoableCommand;
+import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.ModelManagementHelper;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -2109,26 +2111,34 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 List list = new ArrayList();
                 
                 // Get all classifiers in our model
-                // TODO: We need the property panels to have some reference to the
-                // project they belong to instead of using deprecated functionality
+                // TODO: We need the property panels to have some reference to
+                // the project they belong to instead of using deprecated
+                // functionality
                 Project p = ProjectManager.getManager().getCurrentProject();
                 Object model = p.getRoot();
                 list.addAll(Model.getModelManagementHelper()
-                        .getAllModelElementsOfKindWithModel(model, Model.getMetaTypes().getClassifier()));
-                
+                        .getAllModelElementsOfKindWithModel(
+                        	model, Model.getMetaTypes().getClassifier()));
+                final ProfileConfiguration profileConfiguration =
+                    p.getProfileConfiguration();
+		final ModelManagementHelper mmh =
+		    Model.getModelManagementHelper();
+		final Object classifierMetaType =
+		    Model.getMetaTypes().getClassifier();
                 // Get all classifiers in all top level packages of all profiles
-                for (Profile profile : p.getProfileConfiguration().getProfiles()) {
-            	try {
-    		    for (Object topPackage : profile.getProfilePackages()) {
-    		            list.addAll(Model.getModelManagementHelper()
-    		                    .getAllModelElementsOfKindWithModel(topPackage,
-    		                	    Model.getMetaTypes().getClassifier()));
-    		    }
-    		} catch (ProfileException e) {
-    		    // TODO: We need to rethrow this as some other exception
-    		    // type but that is too much change for the moment.
-    		    LOG.error("Exception", e);
-    		}
+                for (Profile profile : profileConfiguration.getProfiles()) {
+                    try {
+        		for (Object topPackage : profile.getProfilePackages()) {
+        		    if (Model.getFacade().isAModel(topPackage)) {
+        	                list.addAll(mmh.getAllModelElementsOfKindWithModel(
+            	        	    topPackage, classifierMetaType));
+        		    }
+                        }
+                    } catch (ProfileException e) {
+                        // TODO: We need to rethrow this as some other exception
+                        // type but that is too much change for the moment.
+                        LOG.error("Exception", e);
+                    }
                 }
                 return list;
             }
@@ -2147,7 +2157,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
             @Override
             protected void doIt(Collection selected) {
-           	    Model.getCommonBehaviorHelper().setClassifiers(getTarget(), selected);
+                Model.getCommonBehaviorHelper().setClassifiers(getTarget(), selected);
             }
         }
     
