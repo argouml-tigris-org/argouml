@@ -53,6 +53,7 @@ import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.collaboration.ui.FigClassifierRole;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
 import org.argouml.uml.diagram.deployment.ui.FigMNode;
@@ -100,6 +101,7 @@ public class UMLClassDiagram extends UMLDiagram {
     private Action actionAssociationClass;
     private Action actionClass;
     private Action actionInterface;
+    private Action actionInstanceSpecification;
     private Action actionDependency;
     private Action actionPermission;
     private Action actionUsage;
@@ -209,6 +211,7 @@ public class UMLClassDiagram extends UMLDiagram {
             ActionAddAttribute.getTargetFollower(),
             ActionAddOperation.getTargetFollower(),
             getActionAssociationClass(),
+            getActionInstanceSpecification(),
             null,
             getDataTypeActions(),
         };
@@ -416,6 +419,19 @@ public class UMLClassDiagram extends UMLDiagram {
                         "button.new-interface");
         }
         return actionInterface;
+    }
+
+    /**
+     * @return Returns the actionInterface.
+     */
+    protected Action getActionInstanceSpecification() {
+        if (actionInstanceSpecification == null) {
+            actionInstanceSpecification =
+                makeCreateNodeAction(
+                        Model.getMetaTypes().getInstanceSpecification(),
+                        "button.new-instance-specification");
+        }
+        return actionInstanceSpecification;
     }
 
     /**
@@ -669,6 +685,8 @@ public class UMLClassDiagram extends UMLDiagram {
             return true;
         } else if (Model.getFacade().isAObject(objectToAccept)) {
             return true;
+        } else if (Model.getFacade().isAInstanceSpecification(objectToAccept)) {
+            return true;
         } else if (Model.getFacade().isANodeInstance(objectToAccept)) {
             return true;
         } else if (Model.getFacade().isAComponentInstance(objectToAccept)) {
@@ -865,6 +883,8 @@ public class UMLClassDiagram extends UMLDiagram {
         } else if (Model.getFacade().isAUseCase(modelElement)) {
             figNode = new FigUseCase(modelElement, bounds, settings);
         } else if (Model.getFacade().isAObject(modelElement)) {
+            figNode = new FigObject(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAInstanceSpecification(modelElement)) {
             figNode = new FigObject(modelElement, bounds, settings);
         } else if (Model.getFacade().isANodeInstance(modelElement)) {
             figNode = new FigNodeInstance(modelElement, bounds, settings);

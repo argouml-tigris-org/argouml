@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Michiel van der Wulp
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -61,7 +62,8 @@ public abstract class ObjectNotation extends NotationProvider {
      * @param theObject the UML element
      */
     public ObjectNotation(Object theObject) {
-        if (!Model.getFacade().isAObject(theObject)) {
+        if (!Model.getFacade().isAObject(theObject)
+                && !Model.getFacade().isAInstanceSpecification(theObject)) {
             throw new IllegalArgumentException("This is not an Object.");
         }
     }

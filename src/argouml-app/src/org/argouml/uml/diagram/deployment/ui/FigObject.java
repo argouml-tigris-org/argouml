@@ -251,7 +251,6 @@ public class FigObject extends FigNodeModelElement {
      */
     @Override
     public void setEnclosingFig(Fig encloser) {
-	assert Model.getFacade().isAObject(getOwner());
 
         Object owner = getOwner();
 
@@ -262,7 +261,8 @@ public class FigObject extends FigNodeModelElement {
                     .setComponentInstance(owner, encloser.getOwner());
             super.setEnclosingFig(encloser);
 
-        } else if (Model.getFacade().getComponentInstance(owner) != null) {
+        } else if (Model.getFacade().getUmlVersion().startsWith("1")
+                && Model.getFacade().getComponentInstance(owner) != null) {
             Model.getCommonBehaviorHelper().setComponentInstance(owner, null);
             super.setEnclosingFig(null);
         }
