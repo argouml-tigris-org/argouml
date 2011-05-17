@@ -47,6 +47,8 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -59,6 +61,8 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.batik.dom.GenericDOMImplementation;
+import org.apache.batik.svggen.SVGGraphics2D;
 import org.apache.log4j.Logger;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
@@ -80,6 +84,8 @@ import org.tigris.gef.persistence.SvgWriter2D;
 import org.tigris.gef.persistence.export.PostscriptWriter;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.Localizer;
+import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.Document;
 
 
 /**
@@ -577,7 +583,7 @@ class SaveSVGAction2 extends SaveGraphicsAction {
         super(localize ? Localizer.localize("GefBase", name) : name, icon);
     }
 
-    protected void saveGraphics(OutputStream s, Editor ce, 
+    protected void saveGraphics(OutputStream outStream, Editor ce, 
     		Rectangle drawingArea)
         throws IOException {
 
@@ -598,44 +604,40 @@ class SaveSVGAction2 extends SaveGraphicsAction {
         bounds.width -= bounds.x;
         bounds.height -= bounds.y;
         
-    	SvgWriter2D writer = null;
-    	try {
-            // TODO: Do we want the current view or the entire diagram?
-//    	    drawingArea.width /= ce.getScale();
-//            drawingArea.height /= ce.getScale();
-//            writer = new SvgWriter2D(s, drawingArea);
-            writer = new SvgWriter2D(s, bounds);
-        } catch (ParserConfigurationException e) {
-//            LOG.error("Exception creating SVG writer", e);
-            // Not really kosher, but we are constrained by the method signature
-            throw new IOException("Error creating SVGwriter " + e);
-        }
+        // Get a DOMImplementation
+        DOMImplementation domImpl =
+        GenericDOMImplementation.getDOMImplementation();
+        // Create an instance of org.w3c.dom.Document
+        Document document = domImpl.createDocument(null, "svg", null);
+        // Create an instance of the SVG Generator
+        SVGGraphics2D svgGenerator = new SVGGraphics2D(document);
 
-        if (writer != null) {
-            // We'll do the equivalent of the following ourselves
-//            ce.print(writer);
+        ce.print(svgGenerator);
 
-            for (Fig f : layer.getContents()) {
-                // ignore clipping
-                String url = null;
-                String clazz = null;
-                Object owner = f.getOwner();
-                if (Model.getFacade().isAUMLElement(owner)) {
-                    clazz = Model.getMetaTypes().getName(owner);
-                    // TODO: toLower?
-                    if (Model.getFacade().isAModelElement(owner)) {
-                        String name = Model.getFacade().getName(owner);
-                        if (name == null) {
-                            name = "";
-                        }
-                        url = "http://argoeclipse.tigris.org" + "#" + name;
-                    }
-                }
-                writer.beginFig(f, clazz, url);
-                f.paint(writer);
-                writer.endFig();
-            }
-            writer.dispose();
-        }
+//            for (Fig f : layer.getContents()) {
+//                // ignore clipping
+//                String url = null;
+//                String clazz = null;
+//                Object owner = f.getOwner();
+//                if (Model.getFacade().isAUMLElement(owner)) {
+//                    clazz = Model.getMetaTypes().getName(owner);
+//                    // TODO: toLower?
+//                    if (Model.getFacade().isAModelElement(owner)) {
+//                        String name = Model.getFacade().getName(owner);
+//                        if (name == null) {
+//                            name = "";
+//                        }
+//                        url = "http://argoeclipse.tigris.org" + "#" + name;
+//                    }
+//                }
+////                writer.beginFig(f, clazz, url);
+//                f.paint(writer);
+//  //              writer.endFig();
+//            }
+            // Finally, stream out SVG to the standard output using UTF-8
+            // character to byte encoding
+        boolean useCSS = true; // we want to use CSS style attribute
+        Writer out = new OutputStreamWriter(outStream, "UTF-8");
+        svgGenerator.stream(out, useCSS);
     }
 }
