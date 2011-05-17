@@ -404,7 +404,12 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getClassifiers(Object handle) {
-        throw new NotYetImplementedException();
+        if (handle instanceof InstanceSpecification) {
+            return ((InstanceSpecification) handle).getClassifiers();
+        }
+        throw new IllegalArgumentException(
+                "Expected an InstanceSpecification. Got a " //$NON-NLS-1$
+                + handle);
     }
 
     public Collection getClassifiersInState(Object handle) {
@@ -477,7 +482,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getComponentInstance(Object handle) {
-        throw new NotYetImplementedException();
+        throw new IllegalArgumentException(
+                "ComponentInstance is not available in UML2"); //$NON-NLS-1$
     }
 
     public Object getConcurrency(Object handle) {
@@ -1330,7 +1336,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getReceivedStimuli(Object handle) {
-        throw new NotYetImplementedException();
+        throw new NotImplementedException(
+                "Not available in UML2"); //$NON-NLS-1$
     }
 
     public Object getReceiver(Object handle) {

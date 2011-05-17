@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.argouml.model.CommonBehaviorHelper;
+import org.eclipse.uml2.uml.InstanceSpecification;
 
 /**
  * Eclipse UML2 implementation of CommonBehaviorHelper.
@@ -122,7 +123,9 @@ class CommonBehaviorHelperEUMLImpl implements CommonBehaviorHelper {
 
 
     public void setClassifiers(Object handle, Collection classifiers) {
-        // TODO: Auto-generated method stub
+        ((InstanceSpecification) handle).getClassifiers().retainAll(classifiers);
+        classifiers.removeAll(((InstanceSpecification) handle).getClassifiers());
+        ((InstanceSpecification) handle).getClassifiers().addAll(classifiers);
     }
     
     public void setCommunicationLink(Object handle, Object c) {

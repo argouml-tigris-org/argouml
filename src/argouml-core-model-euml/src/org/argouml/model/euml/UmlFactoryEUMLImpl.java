@@ -384,6 +384,8 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             o = modelImpl.getStateMachinesFactory().createCompositeState();
         } else if (elementType == metaTypes.getSynchState()) {
             o = modelImpl.getStateMachinesFactory().createSynchState();
+        } else if (elementType == metaTypes.getInstanceSpecification()) {
+            o = UMLFactory.eINSTANCE.createInstanceSpecification();
         } else if (elementType == metaTypes.getState()) {
             throw new IllegalArgumentException(
                     "Attempt to instantiate abstract type"); //$NON-NLS-1$
