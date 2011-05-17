@@ -126,6 +126,9 @@ public class CrNameConfusion extends CrUML {
 	    if (me2 == dm || Model.getFacade().isAAssociation(me2)) {
 	        continue;
 	    }
+            if (!Model.getFacade().isANamedElement(me2)) {
+                continue;
+            }
 	    String meName = Model.getFacade().getName(me2);
 	    if (meName == null || meName.equals("")) {
 	        continue;
