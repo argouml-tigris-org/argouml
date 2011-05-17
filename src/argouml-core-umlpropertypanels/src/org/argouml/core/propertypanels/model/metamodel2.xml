@@ -24,6 +24,7 @@ Authors:
   <class name="Element">org.eclipse.uml2.uml.Element</class>
   <class name="Expression">org.eclipse.uml2.uml.Expression</class>
   <class name="Feature">org.eclipse.uml2.uml.Feature</class>
+  <class name="InstanceSpecification">org.eclipse.uml2.uml.InstanceSpecification</class>
   <class name="Interface">org.eclipse.uml2.uml.Interface</class>
   <class name="Namespace">org.eclipse.uml2.uml.Namespace</class>
   <class name="ObjectFlow">org.eclipse.uml2.uml.ObjectFlow</class>
@@ -1739,12 +1740,9 @@ Authors:
     <attribute name="instance" type="Instance" />
     <attribute name="linkEnd" type="LinkEnd" />
   </panel>
-  <panel name="Object">
+  <panel name="InstanceSpecification">
     <text name="name" type="Name" />
     <combo name="namespace" type="Namespace" />
-    <separator />
-    <singlerow name="sender" type="Instance" />
-    <singlerow name="receiver" type="Instance" />
     <separator />
     <list name="classifier" type="Classifier" />
     
