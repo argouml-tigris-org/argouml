@@ -337,65 +337,64 @@ public class Init {
 
 
 	// Instance
-	cl = new Checklist();
-
-	cat = Translator.localize("checklist.instance.general");
-	newCheckItem(cat, "checklist.instance.general.describe-clearly", cl);
-
-	cat = Translator.localize("checklist.instance.naming");
-	newCheckItem(cat, "checklist.instance.naming.describe-clearly", cl);
-	newCheckItem(cat, "checklist.instance.naming.denotes-state", cl);
-	newCheckItem(cat, "checklist.instance.naming.misinterpret", cl);
-
-	cat = Translator.localize("checklist.instance.structure");
-	newCheckItem(cat, "checklist.instance.structure.merged-with-other", cl);
-	newCheckItem(cat, "checklist.instance.structure.do-just-one-thing", cl);
-	newCheckItem(cat, "checklist.instance.structure.break-into-parts", cl);
-	newCheckItem(cat,
-	    "checklist.instance.structure.can-write-characteristic-equation",
-	    cl);
-	newCheckItem(cat, "checklist.instance.structure.belong", cl);
-	newCheckItem(cat, "checklist.instance.structure.make-internal", cl);
-	newCheckItem(cat,
-	    "checklist.instance.structure.is-state-in-another-machine-"
-            + "exclusive", cl);
-
-	cat = Translator.localize("checklist.instance.actions");
-	newCheckItem(cat, "checklist.instance.actions.list-entry-actions", cl);
-	newCheckItem(cat,
-		     "checklist.instance.actions.update-attribute-on-entry",
-		     cl);
-	newCheckItem(cat, "checklist.instance.actions.list-exit-action", cl);
-	newCheckItem(cat, "checklist.instance.actions.update-attribute-on-exit",
-		     cl);
-	newCheckItem(cat, "checklist.instance.actions.list-do-action", cl);
-	newCheckItem(cat, "checklist.instance.actions.maintained-state", cl);
-
-	cat = Translator.localize("checklist.instance.transitions");
-	newCheckItem(cat,
-	    "checklist.instance.transitions.need-another-transition-into",
-	    cl);
-	newCheckItem(cat,
-	    "checklist.instance.transitions.use-all-transitions-into",
-	    cl);
-	newCheckItem(cat,
-	    "checklist.instance.transitions.combine-with-other-incoming",
-	    cl);
-	newCheckItem(cat,
-	    "checklist.instance.transitions.need-another-transition-out-of",
-	    cl);
-	newCheckItem(cat,
-	    "checklist.instance.transitions.use-all-transitions-out-of",
-	    cl);
-	newCheckItem(cat,
-	    "checklist.instance.transitions.are-transitions-out-of-exclusive",
-	    cl);
-	newCheckItem(cat,
-	    "checklist.instance.transitions.combine-with-other-outgoing",
-	    cl);
-
-	CheckManager.register(Model.getMetaTypes().getInstance(), cl);
-
+	if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            cl = new Checklist();
+    
+            cat = Translator.localize("checklist.instance.general");
+            newCheckItem(cat, "checklist.instance.general.describe-clearly", cl);
+    
+            cat = Translator.localize("checklist.instance.naming");
+            newCheckItem(cat, "checklist.instance.naming.describe-clearly", cl);
+            newCheckItem(cat, "checklist.instance.naming.denotes-state", cl);
+            newCheckItem(cat, "checklist.instance.naming.misinterpret", cl);
+    
+            cat = Translator.localize("checklist.instance.structure");
+            newCheckItem(cat, "checklist.instance.structure.merged-with-other", cl);
+            newCheckItem(cat, "checklist.instance.structure.do-just-one-thing", cl);
+            newCheckItem(cat, "checklist.instance.structure.break-into-parts", cl);
+            newCheckItem(cat,
+                "checklist.instance.structure.can-write-characteristic-equation",
+                cl);
+            newCheckItem(cat, "checklist.instance.structure.belong", cl);
+            newCheckItem(cat, "checklist.instance.structure.make-internal", cl);
+            newCheckItem(cat,
+                "checklist.instance.structure.is-state-in-another-machine-"
+                + "exclusive", cl);
+    
+            cat = Translator.localize("checklist.instance.actions");
+            newCheckItem(cat, "checklist.instance.actions.list-entry-actions", cl);
+            newCheckItem(cat,
+                "checklist.instance.actions.update-attribute-on-entry",
+                cl);
+            newCheckItem(cat, "checklist.instance.actions.list-exit-action", cl);
+            newCheckItem(cat, "checklist.instance.actions.update-attribute-on-exit",
+                cl);
+            newCheckItem(cat, "checklist.instance.actions.list-do-action", cl);
+            newCheckItem(cat, "checklist.instance.actions.maintained-state", cl);
+            cat = Translator.localize("checklist.instance.transitions");
+            newCheckItem(cat,
+                "checklist.instance.transitions.need-another-transition-into",
+                cl);
+            newCheckItem(cat,
+                "checklist.instance.transitions.use-all-transitions-into",
+                cl);
+            newCheckItem(cat,
+                "checklist.instance.transitions.combine-with-other-incoming",
+                cl);
+            newCheckItem(cat,
+                "checklist.instance.transitions.need-another-transition-out-of",
+                cl);
+            newCheckItem(cat,
+                "checklist.instance.transitions.use-all-transitions-out-of",
+                cl);
+            newCheckItem(cat,
+                "checklist.instance.transitions.are-transitions-out-of-exclusive",
+                cl);
+            newCheckItem(cat,
+                "checklist.instance.transitions.combine-with-other-outgoing",
+                cl);
+            CheckManager.register(Model.getMetaTypes().getInstance(), cl);
+	}
 
 	// Link
 	cl = new Checklist();
