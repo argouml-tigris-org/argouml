@@ -249,11 +249,13 @@ public abstract class FigEdgeModelElement
             if (edgePort != null) {
                 edgePort.setOwner(getOwner());
             }
-            NotationName nn = Notation.findNotation(
-                    settings.getNotationSettings().getNotationLanguage());
-            notationProviderName =
-                NotationProviderFactory2.getInstance().getNotationProvider(
-                        getNotationProviderType(), element, this, nn);
+            if (Model.getFacade().isANamedElement(element)) {
+                NotationName nn = Notation.findNotation(
+                        settings.getNotationSettings().getNotationLanguage());
+                notationProviderName =
+                    NotationProviderFactory2.getInstance().getNotationProvider(
+                            getNotationProviderType(), element, this, nn);
+            }
 
             addElementListener(element, "remove");
         }
@@ -992,8 +994,8 @@ public abstract class FigEdgeModelElement
         /* This should NOT be looking for a NamedElement, 
          * since this is not always about the name of this 
          * modelelement alone.*/
-        if (Model.getFacade().isAModelElement(own)) {
-            NotationName notation = Notation.findNotation(
+        if (Model.getFacade().isANamedElement(own)) {
+            final NotationName notation = Notation.findNotation(
                     getNotationSettings().getNotationLanguage());
             notationProviderName =
                 NotationProviderFactory2.getInstance().getNotationProvider(
