@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.tigris.gef</groupId>
       <artifactId>gef</artifactId>
-      <version>0.13.3-1</version>
+      <version>0.13.5</version>
       <scope>compile</scope>
     </dependency>
 
@@ -42,6 +42,27 @@
       <artifactId>commons-logging</artifactId>
       <version>1.0.2-6</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.batik</groupId>
+      <artifactId>batik-dom</artifactId>
+      <version>1.7</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.batik</groupId>
+      <artifactId>batik-ext</artifactId>
+      <version>1.7</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.batik</groupId>
+      <artifactId>batik-svggen</artifactId>
+      <version>1.7</version>
+      <scope>compile</scope>
     </dependency>
 
     <dependency>
