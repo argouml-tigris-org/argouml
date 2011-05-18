@@ -108,58 +108,10 @@ public class ExplorerPopup extends JPopupMenu {
     
     private static final Logger LOG =
         Logger.getLogger(ExplorerPopup.class);
-    
-    /**
-     * Array of model elements and corresponding il8n tag 
-     * that are presented on the Create Model Elements menu.
-     */
-    private static final Object[] MODEL_ELEMENT_MENUITEMS = 
-        new Object[] {
-            Model.getMetaTypes().getProfile(), // needs to be the first entry
-            "button.new-profile-package", // because of UML1/UML2 differences
-            Model.getMetaTypes().getParameter(),
-            "button.new-parameter",
-            Model.getMetaTypes().getTemplateParameter(),
-            "button.new-template-parameter",
-            Model.getMetaTypes().getPackage(), 
-            "button.new-package",
-            Model.getMetaTypes().getActor(), 
-            "button.new-actor",
-            Model.getMetaTypes().getUseCase(), 
-            "button.new-usecase",
-            Model.getMetaTypes().getExtensionPoint(), 
-            "button.new-extension-point",
-            Model.getMetaTypes().getUMLClass(), 
-            "button.new-class",
-            Model.getMetaTypes().getInterface(), 
-            "button.new-interface",
-            Model.getMetaTypes().getAttribute(), 
-            "button.new-attribute",
-            Model.getMetaTypes().getOperation(), 
-            "button.new-operation",
-            Model.getMetaTypes().getDataType(),
-            "button.new-datatype",
-            Model.getMetaTypes().getEnumeration(),
-            "button.new-enumeration",
-            Model.getMetaTypes().getEnumerationLiteral(),
-            "button.new-enumeration-literal",
-            Model.getMetaTypes().getSignal(),
-            "button.new-signal",
-            Model.getMetaTypes().getException(),
-            "button.new-exception",
-            Model.getMetaTypes().getComponent(), 
-            "button.new-component",
-            Model.getMetaTypes().getComponentInstance(), 
-            "button.new-componentinstance",
-            Model.getMetaTypes().getNode(), 
-            "button.new-node",
-            Model.getMetaTypes().getNodeInstance(), 
-            "button.new-nodeinstance",
-            Model.getMetaTypes().getReception(), 
-            "button.new-reception",             
-            Model.getMetaTypes().getStereotype(), 
-            "button.new-stereotype" };
 
+    private final Object[] metaTypes; 
+    
+    
     /**
      * Creates a new instance of ExplorerPopup.
      *
@@ -170,7 +122,64 @@ public class ExplorerPopup extends JPopupMenu {
      */
     public ExplorerPopup(Object selectedItem, MouseEvent me) {
         super("Explorer popup menu");
-
+        
+        // TODO: Bob says - we need a Model interface method to return all
+        // metatypes that are available in that model. This code should
+        // only be required till that is implemented.
+        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
+            metaTypes = 
+                new Object[] {
+                    Model.getMetaTypes().getProfile(),
+                    Model.getMetaTypes().getParameter(),
+                    Model.getMetaTypes().getTemplateParameter(),
+                    Model.getMetaTypes().getPackage(), 
+                    Model.getMetaTypes().getActor(), 
+                    Model.getMetaTypes().getUseCase(), 
+                    Model.getMetaTypes().getExtensionPoint(), 
+                    Model.getMetaTypes().getUMLClass(), 
+                    Model.getMetaTypes().getInterface(), 
+                    Model.getMetaTypes().getAttribute(), 
+                    Model.getMetaTypes().getOperation(), 
+                    Model.getMetaTypes().getDataType(),
+                    Model.getMetaTypes().getEnumeration(),
+                    Model.getMetaTypes().getEnumerationLiteral(),
+                    Model.getMetaTypes().getSignal(),
+                    Model.getMetaTypes().getException(),
+                    Model.getMetaTypes().getComponent(), 
+                    Model.getMetaTypes().getComponentInstance(), 
+                    Model.getMetaTypes().getNode(), 
+                    Model.getMetaTypes().getNodeInstance(), 
+                    Model.getMetaTypes().getReception(), 
+                    Model.getMetaTypes().getStereotype()
+            };
+        } else {
+            metaTypes = 
+                new Object[] {
+                    Model.getMetaTypes().getParameter(),
+                    Model.getMetaTypes().getTemplateParameter(),
+                    Model.getMetaTypes().getPackage(), 
+                    Model.getMetaTypes().getActor(), 
+                    Model.getMetaTypes().getUseCase(), 
+                    Model.getMetaTypes().getExtensionPoint(), 
+                    Model.getMetaTypes().getUMLClass(), 
+                    Model.getMetaTypes().getInterface(), 
+                    Model.getMetaTypes().getAttribute(), 
+                    Model.getMetaTypes().getOperation(), 
+                    Model.getMetaTypes().getDataType(),
+                    Model.getMetaTypes().getEnumeration(),
+                    Model.getMetaTypes().getEnumerationLiteral(),
+                    Model.getMetaTypes().getRegion(),
+                    Model.getMetaTypes().getState(),
+                    Model.getMetaTypes().getSignal(),
+                    Model.getMetaTypes().getException(),
+                    Model.getMetaTypes().getComponent(), 
+                    Model.getMetaTypes().getNode(), 
+                    Model.getMetaTypes().getNodeInstance(), 
+                    Model.getMetaTypes().getReception(), 
+                    Model.getMetaTypes().getStereotype()
+            };
+        }
+        
         /* Check if multiple items are selected. */
         boolean multiSelect =
                 TargetManager.getInstance().getTargets().size() > 1;
@@ -478,24 +487,14 @@ public class ExplorerPopup extends JPopupMenu {
 
             // iterate through all possible model elements to determine which  
             // are valid to be contained by the selected target
-            int start = 0;
-            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
-                // skip profile item for UML1
-                start = 2;
-            }
-            for (int iter = start; iter < MODEL_ELEMENT_MENUITEMS.length; 
-                iter += 2) {
-                
-                Object me = MODEL_ELEMENT_MENUITEMS[iter];
-                String md = (String) MODEL_ELEMENT_MENUITEMS[iter + 1];
-                
+            for (Object metaType : metaTypes) {
                 // test if this element can be contained by the target
-                if (Model.getUmlFactory().isContainmentValid(me, target)) {
+                if (Model.getUmlFactory().isContainmentValid(metaType, target)) {
                     // this element can be contained add a menu item 
                     // that allows the user to take that action
                     menuItems.add(new OrderedMenuItem(
                             new ActionCreateContainedModelElement(
-                                    me, target, md)));
+                                    metaType, target)));
                 }
             }    
         }
