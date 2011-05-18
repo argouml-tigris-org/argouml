@@ -622,6 +622,12 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
             });
                 
         // specifies valid elements for a Region to contain
+        validContainmentMap.put(State.class, 
+            new Class<?>[] { 
+                Region.class
+            });
+                
+        // specifies valid elements for a Region to contain
         validContainmentMap.put(StateMachine.class, 
             new Class<?>[] { 
                 Region.class
