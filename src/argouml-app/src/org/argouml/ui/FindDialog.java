@@ -386,8 +386,10 @@ public class FindDialog extends ArgoDialog
                 Model.getMetaTypes().getGeneralization()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getInclude()));
-        type.addItem(PredicateMType.create(
-                Model.getMetaTypes().getInstance()));
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            type.addItem(PredicateMType.create(
+                    Model.getMetaTypes().getInstance()));
+        }
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getInteraction()));
         type.addItem(PredicateMType.create(
@@ -422,13 +424,10 @@ public class FindDialog extends ArgoDialog
                 Model.getMetaTypes().getStereotype()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getTagDefinition()));
-        
-        // Not in UML 2.x (or Metatypes)
-//        type.addItem(PredicateMType.create(
-//                Model.getMetaTypes().getTemplateArgument()));
-//        type.addItem(PredicateMType.create(
-//                Model.getMetaTypes().getTemplateParameter()));
-        
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getTemplateArgument()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getTemplateParameter()));
         type.addItem(PredicateMType.create(
                 Model.getMetaTypes().getTransition()));
         type.addItem(PredicateMType.create(
