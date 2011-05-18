@@ -14,8 +14,6 @@
 
 package org.argouml.model.euml;
 
-import javax.swing.plaf.synth.Region;
-
 import org.argouml.model.MetaTypes;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.uml2.uml.Abstraction;
@@ -89,6 +87,7 @@ import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Pseudostate;
 import org.eclipse.uml2.uml.PseudostateKind;
 import org.eclipse.uml2.uml.Reception;
+import org.eclipse.uml2.uml.Region;
 import org.eclipse.uml2.uml.Relationship;
 import org.eclipse.uml2.uml.SendSignalAction;
 import org.eclipse.uml2.uml.Signal;
