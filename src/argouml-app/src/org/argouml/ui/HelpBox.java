@@ -54,6 +54,7 @@ import javax.swing.event.HyperlinkListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ApplicationVersion;
+import org.argouml.cognitive.Translator;
 
 /**
  * This is what you see after you activate the "Help->Help" menu-item.
@@ -75,12 +76,12 @@ public class HelpBox extends JFrame implements HyperlinkListener {
     /**
      * The names and URLs for the pages.
      */
-    private String pages[][] = {{"Manual",
+    private String pages[][] = {{Translator.localize("tab.help.manual"),
             ApplicationVersion.getOnlineManual() ,
-            "The ArgoUML online manual"},
-        {"Support",
+            Translator.localize("tab.help.tip.manual")},
+        {Translator.localize("tab.help.support"),
             ApplicationVersion.getOnlineSupport(),
-            "The ArgoUML support page" }};
+            Translator.localize("tab.help.tip.support") }};
 
 
     /**
