@@ -117,14 +117,14 @@ public class NameOrder
             name = "Profile Configuration";
         } else if (obj instanceof Profile) {
             name = ((Profile) obj).getDisplayName();
-        } else if (Model.getFacade().isAModelElement(obj)) {
+        } else if (Model.getFacade().isANamedElement(obj)) {
             try {
                 name = Model.getFacade().getName(obj);
             } catch (InvalidElementException e) {
                 name = Translator.localize("misc.name.deleted");
             }
         } else {
-            name = "??";
+            name = "";
         }
 
         if (name == null) {
