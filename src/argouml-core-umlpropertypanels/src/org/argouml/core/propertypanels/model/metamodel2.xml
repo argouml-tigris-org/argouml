@@ -725,7 +725,6 @@ Authors:
     <textarea name="body" type="String" />
   </panel>
   <panel name="Generalization">
-    <text name="name" type="Name" />
     <text name="discriminator" type="Name" />
     <combo name="namespace" type="Namespace" />
     <separator />
