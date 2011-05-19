@@ -203,7 +203,22 @@ class ModelManagementHelperEUMLImpl implements ModelManagementHelper {
     public List<String> getPathList(Object element) {
         // TODO: Needs completing - stub implementation only! - tfm
         List<String> path = new ArrayList<String>();
-        path.add(modelImpl.getFacade().getName(element));
+        String name;
+        if (modelImpl.getFacade().isANamedElement(element)) {
+            name = modelImpl.getFacade().getName(element);
+        } else {
+            // TODO: Some elements such as Generalization are
+            // no longer named.  For a transitional period we'll
+            // return a String so debug can continue, but the
+            // calling code should probably be fixed. - tfm 20070607
+            // Bob says - these are the comments that were in
+            // FacadeEUMLImpl.getName. Same trick is needed here
+            // for now.
+            name = modelImpl.getFacade().getUMLClassName(element)
+                + " <not nameable>"; //$NON-NLS-1$
+        }
+
+        path.add(name);
         return path;
     }
 
