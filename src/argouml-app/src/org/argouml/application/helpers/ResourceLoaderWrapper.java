@@ -421,6 +421,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-generalization", "Generalization");
         images.put("button.new-include", "Include");
         images.put("button.new-initial", "Initial");
+        images.put("button.new-region", "Region");
     }
 
     static {
