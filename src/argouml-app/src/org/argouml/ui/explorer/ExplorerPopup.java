@@ -109,9 +109,6 @@ public class ExplorerPopup extends JPopupMenu {
     private static final Logger LOG =
         Logger.getLogger(ExplorerPopup.class);
 
-    private final Object[] metaTypes; 
-    
-    
     /**
      * Creates a new instance of ExplorerPopup.
      *
@@ -122,63 +119,6 @@ public class ExplorerPopup extends JPopupMenu {
      */
     public ExplorerPopup(Object selectedItem, MouseEvent me) {
         super("Explorer popup menu");
-        
-        // TODO: Bob says - we need a Model interface method to return all
-        // metatypes that are available in that model. This code should
-        // only be required till that is implemented.
-        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
-            metaTypes = 
-                new Object[] {
-                    Model.getMetaTypes().getProfile(),
-                    Model.getMetaTypes().getParameter(),
-                    Model.getMetaTypes().getTemplateParameter(),
-                    Model.getMetaTypes().getPackage(), 
-                    Model.getMetaTypes().getActor(), 
-                    Model.getMetaTypes().getUseCase(), 
-                    Model.getMetaTypes().getExtensionPoint(), 
-                    Model.getMetaTypes().getUMLClass(), 
-                    Model.getMetaTypes().getInterface(), 
-                    Model.getMetaTypes().getAttribute(), 
-                    Model.getMetaTypes().getOperation(), 
-                    Model.getMetaTypes().getDataType(),
-                    Model.getMetaTypes().getEnumeration(),
-                    Model.getMetaTypes().getEnumerationLiteral(),
-                    Model.getMetaTypes().getSignal(),
-                    Model.getMetaTypes().getException(),
-                    Model.getMetaTypes().getComponent(), 
-                    Model.getMetaTypes().getComponentInstance(), 
-                    Model.getMetaTypes().getNode(), 
-                    Model.getMetaTypes().getNodeInstance(), 
-                    Model.getMetaTypes().getReception(), 
-                    Model.getMetaTypes().getStereotype()
-            };
-        } else {
-            metaTypes = 
-                new Object[] {
-                    Model.getMetaTypes().getParameter(),
-                    Model.getMetaTypes().getTemplateParameter(),
-                    Model.getMetaTypes().getPackage(), 
-                    Model.getMetaTypes().getActor(), 
-                    Model.getMetaTypes().getUseCase(), 
-                    Model.getMetaTypes().getExtensionPoint(), 
-                    Model.getMetaTypes().getUMLClass(), 
-                    Model.getMetaTypes().getInterface(), 
-                    Model.getMetaTypes().getAttribute(), 
-                    Model.getMetaTypes().getOperation(), 
-                    Model.getMetaTypes().getDataType(),
-                    Model.getMetaTypes().getEnumeration(),
-                    Model.getMetaTypes().getEnumerationLiteral(),
-                    Model.getMetaTypes().getRegion(),
-                    Model.getMetaTypes().getState(),
-                    Model.getMetaTypes().getSignal(),
-                    Model.getMetaTypes().getException(),
-                    Model.getMetaTypes().getComponent(), 
-                    Model.getMetaTypes().getNode(), 
-                    Model.getMetaTypes().getNodeInstance(), 
-                    Model.getMetaTypes().getReception(), 
-                    Model.getMetaTypes().getStereotype()
-            };
-        }
         
         /* Check if multiple items are selected. */
         boolean multiSelect =
@@ -487,7 +427,7 @@ public class ExplorerPopup extends JPopupMenu {
 
             // iterate through all possible model elements to determine which  
             // are valid to be contained by the selected target
-            for (Object metaType : metaTypes) {
+            for (Object metaType : Model.getMetaTypes().getAllMetaTypes()) {
                 // test if this element can be contained by the target
                 if (Model.getUmlFactory().isContainmentValid(metaType, target)) {
                     // this element can be contained add a menu item 
