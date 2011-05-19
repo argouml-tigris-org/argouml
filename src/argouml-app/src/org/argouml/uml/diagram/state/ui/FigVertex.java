@@ -101,15 +101,14 @@ public class FigVertex extends FigNodeModelElement {
         super.setEnclosingFig(encloser);
 
         final Object region;
-        if (encloser != null
-                && (Model.getFacade().isACompositeState(encloser.getOwner()))) {
+        if (encloser != null) {
             // Get the region as the first Region in the State.
             // If there is no region in the StateMachine then create one.
             List regions = Model.getStateMachinesHelper().getRegions(
                     encloser.getOwner());
             if (regions.isEmpty()) {
                 region = Model.getUmlFactory().buildNode(
-                        Model.getMetaTypes().getRegion(), getOwner());
+                        Model.getMetaTypes().getRegion(), encloser.getOwner());
             } else {
                 region = regions.get(0);
             }
