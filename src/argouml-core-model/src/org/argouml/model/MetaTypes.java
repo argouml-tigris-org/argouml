@@ -38,6 +38,8 @@
 
 package org.argouml.model;
 
+import java.util.Collection;
+
 
 /**
  * This interface contains methods to retrieve objects that represent the
@@ -46,13 +48,20 @@ package org.argouml.model;
  *
  * TODO: There are parts of ArgoUML which assume that the objects returned
  * here are Classes.  We should formalize that by changing the return types to
- * match. tfm - 20070620
+ * match. tfm - 20070620 Bob says - there should be no such assumption in
+ * ArgoUML. Can we document where these are?
  * 
  * @see org.argouml.model.UmlFactory#buildConnection(
  *         Object, Object, Object, Object, Object, Object, Object)
  * @see org.argouml.model.UmlFactory#buildNode(Object)
  */
 public interface MetaTypes {
+    
+    /**
+     * Get all metatypes available in the model implementation
+     */
+    Collection getAllMetaTypes();
+    
     /**
      * Given a Element instance returns the name of its meta type.
      *

@@ -14,6 +14,9 @@
 
 package org.argouml.model.euml;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.argouml.model.MetaTypes;
 import org.argouml.model.NotImplementedException;
 import org.eclipse.uml2.uml.Abstraction;
@@ -52,6 +55,7 @@ import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.ElementImport;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
+import org.eclipse.uml2.uml.Event;
 import org.eclipse.uml2.uml.ExpansionNode;
 import org.eclipse.uml2.uml.Expression;
 import org.eclipse.uml2.uml.Extend;
@@ -75,6 +79,7 @@ import org.eclipse.uml2.uml.MultiplicityElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.Node;
 import org.eclipse.uml2.uml.ObjectFlow;
+import org.eclipse.uml2.uml.OpaqueBehavior;
 import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.OutputPin;
@@ -100,6 +105,7 @@ import org.eclipse.uml2.uml.TemplateBinding;
 import org.eclipse.uml2.uml.TemplateParameter;
 import org.eclipse.uml2.uml.TemplateParameterSubstitution;
 import org.eclipse.uml2.uml.TimeEvent;
+import org.eclipse.uml2.uml.TimeExpression;
 import org.eclipse.uml2.uml.Transition;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.UseCase;
@@ -117,6 +123,78 @@ final class MetaTypesEUMLImpl implements MetaTypes {
      */
     private EUMLModelImplementation modelImpl;
 
+    private static final Collection<Class<?>> allMetaTypes;
+    static {
+        // TODO: Bob says - how can we auto-generate this list?
+        allMetaTypes = new ArrayList<Class<?>>(125);
+        allMetaTypes.add(AcceptEventAction.class);
+        allMetaTypes.add(Action.class);
+        allMetaTypes.add(ActivityParameterNode.class);
+        allMetaTypes.add(Actor.class);
+        allMetaTypes.add(Artifact.class);
+        allMetaTypes.add(AssociationClass.class);
+        allMetaTypes.add(Association.class);
+        allMetaTypes.add(BehavioralFeature.class);
+        allMetaTypes.add(CallAction.class);
+        allMetaTypes.add(CallBehaviorAction.class);
+        allMetaTypes.add(CallEvent.class);
+        allMetaTypes.add(CentralBufferNode.class);
+        allMetaTypes.add(ChangeEvent.class);
+        allMetaTypes.add(org.eclipse.uml2.uml.Class.class);
+        allMetaTypes.add(Classifier.class);
+        allMetaTypes.add(Collaboration.class);
+        allMetaTypes.add(Comment.class);
+        allMetaTypes.add(Component.class);
+        allMetaTypes.add(Constraint.class);
+        allMetaTypes.add(ControlFlow.class);
+        allMetaTypes.add(CreateObjectAction.class);
+        allMetaTypes.add(DataStoreNode.class);
+        allMetaTypes.add(DataType.class);
+        allMetaTypes.add(Dependency.class);
+        allMetaTypes.add(DestroyObjectAction.class);
+        allMetaTypes.add(Element.class);
+        allMetaTypes.add(Enumeration.class);
+        allMetaTypes.add(EnumerationLiteral.class);
+        allMetaTypes.add(Event.class);
+        allMetaTypes.add(Expression.class);
+        allMetaTypes.add(Extend.class);
+        allMetaTypes.add(ExtensionPoint.class);
+        allMetaTypes.add(Feature.class);
+        allMetaTypes.add(FinalState.class);
+        allMetaTypes.add(Generalization.class);
+        allMetaTypes.add(Include.class);
+        allMetaTypes.add(InstanceSpecification.class);
+        allMetaTypes.add(Interaction.class);
+        allMetaTypes.add(Interface.class);
+        allMetaTypes.add(Message.class);
+        allMetaTypes.add(Model.class);
+        allMetaTypes.add(Namespace.class);
+        allMetaTypes.add(Node.class);
+        allMetaTypes.add(ObjectFlow.class);
+        allMetaTypes.add(OpaqueBehavior.class);
+        allMetaTypes.add(Operation.class);
+        allMetaTypes.add(org.eclipse.uml2.uml.Package.class);
+        allMetaTypes.add(Profile.class);
+        allMetaTypes.add(Property.class);
+        allMetaTypes.add(Pseudostate.class);
+        allMetaTypes.add(Parameter.class);
+        allMetaTypes.add(Reception.class);
+        allMetaTypes.add(Region.class);
+        allMetaTypes.add(Relationship.class);
+        allMetaTypes.add(SendSignalAction.class);
+        allMetaTypes.add(Signal.class);
+        allMetaTypes.add(SignalEvent.class);
+        allMetaTypes.add(State.class);
+        allMetaTypes.add(StateMachine.class);
+        allMetaTypes.add(Stereotype.class);
+        allMetaTypes.add(StructuralFeature.class);
+        allMetaTypes.add(TimeEvent.class);
+        allMetaTypes.add(TimeExpression.class);
+        allMetaTypes.add(Transition.class);
+        allMetaTypes.add(Usage.class);
+        allMetaTypes.add(UseCase.class);
+    }
+    
     /**
      * Constructor.
      * 
@@ -125,6 +203,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
      */
     public MetaTypesEUMLImpl(EUMLModelImplementation implementation) {
         modelImpl = implementation;
+    }
+    
+    public Collection getAllMetaTypes() {
+        return allMetaTypes;
     }
 
     public Object getAbstraction() {

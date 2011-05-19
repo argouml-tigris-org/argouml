@@ -38,6 +38,9 @@
 
 package org.argouml.model.mdr;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.jmi.model.PrimitiveType;
 
 import org.argouml.model.MetaTypes;
@@ -102,6 +105,7 @@ import org.omg.uml.behavioralelements.usecases.Extend;
 import org.omg.uml.behavioralelements.usecases.ExtensionPoint;
 import org.omg.uml.behavioralelements.usecases.Include;
 import org.omg.uml.behavioralelements.usecases.UseCase;
+import org.omg.uml.behavioralelements.usecases.UseCaseInstance;
 import org.omg.uml.foundation.core.Abstraction;
 import org.omg.uml.foundation.core.Artifact;
 import org.omg.uml.foundation.core.AssociationClass;
@@ -131,6 +135,8 @@ import org.omg.uml.foundation.core.Node;
 import org.omg.uml.foundation.core.Operation;
 import org.omg.uml.foundation.core.Parameter;
 import org.omg.uml.foundation.core.Permission;
+import org.omg.uml.foundation.core.PresentationElement;
+import org.omg.uml.foundation.core.ProgrammingLanguageDataType;
 import org.omg.uml.foundation.core.Relationship;
 import org.omg.uml.foundation.core.Stereotype;
 import org.omg.uml.foundation.core.StructuralFeature;
@@ -143,14 +149,21 @@ import org.omg.uml.foundation.core.UmlClass;
 import org.omg.uml.foundation.core.Usage;
 import org.omg.uml.foundation.datatypes.ActionExpression;
 import org.omg.uml.foundation.datatypes.AggregationKind;
+import org.omg.uml.foundation.datatypes.ArgListsExpression;
 import org.omg.uml.foundation.datatypes.BooleanExpression;
 import org.omg.uml.foundation.datatypes.CallConcurrencyKind;
 import org.omg.uml.foundation.datatypes.Expression;
+import org.omg.uml.foundation.datatypes.IterationExpression;
+import org.omg.uml.foundation.datatypes.MappingExpression;
 import org.omg.uml.foundation.datatypes.Multiplicity;
 import org.omg.uml.foundation.datatypes.MultiplicityRange;
+import org.omg.uml.foundation.datatypes.ObjectSetExpression;
 import org.omg.uml.foundation.datatypes.ParameterDirectionKind;
+import org.omg.uml.foundation.datatypes.ProcedureExpression;
 import org.omg.uml.foundation.datatypes.PseudostateKind;
 import org.omg.uml.foundation.datatypes.ScopeKind;
+import org.omg.uml.foundation.datatypes.TimeExpression;
+import org.omg.uml.foundation.datatypes.TypeExpression;
 import org.omg.uml.foundation.datatypes.VisibilityKind;
 import org.omg.uml.modelmanagement.ElementImport;
 import org.omg.uml.modelmanagement.Model;
@@ -173,6 +186,134 @@ final class MetaTypesMDRImpl implements MetaTypes {
      */
     MetaTypesMDRImpl() {
         // forbid instantiation
+    }
+    
+    private static final Collection<Class<?>> allMetaTypes;
+    static {
+        // TODO: Bob says - how can we auto-generate this list?
+        allMetaTypes = new ArrayList<Class<?>>(125);
+        allMetaTypes.add(Abstraction.class);
+        allMetaTypes.add(ActionSequence.class);
+        allMetaTypes.add(ActionState.class);
+        allMetaTypes.add(Actor.class);
+        allMetaTypes.add(ArgListsExpression.class);
+        allMetaTypes.add(Argument.class);
+        allMetaTypes.add(Artifact.class);
+        allMetaTypes.add(AssociationEnd.class);
+        allMetaTypes.add(AssociationEndRole.class);
+        allMetaTypes.add(AssociationRole.class);
+        allMetaTypes.add(AttributeLink.class);
+        allMetaTypes.add(Expression.class);
+        allMetaTypes.add(BooleanExpression.class);
+        allMetaTypes.add(Multiplicity.class);
+        allMetaTypes.add(MultiplicityRange.class);
+        allMetaTypes.add(TypeExpression.class);
+        allMetaTypes.add(MappingExpression.class);
+        allMetaTypes.add(ProcedureExpression.class);
+        allMetaTypes.add(ObjectSetExpression.class);
+        allMetaTypes.add(ActionExpression.class);
+        allMetaTypes.add(IterationExpression.class);
+        allMetaTypes.add(TimeExpression.class);
+        allMetaTypes.add(Element.class);
+        allMetaTypes.add(ModelElement.class);
+        allMetaTypes.add(GeneralizableElement.class);
+        allMetaTypes.add(Namespace.class);
+        allMetaTypes.add(Classifier.class);
+        allMetaTypes.add(UmlClass.class);
+        allMetaTypes.add(DataType.class);
+        allMetaTypes.add(Feature.class);
+        allMetaTypes.add(StructuralFeature.class);
+        allMetaTypes.add(Interface.class);
+        allMetaTypes.add(Constraint.class);
+        allMetaTypes.add(Relationship.class);
+        allMetaTypes.add(UmlAssociation.class);
+        allMetaTypes.add(Attribute.class);
+        allMetaTypes.add(BehavioralFeature.class);
+        allMetaTypes.add(Operation.class);
+        allMetaTypes.add(Parameter.class);
+        allMetaTypes.add(Method.class);
+        allMetaTypes.add(Generalization.class);
+        allMetaTypes.add(AssociationClass.class);
+        allMetaTypes.add(Dependency.class);
+        allMetaTypes.add(PresentationElement.class);
+        allMetaTypes.add(Usage.class);
+        allMetaTypes.add(Binding.class);
+        allMetaTypes.add(Component.class);
+        allMetaTypes.add(Node.class);
+        allMetaTypes.add(Permission.class);
+        allMetaTypes.add(Comment.class);
+        allMetaTypes.add(Flow.class);
+        allMetaTypes.add(ElementResidence.class);
+        allMetaTypes.add(Enumeration.class);
+        allMetaTypes.add(EnumerationLiteral.class);
+        allMetaTypes.add(Stereotype.class);
+        allMetaTypes.add(TagDefinition.class);
+        allMetaTypes.add(TaggedValue.class);
+        allMetaTypes.add(ProgrammingLanguageDataType.class);
+        allMetaTypes.add(TemplateArgument.class);
+        allMetaTypes.add(Instance.class);
+        allMetaTypes.add(Signal.class);
+        allMetaTypes.add(Action.class);
+        allMetaTypes.add(CreateAction.class);
+        allMetaTypes.add(DestroyAction.class);
+        allMetaTypes.add(UninterpretedAction.class);
+        allMetaTypes.add(Object.class);
+        allMetaTypes.add(Link.class);
+        allMetaTypes.add(LinkObject.class);
+        allMetaTypes.add(DataValue.class);
+        allMetaTypes.add(CallAction.class);
+        allMetaTypes.add(SendAction.class);
+        allMetaTypes.add(Reception.class);
+        allMetaTypes.add(LinkEnd.class);
+        allMetaTypes.add(ReturnAction.class);
+        allMetaTypes.add(TerminateAction.class);
+        allMetaTypes.add(Stimulus.class);
+        allMetaTypes.add(UmlException.class);
+        allMetaTypes.add(ComponentInstance.class);
+        allMetaTypes.add(NodeInstance.class);
+        allMetaTypes.add(SubsystemInstance.class);
+        allMetaTypes.add(UseCase.class);
+        allMetaTypes.add(UseCaseInstance.class);
+        allMetaTypes.add(Extend.class);
+        allMetaTypes.add(Include.class);
+        allMetaTypes.add(ExtensionPoint.class);
+        allMetaTypes.add(StateMachine.class);
+        allMetaTypes.add(Event.class);
+        allMetaTypes.add(StateVertex.class);
+        allMetaTypes.add(State.class);
+        allMetaTypes.add(TimeEvent.class);
+        allMetaTypes.add(CallEvent.class);
+        allMetaTypes.add(SignalEvent.class);
+        allMetaTypes.add(Transition.class);
+        allMetaTypes.add(CompositeState.class);
+        allMetaTypes.add(ChangeEvent.class);
+        allMetaTypes.add(Guard.class);
+        allMetaTypes.add(Pseudostate.class);
+        allMetaTypes.add(SimpleState.class);
+        allMetaTypes.add(SubmachineState.class);
+        allMetaTypes.add(SynchState.class);
+        allMetaTypes.add(StubState.class);
+        allMetaTypes.add(FinalState.class);
+        allMetaTypes.add(Collaboration.class);
+        allMetaTypes.add(ClassifierRole.class);
+        allMetaTypes.add(Message.class);
+        allMetaTypes.add(Interaction.class);
+        allMetaTypes.add(InteractionInstanceSet.class);
+        allMetaTypes.add(CollaborationInstanceSet.class);
+        allMetaTypes.add(ActivityGraph.class);
+        allMetaTypes.add(Partition.class);
+        allMetaTypes.add(SubactivityState.class);
+        allMetaTypes.add(CallState.class);
+        allMetaTypes.add(ObjectFlowState.class);
+        allMetaTypes.add(ClassifierInState.class);
+        allMetaTypes.add(UmlPackage.class);
+        allMetaTypes.add(Model.class);
+        allMetaTypes.add(Subsystem.class);
+        allMetaTypes.add(ElementImport.class);
+    };
+    
+    public Collection getAllMetaTypes() {
+        return allMetaTypes;
     }
     
     public String getName(Object modelElement) {
