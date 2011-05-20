@@ -2855,12 +2855,12 @@ Authors:
   </panel>
   <panel name="Transition">
     <text name="name" type="Name" />    
-    <singlerow name="stateMachine" type="StateMachine" />
-    <singlerow name="state" type="Transition" />    
-    <separator />
     <singlerow name="source" type="StateVertex" />
     <singlerow name="target" type="StateVertex" />
+    <separator />
     <singlerow name="trigger" type="CallEvent,ChangeEvent,SignalEvent,TimeEvent" new="true" />
+    <singlerow name="guard" type="CallEvent,ChangeEvent,SignalEvent,TimeEvent" new="true" />
+    <singlerow name="effect" type="CallEvent,ChangeEvent,SignalEvent,TimeEvent" new="true" />
 	<debug />
     <attribute name="visibility" type="VisibilityKind" />
     <attribute name="modifiers">
