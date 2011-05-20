@@ -403,17 +403,11 @@ public class UMLStateDiagram extends UMLDiagram {
         ArrayList actions = new ArrayList();
         
         actions.add(getActionState());
-        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
-            actions.add(getActionCompositeState());
-        }
+        actions.add(getActionCompositeState());
         actions.add(getActionTransition());
-        
-        if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
-            actions.add(getActionSynchState());
-            actions.add(getActionSubmachineState());
-            actions.add(getActionStubState());
-        }
-        
+        actions.add(getActionSynchState());
+        actions.add(getActionSubmachineState());
+        actions.add(getActionStubState());
         actions.add(null);
         actions.add(getActionStartPseudoState());
         actions.add(getActionFinalPseudoState());
@@ -481,19 +475,10 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     protected Action getActionCompositeState() {
         if (actionCompositeState == null) {
-            if (Model.getFacade().getUmlVersion().startsWith("1")) {
-                actionCompositeState =
-                    new RadioAction(new CmdCreateNode(
-                            Model.getMetaTypes().getCompositeState(),
-                            "button.new-compositestate"));
-            } else {
-                // TODO: We need a specialist action here to set the composite flag]
-                // on the state after its created.
-                actionCompositeState =
-                    new RadioAction(new CmdCreateNode(
-                            Model.getMetaTypes().getState(),
-                            "button.new-compositestate"));
-            }
+            actionCompositeState =
+                new RadioAction(new CmdCreateNode(
+                        Model.getMetaTypes().getCompositeState(),
+                        "button.new-compositestate"));
         }
         return actionCompositeState;
     }
@@ -585,17 +570,10 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     protected Action getActionState() {
         if (actionState == null) {
-            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
-                actionState =
-                    new RadioAction(
-                            new CmdCreateNode(Model.getMetaTypes().getSimpleState(),
-                                              "button.new-simplestate"));
-            } else {
-                actionState =
-                    new RadioAction(
-                            new CmdCreateNode(Model.getMetaTypes().getState(),
-                                              "button.new-simplestate"));
-            }
+            actionState =
+                new RadioAction(
+                        new CmdCreateNode(Model.getMetaTypes().getSimpleState(),
+                                          "button.new-simplestate"));
         }
         return actionState;
     }
@@ -841,19 +819,11 @@ public class UMLStateDiagram extends UMLDiagram {
         } else if (Model.getFacade().isASubmachineState(droppedObject)) {
             figNode = new FigSubmachineState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isACompositeState(droppedObject)) {
-            if (Model.getFacade().getUmlVersion().startsWith("1")) {
-                figNode = new FigCompositeState(droppedObject, bounds, settings);
-            } else {
-                figNode = new FigVertex(droppedObject, bounds, settings);
-            }
+            figNode = new FigCompositeState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isASynchState(droppedObject)) {
             figNode = new FigSynchState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAState(droppedObject)) {
-            if (Model.getFacade().getUmlVersion().startsWith("1")) {
-                figNode = new FigSimpleState(droppedObject, bounds, settings);
-            } else {
-                figNode = new FigVertex(droppedObject, bounds, settings);
-            }
+            figNode = new FigSimpleState(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAComment(droppedObject)) {
             figNode = new FigComment(droppedObject, bounds, settings);
         } else if (Model.getFacade().isAPseudostate(droppedObject)) {
