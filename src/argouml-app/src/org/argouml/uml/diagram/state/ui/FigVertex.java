@@ -100,19 +100,30 @@ public class FigVertex extends FigNodeModelElement {
         
         super.setEnclosingFig(encloser);
 
-        final Object region;
+        Object region = null;
         if (encloser != null) {
             // Get the region as the first Region in the State.
             // If there is no region in the StateMachine then create one.
             List regions = Model.getStateMachinesHelper().getRegions(
                     encloser.getOwner());
             if (regions.isEmpty()) {
+                // There are no regions so create one and place the vertex there.
                 region = Model.getUmlFactory().buildNode(
                         Model.getMetaTypes().getRegion(), encloser.getOwner());
             } else {
-                region = regions.get(0);
+                // There are one or more regions so find the one that the
+                //vertex was dropped in
+                FigVertex compositeState = (FigVertex) encloser;
+                for (DiagramElement de :
+                        compositeState.regionCompartment.getDiagramElements()) {
+                    if (((Fig) de).getBounds().contains(getBounds())) {
+                        region = de.getOwner();
+                        break;
+                    }
+                }
             }
         } else {
+            // The vertex was dropped onto the diagram.
             // Get the region as the first Region in the StateMachine.
             // If there is no region in the StateMachine then create one.
             ArgoDiagram diagram = (ArgoDiagram) lp.getDiagram();
