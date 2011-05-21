@@ -182,8 +182,8 @@ class FigMessageGroup extends ArgoFigGroup {
     }
     
     void updateArrows() {
-        for (FigMessage fm : (List<FigMessage>) getFigs()) {
-            fm.updateArrow();
+        for (Fig fm : getFigs()) {
+            ((FigMessage) fm).updateArrow();
         }
     }
 
