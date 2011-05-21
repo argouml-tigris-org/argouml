@@ -40,7 +40,6 @@ import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.base.Selection;
 import org.tigris.gef.di.DiagramElement;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
@@ -106,7 +105,8 @@ public class FigVertex extends FigNodeModelElement {
             List regions = Model.getStateMachinesHelper().getRegions(
                     encloser.getOwner());
             if (regions.isEmpty()) {
-                // There are no regions so create one and place the vertex there.
+                // There are no regions so create one and place the vertex
+                //there.
                 region = Model.getUmlFactory().buildNode(
                         Model.getMetaTypes().getRegion(), encloser.getOwner());
             } else {
@@ -183,17 +183,11 @@ public class FigVertex extends FigNodeModelElement {
         }
     }
 
-    // Temporary start
-//    private static final Color[] COLOR_ARRAY = {
-//        Color.RED, Color.BLUE, Color.CYAN, Color.YELLOW, Color.GREEN}; 
-//    private int nextColor = 0;
-    // Temporary end
-    
     @Override
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         
-        assert(mee.getPropertyName().equals("region"));
+        assert (mee.getPropertyName().equals("region"));
         
         if (mee instanceof AddAssociationEvent) {
             // TODO: Before adding a new region make the last region
@@ -206,15 +200,9 @@ public class FigVertex extends FigNodeModelElement {
                     regionCompartment.getX(), regionCompartment.getY(),
                     rg.getMinimumSize().width, rg.getMinimumSize().height);
             
-            // Temporary start - colour the regions so that we can see them for now
-//            rg.setFillColor(COLOR_ARRAY[nextColor++]);
-//            if (nextColor >= COLOR_ARRAY.length) {
-//                nextColor = 0;
-//            }
-            // Temporary end
-            
             regionCompartment.addFig(rg);
-            setSize(getMinimumSize());
+            setSize(Math.max(getMinimumSize().width, getWidth()),
+                    Math.max(getMinimumSize().height, getHeight()));
         }
         if (mee instanceof RemoveAssociationEvent) {
             Object oldRegion = mee.getNewValue();
@@ -329,18 +317,24 @@ public class FigVertex extends FigNodeModelElement {
         return true;
     }
 
-    public List<Rectangle> getTrapRects() {
-        List regions = Model.getStateMachinesHelper().getRegions(getOwner());
-        
-        ArrayList<Rectangle> rects = new ArrayList<Rectangle>(regions.size());
-        if (regions.isEmpty()) {
-            rects.add(regionCompartment.getBounds());
+    public List<Rectangle> getTrapRects(Fig draggedFig) {
+        if (draggedFig instanceof NodeConnector) {
+            ArrayList<Rectangle> rects = new ArrayList<Rectangle>(1);
+            rects.add(getBounds());
+            return rects;
         } else {
-            for (DiagramElement f : regionCompartment.getDiagramElements()) {
-                rects.add(((Fig) f).getBounds());
+            List regions = Model.getStateMachinesHelper().getRegions(getOwner());
+            
+            ArrayList<Rectangle> rects = new ArrayList<Rectangle>(regions.size());
+            if (regions.isEmpty()) {
+                rects.add(regionCompartment.getBounds());
+            } else {
+                for (Fig f : regionCompartment.getFigs()) {
+                    rects.add(f.getBounds());
+                }
             }
+            return rects;
         }
-        return rects;
     }
     
     protected void setStandardBounds(int x, int y, int w, int h) {

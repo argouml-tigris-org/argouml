@@ -13,13 +13,12 @@
 
 package org.argouml.state2.diagram;
 
-import java.awt.Rectangle;
-import org.argouml.uml.diagram.DiagramSettings;
+/**
+ * An interface that must be implemented by any node that acts as a connection
+ * point to another node. Such a node hugs the bounds of any other node it is
+ * connected to.
+ * @author Bob Tarling
+ */
+interface NodeConnector {
 
-public class FigExitPoint extends FigCircleState implements NodeConnector {
-
-    public FigExitPoint(Object owner, Rectangle bounds, 
-            DiagramSettings settings) {
-        super(owner, bounds, settings);
-    }
 }

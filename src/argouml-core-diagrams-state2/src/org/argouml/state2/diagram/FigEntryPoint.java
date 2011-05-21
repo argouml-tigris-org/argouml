@@ -16,7 +16,7 @@ package org.argouml.state2.diagram;
 import java.awt.Rectangle;
 import org.argouml.uml.diagram.DiagramSettings;
 
-public class FigEntryPoint extends FigCircleState {
+public class FigEntryPoint extends FigCircleState implements NodeConnector {
 
     public FigEntryPoint(Object owner, Rectangle bounds, 
             DiagramSettings settings) {

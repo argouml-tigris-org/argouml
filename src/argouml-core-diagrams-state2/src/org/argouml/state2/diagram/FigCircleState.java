@@ -20,7 +20,11 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 
-public class FigCircleState extends FigNodeModelElement {
+/**
+ * Abstract class for any state class with a circular boundary.
+ * @author Bob Tarling
+ */
+abstract class FigCircleState extends FigNodeModelElement {
 
     private static final int WIDTH = 16;
     private static final int HEIGHT = 16;
