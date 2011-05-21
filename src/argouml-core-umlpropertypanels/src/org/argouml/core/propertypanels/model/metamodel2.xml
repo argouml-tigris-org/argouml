@@ -2726,8 +2726,8 @@ Authors:
     <list name="targetFlow" type="Flow" label="label.target-flows" />
     <list name="sourceFlow" type="Flow" label="label.source-flows" />
     <list name="comment" type="Comment" />
-    <list name="region" type="Region" />
     <separator />
+    <list name="region" type="Region" />
     <list name="clientDependency" type="Dependency" label="label.client-dependencies" />
     <list name="supplierDependency" type="ModelElement" label="label.supplier-dependencies" />
     <list name="presentation" type="ModelElement" />
@@ -2745,10 +2745,9 @@ Authors:
     <attribute name="container" type="CompositeState" />
     <list name="outgoing" type="Transition" />
     <list name="incoming" type="Transition" />
-    <attribute name="entry" type="Action" />
-    <separator />
-    <attribute name="exit" type="Action" />
     <list name="deferrableEvent" type="Event" label="label.deferrable" />
+    <attribute name="entry" type="Action" />
+    <attribute name="exit" type="Action" />
     <attribute name="doActivity" type="Action" />
     <attribute name="stateMachine" type="StateMachine" />
   </panel>
