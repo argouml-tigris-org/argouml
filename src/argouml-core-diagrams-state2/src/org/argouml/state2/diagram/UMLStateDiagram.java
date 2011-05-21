@@ -216,6 +216,13 @@ public class UMLStateDiagram extends UMLDiagram {
             if (kind.equals(Model.getPseudostateKind().getInitial())) {
                 figNode = new FigInitialState(modelElement, bounds, settings);
             } else if (kind.equals(
+                    Model.getPseudostateKind().getEntryPoint())) {
+                figNode = 
+                        new FigEntryPoint(modelElement, bounds, settings);
+            } else if (kind.equals(
+                    Model.getPseudostateKind().getExitPoint())) {
+                figNode = new FigExitPoint(modelElement, bounds, settings);
+            } else if (kind.equals(
                     Model.getPseudostateKind().getChoice())) {
                 figNode = new FigBranchState(modelElement, bounds, settings);
             } else if (kind.equals(
