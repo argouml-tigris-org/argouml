@@ -1653,9 +1653,11 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public String getTipString(Object modelElement) {
-        // TODO: Not Model implementation dependent
-        String name = getName(modelElement);
-        if (name.equals("")) { //$NON-NLS-1$
+        String name = ""; //$NON-NLS-1$
+        if (modelElement instanceof NamedElement) {
+            name = getName(modelElement);
+        }
+        if (name.trim().length() == 0) {
             return getUMLClassName(modelElement);
         } else {
             return getUMLClassName(modelElement) + ": " + name; //$NON-NLS-1$
