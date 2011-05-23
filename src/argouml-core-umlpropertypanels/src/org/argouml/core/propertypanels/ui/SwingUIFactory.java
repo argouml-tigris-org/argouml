@@ -69,7 +69,7 @@ import org.tigris.toolbar.ToolBarFactory;
  * Creates the XML Property panels
  */
 class SwingUIFactory {
-	
+    
     private static final Logger LOG = Logger.getLogger(SwingUIFactory.class);
     
     public SwingUIFactory() {
@@ -89,7 +89,8 @@ class SwingUIFactory {
               	target.getClass());
         
         if (panelData == null) {
-            panel.add(new JLabel("There is no panel configured for " + target.getClass()));
+            panel.add(new JLabel(
+        	    "There is no panel configured for " + target.getClass()));
             LOG.error("No panel found for " + target.getClass());
             return;
         }
@@ -98,34 +99,49 @@ class SwingUIFactory {
             
         for (ControlData prop : panelData.getProperties()) {
             try {
-                if ("text".equals(prop.getControlType())) {
-                    buildTextboxPanel(panel, target, prop);
-                } else if ("combo".equals(prop.getControlType())) {
-                    buildComboPanel(panel, target, prop);                
-                } else if ("checkgroup".equals(prop.getControlType())) {
-                    buildCheckGroup(panel, target, prop);
-                } else if ("optionbox".equals(prop.getControlType())) {
-                    buildOptionBox(panel, target, prop);
-                } else if ("singlerow".equals(prop.getControlType())) {
-                    buildSingleRow(panel, target, prop);
-                } else if ("list".equals(prop.getControlType())) {                    
-                    buildList(panel, target, prop);
-                } else if ("textarea".equals(prop.getControlType())) {
-                    buildTextArea(panel, target, prop);
-                } else if ("separator".equals(prop.getControlType())) {
-                    panel.add(LabelledLayout.getSeparator());
-                }
+        	createControl (target, panel, prop);
             } catch (Exception e) {
-        	String message = "Exception caught building control " + prop.getControlType()
-    		+ " for property " + prop.getPropertyName() + " on panel for "
-    		+ target;
-        	LOG.error(message, e);
-        	try {
+                String message = "Exception caught building control "
+                    + prop.getControlType()
+                    + " for property " + prop.getPropertyName()
+                    + " on panel for " + target;
+                LOG.error(message, e);
+                try {
                     panel.add(new JLabel(message));
-        	} catch (Exception ex) {
-        	    throw e;
-        	}
+                } catch (Exception ex) {
+                    throw e;
+                }
             }
+        }
+    }
+    
+    /**
+     * Create a control on the given panel for the correct type and target
+     * @param target
+     * @param panel
+     * @param prop
+     * @throws Exception
+     */
+    private void createControl(
+            final Object target,
+            final JPanel panel,
+            final ControlData prop) throws Exception {
+        if ("text".equals(prop.getControlType())) {
+            buildTextboxPanel(panel, target, prop);
+        } else if ("combo".equals(prop.getControlType())) {
+            buildComboPanel(panel, target, prop);                
+        } else if ("checkgroup".equals(prop.getControlType())) {
+            buildCheckGroup(panel, target, prop);
+        } else if ("optionbox".equals(prop.getControlType())) {
+            buildOptionBox(panel, target, prop);
+        } else if ("singlerow".equals(prop.getControlType())) {
+            buildSingleRow(panel, target, prop);
+        } else if ("list".equals(prop.getControlType())) {
+            buildList(panel, target, prop);
+        } else if ("textarea".equals(prop.getControlType())) {
+            buildTextArea(panel, target, prop);
+        } else if ("separator".equals(prop.getControlType())) {
+            panel.add(LabelledLayout.getSeparator());
         }
     }
 
@@ -135,9 +151,9 @@ class SwingUIFactory {
      * @param panel
      */
     private void createLabel(
-	    final Object target,
-	    final PanelData panelData,
-	    final JPanel panel) {
+            final Object target,
+            final PanelData panelData,
+            final JPanel panel) {
         final String metaTypeName = Model.getMetaTypes().getName(target);
         final ToolBarFactory tbf = new ToolBarFactory(new Object[0]);
         tbf.setRollover(true);
@@ -613,13 +629,17 @@ class SwingUIFactory {
             if (Model.getFacade().isATemplateParameter(target)) {
                 target = Model.getFacade().getParameter(target);
             }
-            document = new UMLModelElementNameDocument(prop.getPropertyName(), target);
+            document = new UMLModelElementNameDocument(
+        	    prop.getPropertyName(), target);
         } else if ("discriminator".equals(prop.getPropertyName())) {
-            document = new UMLDiscriminatorNameDocument(prop.getPropertyName(), target);
+            document = new UMLDiscriminatorNameDocument(
+        	    prop.getPropertyName(), target);
         } else if ("location".equals(prop.getPropertyName())) {
-            document = new UMLExtensionPointLocationDocument(prop.getPropertyName(), target);
+            document = new UMLExtensionPointLocationDocument(
+        	    prop.getPropertyName(), target);
         } else if ("bound".equals(prop.getPropertyName())) {
-            document = new UMLSynchStateBoundDocument(prop.getPropertyName(), target);
+            document =new UMLSynchStateBoundDocument(
+        	    prop.getPropertyName(), target);
         }
         
         if (document != null) {
