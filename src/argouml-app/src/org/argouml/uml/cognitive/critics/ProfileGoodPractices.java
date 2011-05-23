@@ -42,6 +42,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Translator;
 import org.argouml.model.Model;
 import org.argouml.profile.Profile;
 
@@ -101,7 +102,8 @@ public class ProfileGoodPractices extends Profile {
     
     @Override
     public String getDisplayName() {
-        return "Critics for Good Practices";
+        return Translator.localize(
+                "misc.project.profile-critics-for-good-practices");
     }
 
 

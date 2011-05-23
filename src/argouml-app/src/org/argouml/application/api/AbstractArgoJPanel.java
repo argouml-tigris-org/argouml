@@ -87,7 +87,7 @@ public abstract class AbstractArgoJPanel extends JPanel
 
     private static final int OVERLAPP = 30;
 
-    private String title = "untitled";
+    private String title = Translator.localize("tab.untitled");
     
     private Icon icon = null;
 
@@ -118,23 +118,23 @@ public abstract class AbstractArgoJPanel extends JPanel
     /**
      * The constructor.
      *
-     * @param title The name as a localized string.
+     * @param theTitle The name as a localized string.
      */
     // TODO: Review all callers to make sure that they localize the title
-    public AbstractArgoJPanel(String title) {
-        this(title, false);
+    public AbstractArgoJPanel(String theTitle) {
+        this(theTitle, false);
     }
 
     /**
      * The constructor.
      *
-     * @param title The name (a localized string).
+     * @param theTitle The name (a localized string).
      * @param t if true, remove tab from parent JTabbedPane
      */
     // TODO: Review all callers to make sure that they localize the title
     // In process by Harold Braun 20070912
-    public AbstractArgoJPanel(String title, boolean t) {
-        setTitle(title);
+    public AbstractArgoJPanel(String theTitle, boolean t) {
+        setTitle(theTitle);
         tear = t;
     }
 

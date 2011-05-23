@@ -43,6 +43,7 @@ import java.util.Set;
 
 import org.argouml.cognitive.CompoundCritic;
 import org.argouml.cognitive.Critic;
+import org.argouml.cognitive.Translator;
 import org.argouml.model.Model;
 import org.argouml.profile.Profile;
 
@@ -153,7 +154,8 @@ public class ProfileCodeGeneration extends Profile {
     
     @Override
     public String getDisplayName() {
-        return "Critics for Code Generation";
+        return Translator.localize(
+                "misc.project.profile-critics-for-codegeneration");
     }
 
    /*

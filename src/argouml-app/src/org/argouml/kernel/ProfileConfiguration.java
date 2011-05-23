@@ -51,6 +51,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoProfileEvent;
+import org.argouml.cognitive.Translator;
 import org.argouml.configuration.Configuration;
 import org.argouml.configuration.ConfigurationKey;
 import org.argouml.model.Model;
@@ -214,7 +215,8 @@ public class ProfileConfiguration extends AbstractProjectMember {
             profiles.add(p);
             try {
                 for (Object profile : p.getProfilePackages()) {
-                    Model.getExtensionMechanismsHelper().applyProfile(m, profile);
+                    Model.getExtensionMechanismsHelper().applyProfile(
+                            m, profile);
                 }
                 profileModels.addAll(p.getProfilePackages());
             } catch (ProfileException e) {
@@ -350,7 +352,7 @@ public class ProfileConfiguration extends AbstractProjectMember {
      */
     @Override
     public String toString() {
-        return "Profile Configuration";
+        return Translator.localize("misc.project.profileconfigurationname");
     }
 
 
