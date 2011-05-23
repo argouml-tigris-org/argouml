@@ -9,6 +9,7 @@
  * Contributors:
  *    Bob Tarling
  *    Luis Sergio Oliveira (euluis)
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -1676,6 +1677,10 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
         } catch (InvalidObjectException e) {
             throw new InvalidElementException(e);
         }
+    }
+    
+    public Collection getExtentElements(String name) {
+        return getExtentPackages(name);
     }
     
     public Collection getExtentPackages(String name) {

@@ -7,7 +7,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    tfmorris
+ *    Tom Morris
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -78,7 +79,7 @@ public class URLModelLoader implements ProfileModelLoader {
         }
         
         Collection elements = 
-            Model.getUmlFactory().getExtentPackages(publicId.toExternalForm());
+            Model.getUmlFactory().getExtentElements(publicId.toExternalForm());
         if (elements == null) {
             ZipInputStream zis = null;
             try {

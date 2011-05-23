@@ -24,12 +24,12 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelFactory;
+import org.argouml.model.Defaults;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.InvalidElementException;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.Model;
 import org.argouml.model.UmlFactory;
-import org.argouml.model.Defaults;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -84,7 +84,6 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.Usage;
 import org.eclipse.uml2.uml.UseCase;
-import org.eclipse.uml2.uml.Vertex;
 
 /**
  * The implementation of the UmlFactory for EUML2.
@@ -769,7 +768,7 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
         }
     }
 
-    public Collection getExtentPackages(String extentName) {
+    public Collection getExtentElements(String extentName) {
         if (extentName != null && extentName.startsWith("pathmap://UML_")) {
             // trying to get a built-in standard profile from eclipse UML2
             try {
@@ -779,6 +778,19 @@ class UmlFactoryEUMLImpl implements UmlFactory, AbstractModelFactory {
                 return r.getContents();
             } catch (Exception ex) {
                 LOG.warn("failed to get resource: " + extentName); //$NON-NLS-1$
+            }
+        }
+        return null;
+    }
+
+    public Collection getExtentPackages(String extentName) {
+        Collection elements = getExtentElements(extentName);
+        if (elements != null) {
+            Collection<Object> result = new ArrayList<Object>();
+            for (Object element : elements) {
+                if (element instanceof Package) {
+                    result.add(element);
+                }
             }
         }
         return null;

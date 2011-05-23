@@ -9,6 +9,7 @@
  * Contributors:
  *    Tom Morris
  *    Bob Tarling
+ *    Thomas Neustupny
  *******************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -202,6 +203,17 @@ public interface UmlFactory {
      * @return true if removed
      */
     boolean isRemoved(Object o);
+
+    /**
+     * Get the top level elements (only packages in UML 1.x) for the given
+     * extent if it is loaded. Returns null if the extent doesn't exist and an
+     * empty collection if it exists, but contains no elements.
+     * 
+     * @param extentName the extent name (typically the public ID or URL of the
+     *            file which is used for references)
+     * @return a collection of elements if the extent exists, otherwise null
+     */
+    Collection getExtentElements(String extentName);
 
     /**
      * Get the top level packages (typically just a single Model) for the given
