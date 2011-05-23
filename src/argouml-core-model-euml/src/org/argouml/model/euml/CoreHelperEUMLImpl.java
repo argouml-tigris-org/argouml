@@ -411,6 +411,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         Element element = (Element) me;
         if (element.getOwner() != null) {
+            LOG.info("Setting ignore delete for " + element); //$NON-NLS-1$
             ModelEventPumpEUMLImpl pump = (ModelEventPumpEUMLImpl) Model.getPump();
             pump.addElementForDeleteEventIgnore(element);
         }

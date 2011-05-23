@@ -352,6 +352,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
         LOG.debug("event  - Property: " //$NON-NLS-1$
                 + featureName 
+                + " Type : " + eventType  //$NON-NLS-1$
                 + " Old: " + oldValue //$NON-NLS-1$
                 + " New: " + newValue //$NON-NLS-1$
                 + " From: " + notifier); //$NON-NLS-1$
@@ -404,6 +405,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                                     null, null, null),
                                     getListeners(
                                         oldValue)));
+                } else {
+                    LOG.info("Not sending delete event - assume remove"); //$NON-NLS-1$
                 }
                 events.add(new EventAndListeners(
                         new RemoveAssociationEvent(

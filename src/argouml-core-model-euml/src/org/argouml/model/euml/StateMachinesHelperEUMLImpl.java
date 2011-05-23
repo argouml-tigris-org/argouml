@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
 import org.eclipse.uml2.uml.Classifier;
@@ -32,6 +33,8 @@ import org.eclipse.uml2.uml.Vertex;
  */
 class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
 
+    private static final Logger LOG = Logger.getLogger(StateMachinesHelperEUMLImpl.class);
+    
     /**
      * The model implementation.
      */
@@ -231,6 +234,8 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
                     "Expected a vertext, got a " + handle); //$NON-NLS-1$
         }
         
+        Vertex vertex = (Vertex) handle;
+        
         if (region instanceof State) {
             List<Region> regions = ((State) region).getRegions();
             if (regions.isEmpty()) {
@@ -242,10 +247,20 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
         }
                         
         if (region == null || region instanceof Region) {
-            ModelEventPumpEUMLImpl pump =
-                (ModelEventPumpEUMLImpl) Model.getPump();
-            pump.addElementForDeleteEventIgnore((Vertex) handle);
-            ((Vertex) handle).setContainer((Region) region);
+            if (vertex.getContainer() != null && region != null) {
+                // If the region is changed to another region then
+                // we make sure that a delete event is not fired
+                // as a result.
+                LOG.info("Setting ignore delete for " + vertex); //$NON-NLS-1$
+                ModelEventPumpEUMLImpl pump =
+                    (ModelEventPumpEUMLImpl) Model.getPump();
+                pump.addElementForDeleteEventIgnore((Vertex) handle);
+            } else {
+                // The only way a region is set to null is if we're deleting
+                // the vertex in which case we do nothing special so that
+                // the removal of the state triggers a delete event.
+            }
+            vertex.setContainer((Region) region);
             return;
         }
                         
