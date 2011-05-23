@@ -38,6 +38,14 @@
 
 package org.argouml.application.helpers;
 
+import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import org.apache.log4j.Logger;
+import org.argouml.cognitive.Translator;
+
 /**
  * Receives the version of the application at initialisation time.
  * Also knows about website locations that depend on the version of ArgoUML.
@@ -45,6 +53,11 @@ package org.argouml.application.helpers;
  * @author Michiel
  */
 public class ApplicationVersion {
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(ApplicationVersion.class);
+
     /**
      * Version number.
      */
@@ -74,7 +87,7 @@ public class ApplicationVersion {
      * @return the URL
      */
     public static String getManualForCritic() {
-        return "http://argouml-stats.tigris.org/documentation/"
+        return Translator.localize("tab.help.path.manualcritic")
             + "manual-" 
             + stableVersion
             + "-single/argomanual.html#critics.";
@@ -86,8 +99,9 @@ public class ApplicationVersion {
      * @return the URL
      */
     public static String getOnlineManual() {
-        return "http://argouml-stats.tigris.org/nonav/documentation/"
-                + "manual-" + stableVersion + "/";
+        
+        return Translator.localize("tab.help.path.manual")
+        + "manual-" + stableVersion + "/";
     }
 
     /**
@@ -96,7 +110,7 @@ public class ApplicationVersion {
      * @return the URL
      */
     public static String getOnlineSupport() {
-        return "http://argouml.tigris.org/nonav/support.html";
+        return Translator.localize("tab.help.path.support");
     }
 
     /**
