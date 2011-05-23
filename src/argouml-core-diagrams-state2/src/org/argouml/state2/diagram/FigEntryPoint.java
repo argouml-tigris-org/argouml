@@ -41,17 +41,22 @@ class FigEntryPoint extends FigCircleState implements Connector {
 
     @Override
     public void setEnclosingFig(Fig encloser) {
+        // TODO: Note copy/paste code in FigExitPoint - where is this code
+        // better placed in GEF?
         LayerPerspective lp = (LayerPerspective) getLayer();
         if (lp == null) {
             return;
         }
         
         super.setEnclosingFig(encloser);
-
-        if (encloser != null) {
-            ((FigNode) encloser).addConnector(this);
+        FigVertex vertex = ((FigVertex) encloser);
+        
+        if (vertex != null) {
+            vertex.addConnector(this);
         } else {
-            ((FigNode) encloser).removeConnector(this);
+            FigVertex previousVertex = (FigVertex) getGraphNode();
+            if (previousVertex != null)
+                previousVertex.removeConnector(this);
         }
     }
 }
