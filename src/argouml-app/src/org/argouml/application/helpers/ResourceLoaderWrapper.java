@@ -401,8 +401,10 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-deephistory", "DeepHistory");
         images.put("button.new-dependency", "Dependency");
         images.put("button.new-destroyaction", "DestroyAction");
+        images.put("button.new-entrypoint", "EntryPoint");
         images.put("button.new-enumeration", "Enumeration");
         images.put("button.new-enumerationliteral", "EnumerationLiteral");
+        images.put("button.new-exitpoint", "ExitPoint");
         images.put("button.new-extension-point", "New Extension Point");
         images.put("button.new-extend", "Extend");
         images.put("button.new-exception", "Exception");
@@ -412,6 +414,7 @@ public final class ResourceLoaderWrapper {
         images.put("button.new-message", "Message");
         images.put("button.new-argument", "Argument");
         images.put("button.new-property", "Property");
+        images.put("button.new-state", "State");
         images.put("button.new-templateparameter", "TemplateParameter");
     }
 
