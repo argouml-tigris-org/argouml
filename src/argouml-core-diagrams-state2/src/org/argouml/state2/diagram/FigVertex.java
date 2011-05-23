@@ -41,6 +41,7 @@ import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.di.DiagramElement;
+import org.tigris.gef.presentation.Connector;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRRect;
@@ -318,9 +319,9 @@ public class FigVertex extends FigNodeModelElement {
     }
 
     public List<Rectangle> getTrapRects(Fig draggedFig) {
-        if (draggedFig instanceof NodeConnector) {
+        if (draggedFig instanceof Connector) {
             ArrayList<Rectangle> rects = new ArrayList<Rectangle>(1);
-            rects.add(getBounds());
+            rects.add(getBigPort().getBounds());
             return rects;
         } else {
             List regions = Model.getStateMachinesHelper().getRegions(getOwner());

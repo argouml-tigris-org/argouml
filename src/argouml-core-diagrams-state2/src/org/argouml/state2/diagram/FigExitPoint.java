@@ -15,11 +15,44 @@ package org.argouml.state2.diagram;
 
 import java.awt.Rectangle;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.di.GraphNode;
+import org.tigris.gef.presentation.Connector;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
 
-public class FigExitPoint extends FigCircleState implements NodeConnector {
+class FigExitPoint extends FigCircleState implements Connector {
 
+    private FigVertex node;
+    
     public FigExitPoint(Object owner, Rectangle bounds, 
             DiagramSettings settings) {
         super(owner, bounds, settings);
+    }
+
+    public GraphNode getGraphNode() {
+        return node;
+    }
+
+    public void setGraphNode(GraphNode node) {
+        this.node = (FigVertex) node;
+    }
+    
+    
+
+    @Override
+    public void setEnclosingFig(Fig encloser) {
+        LayerPerspective lp = (LayerPerspective) getLayer();
+        if (lp == null) {
+            return;
+        }
+        
+        super.setEnclosingFig(encloser);
+
+        if (encloser != null) {
+            ((FigNode) encloser).addConnector(this);
+        } else {
+            ((FigNode) encloser).removeConnector(this);
+        }
     }
 }
