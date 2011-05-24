@@ -32,7 +32,6 @@ import org.argouml.uml.diagram.DiagramFactory;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.deployment.ui.DeploymentDiagramRenderer;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
-import org.argouml.uml.diagram.deployment.ui.FigMNode;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
@@ -47,7 +46,6 @@ import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.presentation.FigNode;
 
 /**
  * Diagram for UML2 Deployment Diagram
@@ -56,14 +54,15 @@ import org.tigris.gef.presentation.FigNode;
 public class UMLDeploymentDiagram extends UMLDiagram {
 
     private static final List acceptList = Arrays.asList(new Object[] {
-            Model.getMetaTypes().getNode(),
+            Model.getMetaTypes().getActor(),
             Model.getMetaTypes().getAssociation(),
-            Model.getMetaTypes().getComponent(),
             Model.getMetaTypes().getUMLClass(),
-            Model.getMetaTypes().getInterface(),
-            Model.getMetaTypes().getObject(),
             Model.getMetaTypes().getComment(),
-            Model.getMetaTypes().getActor()
+            Model.getMetaTypes().getComponent(),
+            Model.getMetaTypes().getInterface(),
+            Model.getMetaTypes().getNode(),
+            Model.getMetaTypes().getObject(),
+            Model.getMetaTypes().getPort()
     });
     
     /**
@@ -135,6 +134,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         ArrayList actions = new ArrayList();
         
         actions.add(getNodeAction(Model.getMetaTypes().getNode()));
+        actions.add(getNodeAction(Model.getMetaTypes().getPort()));
         actions.add(getNodeAction(Model.getMetaTypes().getComponent()));
         actions.add(getEdgeAction(Model.getMetaTypes().getGeneralization()));
         actions.add(getEdgeAction(Model.getMetaTypes().getAbstraction()));
@@ -218,8 +218,10 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         return false;
     }
 
-    public void encloserChanged(FigNode enclosed, 
-            FigNode oldEncloser, FigNode newEncloser) {
+    public void encloserChanged(
+            org.tigris.gef.presentation.FigNode enclosed, 
+            org.tigris.gef.presentation.FigNode oldEncloser,
+            org.tigris.gef.presentation.FigNode newEncloser) {
     }
 
     @Override
@@ -243,7 +245,9 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         DiagramSettings settings = getDiagramSettings();
         
         if (Model.getFacade().isANode(modelElement)) {
-            figNode = new FigMNode(modelElement, bounds, settings);
+            figNode = new FigNode(modelElement, bounds, settings);
+        } else if (Model.getFacade().isAPort(modelElement)) {
+            figNode = new FigPort(modelElement, bounds, settings);
         } else if (Model.getFacade().isAAssociation(modelElement)) {
             figNode =
                 createNaryAssociationNode(modelElement, bounds, settings);
