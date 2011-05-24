@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -167,5 +167,19 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
     
         addEdge(lay, newEdge, edge);
         return newEdge;
+    }
+    
+    protected FigNode getFigNodeForAssociationEnd(
+            final ArgoDiagram diagram,
+            final Object associationEnd) {
+        final Object element; 
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            element = 
+                Model.getFacade().getClassifier(associationEnd);
+        } else {
+            element = 
+                Model.getFacade().getLifeline(associationEnd);
+        }
+        return getNodePresentationFor(diagram.getLayer(), element);
     }
 }

@@ -42,7 +42,6 @@ import java.util.Map;
 
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
-import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigCompartmentBox;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Layer;
@@ -329,7 +328,7 @@ public abstract class UmlDiagramRenderer
      * @param modelElement the model element to find presentation for
      * @return the FigNode presentation of the model element
      */
-    private FigNode getNodePresentationFor(Layer lay, Object modelElement) {
+    protected FigNode getNodePresentationFor(Layer lay, Object modelElement) {
         assert modelElement != null : "A modelElement must be supplied";
         for (Object fig : lay.getContentsNoEdges()) {
  
@@ -353,13 +352,8 @@ public abstract class UmlDiagramRenderer
             final ArgoDiagram diagram,
             final Object associationEnd) {
         final Object element; 
-        if (Model.getFacade().getUmlVersion().startsWith("1")) {
-            element = 
-                Model.getFacade().getClassifier(associationEnd);
-        } else {
-            element = 
-                Model.getFacade().getLifeline(associationEnd);
-        }
+        element = 
+            Model.getFacade().getClassifier(associationEnd);
         return getNodePresentationFor(diagram.getLayer(), element);
     }
     

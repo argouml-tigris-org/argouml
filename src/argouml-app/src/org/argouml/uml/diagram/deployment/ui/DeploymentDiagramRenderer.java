@@ -93,8 +93,7 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
         // Although not generally true for GEF, for Argo we know that the layer
         // is a LayerPerspective which knows the associated diagram
         Diagram diag = ((LayerPerspective) lay).getDiagram(); 
-        if (diag instanceof UMLDiagram
-                && ((UMLDiagram) diag).doesAccept(node)) {
+        if (((UMLDiagram) diag).doesAccept(node)) {
             figNode = (FigNode) ((UMLDiagram) diag).drop(node, null);
         } else {
             LOG.debug("TODO: DeploymentDiagramRenderer getFigNodeFor");

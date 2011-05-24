@@ -184,33 +184,19 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        if (Model.getFacade().getUmlVersion().startsWith("1")) {
-            final Object[] actions = {
-                getActionMNode(),
-                getActionMNodeInstance(),
-                getActionMComponent(),
-                getActionMComponentInstance(),
-                getActionMGeneralization(),
-                getActionMAbstraction(),
-                getActionMDependency(),
-                getAssociationActions(),
-                getActionMObject(),
-                getActionMLink(),
-            };
-            return actions;
-        } else {
-            final Object[] actions = {
-                getActionMNode(),
-                getActionMComponent(),
-                getActionMGeneralization(),
-                getActionMAbstraction(),
-                getActionMDependency(),
-                getAssociationActions(),
-                getActionMObject(),
-                getActionMLink(),
-            };
-            return actions;
-        }
+        final Object[] actions = {
+            getActionMNode(),
+            getActionMNodeInstance(),
+            getActionMComponent(),
+            getActionMComponentInstance(),
+            getActionMGeneralization(),
+            getActionMAbstraction(),
+            getActionMDependency(),
+            getAssociationActions(),
+            getActionMObject(),
+            getActionMLink(),
+        };
+        return actions;
     }
 
     private Object[] getAssociationActions() {
