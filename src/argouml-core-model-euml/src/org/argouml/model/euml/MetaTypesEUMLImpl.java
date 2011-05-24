@@ -86,6 +86,7 @@ import org.eclipse.uml2.uml.OutputPin;
 import org.eclipse.uml2.uml.PackageImport;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
+import org.eclipse.uml2.uml.Port;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Property;
@@ -567,6 +568,10 @@ final class MetaTypesEUMLImpl implements MetaTypes {
         return ActivityPartition.class;
     }
 
+    public Object getPort() {
+        return Port.class;
+    }
+    
     public Object getPackageImport() {
         return PackageImport.class;
     }

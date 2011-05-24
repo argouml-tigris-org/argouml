@@ -472,6 +472,11 @@ public interface MetaTypes {
     Object getPartition();
 
     /**
+     * @return Returns the Port.
+     */
+    Object getPort();
+
+    /**
      * @return Return the PackageImport type.
      * @since UML 2.0
      */

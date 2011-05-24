@@ -665,6 +665,10 @@ final class MetaTypesMDRImpl implements MetaTypes {
         return Permission.class;
     }
 
+    public Object getPort() {
+        throw new NotImplementedException("Not a UML1.4 element");
+    }
+
     public Object getProfile() {
         return Package.class;
     }
