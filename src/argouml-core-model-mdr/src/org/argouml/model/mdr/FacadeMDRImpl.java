@@ -632,6 +632,14 @@ class FacadeMDRImpl implements Facade {
             instanceof org.omg.uml.behavioralelements.commonbehavior.Object;
     }
 
+    public boolean isAPackage(Object handle) {
+        return handle instanceof UmlPackage;
+    }
+
+    public boolean isAPackageImport(Object handle) {
+        return handle instanceof Permission;
+    }
+    
     public boolean isAParameter(Object handle) {
         return handle instanceof Parameter;
     }
@@ -640,12 +648,8 @@ class FacadeMDRImpl implements Facade {
         return handle instanceof Partition;
     }
 
-    public boolean isAPackageImport(Object handle) {
-        return handle instanceof Permission;
-    }
-    
-    public boolean isAPackage(Object handle) {
-        return handle instanceof UmlPackage;
+    public boolean isAPort(Object handle) {
+        return false;
     }
 
     public boolean isAPrimitiveType(Object handle) {

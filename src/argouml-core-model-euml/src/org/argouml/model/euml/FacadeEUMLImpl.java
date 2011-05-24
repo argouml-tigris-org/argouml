@@ -2268,6 +2268,10 @@ class FacadeEUMLImpl implements Facade {
         return handle instanceof PackageImport;
     }
 
+    public boolean isAPort(Object handle) {
+        return handle instanceof Port;
+    }
+
     public boolean isAPrimitiveType(Object handle) {
         return handle instanceof PrimitiveType;
     }

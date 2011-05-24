@@ -983,6 +983,14 @@ public interface Facade {
     boolean isAPackage(Object handle);
 
     /**
+     * Recognizer for Port.
+     *
+     * @param handle candidate
+     * @return true if handle is a Port
+     */
+    boolean isAPort(Object handle);
+    
+    /**
      * Recognizer for PrimitiveType.
      *
      * @param handle candidate
