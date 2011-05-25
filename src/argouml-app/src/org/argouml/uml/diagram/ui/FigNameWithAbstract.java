@@ -77,8 +77,4 @@ class FigNameWithAbstract extends FigSingleLineText {
         }
         return super.getFigFontStyle() | style;
     }
-
-    public void setText(String s) {
-        super.setText(s);
-    }
 }
