@@ -708,11 +708,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     public Object buildNode(Object elementType) {
         if (elementType == metaTypes.getActor()) {
-            Actor actor = getUseCases().createActor();
-            // TODO: Work around for defect 5903. Remove when a better
-            // solution is found.
-//            actor.setName("");
-            return actor;
+            return getUseCases().createActor();
         } else if (elementType == metaTypes.getUseCase()) {
             return getUseCases().createUseCase();
         } else if (elementType == metaTypes.getUMLClass()) {
