@@ -248,6 +248,7 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-core-diagrams-state2" inheritAll="false" target="jar"/>
     <ant dir="../argouml-core-diagrams-sequence2" inheritAll="false" target="jar"/>
     <ant dir="../argouml-core-diagrams-activity2" inheritAll="false" target="jar"/>
+    <ant dir="../argouml-core-diagrams-deployment2" inheritAll="false" target="jar"/>
     <ant dir="../argouml-core-umlpropertypanels" inheritAll="false" target="jar"/>
     <ant dir="../argouml-core-transformer" inheritAll="false"     target="jar"/>
 
@@ -287,6 +288,9 @@ Property files to be searched (in argouml-build):
         <include name="*"/>
       </fileset>
       <fileset dir="../argouml-core-diagrams-activity2/build">
+        <include name="*"/>
+      </fileset>
+      <fileset dir="../argouml-core-diagrams-deployment2/build">
         <include name="*"/>
       </fileset>
       <fileset dir="../argouml-core-umlpropertypanels/build">
@@ -388,6 +392,9 @@ Property files to be searched (in argouml-build):
     <!-- Tests for activity2 -->
     <!-- Currently none. -->
 
+    <!-- Tests for deployment2 -->
+    <!-- Currently none. -->
+
     <!-- Tests for umlpropertypanels -->
     <ant dir="../argouml-core-diagrams-sequence2" inheritAll="false"
          target="${tests-to-do}"/>
@@ -428,6 +435,9 @@ Property files to be searched (in argouml-build):
         <include name="build/tests/reports/**/TEST-*.xml"/>
       </fileset>
       <fileset dir="../argouml-core-diagrams-activity2">
+        <include name="build/tests/reports/**/TEST-*.xml"/>
+      </fileset>
+      <fileset dir="../argouml-core-diagrams-deployment2">
         <include name="build/tests/reports/**/TEST-*.xml"/>
       </fileset>
       <fileset dir="../argouml-core-umlpropertypanels">
@@ -480,6 +490,8 @@ Property files to be searched (in argouml-build):
     <ant dir="../argouml-core-transformer"
          inheritAll="false"                                   target="clean"/>
     <ant dir="../argouml-core-umlpropertypanels"
+         inheritAll="false"                                   target="clean"/>
+    <ant dir="../argouml-core-diagrams-deployment2"
          inheritAll="false"                                   target="clean"/>
     <ant dir="../argouml-core-diagrams-activity2"
          inheritAll="false"                                   target="clean"/>
@@ -535,6 +547,7 @@ Property files to be searched (in argouml-build):
         <pathelement location="../argouml-core-diagrams-state2/src"/>
         <pathelement location="../argouml-core-diagrams-sequence2/src"/>
         <pathelement location="../argouml-core-diagrams-activity2/src"/>
+        <pathelement location="../argouml-core-diagrams-deployment2/src"/>
  	<pathelement location="../argouml-core-umlpropertypanels/src"/>
       </sourcepath>
 
