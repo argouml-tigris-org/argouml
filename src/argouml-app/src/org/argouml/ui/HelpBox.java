@@ -76,12 +76,20 @@ public class HelpBox extends JFrame implements HyperlinkListener {
     /**
      * The names and URLs for the pages.
      */
-    private String pages[][] = {{Translator.localize("tab.help.manual"),
-            ApplicationVersion.getOnlineManual() ,
-            Translator.localize("tab.help.tip.manual")},
-        {Translator.localize("tab.help.support"),
-            ApplicationVersion.getOnlineSupport(),
-            Translator.localize("tab.help.tip.support") }};
+    private String pages[][] = {
+            {
+                Translator.localize("tab.help.manual"),
+                (Translator.localize("tab.help.path.manual")
+                 + "manual-" + ApplicationVersion.getStableVersion() 
+                 + "/"),
+                 Translator.localize("tab.help.tip.manual")
+            },
+            {
+                Translator.localize("tab.help.support"),
+                Translator.localize("tab.help.path.support"),
+                Translator.localize("tab.help.tip.support") 
+            }
+    };
 
 
     /**

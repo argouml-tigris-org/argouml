@@ -172,8 +172,12 @@ public class Critic
     public final String defaultMoreInfoURL() {
 	String clsName = getClass().getName();
 	clsName = clsName.substring(clsName.lastIndexOf(".") + 1);
-	return ApplicationVersion.getManualForCritic()
-	    + clsName;
+	String singleVersionURL =
+	    Translator.localize("tab.help.path.manualcritic")
+	    + "manual-" 
+	    + ApplicationVersion.getStableVersion()
+	    + "-single/argomanual.html"; 
+	return singleVersionURL + "#critics." + clsName;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -756,7 +760,7 @@ public class Critic
      * some information you may need to override this method. <p>
      *
      * TODO: I would like a better default action, but goals
-     * are typed and their values must be interperted by critics. They
+     * are typed and their values must be interpreted by critics. They
      * are not as generic as the DecisionModel.
      *
      * @param dsgr the designer

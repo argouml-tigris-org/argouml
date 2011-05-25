@@ -38,26 +38,13 @@
 
 package org.argouml.application.helpers;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import org.apache.log4j.Logger;
-import org.argouml.cognitive.Translator;
 
 /**
- * Receives the version of the application at initialisation time.
- * Also knows about website locations that depend on the version of ArgoUML.
+ * Receives the version of the application at initialization time.
  *
  * @author Michiel
  */
 public class ApplicationVersion {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(ApplicationVersion.class);
-
     /**
      * Version number.
      */
@@ -74,43 +61,11 @@ public class ApplicationVersion {
     }
     
     /**
-     * Retrieve the online HTML manual of ArgoUML for a critic. 
-     * You need to append the critic class-name.
-     * This syntax is synchronized with:
-     * <ol>
-     * <li>Tags in the manual.
-     * <li>Name of the ArgoUML site.
-     * <li>How the manual is deployed on the site.
-     * </ol>
-     * so this must be updated when any of these change.
-     *
-     * @return the URL
+     * @return the version number of the stable version
+     * for pointers to documentation.
      */
-    public static String getManualForCritic() {
-        return Translator.localize("tab.help.path.manualcritic")
-            + "manual-" 
-            + stableVersion
-            + "-single/argomanual.html#critics.";
-    }
-
-    /**
-     * Retrieve the URL of the online manual of ArgoUML.
-     * 
-     * @return the URL
-     */
-    public static String getOnlineManual() {
-        
-        return Translator.localize("tab.help.path.manual")
-        + "manual-" + stableVersion + "/";
-    }
-
-    /**
-     * Retrieve the URL of the location for online support for ArgoUML.
-     * 
-     * @return the URL
-     */
-    public static String getOnlineSupport() {
-        return Translator.localize("tab.help.path.support");
+    public static String getStableVersion() {
+        return stableVersion;
     }
 
     /**
