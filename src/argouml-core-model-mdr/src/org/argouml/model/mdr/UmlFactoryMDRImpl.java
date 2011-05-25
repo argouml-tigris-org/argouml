@@ -708,7 +708,11 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
 
     public Object buildNode(Object elementType) {
         if (elementType == metaTypes.getActor()) {
-            return getUseCases().createActor();
+            Actor actor = getUseCases().createActor();
+            // TODO: Work around for defect 5903. Remove when a better
+            // solution is found.
+            actor.setName("");
+            return actor;
         } else if (elementType == metaTypes.getUseCase()) {
             return getUseCases().createUseCase();
         } else if (elementType == metaTypes.getUMLClass()) {
@@ -805,6 +809,8 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             }
             if (name != null) {
                 modelImpl.getCoreHelper().setName(element, name);
+            } else {
+                modelImpl.getCoreHelper().setName(element, "");
             }
         }
         return element;
@@ -954,6 +960,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             this.modelImpl.getCoreHelper().addOwnedElement(container, element);
         }
         
+        modelImpl.getCoreHelper().setName(element, "");
         return element;
     }
     
