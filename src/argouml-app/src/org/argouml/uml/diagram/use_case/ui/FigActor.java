@@ -41,6 +41,7 @@ package org.argouml.uml.diagram.use_case.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -91,6 +92,7 @@ public class FigActor extends FigNodeModelElement {
 
     private void constructFigs(Rectangle bounds) {
 
+        
         FigCircle head =
             new FigCircle(X0 + 2, Y0, 16, 15);
         FigLine body = new FigLine(X0 + 10, Y0 + 15, 20, 40);
@@ -154,6 +156,11 @@ public class FigActor extends FigNodeModelElement {
             DiagramSettings settings) {
         super(owner, bounds, settings);
         constructFigs(bounds);
+    }
+    
+    public void paint(Graphics g) {
+        forceRepaintShadow();
+        super.paint(g);
     }
 
     @Override

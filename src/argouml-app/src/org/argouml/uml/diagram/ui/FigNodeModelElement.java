@@ -346,6 +346,7 @@ public abstract class FigNodeModelElement
     private void constructFigs() {
         // TODO: Why isn't this stuff managed by the nameFig itself?
         nameFig.setFilled(true);
+        nameFig.setText(placeString());
         nameFig.setBotMargin(7); // make space for the clarifier
         nameFig.setRightMargin(4); // margin between text and border
         nameFig.setLeftMargin(4);
@@ -416,6 +417,8 @@ public abstract class FigNodeModelElement
                     + element.getClass().getName());
         }
 
+        nameFig.setText(placeString());
+        
         if (element != null) {
             NotationName nn = Notation.findNotation(notationSettings.getNotationLanguage());
             notationProviderName =
@@ -754,16 +757,16 @@ public abstract class FigNodeModelElement
 
         if ((items & ABSTRACT) > 0) {
             modifierMenu.addCheckItem(new ActionModifierAbstract(getOwner()));
-	}
+        }
         if ((items & LEAF) > 0) {
             modifierMenu.addCheckItem(new ActionModifierLeaf(getOwner()));
-	}
+        }
         if ((items & ROOT) > 0) {
             modifierMenu.addCheckItem(new ActionModifierRoot(getOwner()));
-	}
+        }
         if ((items & ACTIVE) > 0) {
             modifierMenu.addCheckItem(new ActionModifierActive(getOwner()));
-	}
+        }
 
         return modifierMenu;
     }
@@ -790,23 +793,23 @@ public abstract class FigNodeModelElement
     public void setEnclosingFig(Fig newEncloser) {
         Fig oldEncloser = encloser;
         
-	LayerPerspective layer = (LayerPerspective) getLayer();
-	if (layer != null) {
+        LayerPerspective layer = (LayerPerspective) getLayer();
+        if (layer != null) {
             ArgoDiagram diagram = (ArgoDiagram) layer.getDiagram();
             diagram.encloserChanged(
                     this,
-        	    (FigNode) oldEncloser,
-        	    (FigNode) newEncloser);
-	}
-	
-	super.setEnclosingFig(newEncloser);
-	
-	if (layer != null && newEncloser != oldEncloser) {
+                    (FigNode) oldEncloser,
+                    (FigNode) newEncloser);
+        }
+        
+        super.setEnclosingFig(newEncloser);
+        
+        if (layer != null && newEncloser != oldEncloser) {
             Diagram diagram = layer.getDiagram();
             if (diagram instanceof ArgoDiagram) {
-        	ArgoDiagram umlDiagram = (ArgoDiagram) diagram;
-        	// Set the namespace of the enclosed model element to the
-        	// namespace of the encloser.
+                ArgoDiagram umlDiagram = (ArgoDiagram) diagram;
+                // Set the namespace of the enclosed model element to the
+                // namespace of the encloser.
                 Object namespace = null;
                 if (newEncloser == null) {
                     // The node's been placed on the diagram
@@ -821,13 +824,13 @@ public abstract class FigNodeModelElement
                 }
             }
 
-	    if (encloser instanceof FigNodeModelElement) {
-		((FigNodeModelElement) encloser).removeEnclosedFig(this);
+            if (encloser instanceof FigNodeModelElement) {
+                ((FigNodeModelElement) encloser).removeEnclosedFig(this);
             }
-	    if (newEncloser instanceof FigNodeModelElement) {
-		((FigNodeModelElement) newEncloser).addEnclosedFig(this);
+            if (newEncloser instanceof FigNodeModelElement) {
+                ((FigNodeModelElement) newEncloser).addEnclosedFig(this);
             }
-	}
+        }
         encloser = newEncloser;
     }
 
@@ -1058,8 +1061,8 @@ public abstract class FigNodeModelElement
             SwingUtilities.invokeLater(delayedNotify);
         } else {
             LOG.debug("FigNodeModelElement got vetoableChange"
-		      + " from non-owner:"
-		      + src);
+                      + " from non-owner:"
+                      + src);
         }
     }
 
@@ -1815,39 +1818,39 @@ public abstract class FigNodeModelElement
     }
 
     protected void updateStereotypeIcon() {
-	if (getOwner() == null) {
-	    LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
-		    + "] is null.");
-	    LOG.warn("I return...");
-	    return;
-	}
+        if (getOwner() == null) {
+            LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
+                    + "] is null.");
+            LOG.warn("I return...");
+            return;
+        }
 
-	if (stereotypeFigProfileIcon != null) {
-	    for (Object fig : getFigs()) {
-		((Fig) fig).setVisible(fig != stereotypeFigProfileIcon);
-	    }
+        if (stereotypeFigProfileIcon != null) {
+            for (Object fig : getFigs()) {
+                ((Fig) fig).setVisible(fig != stereotypeFigProfileIcon);
+            }
 
-	    this.removeFig(stereotypeFigProfileIcon);
-	    stereotypeFigProfileIcon = null;
-	}
-	
-	if (originalNameFig != null) {
-	    this.setNameFig(originalNameFig);
-	    originalNameFig = null;
-	}
-	
-	for (Fig icon : floatingStereotypes) {
+            this.removeFig(stereotypeFigProfileIcon);
+            stereotypeFigProfileIcon = null;
+        }
+        
+        if (originalNameFig != null) {
+            this.setNameFig(originalNameFig);
+            originalNameFig = null;
+        }
+        
+        for (Fig icon : floatingStereotypes) {
             this.removeFig(icon);
         }
         floatingStereotypes.clear();
 
 
         int practicalView = getPracticalView();
-	Object modelElement = getOwner();
-	Collection stereos = Model.getFacade().getStereotypes(modelElement);
-	 
-	boolean hiding = 
-	    practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON;
+        Object modelElement = getOwner();
+        Collection stereos = Model.getFacade().getStereotypes(modelElement);
+         
+        boolean hiding = 
+            practicalView == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON;
         if (getStereotypeFig() != null) {
             getStereotypeFig().setHidingStereotypesWithIcon(hiding);
         }
@@ -1887,8 +1890,8 @@ public abstract class FigNodeModelElement
                 }
 
             }
-	} else if (practicalView
-	        == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON) {
+        } else if (practicalView
+                == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON) {
             int i = this.getX() + this.getWidth() - ICON_WIDTH - 2;
 
             for (Object stereo : stereos) {
@@ -1914,13 +1917,13 @@ public abstract class FigNodeModelElement
         }
 
         // TODO: This is a redundant invocation
-	updateStereotypeText();
-	
+        updateStereotypeText();
+        
         damage();
-	calcBounds();
-	updateEdges();
-	updateBounds();
-	redraw();
+        calcBounds();
+        updateEdges();
+        updateBounds();
+        redraw();
     }
 
     /*
@@ -2308,8 +2311,8 @@ public abstract class FigNodeModelElement
      * @return true if this is the sole target.
      */
     protected boolean isSingleTarget() {
-	return TargetManager.getInstance().getSingleModelTarget()
-		== getOwner();
+        return TargetManager.getInstance().getSingleModelTarget()
+                == getOwner();
     }
 
     
@@ -2339,7 +2342,7 @@ public abstract class FigNodeModelElement
      */
     private int getPracticalView() {
         // TODO assert modelElement != null???
-	int practicalView = getStereotypeView();
+        int practicalView = getStereotypeView();
         Object modelElement = getOwner();
 
         if (modelElement != null) {
@@ -2420,12 +2423,12 @@ public abstract class FigNodeModelElement
                 // the stereotypeFigProfileIcon
             }
         } else {
-	    setStandardBounds(x, y, w, h);
-	    if (getStereotypeView()
-	            == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON) {
-	        updateSmallIcons(w);
-	    }
-	}
+            setStandardBounds(x, y, w, h);
+            if (getStereotypeView()
+                    == DiagramAppearance.STEREOTYPE_VIEW_SMALL_ICON) {
+                updateSmallIcons(w);
+            }
+        }
     }
 
     private void updateSmallIcons(int wid) {
