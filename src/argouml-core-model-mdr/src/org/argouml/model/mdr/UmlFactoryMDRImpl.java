@@ -711,7 +711,7 @@ class UmlFactoryMDRImpl extends AbstractUmlModelFactoryMDR implements
             Actor actor = getUseCases().createActor();
             // TODO: Work around for defect 5903. Remove when a better
             // solution is found.
-            actor.setName("");
+//            actor.setName("");
             return actor;
         } else if (elementType == metaTypes.getUseCase()) {
             return getUseCases().createUseCase();

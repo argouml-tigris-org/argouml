@@ -346,7 +346,6 @@ public abstract class FigNodeModelElement
     private void constructFigs() {
         // TODO: Why isn't this stuff managed by the nameFig itself?
         nameFig.setFilled(true);
-        nameFig.setText(placeString());
         nameFig.setBotMargin(7); // make space for the clarifier
         nameFig.setRightMargin(4); // margin between text and border
         nameFig.setLeftMargin(4);
@@ -417,8 +416,6 @@ public abstract class FigNodeModelElement
                     + element.getClass().getName());
         }
 
-        nameFig.setText(placeString());
-        
         if (element != null) {
             NotationName nn = Notation.findNotation(notationSettings.getNotationLanguage());
             notationProviderName =
