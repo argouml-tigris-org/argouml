@@ -8,9 +8,14 @@
     Experimenting with maven for the nightly build.
   -->
 
-  <groupId>org.argouml</groupId>
+  <parent>
+    <groupId>org.argouml</groupId>
+    <artifactId>parentpom</artifactId>
+    <version>0.2-SNAPSHOT</version>
+    <relativePath>tools/maven/parentpom.xml</relativePath>
+  </parent>
+
   <artifactId>allCoreArgoUMLProjects</artifactId>
-  <version>0.1</version>
   <packaging>pom</packaging>
 
   <modules>
