@@ -25,14 +25,14 @@
     <dependency>
       <groupId>org.argouml</groupId>
       <artifactId>argouml-app</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.argouml</groupId>
       <artifactId>argouml-core-model</artifactId>
-      <version>0.2-SNAPSHOT</version>
+      <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
 
