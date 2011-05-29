@@ -33,7 +33,7 @@
     <dependency>
       <groupId>org.argouml</groupId>
       <artifactId>argouml-core-notation</artifactId>
-      <version>0.1</version>
+      <version>0.2-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
 
