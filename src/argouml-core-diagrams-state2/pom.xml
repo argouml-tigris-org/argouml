@@ -10,13 +10,12 @@
 
   <parent>
     <groupId>org.argouml</groupId>
-    <artifactId>parentpom</artifactId>
-    <version>0.2</version>
-    <relativePath>../../tools/maven/parentpom.xml</relativePath>
+    <artifactId>argouml</artifactId>
+    <version>0.2-SNAPSHOT</version>
+    <relativePath>../..</relativePath>
   </parent>
 
   <artifactId>argouml-core-diagrams-state2</artifactId>
-  <version>0.1</version>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

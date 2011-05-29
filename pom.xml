@@ -15,7 +15,8 @@
     <relativePath>tools/maven/parentpom.xml</relativePath>
   </parent>
 
-  <artifactId>allCoreArgoUMLProjects</artifactId>
+  <artifactId>argouml</artifactId>
+  <version>0.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>

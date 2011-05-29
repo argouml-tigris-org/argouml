@@ -11,7 +11,7 @@
   <parent>
     <groupId>org.argouml</groupId>
     <artifactId>parentpom</artifactId>
-    <relativePath>tools/maven/parentpom.xml</relativePath>
+    <relativePath>maven/parentpom.xml</relativePath>
   </parent>
 
   <artifactId>tools</artifactId>

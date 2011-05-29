@@ -10,9 +10,9 @@
 
   <parent>
     <groupId>org.argouml</groupId>
-    <artifactId>parentpom</artifactId>
-    <version>0.3</version>
-    <relativePath>../../tools/maven/parentpom.xml</relativePath>
+    <artifactId>argouml</artifactId>
+    <version>0.2-SNAPSHOT</version>
+    <relativePath>../..</relativePath>
   </parent>
 
   <artifactId>argouml-core-umlpropertypanels</artifactId>
