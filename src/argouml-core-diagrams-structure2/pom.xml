@@ -11,7 +11,7 @@
   <parent>
     <groupId>org.argouml</groupId>
     <artifactId>parentpom</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.3</version>
     <relativePath>../../tools/maven/parentpom.xml</relativePath>
   </parent>
 

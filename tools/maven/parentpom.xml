@@ -10,8 +10,21 @@
 
   <groupId>org.argouml</groupId>
   <artifactId>parentpom</artifactId>
-  <version>0.2-SNAPSHOT</version>
+  <!-- As of 2011-05-29 Linus Tolke has not figured out how
+       this pom can be included in the automatic updates
+       of the version number. Until that is resolved
+       references to this pom need to updated manually
+       when this changes and no snapshot versions are
+       possible.
+   -->
+  <version>0.3</version>
   <packaging>pom</packaging>
+  <name>parentpom</name>
+  <description>
+The ArgoUML project contains separate projects for plugins.
+This is the pom, the parentpom, or the ArgoUML super pom 
+that contains the common parts of all ArgoUML projects.
+  </description>
 
   <dependencies>
     <dependency>
@@ -144,11 +157,6 @@
   </reporting>
 
   <!-- Environment Settings -->
-  <scm>
-    <connection>scm:svn:http://argouml.tigris.org/svn/argouml/trunk</connection>
-    <url>http://argouml.tigris.org/source/browse/argouml/trunk</url>
-  </scm>
-
   <issueManagement>
     <system>Issuezilla</system>
     <url>http://argouml.tigris.org/project_bugs.html</url>
