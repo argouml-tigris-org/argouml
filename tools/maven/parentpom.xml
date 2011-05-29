@@ -144,6 +144,11 @@
   </reporting>
 
   <!-- Environment Settings -->
+  <scm>
+    <connection>scm:svn:http://argouml.tigris.org/svn/argouml/trunk</connection>
+    <url>http://argouml.tigris.org/source/browse/argouml/trunk</url>
+  </scm>
+
   <issueManagement>
     <system>Issuezilla</system>
     <url>http://argouml.tigris.org/project_bugs.html</url>
@@ -151,7 +156,7 @@
 
   <ciManagement>
     <system>Hudson</system>
-    <url>http://closettop.homelinux.org:8080/jobs/maven-build/</url>
+    <url>http://closettop.homelinux.org:8080/</url>
   </ciManagement>
 
 
