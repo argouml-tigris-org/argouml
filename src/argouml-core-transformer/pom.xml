@@ -10,7 +10,7 @@
 
   <parent>
     <groupId>org.argouml</groupId>
-    <artifactId>argouml</artifactId>
+    <artifactId>argouml-core</artifactId>
     <version>0.2-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent>
