@@ -3266,8 +3266,10 @@ class FacadeMDRImpl implements Facade {
                 for (Iterator it =
                         ((Component) handle).getResidentElement().iterator();
                     it.hasNext();) {
-                    residents.add(
-                            ((ElementResidence) it.next()).getResident());
+                    ModelElement me = ((ElementResidence) it.next()).getResident();
+                    if (me != null) {
+                        residents.add(me);
+                    }
                 }
                 return residents;
             }
