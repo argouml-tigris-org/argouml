@@ -8,13 +8,9 @@
     Experimenting with maven for the nightly build.
   -->
 
-  <parent>
-    <groupId>org.argouml</groupId>
-    <artifactId>parentpom</artifactId>
-    <relativePath>maven/parentpom.xml</relativePath>
-  </parent>
-
+  <groupId>org.argouml</groupId>
   <artifactId>tools</artifactId>
+  <version>0.2</version>
 
   <build>
     <resources>

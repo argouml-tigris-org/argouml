@@ -100,7 +100,7 @@ that contains the common parts of all ArgoUML projects.
           <dependency>
             <groupId>org.argouml</groupId>
             <artifactId>tools</artifactId>
-            <version>0.1</version>
+            <version>0.2</version>
           </dependency>
         </dependencies>
       </plugin>
