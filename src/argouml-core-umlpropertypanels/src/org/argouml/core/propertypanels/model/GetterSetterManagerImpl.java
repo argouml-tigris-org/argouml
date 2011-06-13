@@ -90,7 +90,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("isQuery", new QueryGetterSetter());
         addGetterSetter("isRoot", new RootGetterSetter());
         addGetterSetter("isSynch", new SynchGetterSetter());
-        addGetterSetter("isSynchronous", new AsynchronousGetterSetter());
+        addGetterSetter("isAsynchronous", new AsynchronousGetterSetter());
         addGetterSetter("kind", new ParameterDirectionGetterSetter());
         addGetterSetter("literal", new LiteralGetterSetter());
         addGetterSetter("message", new MessageGetterSetter());
