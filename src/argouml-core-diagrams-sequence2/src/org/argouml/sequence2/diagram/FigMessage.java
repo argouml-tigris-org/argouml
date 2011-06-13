@@ -64,6 +64,7 @@ import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigTextGroup;
 import org.argouml.uml.diagram.ui.PathItemPlacement;
 import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
@@ -182,14 +183,15 @@ public class FigMessage extends FigEdgeModelElement {
             return;
         }
         getFig().setDashed(isReplyMessage());
-        Object act = getAction();
+        final Object act = getAction();
+        final ArrowHead arrowHead;
         if (act != null && Model.getFacade().isAsynchronous(getAction())) {
-            setDestArrowHead(new ArrowHeadGreater());
+            arrowHead = new ArrowHeadGreater();
         } else {
-            setDestArrowHead(new ArrowHeadTriangle());            
+            arrowHead = new ArrowHeadTriangle();
+            getFig().setFillColor(getLineColor());
         }
-        getDestArrowHead().setLineColor(getLineColor());
-	getDestArrowHead().setFillColor(getLineColor());
+        setDestArrowHead(arrowHead);            
     }
     
     /**
