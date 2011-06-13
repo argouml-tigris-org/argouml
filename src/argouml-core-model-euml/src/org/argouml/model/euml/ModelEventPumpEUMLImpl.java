@@ -10,6 +10,7 @@
  *    Bogdan Pistol - initial implementation
  *    Thomas Neustupny
  *    Bob Tarling
+ *    Laurent Braud
  *******************************************************************************/
 package org.argouml.model.euml;
 
@@ -230,6 +231,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             boolean found = false;
             if (list == null) {
                 list = new ArrayList<Listener>();
+                register.put(notifier, list);
             } else {
                 for (Listener l : list) {
                     if (l.getListener() == listener) {
@@ -241,7 +243,6 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
             }
             if (!found) {
                 list.add(new Listener(listener, propertyNames));
-                register.put(notifier, list);
             }
         }
     }
@@ -296,11 +297,17 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                 if (l.getListener() == listener) {
                     if (propertyNames != null) {
                         l.removeProperties(propertyNames);
+                        if(l.getProperties().isEmpty()){
+                            iter.remove();
+                        }
                     } else {
                         iter.remove();
                     }
                     break;
                 }
+            }
+            if(list.isEmpty()){
+                register.remove(notifier);
             }
         }
     }
