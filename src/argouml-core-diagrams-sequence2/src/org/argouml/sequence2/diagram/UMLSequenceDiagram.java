@@ -173,7 +173,7 @@ public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
                 Model.getMessageSort().getSynchCall(),
                 "button.new-callaction")));
         actions.add(new RadioAction(new ActionSetAddMessageMode(
-                Model.getMessageSort().getASynchCall(),
+                Model.getMessageSort().getASynchSignal(),
                 "button.new-sendaction")));
         actions.add(new RadioAction(new ActionSetAddMessageMode(
                 Model.getMessageSort().getReply(),
