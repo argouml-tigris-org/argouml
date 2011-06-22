@@ -13,7 +13,6 @@
 
 package org.argouml.model;
 
-import java.util.EventListener;
 
 /**
  * An interface to be implemented by those classes wishing to listen for addition and removal
