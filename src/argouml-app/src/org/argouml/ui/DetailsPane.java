@@ -197,26 +197,7 @@ public class DetailsPane
         return topLevelTabbedPane;
     }
 
-    /**
-     * @param p the panel to be added 
-     * @param atEnd true = add the panel at the end, 
-     *                  false = at the beginning
-     * @deprecated by Bob Tarling in 0.29.3 use addTab(JPanel, boolean)
-     */
-    @Deprecated
-    public void addTab(AbstractArgoJPanel p, boolean atEnd) {
-        Icon icon = p.getIcon();
-        String title = Translator.localize(p.getTitle());
-        if (atEnd) {
-            topLevelTabbedPane.addTab(title, icon, p); 
-            tabPanelList.add(p);
-        } else { 
-            topLevelTabbedPane.insertTab(title, icon, p, null, 0);
-            tabPanelList.add(0, p);
-        }
-
-    }
-
+    
     /**
      * @param p the panel to be added 
      * @param atEnd true = add the panel at the end, 
