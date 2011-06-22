@@ -73,6 +73,7 @@ public class CrMultiComposite extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
         boolean problem = NO_PROBLEM;
         if (Model.getFacade().isAAssociationEnd(dm)) {
@@ -88,6 +89,7 @@ public class CrMultiComposite extends CrUML {
     /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
+    @Override
     public Class getWizardClass(ToDoItem item) {
         return WizAssocComposite.class;
     }
@@ -95,6 +97,7 @@ public class CrMultiComposite extends CrUML {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getAssociationEnd());

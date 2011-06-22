@@ -67,15 +67,21 @@ public class CrUnnavigableAssoc extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAAssociation(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAAssociation(dm))) {
+	    return NO_PROBLEM;
+	}
 	Object asc = /*(MAssociation)*/ dm;
 	Collection conn = Model.getFacade().getConnections(asc);
-	if (Model.getFacade().isAAssociationRole(asc))
+	if (Model.getFacade().isAAssociationRole(asc)) {
 	    conn = Model.getFacade().getConnections(asc);
+	}
 	for (Iterator iter = conn.iterator(); iter.hasNext();) {
 	    Object ae = /*(MAssociationEnd)*/ iter.next();
-	    if (Model.getFacade().isNavigable(ae)) return NO_PROBLEM;
+	    if (Model.getFacade().isNavigable(ae)) {
+	        return NO_PROBLEM;
+	    }
 	}
 	return PROBLEM_FOUND;
     }
@@ -83,11 +89,13 @@ public class CrUnnavigableAssoc extends CrUML {
     /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
+    @Override
     public Class getWizardClass(ToDoItem item) { return WizNavigable.class; }
 
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getAssociationClass());

@@ -207,6 +207,7 @@ public class CrUML extends Critic {
      * @param res is the text to expand.
      * @param offs is the elements to replace
      */
+    @Override
     public String expand(String res, ListSet offs) {
 
         if (offs.size() == 0) {

@@ -80,6 +80,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!Model.getFacade().isAAttribute(dm)) {
 	    return NO_PROBLEM;
@@ -133,6 +134,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Object f = dm;
 	ListSet offs = computeOffenders(f);
@@ -186,6 +188,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
     /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
+    @Override
     public Icon getClarifier() {
 	return ClAttributeCompartment.getTheInstance();
     }
@@ -194,6 +197,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      * @see org.argouml.cognitive.Poster#stillValid(
      *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) {
 	    return false;
@@ -213,6 +217,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
+    @Override
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
@@ -235,6 +240,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getAttribute());

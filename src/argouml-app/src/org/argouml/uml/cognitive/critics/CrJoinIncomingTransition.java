@@ -68,23 +68,32 @@ public class CrJoinIncomingTransition extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(Model.getFacade().isATransition(dm))) return NO_PROBLEM;
+        if (!(Model.getFacade().isATransition(dm))) {
+            return NO_PROBLEM;
+        }
         Object tr = dm;
         Object target = Model.getFacade().getTarget(tr);
         Object source = Model.getFacade().getSource(tr);
-        if (!(Model.getFacade().isAPseudostate(target))) return NO_PROBLEM;
+        if (!(Model.getFacade().isAPseudostate(target))) {
+            return NO_PROBLEM;
+        }
         if (!Model.getFacade().equalsPseudostateKind(
                 Model.getFacade().getKind(target),
-                Model.getPseudostateKind().getJoin()))
+                Model.getPseudostateKind().getJoin())) {
             return NO_PROBLEM;
-        if (Model.getFacade().isAState(source)) return NO_PROBLEM;
+        }
+        if (Model.getFacade().isAState(source)) {
+            return NO_PROBLEM;
+        }
         return PROBLEM_FOUND;
     }
 
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getTransition());

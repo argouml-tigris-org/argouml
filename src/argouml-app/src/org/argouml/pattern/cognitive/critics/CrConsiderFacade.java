@@ -63,6 +63,7 @@ public class CrConsiderFacade extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 	/* TODO: Add implementation. */
 	return NO_PROBLEM;

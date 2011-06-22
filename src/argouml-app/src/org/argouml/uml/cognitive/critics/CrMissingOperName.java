@@ -69,11 +69,17 @@ public class CrMissingOperName extends CrUML {
      */
     @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAOperation(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAOperation(dm))) {
+	    return NO_PROBLEM;
+	}
 	Object oper = dm;
 	String myName = Model.getFacade().getName(oper);
-	if (myName == null || myName.equals("")) return PROBLEM_FOUND;
-	if (myName.length() == 0) return PROBLEM_FOUND;
+	if (myName == null || myName.equals("")) {
+	    return PROBLEM_FOUND;
+	}
+	if (myName.length() == 0) {
+	    return PROBLEM_FOUND;
+	}
 	return NO_PROBLEM;
     }
 
@@ -112,6 +118,7 @@ public class CrMissingOperName extends CrUML {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getOperation());

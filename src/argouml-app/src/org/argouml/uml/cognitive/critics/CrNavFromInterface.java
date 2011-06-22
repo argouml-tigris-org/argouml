@@ -109,6 +109,7 @@ public class CrNavFromInterface extends CrUML {
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
      *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only look at Associations
@@ -165,6 +166,7 @@ public class CrNavFromInterface extends CrUML {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getAssociationClass());

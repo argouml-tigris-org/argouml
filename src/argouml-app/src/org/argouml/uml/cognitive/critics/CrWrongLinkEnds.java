@@ -72,10 +72,14 @@ public class CrWrongLinkEnds extends CrUML {
      */
     @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
+	if (!(dm instanceof UMLDeploymentDiagram)) {
+	    return NO_PROBLEM;
+	}
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	ListSet offs = computeOffenders(dd);
-	if (offs == null) return NO_PROBLEM;
+	if (offs == null) {
+	    return NO_PROBLEM;
+	}
 	return PROBLEM_FOUND;
     }
 

@@ -73,11 +73,16 @@ public class CrZeroLengthEdge extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof FigEdge)) return NO_PROBLEM;
+	if (!(dm instanceof FigEdge)) {
+	    return NO_PROBLEM;
+	}
 	FigEdge fe = (FigEdge) dm;
 	int length = fe.getPerimeterLength();
-	if (length > THRESHOLD) return NO_PROBLEM;
+	if (length > THRESHOLD) {
+	    return NO_PROBLEM;
+	}
 	return PROBLEM_FOUND;
     }
 

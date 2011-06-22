@@ -78,6 +78,7 @@ public class CrDisambigClassName extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
         // TODO: The WFR doesn't restrict this to Classifiers - tfm
 	if (!(Model.getFacade().isAClassifier(dm))) {
@@ -136,6 +137,7 @@ public class CrDisambigClassName extends CrUML {
     /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
+    @Override
     public Icon getClarifier() {
 	return ClClassName.getTheInstance();
     }
@@ -144,6 +146,7 @@ public class CrDisambigClassName extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#initWizard(
      *         org.argouml.cognitive.ui.Wizard)
      */
+    @Override
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
@@ -159,6 +162,7 @@ public class CrDisambigClassName extends CrUML {
     /*
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
+    @Override
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 

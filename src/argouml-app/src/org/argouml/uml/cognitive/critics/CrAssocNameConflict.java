@@ -77,6 +77,7 @@ public class CrAssocNameConflict extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
         return computeOffenders(dm).size() > 1;
     }
@@ -85,6 +86,7 @@ public class CrAssocNameConflict extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#toDoItem( java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
         ListSet offs = computeOffenders(dm);
         return new UMLToDoItem(this, offs, dsgr);
@@ -168,6 +170,7 @@ public class CrAssocNameConflict extends CrUML {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getNamespace());

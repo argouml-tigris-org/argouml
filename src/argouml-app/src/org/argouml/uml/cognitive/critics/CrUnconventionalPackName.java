@@ -97,6 +97,7 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
     /*
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
+    @Override
     public Icon getClarifier() {
 	return ClClassName.getTheInstance();
     }
@@ -144,6 +145,7 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getPackage());

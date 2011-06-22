@@ -68,28 +68,37 @@ public class CrInvalidPseudoStateTrigger extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(Model.getFacade().isATransition(dm))) return NO_PROBLEM;
+        if (!(Model.getFacade().isATransition(dm))) {
+            return NO_PROBLEM;
+        }
         Object tr = dm;
         Object t = Model.getFacade().getTrigger(tr);
         Object sv = Model.getFacade().getSource(tr);
-        if (!(Model.getFacade().isAPseudostate(sv))) return NO_PROBLEM;
+        if (!(Model.getFacade().isAPseudostate(sv))) {
+            return NO_PROBLEM;
+        }
         Object k = Model.getFacade().getKind(sv);
         //Forks have their own outgoing transitions critic
         if (Model.getFacade().
                 equalsPseudostateKind(k,
-                        Model.getPseudostateKind().getFork()))
+                        Model.getPseudostateKind().getFork())) {
             return NO_PROBLEM;
+        }
         boolean hasTrigger =
                 (t != null && Model.getFacade().getName(t) != null
                 && Model.getFacade().getName(t).length() > 0);
-        if (hasTrigger) return PROBLEM_FOUND;
+        if (hasTrigger) {
+            return PROBLEM_FOUND;
+        }
         return NO_PROBLEM;
     }
 
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getTransition());

@@ -70,43 +70,49 @@ public class CrInvalidSynch extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
         Object destinationRegion = null;
         Object sourceRegion = null;
         Object aux = null;
         Object tr = null;
-        if (!Model.getFacade().isASynchState(dm))
+        if (!Model.getFacade().isASynchState(dm)) {
             return NO_PROBLEM;
+        }
         Iterator outgoing = Model.getFacade().getOutgoings(dm).iterator();
         while (outgoing.hasNext()) {
             tr = outgoing.next();
             aux = Model.getFacade().getContainer(Model.getFacade().
                     getTarget(tr));
-            if (destinationRegion == null)
+            if (destinationRegion == null) {
                 destinationRegion = aux;
-            else if (!aux.equals(destinationRegion))
+            } else if (!aux.equals(destinationRegion)) {
                 return PROBLEM_FOUND;
+            }
         }
         Iterator incoming = Model.getFacade().getIncomings(dm).iterator();
         while (incoming.hasNext()) {
             tr = incoming.next();
             aux = Model.getFacade().getContainer(Model.getFacade().
                     getSource(tr));
-            if (sourceRegion == null)
+            if (sourceRegion == null) {
                 sourceRegion = aux;
-            else if (!aux.equals(sourceRegion))
+            } else if (!aux.equals(sourceRegion)) {
                 return PROBLEM_FOUND;
+            }
         }
 
         if (destinationRegion != null
                 && !Model.getFacade().isAConcurrentRegion(destinationRegion)
-        )
+        ) {
             return PROBLEM_FOUND;
+        }
 
         if (sourceRegion != null
                 && !Model.getFacade().isAConcurrentRegion(sourceRegion)
-        )
+        ) {
             return PROBLEM_FOUND;
+        }
 
         return NO_PROBLEM;
     }
@@ -114,6 +120,7 @@ public class CrInvalidSynch extends CrUML {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getSynchState());

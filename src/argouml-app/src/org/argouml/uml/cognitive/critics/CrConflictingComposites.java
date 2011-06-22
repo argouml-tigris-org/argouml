@@ -73,6 +73,7 @@ public class CrConflictingComposites extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object classifier, Designer dsgr) {
 	if (!(Model.getFacade().isAClassifier(classifier))) {
 	    return NO_PROBLEM;

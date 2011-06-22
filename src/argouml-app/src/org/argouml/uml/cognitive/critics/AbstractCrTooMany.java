@@ -79,6 +79,7 @@ public abstract class AbstractCrTooMany extends CrUML {
      *
      * {@inheritDoc}
      */
+    @Override
     public Class getWizardClass(ToDoItem item) {
         return WizTooMany.class;
     }

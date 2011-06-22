@@ -113,6 +113,7 @@ public class CrSingletonViolatedMissingStaticAttr extends CrUML {
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
      *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
         // Only look at classes
         if (!(Model.getFacade().isAClass(dm))) {

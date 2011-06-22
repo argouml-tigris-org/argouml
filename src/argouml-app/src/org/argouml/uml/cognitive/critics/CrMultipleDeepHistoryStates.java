@@ -80,6 +80,7 @@ public class CrMultipleDeepHistoryStates extends CrUML {
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isAPseudostate(dm))) {
             return NO_PROBLEM;
@@ -117,6 +118,7 @@ public class CrMultipleDeepHistoryStates extends CrUML {
      * @see org.argouml.cognitive.critics.Critic#toDoItem(java.lang.Object,
      *      org.argouml.cognitive.Designer)
      */
+    @Override
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
         ListSet offs = computeOffenders(dm);
         return new UMLToDoItem(this, offs, dsgr);
@@ -150,6 +152,7 @@ public class CrMultipleDeepHistoryStates extends CrUML {
      * @see org.argouml.cognitive.Poster#stillValid(
      *      org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
+    @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
         if (!isActive()) {
             return false;
@@ -164,6 +167,7 @@ public class CrMultipleDeepHistoryStates extends CrUML {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getPseudostate());

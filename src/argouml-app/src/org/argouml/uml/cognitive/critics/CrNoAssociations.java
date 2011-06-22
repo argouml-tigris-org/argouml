@@ -79,10 +79,12 @@ public class CrNoAssociations extends CrUML {
      */
     @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(Model.getFacade().isAClassifier(dm)))
+        if (!(Model.getFacade().isAClassifier(dm))) {
             return NO_PROBLEM;
-        if (!(Model.getFacade().isPrimaryObject(dm)))
+        }
+        if (!(Model.getFacade().isPrimaryObject(dm))) {
             return NO_PROBLEM;
+        }
 
         // If the classifier does not have a name,
         // then no problem - the model is not finished anyhow.
@@ -197,6 +199,7 @@ public class CrNoAssociations extends CrUML {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getUMLClass());

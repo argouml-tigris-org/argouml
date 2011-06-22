@@ -74,6 +74,7 @@ public class CrNoIncomingTransitions extends CrUML {
      *
      * @return boolean problem found
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isAStateVertex(dm))) {
             return NO_PROBLEM;
@@ -149,6 +150,7 @@ public class CrNoIncomingTransitions extends CrUML {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getStateVertex());

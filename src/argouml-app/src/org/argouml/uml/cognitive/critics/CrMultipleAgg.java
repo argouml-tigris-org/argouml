@@ -118,6 +118,7 @@ public class CrMultipleAgg extends CrUML {
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
      *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
      */
+    @Override
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only for associations
@@ -170,7 +171,7 @@ public class CrMultipleAgg extends CrUML {
      *
      * @return       {@link Class} of the wizard.
      */
-
+    @Override
     public Class getWizardClass(ToDoItem item) {
         return WizAssocComposite.class;
     }
@@ -178,6 +179,7 @@ public class CrMultipleAgg extends CrUML {
     /*
      * @see org.argouml.uml.cognitive.critics.CrUML#getCriticizedDesignMaterials()
      */
+    @Override
     public Set<Object> getCriticizedDesignMaterials() {
         Set<Object> ret = new HashSet<Object>();
         ret.add(Model.getMetaTypes().getAssociationClass());
