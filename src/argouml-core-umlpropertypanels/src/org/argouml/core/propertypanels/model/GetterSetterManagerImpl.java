@@ -37,6 +37,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelManagementHelper;
+import org.argouml.model.PseudostateKind;
 import org.argouml.profile.Profile;
 import org.argouml.profile.ProfileException;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -1233,61 +1234,69 @@ class GetterSetterManagerImpl extends GetterSetterManager {
          * configurable way to replace.
          */
         public List<Command> getAdditionalCommands(Object modelElement) {
-        	final List<Command> commands = new ArrayList<Command>(6);
-        	commands.add(new NewPseudoStateCommand(
-        			modelElement, Model.getPseudostateKind().getFork()));
-        	commands.add(new NewPseudoStateCommand(
-        			modelElement, Model.getPseudostateKind().getJoin()));
-        	commands.add(new NewPseudoStateCommand(
-        			modelElement, Model.getPseudostateKind().getChoice()));
-        	commands.add(new NewPseudoStateCommand(
-        			modelElement, Model.getPseudostateKind().getDeepHistory()));
-        	commands.add(new NewPseudoStateCommand(
-        			modelElement, Model.getPseudostateKind().getShallowHistory()));
-        	commands.add(new NewPseudoStateCommand(
-        			modelElement, Model.getPseudostateKind().getInitial()));
-        	commands.add(new NewPseudoStateCommand(
-        			modelElement, Model.getPseudostateKind().getJunction()));
-        	return commands;
+            final List<Command> commands = new ArrayList<Command>(6);
+            commands.add(new NewPseudoStateCommand(
+        	    modelElement, Model.getPseudostateKind().getFork()));
+            commands.add(new NewPseudoStateCommand(
+        	    modelElement, Model.getPseudostateKind().getJoin()));
+            commands.add(new NewPseudoStateCommand(
+        	    modelElement, Model.getPseudostateKind().getChoice()));
+            commands.add(new NewPseudoStateCommand(
+        	    modelElement,
+        	    Model.getPseudostateKind().getDeepHistory()));
+            commands.add(new NewPseudoStateCommand(
+        	    modelElement,
+        	    Model.getPseudostateKind().getShallowHistory()));
+            commands.add(new NewPseudoStateCommand(
+        	    modelElement, Model.getPseudostateKind().getInitial()));
+            commands.add(new NewPseudoStateCommand(
+        	    modelElement, Model.getPseudostateKind().getJunction()));
+            return commands;
         }
         
-        private class NewPseudoStateCommand extends NonUndoableCommand implements IconIdentifiable, Named {
+        private class NewPseudoStateCommand extends NonUndoableCommand
+        	implements IconIdentifiable, Named {
 
-        	private final String label;
-        	private final Object kind;
-        	private final Icon icon;
-        	private final Object target;
+            private final String label;
+            private final Object kind;
+            private final Icon icon;
+            private final Object target;
         	
-        	/**
-        	 * A Command to create a new pseudostate inside some target model
-        	 * element.
-        	 * @param target the target model element the pseudo state should
-        	 * belong to
-        	 * @param kind the required kind of pseudostate
-        	 */
-        	NewPseudoStateCommand(Object target, Object kind) {
-        		this.target = target;
-        		this.kind = kind;
-                if (kind == Model.getPseudostateKind().getFork()) {
-                    label = Translator.localize("label.pseudostate.fork");
-                } else if (kind == Model.getPseudostateKind().getJoin()) {
-                    label = Translator.localize("label.pseudostate.join");
-                } else if (kind == Model.getPseudostateKind().getChoice()) {
-                	label = Translator.localize("label.pseudostate.choice");
-                } else if (kind == Model.getPseudostateKind().getDeepHistory()) {
-                	label = Translator.localize("label.pseudostate.deephistory");
-                } else if (kind == Model.getPseudostateKind().getShallowHistory()) {
-                	label = Translator.localize("label.pseudostate.shallowhistory");
-                } else if (kind == Model.getPseudostateKind().getInitial()) {
-                	label = Translator.localize("label.pseudostate.initial");
-                } else if (kind == Model.getPseudostateKind().getJunction()) {
-                	label = Translator.localize("label.pseudostate.junction");
+            /**
+             * A Command to create a new pseudostate inside some target
+             * model element.
+             * @param target the target model element the pseudo state
+             * should belong to
+             * @param kind the required kind of pseudostate
+    s         */
+            NewPseudoStateCommand(Object target, Object kind) {
+                this.target = target;
+                this.kind = kind;
+                final String key;
+                PseudostateKind kinds = Model.getPseudostateKind();
+                if (kind == kinds.getFork()) {
+                    key = "label.pseudostate.fork";
+                } else if (kind == kinds.getJoin()) {
+                    key = "label.pseudostate.join";
+                } else if (kind == kinds.getChoice()) {
+                    key = "label.pseudostate.choice";
+                } else if (kind == kinds.getDeepHistory()) {
+                    key = "label.pseudostate.deephistory";
+                } else if (kind == kinds.getShallowHistory()) {
+                    key = "label.pseudostate.shallowhistory";
+                } else if (kind == kinds.getInitial()) {
+                    key = "label.pseudostate.initial";
+                } else if (kind == kinds.getJunction()) {
+                    key = "label.pseudostate.junction";
                 } else {
-                	throw new IllegalArgumentException(
+                    throw new IllegalArgumentException(
                 			kind + " is not a known PseudostateKind");
                 }
-                icon = ResourceLoaderWrapper.lookupIcon(
-                		Model.getFacade().getName(kind));
+                label = Translator.localize(key);
+                final String name =
+                    Model.getFacade().getName(kind).substring(0,1).toUpperCase()
+                    + Model.getFacade().getName(kind).substring(1);
+                icon = ResourceLoaderWrapper.lookupIcon(name);
             }
         	
 			@Override
