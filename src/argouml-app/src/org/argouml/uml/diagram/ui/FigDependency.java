@@ -116,13 +116,6 @@ public class FigDependency extends FigEdgeModelElement {
         return false;
     }
 
-    public void setLineColor(Color color) {
-        ArrowHead arrow = getDestArrowHead();
-        if (arrow != null) {
-            arrow.setLineColor(getLineColor());
-        }
-    }
-    
     @Override
     protected void updateNameText() {
         super.updateNameText();

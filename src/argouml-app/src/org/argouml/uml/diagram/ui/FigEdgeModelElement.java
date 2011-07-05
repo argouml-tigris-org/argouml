@@ -115,6 +115,7 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.persistence.pgml.PgmlUtility;
+import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigEdge;
@@ -1674,6 +1675,10 @@ public abstract class FigEdgeModelElement
     
     public void setLineColor(Color c) {
         super.setLineColor(c);
+        ArrowHead arrow = getDestArrowHead();
+        if (arrow != null) {
+            arrow.setLineColor(getLineColor());
+        }
     }
     
     public void setFig(Fig f) {
