@@ -68,6 +68,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("actualArgument", new ArgumentGetterSetter());
         addGetterSetter("aggregation", new AggregationGetterSetter());
         addGetterSetter("baseClass", new BaseClassGetterSetter());
+        //addGetterSetter("base", new BaseGetterSetter());
         addGetterSetter("body", new MethodExpressionGetterSetter());
         addGetterSetter("changeability", new ChangeabilityGetterSetter());
         addGetterSetter("classifier", new ClassifierGetterSetter());
@@ -130,7 +131,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
      * @param propertyName
      * @param bgs
      */
-    private void addGetterSetter(String propertyName, BaseGetterSetter bgs) {
+    private void addGetterSetter(String propertyName, GetterSetter bgs) {
         getterSetterByPropertyName.put(propertyName, bgs);
     }
     
@@ -141,14 +142,14 @@ class GetterSetterManagerImpl extends GetterSetterManager {
      * @param propertyName the property name
      */
     public void set(Object handle, Object value, String propertyName) {
-        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs != null) {
             bgs.set(handle, value);
         }
     }
     
     public Object get(Object handle, String propertyName, Class<?> type) {
-        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs != null) {
             return bgs.get(handle, type);
         }
@@ -161,7 +162,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             final Object umlElement,
             final String propertyName,
             final Collection<Class<?>> types) {
-        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof OptionGetterSetter) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("OptionGetterSetter found for "
@@ -176,7 +177,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     public boolean isFullBuildOnly(
             final String propertyName) {
-        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof ListGetterSetter) {
             return ((ListGetterSetter) bgs).isFullBuildOnly();
         }
@@ -186,7 +187,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     
     
     public Object create(String propertyName, String language, String body) {
-        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof ExpressionGetterSetter) {
             return ((ExpressionGetterSetter) bgs).create(language, body);
         }
@@ -198,7 +199,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             final String propertyName,
             final Collection<Class<?>> types,
             final Object element) {
-        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof ListGetterSetter) {
             return ((ListGetterSetter) bgs).isValidElement(element, types);
         }
@@ -207,56 +208,61 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     }
     
     public Object getMetaType(String propertyName) {
-        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+        GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof ListGetterSetter) {
             return ((ListGetterSetter) bgs).getMetaType();
         }
         
         return null;
     }
-    
 
-	@Override
-	public Command getAddCommand(String propertyName, Object umlElement) {
-        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+    @Override
+    public Command getAddCommand(String propertyName, Object umlElement) {
+        LOG.info("Finding getter/setter for " + propertyName);
+        GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof Addable) {
+            LOG.info("Returning add command");
             return ((Addable) bgs).getAddCommand(umlElement);
         }
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public List<Command> getAdditionalCommands(String propertyName, Object umlElement) {
-        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+    @Override
+    public List<Command> getAdditionalCommands(
+	    final String propertyName, final Object umlElement) {
+        GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
         if (bgs instanceof ListGetterSetter) {
             return ((ListGetterSetter) bgs).getAdditionalCommands(umlElement);
         }
-		return null;
-	}
+	return null;
+    }
 
-	@Override
-	public Command getRemoveCommand(String propertyName, Object umlElement, Object objectToRemove) {
-        BaseGetterSetter bgs = getterSetterByPropertyName.get(propertyName);
-        if (bgs instanceof Removeable) {
-            return ((Removeable) bgs).getRemoveCommand(umlElement, objectToRemove);
+    @Override
+    public Command getRemoveCommand(
+	    final String propertyName, Object umlElement,
+	    final Object objectToRemove) {
+	GetterSetter bgs = getterSetterByPropertyName.get(propertyName);
+	if (bgs instanceof Removeable) {
+            return ((Removeable) bgs).getRemoveCommand(
+        	    umlElement, objectToRemove);
         }
-		return null;
-	}
+	return null;
+    }
 	
-	private interface Addable {
-		Command getAddCommand(Object umlElement);
-	}
+    private interface Addable {
+        Command getAddCommand(Object umlElement);
+    }
     
-	private interface Removeable {
-		Command getRemoveCommand(Object umlElement, Object objectToRemove);
-	}
+    private interface Removeable {
+	Command getRemoveCommand(Object umlElement, Object objectToRemove);
+    }
     
     
     /**
      * The getter/setter for the Absrtact property
      * @author Bob Tarling
      */
-    private class AbstractGetterSetter extends BaseGetterSetter {
+    private class AbstractGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isAbstract(modelElement);
         }
@@ -265,7 +271,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class LeafGetterSetter extends BaseGetterSetter {
+    private class LeafGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isLeaf(modelElement);
         }
@@ -274,7 +280,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class RootGetterSetter extends BaseGetterSetter {
+    private class RootGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isRoot(modelElement);
         }
@@ -283,7 +289,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class ActiveGetterSetter extends BaseGetterSetter {
+    private class ActiveGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isActive(modelElement);
         }
@@ -292,7 +298,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class OwnerScopeGetterSetter extends BaseGetterSetter {
+    private class OwnerScopeGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isStatic(modelElement);
         }
@@ -334,7 +340,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
 
-    private class TargetScopeGetterSetter extends BaseGetterSetter {
+    private class TargetScopeGetterSetter extends GetterSetter {
         // Have we handled UML2 here?
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isStatic(modelElement);
@@ -344,7 +350,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class QueryGetterSetter extends BaseGetterSetter {
+    private class QueryGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isQuery(modelElement);
         }
@@ -353,7 +359,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class NavigableGetterSetter extends BaseGetterSetter {
+    private class NavigableGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isNavigable(modelElement);
         }
@@ -362,7 +368,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class AsynchronousGetterSetter extends BaseGetterSetter {
+    private class AsynchronousGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isAsynchronous(modelElement);
         }
@@ -371,7 +377,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class SynchGetterSetter extends BaseGetterSetter {
+    private class SynchGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().isSynch(modelElement);
         }
@@ -380,7 +386,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class OrderingGetterSetter extends BaseGetterSetter {
+    private class OrderingGetterSetter extends GetterSetter {
         public Object get(Object modelElement, Class<?> type) {
             return Model.getFacade().getOrdering(modelElement) ==
                 Model.getOrderingKind().getOrdered();
@@ -396,7 +402,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         }
     }
     
-    private class DerivedGetterSetter extends BaseGetterSetter {
+    private class DerivedGetterSetter extends GetterSetter {
         
         /**
          * Derived is not a true UML property but is in fact a pseudo property
@@ -1290,7 +1296,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                     key = "label.pseudostate.junction";
                 } else {
                     throw new IllegalArgumentException(
-                			kind + " is not a known PseudostateKind");
+                	kind + " is not a known PseudostateKind");
                 }
                 label = Translator.localize(key);
                 final String name =
@@ -2329,6 +2335,142 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 	    }
 	}
     }
+    
+//    private class BaseGetterSetter extends ListGetterSetter {
+//	//implements Addable, Removeable {
+//        
+////        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
+////            return Model.getFacade().getBases(modelElement);
+////        }
+//      
+//        public Object get(Object modelElement, Class<?> type) {
+//            // not needed
+//            return null;
+//        }
+//      
+//        public void set(Object element, Object x) {
+//            // not needed
+//        }
+//
+//        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+//            return getOptions(element, types).contains(element);
+//        }
+//        
+//        public Object getMetaType() {
+//            return Model.getMetaTypes().getClassifier();
+//        }
+//
+////        public Command getAddCommand(Object modelElement) {
+////            return new AddCommand(modelElement);
+////        }
+////    
+////        public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
+////    	    return new RemoveCommand(modelElement, objectToRemove);
+////        }
+////    
+////        private class AddCommand extends AddModelElementCommand {
+////
+////            final private List<String> metaClasses;
+////            
+////            /**
+////             * Constructor for ActionAddPackageImport.
+////             */
+////            public AddCommand(Object target) {
+////                super(target);
+////                LOG.info("Creating AddCommand");
+////                metaClasses = initMetaClasses();
+////            }
+////            
+////            /**
+////             * Initialize the meta-classes list. <p>
+////             * 
+////             * All this code is necessary to be independent of 
+////             * model repository implementation, 
+////             * i.e. to ensure that we have a 
+////             * sorted list of strings.
+////             */
+////            private List<String> initMetaClasses() {
+////                Collection<String> tmpMetaClasses = 
+////                    Model.getCoreHelper().getAllMetatypeNames();
+////                List<String> metaClasses;
+////                if (tmpMetaClasses instanceof List) {
+////                    metaClasses = (List<String>) tmpMetaClasses;
+////                } else {
+////                    metaClasses = new LinkedList<String>(tmpMetaClasses);
+////                }
+////                try {
+////                    Collections.sort(metaClasses);
+////                } catch (UnsupportedOperationException e) {
+////                    // We got passed an unmodifiable List.  Copy it and sort the result
+////                    metaClasses = new LinkedList<String>(tmpMetaClasses);
+////                    Collections.sort(metaClasses);
+////                }
+////                
+////                return metaClasses;
+////            }
+////            
+////            protected List getChoices() {
+////                List vec = new ArrayList();
+////                vec.addAll(Model.getCollaborationsHelper()
+////                        .getAllPossibleBases(getTarget()));
+////                return vec;
+////            }
+////    
+////            protected List getSelected() {
+////                List list = new ArrayList();
+////                list.addAll(Model.getFacade().getBases(getTarget()));
+////                return list;
+////            }
+////    
+////    
+////            protected String getDialogTitle() {
+////                return Translator.localize("dialog.title.add-bases");
+////            }
+////    
+////    
+////            @Override
+////            protected void doIt(Collection selected) {
+////                Object stereo = getTarget();
+////                Set<Object> oldSet = new HashSet<Object>(getSelected());
+////                Set toBeRemoved = new HashSet<Object>(oldSet);
+////
+////                for (Object o : selected) {
+////                    if (oldSet.contains(o)) {
+////                        toBeRemoved.remove(o);
+////                    } else {
+////                        Model.getExtensionMechanismsHelper()
+////                                .addBaseClass(stereo, o);
+////                    }
+////                }
+////                for (Object o : toBeRemoved) {
+////                    Model.getExtensionMechanismsHelper().removeBaseClass(stereo, o);
+////                }
+////            }
+////        }
+////    
+////        private class RemoveCommand
+////	    extends NonUndoableCommand {
+////    	
+////            private final Object target;
+////            private final Object objectToRemove;
+////    	
+////	    /**
+////	     * Constructor for RemoveCommand.
+////	     */
+////	    public RemoveCommand(final Object target, final Object objectToRemove) {
+////	        this.target = target;
+////	        this.objectToRemove = objectToRemove;
+////	    }
+////	    
+////	    /*
+////	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+////	     */
+////	    public Object execute() {
+////                Model.getExtensionMechanismsHelper().removeBaseClass(target, objectToRemove);
+////	        return null;
+////	    }
+////	}
+//    }
     
     private class QualifierGetterSetter extends ListGetterSetter {
         

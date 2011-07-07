@@ -29,8 +29,8 @@ public abstract class GetterSetterManager {
     /**
      * The list of boolean property getter/setters
      */
-    protected final Map<String, BaseGetterSetter> getterSetterByPropertyName =
-        new HashMap<String, BaseGetterSetter>();
+    protected final Map<String, GetterSetter> getterSetterByPropertyName =
+        new HashMap<String, GetterSetter>();
     
     /**
      * Set a UML property by property name
@@ -75,18 +75,18 @@ public abstract class GetterSetterManager {
         return new GetterSetterManagerImpl(type);
     }
     
-    protected abstract class BaseGetterSetter {
+    protected abstract class GetterSetter {
         
         abstract Object get(Object modelElement, Class<?> type);
         abstract void set(Object modelElement, Object value);
     }
     
-    protected abstract class ExpressionGetterSetter extends BaseGetterSetter {
+    protected abstract class ExpressionGetterSetter extends GetterSetter {
         abstract Object create(String language, String body);
     }
     
     
-    protected abstract class OptionGetterSetter extends BaseGetterSetter {
+    protected abstract class OptionGetterSetter extends GetterSetter {
         
         private Collection options;
 
