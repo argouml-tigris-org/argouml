@@ -71,8 +71,6 @@ class ListFactory implements ComponentFactory {
             model = new UMLClassifierRoleAvailableContentsListModel(modelElement);
         } else if ("availableFeature".equals(propName)) {
             model = new UMLClassifierRoleAvailableFeaturesListModel(modelElement);
-        } else if ("base".equals(propName)) {
-            model = new UMLClassifierRoleBaseListModel(modelElement);
         } else if ("classifierInState".equals(propName)) {
             model = new UMLOFSStateListModel(modelElement);
         } else if ("client".equals(propName)) {

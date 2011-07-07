@@ -68,7 +68,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         addGetterSetter("actualArgument", new ArgumentGetterSetter());
         addGetterSetter("aggregation", new AggregationGetterSetter());
         addGetterSetter("baseClass", new BaseClassGetterSetter());
-        //addGetterSetter("base", new BaseGetterSetter());
+        addGetterSetter("base", new BaseGetterSetter());
         addGetterSetter("body", new MethodExpressionGetterSetter());
         addGetterSetter("changeability", new ChangeabilityGetterSetter());
         addGetterSetter("classifier", new ClassifierGetterSetter());
@@ -2336,141 +2336,95 @@ class GetterSetterManagerImpl extends GetterSetterManager {
 	}
     }
     
-//    private class BaseGetterSetter extends ListGetterSetter {
-//	//implements Addable, Removeable {
-//        
-////        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
-////            return Model.getFacade().getBases(modelElement);
-////        }
-//      
-//        public Object get(Object modelElement, Class<?> type) {
-//            // not needed
-//            return null;
-//        }
-//      
-//        public void set(Object element, Object x) {
-//            // not needed
-//        }
-//
-//        public boolean isValidElement(Object element, Collection<Class<?>> types) {
-//            return getOptions(element, types).contains(element);
-//        }
-//        
-//        public Object getMetaType() {
-//            return Model.getMetaTypes().getClassifier();
-//        }
-//
-////        public Command getAddCommand(Object modelElement) {
-////            return new AddCommand(modelElement);
-////        }
-////    
-////        public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
-////    	    return new RemoveCommand(modelElement, objectToRemove);
-////        }
-////    
-////        private class AddCommand extends AddModelElementCommand {
-////
-////            final private List<String> metaClasses;
-////            
-////            /**
-////             * Constructor for ActionAddPackageImport.
-////             */
-////            public AddCommand(Object target) {
-////                super(target);
-////                LOG.info("Creating AddCommand");
-////                metaClasses = initMetaClasses();
-////            }
-////            
-////            /**
-////             * Initialize the meta-classes list. <p>
-////             * 
-////             * All this code is necessary to be independent of 
-////             * model repository implementation, 
-////             * i.e. to ensure that we have a 
-////             * sorted list of strings.
-////             */
-////            private List<String> initMetaClasses() {
-////                Collection<String> tmpMetaClasses = 
-////                    Model.getCoreHelper().getAllMetatypeNames();
-////                List<String> metaClasses;
-////                if (tmpMetaClasses instanceof List) {
-////                    metaClasses = (List<String>) tmpMetaClasses;
-////                } else {
-////                    metaClasses = new LinkedList<String>(tmpMetaClasses);
-////                }
-////                try {
-////                    Collections.sort(metaClasses);
-////                } catch (UnsupportedOperationException e) {
-////                    // We got passed an unmodifiable List.  Copy it and sort the result
-////                    metaClasses = new LinkedList<String>(tmpMetaClasses);
-////                    Collections.sort(metaClasses);
-////                }
-////                
-////                return metaClasses;
-////            }
-////            
-////            protected List getChoices() {
-////                List vec = new ArrayList();
-////                vec.addAll(Model.getCollaborationsHelper()
-////                        .getAllPossibleBases(getTarget()));
-////                return vec;
-////            }
-////    
-////            protected List getSelected() {
-////                List list = new ArrayList();
-////                list.addAll(Model.getFacade().getBases(getTarget()));
-////                return list;
-////            }
-////    
-////    
-////            protected String getDialogTitle() {
-////                return Translator.localize("dialog.title.add-bases");
-////            }
-////    
-////    
-////            @Override
-////            protected void doIt(Collection selected) {
-////                Object stereo = getTarget();
-////                Set<Object> oldSet = new HashSet<Object>(getSelected());
-////                Set toBeRemoved = new HashSet<Object>(oldSet);
-////
-////                for (Object o : selected) {
-////                    if (oldSet.contains(o)) {
-////                        toBeRemoved.remove(o);
-////                    } else {
-////                        Model.getExtensionMechanismsHelper()
-////                                .addBaseClass(stereo, o);
-////                    }
-////                }
-////                for (Object o : toBeRemoved) {
-////                    Model.getExtensionMechanismsHelper().removeBaseClass(stereo, o);
-////                }
-////            }
-////        }
-////    
-////        private class RemoveCommand
-////	    extends NonUndoableCommand {
-////    	
-////            private final Object target;
-////            private final Object objectToRemove;
-////    	
-////	    /**
-////	     * Constructor for RemoveCommand.
-////	     */
-////	    public RemoveCommand(final Object target, final Object objectToRemove) {
-////	        this.target = target;
-////	        this.objectToRemove = objectToRemove;
-////	    }
-////	    
-////	    /*
-////	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-////	     */
-////	    public Object execute() {
-////                Model.getExtensionMechanismsHelper().removeBaseClass(target, objectToRemove);
-////	        return null;
-////	    }
-////	}
-//    }
+    private class BaseGetterSetter extends ListGetterSetter implements Addable, Removeable {
+        
+        public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
+            return Model.getFacade().getBases(modelElement);
+        }
+      
+        public Object get(Object modelElement, Class<?> type) {
+            // not needed
+            return null;
+        }
+      
+        public void set(Object element, Object x) {
+            // not needed
+        }
+
+        public boolean isValidElement(Object element, Collection<Class<?>> types) {
+            return getOptions(element, types).contains(element);
+        }
+        
+        public Object getMetaType() {
+            return Model.getMetaTypes().getClassifier();
+        }
+
+        public Command getAddCommand(Object modelElement) {
+            return new AddCommand(modelElement);
+        }
+    
+        public Command getRemoveCommand(Object modelElement, Object objectToRemove) {
+    	    return new RemoveCommand(modelElement, objectToRemove);
+        }
+    
+        private class AddCommand extends AddModelElementCommand {
+
+            /**
+             * Constructor for ActionAddPackageImport.
+             */
+            public AddCommand(Object target) {
+                super(target);
+            }
+            
+            protected List getChoices() {
+                List vec = new ArrayList();
+                vec.addAll(Model.getCollaborationsHelper()
+                        .getAllPossibleBases(getTarget()));
+                return vec;
+            }
+    
+            protected List getSelected() {
+                List list = new ArrayList();
+                list.addAll(Model.getFacade().getBases(getTarget()));
+                return list;
+            }
+    
+    
+            protected String getDialogTitle() {
+                return Translator.localize("dialog.title.add-bases");
+            }
+    
+    
+            @Override
+            protected void doIt(Collection selected) {
+                Object role = getTarget();
+                Model.getCollaborationsHelper().setBases(role, selected);
+            }
+        }
+    
+        private class RemoveCommand
+	    extends NonUndoableCommand {
+    	
+            private final Object target;
+            private final Object objectToRemove;
+    	
+	    /**
+	     * Constructor for RemoveCommand.
+	     */
+	    public RemoveCommand(final Object target, final Object objectToRemove) {
+	        this.target = target;
+	        this.objectToRemove = objectToRemove;
+	    }
+	    
+	    /*
+	     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	     */
+	    public Object execute() {
+		Model.getCollaborationsHelper().removeBase(target, objectToRemove);
+	        return null;
+	    }
+	}
+    }
     
     private class QualifierGetterSetter extends ListGetterSetter {
         
