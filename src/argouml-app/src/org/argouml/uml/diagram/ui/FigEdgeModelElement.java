@@ -941,11 +941,9 @@ public abstract class FigEdgeModelElement
      * generate the notation for the modelelement and stuff it into the text Fig
      */
     protected void updateNameText() {
-
-        if (getOwner() == null) {
-            return;
-        }
-        if (notationProviderName != null) {
+        if (notationProviderName != null
+                && getOwner() != null
+                && Model.getFacade().isANamedElement(getOwner())) {
             String nameStr = notationProviderName.toString(
                     getOwner(), getNotationSettings());
             nameFig.setText(nameStr);

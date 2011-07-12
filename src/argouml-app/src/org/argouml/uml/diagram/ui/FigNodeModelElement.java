@@ -1617,19 +1617,17 @@ public abstract class FigNodeModelElement
      * but also changes in rendering like bold.
      */
     protected void updateNameText() {
-        if (readyToEdit) {
-            if (getOwner() == null) {
-                return;
-            }
-            if (notationProviderName != null) {
-                nameFig.setText(notationProviderName.toString(
-                        getOwner(), getNotationSettings()));
-                updateFont();
-                updateBounds();
-            }
+        if (readyToEdit
+                && notationProviderName != null
+                && getOwner() != null
+                && Model.getFacade().isANamedElement(getOwner())) {
+            nameFig.setText(notationProviderName.toString(
+                    getOwner(), getNotationSettings()));
+            updateFont();
+            updateBounds();
         }
     }
-
+    
     /*
      * @see org.argouml.uml.diagram.ui.PathContainer#isPathVisible()
      */
