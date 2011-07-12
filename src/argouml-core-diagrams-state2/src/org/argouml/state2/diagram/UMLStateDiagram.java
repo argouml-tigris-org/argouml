@@ -37,6 +37,7 @@ import org.argouml.uml.diagram.state.ui.FigJoinState;
 import org.argouml.uml.diagram.state.ui.FigJunctionState;
 import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
 import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -53,6 +54,16 @@ import org.tigris.gef.presentation.FigNode;
  */
 public class UMLStateDiagram extends UMLDiagram {
 
+    /**
+     * Construct a State Diagram. Default constructor used by PGML parser during
+     * diagram load. It should not be used by other callers.
+     * @deprecated only for use by PGML parser
+     */
+    @Deprecated
+    public UMLStateDiagram() {
+        super(new StateDiagramGraphModel());
+    }
+    
     /**
      * Construct a new State Machine diagram.
      * 
