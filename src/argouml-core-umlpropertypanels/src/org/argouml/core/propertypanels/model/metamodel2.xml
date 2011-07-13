@@ -2631,7 +2631,6 @@ Authors:
     <list name="templateParameter" type="TemplateParameter" new="true" label="label.template-parameters" />
     <separator />
     <list name="transitions" type="Transition" />
-    <list name="submachineState" type="SubmachineState" />
     
     <debug />
     <attribute name="visibility" type="VisibilityKind" />
