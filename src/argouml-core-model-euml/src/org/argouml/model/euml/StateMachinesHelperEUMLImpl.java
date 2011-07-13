@@ -80,9 +80,15 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
 
     public Collection getAllPossibleStatemachines(Object model,
             Object oSubmachineState) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        if (oSubmachineState instanceof State) {
+            Collection<StateMachine> statemachines =
+                Model.getModelManagementHelper()
+                    .getAllModelElementsOfKind(model, StateMachine.class);
+            statemachines.remove(getStateMachine(oSubmachineState));
+            return statemachines;
+        } else {
+            throw new IllegalArgumentException("State expected"); //$NON-NLS-1$
+        }
     }
 
     public Collection getAllPossibleSubvertices(Object oState) {

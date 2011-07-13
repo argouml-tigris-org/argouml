@@ -1521,13 +1521,11 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Object getSubmachine(Object handle) {
-        throw new NotYetImplementedException();
-
+        return ((State) handle).getSubmachine();
     }
 
     public Collection getSubmachineStates(Object handle) {
-        throw new NotYetImplementedException();
-
+        throw new NotImplementedException("Not applicable in UML2"); //$NON-NLS-1$
     }
 
     public Collection getSubvertices(Object handle) {
