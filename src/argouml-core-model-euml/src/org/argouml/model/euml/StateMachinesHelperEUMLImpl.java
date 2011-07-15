@@ -354,9 +354,18 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
 
     public void setStatemachineAsSubmachine(Object oSubmachineState,
             Object oStatemachine) {
-        // TODO: Auto-generated method stub
-        throw new NotYetImplementedException();
-
+        if (!(oSubmachineState instanceof State)
+                || !(oStatemachine instanceof StateMachine || oStatemachine == null)) {
+            throw new IllegalArgumentException(
+                    "Expected a state and statemachine, got a " //$NON-NLS-1$
+                    + oSubmachineState + " and " + oStatemachine); //$NON-NLS-1$
+        }
+        LOG.info("StateMachineHelper setStatemachnieAsSubmachine");
+        State state = (State) oSubmachineState;
+        StateMachine stateMachine = (StateMachine) oStatemachine;
+        ModelEventPumpEUMLImpl pump = (ModelEventPumpEUMLImpl) Model.getPump();
+        pump.addElementForDeleteEventIgnore(state);
+        state.setSubmachine(stateMachine);
     }
 
     public void setSubvertices(Object handle, Collection subvertices) {
