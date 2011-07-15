@@ -360,7 +360,6 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
                     "Expected a state and statemachine, got a " //$NON-NLS-1$
                     + oSubmachineState + " and " + oStatemachine); //$NON-NLS-1$
         }
-        LOG.info("StateMachineHelper setStatemachnieAsSubmachine");
         State state = (State) oSubmachineState;
         StateMachine stateMachine = (StateMachine) oStatemachine;
         ModelEventPumpEUMLImpl pump = (ModelEventPumpEUMLImpl) Model.getPump();
