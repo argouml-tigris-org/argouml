@@ -38,11 +38,9 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
 
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.Fig;
@@ -88,7 +86,7 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
      */
     private void updateFigTexts() {
         int height = 0;
-        for (Fig fig : (List<Fig>) getFigs()) {
+        for (Fig fig : getFigs()) {
             int figHeight = fig.getMinimumSize().height;
             fig.setBounds(getX(), getY() + height, fig.getWidth(), figHeight);
             fig.endTrans();
@@ -109,7 +107,7 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
             // calculate the total height
             int maxWidth = 0;
             int height = 0;
-            for (Fig fig : (List<Fig>) getFigs()) {
+            for (Fig fig : getFigs()) {
 //                fig.calcBounds();
                 if (fig.getWidth() > maxWidth) {
                     maxWidth = fig.getWidth();
@@ -127,7 +125,7 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
      */
     @Override
     public void removeFromDiagram() {
-        for (Fig fig : (List<Fig>) getFigs()) {
+        for (Fig fig : getFigs()) {
             fig.removeFromDiagram();
         }
         super.removeFromDiagram();
@@ -138,7 +136,7 @@ public class FigTextGroup extends ArgoFigGroup implements MouseListener {
      */
     @Override
     public void deleteFromModel() {
-        for (Fig fig : (List<Fig>) getFigs()) {
+        for (Fig fig : getFigs()) {
             fig.deleteFromModel();
         }
         super.deleteFromModel();

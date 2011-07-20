@@ -128,7 +128,7 @@ public class ModeLabelDrag extends FigModifyingModeImpl {
         Point clickPoint = me.getPoint(); 
         Fig underMouse = editor.hit(clickPoint);
         if (underMouse instanceof FigEdge) {
-            List<Fig> figList = ((FigEdge)underMouse).getPathItemFigs();
+            List<Fig> figList = ((FigEdge) underMouse).getPathItemFigs();
             for (Fig fig : figList) {
                 if (fig.contains(clickPoint)) {
                     // Consume to stop other modes from trying to take over

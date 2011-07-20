@@ -41,23 +41,22 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 import java.io.File;
 import java.util.Collection;
 
+import junit.framework.TestCase;
+
 import org.argouml.FileHelper;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.TestProjectWithProfiles;
-import org.argouml.model.Model;
-import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.uml.StereotypeUtility;
-import org.argouml.uml.TestStereotypeUtility;
-import org.argouml.uml.ui.foundation.extension_mechanisms.UMLTagDefinitionComboBoxModel;
-
-import junit.framework.TestCase;
 import org.argouml.model.InitializeModel;
+import org.argouml.model.Model;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.ProfileMother;
 import org.argouml.profile.UserDefinedProfile;
 import org.argouml.profile.init.InitProfileSubsystem;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.uml.StereotypeUtility;
+import org.argouml.uml.TestStereotypeUtility;
 
 /**
  * Test cases for the UMLTagDefinitionComboBoxModel class.

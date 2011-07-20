@@ -127,7 +127,9 @@ public class CrInterfaceWithoutComponent extends CrUML {
         Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
-	    if (!(obj instanceof FigInterface)) continue;
+	    if (!(obj instanceof FigInterface)) {
+	        continue;
+	    }
 	    FigInterface fi = (FigInterface) obj;
 	    Fig enclosing = fi.getEnclosingFig();
 	    if (enclosing == null || (!(Model.getFacade()

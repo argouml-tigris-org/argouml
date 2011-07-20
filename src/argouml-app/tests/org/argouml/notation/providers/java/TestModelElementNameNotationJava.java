@@ -40,7 +40,6 @@ package org.argouml.notation.providers.java;
 
 import junit.framework.TestCase;
 
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.InitializeModel;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationSettings;

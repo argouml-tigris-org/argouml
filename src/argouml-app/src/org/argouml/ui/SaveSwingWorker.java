@@ -55,8 +55,8 @@ import org.tigris.gef.undo.UndoManager;
  * in visibility to package visibility only. It is currently only used by
  * ProjectBrowser and any client calling should use methods there for save.
  */
-class SaveSwingWorker extends SwingWorker {
 @Deprecated
+class SaveSwingWorker extends SwingWorker {
 
     private final boolean overwrite;
     private final File file;

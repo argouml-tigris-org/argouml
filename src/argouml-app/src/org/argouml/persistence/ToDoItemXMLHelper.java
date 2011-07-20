@@ -62,8 +62,9 @@ public class ToDoItemXMLHelper
      */
     public ToDoItemXMLHelper(ToDoItem todoItem)
     {
-	if (todoItem == null)
+	if (todoItem == null) {
 	    throw new NullPointerException();
+	}
 	item = todoItem;
     }
 

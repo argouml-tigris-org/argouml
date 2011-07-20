@@ -62,7 +62,9 @@ public final class UUIDHelper {
         if (base instanceof Fig) {
             base = ((Fig) base).getOwner();
         }
-        if (base == null) return null;
+        if (base == null) {
+            return null;
+        }
         if (base instanceof CommentEdge) {
             return (String) ((CommentEdge) base).getUUID();
         }

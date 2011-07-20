@@ -31,7 +31,6 @@ import javax.swing.Icon;
  * a submenu node or dropdown toolbutton and contains a list of further
  * Actions to be contained in that subnode.
  *
- * @param <E>
  * @author Bob Tarling
  */
 public class ActionList extends ArrayList<Action> implements Action {

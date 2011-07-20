@@ -38,8 +38,6 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
-
 import org.argouml.uml.diagram.DiagramSettings;
 import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadGreater;

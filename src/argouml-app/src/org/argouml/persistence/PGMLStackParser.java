@@ -90,8 +90,8 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 
     private List<EdgeData> figEdges = new ArrayList<EdgeData>(50);
 
-    private LinkedHashMap<FigEdge, Object> modelElementsByFigEdge = new LinkedHashMap<FigEdge, Object>(
-            50);
+    private LinkedHashMap<FigEdge, Object> modelElementsByFigEdge =
+        new LinkedHashMap<FigEdge, Object>(50);
 
     private DiagramSettings diagramSettings;
 
@@ -202,7 +202,8 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
             FigGroup group = (FigGroup) f;
             String clsNameBounds = attrList.getValue("description");
             if (clsNameBounds != null) {
-                StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
+                StringTokenizer st = 
+                    new StringTokenizer(clsNameBounds, ",;[] ");
                 // Discard class name, x y w h
                 if (st.hasMoreElements()) {
                     st.nextToken();
@@ -644,8 +645,8 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
             final Rectangle bounds, final Attributes attributes)
         throws SAXException {
 
-        final DiagramSettings diagramSettings = ((ArgoDiagram) getDiagram())
-                .getDiagramSettings();
+        final DiagramSettings oldSettings = 
+            ((ArgoDiagram) getDiagram()).getDiagramSettings();
 
         Fig f = null;
         try {
@@ -674,7 +675,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
                     }
                     parameters[0] = owner;
                     parameters[1] = bounds;
-                    parameters[2] = diagramSettings;
+                    parameters[2] = oldSettings;
 
                     constructor.setAccessible(true);
                     f = (Fig) constructor.newInstance(parameters);
@@ -703,10 +704,10 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
                         destination = null;
                     }
 
-                    DiagramEdgeSettings settings = new DiagramEdgeSettings(
+                    DiagramEdgeSettings newSettings = new DiagramEdgeSettings(
                             owner, source, destination);
-                    parameters[0] = settings;
-                    parameters[1] = diagramSettings;
+                    parameters[0] = newSettings;
+                    parameters[1] = oldSettings;
 
                     constructor.setAccessible(true);
                     f = (Fig) constructor.newInstance(parameters);
@@ -719,7 +720,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
                     // FigNodeModelElement when in fact it should not do so.
                     Object parameters[] = new Object[2];
                     parameters[0] = bounds;
-                    parameters[1] = diagramSettings;
+                    parameters[1] = oldSettings;
 
                     constructor.setAccessible(true);
                     f = (Fig) constructor.newInstance(parameters);
@@ -746,7 +747,7 @@ class PGMLStackParser extends org.tigris.gef.persistence.pgml.PGMLStackParser {
 //                            return null;
 //                        }
                         parameters[0] = owner;
-                        parameters[1] = diagramSettings;
+                        parameters[1] = oldSettings;
 
                         constructor.setAccessible(true);
                         f = (Fig) constructor.newInstance(parameters);

@@ -107,20 +107,26 @@ class TableModelCritics extends AbstractTableModel
      * @see javax.swing.table.TableModel#getColumnName(int)
      */
     public String getColumnName(int c) {
-        if (c == 0)
+        if (c == 0) {
             return Translator.localize("dialog.browse.column-name.active");
-        if (c == 1)
+        }
+        if (c == 1) {
             return Translator.localize("dialog.browse.column-name.headline");
-        if (c == 2)
+        }
+        if (c == 2) {
             return Translator.localize("dialog.browse.column-name.snoozed");
-        if (c == 3)
+        }
+        if (c == 3) {
             return Translator.localize("dialog.browse.column-name.priority");
-        if (c == 4)
+        }
+        if (c == 4) {
             return Translator.localize(
                     "dialog.browse.column-name.supported-decision");
-        if (c == 5)
+        }
+        if (c == 5) {
             return Translator.localize(
                     "dialog.browse.column-name.knowledge-type");
+        }
         throw new IllegalArgumentException();
     }
 
@@ -160,7 +166,9 @@ class TableModelCritics extends AbstractTableModel
      * @see javax.swing.table.TableModel#getRowCount()
      */
     public int getRowCount() {
-        if (critics == null) return 0;
+        if (critics == null) {
+            return 0;
+        }
         return critics.size();
     }
 
@@ -169,12 +177,24 @@ class TableModelCritics extends AbstractTableModel
      */
     public Object getValueAt(int row, int col) {
         Critic cr = critics.get(row);
-        if (col == 0) return cr.isEnabled() ? Boolean.TRUE : Boolean.FALSE;
-        if (col == 1) return cr.getHeadline();
-        if (col == 2) return cr.isActive() ? "no" : "yes";
-        if (col == 3) return cr.getPriority();
-        if (col == 4) return listToString(cr.getSupportedDecisions());
-        if (col == 5) return listToString(cr.getKnowledgeTypes());
+        if (col == 0) {
+            return cr.isEnabled() ? Boolean.TRUE : Boolean.FALSE;
+        }
+        if (col == 1) {
+            return cr.getHeadline();
+        }
+        if (col == 2) {
+            return cr.isActive() ? "no" : "yes";
+        }
+        if (col == 3) {
+            return cr.getPriority();
+        }
+        if (col == 4) {
+            return listToString(cr.getSupportedDecisions());
+        }
+        if (col == 5) {
+            return listToString(cr.getKnowledgeTypes());
+        }
         throw new IllegalArgumentException();
     }
     
@@ -186,8 +206,9 @@ class TableModelCritics extends AbstractTableModel
             Object o = i.next();
             buf.append(String.valueOf(o));
             hasNext = i.hasNext();
-            if (hasNext)
+            if (hasNext) {
                 buf.append(", ");
+            }
         }
         return buf.toString();
     }
@@ -197,8 +218,12 @@ class TableModelCritics extends AbstractTableModel
      */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
         LOG.debug("setting table value " + rowIndex + ", " + columnIndex);
-        if (columnIndex != 0) return;
-        if (!(aValue instanceof Boolean)) return;
+        if (columnIndex != 0) {
+            return;
+        }
+        if (!(aValue instanceof Boolean)) {
+            return;
+        }
         Boolean enable = (Boolean) aValue;
         Critic cr = critics.get(rowIndex);
         cr.setEnabled(enable.booleanValue());

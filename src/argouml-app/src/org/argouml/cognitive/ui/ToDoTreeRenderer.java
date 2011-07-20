@@ -114,19 +114,33 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
                 ToDoItem item = (ToDoItem) value;
                 Poster post = item.getPoster();
                 if (post instanceof Designer) {
-                    if (item.getProgress() == 0) lab.setIcon(postItD0);
-                    else if (item.getProgress() <= 25) lab.setIcon(postItD25);
-                    else if (item.getProgress() <= 50) lab.setIcon(postItD50);
-                    else if (item.getProgress() <= 75) lab.setIcon(postItD75);
-                    else if (item.getProgress() <= 100) lab.setIcon(postItD99);
-                    else lab.setIcon(postItD100);
+                    if (item.getProgress() == 0) {
+                        lab.setIcon(postItD0);
+                    } else if (item.getProgress() <= 25) {
+                        lab.setIcon(postItD25);
+                    } else if (item.getProgress() <= 50) {
+                        lab.setIcon(postItD50);
+                    } else if (item.getProgress() <= 75) {
+                        lab.setIcon(postItD75);
+                    } else if (item.getProgress() <= 100) {
+                        lab.setIcon(postItD99);
+                    } else {
+                        lab.setIcon(postItD100);
+                    }
                 } else {
-                    if (item.getProgress() == 0) lab.setIcon(postIt0);
-                    else if (item.getProgress() <= 25) lab.setIcon(postIt25);
-                    else if (item.getProgress() <= 50) lab.setIcon(postIt50);
-                    else if (item.getProgress() <= 75) lab.setIcon(postIt75);
-                    else if (item.getProgress() <= 100) lab.setIcon(postIt99);
-                    else lab.setIcon(postIt100);
+                    if (item.getProgress() == 0) {
+                        lab.setIcon(postIt0);
+                    } else if (item.getProgress() <= 25) {
+                        lab.setIcon(postIt25);
+                    } else if (item.getProgress() <= 50) {
+                        lab.setIcon(postIt50);
+                    } else if (item.getProgress() <= 75) {
+                        lab.setIcon(postIt75);
+                    } else if (item.getProgress() <= 100) {
+                        lab.setIcon(postIt99);
+                    } else {
+                        lab.setIcon(postIt100);
+                    }
                 }
 
             } else if (value instanceof Decision) {

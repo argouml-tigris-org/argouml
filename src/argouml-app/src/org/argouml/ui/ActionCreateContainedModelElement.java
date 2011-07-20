@@ -44,7 +44,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
@@ -56,14 +55,14 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 public class ActionCreateContainedModelElement
             extends AbstractActionNewModelElement {
 
-    final private Object metaType; 
-    final private String property; 
+    private final Object metaType; 
+    private final String property; 
 
     /**
      * Construct the action.
      * 
      * @param theMetaType the element to be created
-     * @param target the container that will own the new element
+     * @param container the container that will own the new element
      */
     public ActionCreateContainedModelElement(
             Object theMetaType, 

@@ -62,7 +62,9 @@ public class ActionSnooze extends ToDoItemAction {
     @Override
     public void actionPerformed(ActionEvent ae) {
     	super.actionPerformed(ae);
-	if (!(getRememberedTarget() instanceof ToDoItem)) return;
+	if (!(getRememberedTarget() instanceof ToDoItem)) {
+	    return;
+	}
 
 	ToDoItem item = (ToDoItem) getRememberedTarget();
 	Poster p = item.getPoster();

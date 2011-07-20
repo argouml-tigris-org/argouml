@@ -96,7 +96,9 @@ public abstract class UMLWizard extends Wizard {
      * @return the suggestion string
      */
     public String offerSuggestion() {
-        if (suggestion != null) return suggestion;
+        if (suggestion != null) {
+            return suggestion;
+        }
         Object me = getModelElement();
         if (me != null) {
             String n = Model.getFacade().getName(me);

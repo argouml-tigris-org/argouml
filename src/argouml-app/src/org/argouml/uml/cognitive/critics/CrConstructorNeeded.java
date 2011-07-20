@@ -108,8 +108,9 @@ public class CrConstructorNeeded extends CrUML {
 
 
 	// We don't consider secondary stuff.
-	if (!(Model.getFacade().isPrimaryObject(dm)))
+	if (!(Model.getFacade().isPrimaryObject(dm))) {
 	    return NO_PROBLEM;
+	}
 
         // Types don't need a constructor.
         if (Model.getFacade().isType(dm)) {
@@ -139,11 +140,13 @@ public class CrConstructorNeeded extends CrUML {
         while (attrs.hasNext()) {
             Object attr = attrs.next();
 
-            if (Model.getFacade().isStatic(attr))
+            if (Model.getFacade().isStatic(attr)) {
                 continue;
+            }
 
-            if (Model.getFacade().isInitialized(attr))
+            if (Model.getFacade().isInitialized(attr)) {
                 continue;
+            }
 
             // We have found a non-static one that is not initialized.
             return PROBLEM_FOUND;
@@ -165,8 +168,9 @@ public class CrConstructorNeeded extends CrUML {
 	    Object me = item.getOffenders().get(0);
 	    String ins = super.getInstructions();
 	    String sug = null;
-	    if (me != null)
-		sug = Model.getFacade().getName(me);
+	    if (me != null) {
+	        sug = Model.getFacade().getName(me);
+	    }
 	    if ("".equals(sug)) {
 		sug = super.getDefaultSuggestion();
             }

@@ -53,8 +53,8 @@ import org.argouml.util.ArgoFrame;
  * in scope to package to package only. It is currently only used by
  * ProjectBrowser and any client calling should use methods there for load.
  */
-class LoadSwingWorker extends SwingWorker {
 @Deprecated
+class LoadSwingWorker extends SwingWorker {
 
     private static final Logger LOG = Logger.getLogger(LoadSwingWorker.class);
     

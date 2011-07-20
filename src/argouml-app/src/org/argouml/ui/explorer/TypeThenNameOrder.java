@@ -79,8 +79,9 @@ public class TypeThenNameOrder extends NameOrder {
 	}
 
 	if (obj1 == null) {
-	    if (obj2 == null)
-		return 0;
+	    if (obj2 == null) {
+	        return 0;
+	    }
 	    return -1;
 	} else if (obj2 == null) {
 	    return 1;
@@ -95,24 +96,29 @@ public class TypeThenNameOrder extends NameOrder {
 	//     return compareUserObjects(obj1, obj2);
 
         int typeNameOrder = typeName.compareTo(typeName1);
-        if (typeNameOrder == 0)
+        if (typeNameOrder == 0) {
             return compareUserObjects(obj1, obj2);
+        }
 
         if (typeName.indexOf("Diagram") == -1
-	    && typeName1.indexOf("Diagram") != -1)
+	    && typeName1.indexOf("Diagram") != -1) {
             return 1;
+        }
 
         if (typeName.indexOf("Diagram") != -1
-	    && typeName1.indexOf("Diagram") == -1)
+	    && typeName1.indexOf("Diagram") == -1) {
             return -1;
+        }
 
         if (typeName.indexOf("Package") == -1
-	    && typeName1.indexOf("Package") != -1)
+	    && typeName1.indexOf("Package") != -1) {
             return 1;
+        }
 
         if (typeName.indexOf("Package") != -1
-	    && typeName1.indexOf("Package") == -1)
+	    && typeName1.indexOf("Package") == -1) {
             return -1;
+        }
 
         return typeNameOrder;
     }

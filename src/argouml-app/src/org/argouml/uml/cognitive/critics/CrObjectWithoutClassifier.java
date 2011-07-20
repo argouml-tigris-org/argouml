@@ -76,7 +76,9 @@ public class CrObjectWithoutClassifier extends CrUML {
         }
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	ListSet offs = computeOffenders(dd);
-	if (offs == null) return NO_PROBLEM;
+	if (offs == null) {
+	    return NO_PROBLEM;
+	}
 	return PROBLEM_FOUND;
     }
 
@@ -129,7 +131,9 @@ public class CrObjectWithoutClassifier extends CrUML {
 		Object mobj = fo.getOwner();
 		if (mobj != null) {
 		    Collection col = Model.getFacade().getClassifiers(mobj);
-		    if (col.size() > 0) continue;
+		    if (col.size() > 0) {
+		        continue;
+		    }
 		}
 		if (offs == null) {
 		    offs = new ListSet();

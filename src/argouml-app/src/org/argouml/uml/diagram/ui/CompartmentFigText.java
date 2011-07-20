@@ -38,9 +38,9 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.SelectionCompartmentText;
 import org.tigris.gef.base.Selection;

@@ -95,7 +95,8 @@ public class AssociationNameNotationUml extends AssociationNameNotation {
     }
     
     protected void parseAssociationName(Object modelElement, String text)
-    throws ParseException {
+        throws ParseException {
+
         boolean derived = false;
 
         text = text.trim();

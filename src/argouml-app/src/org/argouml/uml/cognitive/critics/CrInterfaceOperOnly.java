@@ -75,13 +75,18 @@ public class CrInterfaceOperOnly extends CrUML {
      */
     @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAInterface(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAInterface(dm))) {
+	    return NO_PROBLEM;
+	}
 	Object inf = dm;
 	Collection sf = Model.getFacade().getFeatures(inf);
-	if (sf == null) return NO_PROBLEM;
+	if (sf == null) {
+	    return NO_PROBLEM;
+	}
 	for (Iterator iter = sf.iterator(); iter.hasNext();) {
-	    if (Model.getFacade().isAStructuralFeature(iter.next()))
+	    if (Model.getFacade().isAStructuralFeature(iter.next())) {
 		return PROBLEM_FOUND;
+	    }
 	}
 	return NO_PROBLEM;
     }

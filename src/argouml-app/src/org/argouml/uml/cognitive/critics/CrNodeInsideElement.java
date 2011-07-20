@@ -123,7 +123,9 @@ public class CrNodeInsideElement extends CrUML {
 	Collection figs = dd.getLayer().getContents();
 	ListSet offs = null;
         for (Object obj : figs) {
-	    if (!(obj instanceof FigMNode)) continue;
+	    if (!(obj instanceof FigMNode)) {
+	        continue;
+	    }
 	    FigMNode fn = (FigMNode) obj;
 	    if (fn.getEnclosingFig() != null) {
 		if (offs == null) {

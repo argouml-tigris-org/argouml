@@ -40,7 +40,6 @@ package org.argouml.profile.internal.ocl.uml14;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.profile.internal.ocl.ModelInterpreter;
 
@@ -50,9 +49,6 @@ import org.argouml.profile.internal.ocl.ModelInterpreter;
  * @author maurelio1234
  */
 public class OclAPIModelInterpreter implements ModelInterpreter {
-
-    private static final Logger LOG = Logger
-            .getLogger(OclAPIModelInterpreter.class);
 
     /*
      * @see org.argouml.profile.internal.ocl.ModelInterpreter#invokeFeature(java.util.Map,

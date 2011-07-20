@@ -80,9 +80,10 @@ public class ActionSetStubStateReferenceState extends UndoableAction {
             Object o = box.getSelectedItem();
             if (o != null) {
                 String name = Model.getStateMachinesHelper().getPath(o);
-                if (name != null)
+                if (name != null) {
                     Model.getStateMachinesHelper()
                             .setReferenceState(box.getTarget(), name);
+                }
             }
         }
     }

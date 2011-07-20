@@ -97,7 +97,7 @@ class DefaultUndoManager implements UndoManager {
     /**
      * @deprecated in 0.32 alpha by Bob Tarling use DefaultUndoManager(Project)
      */
-   @Deprecated
+    @Deprecated
     private DefaultUndoManager() {
         super();
         project = null;
@@ -111,7 +111,7 @@ class DefaultUndoManager implements UndoManager {
     /**
      * @deprecated in 0.32 alpha by Bob Tarling use DefaultUndoManager(Project)
      */
-   @Deprecated
+    @Deprecated
     public static UndoManager getInstance() {
         return INSTANCE;
     }

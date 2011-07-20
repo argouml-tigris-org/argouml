@@ -365,31 +365,44 @@ public class CriticBrowserDialog extends ArgoDialog
     }
     
     private void setTargetHeadline() {
-	if (target == null) return;
+	if (target == null) {
+	    return;
+	}
 	String h = headline.getText();
 	target.setHeadline(h);
     }
 
     private void setTargetPriority() {
-	if (target == null) return;
+	if (target == null) {
+	    return;
+	}
 	String p = (String) priority.getSelectedItem();
-	if (p == null) return;
-	if (p.equals(PRIORITIES[0]))
+	if (p == null) {
+	    return;
+	}
+	if (p.equals(PRIORITIES[0])) {
 	    target.setPriority(ToDoItem.HIGH_PRIORITY);
-	if (p.equals(PRIORITIES[1]))
+	}
+	if (p.equals(PRIORITIES[1])) {
 	    target.setPriority(ToDoItem.MED_PRIORITY);
-	if (p.equals(PRIORITIES[2]))
+	}
+	if (p.equals(PRIORITIES[2])) {
 	    target.setPriority(ToDoItem.LOW_PRIORITY);
+	}
     }
 
     private void setTargetMoreInfo() {
-	if (target == null) return;
+	if (target == null) {
+	    return;
+	}
 	String mi = moreInfo.getText();
 	target.setMoreInfoURL(mi);
     }
 
     private void setTargetDesc() {
-	if (target == null) return;
+	if (target == null) {
+	    return;
+	}
 	String d = desc.getText();
 	target.setDescription(d);
     }
@@ -436,7 +449,9 @@ public class CriticBrowserDialog extends ArgoDialog
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
      */
     public void valueChanged(ListSelectionEvent lse) {
-	if (lse.getValueIsAdjusting()) return;
+	if (lse.getValueIsAdjusting()) {
+	    return;
+	}
 	Object src = lse.getSource();
 	if (src != table.getSelectionModel()) {
 	    LOG.debug("src = " + src);
@@ -471,9 +486,15 @@ public class CriticBrowserDialog extends ArgoDialog
 	Document hDoc = headline.getDocument();
 	Document miDoc = moreInfo.getDocument();
 	Document dDoc = desc.getDocument();
-	if (e.getDocument() == hDoc) setTargetHeadline();
-	if (e.getDocument() == miDoc) setTargetMoreInfo();
-	if (e.getDocument() == dDoc) setTargetDesc();
+	if (e.getDocument() == hDoc) {
+	    setTargetHeadline();
+	}
+	if (e.getDocument() == miDoc) {
+	    setTargetMoreInfo();
+	}
+	if (e.getDocument() == dDoc) {
+	    setTargetDesc();
+	}
     }
 
     /*

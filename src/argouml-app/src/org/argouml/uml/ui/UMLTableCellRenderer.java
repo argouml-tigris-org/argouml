@@ -59,10 +59,11 @@ public class UMLTableCellRenderer extends DefaultTableCellRenderer {
             String name = Model.getFacade().getName(value);
             setText(name);
         } else {
-            if (value instanceof String)
+            if (value instanceof String) {
                 setText((String) value);
-            else
+            } else {
                 setText("");
+            }
         }
     }
 }

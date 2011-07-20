@@ -233,7 +233,9 @@ class ResourceLoader {
         int len = s.length();
         int pos = 0;
         for (int i = 0; i < len; i++, pos++) {
-            if (!Character.isJavaIdentifierPart(s.charAt(i))) break;
+            if (!Character.isJavaIdentifierPart(s.charAt(i))) {
+                break;
+            }
         }
         if (pos == len) {
             return s;

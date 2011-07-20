@@ -91,7 +91,9 @@ public class ClOperationCompartment implements Clarifier {
 	if (fig instanceof FigCompartmentBox) {
             final FigCompartment fc = ((FigCompartmentBox)
 	            fig).getCompartment(Model.getMetaTypes().getOperation());
-            if (fc == null) return;
+            if (fc == null) {
+                return;
+            }
 
 	    // added by Eric Lefevre 13 Mar 1999: we must check if the
 	    // FigText for operations is drawn before drawing things
@@ -110,18 +112,26 @@ public class ClOperationCompartment implements Clarifier {
 	    while (true) {
 		g.drawLine(i, height, i + WAVE_LENGTH, height + WAVE_HEIGHT);
 		i += WAVE_LENGTH;
-		if (i >= right) break;
+		if (i >= right) {
+		    break;
+		}
 		g.drawLine(i, height + WAVE_HEIGHT, i + WAVE_LENGTH, height);
 		i += WAVE_LENGTH;
-		if (i >= right) break;
+		if (i >= right) {
+		    break;
+		}
 		g.drawLine(i, height, i + WAVE_LENGTH,
 			   height + WAVE_HEIGHT / 2);
 		i += WAVE_LENGTH;
-		if (i >= right) break;
+		if (i >= right) {
+		    break;
+		}
 		g.drawLine(i, height + WAVE_HEIGHT / 2, i + WAVE_LENGTH,
 			   height);
 		i += WAVE_LENGTH;
-		if (i >= right) break;
+		if (i >= right) {
+		    break;
+		}
 	    }
 	    fig = null;
 	}
@@ -141,10 +151,14 @@ public class ClOperationCompartment implements Clarifier {
      * @see org.argouml.ui.Clarifier#hit(int, int)
      */
     public boolean hit(int x, int y) {
-	if (!(fig instanceof FigCompartmentBox)) return false;
+	if (!(fig instanceof FigCompartmentBox)) {
+	    return false;
+	}
 	FigCompartment compartment = ((FigCompartmentBox) fig)
 	    .getCompartment(Model.getMetaTypes().getOperation());
-	if (compartment == null) return false;
+	if (compartment == null) {
+	    return false;
+	}
 	Rectangle fr = compartment.getBounds();
 	boolean res = fr.contains(x, y);
 	fig = null;

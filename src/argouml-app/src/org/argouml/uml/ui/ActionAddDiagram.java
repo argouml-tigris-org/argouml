@@ -39,7 +39,6 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.Action;
@@ -50,11 +49,11 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.ui.UndoableAction;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.ui.UndoableAction;
 
 /**
  * Abstract class that is the parent of all actions adding diagrams to ArgoUML.

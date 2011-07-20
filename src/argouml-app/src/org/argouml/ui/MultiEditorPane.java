@@ -300,8 +300,9 @@ public class MultiEditorPane
         int tab = tabs.getSelectedIndex();
         if (tab != -1) {
             Rectangle tabBounds = tabs.getBoundsAt(tab);
-            if (!tabBounds.contains(me.getX(), me.getY()))
+            if (!tabBounds.contains(me.getX(), me.getY())) {
                 return;
+            }
             if (me.getClickCount() == 1) {
                 mySingleClick(tab);
                 me.consume();

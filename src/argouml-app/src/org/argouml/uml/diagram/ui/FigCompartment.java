@@ -90,7 +90,8 @@ public abstract class FigCompartment extends ArgoFigGroup {
     private Fig externalSeparatorFig = new FigSeparator(X0, Y0, 11, LINE_WIDTH);
 
     /**
-     * If true the last element will be editable when the populate method completes
+     * If true the last element will be editable when 
+     * the populate method completes.
      */
     private boolean editOnRedraw;
     
@@ -205,7 +206,7 @@ public abstract class FigCompartment extends ArgoFigGroup {
 
         int currentHeight = 0;
 
-        for  (Fig fig : (List<Fig>) getFigs()) {
+        for  (Fig fig : getFigs()) {
             if (fig.isVisible() && fig != getBigPort()) {
                 int fh = fig.getMinimumSize().height;
 
@@ -224,7 +225,12 @@ public abstract class FigCompartment extends ArgoFigGroup {
     protected void createModelElement() {
         Project project = getProject();
         Defaults defaults = project.getDefaults();
-        Object attr = Model.getUmlFactory().buildNode(getCompartmentType(), getOwner(), null, defaults);
+        Object attr = 
+            Model.getUmlFactory().buildNode(
+                    getCompartmentType(), 
+                    getOwner(), 
+                    null, 
+                    defaults);
         TargetManager.getInstance().setTarget(attr);
     }
 
@@ -455,7 +461,8 @@ public abstract class FigCompartment extends ArgoFigGroup {
     }
     
     /* Find the compartment fig for this umlObject: */
-    private CompartmentFigText findCompartmentFig(List<CompartmentFigText> figs, 
+    private CompartmentFigText findCompartmentFig(
+            List<CompartmentFigText> figs, 
             Object umlObject) {
         for (CompartmentFigText fig : figs) {
             if (fig.getOwner() == umlObject) {
@@ -601,8 +608,9 @@ public abstract class FigCompartment extends ArgoFigGroup {
          * @return true if the hit rectangle strikes this fig
          */
         public boolean hit(Rectangle r) {
-            if (!isVisible() || !isSelectable())
+            if (!isVisible() || !isSelectable()) {
                 return false;
+            }
             final int cornersHit =
                 countCornersContained(r.x, r.y, r.width, r.height);
             return cornersHit > 0;

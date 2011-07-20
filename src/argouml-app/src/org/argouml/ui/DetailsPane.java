@@ -157,7 +157,7 @@ public class DetailsPane
         
         orientation = theOrientation;
 
-        loadTabs(compassPoint, theOrientation);
+        loadTabs(compassPoint);
         
         setOrientation(orientation);
         
@@ -174,7 +174,7 @@ public class DetailsPane
      * details panels, but we currently only support 
      * the default South (bottom) panel
      */
-    private void loadTabs(String direction, Orientation theOrientation) {
+    private void loadTabs(String direction) {
         if (Position.South.toString().equalsIgnoreCase(direction)
                 // Special case for backward compatibility
                 || "detail".equalsIgnoreCase(direction)) {
@@ -488,10 +488,11 @@ public class DetailsPane
         Object target = TargetManager.getInstance().getSingleTarget();
         
         if (!(sel instanceof TabToDoTarget) && !(sel instanceof TabProps)) {
-            // TODO: Bob says - tabs that listen for target changes should register themselves
-            // not expect DetailsPane to listen and pass on the event. Otherwise these tabs
-            // always rely on DetailsPane. TabToDoTarget and TabProps currently
-            // listen directly.
+            // TODO: Bob says - tabs that listen for target changes 
+            // should register themselves not expect DetailsPane to 
+            // listen and pass on the event. Otherwise these tabs
+            // always rely on DetailsPane. TabToDoTarget and TabProps 
+            // currently listen directly.
             
             // The other tabs need to be updated depending on the selection.
             if (sel instanceof TabTarget) {
@@ -504,7 +505,9 @@ public class DetailsPane
                 // a new set target event for it to refresh it
                 ((TargetListener) sel).targetSet(new TargetEvent(this,
                         TargetEvent.TARGET_SET, new Object[] {},
-                        new Object[] { target }));
+                        new Object[] { 
+                            target 
+                        }));
             }
         }
         
@@ -657,20 +660,22 @@ public class DetailsPane
             JPanel tab = tabPanelList.get(i);
             boolean shouldEnable = false;
             if (!(tab instanceof TabToDoTarget) && !(tab instanceof TabProps)) {
-                // TODO: Bob says - tabs that listen for target changes should register themselves
-                // not expect DetailsPane to listen and pass on the event. Otherwise these tabs
-                // always rely on DetailsPane. TabToDoTarget and TabProps currently
-                // listen directly.
+                // TODO: Bob says - tabs that listen for target changes
+                // should register themselves not expect DetailsPane to 
+                // listen and pass on the event. Otherwise these tabs
+                // always rely on DetailsPane. TabToDoTarget and TabProps 
+                // currently listen directly.
                 if (tab instanceof TargetListener) {
                     if (tab instanceof TabTarget) {
-                        shouldEnable = ((TabTarget) tab).shouldBeEnabled(target);
+                        shouldEnable = 
+                            ((TabTarget) tab).shouldBeEnabled(target);
                     } else {
                         if (tab instanceof TabToDoTarget) {
                             shouldEnable = true;
                         }
                     }
-                    // TODO: Do we want all enabled tabs to listen or only the one
-                    // that is selected/visible? - tfm
+                    // TODO: Do we want all enabled tabs to listen or
+                    // only the one that is selected/visible? - tfm
                     removeTargetListener((TargetListener) tab);
                     if (shouldEnable) {
                         addTargetListener((TargetListener) tab);

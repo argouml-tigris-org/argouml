@@ -97,7 +97,9 @@ public class CrNodesOverlap extends CrUML {
         }
 
 	ListSet offs = computeOffenders(d);
-	if (offs == null) return NO_PROBLEM;
+	if (offs == null) {
+	    return NO_PROBLEM;
+	}
 	return PROBLEM_FOUND;
     }
 
@@ -156,13 +158,15 @@ public class CrNodesOverlap extends CrUML {
 		    if (!(d instanceof UMLDeploymentDiagram)) {
 			if (fni instanceof FigNodeModelElement) {
 			    if (((FigNodeModelElement) fni).getEnclosingFig()
-				== fnj)
+				== fnj) {
 				continue;
+			    }
 			}
 			if (fnj instanceof FigNodeModelElement) {
 			    if (((FigNodeModelElement) fnj).getEnclosingFig()
-				== fni)
+				== fni) {
 				continue;
+			    }
 			}
 		    }
 		    // In DeploymentDiagrams the situation is not the
@@ -176,8 +180,9 @@ public class CrNodesOverlap extends CrUML {
 			       || (fni instanceof FigObject)))
 			    || (!((fnj instanceof  FigClass)
 				  || (fnj instanceof FigInterface)
-				  || (fnj instanceof FigObject))))
+				  || (fnj instanceof FigObject)))) {
 			    continue;
+			}
 		    }
 		    if (offs == null) {
 			offs = new ListSet();

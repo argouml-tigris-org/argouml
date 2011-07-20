@@ -53,7 +53,8 @@ import org.argouml.uml.ui.AbstractActionAddModelElement2;
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public class ActionAddMessagePredecessor extends AbstractActionAddModelElement2 {
+public class ActionAddMessagePredecessor 
+    extends AbstractActionAddModelElement2 {
 
     private static final ActionAddMessagePredecessor SINGLETON =
 	new ActionAddMessagePredecessor();
@@ -94,9 +95,10 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement2 
 
 
     protected void doIt(Collection selected) {
-	if (getTarget() == null)
+	if (getTarget() == null) {
 	    throw new IllegalStateException(
-                "doIt may not be called with null target");
+	            "doIt may not be called with null target");
+	}
 	Object message = getTarget();
 	Model.getCollaborationsHelper().setPredecessors(message, selected);
     }

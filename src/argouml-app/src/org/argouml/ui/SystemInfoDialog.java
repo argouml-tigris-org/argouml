@@ -42,7 +42,6 @@
 
 package org.argouml.ui;
 
-import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;

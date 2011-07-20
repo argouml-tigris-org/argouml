@@ -97,7 +97,9 @@ public class ModelElementNameNotationUml extends ModelElementNameNotation {
         String name = Model.getFacade().getName(modelElement);
         StringBuffer sb = new StringBuffer("");
         if (handleStereotypes) {
-            sb.append(NotationUtilityUml.generateStereotype(modelElement, useGuillemets));
+            sb.append(NotationUtilityUml.generateStereotype(
+                    modelElement, 
+                    useGuillemets));
         }
         if (showVisibility) {
             sb.append(generateVisibility(modelElement));

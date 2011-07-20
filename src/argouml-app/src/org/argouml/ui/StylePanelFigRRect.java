@@ -96,9 +96,13 @@ public class StylePanelFigRRect extends StylePanelFig {
      * Set the corner rounding.
      */
     protected void setTargetRounding() {
-        if (getPanelTarget() == null) return;
+        if (getPanelTarget() == null) {
+            return;
+        }
         String roundingStr = roundingField.getText();
-        if (roundingStr.length() == 0) return;
+        if (roundingStr.length() == 0) {
+            return;
+        }
         int r = Integer.parseInt(roundingStr);
         ((FigRRect) getPanelTarget()).setCornerRadius(r);
         getPanelTarget().endTrans();
@@ -111,7 +115,9 @@ public class StylePanelFigRRect extends StylePanelFig {
      */
     public void insertUpdate(DocumentEvent e) {
         Document roundingDoc = roundingField.getDocument();
-        if (e.getDocument() == roundingDoc) setTargetRounding();
+        if (e.getDocument() == roundingDoc) {
+            setTargetRounding();
+        }
         super.insertUpdate(e);
     }
 

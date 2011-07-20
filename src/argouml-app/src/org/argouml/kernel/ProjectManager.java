@@ -49,9 +49,6 @@ import javax.swing.Action;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoStatusEvent;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
@@ -350,7 +347,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
      *            default diagram (Class)
      * @return Project the newly created profile project
      */
-    public Project makeEmptyProfileProject(final boolean addDefaultDiagrams) {    
+    public Project makeEmptyProfileProject(final boolean addDefaultDiagrams) {
         final Command cmd = new NonUndoableCommand() {
 
             @Override

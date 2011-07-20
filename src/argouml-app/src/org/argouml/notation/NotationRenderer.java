@@ -17,8 +17,9 @@ package org.argouml.notation;
  * An interface to be implemented by Objects that wish to render a 
  * string-representation for an UML modelElement. <p>
  * 
- * The Object will be notified of model changes that cause a redraw of the string.
- * <p>
+ * The Object will be notified of model changes that cause 
+ * a redraw of the string.<p>
+ * 
  * These functions have the NotationProvider as a parameter, since 
  * the Object may have multiple NotationProviders, and may need 
  * to keep track which of their strings to refresh.

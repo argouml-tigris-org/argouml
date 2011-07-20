@@ -41,7 +41,6 @@ package org.argouml.gefext;
 import java.awt.event.MouseEvent;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.diagram.ui.ArgoFig;
 import org.tigris.gef.base.ModeCreateFigLine;
 import org.tigris.gef.presentation.Fig;
 

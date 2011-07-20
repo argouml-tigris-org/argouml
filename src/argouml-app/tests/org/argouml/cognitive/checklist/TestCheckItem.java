@@ -86,8 +86,7 @@ public class TestCheckItem extends TestCase {
                 item.getCategory() == category);
         assertTrue("CheckItem.getPredicate() incorrect after "
                 + "initialization (1)",
-                item.getPredicate2() == 
-                    PredicateTrue.getInstance());
+                item.getPredicate2() == PredicateTrue.getInstance());
 
         // reset the values to something different
         category += "- Set Test";

@@ -39,7 +39,6 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -104,13 +103,11 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         return NotationProviderFactory2.TYPE_ASSOCIATION_END_NAME;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     protected void initNotationProviders(Object own) {
         initializeNotationProvidersInternal(own);
     }
 
-    @SuppressWarnings("deprecation")
     private void initializeNotationProvidersInternal(Object own) {
         super.initNotationProviders(own);
         destMult.initNotationProviders();

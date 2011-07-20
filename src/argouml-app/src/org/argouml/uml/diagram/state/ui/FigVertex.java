@@ -13,7 +13,6 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -107,14 +106,15 @@ public class FigVertex extends FigNodeModelElement {
             List regions = Model.getStateMachinesHelper().getRegions(
                     encloser.getOwner());
             if (regions.isEmpty()) {
-                // There are no regions so create one and place the vertex there.
+                // There are no regions so create one and 
+                // place the vertex there.
                 region = Model.getUmlFactory().buildNode(
                         Model.getMetaTypes().getRegion(), encloser.getOwner());
             } else {
                 // There are one or more regions so find the one that the
                 //vertex was dropped in
                 FigVertex compositeState = (FigVertex) encloser;
-                for (DiagramElement de :
+                for (DiagramElement de : 
                         compositeState.regionCompartment.getDiagramElements()) {
                     if (((Fig) de).getBounds().contains(getBounds())) {
                         region = de.getOwner();
@@ -157,8 +157,8 @@ public class FigVertex extends FigNodeModelElement {
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
 
-        bodyText = new FigBody(0,0,0,0);
-        regionCompartment = new FigRegionCompartment(0,0,0,0);
+        bodyText = new FigBody(0, 0, 0, 0);
+        regionCompartment = new FigRegionCompartment(0, 0, 0, 0);
         
         addFig(getBigPort());
         addFig(getNameFig());
@@ -199,7 +199,7 @@ public class FigVertex extends FigNodeModelElement {
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         
-        assert(mee.getPropertyName().equals("region"));
+        assert (mee.getPropertyName().equals("region"));
         
         if (mee instanceof AddAssociationEvent) {
             // TODO: Before adding a new region make the last region
@@ -212,7 +212,8 @@ public class FigVertex extends FigNodeModelElement {
                     regionCompartment.getX(), regionCompartment.getY(),
                     rg.getMinimumSize().width, rg.getMinimumSize().height);
             
-            // Temporary start - colour the regions so that we can see them for now
+            // Temporary start - colour the regions so that we can 
+            // see them for now
 //            rg.setFillColor(COLOR_ARRAY[nextColor++]);
 //            if (nextColor >= COLOR_ARRAY.length) {
 //                nextColor = 0;
@@ -285,7 +286,9 @@ public class FigVertex extends FigNodeModelElement {
         }
     }
 
-    public void notationRenderingChanged(NotationProvider np, String rendering) {
+    public void notationRenderingChanged(
+            NotationProvider np, 
+            String rendering) {
         super.notationRenderingChanged(np, rendering);
         if (notationProviderBody == np) {
             bodyText.setText(rendering);
@@ -499,7 +502,9 @@ public class FigVertex extends FigNodeModelElement {
                             fig.getY() + fig.getHeight(),
                             fig.getX() + fig.getWidth(),
                             fig.getY() + fig.getHeight(),
-                            0, new float [] { 5.0f, 5.0f }, 10);            
+                            0, new float [] {
+                                5.0f, 5.0f },
+                            10);            
                 }
             }
             

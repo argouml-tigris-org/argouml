@@ -101,8 +101,9 @@ public class DocumentationManager {
             }
         }
 
-        if (sResult == null)
+        if (sResult == null) {
             return "(No comment)";
+        }
 
 	StringBuffer result = new StringBuffer();
 	if (header != null) {
@@ -285,8 +286,9 @@ public class DocumentationManager {
 	int nlcount = 0;
 
 	for (; nlprefix > 0; nlprefix--) {
-	    if (prefix != null)
-		sb.append(prefix);
+	    if (prefix != null) {
+	        sb.append(prefix);
+	    }
 	    sb.append(LINE_SEPARATOR);
 	    nlcount++;
 	}
@@ -302,14 +304,16 @@ public class DocumentationManager {
 	while (tokens.hasMoreTokens()) {
 	    String s = tokens.nextToken();
 	    if (!s.startsWith("\r") && !s.startsWith("\n")) {
-		if (prefix != null)
+		if (prefix != null) {
 		    sb.append(prefix);
+                }
 		sb.append(s);
 		sb.append(LINE_SEPARATOR);
 		nlcount = 0;
 	    } else if (nlcount > 0) {
-		if (prefix != null)
+		if (prefix != null) {
 		    sb.append(prefix);
+                }
 		sb.append(LINE_SEPARATOR);
 		nlcount++;
 	    } else {

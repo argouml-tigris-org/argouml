@@ -280,7 +280,9 @@ public class TabProps
 	for (PropPanelFactory factory
 	        : PropPanelFactoryManager.getFactories()) {
 	    propPanel = factory.createPropPanel(targetObject);
-	    if (propPanel != null) return propPanel;
+	    if (propPanel != null) {
+	        return propPanel;
+	    }
 	}        
         
 	/* This does not work (anymore/yet?), 

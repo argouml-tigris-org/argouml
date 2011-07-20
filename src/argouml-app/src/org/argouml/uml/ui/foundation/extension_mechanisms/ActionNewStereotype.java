@@ -60,7 +60,7 @@ import org.tigris.gef.presentation.Fig;
  */
 public class ActionNewStereotype extends AbstractActionNewModelElement {
     
-    final static Logger LOG = Logger.getLogger(ActionNewStereotype.class);
+    static final Logger LOG = Logger.getLogger(ActionNewStereotype.class);
 
     /**
      * The constructor.
@@ -75,7 +75,9 @@ public class ActionNewStereotype extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         Object t = TargetManager.getInstance().getTarget();
-        if (t instanceof Fig) t = ((Fig) t).getOwner();
+        if (t instanceof Fig) {
+            t = ((Fig) t).getOwner();
+        }
         Project p = ProjectManager.getManager().getCurrentProject();
         Object model = p.getModel();
         Collection models = p.getModels();

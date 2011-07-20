@@ -72,10 +72,14 @@ public class CrInstanceWithoutClassifier extends CrUML {
      */
     @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
+	if (!(dm instanceof UMLDeploymentDiagram)) {
+	    return NO_PROBLEM;
+	}
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	ListSet offs = computeOffenders(dd);
-	if (offs == null) return NO_PROBLEM;
+	if (offs == null) {
+	    return NO_PROBLEM;
+	}
 	return PROBLEM_FOUND;
     }
 
@@ -96,7 +100,9 @@ public class CrInstanceWithoutClassifier extends CrUML {
      */
     @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+	    return false;
+	}
 	ListSet offs = i.getOffenders();
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.get(0);
 	//if (!predicate(dm, dsgr)) return false;
@@ -120,7 +126,9 @@ public class CrInstanceWithoutClassifier extends CrUML {
         Iterator figIter = figs.iterator();
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
-	    if (!(obj instanceof FigNodeModelElement)) continue;
+	    if (!(obj instanceof FigNodeModelElement)) {
+	        continue;
+	    }
 	    FigNodeModelElement figNodeModelElement = (FigNodeModelElement) obj;
 	    if (figNodeModelElement != null
                 && (Model.getFacade().isAInstance(

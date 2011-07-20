@@ -45,7 +45,6 @@ package org.argouml.uml.diagram.ui;
 
 
 import org.argouml.model.Model;
-import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /**
  * An extension of ActionSetMode to set the parameters for an association.

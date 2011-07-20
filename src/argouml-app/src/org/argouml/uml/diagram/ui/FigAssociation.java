@@ -459,8 +459,9 @@ public class FigAssociation extends FigEdgeModelElement {
         int destDeterminingFactor =
             getSquaredDistance(p, lastPoint);
 
-        return destDeterminingFactor < rSquared || (srcDeterminingFactor < rSquared
-                && srcDeterminingFactor < destDeterminingFactor);
+        return destDeterminingFactor < rSquared 
+                || (srcDeterminingFactor < rSquared
+                        && srcDeterminingFactor < destDeterminingFactor);
     }
     
     private void buildMultiplicityMenu(
@@ -809,7 +810,7 @@ class FigRole extends FigSingleLineTextWithNotation {
     @Override
     public void propertyChange(PropertyChangeEvent pce) {
         super.propertyChange(pce);
-        assert(getGroup() != null);
+        assert (getGroup() != null);
         this.getGroup().calcBounds();
     }
 

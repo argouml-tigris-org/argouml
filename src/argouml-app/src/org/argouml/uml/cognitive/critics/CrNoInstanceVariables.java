@@ -146,16 +146,18 @@ public class CrNoInstanceVariables extends CrUML {
 	}
 
 	// I am only prepared to go this far.
-	if (depth > MAX_DEPTH)
+	if (depth > MAX_DEPTH) {
 	    return false;
+	}
 
 	Iterator iter = Model.getFacade().getGeneralizations(dm).iterator();
 
 	while (iter.hasNext()) {
 	    Object parent = Model.getFacade().getGeneral(iter.next());
 
-	    if (parent == dm)
-		continue;
+	    if (parent == dm) {
+	        continue;
+	    }
 
 	    if (Model.getFacade().isAClassifier(parent)
                     && findChangeableInstanceAttributeInInherited(

@@ -192,7 +192,8 @@ public class AddToDoItemDialog extends ArgoDialog {
             newOffenders.add(offenderList.getModel().getElementAt(i));
         }
         ToDoItem item =
-            new UMLToDoItem(designer, headline, priority, desc, moreInfoURL, newOffenders);
+            new UMLToDoItem(designer, headline, priority, 
+                    desc, moreInfoURL, newOffenders);
         designer.getToDoList().addElement(item); //? inform()
         Designer.firePropertyChange(Designer.MODEL_TODOITEM_ADDED, null, item);
     }

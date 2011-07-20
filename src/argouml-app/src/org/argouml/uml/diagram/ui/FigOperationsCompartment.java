@@ -43,10 +43,8 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Rectangle;
 import java.util.Collection;
 
-import org.argouml.kernel.Project;
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.static_structure.ui.FigOperation;
 

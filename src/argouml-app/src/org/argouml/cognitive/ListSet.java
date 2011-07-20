@@ -242,13 +242,13 @@ public class ListSet<T extends Object>
         if (!(o instanceof ListSet)) {
             return false;
         }
-        ListSet set = (ListSet) o;
-        if (set.size() != size()) {
+        ListSet oSet = (ListSet) o;
+        if (oSet.size() != size()) {
             return false;
         }
         synchronized (list) {
             for (Object obj : list) {
-                if (!(set.contains(obj))) {
+                if (!(oSet.contains(obj))) {
                     return false;
                 }
             }

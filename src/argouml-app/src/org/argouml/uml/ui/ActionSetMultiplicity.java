@@ -72,8 +72,9 @@ public abstract class ActionSetMultiplicity extends UndoableAction {
         if (source instanceof UMLComboBox2) {
             Object selected = ((UMLComboBox2) source).getSelectedItem();
             Object target = ((UMLComboBox2) source).getTarget();
-            if (target != null && selected != null)
+            if (target != null && selected != null) {
                 setSelectedItem(selected, target);
+            }
         }
     }
 

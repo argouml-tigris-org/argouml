@@ -95,18 +95,26 @@ public class ClClassName implements Clarifier {
             while (true) {
         	g.drawLine(i, height, i + WAVE_LENGTH, height + WAVE_HEIGHT);
         	i += WAVE_LENGTH;
-        	if (i >= right) break;
+        	if (i >= right) {
+        	    break;
+        	}
         	g.drawLine(i, height + WAVE_HEIGHT, i + WAVE_LENGTH, height);
         	i += WAVE_LENGTH;
-        	if (i >= right) break;
+        	if (i >= right) {
+        	    break;
+        	}
         	g.drawLine(i, height, i + WAVE_LENGTH,
         		   height + WAVE_HEIGHT / 2);
         	i += WAVE_LENGTH;
-        	if (i >= right) break;
+        	if (i >= right) {
+        	    break;
+        	}
         	g.drawLine(i, height + WAVE_HEIGHT / 2, i + WAVE_LENGTH,
         		   height);
         	i += WAVE_LENGTH;
-        	if (i >= right) break;
+        	if (i >= right) {
+        	    break;
+        	}
             }
             fig = null;
         }

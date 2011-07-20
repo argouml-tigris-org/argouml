@@ -120,7 +120,7 @@ public class OperationNotationJava extends OperationNotation {
         
         boolean isReception = Model.getFacade().isAReception(modelElement);
 
-        if (! isReception) {
+        if (!isReception) {
             sb.append(generateConcurrency(modelElement));
         }
         sb.append(generateAbstractness(modelElement));

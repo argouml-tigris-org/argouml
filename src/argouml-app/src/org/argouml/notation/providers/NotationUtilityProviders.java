@@ -49,7 +49,7 @@ class NotationUtilityProviders {
         addListenersForAction(np, effect);
     }    
     
-    static private void addListenersForEvent(NotationProvider np, 
+    private static void addListenersForEvent(NotationProvider np, 
             Object event) {
         if (event != null) {
             if (Model.getFacade().isAEvent(event)) {
@@ -80,8 +80,8 @@ class NotationUtilityProviders {
         if (action != null) {
             np.addElementListener(action,
                     new String[] {
-                    "script", "actualArgument", "action"
-            });
+                        "script", "actualArgument", "action"
+                    });
             /* And the arguments: */
             Collection args = Model.getFacade().getActualArguments(action);
             Iterator i = args.iterator();

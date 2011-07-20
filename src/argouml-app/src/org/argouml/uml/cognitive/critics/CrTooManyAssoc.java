@@ -71,13 +71,17 @@ public class CrTooManyAssoc extends AbstractCrTooMany {
      */
     @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAClassifier(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClassifier(dm))) {
+	    return NO_PROBLEM;
+	}
 
 	// TODO: consider inherited associations?
 	// TODO: self loops are double counted
 	int threshold = getThreshold();
 	Collection aes = Model.getFacade().getAssociationEnds(dm);
-	if (aes == null || aes.size() <= threshold) return NO_PROBLEM;
+	if (aes == null || aes.size() <= threshold) {
+	    return NO_PROBLEM;
+	}
 	return PROBLEM_FOUND;
     }
 

@@ -258,9 +258,11 @@ public class Main {
                     Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
             // Andreas: just temporary: a warning dialog for uml2...
-            if( showUml2warning && Model.getFacade().getUmlVersion().startsWith("2")) {
+            if (showUml2warning 
+                    && Model.getFacade().getUmlVersion().startsWith("2")) {
                 JOptionPane.showMessageDialog( ArgoFrame.getFrame()
-                        , "You are running an experimental version not meant for productive work!"
+                        , "You are running an experimental version "
+                        + "not meant for productive work!"
                         , "UML2 pre-alpha warning"
                         , JOptionPane.WARNING_MESSAGE);
             }
@@ -393,8 +395,9 @@ public class Main {
                     PrintManager.getInstance().print();
                     // nothing else to do (?)
                     System.exit(0);
-                } else if (args[i].equalsIgnoreCase("-nouml2warning")) {  // Andreas: just temporary for the 
-                    showUml2warning = false;                         // uml2 pre-alpha versions!
+                } else if (args[i].equalsIgnoreCase("-nouml2warning")) {
+                    // Andreas: just temporary for the uml2 pre-alpha versions!
+                    showUml2warning = false;
                 } else {
                     System.err.println("Ignoring unknown/incomplete option '"
                             + args[i] + "'");
@@ -866,8 +869,9 @@ public class Main {
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         // Set the screen layout to what the user left it before, or
         // to reasonable defaults.
-        Rectangle scrSize = GraphicsEnvironment.getLocalGraphicsEnvironment()
-        .getMaximumWindowBounds();
+        Rectangle scrSize =
+            GraphicsEnvironment.getLocalGraphicsEnvironment()
+                .getMaximumWindowBounds();
 
         int configFrameWidth =
             Configuration.getInteger(Argo.KEY_SCREEN_WIDTH, scrSize.width);
@@ -893,10 +897,10 @@ public class Main {
 
         UIManager.put("Button.focusInputMap", new UIDefaults.LazyInputMap(
                 new Object[] {
-                        "ENTER", "pressed",
-                        "released ENTER", "released",
-                        "SPACE", "pressed",
-                        "released SPACE", "released"
+                    "ENTER", "pressed",
+                    "released ENTER", "released",
+                    "SPACE", "pressed",
+                    "released SPACE", "released"
                 })
         );         
         return pb;

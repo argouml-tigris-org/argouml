@@ -214,7 +214,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
                 getActionGeneralize(),
                 getActionDepend(),
                 null,
-                getActionMessage(), //this one behaves differently, hence seperated!
+                //this one behaves differently, hence seperated:
+                getActionMessage(), 
             };
             return actions;
         } else {
@@ -224,7 +225,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
                 getActionGeneralize(),
                 getActionDepend(),
                 null,
-                getActionMessage(), //this one behaves differently, hence seperated!
+                //this one behaves differently, hence seperated:
+                getActionMessage(),
             };
             return actions;
         }
@@ -514,7 +516,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
             node =
                 Model.getCollaborationsFactory().buildClassifierRole(
                         collaboration);
-          }
+        }
         Model.getCollaborationsHelper().addBase(node, base);
         
         return node;
@@ -608,7 +610,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     @Override
     public String getInstructions(Object droppedObject) {
         if (Model.getFacade().isAClassifierRole(droppedObject)) {
-    		return super.getInstructions(droppedObject);
+            return super.getInstructions(droppedObject);
     	} else if (Model.getFacade().isAClassifier(droppedObject)) {
             return Translator.localize(
                     "misc.message.click-on-diagram-to-add-as-cr", 

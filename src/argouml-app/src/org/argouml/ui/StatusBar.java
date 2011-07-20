@@ -56,8 +56,8 @@ import org.tigris.gef.ui.IStatusBar;
  *
  */
 public class StatusBar 
-extends JPanel 
-implements Runnable, IStatusBar, ProgressMonitor {
+    extends JPanel 
+    implements Runnable, IStatusBar, ProgressMonitor {
 
     private JLabel msg = new JLabel();
     private JProgressBar progress = new JProgressBar();
@@ -164,9 +164,12 @@ implements Runnable, IStatusBar, ProgressMonitor {
         progress.setMaximum(max);        
     }
 
-    public void notifyNullAction() {}
+    public void notifyNullAction() { }
 
-    public void notifyMessage(String title, String introduction, String message) {
+    public void notifyMessage(
+            String title, 
+            String introduction, 
+            String message) {
         // TODO: Auto-generated method stub
         
     }

@@ -25,11 +25,10 @@ public class FigRegion extends FigRect {
      * Construct a fig representing a region.
      * 
      * @param region owning UML element
-     * @param bounds position and size
      */
     public FigRegion(
             final Object region) {
-        super(0,0,0,0);
+        super(0, 0, 0, 0);
         setLineWidth(0);
         setOwner(region);
     }

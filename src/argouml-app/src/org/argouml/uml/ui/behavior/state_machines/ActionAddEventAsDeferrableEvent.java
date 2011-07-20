@@ -106,8 +106,11 @@ public class ActionAddEventAsDeferrableEvent
     @Override
     protected void doIt(Collection selected) {
         Object state = getTarget();
-        if (!Model.getFacade().isAState(state)) return;
-        Collection oldOnes = new ArrayList(Model.getFacade()
+        if (!Model.getFacade().isAState(state)) {
+            return;
+        }
+        Collection oldOnes = 
+            new ArrayList(Model.getFacade()
                 .getDeferrableEvents(state));
         Collection toBeRemoved = new ArrayList(oldOnes);
         for (Object o : selected) {

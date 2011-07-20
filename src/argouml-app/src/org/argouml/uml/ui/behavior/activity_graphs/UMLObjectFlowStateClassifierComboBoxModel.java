@@ -38,7 +38,6 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
-import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -85,8 +84,11 @@ public class UMLObjectFlowStateClassifierComboBoxModel
         // get the current type - normally we won't need this, but who knows?
         if (getTarget() != null) {
             Object type = Model.getFacade().getType(getTarget());
-            if (type != null)
-                if (!newList.contains(type)) newList.add(type);
+            if (type != null) {
+                if (!newList.contains(type)) {
+                    newList.add(type);
+                }
+            }
         }
 
         setElements(newList);

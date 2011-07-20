@@ -44,7 +44,6 @@ import java.util.List;
 
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
@@ -176,7 +175,8 @@ public class ModeCreateAssociationEnd extends ModeCreateGraphEdge {
         // Detach any edges (such as comment edges) already attached
         // to the FigAssociation before the FigAssociation is removed.
         // They'll later be re-attached to the new FigNodeAssociation
-        final Collection<FigEdge> existingEdges = originalEdgePort.getFigEdges();
+        final Collection<FigEdge> existingEdges =
+            originalEdgePort.getFigEdges();
         for (FigEdge edge : existingEdges) {
             if (edge instanceof FigEdgeAssociationClass) {
                 // If there are bits of an association class then

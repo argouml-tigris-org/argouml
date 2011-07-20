@@ -453,7 +453,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
                 if (Model.getFacade().isANaryAssociation(association) 
                         && canAddEdge(associationEnd)) {
                     addEdge(associationEnd);
-                } else if (canAddEdge(association)){
+                } else if (canAddEdge(association)) {
                     addEdge(association);
                 }
             }

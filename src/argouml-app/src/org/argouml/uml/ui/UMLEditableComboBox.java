@@ -190,11 +190,13 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements
             if (((UMLComboBoxModel2) getModel()).contains(anObject)) {
                 editor.setText(((UMLListCellRenderer2) getRenderer())
                         .makeText(anObject));
-                if (theShowIcon && (anObject != null))
+                if (theShowIcon && (anObject != null)) {
                     panel.setIcon(ResourceLoaderWrapper.getInstance()
                             .lookupIcon(anObject));
-            } else
+                }
+            } else {
                 super.setItem(anObject);
+            }
 
         }
 
@@ -289,8 +291,9 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements
             // next statement is necessary to update the textfield
             // if the selection is equal to what was allready
             // selected
-            if (oldValue == getSelectedItem())
+            if (oldValue == getSelectedItem()) {
                 getEditor().setItem(getSelectedItem());
+            }
         }
     }
 

@@ -135,8 +135,8 @@ public class CrOperNameConflict extends CrUML {
 
         // Get all the features (giving up if there are none). Then loop
         // through finding all operations. Each time we find one, we compare
-        // its signature with all previous (held in collection operSeen), and then
-        // if it doesn't match add it to the collection.
+        // its signature with all previous (held in collection operSeen), 
+        // and then if it doesn't match add it to the collection.
 
         Collection operSeen = new ArrayList();
         for (Object op : Model.getFacade().getOperations(dm)) {
@@ -237,19 +237,22 @@ public class CrOperNameConflict extends CrUML {
 	    Object p1 = null;
 	    while (p1 == null && params1.hasNext()) {
 		p1 = params1.next();
-		if (Model.getFacade().isReturn(p1))
+		if (Model.getFacade().isReturn(p1)) {
 		    p1 = null;
+		}
 	    }
 
 	    Object p2 = null;
 	    while (p2 == null && params1.hasNext()) {
 		p2 = params1.next();
-		if (Model.getFacade().isReturn(p2))
+		if (Model.getFacade().isReturn(p2)) {
 		    p2 = null;
+		}
 	    }
 
-	    if (p1 == null && p2 == null)
-		return true;	// Both lists have the same length
+	    if (p1 == null && p2 == null) {
+	        return true;	// Both lists have the same length
+	    }
 
 	    // Different lengths:
 	    if (p1 == null || p2 == null) {

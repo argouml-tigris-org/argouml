@@ -371,8 +371,8 @@ public class FigCompositeState extends FigState {
     @Override 
     protected void updateLayout(UmlChangeEvent event) {
         /* We only handle the case where a region has been removed: */
-        if (!(event instanceof RemoveAssociationEvent) || 
-                !"subvertex".equals(event.getPropertyName())) {
+        if (!(event instanceof RemoveAssociationEvent)
+                ||  !"subvertex".equals(event.getPropertyName())) {
             return;
         }
         

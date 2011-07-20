@@ -67,7 +67,9 @@ public class ButtonActionNewGuard extends UndoableAction
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (!isEnabled()) return;
+        if (!isEnabled()) {
+            return;
+        }
         super.actionPerformed(e);
         Object target = TargetManager.getInstance().getModelTarget();
         Object guard = Model.getFacade().getGuard(target);

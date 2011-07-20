@@ -129,7 +129,9 @@ public class CrWrongLinkEnds extends CrUML {
                 continue;
             }
 	    FigLink figLink = (FigLink) obj;
-	    if (!(Model.getFacade().isALink(figLink.getOwner()))) continue;
+	    if (!(Model.getFacade().isALink(figLink.getOwner()))) {
+	        continue;
+	    }
 	    Object link = figLink.getOwner();
 	    Collection ends = Model.getFacade().getConnections(link);
 	    if (ends != null && (ends.size() > 0)) {
@@ -141,14 +143,16 @@ public class CrWrongLinkEnds extends CrUML {
                         Collection residencies =
                             Model.getFacade().getResidents(instance);
                         if (residencies != null
-                                && (residencies.size() > 0))
+                                && (residencies.size() > 0)) {
                             count = count + 2;
+                        }
                     }
 
                     Object component =
                         Model.getFacade().getComponentInstance(instance);
-		    if (component != null)
-			count = count + 1;
+		    if (component != null) {
+		        count = count + 1;
+		    }
 		}
 		if (count == 3) {
 		    if (offs == null) {

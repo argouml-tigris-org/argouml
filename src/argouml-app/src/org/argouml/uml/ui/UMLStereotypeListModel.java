@@ -280,8 +280,9 @@ abstract class UMLStereotypeListModel extends DefaultListModel
      * @param col the given collection
      */
     protected void setAllElements(Collection col) {
-        if (!isEmpty())
+        if (!isEmpty()) {
             removeAllElements();
+        }
         addAll(col);
     }
 
@@ -290,7 +291,9 @@ abstract class UMLStereotypeListModel extends DefaultListModel
      * @param col the given collection
      */
     protected void addAll(Collection col) {
-        if (col.size() == 0) return;
+        if (col.size() == 0) {
+            return;
+        }
         Iterator it = col.iterator();
         fireListEvents = false;
         int intervalStart = getSize() == 0 ? 0 : getSize() - 1;
@@ -515,8 +518,9 @@ abstract class UMLStereotypeListModel extends DefaultListModel
      *          Object, int, int)
      */
     protected void fireContentsChanged(Object source, int index0, int index1) {
-        if (fireListEvents && !buildingModel)
+        if (fireListEvents && !buildingModel) {
             super.fireContentsChanged(source, index0, index1);
+        }
     }
 
     /*
@@ -524,8 +528,9 @@ abstract class UMLStereotypeListModel extends DefaultListModel
      *          Object, int, int)
      */
     protected void fireIntervalAdded(Object source, int index0, int index1) {
-        if (fireListEvents && !buildingModel)
+        if (fireListEvents && !buildingModel) {
             super.fireIntervalAdded(source, index0, index1);
+        }
     }
 
     /*
@@ -533,8 +538,9 @@ abstract class UMLStereotypeListModel extends DefaultListModel
      *          Object, int, int)
      */
     protected void fireIntervalRemoved(Object source, int index0, int index1) {
-        if (fireListEvents && !buildingModel)
+        if (fireListEvents && !buildingModel) {
             super.fireIntervalRemoved(source, index0, index1);
+        }
     }
 
     /**

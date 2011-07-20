@@ -484,8 +484,9 @@ public class FigConcurrentRegion extends FigState
     // event processing
 
     protected void modelChanged(PropertyChangeEvent mee) {
-        // TODO: Rather than specifically ignore some item maybe it would be better
-        // to specifically state what items are of interest. Otherwise we may still
+        // TODO: Rather than specifically ignore some item 
+        // maybe it would be better to specifically state 
+        // what items are of interest. Otherwise we may still
         // be acting on other events we don't need
         if (!Model.getFacade().isATransition(mee.getNewValue())
                 && !("container".equals(mee.getPropertyName()))
@@ -546,8 +547,8 @@ public class FigConcurrentRegion extends FigState
 
     @Override
     protected void updateLayout(UmlChangeEvent event) {
-        if (!"container".equals(event.getPropertyName()) &&
-                !"isConcurrent".equals(event.getPropertyName())) {
+        if (!"container".equals(event.getPropertyName()) 
+                && !"isConcurrent".equals(event.getPropertyName())) {
             super.updateLayout(event);
         }
         final String eName = event.getPropertyName();

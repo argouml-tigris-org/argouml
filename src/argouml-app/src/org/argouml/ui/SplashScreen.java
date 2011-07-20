@@ -56,7 +56,9 @@ import org.tigris.gef.ui.IStatusBar;
 /**
  * The splash screen.
  */
-public class SplashScreen extends JWindow implements IStatusBar, ProgressMonitor {
+public class SplashScreen 
+    extends JWindow 
+    implements IStatusBar, ProgressMonitor {
 
     private StatusBar statusBar = new StatusBar();
     
@@ -182,7 +184,10 @@ public class SplashScreen extends JWindow implements IStatusBar, ProgressMonitor
         // ignored - will never be called
     }
 
-    public void notifyMessage(String title, String introduction, String message) {
+    public void notifyMessage(
+            String title, 
+            String introduction, 
+            String message) {
         // TODO: Auto-generated method stub
         
     }

@@ -44,7 +44,6 @@ import java.util.List;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.kernel.ActionList;
 import org.argouml.ui.targetmanager.TargetManager;
 
@@ -94,8 +93,9 @@ public class ContextActionFactoryManager {
     }
 
     /**
-     * Adds to the default actions the new menus for the registered factories
-     * @return
+     * Adds to the default actions the new menus for the registered factories.
+     *
+     * @return all actions found.
      */
     public static List<Action> getContextPopupActions() {
 	List<Action> allActionsFound = new ArrayList<Action>();
@@ -108,7 +108,8 @@ public class ContextActionFactoryManager {
 	    if (tmpActionsContainer instanceof ActionList) {
 	        allActionsFound.add((Action) tmpActionsContainer);
 	    } else {
-                if (tmpActionsContainer != null && tmpActionsContainer.size() > 0) {
+                if (tmpActionsContainer != null 
+                        && tmpActionsContainer.size() > 0) {
                     allActionsFound.addAll(tmpActionsContainer);
                 }
 	    }

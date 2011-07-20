@@ -38,11 +38,9 @@
 
 package org.argouml.notation.providers.java;
 
-import java.util.Map;
 import java.util.Stack;
 
 import org.argouml.model.Model;
-import org.argouml.notation.NotationProvider;
 
 /**
  * This class is a utility for the Java notation.

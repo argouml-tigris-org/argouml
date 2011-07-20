@@ -89,8 +89,9 @@ public class ActionAddEventAsTrigger extends AbstractActionAddModelElement2 {
     protected List getSelected() {
         List vec = new ArrayList();
         Object trigger = Model.getFacade().getTrigger(getTarget());
-        if (trigger != null)
+        if (trigger != null) {
             vec.add(trigger);
+        }
         return vec;
     }
 

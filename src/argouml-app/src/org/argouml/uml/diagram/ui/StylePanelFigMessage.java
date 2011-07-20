@@ -53,9 +53,11 @@ import org.argouml.ui.StylePanelFigNodeModelElement;
  */
 public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
 
-    private JLabel arrowLabel = new JLabel(Translator.localize("label.localize"));
+    private JLabel arrowLabel = 
+        new JLabel(Translator.localize("label.localize"));
 
-    private JComboBox arrowField = new JComboBox(FigMessage.getArrowDirections().toArray());
+    private JComboBox arrowField = 
+        new JComboBox(FigMessage.getArrowDirections().toArray());
 
 
     /**
@@ -95,7 +97,9 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
     public void setTargetArrow() {
         String ad = (String) arrowField.getSelectedItem();
         int arrowDirection = FigMessage.getArrowDirections().indexOf(ad);
-        if (getPanelTarget() == null || arrowDirection == -1) return;
+        if (getPanelTarget() == null || arrowDirection == -1) {
+            return;
+        }
         ((FigMessage) getPanelTarget()).setArrow(arrowDirection);
         getPanelTarget().endTrans();
     }
@@ -106,10 +110,12 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
     @Override
     public void itemStateChanged(ItemEvent e) {
         Object src = e.getSource();
-        if (src == arrowField)
+        if (src == arrowField) {
             setTargetArrow();
-        else
+        }
+        else {
             super.itemStateChanged(e);
+        }
     }
 
 }

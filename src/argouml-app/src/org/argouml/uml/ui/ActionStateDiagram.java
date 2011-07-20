@@ -100,12 +100,12 @@ public class ActionStateDiagram extends ActionNewDiagram {
                 /* Follow well-formedness rule for a Class [2].
                  * Determine the owning namespace for the statemachine: */
                 while (Model.getFacade().isAClass(namespace)) {
-                  Object parent = Model.getFacade().getNamespace(namespace);
-                  if (parent == null) {
-                      break;
-                  }
-                  namespace = parent;
-              }
+                    Object parent = Model.getFacade().getNamespace(namespace);
+                    if (parent == null) {
+                        break;
+                    }
+                    namespace = parent;
+                }
             }
             Model.getCoreHelper().setNamespace(machine, namespace);
             

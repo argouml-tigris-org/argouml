@@ -76,7 +76,9 @@ public final class PgmlUtility {
      * @return "0"=hidden, null=shown
      */
     public static String getVisibility(Fig f) {
-        if (f.isVisible()) return null;
+        if (f.isVisible()) {
+            return null;
+        }
         return "0";
     }
     

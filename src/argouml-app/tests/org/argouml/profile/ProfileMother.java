@@ -125,7 +125,8 @@ public class ProfileMother {
     public static final String TAG_DEFINITION_NAME_TD = "TagDef";
 
     /**
-     * Create a simple profile model with name {@link ProfileMother#DEFAULT_SIMPLE_PROFILE_NAME}
+     * Create a simple profile model with name 
+     * {@link ProfileMother#DEFAULT_SIMPLE_PROFILE_NAME}
      * with a class named "foo" and with a stereotype named
      * {@link ProfileMother#STEREOTYPE_NAME_ST}.
      * 
@@ -149,8 +150,11 @@ public class ProfileMother {
 //        assert getFacade().getRootElements().size() == 0;
         Object model = getModelManagementFactory().createProfile();
         Object fooClass = Model.getCoreFactory().buildClass("foo", model);
-        Object stereotype = getExtensionMechanismsFactory().buildStereotype(fooClass,
-            STEREOTYPE_NAME_ST, model);
+        Object stereotype = 
+            getExtensionMechanismsFactory().buildStereotype(
+                    fooClass,
+                    STEREOTYPE_NAME_ST, 
+                    model);
         getCoreHelper().setName(model, profileName);
         getExtensionMechanismsFactory().buildTagDefinition(
             TAG_DEFINITION_NAME_TD, stereotype, null);
@@ -165,8 +169,9 @@ public class ProfileMother {
             models);
         for (Object stereotype : stereotypes) {
             if (STEREOTYPE_NAME_PROFILE.equals(
-                    Model.getFacade().getName(stereotype)))
+                    Model.getFacade().getName(stereotype))) {
                 return stereotype;
+            }
         }
         return null;
     }
@@ -254,6 +259,7 @@ public class ProfileMother {
             DependencyCreator dependencyCreator,
             File profilesDir, String dependentProfileFilenamePrefix)
         throws IOException, UmlException {
+
         XmiReader xmiReader = Model.getXmiReader();
         xmiReader.addSearchPath(profileFromWhichDependsFile.getParent());
         InputSource pIs = new InputSource(
@@ -291,7 +297,8 @@ public class ProfileMother {
      * @throws UmlException if the manipulation of models causes errors.
      */
     List<File> createProfileFilePairWith2ndDependingOn1stViaXmi()
-            throws IOException, UmlException {
+        throws IOException, UmlException {
+
         File profilesDir = FileHelper.createTempDirectory();
         final File baseFile = File.createTempFile(
             "baseProfile", XMI_FILE_EXTENSION, profilesDir);
@@ -300,17 +307,21 @@ public class ProfileMother {
         Model.getUmlFactory().deleteExtent(model);
         ProfileMother.DependencyCreator dependencyCreator =
             new ProfileMother.DependencyCreator() {
-            public void create(Object profileFromWhichDepends,
-                    Object dependentProfile) {
-                Object theClass = Model.getCoreFactory().buildClass("DasClazz",
-                    dependentProfile);
-                Collection stereotypes = getFacade().getStereotypes(
-                    profileFromWhichDepends);
-                assert stereotypes.size() >= 1: "";
-                Object stereotype = stereotypes.iterator().next();
-                Model.getCoreHelper().addStereotype(theClass, stereotype);
-            }
-        };
+                    public void create(Object profileFromWhichDepends,
+                            Object dependentProfile) {
+                        Object theClass = 
+                            Model.getCoreFactory().buildClass(
+                                "DasClazz",
+                                dependentProfile);
+                        Collection stereotypes = 
+                            getFacade().getStereotypes(profileFromWhichDepends);
+                        assert stereotypes.size() >= 1 : "";
+                        Object stereotype = stereotypes.iterator().next();
+                        Model.getCoreHelper().addStereotype(
+                                theClass, 
+                                stereotype);
+                    }
+                };
         String dependentProfileFilenamePrefix = "dependentProfile";
         final File dependentFile = createXmiDependentProfile(
             baseFile, dependencyCreator, profilesDir,
@@ -333,7 +344,8 @@ public class ProfileMother {
      * @throws UmlException if the manipulation of models causes errors.
      */
     public List<File> createUnloadedProfilePairWith2ndDependingOn1stViaXmi()
-            throws IOException, UmlException {
+        throws IOException, UmlException {
+        
         List<File> profileFiles =
             createProfileFilePairWith2ndDependingOn1stViaXmi();
         File baseProfileFile = profileFiles.get(0);
@@ -363,8 +375,10 @@ public class ProfileMother {
      * @param replacement the replacement {@link String}.
      * @throws IOException if IO operations throw.
      */
-    static public void replaceStringInFile(File file, String regex,
-            String replacement) throws IOException {
+    public static void replaceStringInFile(File file, String regex,
+            String replacement) 
+        throws IOException {
+        
         StringBuffer fileContents = new StringBuffer();
         BufferedReader reader = null;
         String fileContents2 = null;
@@ -422,7 +436,8 @@ public class ProfileMother {
      * @throws IOException
      */
     public File createUnloadedSimpleProfile(String profileName)
-            throws IOException {
+        throws IOException {
+
         Object model = createSimpleProfileModel(profileName);
         File profileFile = File.createTempFile(profileName,
             XMI_FILE_EXTENSION);

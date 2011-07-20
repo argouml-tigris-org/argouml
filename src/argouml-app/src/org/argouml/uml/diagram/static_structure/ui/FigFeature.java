@@ -44,9 +44,6 @@ import java.beans.PropertyChangeEvent;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
-import org.tigris.gef.base.Selection;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.Handle;
 
 /**
  * Fig to show features in class or interface like attributes or operations.<p>

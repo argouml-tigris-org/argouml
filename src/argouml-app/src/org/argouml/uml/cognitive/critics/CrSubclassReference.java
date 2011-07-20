@@ -125,7 +125,9 @@ public class CrSubclassReference extends CrUML {
      */
     public ListSet computeOffenders(Object cls) {
 	Collection asc = Model.getFacade().getAssociationEnds(cls);
-	if (asc == null || asc.size() == 0) return null;
+	if (asc == null || asc.size() == 0) {
+	    return null;
+	}
 
 	Enumeration descendEnum =
 	    GenDescendantClasses.getSINGLETON().gen(cls);
@@ -133,8 +135,9 @@ public class CrSubclassReference extends CrUML {
             return null;
         }
 	ListSet descendants = new ListSet();
-	while (descendEnum.hasMoreElements())
+	while (descendEnum.hasMoreElements()) {
 	    descendants.add(descendEnum.nextElement());
+	}
 
 	//TODO: GenNavigableClasses?
 	ListSet offs = null;
@@ -145,8 +148,9 @@ public class CrSubclassReference extends CrUML {
                 continue;
             }
 	    Object otherEnd = conn.get(0);
-	    if (ae == conn.get(0))
-		otherEnd = conn.get(1);
+	    if (ae == conn.get(0)) {
+	        otherEnd = conn.get(1);
+	    }
 	    if (!Model.getFacade().isNavigable(otherEnd)) {
                 continue;
             }

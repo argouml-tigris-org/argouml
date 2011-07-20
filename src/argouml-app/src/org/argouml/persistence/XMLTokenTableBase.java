@@ -81,8 +81,9 @@ abstract class XMLTokenTableBase {
      * @return the token
      */
     public final int toToken(String s, boolean push) {
-	if (push) openTags[++numOpen] = s;
-	else if (s.equals(openTags[numOpen])) {
+	if (push) {
+	    openTags[++numOpen] = s;
+	} else if (s.equals(openTags[numOpen])) {
 	    LOG.debug("matched: " + s);
 	    return openTokens[numOpen--];
 	}
@@ -90,8 +91,9 @@ abstract class XMLTokenTableBase {
 	if (i != null) {
 	    openTokens[numOpen] = i.intValue();
 	    return openTokens[numOpen];
+	} else {
+	    return -1;
 	}
-	else return -1;
     }
 
     /**

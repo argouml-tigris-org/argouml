@@ -40,7 +40,6 @@ package org.argouml.uml.diagram.collaboration.ui;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.argouml.notation.NotationProviderFactory2;
 import org.argouml.uml.diagram.DiagramEdgeSettings;

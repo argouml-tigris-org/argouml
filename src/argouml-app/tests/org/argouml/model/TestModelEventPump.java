@@ -43,8 +43,6 @@ import java.beans.PropertyChangeListener;
 
 import junit.framework.TestCase;
 
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.profile.ProfileFacade;
 import org.argouml.profile.init.InitProfileSubsystem;
 

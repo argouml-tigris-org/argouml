@@ -46,7 +46,6 @@ import java.util.Vector;
 import org.argouml.cognitive.CompoundCritic;
 import org.argouml.cognitive.Critic;
 import org.argouml.i18n.Translator;
-import org.argouml.profile.Profile;
 
 /**
  * Show the critics exported by a Profile

@@ -40,10 +40,7 @@ package org.argouml.cognitive.checklist;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * A Checklist is basically a list of CheckItems.  It also provides

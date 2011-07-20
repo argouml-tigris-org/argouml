@@ -62,9 +62,10 @@ class TokenSep {
     public TokenSep(String str) {
 	theString = str;
 	length = str.length();
-	if (length > 32)
+	if (length > 32) {
 	    throw new IllegalArgumentException("TokenSep " + str
-	                + " is " + length + " (> 32) chars long");
+	            + " is " + length + " (> 32) chars long");
+        }
 	pattern = 0;
     }
 
@@ -224,10 +225,12 @@ class QuotedStringSeparator extends CustomSeparator {
 	    esced = true;
 	    return false;
 	}
-	if (startChr != 0 && c == startChr)
+	if (startChr != 0 && c == startChr) {
 	    level++;
-	if (c == stopChr)
+	}
+	if (c == stopChr) {
 	    level--;
+	}
 	return level <= 0;
     }
 }
@@ -302,30 +305,33 @@ class ExprSeparatorWithStrings extends CustomSeparator {
 		isEsc = false;
 		return false;
 	    }
-	    if (c == '\\')
-		isEsc = true;
-	    else if (c == '\'')
-		isSQuot = false;
+	    if (c == '\\') {
+	        isEsc = true;
+	    } else if (c == '\'') {
+	        isSQuot = false;
+	    }
 	    return false;
 	} else if (isDQuot) {
 	    if (isEsc) {
 		isEsc = false;
 		return false;
 	    }
-	    if (c == '\\')
-		isEsc = true;
-	    else if (c == '\"')
-		isDQuot = false;
+	    if (c == '\\') {
+	        isEsc = true;
+	    } else if (c == '\"') {
+	        isDQuot = false;
+	    }
 	    return false;
 	} else {
-	    if (c == '\'')
-		isSQuot = true;
-	    else if (c == '\"')
-		isDQuot = true;
-	    else if (c == '(')
-		tokLevel++;
-	    else if (c == ')')
-		tokLevel--;
+	    if (c == '\'') {
+	        isSQuot = true;
+	    } else if (c == '\"') {
+	        isDQuot = true;
+	    } else if (c == '(') {
+	        tokLevel++;
+	    } else if (c == ')') {
+	        tokLevel--;
+	    }
 	    return tokLevel <= 0;
 	}
     }
@@ -602,16 +608,18 @@ public class MyTokenizer implements Enumeration {
 	    return s;
 	}
 
-	if (sIdx >= eIdx)
-	    throw new NoSuchElementException(
-					     "No more tokens available");
+	if (sIdx >= eIdx) {
+	    throw new NoSuchElementException("No more tokens available");
+	}
 
-	for (sep = delims; sep != null; sep = sep.getNext())
+	for (sep = delims; sep != null; sep = sep.getNext()) {
 	    sep.reset();
+	}
 
 	if (customSeps != null) {
-	    for (i = 0; i < customSeps.size(); i++)
-		((CustomSeparator) customSeps.get(i)).reset();
+	    for (i = 0; i < customSeps.size(); i++) {
+	        ((CustomSeparator) customSeps.get(i)).reset();
+	    }
 	}
 
 	for (i = sIdx; i < eIdx; i++) {
@@ -621,15 +629,18 @@ public class MyTokenizer implements Enumeration {
 	            && j < customSeps.size(); j++) {
 		csep = (CustomSeparator) customSeps.get(j);
 
-		if (csep.addChar(c))
+		if (csep.addChar(c)) {
 		    break;
+		}
 	    }
 	    if (customSeps != null && j < customSeps.size()) {
 		csep = (CustomSeparator) customSeps.get(j);
 
-		while (csep.hasFreePart() && i + 1 < eIdx)
-		    if (csep.endChar(source.charAt(++i)))
-			break;
+		while (csep.hasFreePart() && i + 1 < eIdx) {
+		    if (csep.endChar(source.charAt(++i))) {
+		        break;
+		    }
+		}
 		i -= Math.min(csep.getPeekCount(), i);
 
 		int clen = Math.min(i + 1, source.length());
@@ -650,9 +661,11 @@ public class MyTokenizer implements Enumeration {
 		break;
 	    }
 
-	    for (sep = delims; sep != null; sep = sep.getNext())
-		if (sep.addChar(c))
-		    break;
+	    for (sep = delims; sep != null; sep = sep.getNext()) {
+                if (sep.addChar(c)) {
+                    break;
+                }
+            }
 	    if (sep != null) {
 		if (i - sIdx + 1 > sep.length()) {
 		    s = source.substring(sIdx,
@@ -721,9 +734,9 @@ public class MyTokenizer implements Enumeration {
      * @throws NullPointerException if s is null.
      */
     public void putToken(String s) {
-	if (s == null)
-	    throw new NullPointerException(
-					   "Cannot put a null token");
+	if (s == null) {
+	    throw new NullPointerException("Cannot put a null token");
+	}
 
 	putToken = s;
     }
@@ -748,8 +761,9 @@ public class MyTokenizer implements Enumeration {
 		c = str.charAt(idx1);
 		if (c == '\\') {
 		    idx1++;
-		    if (idx1 < length)
-			val.append(str.charAt(idx1));
+		    if (idx1 < length) {
+		        val.append(str.charAt(idx1));
+		    }
 		} else if (c == ',') {
 		    break;
 		} else {

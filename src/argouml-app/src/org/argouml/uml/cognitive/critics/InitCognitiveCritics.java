@@ -44,7 +44,6 @@ import java.util.List;
 import org.argouml.application.api.AbstractArgoJPanel;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.application.api.InitSubsystem;
-import org.argouml.profile.ProfileFacade;
 
 /**
  * Registers critics for use in ArgoUML.  This class is called at

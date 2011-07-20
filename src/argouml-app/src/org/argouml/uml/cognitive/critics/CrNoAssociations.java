@@ -103,17 +103,21 @@ public class CrNoAssociations extends CrUML {
         // not having any.
         // utility is a namespace collection - also not strictly required
         // to have associations.
-        if (Model.getFacade().isType(dm))
+        if (Model.getFacade().isType(dm)) {
             return NO_PROBLEM;
-        if (Model.getFacade().isUtility(dm))
+        }
+        if (Model.getFacade().isUtility(dm)) {
             return NO_PROBLEM;
+        }
 
         // See issue 1129: If the classifier has dependencies,
         // then mostly there is no problem. 
-        if (Model.getFacade().getClientDependencies(dm).size() > 0)
+        if (Model.getFacade().getClientDependencies(dm).size() > 0) {
             return NO_PROBLEM;
-        if (Model.getFacade().getSupplierDependencies(dm).size() > 0)
+        }
+        if (Model.getFacade().getSupplierDependencies(dm).size() > 0) {
             return NO_PROBLEM;
+        }
         
         // special cases for use cases
         // Extending use cases and use case that are being included are
@@ -135,8 +139,9 @@ public class CrNoAssociations extends CrUML {
         //TODO: different critic or special message for classes
         //that inherit all ops but define none of their own.
 
-        if (findAssociation(dm, 0))
+        if (findAssociation(dm, 0)) {
             return NO_PROBLEM;
+        }
         return PROBLEM_FOUND;
     }
 
@@ -147,23 +152,28 @@ public class CrNoAssociations extends CrUML {
      *		or in any of its generalizations.
      */
     private boolean findAssociation(Object dm, int depth) {
-        if (Model.getFacade().getAssociationEnds(dm).iterator().hasNext())
+        if (Model.getFacade().getAssociationEnds(dm).iterator().hasNext()) {
             return true;
+        }
 
-        if (depth > 50)
+        if (depth > 50) {
             return false;
+        }
 
         Iterator iter = Model.getFacade().getGeneralizations(dm).iterator();
 
         while (iter.hasNext()) {
             Object parent = Model.getFacade().getGeneral(iter.next());
 
-            if (parent == dm)
+            if (parent == dm) {
                 continue;
+            }
 
-            if (Model.getFacade().isAClassifier(parent))
-                if (findAssociation(parent, depth + 1))
+            if (Model.getFacade().isAClassifier(parent)) {
+                if (findAssociation(parent, depth + 1)) {
                     return true;
+                }
+            }
         }
 
         if (Model.getFacade().isAUseCase(dm)) {
@@ -173,24 +183,30 @@ public class CrNoAssociations extends CrUML {
             while (iter2.hasNext()) {
                 Object parent = Model.getFacade().getExtension(iter2.next());
 
-                if (parent == dm)
+                if (parent == dm) {
                     continue;
+                }
 
-                if (Model.getFacade().isAClassifier(parent))
-                    if (findAssociation(parent, depth + 1))
+                if (Model.getFacade().isAClassifier(parent)) {
+                    if (findAssociation(parent, depth + 1)) {
                         return true;
+                    }
+                }
             }
 
             Iterator iter3 = Model.getFacade().getIncludes(dm).iterator();
             while (iter3.hasNext()) {
                 Object parent = Model.getFacade().getBase(iter3.next());
 
-                if (parent == dm)
+                if (parent == dm) {
                     continue;
+                }
 
-                if (Model.getFacade().isAClassifier(parent))
-                    if (findAssociation(parent, depth + 1))
+                if (Model.getFacade().isAClassifier(parent)) {
+                    if (findAssociation(parent, depth + 1)) {
                         return true;
+                    }
+                }
             }
         }
         return false;

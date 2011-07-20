@@ -285,7 +285,9 @@ public class ActionSaveAllGraphics extends AbstractAction
             LOG.error("exception in opening JFileChooser", ex);
         }
 
-        if ( chooser == null ) chooser = new JFileChooser();
+        if ( chooser == null ) {
+            chooser = new JFileChooser();
+        }
         chooser.setDialogTitle(
                 Translator.localize("filechooser.save-all-graphics"));
         chooser.setDialogType(JFileChooser.OPEN_DIALOG);

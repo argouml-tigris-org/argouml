@@ -45,7 +45,6 @@ import java.util.Collection;
 
 import org.argouml.model.Model;
 import org.argouml.notation.NotationProviderFactory2;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.DiagramSettings;
 import org.argouml.uml.diagram.use_case.ui.FigExtensionPoint;
 
@@ -88,7 +87,7 @@ public class FigExtensionPointsCompartment extends FigCompartment {
 
     @Override
     public String getName() {
-         return "extension points";
+        return "extension points";
     }
     
     /**

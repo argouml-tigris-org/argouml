@@ -112,10 +112,14 @@ public class WizMEName extends UMLWizard {
      * @see org.argouml.cognitive.critics.Wizard#canGoNext()
      */
     public boolean canGoNext() {
-	if (!super.canGoNext()) return false;
+	if (!super.canGoNext()) {
+	    return false;
+	}
 	if (step1 != null) {
 	    boolean changed = origSuggest.equals(step1.getText());
-	    if (mustEdit && !changed) return false;
+	    if (mustEdit && !changed) {
+	        return false;
+	    }
 	}
 	return true;
     }

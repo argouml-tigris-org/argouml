@@ -614,7 +614,7 @@ public abstract class FigNodeModelElement
         
         for (Action a : modulesActions) {
             if (a instanceof List) {
-                JMenu m = new JMenu((Action) a);
+                JMenu m = new JMenu(a);
                 popUpActions.add(m);
                 for (Action subAction : (List<Action>) a) {
                     m.add(subAction);
@@ -2285,7 +2285,6 @@ public abstract class FigNodeModelElement
      * @param project the project
      * @deprecated
      */
-    @SuppressWarnings("deprecation")
     @Deprecated
     public void setProject(Project project) {
         throw new UnsupportedOperationException();
@@ -2353,15 +2352,16 @@ public abstract class FigNodeModelElement
                     .getProfileConfiguration().getFigNodeStrategy();
                 Iterator<FigStereotype> figsIterator = getStereotypeFig()
                     .getStereotypeFigs().iterator();
-                Object owner = figsIterator.hasNext() ?
-                        figsIterator.next().getOwner() : null;
+                Object owner = 
+                    figsIterator.hasNext() 
+                    ? figsIterator.next().getOwner() : null;
                 if (stereotypeCount != 1
                         || figNodeStrategy == null
                         || owner == null
                         ||  (stereotypeCount == 1
                                 && figNodeStrategy.getIconForStereotype(owner) 
                                     == null)) {
-                practicalView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;
+                    practicalView = DiagramAppearance.STEREOTYPE_VIEW_TEXTUAL;
                 }
             }
         }
@@ -2627,7 +2627,6 @@ public abstract class FigNodeModelElement
      *             is implemented in GEF, so we'll leave this implementation
      *             here to block any attempts to use it within ArgoUML.
      */
-    @SuppressWarnings("deprecation")
     @Deprecated
     public void setOwner(Object owner) {
         if (owner != getOwner()) {

@@ -97,8 +97,12 @@ public class WizTooMany extends UMLWizard {
      * @see org.argouml.cognitive.ui.Wizard#canFinish()
      */
     public boolean canFinish() {
-        if (!super.canFinish()) return false;
-        if (getStep() == 0) return true;
+        if (!super.canFinish()) {
+            return false;
+        }
+        if (getStep() == 0) {
+            return true;
+        }
         if (getStep() == 1 && step1 != null) {
             try {
                 Integer.parseInt(step1.getText());

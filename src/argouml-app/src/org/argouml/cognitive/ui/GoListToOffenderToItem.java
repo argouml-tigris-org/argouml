@@ -66,7 +66,7 @@ public class GoListToOffenderToItem extends AbstractGoList2 {
      * The constructor.
      */
     public GoListToOffenderToItem() {
-        setListPredicate((org.argouml.util.Predicate) new PredicateNotInTrash());
+        setListPredicate(new PredicateNotInTrash());
     }
 
     ////////////////////////////////////////////////////////////////

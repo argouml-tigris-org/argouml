@@ -193,7 +193,7 @@ public abstract class UmlDiagramRenderer
             name = entry.getKey();
             value = entry.getValue();
 
-            if(fig instanceof FigCompartmentBox) {
+            if (fig instanceof FigCompartmentBox) {
                 FigCompartmentBox fcb = (FigCompartmentBox) fig;
                 if ("operationsVisible".equals(name)) {
                     fcb.showCompartment(
@@ -225,7 +225,8 @@ public abstract class UmlDiagramRenderer
     public FigEdge getFigEdgeFor(Object edge, Map styleAttributes) {
         return null;
 //        if (edge == null) {
-//            throw new IllegalArgumentException("A model edge must be supplied");
+//            throw new IllegalArgumentException(
+//                    "A model edge must be supplied");
 //        }
 //        FigEdge newEdge = null;
 //        if (Model.getFacade().isAAssociationClass(edge)) {

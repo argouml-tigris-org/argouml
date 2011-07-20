@@ -65,8 +65,9 @@ public class ProjectMemberModel extends AbstractProjectMember {
                 + FILE_EXT, p);
 
         if (!Model.getFacade().isAModel(m)
-             && !Model.getFacade().isAProfile(m))
+             && !Model.getFacade().isAProfile(m)) {
             throw new IllegalArgumentException();
+        }
 
         setModel(m);
     }

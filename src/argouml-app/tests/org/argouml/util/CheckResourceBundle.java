@@ -100,11 +100,12 @@ public class CheckResourceBundle {
      */
     public static void checkContainsAllFrom(ResourceBundle b,
 					    String[] tags) {
-	for (int i = 0; i < tags.length; i++)
+	for (int i = 0; i < tags.length; i++) {
 	    Assert.assertTrue("Can't find tag \"" + tags[i]
 				+ "\" in "
 				+ b.getClass().getName(),
 				bundleContains(b, tags[i]));
+	}
     }
 
     /**
@@ -179,37 +180,43 @@ public class CheckResourceBundle {
 
 	if (System.getProperty("user.language") != null
 	    && System.getProperty("user.country") != null
-	    && System.getProperty("user.variant") != null)
+	    && System.getProperty("user.variant") != null) {
 	    el.add(new Locale(System.getProperty("user.language"),
 			      System.getProperty("user.country"),
 			      System.getProperty("user.variant")));
+	}
 	if (System.getProperty("user.language") != null
 	    && System.getProperty("user.region") != null
-	    && System.getProperty("user.variant") != null)
+	    && System.getProperty("user.variant") != null) {
 	    el.add(new Locale(System.getProperty("user.language"),
 			      System.getProperty("user.region"),
 			      System.getProperty("user.variant")));
+	}
 
 	if (System.getProperty("user.language") != null
-	    && System.getProperty("user.country") != null)
+	    && System.getProperty("user.country") != null) {
 	    el.add(new Locale(System.getProperty("user.language"),
 			      System.getProperty("user.country"),
 			      ""));
+	}
 	if (System.getProperty("user.language") != null
-	    && System.getProperty("user.region") != null)
+	    && System.getProperty("user.region") != null) {
 	    el.add(new Locale(System.getProperty("user.language"),
 			      System.getProperty("user.region"),
 			      ""));
+	}
 
-	if (System.getProperty("user.language") != null)
+	if (System.getProperty("user.language") != null) {
 	    el.add(new Locale(System.getProperty("user.language"),
 			      "", ""));
+	}
 
 	List<Locale> v = new ArrayList<Locale>();
 	for (Locale elel : el) {
 	    for (int j = 0; j < SUPPORTEDLANGUAGES.length; j++) {
-		if (SUPPORTEDLANGUAGES[j] == null)
+		if (SUPPORTEDLANGUAGES[j] == null) {
 		    continue;
+		}
 		if (elel.equals(new Locale(SUPPORTEDLANGUAGES[j][0],
 					   SUPPORTEDLANGUAGES[j][1],
 					   SUPPORTEDLANGUAGES[j][2]))) {
@@ -219,8 +226,9 @@ public class CheckResourceBundle {
 	    }
 	}
 	for (int j = 0; j < SUPPORTEDLANGUAGES.length; j++) {
-	    if (SUPPORTEDLANGUAGES[j] == null)
+	    if (SUPPORTEDLANGUAGES[j] == null) {
 		continue;
+	    }
 	    v.add(new Locale(SUPPORTEDLANGUAGES[j][0],
 			     SUPPORTEDLANGUAGES[j][1],
 			     SUPPORTEDLANGUAGES[j][2]));

@@ -70,14 +70,17 @@ public class GoClassToSummary extends AbstractPerspectiveRule {
 	if (Model.getFacade().isAClass(parent)) {
 	    ArrayList list = new ArrayList();
 
-	    if (Model.getFacade().getAttributes(parent).size() > 0)
-                list.add(new AttributesNode(parent));
+	    if (Model.getFacade().getAttributes(parent).size() > 0) {
+	        list.add(new AttributesNode(parent));
+	    }
 
-	    if (Model.getFacade().getAssociationEnds(parent).size() > 0)
-                list.add(new AssociationsNode(parent));
+	    if (Model.getFacade().getAssociationEnds(parent).size() > 0) {
+	        list.add(new AssociationsNode(parent));
+	    }
 
-	    if (Model.getFacade().getOperations(parent).size() > 0)
-                list.add(new OperationsNode(parent));
+	    if (Model.getFacade().getOperations(parent).size() > 0) {
+	        list.add(new OperationsNode(parent));
+	    }
 
 	    if (hasIncomingDependencies(parent)) {
 	        list.add(new IncomingDependencyNode(parent));

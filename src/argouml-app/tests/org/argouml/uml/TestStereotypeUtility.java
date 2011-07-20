@@ -61,14 +61,15 @@ public class TestStereotypeUtility extends TestCase {
      * Tests the scenario in which a Stereotype is already applied to a model
      * element and it shouldn't be returned as an available Stereotype to be
      * applied to the model element.
-     * (see <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=5969">issue 5969</a>).
+     * (see <a href="http://argouml.tigris.org/issues/show_bug.cgi?id=5969">
+     * issue 5969</a>).
      * This test is for
      * {@link StereotypeUtility#getAvailableStereotypes(Object)}.
      * 
      * @throws Exception When something goes wrong...
      */
     public void testGetAvailableStereotypesForAModelElementIssue5969()
-            throws Exception {
+        throws Exception {
         ProfileMother profileMother = new ProfileMother();
         File profileFile = profileMother.createUnloadedSimpleProfile();
         profileFile.deleteOnExit();

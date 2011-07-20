@@ -114,8 +114,9 @@ public class CustomSeparator {
      */
     public void reset() {
 	int i;
-	for (i = 0; i < match.length; i++)
+	for (i = 0; i < match.length; i++) {
 	    match[i] = 0;
+	}
     }
 
     /**
@@ -144,12 +145,15 @@ public class CustomSeparator {
      */
     public boolean addChar(char c) {
 	int i;
-	for (i = 0; i < match.length - 1; i++)
+	for (i = 0; i < match.length - 1; i++) {
 	    match[i] = match[i + 1];
+	}
 	match[match.length - 1] = c;
-	for (i = 0; i < match.length; i++)
-	    if (match[i] != pattern[i])
-		return false;
+	for (i = 0; i < match.length; i++) {
+	    if (match[i] != pattern[i]) {
+	        return false;
+	    }
+	}
 	return true;
     }
 

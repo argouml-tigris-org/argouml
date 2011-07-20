@@ -43,9 +43,8 @@ import javax.swing.Icon;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.uml.diagram.ui.SelectionNodeClarifiers2;
-import org.tigris.gef.presentation.Fig;
 import org.argouml.uml.diagram.ui.SelectionClassifierBox;
+import org.tigris.gef.presentation.Fig;
 
 /**
  * @author jrobbins@ics.uci.edu

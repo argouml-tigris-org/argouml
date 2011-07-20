@@ -81,7 +81,6 @@ public class ProfileMeta extends Profile {
      * 
      * @throws ProfileException if something goes wrong
      */
-    @SuppressWarnings("unchecked")
     public ProfileMeta() throws ProfileException {
         super();
         try {

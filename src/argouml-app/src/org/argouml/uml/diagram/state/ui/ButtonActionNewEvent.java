@@ -67,7 +67,9 @@ abstract class ButtonActionNewEvent extends UndoableAction
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (!isEnabled()) return;
+        if (!isEnabled()) {
+            return;
+        }
         super.actionPerformed(e);
         Object target = TargetManager.getInstance().getModelTarget();
         Object model = Model.getFacade().getInnerContainingModel(target);

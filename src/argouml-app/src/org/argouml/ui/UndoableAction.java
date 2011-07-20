@@ -76,6 +76,7 @@ public abstract class UndoableAction extends AbstractAction {
 
     public void actionPerformed(ActionEvent e) {
         final Project p = ProjectManager.getManager().getCurrentProject();
-        p.getUndoManager().startInteraction((String) getValue(AbstractAction.NAME));
+        p.getUndoManager().startInteraction(
+                (String) getValue(AbstractAction.NAME));
     }
 }

@@ -46,7 +46,6 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
 import org.argouml.kernel.Project;
@@ -62,9 +61,6 @@ import org.xml.sax.InputSource;
  * @author Bob Tarling
  */
 class TodoListMemberFilePersister extends MemberFilePersister {
-
-    private static final Logger LOG =
-        Logger.getLogger(ProjectMemberTodoList.class);
 
     private static final String TO_DO_TEE = "/org/argouml/persistence/todo.tee";
 

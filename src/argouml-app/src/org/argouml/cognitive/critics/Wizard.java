@@ -188,9 +188,13 @@ public abstract class Wizard implements java.io.Serializable {
      */
     public void back() {
 	step--;
-	if (step < 0) step = 0;
+	if (step < 0) {
+	    step = 0;
+	}
 	undoAction(step);
-	if (item != null) item.changed();
+	if (item != null) {
+	    item.changed();
+	}
     }
 
     /**
@@ -222,7 +226,9 @@ public abstract class Wizard implements java.io.Serializable {
 	int numSteps = getNumSteps();
 	for (int i = step; i <= numSteps; i++) {
 	    doAction(i);
-	    if (item != null) item.changed();
+	    if (item != null) {
+	        item.changed();
+	    }
 	}
 	// TODO: do all following steps
 	// TODO: resolve item from ToDoList

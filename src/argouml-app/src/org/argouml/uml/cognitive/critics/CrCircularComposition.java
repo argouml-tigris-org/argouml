@@ -120,10 +120,14 @@ public class CrCircularComposition extends CrUML {
      */
     @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+	    return false;
+	}
 	ListSet offs = i.getOffenders();
 	Object dm =  offs.get(0);
-	if (!predicate(dm, dsgr)) return false;
+	if (!predicate(dm, dsgr)) {
+	    return false;
+	}
 	ListSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
 	LOG.debug("offs=" + offs.toString()

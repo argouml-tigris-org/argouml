@@ -543,7 +543,9 @@ public abstract class FigCompartmentBox extends FigNodeModelElement {
     public void showCompartment(Object metaType, boolean visible) {
         FigCompartment fc =
             getCompartment(metaType);
-        if (fc == null) return;
+        if (fc == null) {
+            return;
+        }
         assert fc != null;
         setCompartmentVisible(fc, visible);
     }

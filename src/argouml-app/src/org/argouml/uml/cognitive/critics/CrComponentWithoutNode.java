@@ -73,10 +73,14 @@ public class CrComponentWithoutNode extends CrUML {
      */
     @Override
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
+	if (!(dm instanceof UMLDeploymentDiagram)) {
+	    return NO_PROBLEM;
+	}
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	ListSet offs = computeOffenders(dd);
-	if (offs == null) return NO_PROBLEM;
+	if (offs == null) {
+	    return NO_PROBLEM;
+	}
 	return PROBLEM_FOUND;
     }
 
@@ -97,7 +101,9 @@ public class CrComponentWithoutNode extends CrUML {
      */
     @Override
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+	    return false;
+	}
 	ListSet offs = i.getOffenders();
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.get(0);
 	//if (!predicate(dm, dsgr)) return false;
@@ -124,12 +130,16 @@ public class CrComponentWithoutNode extends CrUML {
 	boolean isNode = false;
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
-	    if (obj instanceof FigMNode) isNode = true;
+	    if (obj instanceof FigMNode) {
+	        isNode = true;
+	    }
 	}
 	figIter = figs.iterator();
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
-	    if (!(obj instanceof FigComponent)) continue;
+	    if (!(obj instanceof FigComponent)) {
+	        continue;
+	    }
 	    FigComponent fc = (FigComponent) obj;
 	    if ((fc.getEnclosingFig() == null) && isNode) {
 		if (offs == null) {

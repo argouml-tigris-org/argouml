@@ -66,7 +66,6 @@ import org.argouml.ui.GUIProjectSettingsTabInterface;
 import org.argouml.ui.ShadowComboBox;
 import org.argouml.uml.diagram.DiagramAppearance;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.DiagramUndoManager;
 import org.argouml.util.ArgoFrame;
 import org.tigris.gef.undo.Memento;
 
@@ -271,7 +270,8 @@ public class SettingsTabDiagramAppearance extends JPanel implements
                     selectedDiagramFontName);
             Configuration.setInteger(DiagramAppearance.KEY_FONT_SIZE,
                     selectedDiagramFontSize);
-            Configuration.setBoolean(DiagramAppearance.KEY_HIDE_BIDIRECTIONAL_ARROWS,
+            Configuration.setBoolean(
+                    DiagramAppearance.KEY_HIDE_BIDIRECTIONAL_ARROWS,
                     hideBidirectionalArrows.isSelected());            
             Configuration.setInteger(DiagramAppearance.KEY_DEFAULT_SHADOW_WIDTH,
                     defaultShadowWidth.getSelectedIndex());
@@ -285,7 +285,8 @@ public class SettingsTabDiagramAppearance extends JPanel implements
             ds.setFontName(selectedDiagramFontName);
             ds.setFontSize(selectedDiagramFontSize);
             ds.setDefaultShadowWidth(defaultShadowWidth.getSelectedIndex());
-            ds.setShowBidirectionalArrows(!hideBidirectionalArrows.isSelected());
+            ds.setShowBidirectionalArrows(
+                    !hideBidirectionalArrows.isSelected());
 
             /* Update the diagram, and other users of these settings: */
             Memento memento = new Memento() {
@@ -298,11 +299,12 @@ public class SettingsTabDiagramAppearance extends JPanel implements
                 }
             };
             // TODO: Undo should be managed externally or we should be given 
-            // an Undo manager to use (the project's) rather than using a global one
+            // an Undo manager to use (the project's) rather than using a 
+            // global one
 //            if (DiagramUndoManager.getInstance().isGenerateMementos()) {
 //                DiagramUndoManager.getInstance().addMemento(memento);
 //            }
-           memento.redo();
+            memento.redo();
         }
     }
 
@@ -381,7 +383,9 @@ public class SettingsTabDiagramAppearance extends JPanel implements
      */
     public void setVisible(boolean arg0) {
         super.setVisible(arg0);
-        if (arg0) handleSettingsTabRefresh();
+        if (arg0) {
+            handleSettingsTabRefresh();
+        }
     }
 
     public void setProject(Project project) {

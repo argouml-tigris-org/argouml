@@ -74,7 +74,7 @@ public class GoModelToDiagrams extends AbstractPerspectiveRule {
 	    Project proj = ProjectManager.getManager().getCurrentProject();
             for (ArgoDiagram diagram : proj.getDiagramList()) {
                 if (isInPath(diagram.getNamespace(), model)) {
-                        returnList.add(diagram);
+                    returnList.add(diagram);
                 }
             }
             return returnList;

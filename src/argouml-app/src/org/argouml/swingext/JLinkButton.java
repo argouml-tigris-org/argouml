@@ -127,7 +127,9 @@ public class JLinkButton extends JButton {
         linkColor = Color.blue;
         colorPressed = Color.red;
         visitedLinkColor = new Color(128, 0, 128);
-        if (text == null && url != null) setText(url.toExternalForm());
+        if (text == null && url != null) {
+            setText(url.toExternalForm());
+        }
         setLinkURL(url);
         setCursor(Cursor.getPredefinedCursor(12));
         setBorderPainted(false);
@@ -148,7 +150,9 @@ public class JLinkButton extends JButton {
 
     protected void setupToolTipText() {
         String tip = null;
-        if (buttonURL != null) tip = buttonURL.toExternalForm();
+        if (buttonURL != null) {
+            tip = buttonURL.toExternalForm();
+        }
         setToolTipText(tip);
     }
 
@@ -191,14 +195,15 @@ public class JLinkButton extends JButton {
 
     protected String paramString() {
         String str;
-        if (linkBehavior == ALWAYS_UNDERLINE)
+        if (linkBehavior == ALWAYS_UNDERLINE) {
             str = "ALWAYS_UNDERLINE";
-        else if (linkBehavior == HOVER_UNDERLINE)
+        } else if (linkBehavior == HOVER_UNDERLINE) {
             str = "HOVER_UNDERLINE";
-        else if (linkBehavior == NEVER_UNDERLINE)
+        } else if (linkBehavior == NEVER_UNDERLINE) {
             str = "NEVER_UNDERLINE";
-        else
+        } else {
             str = "SYSTEM_DEFAULT";
+        }
         String colorStr = linkColor == null ? "" : linkColor.toString();
         String colorPressStr = colorPressed == null ? "" : colorPressed
                 .toString();
@@ -232,25 +237,32 @@ class BasicLinkButtonUI extends MetalButtonUI {
         ButtonModel bnModel = bn.getModel();
         bn.getForeground();
         if (bnModel.isEnabled()) {
-            if (bnModel.isPressed())
+            if (bnModel.isPressed()) {
                 bn.setForeground(bn.getActiveLinkColor());
-            else if (bn.isLinkVisited())
+            } else if (bn.isLinkVisited()) {
                 bn.setForeground(bn.getVisitedLinkColor());
-
-            else
+            } else {
                 bn.setForeground(bn.getLinkColor());
+            }
         } else {
-            if (bn.getDisabledLinkColor() != null)
+            if (bn.getDisabledLinkColor() != null) {
                 bn.setForeground(bn.getDisabledLinkColor());
+            }
         }
         super.paintText(g, com, rect, s);
         int behaviour = bn.getLinkBehavior();
         boolean drawLine = false;
         if (behaviour == JLinkButton.HOVER_UNDERLINE) {
-            if (bnModel.isRollover()) drawLine = true;
+            if (bnModel.isRollover()) {
+                drawLine = true;
+            }
         } else if (behaviour == JLinkButton.ALWAYS_UNDERLINE
-                || behaviour == JLinkButton.SYSTEM_DEFAULT) drawLine = true;
-        if (!drawLine) return;
+                || behaviour == JLinkButton.SYSTEM_DEFAULT) {
+            drawLine = true;
+        }
+        if (!drawLine) {
+            return;
+        }
         FontMetrics fm = g.getFontMetrics();
         int x = rect.x + getTextShiftOffset();
         int y = (rect.y + fm.getAscent() + fm.getDescent() 

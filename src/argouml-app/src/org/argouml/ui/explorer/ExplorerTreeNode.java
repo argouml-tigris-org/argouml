@@ -74,8 +74,9 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode implements
     public ExplorerTreeNode(Object userObj, ExplorerTreeModel m) {
         super(userObj);
         this.model = m;
-        if (userObj instanceof Diagram)
+        if (userObj instanceof Diagram) {
             ((Diagram) userObj).addPropertyChangeListener(this);
+        }
     }
 
     /*
@@ -102,10 +103,11 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode implements
      * @param set the given set
      */
     public void setModifySet(Set set) {
-	if (set == null || set.size() == 0)
+	if (set == null || set.size() == 0) {
 	    modifySet = Collections.EMPTY_SET;
-	else
+	} else {
 	    modifySet = set;
+	}
     }
 
     /**

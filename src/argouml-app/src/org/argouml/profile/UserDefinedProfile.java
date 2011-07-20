@@ -142,7 +142,8 @@ public class UserDefinedProfile extends Profile {
      * @throws ProfileException if the profile could not be loaded
      */
     public UserDefinedProfile(File file, ProfileManager manager)
-            throws ProfileException {
+        throws ProfileException {
+
         LOG.info("load " + file);
         displayName = file.getName();
         modelFile = file;
@@ -230,7 +231,8 @@ public class UserDefinedProfile extends Profile {
      * @throws ProfileException if the profile can't be read or is not valid
      */
     public UserDefinedProfile(URL url, ProfileManager manager)
-            throws ProfileException {
+        throws ProfileException {
+
         LOG.info("load " + url);
         reference = new UserProfileReference(url.getPath(), url);
         profileManager = manager;
@@ -265,7 +267,8 @@ public class UserDefinedProfile extends Profile {
      */
     public UserDefinedProfile(String dn, URL url, Set<Critic> critics,
             Set<String> dependencies, ProfileManager manager)
-            throws ProfileException {
+        throws ProfileException {
+
         LOG.info("load " + url);
 
         this.displayName = dn;
@@ -276,7 +279,7 @@ public class UserDefinedProfile extends Profile {
         for (String profileID : dependencies) {
             addProfileDependency(profileID);
         }
-		profileManager = manager;
+        profileManager = manager;
     }
 
     /**
@@ -289,7 +292,8 @@ public class UserDefinedProfile extends Profile {
      * @throws ProfileException if the model cannot be loaded
      * 
      * @deprecated for 0.30 by euluis. Use
-     * {@link UserDefinedProfile#UserDefinedProfile(String, URL, Set, Set, ProfileManager)}
+     * {@link UserDefinedProfile#UserDefinedProfile(
+     * String, URL, Set, Set, ProfileManager)}
      * instead.
      */
     @Deprecated
@@ -332,8 +336,9 @@ public class UserDefinedProfile extends Profile {
             Collection packagesInProfile = filterPackages(profilePackages);
 
             for (Object obj : packagesInProfile) {
-                // if there is only one package in the model, we should suppose it's
-                // the profile model, if there is more than one, we take the ones
+                // if there is only one package in the model, 
+                // we should suppose it's the profile model, 
+                // if there is more than one, we take the ones
                 // marked as <<profile>>
                 if (Model.getFacade().isAModelElement(obj)
                         && (Model.getFacade().isAProfile(obj)
@@ -454,9 +459,10 @@ public class UserDefinedProfile extends Profile {
     private Collection filterPackages(Collection packages) {
         Collection ret = new ArrayList();
         
-        // TODO: All this profile loading/handling needs to move someplace in model subsystem probably
+        // TODO: All this profile loading/handling needs to 
+        // move someplace in model subsystem probably
         
-        for (Object object: packages) {
+        for (Object object : packages) {
             if (Model.getFacade().isAPackage(object)) {
                 ret.add(object);
             }
@@ -655,7 +661,8 @@ public class UserDefinedProfile extends Profile {
     private List<CrOCL> getAllCritiquesInModel() {
         List<CrOCL> ret = new ArrayList<CrOCL>();
 
-        Collection<Object> comments = getAllCommentsInModel(getProfilePackages());
+        Collection<Object> comments =
+            getAllCommentsInModel(getProfilePackages());
 
         for (Object comment : comments) {
             if (Model.getExtensionMechanismsHelper().hasStereotype(comment,
