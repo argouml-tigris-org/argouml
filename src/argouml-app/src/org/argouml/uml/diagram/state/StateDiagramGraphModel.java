@@ -244,25 +244,26 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 
         getNodes().add(node);
 
-        final Object stateMachine = getMachine();
-        if (Model.getFacade().getUmlVersion().startsWith("1")) {
-            if (Model.getFacade().isAStateVertex(node)) {
+        // Don't do it for comment.
+        if (Model.getFacade().isAStateVertex(node)) {
+            final Object stateMachine = getMachine();
+            if (Model.getFacade().getUmlVersion().startsWith("1")) {
                 Object top = Model.getStateMachinesHelper().getTop(stateMachine);
                 Model.getStateMachinesHelper().addSubvertex(top, node);
-            }
-        } else {
-            final List regions =
-                Model.getStateMachinesHelper().getRegions(stateMachine);
-            final Object region;
-            if (regions.isEmpty()) {
-                region = Model.getUmlFactory().buildNode(
-                        Model.getMetaTypes().getRegion(), stateMachine);
             } else {
-                region = regions.get(0);
+                final List regions =
+                    Model.getStateMachinesHelper().getRegions(stateMachine);
+                final Object region;
+                if (regions.isEmpty()) {
+                    region = Model.getUmlFactory().buildNode(
+                            Model.getMetaTypes().getRegion(), stateMachine);
+                } else {
+                    region = regions.get(0);
+                }
+                Model.getStateMachinesHelper().setContainer(node, region);
             }
-            Model.getStateMachinesHelper().setContainer(node, region);
         }
-
+        
         fireNodeAdded(node);
     }
 
