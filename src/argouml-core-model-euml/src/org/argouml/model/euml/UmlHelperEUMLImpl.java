@@ -1,5 +1,5 @@
 // $Id$
-/*******************************************************************************
+/***************************************************************************
  * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    Tom Morris - initial implementation 
- *******************************************************************************/
+ ***************************************************************************/
 package org.argouml.model.euml;
 
 import java.util.ArrayList;
@@ -83,7 +83,8 @@ class UmlHelperEUMLImpl implements UmlHelper {
         } else if (relationship instanceof ActivityEdge) {
             return ((ActivityEdge) relationship).getSource();
         } else if (relationship instanceof Property) {
-            // TODO: We expect an association end here - check more carefully? - tfm
+            // TODO: We expect an association end here - 
+            // check more carefully? - tfm
             return modelImpl.getCoreHelper().getSource(relationship);
         } else if (relationship instanceof Message) {
             return modelImpl.getFacade().getSender(relationship);
@@ -107,7 +108,8 @@ class UmlHelperEUMLImpl implements UmlHelper {
             return modelImpl.getStateMachinesHelper().
                     getDestination(relationship);
         } else if (relationship instanceof Property) {
-            // TODO: We expect an association end here - check more carefully? - tfm
+            // TODO: We expect an association end here - 
+            // check more carefully? - tfm
             return modelImpl.getCoreHelper().getDestination(relationship);
         } else if (relationship instanceof Message) {
             return modelImpl.getFacade().getReceiver(relationship);
@@ -121,8 +123,8 @@ class UmlHelperEUMLImpl implements UmlHelper {
      * @see org.argouml.model.UmlHelper#move(java.lang.Object, org.argouml.model.UmlHelper.Direction)
      */
     public void move(Object parent, Object element, Direction direction) {
-        if (false) {
-            //TODO: More work require - code below is from MDR implementation
+        //TODO: More work require - code below is from MDR implementation
+//        if (false) {
 //        if (element instanceof Argument) {
 //            final Argument arg = (Argument) element;
 //            final Action action = arg.getAction();
@@ -147,7 +149,8 @@ class UmlHelperEUMLImpl implements UmlHelper {
 //            final int newIndex = newPosition(oldIndex, f.size(), direction);
 //            f.remove(assEnd);
 //            f.add(newIndex, assEnd);
-//        } else if (element instanceof Property && parent instanceof AssociationEnd) {
+//        } else if (element instanceof Property
+//                   && parent instanceof AssociationEnd) {
 //            final Attribute attr = (Attribute) element;
 //            final AssociationEnd assocEnd = attr.getAssociationEnd();
 //            final List<Attribute> f = assocEnd.getQualifier();
@@ -155,7 +158,8 @@ class UmlHelperEUMLImpl implements UmlHelper {
 //            final int newIndex = newPosition(oldIndex, f.size(), direction);
 //            f.remove(attr);
 //            f.add(newIndex, attr);
-        } else if (element instanceof Feature) {
+//        } else 
+        if (element instanceof Feature) {
             final Feature att = (Feature) element;
             final Element cls = att.getOwner();
             final List f = Model.getFacade().getFeatures(cls);
@@ -172,7 +176,8 @@ class UmlHelperEUMLImpl implements UmlHelper {
             final int newIndex = newPosition(oldIndex, f.size(), direction);
             f.remove(param);
             f.add(newIndex, param);
-        } else if (element instanceof Parameter && parent instanceof ParameterSet) {
+        } else if (element instanceof Parameter
+                   && parent instanceof ParameterSet) {
             final Parameter param = (Parameter) element;
             final ParameterSet set = (ParameterSet) parent;
             final List<Parameter> f = set.getParameters();
@@ -205,7 +210,8 @@ class UmlHelperEUMLImpl implements UmlHelper {
             final int newIndex = newPosition(oldIndex, f.size(), direction);
             f.remove(lit);
             f.add(newIndex, lit);
-        } else if (element instanceof ExtensionPoint && parent instanceof Extend) {
+        } else if (element instanceof ExtensionPoint
+                   && parent instanceof Extend) {
             final ExtensionPoint ep = (ExtensionPoint) element;
             final Extend extend = (Extend) parent;
             final List<ExtensionPoint> f = extend.getExtensionLocations();
@@ -216,16 +222,19 @@ class UmlHelperEUMLImpl implements UmlHelper {
 //        } else if (element instanceof LinkEnd) {
 //            final LinkEnd le = (LinkEnd) element;
 //            final Link link = le.getLink();
-//            final List f = new ArrayList(Model.getFacade().getConnections(link));
+//            final List f =
+//                    new ArrayList(Model.getFacade().getConnections(link));
 //            final int oldIndex = f.indexOf(le);
 //            final int newIndex = newPosition(oldIndex, f.size(), direction);
 //            f.remove(le);
 //            f.add(newIndex, le);
 //            Model.getCoreHelper().setConnections(link, f);
-        } else if (element instanceof ExtensionPoint && parent instanceof UseCase) {
+        } else if (element instanceof ExtensionPoint
+                   && parent instanceof UseCase) {
             final ExtensionPoint ep = (ExtensionPoint) element;
             final UseCase extend = ep.getUseCase();
-            final List f = new ArrayList(Model.getFacade().getExtensionPoints(extend));
+            final List f =
+                new ArrayList(Model.getFacade().getExtensionPoints(extend));
             final int oldIndex = f.indexOf(ep);
             final int newIndex = newPosition(oldIndex, f.size(), direction);
             f.remove(ep);

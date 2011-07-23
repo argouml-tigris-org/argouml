@@ -150,21 +150,23 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 Association association = createAssociation();
                 Property property1 = buildAssociationEndInternal(association,
                         null, (Type) type1, null, null, navigability1, null,
-                        (AggregationKind) aggregationKind1, null, null, null);
+                        (AggregationKind) aggregationKind1, null, null);
                 Property property2 = buildAssociationEndInternal(association,
                         null, (Type) type2, null, null, navigability2, null,
-                        (AggregationKind) aggregationKind2, null, null, null);
+                        (AggregationKind) aggregationKind2, null, null);
                 if (associationName != null) {
                     association.setName(associationName);
                 }
                 association.getOwnedEnds().add(property1);
                 association.getOwnedEnds().add(property2);
-                // The code below will make navigable ends owned by the classifier
-                // at the opposite end, but let's just make them owned by the association
-                // for simplicity (don't assume everything will be like this though!)
+                // The code below will make navigable ends owned by 
+                // the classifier at the opposite end, but let's just
+                // make them owned by the association for simplicity 
+                // (don't assume everything will be like this though!)
                 // Bob says - see page 42 and 43 of UML2.2 superstructure
-                // for info on property ownership. Default will be association ownership
-                // but we need a way for the user to change to classifier ownership at a
+                // for info on property ownership. Default will be 
+                // association ownership but we need a way for the 
+                // user to change to classifier ownership at a
                 // later time.
 //                if (UMLUtil.getOwnedAttributes((Type) type2) == null) {
 //                    association.getOwnedEnds().add(property1);
@@ -196,7 +198,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             Object aggregationKind2, Boolean unidirectional) {
         if (unidirectional != null) {
             return buildAssociation(
-                    fromClassifier, !unidirectional, aggregationKind1, toClassifier,
+                    fromClassifier, !unidirectional, 
+                    aggregationKind1, toClassifier,
                     true, aggregationKind2, null);
         } else {
             return buildAssociation(
@@ -296,7 +299,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                     "The visibility of the property must" + //$NON-NLS-1$
                     " be instance of VisibilityKind."); //$NON-NLS-1$
         }
-        if (multi != null && !(multi instanceof MultiplicityElement)) {
+        if (!(multi instanceof MultiplicityElement)) {
             throw new IllegalArgumentException(
                     "The multilicity of the property must" + //$NON-NLS-1$
                     " be instance of MultiplicityElement."); //$NON-NLS-1$
@@ -320,9 +323,9 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                         (Association) assoc, name, (Type) type,
                         new Integer[] {lower, upper}, (Stereotype) stereo,
                         navigable, (Boolean) order,
-                        (AggregationKind) aggregation,(Boolean) scope,
+                        (AggregationKind) aggregation,
                         (Boolean) changeable, (VisibilityKind) visibility);
-                 getParams().add(property);
+                getParams().add(property);
             }
         };
         modelImpl.getModelEventPump().getRootContainer().setHoldEvents(true);
@@ -350,7 +353,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             final String name, final Type type,
             final Integer[] multi, final Stereotype stereo,
             final Boolean navigable, final Boolean order,
-            final AggregationKind aggregation, final Object scope,
+            final AggregationKind aggregation, // final Object scope,
             final Object changeable, final VisibilityKind visibility) {
         // The attribute 'targetScope' of an AssociationEnd in UML1.x is no
         // longer supported in UML2.x
@@ -409,7 +412,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
             Object visibility) {
         return buildAssociationEndInternal((Association) assoc, name,
                 (Type) type, multi, (Stereotype) stereo, (Boolean) navigable,
-                (Boolean) order, (AggregationKind) aggregation, scope,
+                (Boolean) order, (AggregationKind) aggregation,
                 changeable, (VisibilityKind) visibility);
     }
         
@@ -960,8 +963,8 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
                 Parameter param = createParameter();
                 param.setType((Type) type);
                 // TODO: Remove?  Can't be localized
-                param.setName("arg" +
-                    ((BehavioralFeature) o).getOwnedParameters().size());
+                param.setName("arg"
+                        + ((BehavioralFeature) o).getOwnedParameters().size());
                 ((BehavioralFeature) o).getOwnedParameters().add(param);
                 getParams().add(param);
             }
@@ -1191,6 +1194,7 @@ class CoreFactoryEUMLImpl implements CoreFactory, AbstractModelFactory {
         throw new NotImplementedException();
     }
 
+    @Deprecated
     public Generalization createGeneralization() {
         return createGeneralization(null);
     }
