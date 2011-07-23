@@ -1,5 +1,5 @@
 // $Id$
-/*******************************************************************************
+/***************************************************************************
  * Copyright (c) 2007-2011 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -10,7 +10,7 @@
  *    Tom Morris - initial framework 
  *    Bob Tarling
  *    Michiel van der Wulp
- *******************************************************************************/
+ ***************************************************************************/
 package org.argouml.model.euml;
 
 import java.util.ArrayList;
@@ -33,7 +33,8 @@ import org.eclipse.uml2.uml.Vertex;
  */
 class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
 
-    private static final Logger LOG = Logger.getLogger(StateMachinesHelperEUMLImpl.class);
+    private static final Logger LOG = 
+        Logger.getLogger(StateMachinesHelperEUMLImpl.class);
     
     /**
      * The model implementation.
@@ -116,12 +117,13 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
             Collection<Transition> result = new ArrayList<Transition>();
             List<Region> regions = ((StateMachine) handle).getRegions();
             for (Region region : regions) {
-                List<Transition> transitions =region.getTransitions();
+                List<Transition> transitions = region.getTransitions();
                 if (includeInternals) {
                     result.addAll(transitions);
                 } else {
                     for (Transition transition : transitions) {
-                        if (!transition.getKind().equals(TransitionKind.INTERNAL_LITERAL)) {
+                        if (!transition.getKind().equals(
+                                TransitionKind.INTERNAL_LITERAL)) {
                             result.add(transition);
                         }
                     }
@@ -355,7 +357,8 @@ class StateMachinesHelperEUMLImpl implements StateMachinesHelper {
     public void setStatemachineAsSubmachine(Object oSubmachineState,
             Object oStatemachine) {
         if (!(oSubmachineState instanceof State)
-                || !(oStatemachine instanceof StateMachine || oStatemachine == null)) {
+                || !(oStatemachine instanceof StateMachine 
+                        || oStatemachine == null)) {
             throw new IllegalArgumentException(
                     "Expected a state and statemachine, got a " //$NON-NLS-1$
                     + oSubmachineState + " and " + oStatemachine); //$NON-NLS-1$

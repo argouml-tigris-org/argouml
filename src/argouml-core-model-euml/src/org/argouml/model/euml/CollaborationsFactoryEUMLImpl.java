@@ -1,5 +1,5 @@
 // $Id$
-/*******************************************************************************
+/***************************************************************************
  * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    Tom Morris - initial API and implementation
- *******************************************************************************/
+ ***************************************************************************/
 package org.argouml.model.euml;
 
 import org.argouml.model.AbstractModelFactory;
@@ -22,8 +22,6 @@ import org.eclipse.uml2.uml.Interaction;
 import org.eclipse.uml2.uml.Lifeline;
 import org.eclipse.uml2.uml.Message;
 import org.eclipse.uml2.uml.MessageOccurrenceSpecification;
-import org.eclipse.uml2.uml.Port;
-import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.UMLFactory;
 
 /**
@@ -42,7 +40,8 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
      *
      * @param implementation The ModelImplementation.
      */
-    public CollaborationsFactoryEUMLImpl(EUMLModelImplementation implementation) {
+    public CollaborationsFactoryEUMLImpl(
+            EUMLModelImplementation implementation) {
         modelImpl = implementation;
     }
 
@@ -124,7 +123,8 @@ class CollaborationsFactoryEUMLImpl implements CollaborationsFactory,
 
     public Collaboration buildCollaboration(Object namespace, 
             Object representedElement) {
-        throw new IllegalArgumentException("A collaboration is only attached to a namespace in UML2");
+        throw new IllegalArgumentException(
+                "A collaboration is only attached to a namespace in UML2");
     }
 
     public Object buildInteraction(Object collaboration) {

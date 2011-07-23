@@ -1,5 +1,5 @@
 // $Id$
-/*******************************************************************************
+/***************************************************************************
  * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -10,7 +10,7 @@
  *    Tom Morris - initial implementation
  *    Thomas Neustupny
  *    Laurent Braud 
- *******************************************************************************/
+ ***************************************************************************/
 package org.argouml.model.euml;
 
 import java.util.ArrayList;
@@ -87,7 +87,8 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
             bodies = ((OpaqueBehavior) handle).getBodies();
         } else {
             throw new IllegalArgumentException(
-                    "handle must be instance of OpaqueExpression or OpaqueBehavior"); //$NON-NLS-1$
+                    "handle must be instance "
+                    + "of OpaqueExpression or OpaqueBehavior"); //$NON-NLS-1$
         }
         return (bodies.size() < 1) ? null : bodies.get(0);
     }
@@ -109,7 +110,8 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
     public String multiplicityToString(Object multiplicity) {
         if (!(multiplicity instanceof MultiplicityElement)) {
             throw new IllegalArgumentException(
-                    "multiplicity must be instance of MultiplicityElement"); //$NON-NLS-1$
+                    "multiplicity must be instance "
+                    + "of MultiplicityElement"); //$NON-NLS-1$
         }
         MultiplicityElement mult = (MultiplicityElement) multiplicity;
         if (mult.getLower() == mult.getUpper()) {
@@ -130,11 +132,13 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
             bodies = ((OpaqueBehavior) handle).getBodies();
         } else {
             throw new IllegalArgumentException(
-                    "handle must be instance of OpaqueExpression or OpaqueBehavior"); //$NON-NLS-1$
+                    "handle must be instance "
+                    + "of OpaqueExpression or OpaqueBehavior"); //$NON-NLS-1$
         }
         // TODO: Support more than one body/language
         if (bodies.size() > 1) {
-            throw new IllegalStateException("Only one body/lang supported"); //$NON-NLS-1$
+            throw new IllegalStateException(
+                    "Only one body/lang supported"); //$NON-NLS-1$
         }
         bodies.clear();
         bodies.add(body);
@@ -149,11 +153,13 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
             langs = ((OpaqueBehavior) handle).getLanguages();
         } else {
             throw new IllegalArgumentException(
-                    "handle must be instance of OpaqueExpression or OpaqueBehavior"); //$NON-NLS-1$
+                    "handle must be instance "
+                    + "of OpaqueExpression or OpaqueBehavior"); //$NON-NLS-1$
         }
         // TODO: Support more than one body/language
         if (langs.size() > 1) {
-            throw new IllegalStateException("Only one body/lang supported"); //$NON-NLS-1$
+            throw new IllegalStateException(
+                    "Only one body/lang supported"); //$NON-NLS-1$
         }
         langs.clear(); 
         langs.add(language);
@@ -196,31 +202,43 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
             
             Object[] tabValues = null;
             if (type.equals("LiteralBoolean")) {
-                newValueSpecification = (ValueSpecification)UMLFactory.eINSTANCE.create(UMLPackage.eINSTANCE.getLiteralBoolean());
+                newValueSpecification = 
+                    (ValueSpecification) UMLFactory.eINSTANCE.create(
+                            UMLPackage.eINSTANCE.getLiteralBoolean());
             } else if (type.equals("LiteralNull")) {
-        	newValueSpecification = (ValueSpecification)UMLFactory.eINSTANCE.create(UMLPackage.eINSTANCE.getLiteralNull());
+        	newValueSpecification = 
+        	    (ValueSpecification) UMLFactory.eINSTANCE.create(
+        	            UMLPackage.eINSTANCE.getLiteralNull());
             } else if (type.equals("LiteralString")) {
-                newValueSpecification = (ValueSpecification)UMLFactory.eINSTANCE.create(UMLPackage.eINSTANCE.getLiteralString());
+                newValueSpecification = 
+                    (ValueSpecification) UMLFactory.eINSTANCE.create(
+                            UMLPackage.eINSTANCE.getLiteralString());
                 tabValues = new String[]{""};
             } else if (type.equals("LiteralUnlimitedNatural")) {
-                newValueSpecification = (ValueSpecification)UMLFactory.eINSTANCE.create(UMLPackage.eINSTANCE.getLiteralUnlimitedNatural());
+                newValueSpecification = 
+                    (ValueSpecification) UMLFactory.eINSTANCE.create(
+                            UMLPackage.eINSTANCE.getLiteralUnlimitedNatural());
                 tabValues = new String[]{"0"};
             } else if (type.equals("LiteralInteger")) {
-                newValueSpecification = (ValueSpecification)UMLFactory.eINSTANCE.create(UMLPackage.eINSTANCE.getLiteralInteger());
+                newValueSpecification = 
+                    (ValueSpecification) UMLFactory.eINSTANCE.create(
+                            UMLPackage.eINSTANCE.getLiteralInteger());
                 tabValues = new String[]{"0"};
             } else if (type.equals("OpaqueExpression")) {
-                newValueSpecification = (ValueSpecification)UMLFactory.eINSTANCE.create(UMLPackage.eINSTANCE.getOpaqueExpression());
+                newValueSpecification =
+                    (ValueSpecification) UMLFactory.eINSTANCE.create(
+                            UMLPackage.eINSTANCE.getOpaqueExpression());
                 setLanguage(newValueSpecification, "");
                 setBody(newValueSpecification, "");
             }
-            if(tabValues != null){
-                modifyValueSpecification(newValueSpecification,tabValues);
+            if (tabValues != null) {
+                modifyValueSpecification(newValueSpecification, tabValues);
             }
             
-            if(newValueSpecification!=null){
+            if (newValueSpecification != null) {
                 property.setDefaultValue(newValueSpecification);
             }
-        }// TODO else => Exception !
+        } // TODO else => Exception !
 
         return newValueSpecification;
         
@@ -259,7 +277,7 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
             }
         } else if (handle instanceof OpaqueExpression) {
             //rewrite it after change setExpression ?
-            OpaqueExpression oe=(OpaqueExpression) handle;
+            OpaqueExpression oe = (OpaqueExpression) handle;
             List<String> bodies = oe.getBodies();
             List<String> langs = oe.getLanguages();
             // as write in UML specification, we have size(bodies)==size(langs)
@@ -267,8 +285,8 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
             bodies.clear();
             langs.clear();
             for (int i = 0; i < tabValues.length; i += 2) {
-                bodies.add((String)tabValues[i]);
-                langs.add((String)tabValues[i+1]);
+                bodies.add((String) tabValues[i]);
+                langs.add((String) tabValues[i + 1]);
             }
         }
         // TODO Expression and InstanceValue (how)
@@ -293,7 +311,7 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
             tabValues = new String[]{ls.getValue()};
         } else if (handle instanceof LiteralUnlimitedNatural) {
             LiteralUnlimitedNatural lun = (LiteralUnlimitedNatural) handle;
-            tabValues = new String[]{""+lun.getValue()};
+            tabValues = new String[]{"" + lun.getValue()};
         } else if (handle instanceof LiteralInteger) {
             LiteralInteger li = (LiteralInteger) handle;
             tabValues = new Integer[]{li.getValue()};
@@ -306,10 +324,10 @@ class DataTypesHelperEUMLImpl implements DataTypesHelper {
             // as write in UML specification, we have size(bodies)==size(langs)
             // we must have tabValues.length%2==0
             if (bodies.size() > 0) {
-                tabValues= new String[bodies.size()*2];
+                tabValues = new String[bodies.size() * 2];
                 for (int i = 0; i < bodies.size(); i++) {
-                    tabValues[i*2] = bodies.get(i);
-                    tabValues[i*2+1] = langs.get(i);
+                    tabValues[i * 2] = bodies.get(i);
+                    tabValues[i * 2 + 1] = langs.get(i);
                 }
             }
         }

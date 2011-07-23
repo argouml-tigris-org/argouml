@@ -207,7 +207,8 @@ class FacadeEUMLImpl implements Facade {
                     "association must be Association"); //$NON-NLS-1$
         }
         for (Property p : ((Association) association).getOwnedEnds()) {
-            if (p.getType() == classifier && p.getAssociation() == association) {
+            if (p.getType() == classifier 
+                    && p.getAssociation() == association) {
                 return p;
             }
         }
@@ -315,14 +316,18 @@ class FacadeEUMLImpl implements Facade {
             return getValueSpecification((ValueSpecification) handle);
         } else if (handle instanceof Operation) {
 	    
-	    // Get the implementations of this operations and look for an OpaqueBehavior.
-	    for( Behavior impl : ((Operation)handle).getMethods()) {
-		if( impl instanceof OpaqueBehavior) {
-		    if( ((OpaqueBehavior)impl).isSetLanguages()) {
+	    // Get the implementations of this operations and 
+            // look for an OpaqueBehavior.
+	    for (Behavior impl : ((Operation) handle).getMethods()) {
+		if (impl instanceof OpaqueBehavior) {
+		    if (((OpaqueBehavior) impl).isSetLanguages()) {
 			int bodyIndex = 0;
-			for( String targetLanguage : ((OpaqueBehavior)impl).getLanguages()) {
-			    if( "java".equals( targetLanguage)) {
-				return ((OpaqueBehavior)impl).getBodies().get( bodyIndex);
+			for (String targetLanguage 
+			        : ((OpaqueBehavior) impl).getLanguages()) {
+			    if ("java".equals(targetLanguage)) {
+				EList<String> bodies = 
+				    ((OpaqueBehavior) impl).getBodies();
+                                return bodies.get(bodyIndex);
 			    }
 			    bodyIndex++;
 			}
@@ -332,8 +337,8 @@ class FacadeEUMLImpl implements Facade {
 	    return null;  // No body found.
         } else if (handle instanceof OpaqueBehavior) {
             String ret = null;
-            if (((OpaqueBehavior) handle).getBodies() != null &&
-                    !((OpaqueBehavior) handle).getBodies().isEmpty()) {
+            if (((OpaqueBehavior) handle).getBodies() != null 
+                    && !((OpaqueBehavior) handle).getBodies().isEmpty()) {
                 ret = ((OpaqueBehavior) handle).getBodies().get(0);
             }
             return ret;
@@ -342,8 +347,8 @@ class FacadeEUMLImpl implements Facade {
             return handle;
         }
         throw new IllegalArgumentException(
-                "Unsupported argument type - must be Comment, Constraint," +
-                " Expression, or Method ");
+                "Unsupported argument type - must be Comment, Constraint," 
+                + " Expression, or Method ");
 
     }
 
@@ -447,9 +452,10 @@ class FacadeEUMLImpl implements Facade {
         }
 	if (handle instanceof Operation) {
 	    List<Collaboration> result = new ArrayList<Collaboration>();
-	    for( RedefinableElement re : ((Operation)handle).getRedefinedElements()) {
-		if( re instanceof Collaboration) {
-		    result.add( (Collaboration)re);
+	    for (RedefinableElement re 
+	            : ((Operation) handle).getRedefinedElements()) {
+		if (re instanceof Collaboration) {
+		    result.add((Collaboration) re);
                 }
 	    }
 	    return result;
@@ -488,9 +494,10 @@ class FacadeEUMLImpl implements Facade {
 
     public Object getConcurrency(Object handle) {
         if (!(handle instanceof BehavioralFeature)) {
-            throw new IllegalArgumentException("handle must be a BehavioralFeature!");
+            throw new IllegalArgumentException(
+                    "handle must be a BehavioralFeature!");
         }
-        return ((BehavioralFeature)handle).getConcurrency();
+        return ((BehavioralFeature) handle).getConcurrency();
     }
 
     public Object getCondition(Object handle) {
@@ -625,12 +632,13 @@ class FacadeEUMLImpl implements Facade {
     }
 	
     /**
-     * Get all the relationsships, that represent
+     * Get all the relationships, that represent
      * an import of this element.
      *
      * @param handle The imported model element
      *
-     * @return A collection of ElementImport object, that represent imports of this object.
+     * @return A collection of ElementImport object, 
+     * that represent imports of this object.
      */
     public Collection getElementImports2(Object handle) {
         if (!(handle instanceof Element)) {
@@ -641,11 +649,11 @@ class FacadeEUMLImpl implements Facade {
 
 	// Get all the relationships, that this model element has.
 	// and filter everything, that is not an import.
-	for( Relationship rel : ((Element)handle).getRelationships()) {
-	    if( (rel instanceof ElementImport)
-		&& ((ElementImport)rel).getImportedElement() == handle) {
+	for (Relationship rel : ((Element) handle).getRelationships()) {
+	    if ((rel instanceof ElementImport)
+		&& ((ElementImport) rel).getImportedElement() == handle) {
 
-		result.add( rel);
+		result.add(rel);
 	    }
 	}
 	return result;
@@ -693,7 +701,8 @@ class FacadeEUMLImpl implements Facade {
         
         // TODO: Untested alternative to investigate
 //        Collection<Element> result = new ArrayList<Element>();
-//        TreeIterator it = modelImpl.getEditingDomain().getResourceSet().getAllContents();
+//        TreeIterator it = 
+//            modelImpl.getEditingDomain().getResourceSet().getAllContents();
 //        while (it.hasNext()) {
 //            Object o = it.next();
 //            if (handle.getClass().isAssignableFrom(o.getClass())) {
@@ -711,13 +720,13 @@ class FacadeEUMLImpl implements Facade {
     public Collection<Extend> getExtenders(Object handle) {
         if (isAUseCase(handle)) {
             ArrayList<Extend> extenders = new ArrayList<Extend>();
-            Model oModel=((Element) handle).getModel();
+            Model oModel = ((Element) handle).getModel();
             EList<Element> allElement = oModel.allOwnedElements();
             for (Element element : allElement) {
-                if(isAExtend(element)){
+                if (isAExtend(element)) {
                     Extend aExtend = (Extend) element;
                     
-                    if(aExtend.getExtendedCase().equals(handle)){
+                    if (aExtend.getExtendedCase().equals(handle)) {
                         extenders.add(aExtend);    
                     }
                 }
@@ -843,13 +852,13 @@ class FacadeEUMLImpl implements Facade {
         if (isAUseCase(handle)) {
             ArrayList<Include> includers = new ArrayList<Include>();
             Model oModel = ((Element) handle).getModel();
-            EList<Element> allElement=oModel.allOwnedElements();
+            EList<Element> allElement = oModel.allOwnedElements();
             for (Element element : allElement) {
-                if(isAInclude(element)){
+                if (isAInclude(element)) {
                     Include aInclude = (Include) element;
-                    if(aInclude.getAddition().equals(handle)){
-                       includers.add(aInclude);    
-                   }
+                    if (aInclude.getAddition().equals(handle)) {
+                        includers.add(aInclude);    
+                    }
                 }
             }
             return includers;
@@ -911,13 +920,15 @@ class FacadeEUMLImpl implements Facade {
 
     public Collection getInteractions(Object handle) {
         
-        // Comment by A- Rueckert: I don't think it makes much sense to query interactions
-        // from a Collaboration in UML2, since this diagram does no longer exist and 
+        // TODO: Comment by A- Rueckert: I don't think it makes much 
+        // sense to query interactions from a Collaboration in UML2, 
+        // since this diagram does no longer exist and 
         // an Interaction means something different in UML2.
         if (!(handle instanceof Collaboration)) {
-            throw new IllegalArgumentException("handle has to be a Collaboration!");
+            throw new IllegalArgumentException(
+                    "handle has to be a Collaboration!");
         }
-        return ((Collaboration)handle).getCollaborationRoles();
+        return ((Collaboration) handle).getCollaborationRoles();
     }
 
     public Collection getInternalTransitions(Object handle) {
@@ -1003,7 +1014,7 @@ class FacadeEUMLImpl implements Facade {
 
     public Collection getMethods(Object handle) {
         if (handle instanceof BehavioralFeature) {
-            return ((BehavioralFeature)handle).getMethods();
+            return ((BehavioralFeature) handle).getMethods();
         }
         // there's more to be handled, which still need to be implemented:
         throw new NotYetImplementedException();
@@ -1097,7 +1108,7 @@ class FacadeEUMLImpl implements Facade {
                 name.append('<').append('<');
                 EObject p = c.eContainer();
                 if (p instanceof EPackage) {
-                    name.append(((EPackage)p).getName()).append(':');
+                    name.append(((EPackage) p).getName()).append(':');
                 } else {
                     name.append("(null):");
                 }
@@ -1295,9 +1306,10 @@ class FacadeEUMLImpl implements Facade {
 
     public Object getPowertype(Object handle) {
         if (handle instanceof Generalization) {
-            EList<GeneralizationSet> genSets = ((Generalization) handle).getGeneralizationSets();
+            EList<GeneralizationSet> genSets =
+                ((Generalization) handle).getGeneralizationSets();
             for (GeneralizationSet gs : genSets) {
-                Classifier powerType = gs.getPowertype();
+                /* Classifier powerType = */ gs.getPowertype();
             }
         }
         // TODO: This probably can't be implemented in a way that will make
@@ -1320,13 +1332,14 @@ class FacadeEUMLImpl implements Facade {
         return ((Property) handle).getQualifiers();
     }
 
+    @Deprecated
     public Collection getRaisedSignals(Object handle) {
         return getRaisedExceptions(handle);
     }
     
     public Collection getRaisedExceptions( Object handle) {
         if (handle instanceof Operation) {
-            return ((Operation)handle).getRaisedExceptions();
+            return ((Operation) handle).getRaisedExceptions();
         }
         return null;
     }
@@ -1367,15 +1380,18 @@ class FacadeEUMLImpl implements Facade {
 
     public Object getRepresentedClassifier(Object handle) {
         
-        // Comment by A. Rueckert <a_rueckert@gmx.net> :
+        //TODO:  Comment by A. Rueckert <a_rueckert@gmx.net> :
         // I think, the handle holding the collaboration implementation, should
         // rather be a CollaborationUse in UML2. 
-        // But as a workaround for now, I'll try to get a Collaboration representation
-        // (CollaborationUse) and then try to get the owning Classifier from there...
+        // But as a workaround for now, I'll try to get 
+        // a Collaboration representation (CollaborationUse) and 
+        // then try to get the owning Classifier from there...
         if (!(handle instanceof Collaboration)) {
-            throw new IllegalArgumentException("handle should be a Collaboration!"); //$NON-NLS-<n>$ 
+            throw new IllegalArgumentException(
+                    "handle should be a Collaboration!"); //$NON-NLS-<n>$ 
         }
-        CollaborationUse collabUse = ((Collaboration)handle).getRepresentation();
+        CollaborationUse collabUse = 
+            ((Collaboration) handle).getRepresentation();
         
         return collabUse == null ? null : collabUse.getOwner();
     }
@@ -1383,9 +1399,10 @@ class FacadeEUMLImpl implements Facade {
     public Object getRepresentedOperation(Object handle) {
         
         if (!(handle instanceof Collaboration)) {
-            throw new IllegalArgumentException("handle should be a Collaboration!"); //$NON-NLS-<n>$
+            throw new IllegalArgumentException(
+                    "handle should be a Collaboration!"); //$NON-NLS-<n>$
         }
-        return ((Collaboration)handle).getOperation(null,null,null);
+        return ((Collaboration) handle).getOperation(null, null, null);
     }
 
     public Object getResident(Object handle) {
@@ -1428,7 +1445,8 @@ class FacadeEUMLImpl implements Facade {
         if (handle instanceof Reception) {
             return ((Reception) handle).getSignal();
         }
-        throw new IllegalArgumentException("handle should be a SignalEvent or Reception!"); //$NON-NLS-<n>$
+        throw new IllegalArgumentException(
+                "handle should be a SignalEvent or Reception!"); //$NON-NLS-<n>$
     }
 
     public Vertex getSource(Object handle) {
@@ -1463,10 +1481,10 @@ class FacadeEUMLImpl implements Facade {
         // TODO: The UML2 spec provides a specification for Behavior, which
         // is a BehavioralFeature, but ArgoUML calls this for an Operation
         // instance, so we must check what this method is intended for (bug?).
-        if( handle instanceof Behavior) {
-            return ((Behavior)handle).getSpecification().getName();
+        if (handle instanceof Behavior) {
+            return ((Behavior) handle).getSpecification().getName();
         }
-        if( handle instanceof Operation) {
+        if (handle instanceof Operation) {
             return null;
         }
         throw new NotYetImplementedException();
@@ -1478,7 +1496,8 @@ class FacadeEUMLImpl implements Facade {
 //          return ((Property) handle).gets
             return Collections.emptySet();
         } else if (handle instanceof org.eclipse.uml2.uml.Class) {
-            return ((org.eclipse.uml2.uml.Class) handle).getInterfaceRealizations();
+            Class theClass = (org.eclipse.uml2.uml.Class) handle;
+            return theClass.getInterfaceRealizations();
         }
         throw new NotYetImplementedException();
 
@@ -1525,7 +1544,8 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public Collection getSubmachineStates(Object handle) {
-        throw new NotImplementedException("Not applicable in UML2"); //$NON-NLS-1$
+        throw new NotImplementedException(
+                "Not applicable in UML2"); //$NON-NLS-1$
     }
 
     public Collection getSubvertices(Object handle) {
@@ -1603,7 +1623,11 @@ class FacadeEUMLImpl implements Facade {
         
         for (Stereotype st : elem.getAppliedStereotypes()) {
             for (Property p : st.getAttributes()) {
-                Object v = UMLUtil.getTaggedValue(elem, st.getQualifiedName(), p.getName());
+                Object v = 
+                    UMLUtil.getTaggedValue(
+                            elem, 
+                            st.getQualifiedName(), 
+                            p.getName());
                 if (v != null && v != handle) {
                     if (v instanceof Collection) {
                         for (Object o : (Collection) v) {
@@ -1670,6 +1694,7 @@ class FacadeEUMLImpl implements Facade {
         throw new NotYetImplementedException();
     }
 
+    @Deprecated
     public Collection getTransitions(Object handle) {
         if (isAStateMachine(handle)) {
             List<Region> regions = ((StateMachine) handle).getRegions();
@@ -1683,16 +1708,19 @@ class FacadeEUMLImpl implements Facade {
         } else if (isARegion(handle)) {
             return ((Region) handle).getTransitions();
         } else if (isATrigger(handle)) {
-            List<Transition> result = new ArrayList<Transition>();
+            // List<Transition> result = new ArrayList<Transition>();
             // TODO: not complete - how to retrieve the transitions?
+            throw new NotYetImplementedException();
         } else if (isAEvent(handle)) {
             // TODO: not complete
             throw new NotYetImplementedException();
         }
         throw new IllegalArgumentException(
-            "handle must be instance of StateMachine, Vertex, Region, Trigger or Event"); //$NON-NLS-1$
+            "handle must be instance of "
+                + "StateMachine, Vertex, Region, Trigger or Event");
     }
 
+    @Deprecated
     public Trigger getTrigger(Object handle) {
         if (!(handle instanceof Transition)) {
             throw new IllegalArgumentException();
@@ -1784,8 +1812,11 @@ class FacadeEUMLImpl implements Facade {
         Element elem = (Element) handle;
         Property prop = (Property) property;
         Stereotype stereotype = (Stereotype) prop.eContainer();
-        Object value = UMLUtil.getTaggedValue(elem, stereotype.getQualifiedName(),
-                prop.getName());
+        Object value = 
+            UMLUtil.getTaggedValue(
+                    elem, 
+                    stereotype.getQualifiedName(),
+                    prop.getName());
         if (prop.isMultivalued() && !(value instanceof Collection)) {
             Collection newValue = new ArrayList();
             newValue.add(value);
@@ -1808,7 +1839,8 @@ class FacadeEUMLImpl implements Facade {
         // workaround for missing ability to parse "*"
         if (prop.getType() != null
                 && "UnlimitedNatural".equals(prop.getType().getName())
-                && ((Integer) value).intValue() == LiteralUnlimitedNatural.UNLIMITED) {
+                && ((Integer) value).intValue() 
+                    == LiteralUnlimitedNatural.UNLIMITED) {
             value = "*";
         }
         return value;
@@ -2479,8 +2511,12 @@ class FacadeEUMLImpl implements Facade {
     }
 
     public boolean isAsynchronous(Object handle) {
-        if (handle == MessageSort.ASYNCH_CALL_LITERAL) return true;
-        if (handle == MessageSort.ASYNCH_SIGNAL_LITERAL) return true;
+        if (handle == MessageSort.ASYNCH_CALL_LITERAL) {
+            return true;
+        }
+        if (handle == MessageSort.ASYNCH_SIGNAL_LITERAL) {
+            return true;
+        }
         if (handle instanceof CallAction) {
             return !((CallAction) handle).isSynchronous();
         }
@@ -2715,7 +2751,8 @@ class FacadeEUMLImpl implements Facade {
         Resource resource = modelImpl
                 .getEditingDomain()
                 .getResourceSet()
-                .getResource(URI.createURI(UMLResource.UML_METAMODEL_URI), true);
+                .getResource(URI.createURI(UMLResource.UML_METAMODEL_URI), 
+                             true);
         
         Model metamodel = (Model) EcoreUtil.getObjectByType(resource
                 .getContents(), UMLPackage.Literals.PACKAGE);
@@ -2737,7 +2774,8 @@ class FacadeEUMLImpl implements Facade {
         } else if (element instanceof ElementImport) {
             return ((ElementImport) element).getImportingNamespace();
         }
-        throw new IllegalArgumentException("Element must be one of PackageImport or ElementImport");
+        throw new IllegalArgumentException(
+                "Element must be one of PackageImport or ElementImport");
     }
     
     org.eclipse.uml2.uml.Package getImportedPackage(Object element) {

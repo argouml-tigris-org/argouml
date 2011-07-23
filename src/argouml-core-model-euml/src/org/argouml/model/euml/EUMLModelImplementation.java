@@ -66,9 +66,9 @@ import org.eclipse.uml2.uml.resource.XMI2UMLResource;
  * them.
  * <p>
  * The implementation of this subsystem was generously sponsored by Google as
- * part of the Google Summer of Code 2007. A large part of the implementation was
- * built by the sponsored student, Bogdan Ciprian Pistol, who was mentored by
- * Tom Morris.
+ * part of the Google Summer of Code 2007. A large part of the implementation
+ * was built by the sponsored student, Bogdan Ciprian Pistol, who was mentored
+ * by Tom Morris.
  * <p>
  * This implementation uses ideas and code snippets from the 
  * "org.eclipse.uml2.uml.editor.presentation" package which is part of the
@@ -167,7 +167,7 @@ public class EUMLModelImplementation implements ModelImplementation {
      * <p>
      * TODO: This needs to be managed per EditingDomain.
      */
-    private Map<Resource,Boolean> readOnlyMap = 
+    private Map<Resource, Boolean> readOnlyMap = 
         new HashMap<Resource, Boolean>();
 
     /**
@@ -234,36 +234,52 @@ public class EUMLModelImplementation implements ModelImplementation {
             //if (Character.isLetter(path.charAt(0))) {
             //    path = '/' + path;
             //}
-            URI uri = URI.createURI("jar:file:" + path + "!/"); //$NON-NLS-1$ //$NON-NLS-2$
+            URI uri = 
+                URI.createURI(
+                        "jar:file:" //$NON-NLS-1$
+                        + path 
+                        + "!/"); //$NON-NLS-1$
             LOG.debug("eUML.resource URI --> " + uri); //$NON-NLS-1$
 
             Registry packageRegistry = resourceSet.getPackageRegistry();
             packageRegistry.put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
             packageRegistry.put(EcorePackage.eNS_URI, EcorePackage.eINSTANCE);
             // for other xmi files with further namespaces:
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_1_NS_URI, UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_1_URI, UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_NS_URI, UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_URI, UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_2_NS_URI, UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_NS_URI, UMLPackage.eINSTANCE);
-            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_URI, UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_1_NS_URI, 
+                    UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_1_URI, 
+                    UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_NS_URI, 
+                    UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_1_URI, 
+                    UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_2_2_NS_URI, 
+                    UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_NS_URI, 
+                    UMLPackage.eINSTANCE);
+            packageRegistry.put(XMI212UMLResource.UML_METAMODEL_URI, 
+                    UMLPackage.eINSTANCE);
             // eclipse namespaces:
-            packageRegistry.put(UML212UMLResource.UML_METAMODEL_NS_URI, UMLPackage.eINSTANCE);
-            packageRegistry.put("http://www.eclipse.org/uml2/2.0.0/UML", UMLPackage.eINSTANCE);
+            packageRegistry.put(UML212UMLResource.UML_METAMODEL_NS_URI, 
+                    UMLPackage.eINSTANCE);
+            packageRegistry.put("http://www.eclipse.org/uml2/2.0.0/UML", 
+                    UMLPackage.eINSTANCE);
 
             // For the .uml files in the eclipse jar files, we need this:
             extensionToFactoryMap.put(
                     UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
             uriMap.put(
                     URI.createURI(UMLResource.LIBRARIES_PATHMAP),
-                    uri.appendSegment("libraries").appendSegment("")); //$NON-NLS-1$ //$NON-NLS-2$
+                    uri.appendSegment("libraries") //$NON-NLS-1$
+                       .appendSegment("")); //$NON-NLS-1$
             uriMap.put(
                     URI.createURI(UMLResource.METAMODELS_PATHMAP),
-                    uri.appendSegment("metamodels").appendSegment("")); //$NON-NLS-1$//$NON-NLS-2$
+                    uri.appendSegment("metamodels") //$NON-NLS-1$
+                       .appendSegment("")); //$NON-NLS-1$
             uriMap.put(
                     URI.createURI(UMLResource.PROFILES_PATHMAP),
-                    uri.appendSegment("profiles").appendSegment("")); //$NON-NLS-1$//$NON-NLS-2$
+                    uri.appendSegment("profiles") //$NON-NLS-1$
+                       .appendSegment("")); //$NON-NLS-1$
         }
 
         extensionToFactoryMap.put(
@@ -542,13 +558,6 @@ public class EUMLModelImplementation implements ModelImplementation {
 
     public DiagramInterchangeModel getDiagramInterchangeModel() {
         return null;
-    }
-
-    private CommandStackImpl getCommandStack() {
-        if (theCommandStack == null) {
-            theCommandStack = new CommandStackImpl(this);
-        }
-        return theCommandStack;
     }
 
     /**

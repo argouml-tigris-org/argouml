@@ -85,10 +85,10 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
             public void run() {
                 org.eclipse.uml2.uml.Package pkg =
                     (org.eclipse.uml2.uml.Package) createPackage();
-        if (name != null) {
-            pkg.setName(name);
-        }
-            getParams().add(pkg);
+                if (name != null) {
+                    pkg.setName(name);
+                }
+                getParams().add(pkg);
             }
         };
         editingDomain.getCommandStack().execute(
@@ -102,7 +102,7 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
     }
 
     public ElementImport createElementImport() {
-       RunnableClass run = new RunnableClass() {
+        RunnableClass run = new RunnableClass() {
             public void run() {
                 getParams().add(UMLFactory.eINSTANCE.createElementImport());
             }
@@ -165,7 +165,8 @@ class ModelManagementFactoryEUMLImpl implements ModelManagementFactory,
         if (rootModel != null 
                 && !(rootModel instanceof org.eclipse.uml2.uml.Package)) {
             throw new IllegalArgumentException(
-                    "The rootModel supplied must be a Package. Got a " //$NON-NLS-1$
+                    "The rootModel supplied must be a Package. " //$NON-NLS-1$
+                    + "Got a " 
                     + rootModel.getClass().getName());
         }
         List<EObject> restoreList = new ArrayList<EObject>();

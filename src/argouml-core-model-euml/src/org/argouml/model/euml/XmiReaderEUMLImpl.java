@@ -158,7 +158,8 @@ class XmiReaderEUMLImpl implements XmiReader {
 //                throw new UmlException("Attempted to load non-UML 2.x file");
 //            }
             if (isUML14(r)) {
-                throw new UmlException("Attempted to load UML 1.4 file"); //$NON-NLS-1$
+                throw new UmlException(
+                        "Attempted to load UML 1.4 file"); //$NON-NLS-1$
             }
         } catch (IOException e) {
             throw new UmlException(e);
@@ -174,7 +175,8 @@ class XmiReaderEUMLImpl implements XmiReader {
         }
         resource = r;
         LOG.debug("Parsed resource " + resource  //$NON-NLS-1$
-                + " with " + resource.getContents().size() + " elements"); //$NON-NLS-1$ //$NON-NLS-2$
+                + " with " + resource.getContents().size() //$NON-NLS-1$ 
+                + " elements"); //$NON-NLS-1$
         return r.getContents();
     }
 
@@ -187,7 +189,7 @@ class XmiReaderEUMLImpl implements XmiReader {
      *         Element.
      */
     private boolean isUML2(Resource r) {
-        for (EObject eobj: r.getContents()) {
+        for (EObject eobj : r.getContents()) {
             if (eobj instanceof Element) {
                 return true;
             }
@@ -205,31 +207,31 @@ class XmiReaderEUMLImpl implements XmiReader {
      */
     private boolean isUML14(Resource r) {
         for (EObject eobj : r.getContents()) {
-            if ("XMI.header".equals(eobj.eClass().getName())) { //$NON-NLS-1$
+            if ("XMI.header".equals(eobj.eClass().getName())) {
                 for (Entry e1 : ((AnyType) eobj).getMixed()) {
                     if (e1 instanceof BasicFeatureMapEntry) {
                         BasicFeatureMapEntry x1 = (BasicFeatureMapEntry) e1;
                         String n1 = x1.getEStructuralFeature().getName();
-                        if ("XMI.metamodel".equals(n1)) { //$NON-NLS-1$
+                        if ("XMI.metamodel".equals(n1)) {
                             AnyType v = (AnyType) x1.getValue();
                             for (Entry e2 : v.getAnyAttribute()) {
                                 if (e2 instanceof SimpleFeatureMapEntry) {
                                     SimpleFeatureMapEntry x = (SimpleFeatureMapEntry) e2;
                                     String n = x.getEStructuralFeature().getName();
-                                    if ("xmi.name".equals(n)) { //$NON-NLS-1$
-                                        if (!("UML".equals((String) x.getValue()))) { //$NON-NLS-1$
+                                    if ("xmi.name".equals(n)) {
+                                        if (!("UML".equals((String) x.getValue()))) {
                                             LOG.warn("Tried to parse XMI file with "
-                                                            + "XMI.header/XMI.metamodel/xmi.name = "
-                                                            + (String) x.getValue());
+                                                     + "XMI.header/XMI.metamodel/xmi.name = "
+                                                     + (String) x.getValue());
                                             return false;
                                         }
-                                    } else if ("xmi.version".equals(n)) { //$NON-NLS-1$
+                                    } else if ("xmi.version".equals(n)) {
                                         String version = (String) x.getValue();
                                         if (version != null
-                                                && version.startsWith("1.4")) { //$NON-NLS-1$
+                                                && version.startsWith("1.4")) {
                                             LOG.debug("Tried to parse XMI file with "
-                                                    + "XMI.header/XMI.metamodel/xmi.version = "
-                                                    + version);
+                                                      + "XMI.header/XMI.metamodel/xmi.version = "
+                                                      + version);
                                             return true;
                                         }
                                     }
@@ -247,7 +249,8 @@ class XmiReaderEUMLImpl implements XmiReader {
         if (elementNames == null) {
             return true;
         }
-        throw new NotImplementedException("setIgnoredElements not implemented for UML 2.x");
+        throw new NotImplementedException(
+                "setIgnoredElements not implemented for UML 2.x");
         // TODO: Silently ignore instead?
 //        return false;
     }

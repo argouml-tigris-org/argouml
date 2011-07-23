@@ -1,5 +1,5 @@
 // $Id$
-/*******************************************************************************
+/***************************************************************************
  * Copyright (c) 2007,2011 Bogdan Pistol and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -11,7 +11,7 @@
  *    Thomas Neustupny
  *    Bob Tarling
  *    Laurent Braud
- *******************************************************************************/
+ ***************************************************************************/
 package org.argouml.model.euml;
 
 import java.beans.PropertyChangeEvent;
@@ -55,7 +55,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
      * events. See issue 
 
      */
-    final private List<Element> deleteEventIgnoreList =
+    private final List<Element> deleteEventIgnoreList =
         new ArrayList<Element>();
     
     /**
@@ -67,8 +67,8 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
 
         private Set<String> props;
 
-        Listener(EventListener listener, String[] properties) {
-            this.listener = listener;
+        Listener(EventListener theListener, String[] properties) {
+            listener = theListener;
             if (properties != null) {
                 setProperties(properties);
             }
@@ -297,7 +297,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                 if (l.getListener() == listener) {
                     if (propertyNames != null) {
                         l.removeProperties(propertyNames);
-                        if(l.getProperties().isEmpty()){
+                        if (l.getProperties().isEmpty()) {
                             iter.remove();
                         }
                     } else {
@@ -306,7 +306,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                     break;
                 }
             }
-            if(list.isEmpty()){
+            if (list.isEmpty()) {
                 register.remove(notifier);
             }
         }
@@ -413,7 +413,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                                     getListeners(
                                         oldValue)));
                 } else {
-                    LOG.info("Not sending delete event - assume remove"); //$NON-NLS-1$
+                    LOG.info("Not sending delete event - assume remove");
                 }
                 events.add(new EventAndListeners(
                         new RemoveAssociationEvent(

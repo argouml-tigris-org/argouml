@@ -1,5 +1,5 @@
 // $Id$
-/*******************************************************************************
+/***************************************************************************
  * Copyright (c) 2007,2010 Tom Morris and other contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -8,7 +8,7 @@
  *
  * Contributors:
  *    Tom Morris - initial API and implementation
- *******************************************************************************/
+ ***************************************************************************/
 
 package org.argouml.model.euml;
 

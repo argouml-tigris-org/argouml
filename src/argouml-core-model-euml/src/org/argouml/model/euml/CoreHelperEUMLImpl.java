@@ -85,7 +85,8 @@ import org.eclipse.uml2.uml.VisibilityKind;
  */
 class CoreHelperEUMLImpl implements CoreHelper {
 
-    private static final Logger LOG = Logger.getLogger(CoreHelperEUMLImpl.class);
+    private static final Logger LOG = 
+        Logger.getLogger(CoreHelperEUMLImpl.class);
     
     /**
      * The model implementation.
@@ -105,50 +106,56 @@ class CoreHelperEUMLImpl implements CoreHelper {
         editingDomain = implementation.getEditingDomain();
     }
 
-    public void addAllStereotypes(final Object modelElement,
+    public void addAllStereotypes(
+            final Object modelElement,
             final Collection stereos) {
         if (!(modelElement instanceof Element)) {
             throw new IllegalArgumentException(
-                    "modelElement must be instance of Element"); //$NON-NLS-1$
+                    "modelElement must be instance of Element");
         }
         if (stereos == null) {
-            throw new NullPointerException(
-                    "stereos must be non-null"); //$NON-NLS-1$
+            throw new NullPointerException("stereos must be non-null");
         }
+
+        final Element element = (Element) modelElement;
+
         for (Object o : stereos) {
             if (!(o instanceof Stereotype)) {
                 throw new IllegalArgumentException(
-                        "The stereotypes from stereo collection" //$NON-NLS-1$
-                            + " must be instances of Stereotype"); //$NON-NLS-1$
+                        "The stereotypes from stereo collection"
+                            + " must be instances of Stereotype");
             }
-            if (!((Element) modelElement).isStereotypeApplicable((Stereotype) o)) {
+            if (!element.isStereotypeApplicable((Stereotype) o)) {
                 throw new UnsupportedOperationException(
-                        "The stereotype " + o //$NON-NLS-1$
-                        + " cannot be applied to " + modelElement); //$NON-NLS-1$
+                        "The stereotype " + o 
+                        + " cannot be applied to " + modelElement); 
             }
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
                 for (Object o : stereos) {
                     Stereotype stereotype = (Stereotype) o;
-                    EObject eo = ((Element) modelElement).applyStereotype(stereotype);
-                    if (((Element) modelElement).isStereotypeApplied(stereotype)) {
+                    EObject eo = element.applyStereotype(stereotype);
+                    if (element.isStereotypeApplied(stereotype)) {
                         fireApplyStereotypeEvent(modelElement, stereotype);
                     } else {
                         EcoreUtil.remove(eo);
                     }
                 }
             }
+
             /**
-             * Call the model event pump and ask it to fire an event indicating a
-             * stereotype has been added. This is a stop-gap until we have
+             * Call the model event pump and ask it to fire an event indicating 
+             * a stereotype has been added. This is a stop-gap until we have
              * determined how the event pump can detect itself that a stereotype
              * has been added.
              *  
              * @param modelElement
              * @param stereotype
              */
-            private void fireApplyStereotypeEvent(Object modelElement, Object stereotype) {
+            private void fireApplyStereotypeEvent(
+                    Object modelElement, 
+                    Object stereotype) {
                 final ModelEventPumpEUMLImpl pump =
                     (ModelEventPumpEUMLImpl) Model.getPump();
                 pump.fireEvent(
@@ -156,7 +163,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         null, 
                         stereotype, 
                         Notification.ADD, 
-                        "stereotype",  //$NON-NLS-1$ 
+                        "stereotype",
                         null);
             }
             
@@ -178,11 +185,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
             final Object annotatedElement) {
         if (!(annotatedElement instanceof Element)) {
             throw new IllegalArgumentException(
-                    "annotatedElement must be instance of Element"); //$NON-NLS-1$
+                    "annotatedElement must be instance of Element");
         }
         if (!(comment instanceof Comment)) {
             throw new IllegalArgumentException(
-                    "comment must be instance of Comment"); //$NON-NLS-1$
+                    "comment must be instance of Comment");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -199,11 +206,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void addClient(final Object dependency, final Object element) {
         if (!(dependency instanceof Dependency)) {
             throw new IllegalArgumentException(
-                    "The dependency must be instance of Dependency"); //$NON-NLS-1$
+                    "The dependency must be instance of Dependency");
         }
         if (!(element instanceof NamedElement)) {
             throw new IllegalArgumentException(
-                    "The element must be instance of NamedElement"); //$NON-NLS-1$
+                    "The element must be instance of NamedElement");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -232,11 +239,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void addConnection(Object handle, int position, Object connection) {
         if (!(handle instanceof Association)) {
             throw new IllegalArgumentException(
-                    "The handle must be instance of Association"); //$NON-NLS-1$
+                    "The handle must be instance of Association");
         }
         if (!(connection instanceof Property)) {
             throw new IllegalArgumentException(
-                    "The connection must be instance of Property"); //$NON-NLS-1$
+                    "The connection must be instance of Property");
         }
         RunnableClass run = getRunnableClassForAddCommand(
                 (Association) handle, position, (Property) connection);
@@ -244,22 +251,24 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 new ChangeCommand(
                         modelImpl,
                         run,
-                        "Add the AssociationEnd (Property) # to the Association #",
+                        "Add the AssociationEnd (Property) # "
+                        + "to the Association #",
                         connection, handle));
     }
 
     public void addConstraint(final Object handle, final Object mc) {
         if (!(handle instanceof Element)) {
             throw new IllegalArgumentException(
-                    "The handle must be instance of Element"); //$NON-NLS-1$
+                    "The handle must be instance of Element");
         }
         if (!(mc instanceof Constraint)) {
             throw new IllegalArgumentException(
-                    "mc must be instance of Constraint"); //$NON-NLS-1$
+                    "mc must be instance of Constraint");
         }
+        final Element element = (Element) handle;
         RunnableClass run = new RunnableClass() {
             public void run() {
-                ((Constraint) mc).getConstrainedElements().add((Element) handle);
+                ((Constraint) mc).getConstrainedElements().add(element);
             }
         };
         editingDomain.getCommandStack().execute(
@@ -290,8 +299,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 editingDomain, owner, null, element, index);
         if (cmd == null || !cmd.canExecute()) {
             throw new UnsupportedOperationException(
-                    "The element " + element  //$NON-NLS-1$
-                    + " cannot be added to the element " + owner); //$NON-NLS-1$
+                    "The element " + element
+                    + " cannot be added to the element " + owner);
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -304,11 +313,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
     private RunnableClass getRunnableClassForRemoveCommand(Element element) {
         final Command cmd = RemoveCommand.create(editingDomain, element);
         if (cmd == null || !cmd.canExecute()) {
-            String s = "The element " + element; //$NON-NLS-1$
+            String s = "The element " + element;
             if (element.getOwner() != null) {
-                s += ", owned by " + element.getOwner() + ", "; //$NON-NLS-1$ //$NON-NLS-2$
+                s += ", owned by " + element.getOwner() + ", ";
             }
-            s += " cannot be removed"; //$NON-NLS-1$
+            s += " cannot be removed";
             throw new UnsupportedOperationException(s);
         }
         RunnableClass run = new RunnableClass() {
@@ -322,10 +331,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void addFeature(Object handle, int index, Object f) {
         if (!(handle instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "The handle must be instance of Classifier"); //$NON-NLS-1$
+                    "The handle must be instance of Classifier");
         }
         if (!(f instanceof Feature)) {
-            throw new IllegalArgumentException("f must be instance of Feature"); //$NON-NLS-1$
+            throw new IllegalArgumentException("f must be instance of Feature");
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
@@ -346,11 +355,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void addLiteral(Object handle, int index, Object literal) {
         if (!(handle instanceof Enumeration)) {
             throw new IllegalArgumentException(
-                    "The handle must be instance of Enumeration"); //$NON-NLS-1$
+                    "The handle must be instance of Enumeration");
         }
         if (!(literal instanceof EnumerationLiteral)) {
             throw new IllegalArgumentException(
-                    "literal must be instance of EnumerationLiteral"); //$NON-NLS-1$
+                    "literal must be instance of EnumerationLiteral");
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
@@ -364,11 +373,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void addManifestation(Object handle, Object manifestation) {
         if (!(handle instanceof Artifact)) {
             throw new IllegalArgumentException(
-                    "The handle must be instance of Artifact"); //$NON-NLS-1$
+                    "The handle must be instance of Artifact");
         }
         if (!(manifestation instanceof Manifestation)) {
             throw new IllegalArgumentException(
-                    "The manifestation must be instance of Manifestation"); //$NON-NLS-1$
+                    "The manifestation must be instance of Manifestation");
         }
         ((Artifact) handle).getManifestations()
                 .add((Manifestation) manifestation);
@@ -379,22 +388,25 @@ class CoreHelperEUMLImpl implements CoreHelper {
         // 'method' association of BehavioralFeature
         if (!(handle instanceof BehavioralFeature)) {
             throw new IllegalArgumentException(
-                    "The handle must be instance of BehavioralFeature"); //$NON-NLS-1$
+                    "The handle must be instance of BehavioralFeature");
         }
         if (!(method instanceof Behavior)) {
             throw new IllegalArgumentException(
-                    "method must be instance of Behavior"); //$NON-NLS-1$
+                    "method must be instance of Behavior");
         }
+
+        final Behavior behavior = (Behavior) method;
         RunnableClass run = new RunnableClass() {
             public void run() {
-                ((BehavioralFeature) handle).getMethods().add((Behavior) method);
+                ((BehavioralFeature) handle).getMethods().add(behavior);
             }
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
                         modelImpl,
                         run,
-                        "Add the Behavior (method) # to the BehavioralFeature (operation) #",
+                        "Add the Behavior (method) # "
+                        + "to the BehavioralFeature (operation) #",
                         method, handle));
     }
     
@@ -402,17 +414,17 @@ class CoreHelperEUMLImpl implements CoreHelper {
             Object... objects) {
         if (!(handle instanceof Namespace)) {
             throw new IllegalArgumentException(
-                    "The handle must be instance of Namespace"); //$NON-NLS-1$
+                    "The handle must be instance of Namespace");
         }
         if (!(me instanceof Element)) {
             throw new IllegalArgumentException(
-                    "'me' must be instance of Element, we got a "//$NON-NLS-1$
-                     + me);
+                    "'me' must be instance of Element, we got a " + me);
         }
         Element element = (Element) me;
         if (element.getOwner() != null) {
-            LOG.info("Setting ignore delete for " + element); //$NON-NLS-1$
-            ModelEventPumpEUMLImpl pump = (ModelEventPumpEUMLImpl) Model.getPump();
+            LOG.info("Setting ignore delete for " + element); 
+            ModelEventPumpEUMLImpl pump = 
+                (ModelEventPumpEUMLImpl) Model.getPump();
             pump.addElementForDeleteEventIgnore(element);
         }
         editingDomain.getCommandStack().execute(
@@ -427,14 +439,15 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void addParameter(Object handle, int index, Object parameter) {
         // TODO: In UML2.x Event has no parameters.
-        // TODO: Treat ObjectFlowState (this doesn't exist anymore in UML2) and Classifier
+        // TODO: Treat ObjectFlowState (this doesn't exist anymore in UML2) 
+        // and Classifier
         if (!(handle instanceof BehavioralFeature)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of BehavioralFeature"); //$NON-NLS-1$
+                    "handle must be instance of BehavioralFeature");
         }
         if (!(parameter instanceof Parameter)) {
             throw new IllegalArgumentException(
-                    "parameter must be instance of Parameter"); //$NON-NLS-1$
+                    "parameter must be instance of Parameter");
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
@@ -452,7 +465,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void addQualifier(Object handle, int position, Object qualifier) {
         if (!(handle instanceof Property) || !(qualifier instanceof Property)) {
             throw new IllegalArgumentException(
-                    "handle and qualifier must be instances of Property"); //$NON-NLS-1$
+                    "handle and qualifier must be instances of Property");
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
@@ -492,11 +505,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void addSupplier(final Object dependency, final Object element) {
         if (!(dependency instanceof Dependency)) {
             throw new IllegalArgumentException(
-                    "The dependency must be instance of Dependency"); //$NON-NLS-1$
+                    "The dependency must be instance of Dependency");
         }
         if (!(element instanceof NamedElement)) {
             throw new IllegalArgumentException(
-                    "The element must be instance of NamedElement"); //$NON-NLS-1$
+                    "The element must be instance of NamedElement");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -530,7 +543,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
         throw new NotYetImplementedException();
     }
 
-    public void addTemplateParameter(Object handle, int index, Object parameter) {
+    public void addTemplateParameter(
+            Object handle, 
+            int index, 
+            Object parameter) {
         // TODO: implement
         throw new NotYetImplementedException();
     }
@@ -545,10 +561,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
         throw new NotYetImplementedException();
     }
 
-    public boolean equalsAggregationKind(Object associationEnd, String kindType) {
+    public boolean equalsAggregationKind(
+            Object associationEnd, 
+            String kindType) {
         if (!(associationEnd instanceof Property)) {
             throw new IllegalArgumentException(
-                    "associationEnd must be instance of Property"); //$NON-NLS-1$
+                    "associationEnd must be instance of Property");
         }
         return ((Property) associationEnd).getAggregation().getLiteral().equals(
                 kindType);
@@ -557,7 +575,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection getAllAttributes(Object classifier) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "classifier must be instance of Classifier"); //$NON-NLS-1$
+                    "classifier must be instance of Classifier");
         }
         Collection result = new HashSet();
         result.addAll(((Classifier) classifier).getAttributes());
@@ -622,20 +640,26 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     
     public Collection getAllNodes(Object ns) {
-        return modelImpl.getModelManagementHelper().getAllModelElementsOfKind(ns, Node.class);
+        final ModelManagementHelperEUMLImpl helper =
+            modelImpl.getModelManagementHelper();
+        return helper.getAllModelElementsOfKind(ns, Node.class);
     }
 
-    public Collection getAllPossibleNamespaces(Object modelElement, Object model) {
+    public Collection getAllPossibleNamespaces(
+            Object modelElement, 
+            Object model) {
         if (!(model instanceof Element) || !(modelElement instanceof Element)) {
             throw new IllegalArgumentException(
-                    "modelElement and model must be instances of Element"); //$NON-NLS-1$
+                    "modelElement and model must be instances of Element");
         }
         Collection result = new ArrayList();
         if (isValidNamespace(modelElement, model)) {
             result.add((Namespace) model);
         }
-        for (Object o : modelImpl.getModelManagementHelper().getAllModelElementsOfKind(
-                model, Namespace.class)) {
+        final ModelManagementHelperEUMLImpl helper =
+            modelImpl.getModelManagementHelper();
+        for (Object o 
+                : helper.getAllModelElementsOfKind(model, Namespace.class)) {
             if (isValidNamespace(modelElement, o)) {
                 result.add((Namespace) o);
             }
@@ -646,15 +670,17 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection getAllRealizedInterfaces(Object element) {
         if (!(element instanceof org.eclipse.uml2.uml.Class)) {
             throw new IllegalArgumentException(
-                    "element must be instance of UML2 Class"); //$NON-NLS-1$
+                    "element must be instance of UML2 Class");
         }
-        return ((org.eclipse.uml2.uml.Class) element).getAllImplementedInterfaces();
+        final org.eclipse.uml2.uml.Class theClass = 
+            (org.eclipse.uml2.uml.Class) element;
+        return theClass.getAllImplementedInterfaces();
     }
 
     public Collection getAllSupertypes(Object classifier) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "classifier must be instance of Classifier"); //$NON-NLS-1$
+                    "classifier must be instance of Classifier");
         }
         return ((Classifier) classifier).allParents();
     }
@@ -662,7 +688,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection getAllVisibleElements(Object ns) {
         if (!(ns instanceof Namespace)) {
             throw new IllegalArgumentException(
-                    "ns must be instance of Namespace"); //$NON-NLS-1$
+                    "ns must be instance of Namespace");
         }
         Collection result = new ArrayList();
         for (NamedElement e : ((Namespace) ns).getOwnedMembers()) {
@@ -677,7 +703,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection getAssociateEndsInh(Object classifier) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "classifier must be instance of Classifier"); //$NON-NLS-1$
+                    "classifier must be instance of Classifier");
         }
         Collection result = new ArrayList();
         result.addAll(modelImpl.getFacade().getAssociationEnds(classifier));
@@ -690,7 +716,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection<Classifier> getAssociatedClassifiers(Object aclassifier) {
         if (!(aclassifier instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "aclassifier must be instance of Classifier"); //$NON-NLS-1$
+                    "aclassifier must be instance of Classifier");
         }
         Collection<Classifier> result = new ArrayList<Classifier>();
         for (Association a : ((Classifier) aclassifier).getAssociations()) {
@@ -706,11 +732,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Property getAssociationEnd(Object type, Object assoc) {
         if (!(type instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "type must be instance of Classifier"); //$NON-NLS-1$
+                    "type must be instance of Classifier");
         }
         if (!(assoc instanceof Association)) {
             throw new IllegalArgumentException(
-                    "assoc must be instance of Association"); //$NON-NLS-1$
+                    "assoc must be instance of Association");
         }
         return ((Association) assoc).getMemberEnd(null, (Classifier) type);
     }
@@ -724,7 +750,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         }
         if (!(from instanceof Classifier) || !(to instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "'from' and 'to' must be instances of Classifier"); //$NON-NLS-1$
+                    "'from' and 'to' must be instances of Classifier");
         }
         Collection<Association> result = new ArrayList<Association>();
         for (Association a : ((Classifier) from).getAssociations()) {
@@ -738,7 +764,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection getAssociations(Object classifier) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "'classifier' must be instance of Classifier"); //$NON-NLS-1$
+                    "'classifier' must be instance of Classifier");
         }
         return ((Classifier) classifier).getAssociations();
     }
@@ -746,7 +772,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection getAttributesInh(Object classifier) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "'classifier' must be instance of Classifier"); //$NON-NLS-1$
+                    "'classifier' must be instance of Classifier");
         }
         return ((Classifier) classifier).getAllAttributes();
     }
@@ -754,7 +780,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public List<BehavioralFeature> getBehavioralFeatures(Object classifier) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "'classifier' must be instance of Classifier"); //$NON-NLS-1$
+                    "'classifier' must be instance of Classifier");
         }
         List<BehavioralFeature> result = new ArrayList<BehavioralFeature>();
         for (Feature feature : ((Classifier) classifier).getFeatures()) {
@@ -768,7 +794,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public String getBody(Object comment) {
         if (!(comment instanceof Comment)) {
             throw new IllegalArgumentException(
-                    "'comment' must be instance of Comment"); //$NON-NLS-1$
+                    "'comment' must be instance of Comment");
         }
         return ((Comment) comment).getBody();
     }
@@ -776,7 +802,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection<Classifier> getChildren(Object element) {
         if (!(element instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "'element' must be instance of Classifier"); //$NON-NLS-1$
+                    "'element' must be instance of Classifier");
         }
         Collection<Classifier> results = new HashSet<Classifier>();
         LinkedList<Classifier> classifiers = new LinkedList<Classifier>();
@@ -787,7 +813,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 break;
             }
             results.add(c);
-            for (DirectedRelationship d : c.getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION)) {
+            for (DirectedRelationship d 
+                    : c.getTargetDirectedRelationships(
+                            UMLPackage.Literals.GENERALIZATION)) {
                 for (Element e : d.getSources()) {
                     if (e instanceof Classifier && !results.contains(e)) {
                         classifiers.add((Classifier) e);
@@ -799,13 +827,18 @@ class CoreHelperEUMLImpl implements CoreHelper {
         return results;
     }
 
-    public Collection<Dependency> getDependencies(Object supplierObj, Object clientObj) {
-        if (!(supplierObj instanceof NamedElement) || !(clientObj instanceof NamedElement)) {
+    public Collection<Dependency> getDependencies(
+            Object supplierObj, 
+            Object clientObj) {
+        if (!(supplierObj instanceof NamedElement) 
+                || !(clientObj instanceof NamedElement)) {
             throw new IllegalArgumentException(
-                    "supplierObj and clientObj must be instances of NamedElement"); //$NON-NLS-1$
+                    "supplierObj and clientObj must be "
+                    + "instances of NamedElement");
         }
         Collection<Dependency>  result = new ArrayList<Dependency> ();
-        for (Dependency d : ((NamedElement) clientObj).getClientDependencies()) {
+        for (Dependency d 
+                : ((NamedElement) clientObj).getClientDependencies()) {
             if (d.getSuppliers().contains(supplierObj)) {
                 result.add(d);
             }
@@ -818,7 +851,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         // all parents (direct and indirect) or only the direct parents?
         if (!(element instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "'element' must be instance of Classifier"); //$NON-NLS-1$
+                    "'element' must be instance of Classifier");
         }
         return ((Classifier) element).getGenerals();
     }
@@ -829,7 +862,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         // extending classifiers?
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "'classifier' must be instance of Classifier"); //$NON-NLS-1$
+                    "'classifier' must be instance of Classifier");
         }
         Collection<Element> result = new HashSet<Element>();
         for (Element e : getExtendingElements(classifier)) {
@@ -843,11 +876,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection<Element> getExtendingElements(Object element) {
         if (!(element instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "'element' must be instance of Classifier"); //$NON-NLS-1$
+                    "'element' must be instance of Classifier");
         }
         Collection<Element> result = new HashSet<Element>();
-        for (DirectedRelationship d : ((Classifier) element)
-                .getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION)) {
+        for (DirectedRelationship d 
+                : ((Classifier) element).getTargetDirectedRelationships(
+                        UMLPackage.Literals.GENERALIZATION)) {
             for (Element e : d.getSources()) {
                 result.add(e);
             }
@@ -858,7 +892,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Namespace getFirstSharedNamespace(Object ns1, Object ns2) {
         if (!(ns1 instanceof Namespace) || !(ns2 instanceof Namespace)) {
             throw new IllegalArgumentException(
-                    "ns1 and ns2 must be instances of Namespace"); //$NON-NLS-1$
+                    "ns1 and ns2 must be instances of Namespace");
         }
         Namespace result = null;
         List<Namespace> l1 = new ArrayList<Namespace>();
@@ -891,7 +925,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 || !(aparent instanceof Classifier)) {
             throw new IllegalArgumentException(
                     "'achild' and 'aparent' must "
-                    + "be instances of Classifier"); //$NON-NLS-1$
+                    + "be instances of Classifier");
         }
         return ((Classifier) achild).getGeneralization((Classifier) aparent);
     }
@@ -899,7 +933,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection<PackageableElement> getUtilizedElements(Object artifact) {
         if (!(artifact instanceof Artifact)) {
             throw new IllegalArgumentException(
-                    "'artifact' must be instance of Artifact"); //$NON-NLS-1$
+                    "'artifact' must be instance of Artifact");
         }
         Collection<PackageableElement> c = new ArrayList<PackageableElement>();
         for (Manifestation m : ((Artifact) artifact).getManifestations()) {
@@ -914,7 +948,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection<Operation> getOperationsInh(Object classifier) {
         if (!(classifier instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "'classifier' must be instance of Classifier"); //$NON-NLS-1$
+                    "'classifier' must be instance of Classifier");
         }
         return ((Classifier) classifier).getAllOperations();
     }
@@ -922,17 +956,20 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection<Interface> getRealizedInterfaces(Object cls) {
         if (!(cls instanceof org.eclipse.uml2.uml.Class)) {
             throw new IllegalArgumentException(
-                    "'cls' must be instance of UML2 Class"); //$NON-NLS-1$
+                    "'cls' must be instance of UML2 Class");
         }
         return ((org.eclipse.uml2.uml.Class) cls).getImplementedInterfaces();
     }
 
-    public Collection<DirectedRelationship> getRelationships(Object source, Object dest) {
+    public Collection<DirectedRelationship> getRelationships(
+            Object source, 
+            Object dest) {
         if (!(source instanceof Element) || !(dest instanceof Element)) {
             throw new IllegalArgumentException(
-                    "'source' and 'dest' must be instances of Element"); //$NON-NLS-1$
+                    "'source' and 'dest' must be instances of Element");
         }
-        Collection<DirectedRelationship> result = new ArrayList<DirectedRelationship>();
+        Collection<DirectedRelationship> result = 
+            new ArrayList<DirectedRelationship>();
         for (DirectedRelationship d : ((Element) source)
                 .getSourceDirectedRelationships()) {
             if (d.getTargets().contains(dest)) {
@@ -951,7 +988,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public List<Parameter> getReturnParameters(Object bf) {
         if (!(bf instanceof BehavioralFeature)) {
             throw new IllegalArgumentException(
-                    "'bf' must be instance of BehavioralFeature"); //$NON-NLS-1$
+                    "'bf' must be instance of BehavioralFeature");
         }
         List<Parameter> result = new ArrayList<Parameter>();
         for (Parameter p : ((Operation) bf).getOwnedParameters()) {
@@ -980,7 +1017,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
         if (!(relationship instanceof Relationship)
                 && !(relationship instanceof Property)) {
             throw new IllegalArgumentException(
-                    "'relationship' must be instance of Relationship or Property"); //$NON-NLS-1$
+                    "'relationship' must be instance "
+                    + "of Relationship or Property");
         }
 
         if (relationship instanceof Association) {
@@ -1022,7 +1060,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
         if (!(relationship instanceof Relationship)
                 && !(relationship instanceof Property)) {
             throw new IllegalArgumentException(
-                    "'relationship' must be instance of Relationship or Property"); //$NON-NLS-1$
+                    "'relationship' must be instance "
+                    + "of Relationship or Property");
         }
 
         if (relationship instanceof Association) {
@@ -1033,7 +1072,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
             return conns.get(0).getType();
         }
         if (relationship instanceof DirectedRelationship) {
-            List<Element> targets = ((DirectedRelationship) relationship).getTargets();
+            List<Element> targets = 
+                ((DirectedRelationship) relationship).getTargets();
             if (targets.isEmpty()) {
                 return null;
             }
@@ -1048,7 +1088,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Object getSpecification(Object object) {
         if (!(object instanceof Behavior)) {
             throw new IllegalArgumentException(
-                    "'object' must be instance of Behavior"); //$NON-NLS-1$
+                    "'object' must be instance of Behavior");
         }
         return ((Behavior) object).getSpecification();
     }
@@ -1056,11 +1096,12 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection<Element> getSubtypes(Object cls) {
         if (!(cls instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "'cls' must be instance of Classifier"); //$NON-NLS-1$
+                    "'cls' must be instance of Classifier");
         }
         Collection<Element> results = new HashSet<Element>();
-        for (DirectedRelationship d : ((Classifier) cls)
-                .getTargetDirectedRelationships(UMLPackage.Literals.GENERALIZATION)) {
+        for (DirectedRelationship d 
+                : ((Classifier) cls).getTargetDirectedRelationships(
+                        UMLPackage.Literals.GENERALIZATION)) {
             results.addAll(d.getSources());
         }
         return results;
@@ -1069,7 +1110,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public Collection<Classifier> getSupertypes(Object generalizableElement) {
         if (!(generalizableElement instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "'generalizableElement' must be instance of Classifier"); //$NON-NLS-1$
+                    "'generalizableElement' must be instance of Classifier");
         }
         return ((Classifier) generalizableElement).getGenerals();
     }
@@ -1077,7 +1118,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public boolean hasCompositeEnd(Object association) {
         if (!(association instanceof Association)) {
             throw new IllegalArgumentException(
-                    "'association' must be instance of Association"); //$NON-NLS-1$
+                    "'association' must be instance of Association");
         }
         for (Property p : ((Association) association).getMemberEnds()) {
             if (p.getAggregation() == AggregationKind.COMPOSITE_LITERAL) {
@@ -1090,7 +1131,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public boolean isSubType(Object type, Object subType) {
         if (!(type instanceof Class) || !(subType instanceof Class)) {
             throw new IllegalArgumentException(
-                    "type and subType must be instances of java.lang.Class"); //$NON-NLS-1$
+                    "type and subType must be instances of java.lang.Class");
         }
         return ((Class) type).isAssignableFrom((Class) subType);
     }
@@ -1104,7 +1145,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
             return true;
         }
         try {
-            RunnableClass run = getRunnableClassForAddCommand(
+            getRunnableClassForAddCommand(
                     (Namespace) namespace, (NamedElement) element);
         } catch (UnsupportedOperationException e) {
             return false;
@@ -1116,11 +1157,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
             final Object annotatedElement) {
         if (!(annotatedElement instanceof Element)) {
             throw new IllegalArgumentException(
-                    "annotatedElement must be instance of Element"); //$NON-NLS-1$
+                    "annotatedElement must be instance of Element");
         }
         if (!(comment instanceof Comment)) {
             throw new IllegalArgumentException(
-                    "comment must be instance of Comment"); //$NON-NLS-1$
+                    "comment must be instance of Comment");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1132,18 +1173,19 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 new ChangeCommand(
                         modelImpl,
                         run,
-                        "Remove the link between the comment # and the element #",
+                        "Remove the link between the comment # "
+                        + "and the element #",
                         comment, annotatedElement));
     }
 
     public void removeClientDependency(final Object handle, final Object dep) {
         if (!(handle instanceof NamedElement)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of NamedElement"); //$NON-NLS-1$
+                    "handle must be instance of NamedElement");
         }
         if (!(dep instanceof Dependency)) {
             throw new IllegalArgumentException(
-                    "dep must be instance of Dependency"); //$NON-NLS-1$
+                    "dep must be instance of Dependency");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1160,16 +1202,18 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void removeConnection(final Object handle, final Object connection) {
         if (!(handle instanceof Association)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of Association"); //$NON-NLS-1$
+                    "handle must be instance of Association");
         }
         if (!(connection instanceof Property)) {
             throw new IllegalArgumentException(
-                    "connection must be instance of Property"); //$NON-NLS-1$
+                    "connection must be instance of Property");
         }
+
+        final Association association = (Association) handle;
         RunnableClass run = new RunnableClass() {
             public void run() {
-                if (((Association) handle).getOwnedEnds().contains(connection)) {
-                    ((Association) handle).getOwnedEnds().remove(connection);
+                if (association.getOwnedEnds().contains(connection)) {
+                    association.getOwnedEnds().remove(connection);
                 }
                 if (((Property) connection).getAssociation() == handle) {
                     ((Property) connection).setAssociation(null);
@@ -1206,17 +1250,20 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void removeOwnedElement(Object handle, Object value) {
         if (!(handle instanceof Element)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of Element"); //$NON-NLS-1$
+                    "handle must be instance of Element");
         }
         if (!(value instanceof Element)) {
             throw new IllegalArgumentException(
-                    "value must be instance of Element"); //$NON-NLS-1$
+                    "value must be instance of Element");
         }
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
                         modelImpl,
-                        getRunnableClassForRemoveCommand((Element) value),
-                        "Remove the element # from the owner #", value, handle));
+                        getRunnableClassForRemoveCommand(
+                                (Element) value),
+                                "Remove the element # from the owner #", 
+                                value, 
+                                handle));
     }
 
     public void removeParameter(Object handle, Object parameter) {
@@ -1232,7 +1279,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
 
-    public void removeStereotype(final Object modelElement, final Object stereo) {
+    public void removeStereotype(
+            final Object modelElement, 
+            final Object stereo) {
         UMLUtil.checkArgs(new Object[] {modelElement, stereo},
                 new Class[] {Element.class, Stereotype.class});
         RunnableClass run = new RunnableClass() {
@@ -1242,15 +1291,17 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 fireUnapplyStereotypeEvent(modelElement, stereotype);
             }
             /**
-             * Call the model event pump and ask it to fire an event indicating a
-             * stereotype has been removed. This is a stop-gap until we have
+             * Call the model event pump and ask it to fire an event indicating
+             * a stereotype has been removed. This is a stop-gap until we have
              * determined how the event pump can detect itself that a stereotype
              * has been removed.
              *  
              * @param modelElement
              * @param stereotype
              */
-            private void fireUnapplyStereotypeEvent(Object modelElement, Object stereotype) {
+            private void fireUnapplyStereotypeEvent(
+                    Object modelElement,
+                    Object stereotype) {
                 final ModelEventPumpEUMLImpl pump =
                     (ModelEventPumpEUMLImpl) Model.getPump();
                 pump.fireEvent(
@@ -1258,7 +1309,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
                         stereotype, 
                         null, 
                         Notification.REMOVE, 
-                        "stereotype", //$NON-NLS-1$
+                        "stereotype",
                         null);
             }
 
@@ -1274,11 +1325,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
             final Object dependency) {
         if (!(supplier instanceof NamedElement)) {
             throw new IllegalArgumentException(
-                    "supplier must be instance of NamedElement"); //$NON-NLS-1$
+                    "supplier must be instance of NamedElement");
         }
         if (!(dependency instanceof Dependency)) {
             throw new IllegalArgumentException(
-                    "dependency must be instance of Dependency"); //$NON-NLS-1$
+                    "dependency must be instance of Dependency");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1308,7 +1359,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
         if (!(handle instanceof Classifier)
                 && !(handle instanceof BehavioralFeature)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of Classifier or BehavioralFeature"); //$NON-NLS-1$
+                    "handle must be instance "
+                    + "of Classifier or BehavioralFeature");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1328,7 +1380,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void setActive(final Object handle, final boolean isActive) {
         if (!(handle instanceof org.eclipse.uml2.uml.Class)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of UML2 Class"); //$NON-NLS-1$
+                    "handle must be instance of UML2 Class");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1362,15 +1414,17 @@ class CoreHelperEUMLImpl implements CoreHelper {
         setAggregation2(handle, aggregationKind);
     }
 
-    public void setAggregation2(final Object handle, final Object aggregationKind) {
+    public void setAggregation2(
+            final Object handle, 
+            final Object aggregationKind) {
         if (!(handle instanceof Property)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of Property"); //$NON-NLS-1$
+                    "handle must be instance of Property");
         }
         if (!(aggregationKind instanceof AggregationKind)) {
             throw new IllegalArgumentException(
-                    "aggregationKind must be instance of AggregationKind " //$NON-NLS-1$
-                    + aggregationKind + " recieved"); //$NON-NLS-1$
+                    "aggregationKind must be instance of AggregationKind " 
+                    + aggregationKind + " recieved");
         }
         final Property property = (Property) handle;
         final AggregationKind aggregation = (AggregationKind) aggregationKind;
@@ -1396,18 +1450,21 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
     
     
-    public void setAnnotatedElements(final Object handle, final Collection elems) {
+    public void setAnnotatedElements(
+            final Object handle, 
+            final Collection elems) {
         if (!(handle instanceof Comment)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of Comment"); //$NON-NLS-1$
+                    "handle must be instance of Comment");
         }
         if (elems == null) {
-            throw new NullPointerException("elems must be non-null"); //$NON-NLS-1$
+            throw new NullPointerException("elems must be non-null");
         }
         for (Object o : elems) {
             if (!(o instanceof Element)) {
                 throw new IllegalArgumentException(
-                        "the collection must contain only instances of Element"); //$NON-NLS-1$
+                        "the collection must contain "
+                        + "only instances of Element");
             }
         }
         RunnableClass run = new RunnableClass() {
@@ -1442,52 +1499,62 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setBody(Object handle, String body) {
         
-	if( handle instanceof Comment) {
+	if (handle instanceof Comment) {
 	    ((Comment) handle).setBody(body);
 	    return;
 	}
 
-	if( handle instanceof Operation) {
+	if (handle instanceof Operation) {
 
-	    // We need a method (operation implementation) to store the method body.
+	    // We need a method (operation implementation) 
+	    // to store the method body.
 	    OpaqueBehavior methodImpl = null;
 
 	    // Maybe this operation already has a method, that fits our purpose?
-	    // In this case, try to reuse it, instead of creating a new implementation.
-	    for( Behavior impl : ((Operation)handle).getMethods()) {
-		if( impl instanceof OpaqueBehavior) {
-		    methodImpl = (OpaqueBehavior)impl;
+	    // In this case, try to reuse it, instead of creating a new 
+	    // implementation.
+	    for (Behavior impl : ((Operation) handle).getMethods()) {
+		if (impl instanceof OpaqueBehavior) {
+		    methodImpl = (OpaqueBehavior) impl;
 		    break;
 		}
 	    }
 
 	    // Check, if we have to create a new implementation.
-	    if( methodImpl == null) {
-		methodImpl = UMLFactory.eINSTANCE.createOpaqueBehavior();	// Create a new implementation.
-		methodImpl.setSpecification( (Operation)handle);		// And set the specification to the current operation.
-		((Operation)handle).getMethods().add( methodImpl);  		// Add it to the operation's methods.
+	    if (methodImpl == null) {
+	        // Create a new implementation.
+		methodImpl = UMLFactory.eINSTANCE.createOpaqueBehavior();
+
+		// And set the specification to the current operation.
+		methodImpl.setSpecification((Operation) handle);
+
+	        // Add it to the operation's methods.
+		((Operation) handle).getMethods().add(methodImpl);
 	    }
 
 	    // Look, if there's already a java implementation
-	    if( methodImpl.isSetLanguages()) {
+	    if (methodImpl.isSetLanguages()) {
 		int bodyIndex = 0;
 
 		// Search for our current target language.
-		for( String language : methodImpl.getLanguages()) {
-		    if( "java".equals( language)) {
+                for (String language : methodImpl.getLanguages()) {
+                    if ("java".equals(language)) {
 
-			// Try to get the corresponding body and set it to the current body
-			// This _should_ work, if all the bodies were stored with their corresponding languages.
-			methodImpl.getBodies().set( bodyIndex, body);
+                        // Try to get the corresponding body and set it 
+                        // to the current body
+                        // This _should_ work, if all the bodies 
+                        // were stored with their corresponding languages.
+                        methodImpl.getBodies().set(bodyIndex, body);
 			return;		// Job done.
 		    }
 		    bodyIndex++;
 		}
 	    }
   
-	    // It seems, there was no implementation of our current target language, so we just add one.
-	    methodImpl.getLanguages().add( "java");
-	    methodImpl.getBodies().add( body);
+            // It seems, there was no implementation of 
+            // our current target language, so we just add one.
+            methodImpl.getLanguages().add("java");
+            methodImpl.getBodies().add(body);
 	    return;
 	}
 
@@ -1504,11 +1571,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void setChild(final Object handle, final Object child) {
         if (!(handle instanceof Generalization)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of Generalization"); //$NON-NLS-1$
+                    "handle must be instance of Generalization");
         }
         if (!(child instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "child must be instance of Classifier"); //$NON-NLS-1$
+                    "child must be instance of Classifier");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1519,17 +1586,21 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 new ChangeCommand(
                         modelImpl,
                         run,
-                        "Set the # as the specific classifier of the generalization #",
+                        "Set the # as the specific classifier "
+                        + "of the generalization #",
                         child, handle));
     }
 
-    public void setConcurrency(final Object handle, final Object concurrencyKind) {
+    public void setConcurrency(
+            final Object handle, 
+            final Object concurrencyKind) {
         UMLUtil.checkArgs(new Object[] {handle, concurrencyKind},
                 new Class[] {Element.class, CallConcurrencyKind.class});
         RunnableClass run = new RunnableClass() {
             public void run() {
-                ((Operation) handle).setConcurrency((CallConcurrencyKind) concurrencyKind);
-        }
+                ((Operation) handle).setConcurrency(
+                        (CallConcurrencyKind) concurrencyKind);
+            }
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
@@ -1578,23 +1649,23 @@ class CoreHelperEUMLImpl implements CoreHelper {
 
     public void setKind(Object handle, Object kind) {
         // TODO: Needs undo support
-	if( handle instanceof Parameter 
-	        && kind instanceof ParameterDirectionKind) {
-		((Parameter)handle).setDirection( (ParameterDirectionKind)kind);
-		return;
+        if (handle instanceof Parameter 
+                && kind instanceof ParameterDirectionKind) {
+            ((Parameter) handle).setDirection((ParameterDirectionKind) kind);
+            return;
 	}
-	if( handle instanceof Pseudostate && kind instanceof PseudostateKind) {
-		((Pseudostate)handle).setKind( (PseudostateKind)kind);
-		return;
+        if (handle instanceof Pseudostate && kind instanceof PseudostateKind) {
+            ((Pseudostate) handle).setKind((PseudostateKind) kind);
+            return;
 	}
-        throw new IllegalArgumentException( "handle: " + handle  //$NON-NLS-1$
-                + " or kind: " + kind); //$NON-NLS-1$
+        throw new IllegalArgumentException( "handle: " + handle
+                + " or kind: " + kind);
     }
 
     public void setLeaf(final Object handle, final boolean isLeaf) {
         if (!(handle instanceof RedefinableElement)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of RedefinableElement"); //$NON-NLS-1$
+                    "handle must be instance of RedefinableElement");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1603,7 +1674,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
         };
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
-                        modelImpl, run, "Set isLeaf to # for #", isLeaf, handle));
+                        modelImpl, 
+                        run, 
+                        "Set isLeaf to # for #", 
+                        isLeaf, 
+                        handle));
     }
 
     public void setModelElementContainer(Object handle, Object container) {
@@ -1619,9 +1694,9 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void setMultiplicity(final Object handle, String arg) {
         if (!(handle instanceof MultiplicityElement)) {
             throw new IllegalArgumentException(
-                    "A MultiplicityElement was expected"); //$NON-NLS-1$
+                    "A MultiplicityElement was expected");
         }
-        if (arg == null || arg.equals("")) { //$NON-NLS-1$
+        if (arg == null || arg.equals("")) {
             RunnableClass run = new RunnableClass() {
                 public void run() {
                     ((MultiplicityElement) handle).setLowerValue(null);
@@ -1631,7 +1706,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
             editingDomain.getCommandStack().execute(
                     new ChangeCommand(
                             modelImpl, run,
-                            "Removing the multiplicity from element #", //$NON-NLS-1$
+                            "Removing the multiplicity from element #",
                             handle));
             return;
         }
@@ -1644,29 +1719,29 @@ class CoreHelperEUMLImpl implements CoreHelper {
     private int[] parseMultiplicity(String arg) {
         int lower = 1, upper = 1;
 
-        if ("*".equals(arg.trim())) { //$NON-NLS-1$
+        if ("*".equals(arg.trim())) {
             lower = 0;
             upper = -1;
-        } else if (arg.contains("..")) { //$NON-NLS-1$
-            String[] pieces = arg.trim().split("\\.\\."); //$NON-NLS-1$
+        } else if (arg.contains("..")) {
+            String[] pieces = arg.trim().split("\\.\\."); 
             if (pieces.length > 2) {
                 throw new IllegalArgumentException((String) arg);
             }
             lower = Integer.parseInt(pieces[0]);
-            if ("*".equals(pieces[1])) { //$NON-NLS-1$
+            if ("*".equals(pieces[1])) {
                 upper = -1;
             } else {
                 upper = Integer.parseInt(pieces[1]);
             }
-        } else if (arg.contains("_")) { //$NON-NLS-1$
+        } else if (arg.contains("_")) {
             // also parse 1_* or 0_N etc.
-            String[] pieces = arg.trim().split("_"); //$NON-NLS-1$
+            String[] pieces = arg.trim().split("_");
             if (pieces.length > 2) {
                 throw new IllegalArgumentException((String) arg);
             }
             lower = Integer.parseInt(pieces[0]);
-            if ("*".equals(pieces[1]) //$NON-NLS-1$
-                    || "N".equals(pieces[1])) { //$NON-NLS-1$
+            if ("*".equals(pieces[1])
+                    || "N".equals(pieces[1])) {
                 upper = -1;
             } else {
                 upper = Integer.parseInt(pieces[1]);
@@ -1700,7 +1775,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
                         modelImpl, run,
-                        "Set the multiplicity #..# to the element #", //$NON-NLS-1$
+                        "Set the multiplicity #..# to the element #",
                         lower, upper, handle));
     }
 
@@ -1714,10 +1789,10 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 return;
             }
             throw new IllegalArgumentException(
-                    "handle must be instance of NamedElement"); //$NON-NLS-1$
+                    "handle must be instance of NamedElement");
         }
         if (name == null) {
-            throw new NullPointerException("name must be non-null"); //$NON-NLS-1$
+            throw new NullPointerException("name must be non-null");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1738,7 +1813,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void setNavigable(final Object handle, final boolean flag) {
         if (!(handle instanceof Property)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of Property"); //$NON-NLS-1$
+                    "handle must be instance of Property");
         }
         final Property prop = (Property) handle;
         if (flag == prop.isNavigable()) {
@@ -1791,11 +1866,11 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void setParent(final Object handle, final Object parent) {
         if (!(handle instanceof Generalization)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of Generalization"); //$NON-NLS-1$
+                    "handle must be instance of Generalization");
         }
         if (!(parent instanceof Classifier)) {
             throw new IllegalArgumentException(
-                    "parent must be instance of Classifier"); //$NON-NLS-1$
+                    "parent must be instance of Classifier");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1806,7 +1881,8 @@ class CoreHelperEUMLImpl implements CoreHelper {
                 new ChangeCommand(
                         modelImpl,
                         run,
-                        "Set the # as the general classifier of the generalization #",
+                        "Set the # as the general classifier "
+                        + "of the generalization #",
                         parent, handle));
     }
 
@@ -1821,7 +1897,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void setQuery(final Object handle, final boolean isQuery) {
         if (!(handle instanceof Operation)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of Operation"); //$NON-NLS-1$
+                    "handle must be instance of Operation");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1841,7 +1917,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void setReadOnly(final Object handle, final boolean isReadOnly) {
         if (!(handle instanceof StructuralFeature)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of StructuralFeature"); //$NON-NLS-1$
+                    "handle must be instance of StructuralFeature");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1891,7 +1967,7 @@ class CoreHelperEUMLImpl implements CoreHelper {
     public void setStatic(final Object feature, final boolean isStatic) {
         if (!(feature instanceof Feature)) {
             throw new IllegalArgumentException(
-                    "feature must be instance of Feature"); //$NON-NLS-1$
+                    "feature must be instance of Feature");
         }
         RunnableClass run = new RunnableClass() {
             public void run() {
@@ -1916,12 +1992,13 @@ class CoreHelperEUMLImpl implements CoreHelper {
     }
 
     public void setType(final Object handle, final Object type) {
-        if (!(handle instanceof TypedElement) && !(handle instanceof Operation)) {
+        if (!(handle instanceof TypedElement) 
+                && !(handle instanceof Operation)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of TypedElement"); //$NON-NLS-1$
+                    "handle must be instance of TypedElement");
         }
         if (type != null && !(type instanceof Type)) {
-            throw new IllegalArgumentException("type must be instance of Type"); //$NON-NLS-1$
+            throw new IllegalArgumentException("type must be instance of Type");
         }
         final TypedElement typedElement;
         if (handle instanceof Operation) {
@@ -1938,21 +2015,25 @@ class CoreHelperEUMLImpl implements CoreHelper {
         editingDomain.getCommandStack().execute(
                 new ChangeCommand(
                         modelImpl, run,
-                        "Set the type # for the typed element #", type, handle));
+                        "Set the type # for the typed element #", 
+                        type, 
+                        handle));
     }
 
     public void setVisibility(final Object handle, final Object visibility) {
         if (!(handle instanceof NamedElement)) {
             throw new IllegalArgumentException(
-                    "handle must be instance of NamedElement"); //$NON-NLS-1$
+                    "handle must be instance of NamedElement");
         }
         if (!(visibility instanceof VisibilityKind)) {
             throw new IllegalArgumentException(
-                    "visibility must be instance of VisibilityKind"); //$NON-NLS-1$
+                    "visibility must be instance of VisibilityKind");
         }
+
+        final NamedElement namedElement = (NamedElement) handle;
         RunnableClass run = new RunnableClass() {
             public void run() {
-                ((NamedElement) handle).setVisibility((VisibilityKind) visibility);
+                namedElement.setVisibility((VisibilityKind) visibility);
             }
         };
         editingDomain.getCommandStack().execute(
