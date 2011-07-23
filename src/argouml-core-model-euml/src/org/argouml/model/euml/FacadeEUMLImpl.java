@@ -1607,7 +1607,7 @@ class FacadeEUMLImpl implements Facade {
     public String getTaggedValueValue(Object handle, String name) {
         // usage differs from UML1
         Object tv = getTaggedValue(handle, name);
-        return tv != null ? tv.toString() : null;
+        return tv != null ? tv.toString() : "";
     }
 
     public Iterator getTaggedValues(Object handle) {
