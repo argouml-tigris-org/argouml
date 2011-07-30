@@ -9,6 +9,7 @@
  * Contributors:
  *    Bob Tarling
  *    Michiel van der Wulp
+ *    Laurent Braud
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -317,6 +318,25 @@ public class ExplorerPopup extends JPopupMenu {
                         classifiers);
                 this.add(action);
             }
+            // Determine if only diagrams are in the target list.
+            boolean haveAtLeastOneDiagram = false;
+            boolean onlyDiagram = true;
+            for (Object element : TargetManager.getInstance().getTargets()) {
+                if (element instanceof Diagram) {
+                    haveAtLeastOneDiagram = true;
+                } else {
+                    onlyDiagram = false;
+                }
+            }
+            onlyDiagram = onlyDiagram && haveAtLeastOneDiagram;
+
+            if (onlyDiagram) {
+                ActionDeleteModelElements ad = new ActionDeleteModelElements();
+                ad.setEnabled(ad.shouldBeEnabled());
+                this.add(ad);
+            }
+            
+            
         } else if (selectedItem instanceof Diagram) {
             this.add(new ActionSaveDiagramToClipboard());
             // TODO: Delete should be available on any combination of model
