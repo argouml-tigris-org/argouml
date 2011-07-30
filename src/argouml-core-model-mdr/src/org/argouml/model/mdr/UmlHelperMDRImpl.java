@@ -245,7 +245,7 @@ class UmlHelperMDRImpl implements UmlHelper {
             final int newIndex = newPosition(oldIndex, f.size(), direction);
             f.remove(ep);
             f.add(newIndex, ep);
-            Model.getUseCasesHelper().setExtensionPoints(ep, f);
+            Model.getUseCasesHelper().setExtensionPoints(extend, f);
         }
     }
     
