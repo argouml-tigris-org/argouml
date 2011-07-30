@@ -47,6 +47,7 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.model.DeploymentDiagram;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
@@ -77,7 +78,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author Clemens Eichler
  */
-public class UMLDeploymentDiagram extends UMLDiagram {
+public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagram {
     /**
      * Logger.
      */

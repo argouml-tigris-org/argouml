@@ -50,6 +50,7 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
+import org.argouml.model.UseCaseDiagram;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -77,7 +78,7 @@ import org.tigris.gef.presentation.FigNode;
  * 
  * A use case diagram has as owner either a package or a classifier.
  */
-public class UMLUseCaseDiagram extends UMLDiagram {
+public class UMLUseCaseDiagram extends UMLDiagram implements UseCaseDiagram {
 
     private static final Logger LOG = Logger.getLogger(UMLUseCaseDiagram.class);
 

@@ -53,6 +53,7 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.model.ActivityDiagram;
 import org.argouml.model.ActivityGraphsHelper;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
@@ -101,7 +102,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * TODO: Finish the work on subactivity states.
  */
-public class UMLActivityDiagram extends UMLDiagram {
+public class UMLActivityDiagram extends UMLDiagram implements ActivityDiagram {
     
     /**
      * Logger.

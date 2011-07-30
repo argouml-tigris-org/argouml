@@ -52,6 +52,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.DeleteInstanceEvent;
 import org.argouml.model.Model;
+import org.argouml.model.StateDiagram;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramFactory;
@@ -86,7 +87,7 @@ import org.tigris.gef.presentation.FigNode;
  * The correct name for this class would be 
  * "UMLStatechartDiagram". See issue 2306.
  */
-public class UMLStateDiagram extends UMLDiagram {
+public class UMLStateDiagram extends UMLDiagram implements StateDiagram {
 
     private static final long serialVersionUID = -1541136327444703151L;
 

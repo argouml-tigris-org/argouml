@@ -47,6 +47,7 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.model.ClassDiagram;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.Model;
 import org.argouml.uml.CommentEdge;
@@ -90,7 +91,7 @@ import org.tigris.gef.presentation.FigNode;
  * 
  * @author jrobbins@ics.uci.edy
  */
-public class UMLClassDiagram extends UMLDiagram {
+public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
 
     private static final long serialVersionUID = -9192325790126361563L;
 

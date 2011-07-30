@@ -49,6 +49,7 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.model.CollaborationDiagram;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
@@ -81,7 +82,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author agauthie@ics.uci.edu
  */
-public class UMLCollaborationDiagram extends UMLDiagram {
+public class UMLCollaborationDiagram extends UMLDiagram implements CollaborationDiagram {
 
     /**
      * Logging.
