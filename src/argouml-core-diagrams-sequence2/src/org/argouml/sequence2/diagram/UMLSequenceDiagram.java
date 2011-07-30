@@ -50,9 +50,9 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.CollaborationsHelper;
 import org.argouml.model.Facade;
 import org.argouml.model.Model;
+import org.argouml.model.SequenceDiagram;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.SequenceDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.ui.ActionSetMode;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -74,7 +74,8 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author penyaskito
  */
-public class UMLSequenceDiagram extends UMLDiagram implements SequenceDiagram {
+public class UMLSequenceDiagram extends UMLDiagram 
+        implements org.argouml.uml.diagram.SequenceDiagram, SequenceDiagram {
     
     private Object[] actions;
 

@@ -25,6 +25,7 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.DeleteInstanceEvent;
+import org.argouml.model.DeploymentDiagram;
 import org.argouml.model.Model;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.DiagramElement;
@@ -51,7 +52,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  * Diagram for UML2 Deployment Diagram
  * @author Bob Tarling
  */
-public class UMLDeploymentDiagram extends UMLDiagram {
+public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagram {
 
     private static final List acceptList = Arrays.asList(new Object[] {
             Model.getMetaTypes().getActor(),
