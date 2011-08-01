@@ -7,7 +7,8 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -94,7 +95,8 @@ public class ActionGenerateAll extends UndoableAction {
 	List nodes = d.getNodes();
 	for (Object owner : nodes) {
 	    if (!Model.getFacade().isAClass(owner)
-                    && !Model.getFacade().isAInterface(owner)) {
+                    && !Model.getFacade().isAInterface(owner)
+                    && !Model.getFacade().isAEnumeration(owner)) {
                 continue;
             }
 	    String name = Model.getFacade().getName(owner);
@@ -125,7 +127,8 @@ public class ActionGenerateAll extends UndoableAction {
 			              Model.getMetaTypes().getInterface()),
 				  classes);
 		} else if (Model.getFacade().isAClass(selected)
-			   || Model.getFacade().isAInterface(selected)) {
+			   || Model.getFacade().isAInterface(selected)
+                           || Model.getFacade().isAEnumeration(selected)) {
 		    if (!classes.contains(selected)) {
 		        classes.add(selected);
 		    }
