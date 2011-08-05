@@ -74,7 +74,7 @@ public class UMLComboBox2
      * @param model the ComboBoxModel
      */
     @Deprecated
-    protected UMLComboBox2(UMLComboBoxModel2 model) {
+    UMLComboBox2(UMLComboBoxModel2 model) {
         super(model);
         setFont(LookAndFeelMgr.getInstance().getStandardFont());
         addActionListener(this);
@@ -99,16 +99,6 @@ public class UMLComboBox2
         setKeySelectionManager(this);
         setRenderer(new UMLListCellRenderer2(showIcon));
         addPopupMenuListener(model);
-    }
-
-    /**
-     * Construct a UML Element ComboxBox which shows icons in front of each item
-     *
-     * @param arg0 the ComboBoxModel
-     * @param action the action
-     */
-    public UMLComboBox2(UMLComboBoxModel2 arg0, Action action) {
-        this(arg0, action, true);
     }
 
     /*

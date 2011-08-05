@@ -64,16 +64,6 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
     }
 
     /**
-     * Constructor for UMLSearchableComboBox.
-     * @param arg0 the model
-     * @param selectAction the action for selection
-     */
-    public UMLSearchableComboBox(UMLComboBoxModel2 arg0,
-            Action selectAction) {
-        this(arg0, selectAction, true);
-    }
-
-    /**
      * Searches amongst the modelelements (the elements in the listmodel) for an
      * item that conforms to the parameter item. If such an element is a
      * ModelElement, the name should start with the item (which is a String).

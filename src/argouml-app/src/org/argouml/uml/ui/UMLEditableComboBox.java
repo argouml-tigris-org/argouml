@@ -268,14 +268,6 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 implements
     }
 
     /*
-     * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2( UMLComboBoxModel2,
-     *      Action)
-     */
-    public UMLEditableComboBox(UMLComboBoxModel2 arg0, Action selectAction) {
-        this(arg0, selectAction, true);
-    }
-
-    /*
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      * TODO: From ComboBox javadoc - "This method is public as an 
      * implementation side effect. do not call or override."
