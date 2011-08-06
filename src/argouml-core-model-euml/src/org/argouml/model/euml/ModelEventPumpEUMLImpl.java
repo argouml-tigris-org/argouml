@@ -450,7 +450,7 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                             getListeners(
                                     newValue,
                                     propName)));
-                } else {
+                } else { // i.e. eventType == Notification.REMOVE
                     events.add(new EventAndListeners(
                             new AddAssociationEvent(
                                     oldValue,
@@ -460,14 +460,20 @@ class ModelEventPumpEUMLImpl extends AbstractModelEventPump {
                             getListeners(
                                     oldValue,
                                     propName)));
-                    events.add(new EventAndListeners(
-                            new AttributeChangeEvent(
-                                    oldValue,
-                                    propName,
-                                    notifier, null, null),
-                            getListeners(
-                                    oldValue,
-                                    propName)));
+// Bob says - I don't understand the purpose of sending an attribute change
+// event when a delete event has already happened. With this code in place
+// it causes the feedback loop mentioned in
+// http://argouml.tigris.org/issues/show_bug.cgi?id=6270
+// If this code must be re-introduced to solve some other issue then please give
+// a full explanation here of what this solves for us.
+//                    events.add(new EventAndListeners(
+//                            new AttributeChangeEvent(
+//                                    oldValue,
+//                                    propName,
+//                                    notifier, null, null),
+//                            getListeners(
+//                                    oldValue,
+//                                    propName)));
                 }
             }
         }
