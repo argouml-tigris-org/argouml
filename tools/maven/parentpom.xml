@@ -17,7 +17,7 @@
        when this changes and no snapshot versions are
        possible.
    -->
-  <version>0.4</version>
+  <version>0.5</version>
   <packaging>pom</packaging>
   <name>parentpom</name>
   <description>
@@ -38,7 +38,7 @@ that contains the common parts of all ArgoUML projects.
   </dependencies>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
   </properties>
 
   <!-- Build Settings -->

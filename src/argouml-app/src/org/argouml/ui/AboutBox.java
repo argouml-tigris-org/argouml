@@ -256,7 +256,7 @@ public class AboutBox extends ArgoDialog {
 
         buf.append("+ UML Model, Diagrams, GUI, Persistence: Bob Tarling\n");
 	buf.append("+ MDR Implementation: Tom Morris\n");
-        buf.append("+ Sequence Diagrams: Christian L\u00F3pez Esp\u00EDnola\n");
+        buf.append("+ Sequence Diagrams: Christian López Espínola\n");
         buf.append("+ C++: Luis Sergio Oliveira\n");
         buf.append("+ Csharp: Jan Magne Andersen\n");
         buf.append("+ PHP 4/5: Kai Schroeder\n");
@@ -287,7 +287,7 @@ public class AboutBox extends ArgoDialog {
         buf.append("+ Bogdan Szanto\n");
         buf.append("+ Bogdan Pistol\n");
         buf.append("+ Brian Hudson\n");
-        buf.append("+ Christian L\u00F3pez Esp\u00EDnola\n");
+        buf.append("+ Christian López Espínola\n");
         buf.append("+ Dave Thompson\n");
         buf.append("+ Harald Braun\n");
         buf.append("+ Jan Magne Andersen\n");
@@ -312,7 +312,7 @@ public class AboutBox extends ArgoDialog {
         buf.append("+ Aleksandar\n");
         buf.append("+ Alexandre da Silva\n");
         buf.append("+ Scott Roberts\n");
-        buf.append("+ S\u00E9rgio Adriano Fernandes Lopes\n");
+        buf.append("+ Sérgio Adriano Fernandes Lopes\n");
         
         buf.append("\n");
 
