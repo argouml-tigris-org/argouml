@@ -17,7 +17,7 @@
        when this changes and no snapshot versions are
        possible.
    -->
-  <version>0.3</version>
+  <version>0.4</version>
   <packaging>pom</packaging>
   <name>parentpom</name>
   <description>
@@ -61,8 +61,8 @@ that contains the common parts of all ArgoUML projects.
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.1</version>
         <configuration>
-          <source>1.5</source>
-          <target>1.5</target>
+          <source>1.6</source>
+          <target>1.6</target>
           <showDeprecation>true</showDeprecation>
           <showWarnings>true</showWarnings>
         </configuration>
@@ -146,7 +146,7 @@ that contains the common parts of all ArgoUML projects.
           <linkXref>true</linkXref>
           <sourceEncoding>utf-8</sourceEncoding>
           <minimumTokens>100</minimumTokens>
-          <targetJdk>1.5</targetJdk>
+          <targetJdk>1.6</targetJdk>
           <excludeRoots>
             <excludeRoot>src_generated</excludeRoot>
           </excludeRoots>
@@ -163,7 +163,7 @@ that contains the common parts of all ArgoUML projects.
   </issueManagement>
 
   <ciManagement>
-    <system>Hudson</system>
+    <system>Jenkins</system>
     <url>http://closettop.homelinux.org:8080/</url>
   </ciManagement>
 
