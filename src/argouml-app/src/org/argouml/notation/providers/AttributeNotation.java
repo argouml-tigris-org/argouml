@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Michiel van der Wulp
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -59,15 +60,17 @@ public abstract class AttributeNotation extends NotationProvider {
      * @param attribute the UML element
      */
     public AttributeNotation(Object attribute) {
-        if (!Model.getFacade().isAAttribute(attribute)) {
-            throw new IllegalArgumentException("This is not an Attribute.");
+        if (!Model.getFacade().isAAttribute(attribute)
+                && !Model.getFacade().isAProperty(attribute)) {
+            throw new IllegalArgumentException("This is not an Attribute " + attribute);
         }
     }
 
     @Override
     public void initialiseListener(Object modelElement) {
         addElementListener(modelElement);
-        if (Model.getFacade().isAAttribute(modelElement)) {
+        if (Model.getFacade().isAAttribute(modelElement)
+                || Model.getFacade().isAProperty(modelElement)) {
             // We also show stereotypes
             for (Object uml : Model.getFacade().getStereotypes(modelElement)) {
                 addElementListener(uml);

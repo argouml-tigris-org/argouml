@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Katharina Fahnenbruck
+ *    Bob Tarling
  *******************************************************************************
  */
 
@@ -16,11 +17,11 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.Icon;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.FigClassifierBox;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.Handle;
@@ -36,16 +37,36 @@ public abstract class SelectionClassifierBox extends
         SelectionNodeClarifiers2 {
 
     /** Upper right corner Handle */
-    protected static final int UPPER_RIGHT = 2;
+    private static final int UPPER_RIGHT = 2;
 
     /** Lower right corner Handle */
-    protected static final int LOWER_RIGHT = 7;
+    private static final int LOWER_RIGHT = 7;
 
-    private int localPressedButton;
-
+    private static int[] buttonIds = {UPPER_RIGHT, LOWER_RIGHT};
+    
     private static Icon addIcon = 
         ResourceLoaderWrapper.lookupIconResource("Add");
 
+    private class Button {
+        int handle;
+        Icon icon;
+        Fig fig;
+        Object metaType;
+        
+        public Button(
+                int handle, 
+                Icon icon, 
+                Fig fig,
+                Object metaType) {
+            this.handle = handle;
+            this.fig = fig;
+            this.icon = icon;
+            this.metaType = metaType;
+        }
+    }
+    
+    private ArrayList<Button> buttons = new ArrayList<Button>(2);
+    
     /**
      * @param f
      *            the given Fig
@@ -53,6 +74,12 @@ public abstract class SelectionClassifierBox extends
     public SelectionClassifierBox(Fig f) {
        
         super(f);
+        
+        FigClassifierBox fcb = (FigClassifierBox) getContent();
+        int i=0;
+        for (FigCompartment compartment : fcb.getCompartments()) {
+            buttons.add(new Button(buttonIds[i++], addIcon, compartment, compartment.getCompartmentType()));
+        }
     }
 
     /**
@@ -62,7 +89,8 @@ public abstract class SelectionClassifierBox extends
      * index is -1. There the hitHandle() is overridden (see above)
      */
     @Override
-    public void hitHandle(Rectangle cursor, Handle h) {
+    public void hitHandle(
+            Rectangle cursor, Handle h) {
         super.hitHandle(cursor, h);
 
         int cx = getContent().getX();
@@ -73,7 +101,8 @@ public abstract class SelectionClassifierBox extends
         // super returns -1 if any of GEFs buttons was hit
         // (but maybe one of the not-GEF-buttons)
         if (h.index == -1) {
-            if (hitBelow(cx + cw - (addIcon.getIconWidth() / 2), cy + 25,
+            if (hitBelow(
+                    cx + cw - (addIcon.getIconWidth() / 2), cy + 25,
                     addIcon.getIconWidth() + 5, addIcon.getIconHeight() + 3,
                     cursor)) {
                 h.index = UPPER_RIGHT;
@@ -86,45 +115,22 @@ public abstract class SelectionClassifierBox extends
         }
     }
 
-    /**
-     * Handle h: handle in which to return selected Handle information (output
-     * parameter). A handle index of -1 indicates that the cursor is not over
-     * any GEF handle. If the mouse is over the new buttons nevertheless the
-     * index is -1. There the hitHandle() is overridden.
-     */
-    public void mousePressed(MouseEvent me) {
-        super.mousePressed(me);
-        Handle h = new Handle(-1);
-        hitHandle(me.getX(), me.getY(), 0, 0, h);
-
-        // get the index of the pressed button
-        localPressedButton = h.index;
-    }
-
     @Override
     public void mouseReleased(MouseEvent me) {
+        for (Button button : buttons) {
+            int cx = button.fig.getX() + button.fig.getWidth() - button.icon.getIconWidth();
+            int cy = button.fig.getY();
+            int cw = button.icon.getIconWidth();
+            int ch = button.icon.getIconHeight();
+            Rectangle rect = new Rectangle(cx, cy, cw, ch);
+            if (rect.contains(me.getX(), me.getY())) {
+                onButtonClicked(button.metaType);
+                me.consume();
+                return;
+            }
+        }
+        
         super.mouseReleased(me);
-
-        if (localPressedButton != UPPER_RIGHT
-                && localPressedButton != LOWER_RIGHT) {
-            return;
-        }
-
-        Handle h = new Handle(-1);
-        hitHandle(me.getX(), me.getY(), 0, 0, h);
-
-        // see if mouse was released on the same button
-        if (localPressedButton == h.index) {
-
-            if (localPressedButton == UPPER_RIGHT) {
-                onButtonClicked(Model.getMetaTypes().getAttribute());
-            }
-            if (localPressedButton == LOWER_RIGHT) {
-                onButtonClicked(Model.getMetaTypes().getOperation());
-            }
-
-            me.consume();
-        }
     }
     
     /**
@@ -145,12 +151,12 @@ public abstract class SelectionClassifierBox extends
 
         super.paintButtons(g);
 
-        int cx = getContent().getX();
-        int cy = getContent().getY();
-        int cw = getContent().getWidth();
-        int ch = getContent().getHeight();
-
-        paintButtonLeft(addIcon, g, cx + cw, cy + 35, UPPER_RIGHT);
-        paintButtonLeft(addIcon, g, cx + cw, cy + ch - 10, LOWER_RIGHT);
+        for (Button button : buttons) {
+            if (button.fig.isVisible()) {
+                int cx = button.fig.getX() + button.fig.getWidth() - button.icon.getIconWidth();
+                int cy = button.fig.getY();
+                paintButton(button.icon, g, cx, cy, button.handle);
+            }
+        }
     }
 }
