@@ -39,6 +39,7 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -140,29 +141,48 @@ public class ProjectSettingsTabProperties extends JPanel implements
         top.add(userEmail, fieldConstraints);
 
         /* The project description: */
-        labelConstraints.gridy = 2;
-        fieldConstraints.gridy = 2;
-        fieldConstraints.weighty = 1.0;
-        labelConstraints.weighty = 1.0;
+ 
         JLabel lblDescription = new JLabel(
                 Translator.localize("label.project.description"));
         lblDescription.setVerticalAlignment(SwingConstants.TOP);
-        top.add(lblDescription,
-                labelConstraints);
+
+        
         description = new JTextArea();
         JScrollPane area = new JScrollPane(description);
         area.setVerticalScrollBarPolicy(
-                        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        area.setPreferredSize(new Dimension(400, 370));
+        
         description.setMargin(new Insets(3, 3, 3, 3));
         description.setLineWrap(true);
         description.setWrapStyleWord(true);
-        top.add(area, fieldConstraints);
+        
+        
+        JPanel descPanel = new JPanel(new BorderLayout());
+        descPanel.setPreferredSize(new Dimension(380, 370));
+        descPanel.add(lblDescription, BorderLayout.NORTH);
+        descPanel.add(description, BorderLayout.CENTER);
+        
+        
+        Insets descPanelInsets = new Insets(2, 20, 2, -12);
+        GridBagConstraints descConstraints = new GridBagConstraints();
+        descConstraints.gridx = 0;
+        descConstraints.gridy = 2;
+        descConstraints.gridwidth = 3;
+        descConstraints.gridheight = 4;
+        descConstraints.weightx = 0.8;
+        descConstraints.weighty = 0.8;
+        descConstraints.anchor = GridBagConstraints.LINE_START;
+        descConstraints.insets = descPanelInsets;
+        descConstraints.fill = GridBagConstraints.BOTH;
+        
+        top.add(descPanel, descConstraints);
 
         /* This non-editable field shows 
          * the version of the ArgoUML 
          * that last saved this project: */
-        labelConstraints.gridy = 3;
-        fieldConstraints.gridy = 3;
+        labelConstraints.gridy = 6;
+        fieldConstraints.gridy = 6;
         fieldConstraints.weighty = 0.0;
         labelConstraints.weighty = 0.0;
         top.add(new JLabel(Translator.localize("label.argouml.version")),
@@ -197,6 +217,7 @@ public class ProjectSettingsTabProperties extends JPanel implements
         p.setAuthorname(userFullname.getText());
         p.setAuthoremail(userEmail.getText());
         p.setDescription(description.getText());
+        
     }
 
     /*
