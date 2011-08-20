@@ -11,7 +11,7 @@
   <parent>
     <groupId>org.argouml</groupId>
     <artifactId>parentpom</artifactId>
-    <version>0.5</version>
+    <version>0.6</version>
     <relativePath>tools/maven/parentpom.xml</relativePath>
   </parent>
 
@@ -39,4 +39,10 @@
 The group of core argouml projects.
 This project is the virtual project that includes all core subprojects.
   </description>
+
+  <scm>
+    <connection>scm:svn:http://argouml.tigris.org/svn/argouml/trunk/</connection>
+    <developerConnection>scm:svn:http://argouml.tigris.org/svn/argouml/trunk/</developerConnection>
+    <url>http://argouml.tigris.org/svn/argouml/trunk/</url>
+  </scm>
 </project>
