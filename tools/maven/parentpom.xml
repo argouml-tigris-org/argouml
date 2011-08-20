@@ -187,7 +187,7 @@ that contains the common parts of all ArgoUML projects.
 
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>http://closettop.homelinux.org:8080/</url>
+		<url>http://argouml-jenkins1.dyndns.org:8080/</url>
 	</ciManagement>
 
 
