@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    thn
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -385,8 +386,9 @@ class ModelMemberFilePersister extends MemberFilePersister
         // ISSUE 3516 : Make sure there is at least one diagram because
         // ArgoUML requires it for correct operation
         if (atLeastOne && project.getDiagramCount() < 1) {
-            ArgoDiagram d = diagramFactory.createDiagram(
-                    DiagramType.Class, curModel, null);
+            ArgoDiagram d = diagramFactory.create(
+                    DiagramType.Class, curModel, 
+                    project.getProjectSettings().getDefaultDiagramSettings());
             project.addMember(d);
         }
         if (project.getDiagramCount() >= 1
