@@ -310,12 +310,8 @@ class GetterSetterManagerImpl extends GetterSetterManager {
     private class TagDefinitionGetterSetter extends ListGetterSetter {
         
         public Collection getOptions(Object modelElement, Collection<Class<?>> types) {
-            LinkedList<String> list = new LinkedList<String>(
+            return new LinkedList<String>(
                     Model.getFacade().getTagDefinitions(modelElement));
-            if (Model.getFacade().getUmlVersion().charAt(0) == '1') {
-                Collections.sort(list);
-            }
-            return list;
         }
       
         public Object get(Object modelElement, Class<?> type) {
