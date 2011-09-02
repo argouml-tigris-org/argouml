@@ -13,6 +13,7 @@
  *    Tom Morris - UML 1.4
  *    Bob Tarling
  *    Michiel van der Wulp
+ *    Luis Sergio Oliveira (euluis)
  *******************************************************************************
  */
 // Copyright (c) 2005-2009 The Regents of the University of California. All
@@ -40,7 +41,6 @@
 
 package org.argouml.model.mdr;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
