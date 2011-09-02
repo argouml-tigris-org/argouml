@@ -40,6 +40,7 @@
 
 package org.argouml.model.mdr;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -4283,6 +4284,12 @@ class FacadeMDRImpl implements Facade {
                         .getObjectToId().get(mofId));
                 if (ref == null) {
                     return mofId;
+                }
+                // FIXME: depends on internal behavior of XmiReaderImpl.
+                // Needed for solving issue 5017.
+                else if (!ref.getSystemId().startsWith(
+                        XmiReaderImpl.getTempXMIFileURIPrefix())) {
+                    return ref.getSystemId() + "#" + ref.getXmiId();
                 } else {
                     return ref.getXmiId();
                 }

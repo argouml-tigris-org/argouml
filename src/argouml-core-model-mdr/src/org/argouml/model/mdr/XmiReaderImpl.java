@@ -49,8 +49,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.jmi.reflect.InvalidObjectException;
 import javax.jmi.reflect.RefObject;
@@ -95,10 +99,14 @@ import org.xml.sax.XMLReader;
 class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         XMIHeaderConsumer {
 
+    static final String TEMP_XMI_FILE_PREFIX = "zargo_model_";
+
     /**
      * Logger.
      */
     private static final Logger LOG = Logger.getLogger(XmiReaderImpl.class);
+
+    private static String tempXMIFileURIPrefix;
 
     private MDRModelImplementation modelImpl;
 
@@ -368,12 +376,55 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 .getSystemId(), extent);
     }
 
+    /**
+     * Defines the URI prefix of the temporary XMI file that is being read.
+     * 
+     * @return the URI prefix of the temporary XMI file that is being read.
+     */
+    static String getTempXMIFileURIPrefix() {
+        if (tempXMIFileURIPrefix == null) {
+            tempXMIFileURIPrefix = 
+                new File(System.getProperty("java.io.tmpdir")).toURI()
+                + TEMP_XMI_FILE_PREFIX;
+        }
+        return tempXMIFileURIPrefix;
+    }
+
     /*
      * @see org.argouml.model.XmiReader#getXMIUUIDToObjectMap()
      */
     public Map<String, Object> getXMIUUIDToObjectMap() {
         if (resolver != null) {
-            return resolver.getIdToObjectMap();
+            Map<String, Map<String, Object>> idToObjectMaps = 
+                resolver.getIdToObjectMaps();
+            Set<Entry<String,Map<String,Object>>> entrySet = null;
+            // I think that the synchronized access to idToObjectMaps is 
+            // required in order to respect the thread safe nature of the
+            // object.
+            // FIXME: maybe this should be moved into XmiReferenceResolverImpl,
+            // because it depends on internal implementation details of it.
+            synchronized (idToObjectMaps) {
+                entrySet =
+                    new HashSet<Entry<String,Map<String,Object>>>(
+                            idToObjectMaps.entrySet());
+                for (Entry<String, Map<String, Object>> entry : entrySet) {
+                    entry.setValue(new HashMap<String,Object>(entry.getValue()));
+                }
+            }
+            HashMap<String, Object> globalXmiIdToObjectMap = 
+                new HashMap<String, Object>();
+            for (Entry<String, Map<String, Object>> entry : entrySet) {
+                String xmiIdPrefix =
+                    entry.getKey().startsWith(getTempXMIFileURIPrefix()) ? "" : 
+                        entry.getKey() + "#";
+                for (Entry<String, Object> innerMapEntry : 
+                        entry.getValue().entrySet()) {
+                    globalXmiIdToObjectMap.put(
+                        xmiIdPrefix + innerMapEntry.getKey(),
+                        innerMapEntry.getValue());
+                }
+            }
+            return globalXmiIdToObjectMap;
         }
         return null;
     }
@@ -424,7 +475,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
 
             // Create temporary file for output
             // TODO: we should be able to chain this directly to XMI reader
-            File tmpFile = File.createTempFile("zargo_model_", ".xmi");
+            File tmpFile = File.createTempFile(TEMP_XMI_FILE_PREFIX, ".xmi");
             tmpFile.deleteOnExit();
             StreamResult result =
                 new StreamResult(
@@ -472,7 +523,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 xsltStreamSource.setSystemId(xsltUrl.toExternalForm());
 
                 // Create & set up temporary output file
-                File tmpOutFile = File.createTempFile("zargo_model_", ".xmi");
+                File tmpOutFile = File.createTempFile(TEMP_XMI_FILE_PREFIX, ".xmi");
                 tmpOutFile.deleteOnExit();
                 StreamResult result =
                     new StreamResult(new FileOutputStream(
@@ -507,7 +558,7 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
         int len;
         
         // Create & set up temporary output file
-        File tmpOutFile = File.createTempFile("zargo_model_", ".xmi");
+        File tmpOutFile = File.createTempFile(TEMP_XMI_FILE_PREFIX, ".xmi");
         tmpOutFile.deleteOnExit();
         FileOutputStream out = new FileOutputStream(tmpOutFile);
         
