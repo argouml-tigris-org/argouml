@@ -15,7 +15,7 @@
     <relativePath>../..</relativePath>
   </parent>
 
-  <artifactId>argouml-core-model-euml</artifactId>
+  <artifactId>argouml-euml</artifactId>
 
   <properties>
     <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>

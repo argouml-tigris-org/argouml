@@ -15,13 +15,26 @@
     <relativePath>../..</relativePath>
   </parent>
 
-  <artifactId>argouml-core-model</artifactId>
+  <artifactId>argouml-model</artifactId>
 
   <properties>
     <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
   </properties>
 
+  <build>
+    <!-- This disables the tests that currently require
+         something that will cause a circular reference.
+    -->
+    <testSourceDirectory>${project.basedir}/dont-run-the-tests</testSourceDirectory>
+    <testResources>
+      <testResource>
+        <directory>${project.basedir}/dont-run-the-tests</directory>
+      </testResource>
+    </testResources>
+  </build>
+
   <dependencies>
+    <!-- This is the circular reference for the tests.
     <dependency>
       <groupId>org.argouml</groupId>
       <artifactId>argouml-mdr</artifactId>
@@ -30,6 +43,7 @@
       <scope>test</scope>
       <optional>true</optional>
     </dependency>
+    -->
 
     <dependency>
       <groupId>org.argouml</groupId>

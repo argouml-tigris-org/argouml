@@ -15,7 +15,7 @@
     <relativePath>../..</relativePath>
   </parent>
 
-  <artifactId>argouml-core-umlpropertypanels</artifactId>
+  <artifactId>argouml-umlpropertypanels</artifactId>
 
   <properties>
     <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
@@ -24,14 +24,14 @@
   <dependencies>
     <dependency>
       <groupId>org.argouml</groupId>
-      <artifactId>argouml-app</artifactId>
+      <artifactId>argouml</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.argouml</groupId>
-      <artifactId>argouml-core-model</artifactId>
+      <artifactId>argouml-model</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
