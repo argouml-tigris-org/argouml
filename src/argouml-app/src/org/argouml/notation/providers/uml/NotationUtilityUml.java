@@ -682,6 +682,7 @@ public final class NotationUtilityUml {
             Object p = it.next();
             if (!Model.getFacade().isReturn(p)) {
                 Model.getCoreHelper().removeParameter(op, p);
+                Model.getUmlFactory().delete(p);
             }
         }
     }
