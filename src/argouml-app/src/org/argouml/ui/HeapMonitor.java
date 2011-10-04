@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009,2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -57,12 +57,12 @@ import javax.swing.Timer;
 public class HeapMonitor extends JComponent implements ActionListener {
 
     // % thresholds for bar color changes
-    private static final int ORANGE_THRESHOLD = 70;
-    private static final int RED_THRESHOLD = 90;
+    private static final int WARN_THRESHOLD = 75;
+    private static final int CRITICAL_THRESHOLD = 90;
     
-    private static final Color GREEN = new Color(0, 255, 0);
-    private static final Color ORANGE  = new Color(255, 190, 125);
-    private static final Color RED = new Color(255, 70, 70);
+    private static final Color WARN_COLOR  = new Color(255, 190, 125);
+    private static final Color CRITICAL_COLOR = new Color(255, 70, 70);
+    private static final Color TOTAL_COLOR = new Color(255,255,0);
 
     private static final long M = 1024 * 1024;
     
@@ -90,32 +90,36 @@ public class HeapMonitor extends JComponent implements ActionListener {
     
     public void paint (Graphics g) {        
         Rectangle bounds = getBounds();
-        int usedX = (int) (used * bounds.width / total);
-        int warnX = ORANGE_THRESHOLD * bounds.width / 100;
-        int dangerX = RED_THRESHOLD * bounds.width / 100;
+        int usedX = (int) (used * bounds.width / max);
+        int totalX = (int) (total * bounds.width / max);
+        int warnX = WARN_THRESHOLD * bounds.width / 100;
+        int dangerX = CRITICAL_THRESHOLD * bounds.width / 100;
         
         Color savedColor = g.getColor();
         
-//      g.setColor(GREEN);
-        // TODO: We want something minimally distracting here.  Another option
-        // might be just the background color with a solid end line.
         g.setColor(getBackground().darker());
         g.fillRect(0, 0, Math.min(usedX, warnX), bounds.height);
         
-        g.setColor(ORANGE);
+        g.setColor(WARN_COLOR);
         g.fillRect(warnX, 0, 
                 Math.min(usedX - warnX, dangerX - warnX), 
                 bounds.height);
         
-        g.setColor(RED);
+        g.setColor(CRITICAL_COLOR);
         g.fillRect(dangerX, 0, 
                 Math.min(usedX - dangerX, bounds.width - dangerX), 
                 bounds.height);
 
+        // Thin bar to show current allocated heap size
+        g.setColor(TOTAL_COLOR);
+        g.fillRect(totalX-2, 0, 
+                Math.min(2, bounds.width-totalX), 
+                bounds.height);
+
         g.setColor(getForeground());
 
-        String s = MessageFormat.format("{0}M used of {1}M total",
-                new Object[] {(long) (used / M), (long) (total / M) });
+        String s = MessageFormat.format("{0}M used of {1}M max",
+                new Object[] {(long) (used / M), (long) (max / M) });
         int x = (bounds.width - g.getFontMetrics().stringWidth(s)) / 2;
         int y = (bounds.height + g.getFontMetrics().getHeight()) / 2;
         g.drawString(s, x, y);
@@ -138,8 +142,8 @@ public class HeapMonitor extends JComponent implements ActionListener {
         used = total - free;
 
         String tip = MessageFormat.format(
-                "Heap use: {0}%  {1}M used of {2}M total.  Max: {3}M", 
-                new Object[] {used * 100 / total, (long) (used / M),
+                "Heap use: {0}%  {1}M used of {2}M heap.  Max: {3}M", 
+                new Object[] {used * 100 / max, (long) (used / M),
                               (long) (total / M), (long) (max / M)
                 });
         setToolTipText(tip);
