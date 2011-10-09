@@ -335,50 +335,50 @@ public interface Facade {
     boolean isACallAction(Object handle);
 
     /**
-     * Recognizer for Message or sort ASynchCall.
+     * Recognizer for Message of sort ASynchCall.
      *
      * @param handle candidate
-     * @return true if handle is a CallAction
+     * @return true if handle is a Message with an asynchronous CallAction
      */
     boolean isAASynchCallMessage(Object handle);
     
     /**
-     * Recognizer for Message or sort ASynchSignal.
+     * Recognizer for Message of sort ASynchSignal.
      *
      * @param handle candidate
-     * @return true if handle is a CallAction
+     * @return true if handle is a Message with an asynchronous SendAction
      */
     boolean isAASynchSignalMessage(Object handle);
 
     /**
-     * Recognizer for Message or sort Delete.
+     * Recognizer for Message of sort Delete.
      *
      * @param handle candidate
-     * @return true if handle is a CallAction
+     * @return true if handle is a Message with a DestroyAction
      */
     boolean isADeleteMessage(Object handle);
 
     /**
-     * Recognizer for Message or sort Create
+     * Recognizer for Message of sort Create
      *
      * @param handle candidate
-     * @return true if handle is a CallAction
+     * @return true if handle is a Message with a CreateAction
      */
     boolean isACreateMessage(Object handle);
 
     /**
-     * Recognizer for Message or sort SynchCall.
+     * Recognizer for Message of sort SynchCall.
      *
      * @param handle candidate
-     * @return true if handle is a CallAction
+     * @return true if handle is a Message with a synchronous CallAction
      */
     boolean isASynchCallMessage(Object handle);
     
     /**
-     * Recognizer for Message or sort Reply.
+     * Recognizer for Message of sort Reply.
      *
      * @param handle candidate
-     * @return true if handle is a CallAction
+     * @return true if handle is a Message with a ReturnAction
      */
     boolean isAReplyMessage(Object handle);
     
