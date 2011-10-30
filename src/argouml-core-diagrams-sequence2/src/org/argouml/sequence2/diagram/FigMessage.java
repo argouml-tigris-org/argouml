@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -91,6 +92,7 @@ public class FigMessage extends FigEdgeModelElement {
     private Object action = null;
     
     private SDNotationSettings notationSettings;
+    private boolean t[] = {false,false,false,false,false,false,false,false};
     
     /**
      * Construct a fig owned by the given UML element with the provided render
@@ -107,6 +109,12 @@ public class FigMessage extends FigEdgeModelElement {
         if (action != null) {
             addElementListener(action, "isAsynchronous");
         }
+        t[1] = Model.getFacade().isASynchCallMessage(getOwner());
+        t[2] = Model.getFacade().isAASynchCallMessage(getOwner());
+        t[3] = Model.getFacade().isACreateMessage(getOwner());
+        t[4] = Model.getFacade().isADeleteMessage(getOwner());
+        t[5] = Model.getFacade().isAReplyMessage(getOwner());
+        t[6] = Model.getFacade().isAASynchSignalMessage(getOwner());
     }
     
     private void initialize() {
@@ -151,27 +159,27 @@ public class FigMessage extends FigEdgeModelElement {
     }
     
     boolean isSynchCallMessage() {
-    	return Model.getFacade().isASynchCallMessage(getOwner());
+    	return t[1];
     }
 
     boolean isASynchCallMessage() {
-        return Model.getFacade().isAASynchCallMessage(getOwner());
+        return t[2];
     }
 
     boolean isCreateMessage() {
-    	return Model.getFacade().isACreateMessage(getOwner());
+    	return t[3];
     }
 
     boolean isDeleteMessage() {
-    	return Model.getFacade().isADeleteMessage(getOwner());
+    	return t[4];
     }
 
     boolean isReplyMessage() {
-    	return Model.getFacade().isAReplyMessage(getOwner());
+    	return t[5];
     }
 
     boolean isASynchSignalMessage() {
-        return Model.getFacade().isAASynchSignalMessage(getOwner());
+        return t[6];
     }
     
     /**
