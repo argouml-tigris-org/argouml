@@ -4733,14 +4733,8 @@ class FacadeMDRImpl implements Facade {
 
     public boolean isAASynchCallMessage(Object handle) {
         Message message = (Message) handle;
-        Action action;
-        try {
-            action = message.getAction();
-        } catch (InvalidObjectException e) {
-            return false;
-        }
-        if (action instanceof CallAction) {
-            CallAction ca = (CallAction) action;
+        if (message.getAction() instanceof CallAction) {
+            CallAction ca = (CallAction) message.getAction();
             return ca.isAsynchronous();
         }
         return false;
@@ -4748,14 +4742,8 @@ class FacadeMDRImpl implements Facade {
 
     public boolean isAASynchSignalMessage(Object handle) {
         Message message = (Message) handle;
-        Action action;
-        try {
-            action = message.getAction();
-        } catch (InvalidObjectException e) {
-            return false;
-        }
-        if (action instanceof SendAction) {
-            SendAction sa = (SendAction) action;
+        if (message.getAction() instanceof SendAction) {
+            SendAction sa = (SendAction) message.getAction();
             return sa.isAsynchronous();
         }
         return false;
@@ -4763,47 +4751,23 @@ class FacadeMDRImpl implements Facade {
 
     public boolean isACreateMessage(Object handle) {
         Message message = (Message) handle;
-        Action action;
-        try {
-            action = message.getAction();
-        } catch (InvalidObjectException e) {
-            return false;
-        }
-        return (action instanceof CreateAction);
+        return (message.getAction() instanceof CreateAction);
     }
 
     public boolean isADeleteMessage(Object handle) {
         Message message = (Message) handle;
-        Action action;
-        try {
-            action = message.getAction();
-        } catch (InvalidObjectException e) {
-            return false;
-        }
-        return (action instanceof DestroyAction);
+        return (message.getAction() instanceof DestroyAction);
     }
 
     public boolean isAReplyMessage(Object handle) {
         Message message = (Message) handle;
-        Action action;
-        try {
-            action = message.getAction();
-        } catch (InvalidObjectException e) {
-            return false;
-        }
-        return (action instanceof ReturnAction);
+        return (message.getAction() instanceof ReturnAction);
     }
 
     public boolean isASynchCallMessage(Object handle) {
         Message message = (Message) handle;
-        Action action;
-        try {
-            action = message.getAction();
-        } catch (InvalidObjectException e) {
-            return false;
-        }
-        if (action instanceof CallAction) {
-            CallAction ca = (CallAction) action;
+        if (message.getAction() instanceof CallAction) {
+            CallAction ca = (CallAction) message.getAction();
             return !ca.isAsynchronous();
         }
         return false;
