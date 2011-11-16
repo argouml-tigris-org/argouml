@@ -57,7 +57,7 @@ final class ArgoVersion {
     /**
      * Version number.
      */
-    private static final String VERSION = "PRE-0.34.alpha5";
+    private static final String VERSION = "PRE-0.35.1";
     private static final String STABLE_VERSION = "0.32";
 
     /**
