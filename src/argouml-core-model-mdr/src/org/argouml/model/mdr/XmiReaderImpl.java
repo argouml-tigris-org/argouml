@@ -395,6 +395,13 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
      */
     public Map<String, Object> getXMIUUIDToObjectMap() {
         if (resolver != null) {
+            // Give the resolver.getIdToObjectMap() entries 
+            // priority over entries with the same UUID from 
+            // resolver.getIdToObjectMaps() because entries
+            // in resolver.getIdToObjectMaps() are historic.
+            HashMap<String, Object> globalXmiIdToObjectMap = 
+                new HashMap<String, Object>(resolver.getIdToObjectMap());
+
             Map<String, Map<String, Object>> idToObjectMaps = 
                 resolver.getIdToObjectMaps();
             Set<Entry<String,Map<String,Object>>> entrySet = null;
@@ -411,17 +418,19 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                     entry.setValue(new HashMap<String,Object>(entry.getValue()));
                 }
             }
-            HashMap<String, Object> globalXmiIdToObjectMap = 
-                new HashMap<String, Object>();
             for (Entry<String, Map<String, Object>> entry : entrySet) {
                 String xmiIdPrefix =
                     entry.getKey().startsWith(getTempXMIFileURIPrefix()) ? "" : 
                         entry.getKey() + "#";
                 for (Entry<String, Object> innerMapEntry : 
                         entry.getValue().entrySet()) {
-                    globalXmiIdToObjectMap.put(
-                        xmiIdPrefix + innerMapEntry.getKey(),
-                        innerMapEntry.getValue());
+                    
+                    String id = xmiIdPrefix + innerMapEntry.getKey();
+                    if (!globalXmiIdToObjectMap.containsKey(id)) {
+                        globalXmiIdToObjectMap.put(
+                                id,
+                                innerMapEntry.getValue());
+                    }
                 }
             }
             return globalXmiIdToObjectMap;
