@@ -10,7 +10,7 @@
 
   <groupId>org.argouml</groupId>
   <artifactId>tools</artifactId>
-  <version>0.2</version>
+  <version>0.35.1</version>
 
   <build>
     <resources>
