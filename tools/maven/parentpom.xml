@@ -18,7 +18,7 @@
 		included in the automatic updates of the version number. Until that is resolved 
 		references to this pom need to updated manually when this changes and no 
 		snapshot versions are possible. -->
-	<version>0.6</version>
+	<version>0.35.1</version>
 	<packaging>pom</packaging>
 	<name>parentpom</name>
 	<description>
