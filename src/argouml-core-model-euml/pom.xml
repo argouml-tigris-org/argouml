@@ -24,7 +24,7 @@
   <dependencies>
     <dependency>
       <groupId>org.argouml</groupId>
-      <artifactId>argouml-core-model</artifactId>
+      <artifactId>argouml-model</artifactId>
       <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
