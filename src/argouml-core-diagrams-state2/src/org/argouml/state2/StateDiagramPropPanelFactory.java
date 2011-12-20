@@ -31,7 +31,7 @@ class StateDiagramPropPanelFactory implements PropPanelFactory {
     class PropPanelUMLStateDiagram extends PropPanelDiagram {
 
         public PropPanelUMLStateDiagram() {
-            super(Translator.localize("label.state-diagram"),
+            super(Translator.localize("label.state-chart-diagram"),
                     lookupIcon("StateDiagram"));
         }
 
