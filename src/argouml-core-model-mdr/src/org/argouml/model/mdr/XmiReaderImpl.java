@@ -10,6 +10,7 @@
  *    Bob Tarling
  *    Tom Morris
  *    Luis Sergio Oliveira (euluis)
+ *    Laurent Braud
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -264,8 +265,19 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 // MDR's autocommit mode
                 repository.beginTrans(true);
 
-                newElements = xmiReader.read(inputSource.getByteStream(),
-                        systemId, extent);
+                // Issue 5816 : invalid XMI
+                try {
+                    newElements = xmiReader.read(inputSource.getByteStream(),
+                            systemId, extent);
+                } catch (MalformedXMIException e) {
+                    repository.endTrans(true);
+                    repository.beginTrans(true);
+                    resolver.clearIdMaps();
+                    inputSource = convertFromInvalidXMI(inputSource);
+                    newElements = xmiReader.read(inputSource.getByteStream(),
+                            systemId, extent);
+
+                }
                 
                 // If a UML 1.3 file, attempt to upgrade it to UML 1.4
                 if (uml13) {
@@ -376,6 +388,29 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
                 .getSystemId(), extent);
     }
 
+    /**
+     * 
+     * @param input
+     * @return InputSource : a new XML to test
+     * @throws UmlException
+     */
+    private InputSource convertFromInvalidXMI(InputSource input)
+        throws UmlException {
+        
+        LOG.info("XMI file doesn't appear to be a valid XMI");
+        
+        final String[] transformFiles = new String[] { 
+            "umbrello.xsl",
+            };
+
+        unknownElement = false;
+        // InputSource xformedInput = chainedTransform(transformFiles, pIs);
+        InputSource xformedInput = serialTransform(transformFiles,
+                input);
+        xformedInput.setPublicId(input.getPublicId());
+        return xformedInput;
+    }
+    
     /**
      * Defines the URI prefix of the temporary XMI file that is being read.
      * 
