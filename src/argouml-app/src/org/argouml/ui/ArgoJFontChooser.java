@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -206,10 +207,16 @@ public class ArgoJFontChooser extends JDialog {
             jContentPane = new JPanel();
             jContentPane.setLayout(new GridBagLayout());
 
+            // Initialize font faces list
             JScrollPane jscpFamilies = new JScrollPane();
             jscpFamilies.setViewportView(getJlstFamilies());
+            getJlstFamilies().setSelectedValue(resultName, true);
+
+            // Initialize font sizes list
             JScrollPane jscpSizes = new JScrollPane();
             jscpSizes.setViewportView(getJlstSizes());
+            getJlstSizes().setSelectedValue(resultSize, true);
+
             jContentPane.add(jscpFamilies, gridBagConstraints);
             jContentPane.add(jscpSizes, gridBagConstraints1);
 //            jContentPane.add(getJchbBold(), gridBagConstraints2);
@@ -240,7 +247,6 @@ public class ArgoJFontChooser extends JDialog {
                 ((DefaultListModel) jlstFamilies.getModel())
                         .addElement(fontName);
             }
-            jlstFamilies.setSelectedValue(resultName, true);
 
             jlstFamilies.getSelectionModel().addListSelectionListener(
                     new ListSelectionListener() {
@@ -270,7 +276,6 @@ public class ArgoJFontChooser extends JDialog {
                 Integer.valueOf(24), Integer.valueOf(26), Integer.valueOf(28),
                 Integer.valueOf(36), Integer.valueOf(48), Integer.valueOf(72)
             });
-            jlstSizes.setSelectedValue(resultSize, true);
 
             jlstSizes.getSelectionModel().addListSelectionListener(
                     new ListSelectionListener() {
@@ -340,7 +345,7 @@ public class ArgoJFontChooser extends JDialog {
     }
 
     /**
-     * Returns true if dilaog result is OK.
+     * Returns true if dialog result is OK.
      *
      * @return dialog result
      */
