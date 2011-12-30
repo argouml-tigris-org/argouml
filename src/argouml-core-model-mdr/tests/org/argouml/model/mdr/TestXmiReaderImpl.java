@@ -28,7 +28,9 @@ public class TestXmiReaderImpl extends TestCase {
     public void testGetTempXMIFileURIPrefix() {
         assertTrue(XmiReaderImpl.getTempXMIFileURIPrefix().contains(
                 XmiReaderImpl.TEMP_XMI_FILE_PREFIX));
-        assertTrue(XmiReaderImpl.getTempXMIFileURIPrefix().contains(
-                System.getProperty("java.io.tmpdir")));
+        assertTrue(XmiReaderImpl.getTempXMIFileURIPrefix().matches(
+                ".*"
+                + System.getProperty("java.io.tmpdir").replaceAll("[/\\\\]", "[/\\]+")
+                + ".*"));
     }
 }
