@@ -40,7 +40,7 @@
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
       <version>1.0.2-6</version>
-      <scope>test</scope>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -105,7 +105,7 @@
       <groupId>org.argouml</groupId>
       <artifactId>argouml-mdr</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -113,7 +113,7 @@
       <artifactId>java-interfaces</artifactId>
       <version>0.33.1</version>
       <type>jar</type>
-      <scope>test</scope>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -121,42 +121,42 @@
       <artifactId>jmi</artifactId>
       <version>1.0-5</version>
       <type>jar</type>
-      <scope>test</scope>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>jmi</groupId>
       <artifactId>mof</artifactId>
       <version>0.0-5</version>
       <type>jar</type>
-      <scope>test</scope>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.netbeans.mdr</groupId>
       <artifactId>jmiutils</artifactId>
       <version>0.0-5</version>
       <type>jar</type>
-      <scope>test</scope>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.netbeans.mdr</groupId>
       <artifactId>mdrapi</artifactId>
       <version>0.0-5</version>
       <type>jar</type>
-      <scope>test</scope>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.netbeans.mdr</groupId>
       <artifactId>openide-util</artifactId>
       <version>0.0-5</version>
       <type>jar</type>
-      <scope>test</scope>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>org.netbeans.mdr</groupId>
       <artifactId>nbmdr</artifactId>
       <version>0.0-5</version>
       <type>jar</type>
-      <scope>test</scope>
+      <scope>runtime</scope>
     </dependency>
 
     <!-- Other test stuff -->

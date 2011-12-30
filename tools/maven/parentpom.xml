@@ -125,6 +125,14 @@ that contains the common parts of all ArgoUML projects.
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2-beta-2</version>
 			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>org.argouml.application.Main</mainClass>
+				</configuration>
+			</plugin>
 		</plugins>
 
 
