@@ -48,7 +48,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -104,7 +103,6 @@ import org.argouml.util.ArgoFrame;
 import org.argouml.util.JavaRuntimeUtility;
 import org.argouml.util.logging.AwtExceptionHandler;
 import org.argouml.util.logging.SimpleTimer;
-import org.tigris.gef.util.Util;
 
 /**
  * This is the main class for two of the types 
@@ -205,14 +203,14 @@ public class Main {
                 projectName = getMostRecentProject();
             }
 
-            URL urlToOpen = null;
+            File fileToOpen = null;
             if (projectName != null) {
                 projectName =
                     PersistenceManager.getInstance().fixExtension(projectName);
-                urlToOpen = projectUrl(projectName, urlToOpen);
+                fileToOpen = new File(projectName);
             }
 
-            openProject(st, splash, pb, urlToOpen);
+            openProject(st, splash, pb, fileToOpen);
 
             st.mark("perspectives");
             if (splash != null) {
@@ -387,10 +385,8 @@ public class Main {
                     String projectToBePrinted = 
                         PersistenceManager.getInstance().fixExtension(
                                 args[++i]);
-                    URL urlToBePrinted = projectUrl(projectToBePrinted,
-                            null);
                     ProjectBrowser.getInstance().loadProject(
-                            new File(urlToBePrinted.getFile()), true, null);
+                            new File(projectToBePrinted), true, null);
                     // now, let's print it
                     PrintManager.getInstance().print();
                     // nothing else to do (?)
@@ -479,7 +475,7 @@ public class Main {
 
 
     private static void openProject(SimpleTimer st, SplashScreen splash,
-            ProjectBrowser pb, URL urlToOpen) {
+            ProjectBrowser pb, File fileToOpen) {
         if (splash != null) {
             splash.updateProgress(40);
         }
@@ -489,7 +485,7 @@ public class Main {
         Designer.clearCritiquing();
 
         Project project = null;
-        if (urlToOpen != null) {
+        if (fileToOpen != null) {
             if (splash != null) {
                 Object[] msgArgs = {projectName};
                 splash.showStatus(
@@ -497,14 +493,9 @@ public class Main {
                                 "statusmsg.bar.readingproject",
                                 msgArgs));
             }
-            String filename = urlToOpen.getFile();
-            File file = new File(filename);
-            System.err.println("The url of the file to open is " 
-                    + urlToOpen);
-            System.err.println("The filename is " + filename);
-            System.err.println("The file is " + file);
-            System.err.println("File.exists = " + file.exists());
-            project =  pb.loadProject2(file, true, null);
+            System.err.println("The file is " + fileToOpen);
+            System.err.println("File.exists = " + fileToOpen.exists());
+            project =  pb.loadProject2(fileToOpen, true, null);
         } else {
             if (splash != null) {
                 splash.showStatus(
@@ -558,31 +549,6 @@ public class Main {
         }
     }
 
-    /**
-     * Calculates the {@link URL} for the given project name.
-     * If the file does not exist or cannot be converted the default
-     * {@link URL} is returned.
-     *
-     * @param theProjectName is the file name of the project
-     * @param urlToOpen is the default {@link URL}
-     * @return the new URL.
-     */
-    private static URL projectUrl(final String theProjectName, URL urlToOpen) {
-        File projectFile = new File(theProjectName);
-        if (!projectFile.exists()) {
-            System.err.println("Project file '" + projectFile
-                    + "' does not exist.");
-            /* this will cause an empty project to be created */
-        } else {
-            try {
-                urlToOpen = Util.fileToURL(projectFile);
-            } catch (Exception e) {
-                LOG.error("Exception opening project in main()", e);
-            }
-        }
-
-        return urlToOpen;
-    }
 
     /**
      * Prints the usage message.
