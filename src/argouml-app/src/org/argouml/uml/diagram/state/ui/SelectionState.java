@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -84,14 +85,14 @@ public class SelectionState extends SelectionNodeClarifiers2 {
     }
 
     /**
-     * @param b true if the buton is enabled
+     * @param b true if the button is enabled
      */
     public void setIncomingButtonEnabled(boolean b) {
 	showIncoming = b;
     }
 
     /**
-     * @param b true if the buton is enabled
+     * @param b true if the button is enabled
      */
     public void setOutgoingButtonEnabled(boolean b) {
 	showOutgoing = b;
@@ -129,7 +130,11 @@ public class SelectionState extends SelectionNodeClarifiers2 {
     
     @Override
     protected Object getNewNodeType(int index) {
-        return Model.getMetaTypes().getSimpleState();
+        if (Model.getFacade().getUmlVersion().startsWith("1")) {
+            return Model.getMetaTypes().getSimpleState();
+        } else {
+            return Model.getMetaTypes().getState();
+        }
     }
 
     @Override

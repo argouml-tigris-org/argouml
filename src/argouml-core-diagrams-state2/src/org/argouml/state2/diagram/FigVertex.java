@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Bob Tarling
+ *    Michiel van der Wulp
  *****************************************************************************
  */
 
@@ -38,8 +39,10 @@ import org.argouml.ui.ActionCreateContainedModelElement;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ArgoDiagram;
 import org.argouml.uml.diagram.DiagramSettings;
+import org.argouml.uml.diagram.state.ui.SelectionState;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.di.DiagramElement;
 import org.tigris.gef.presentation.Connector;
 import org.tigris.gef.presentation.Fig;
@@ -69,7 +72,7 @@ public class FigVertex extends FigNodeModelElement {
 
     /**
      * Create a new instance of FigVertex
-     * @param owner the vertex that own this dagram element
+     * @param owner the vertex that own this diagram element
      * @param bounds the bounds of the diagram element
      * @param settings the display settings for this diagram element
      */
@@ -493,5 +496,18 @@ public class FigVertex extends FigNodeModelElement {
             }
             
         }
+    }
+    
+    /**
+     * Return a Selection for a Vertex.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public Selection makeSelection() {
+        if (getOwner() != null) {
+            return new SelectionState(this);
+        }
+        return null;
     }
 }
