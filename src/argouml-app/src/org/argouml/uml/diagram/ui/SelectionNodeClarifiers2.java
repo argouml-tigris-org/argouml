@@ -419,8 +419,8 @@ public abstract class SelectionNodeClarifiers2 extends SelectionButtons {
      * 
      * @param index
      *            handle number that is being dragged from
-     * @return true to reverse direction of assocation from direction of drag.
-     *         eg. specialization instead of generalization.  Default
+     * @return true to reverse direction of association from direction of drag.
+     *         e.g. specialization instead of generalization.  Default
      *         implementation always returns false.
      */
     protected boolean isReverseEdge(int index) {
