@@ -6,7 +6,7 @@
     xmlns:xsl = "http://www.w3.org/1999/XSL/Transform"
     xmlns:xalan="http://xml.apache.org/xslt"
     xmlns:saxon = "http://icl.com/saxon"
-    xmlns:date="http://xml.apache.org/xalan/java/java.util.Date"
+    xmlns:date="http://exslt.org/dates-and-times"
     extension-element-prefixes = "xalan saxon date"
     exclude-result-prefixes = "xalan saxon date"
     version = "1.0" >
@@ -30,8 +30,8 @@
 
   <xsl:template match="/">
     <xsl:text>&#xa;</xsl:text>
-    <xsl:variable name="now" select="date:new()"/>
-    <xsl:comment> XMIClean'ed on:  <xsl:value-of select="date:toString($now)"/> </xsl:comment> 
+    <xsl:variable name="now" select="date:date()"/>
+    <xsl:comment> XMIClean'ed on:  <xsl:value-of select="$now"/> </xsl:comment> 
     <xsl:text>&#xa;</xsl:text>
     <xsl:copy>
       <xsl:apply-templates select="@*|node()"/>

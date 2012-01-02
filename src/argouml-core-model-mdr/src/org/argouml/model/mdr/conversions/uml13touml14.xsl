@@ -37,11 +37,12 @@
 -->
 <xsl:stylesheet version="2.0"
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:exslt="http://exslt.org/common"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xalan="http://xml.apache.org/xalan"
-    xmlns:saxon = "http://icl.com/saxon"
+    xmlns:saxon="http://icl.com/saxon"
     xmlns:UML="org.omg.xmi.namespace.UML"
-    xmlns:date="http://xml.apache.org/xalan/java/java.util.Date"
+    xmlns:date="http://exslt.org/dates-and-times"
     xmlns:java_lang="http://xml.apache.org/xalan/java/java.lang"
     xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
     extension-element-prefixes="fn date java_lang"
@@ -50,7 +51,7 @@
   <xsl:output method="xml" indent="yes" encoding="utf-8" 
          xalan:indent-amount="2" saxon:indent-spaces="2"/>
   <xsl:variable name="version" select="0.4"/>
-  <xsl:variable name="now" select="date:new()"/>
+  <xsl:variable name="now" select="date:date()"/>
 
   <xsl:key name="stereo-key" match="Foundation.Extension_Mechanisms.Stereotype" 
     use="./Foundation.Extension_Mechanisms.Stereotype.extendedElement/Foundation.Core.ModelElement/@xmi.idref"/>
@@ -62,7 +63,7 @@
   <xsl:template match="/" name="root">
     <xsl:text>&#xa;</xsl:text>
     <xsl:comment>
-      Converted from UML 1.3 to UML 1.4 on: <xsl:value-of select="date:toString($now)"/>
+      Converted from UML 1.3 to UML 1.4 on: <xsl:value-of select="date:date($now)"/>
       Converter version <xsl:value-of select="$version"/> by Ludovic Maitre and Tom Morris
     </xsl:comment>
     <xsl:text>&#xa;</xsl:text>
@@ -75,7 +76,7 @@
   <xsl:template match="/XMI" name="xmi">
     <XMI xmi.version="1.2" xmlns:UML="org.omg.xmi.namespace.UML">
       <xsl:attribute name="timestamp">
-        <xsl:value-of select="date:toString($now)"/>
+        <xsl:value-of select="$now"/>
       </xsl:attribute>
       <xsl:apply-templates />
     </XMI>
@@ -203,7 +204,7 @@
       <UML:TagDefinition>
         <xsl:attribute name="xmi.idref">
           <xsl:value-of 
-              select="xalan:nodeset($tagdefinitions)//*[@name=$tag]/@xmi.id" />
+              select="exslt:node-set($tagdefinitions)//*[@name=$tag]/@xmi.id" />
         </xsl:attribute>
       </UML:TagDefinition>
     </UML:TaggedValue.type>
