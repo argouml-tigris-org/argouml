@@ -51,6 +51,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 /**
  * Diagram for UML2 Deployment Diagram
  * @author Bob Tarling
+ * @author Thomas Neustupny
  */
 public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagram {
 
@@ -65,6 +66,16 @@ public class UMLDeploymentDiagram extends UMLDiagram implements DeploymentDiagra
             Model.getMetaTypes().getObject(),
             Model.getMetaTypes().getPort()
     });
+
+    /**
+     * Construct a Deployment Diagram. Default constructor used by PGML parser during
+     * diagram load. It should not be used by other callers.
+     * @deprecated only for use by PGML parser
+     */
+    @Deprecated
+    public UMLDeploymentDiagram() {
+        super(new DeploymentDiagramGraphModel());
+    }
     
     /**
      * Construct a new Deployment Diagram.
