@@ -155,6 +155,9 @@ class XmiReaderImpl implements XmiReader, UnknownElementsListener,
     public Collection parse(InputSource inputSource, boolean readOnly)
         throws UmlException {
         
+        System.setProperty("javax.xml.transform.TransformerFactory",
+        "net.sf.saxon.TransformerFactoryImpl");
+        
         Collection<RefObject> newElements = Collections.emptyList();
 
         String extentBase = inputSource.getPublicId();
