@@ -18,5 +18,15 @@
 	<classpathentry kind="lib" path="lib/batik-svggen-1.7.jar"/>
 	<classpathentry kind="lib" path="lib/batik-util-1.7.jar"/>
 	<classpathentry kind="lib" path="lib/batik-xml-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-dom.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-dom4j.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-jdom.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-s9api.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-sql.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-unpack.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-xom.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-xpath.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9-xqj.jar"/>
+	<classpathentry kind="lib" path="lib/saxon9.jar"/>
 	<classpathentry kind="output" path="build-eclipse"/>
 </classpath>
