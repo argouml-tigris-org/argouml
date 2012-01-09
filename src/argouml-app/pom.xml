@@ -159,6 +159,14 @@
       <scope>runtime</scope>
     </dependency>
 
+    <dependency>
+      <groupId>net.sourceforge.saxon</groupId>
+      <artifactId>saxon</artifactId>
+      <version>9.1.0.8</version>
+      <type>jar</type>
+      <scope>runtime</scope>
+    </dependency>
+
     <!-- Other test stuff -->
     <dependency>
       <groupId>easymock</groupId>
