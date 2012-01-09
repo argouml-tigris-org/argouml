@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,7 @@
  * Contributors:
  *    Thomas Neustupny
  *    Bob Tarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -54,7 +55,6 @@ import org.argouml.uml.CommentEdge;
 import org.argouml.uml.diagram.DiagramEdgeSettings;
 import org.argouml.uml.diagram.DiagramElement;
 import org.argouml.uml.diagram.DiagramSettings;
-import org.argouml.uml.diagram.collaboration.ui.FigClassifierRole;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
 import org.argouml.uml.diagram.deployment.ui.FigMNode;
@@ -83,6 +83,7 @@ import org.argouml.util.ToolBarUtility;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
@@ -92,8 +93,6 @@ import org.tigris.gef.presentation.FigNode;
  * @author jrobbins@ics.uci.edy
  */
 public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
-
-    private static final long serialVersionUID = -9192325790126361563L;
 
     private static final Logger LOG = Logger.getLogger(UMLClassDiagram.class);
 
@@ -303,7 +302,7 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
         // This calls the getters to fetch actions even though the
         // action variables are defined is instances of this class.
         // This is because any number of action getters could have
-        // been overridden in a descendent and it is the action from
+        // been overridden in a descendant and it is the action from
         // that overridden method that should be returned in the array.
         Object[] actions = {
             getActionAssociation(),
@@ -861,10 +860,16 @@ public class UMLClassDiagram extends UMLDiagram implements ClassDiagram {
             figEdge.getFig().setLayer(getLayer());
         } else if (modelElement instanceof CommentEdge) {
             CommentEdge ce = (CommentEdge) modelElement;
-            Object source = ce.getSource();
-            Object dest = ce.getDestination();
-            FigNode sourceFN = (FigNode) getLayer().presentationFor(source);
-            FigNode destFN = (FigNode) getLayer().presentationFor(dest);
+            Fig source = getLayer().presentationFor(ce.getSource());
+            Fig dest = getLayer().presentationFor(ce.getDestination());
+            if (source instanceof FigAssociationClass) {
+                source = ((FigAssociationClass) source).getAssociationClass();
+            }
+            if (dest instanceof FigAssociationClass) {
+                dest = ((FigAssociationClass) dest).getAssociationClass();
+            }
+            FigNode sourceFN = (FigNode) source;
+            FigNode destFN = (FigNode) dest;
             figEdge = new FigEdgeNote(modelElement, settings);
             figEdge.setSourcePortFig(sourceFN);
             figEdge.setSourceFigNode(sourceFN);
