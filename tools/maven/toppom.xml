@@ -17,6 +17,7 @@
     <module>..</module>
     <module>../..</module>
     <module>../../../argouml-actionscript3</module>
+    <module>../../../argouml-java</module>
   </modules>
   
   <name>argouml-all</name>
