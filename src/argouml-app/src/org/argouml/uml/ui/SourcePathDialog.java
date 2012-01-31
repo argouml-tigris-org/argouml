@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Thomas Neustupny
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -38,12 +39,15 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -93,6 +97,12 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
         elemCol.setMinWidth(0);
         elemCol.setMaxWidth(0);
 
+        JPanel contentPane = new JPanel(new BorderLayout());
+        JLabel label = new JLabel(
+                Translator.localize("label.generate-code-for-project"));
+        contentPane.add(label, "North");
+        contentPane.add(new JScrollPane(srcPathTable), "Center");
+        
         delButton = new JButton(Translator.localize("button.delete"));
         delButton.setEnabled(false);
         addButton(delButton, 0);
@@ -101,7 +111,7 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
         rowSM.addListSelectionListener(new SelectionListener());
         delButton.addActionListener(this);
 
-        setContent(new JScrollPane(srcPathTable));
+        setContent(contentPane);
     }
 
     ////////////////////////////////////////////////////////////////
