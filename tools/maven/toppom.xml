@@ -10,14 +10,17 @@
 
   <groupId>org.argouml</groupId>
   <artifactId>allArgoUMLProjects</artifactId>
-  <version>0.35.1</version>
+  <version>0.35.2</version>
   <packaging>pom</packaging>
 
   <modules>
     <module>..</module>
     <module>../..</module>
+    <module>../test-with-model</module>
     <module>../../../argouml-actionscript3</module>
     <module>../../../argouml-java</module>
+    <module>../../../argouml-cpp</module>
+    <module>../../../argouml-csharp</module>
   </modules>
   
   <name>argouml-all</name>
