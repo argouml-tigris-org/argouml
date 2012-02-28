@@ -41,9 +41,9 @@ package org.argouml.model;
 import junit.framework.TestCase;
 
 /**
- * Class to initialize the model.
+ * Class to initialize the model for test purposes.
  *
- * @author lito
+ * @author Linus Tolke
  */
 public final class InitializeModel {
     
