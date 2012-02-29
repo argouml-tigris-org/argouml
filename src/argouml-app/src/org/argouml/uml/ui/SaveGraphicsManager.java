@@ -138,7 +138,7 @@ public final class SaveGraphicsManager {
     /**
      * The singleton instance.
      */
-    private static SaveGraphicsManager instance;
+    private static SaveGraphicsManager instance = new SaveGraphicsManager();
 
     /**
      * The constructor.
@@ -191,9 +191,6 @@ public final class SaveGraphicsManager {
      * @return returns the singleton
      */
     public static SaveGraphicsManager getInstance() {
-        if (instance == null) {
-            instance  = new SaveGraphicsManager();
-        }
         return instance;
     }
 
