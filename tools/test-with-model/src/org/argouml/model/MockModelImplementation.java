@@ -251,6 +251,9 @@ class MockModelImplementation implements ModelImplementation {
         controlCopyHelper = MockControl.createControl(CopyHelper.class);
         controls.add(controlCopyHelper);
 
+	controlMS = MockControl.createControl(MessageSort.class);
+	controls.add(controlMS);
+
         controlMT = MockControl.createControl(MetaTypes.class);
         controls.add(controlMT);
 
