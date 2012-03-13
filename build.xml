@@ -13,6 +13,7 @@ Build file to proxy the argoumlstandard ant targets.
 
     <path id="run.classpath">
       <fileset dir="${build.dir}" includes="*.jar"/>
+      <fileset dir="${build.dir}/ext" includes="*.jar"/>
     </path>
   </target>
 
