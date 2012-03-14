@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -109,6 +110,16 @@ public final class PersistenceManager {
      */
     public static final ConfigurationKey KEY_IMPORT_XMI_PATH =
         Configuration.makeKey("xmi", "import", "path");
+    
+    /**
+     * The configuration to do safe saves, i.e. retain the 
+     * previous project file even when the save operation 
+     * crashes in the middle. Also create a backup file after saving.
+     * This works with a project file ending in "~" for the backup 
+     * file, and a file ending in "#" for a temporary file during saving.
+     */
+    public static final ConfigurationKey USE_SAFE_SAVES =
+            Configuration.makeKey("project", "use", "safe-saves");
 
     /**
      * Create the default diagram persister.

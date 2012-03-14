@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -100,8 +101,7 @@ class ZipFilePersister extends XmiFilePersister {
     }
 
     /**
-     * It is being considered to save out individual xmi's from individuals
-     * diagrams to make it easier to modularize the output of Argo.
+     * Save the project in ZIP format.
      *
      * @param file
      *            The file to write.
@@ -116,18 +116,24 @@ class ZipFilePersister extends XmiFilePersister {
     public void doSave(Project project, File file) throws SaveException {
 
         LOG.info("Receiving file '" + file.getName() + "'");
-
+        
+        /* Retain the previous project file even when the save operation 
+         * crashes in the middle. Also create a backup file after saving. */
+        boolean doSafeSaves = useSafeSaves();
+        
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
 
-        try {
-            tempFile = createTempFile(file);
-        } catch (FileNotFoundException e) {
-            throw new SaveException(
-                    "Failed to archive the previous file version", e);
-        } catch (IOException e) {
-            throw new SaveException(
-                    "Failed to archive the previous file version", e);
+        if (doSafeSaves) {
+            try {
+                tempFile = createTempFile(file);
+            } catch (FileNotFoundException e) {
+                throw new SaveException(Translator.localize(
+                        "optionpane.save-project-exception-cause1"), e);
+            } catch (IOException e) {
+                throw new SaveException(Translator.localize(
+                        "optionpane.save-project-exception-cause2"), e);
+            }
         }
 
         OutputStream bufferedStream = null;
@@ -158,17 +164,20 @@ class ZipFilePersister extends XmiFilePersister {
                 }
             }
             stream.close();
-            // if save did not raise an exception
-            // and name+"#" exists move name+"#" to name+"~"
-            // this is the correct backup file
-            if (lastArchiveFile.exists()) {
-                lastArchiveFile.delete();
-            }
-            if (tempFile.exists() && !lastArchiveFile.exists()) {
-                tempFile.renameTo(lastArchiveFile);
-            }
-            if (tempFile.exists()) {
-                tempFile.delete();
+            
+            if (doSafeSaves) {
+                // if save did not raise an exception
+                // and name+"#" exists move name+"#" to name+"~"
+                // this is the correct backup file
+                if (lastArchiveFile.exists()) {
+                    lastArchiveFile.delete();
+                }
+                if (tempFile.exists() && !lastArchiveFile.exists()) {
+                    tempFile.renameTo(lastArchiveFile);
+                }
+                if (tempFile.exists()) {
+                    tempFile.delete();
+                }
             }
         } catch (Exception e) {
             LOG.error("Exception occured during save attempt", e);
@@ -178,11 +187,13 @@ class ZipFilePersister extends XmiFilePersister {
                 // If we get a 2nd error, just ignore it
             }
 
-            // frank: in case of exception
-            // delete name and mv name+"#" back to name if name+"#" exists
-            // this is the "rollback" to old file
-            file.delete();
-            tempFile.renameTo(file);
+            if (doSafeSaves) {
+                // frank: in case of exception
+                // delete name and mv name+"#" back to name if name+"#" exists
+                // this is the "rollback" to old file
+                file.delete();
+                tempFile.renameTo(file);
+            }
             // we have to give a message to user and set the system to unsaved!
             throw new SaveException(e);
         }

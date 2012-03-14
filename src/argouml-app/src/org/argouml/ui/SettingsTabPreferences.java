@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -50,6 +51,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.GUISettingsTabInterface;
 import org.argouml.configuration.Configuration;
 import org.argouml.i18n.Translator;
+import org.argouml.persistence.PersistenceManager;
 
 /**
  * Settings tab panel for handling ArgoUML application related settings.
@@ -64,7 +66,8 @@ class SettingsTabPreferences extends JPanel
     private JCheckBox chkSplash;
     private JCheckBox chkReloadRecent;
     private JCheckBox chkStripDiagrams;
-
+    private JCheckBox chkUseSafeSaves;
+    
     /**
      * The constructor.
      *
@@ -102,6 +105,12 @@ class SettingsTabPreferences extends JPanel
         chkStripDiagrams = j3;
         topPanel.add(chkStripDiagrams, checkConstraints);
 
+        checkConstraints.gridy++;
+        JCheckBox j4 =
+            new JCheckBox(Translator.localize("label.use-safe-saves"));
+        chkUseSafeSaves = j4;
+        topPanel.add(chkUseSafeSaves, checkConstraints);
+        
         checkConstraints.fill = GridBagConstraints.HORIZONTAL;
 
 	add(topPanel, BorderLayout.NORTH);
@@ -118,6 +127,9 @@ class SettingsTabPreferences extends JPanel
         chkStripDiagrams.setSelected(
                 Configuration.getBoolean(Argo.KEY_XMI_STRIP_DIAGRAMS,
                                          false));
+        chkUseSafeSaves.setSelected(
+            Configuration.getBoolean(PersistenceManager.USE_SAFE_SAVES,
+                true)); 
     }
 
     /*
@@ -129,6 +141,8 @@ class SettingsTabPreferences extends JPanel
 				 chkReloadRecent.isSelected());
         Configuration.setBoolean(Argo.KEY_XMI_STRIP_DIAGRAMS,
                  chkStripDiagrams.isSelected());
+        Configuration.setBoolean(PersistenceManager.USE_SAFE_SAVES,
+                chkUseSafeSaves.isSelected());
     }
 
     /*
@@ -162,9 +176,5 @@ class SettingsTabPreferences extends JPanel
         return "tab.preferences";
     }
 
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = -340220974967836979L;
 }
 

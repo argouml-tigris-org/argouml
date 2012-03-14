@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -50,6 +51,7 @@ import javax.swing.event.EventListenerList;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
+import org.argouml.configuration.Configuration;
 import org.argouml.kernel.ProfileConfiguration;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
@@ -129,6 +131,29 @@ public abstract class AbstractFilePersister extends FileFilter
         return tempFile;
     }
 
+    /**
+     * Saving in a safe way means: Retain the previous project 
+     * file even when the save operation causes an
+     * exception in the middle. 
+     * Also create a backup file after saving.
+     * 
+     * See issue 6012 - our method of saving in a safe way does not 
+     * work on a SharePoint drive. 
+     * Hence we can configure ArgoUML to save unsafe, too...
+     * 
+     * @return true if we should be careful
+     */
+    protected boolean useSafeSaves() {
+        boolean result = Configuration.getBoolean(
+                        PersistenceManager.USE_SAFE_SAVES, true);
+
+        /* make sure this setting exists in the configuration file 
+         * to facilitate changing: */
+        Configuration.setBoolean(PersistenceManager.USE_SAFE_SAVES, result);
+        
+        return result;
+    }
+    
     /**
      * Copies one file src to another, raising file exceptions
      * if there are some problems.

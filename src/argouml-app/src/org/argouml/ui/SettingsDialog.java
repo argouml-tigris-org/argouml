@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    tfmorris
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -101,7 +102,7 @@ class SettingsDialog extends ArgoDialog implements WindowListener {
         }
 
         // Increase width to accommodate all tabs on one row.
-        final int minimumWidth = 500;
+        final int minimumWidth = 600;
         tabs.setPreferredSize(new Dimension(Math.max(tabs
                 .getPreferredSize().width, minimumWidth), tabs
                 .getPreferredSize().height));
