@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    bobtarling
+ *    Bob Tarling
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -50,12 +50,10 @@ import org.argouml.util.ArgoFrame;
 import org.tigris.gef.undo.UndoManager;
 
 /**
- * The specialized SwingWorker used for saving projects
- * @deprecated in 0.29.1 by Bob Tarling. This will not be deleted but reduced
- * in visibility to package visibility only. It is currently only used by
+ * The specialized SwingWorker used for saving projects.
+ * This is currently only used by
  * ProjectBrowser and any client calling should use methods there for save.
  */
-@Deprecated
 class SaveSwingWorker extends SwingWorker {
 
     private final boolean overwrite;
@@ -63,19 +61,6 @@ class SaveSwingWorker extends SwingWorker {
     private boolean result;
     private Project project;
     private boolean exitAfterSave;
-
-    /**
-     * Deprecated constructor for SaveSwingWorker.
-     *
-     * @param aFile        the file that's going to be saved
-     * @param aOverwrite   whether to show the UI or not
-     * @deprecated in 0.29.1 Use constructor taking a Project
-     */
-    public SaveSwingWorker(boolean aOverwrite, File aFile) {
-        super("ArgoSaveProjectThread");
-        overwrite = aOverwrite;
-        file = aFile;
-    }
 
     /**
      * This is the only constructor for SaveSwingWorker.
