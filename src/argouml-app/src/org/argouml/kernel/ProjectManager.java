@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    thn
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -244,7 +245,7 @@ public final class ProjectManager implements ModelCommandCreationObserver {
     }
 
     /**
-     * Returns the current project (ie the project which must recently had the
+     * Returns the current project (ie the project which most recently had the
      * user focus) or null if there is no current project.
      * <p>
      * This should only be used by callers who need to know the global state.
