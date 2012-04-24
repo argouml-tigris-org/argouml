@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    Bob Tarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -44,36 +45,34 @@ import javax.swing.UIManager;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.taskmgmt.ProgressMonitor;
 import org.argouml.util.ArgoFrame;
 import org.tigris.gef.undo.UndoManager;
 
 /**
  * The specialized SwingWorker used for saving projects.
- * This is currently only used by
+ * Package visibility only. This class is currently only used by
  * ProjectBrowser and any client calling should use methods there for save.
  */
 class SaveSwingWorker extends SwingWorker {
 
-    private final boolean overwrite;
     private final File file;
     private boolean result;
-    private Project project;
+    private final Project project;
     private boolean exitAfterSave;
 
     /**
      * This is the only constructor for SaveSwingWorker.
      *
      * @param project   the project to save
-     * @param aFile        the file that's going to be saved
+     * @param aFile     the file that's going to be saved
+     * @param exit      if true: exit ArgoUML when done
      */
     public SaveSwingWorker(
             final Project project,
             final File aFile,
             final boolean exit) {
         super("ArgoSaveProjectThread");
-        overwrite = true;
         file = aFile;
         this.project = project;
         exitAfterSave = exit;
@@ -92,11 +91,6 @@ class SaveSwingWorker extends SwingWorker {
         Thread currentThread = Thread.currentThread();
         currentThread.setPriority(currentThread.getPriority() - 1);
         // saves the project
-        if (project == null) {
-            // TODO: When the constructor with no Project is removed we can
-            // delete this block and make project final.
-            project = ProjectManager.getManager().getCurrentProject();
-        }
         result = ProjectBrowser.getInstance().trySave(file, pmw, project);
         return null;
     }
