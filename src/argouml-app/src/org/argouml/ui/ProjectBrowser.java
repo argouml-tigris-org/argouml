@@ -1197,6 +1197,7 @@ public final class ProjectBrowser
 
             // does the file really exists?
             if (!file.exists()) {
+                LOG.warn("Project file not found - URI: " + uri);
                 // project file doesn't exist. let's pop up a message dialog..
                 int response = JOptionPane.showConfirmDialog(
                         this,
@@ -1564,7 +1565,8 @@ public final class ProjectBrowser
      *               false if run in commandline mode
      * @param pmw 	the ProgressMonitor to be updated;  
      * 				if not needed, use null 
-     * @return true if the file was successfully opened
+     * @return project the project that was created based on the file that was
+     *                 successfully opened
      * 
      * TODO: Separate this into a Swing specific class - tfm
      */
