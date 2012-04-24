@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009-2011 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,7 @@
  * Contributors:
  *    Luis Sergio Oliveira
  *    Bob Tarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -1257,6 +1258,7 @@ public final class ProjectBrowser
      * @param file      the target file
      * 
      * TODO: Separate this into a Swing specific class - tfm
+     * @param exit if true: exit ArgoUML when done
      */
     public void trySaveWithProgressMonitor(
             final boolean overwrite,
