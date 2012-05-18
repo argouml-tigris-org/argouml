@@ -18,7 +18,7 @@
 		included in the automatic updates of the version number. Until that is resolved 
 		references to this pom need to updated manually when this changes and no 
 		snapshot versions are possible. -->
-	<version>0.35.1</version>
+	<version>0.35.2</version>
 	<packaging>pom</packaging>
 	<name>parentpom</name>
 	<description>
@@ -133,6 +133,34 @@ that contains the common parts of all ArgoUML projects.
 					<mainClass>org.argouml.application.Main</mainClass>
 				</configuration>
 			</plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <id>unpack-testmodels</id>
+            <phase>process-test-resources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.argouml</groupId>
+                  <artifactId>testmodels</artifactId>
+                  <version>0.35.1</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.build.directory}/test-classes</outputDirectory>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
 		</plugins>
 
 

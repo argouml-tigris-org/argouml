@@ -83,6 +83,19 @@ public class TestUserDefinedProfile extends TestCase {
 
     @Override
     protected void tearDown() throws Exception {
+        // There seems to be cases where we don't erase the profile.
+        // Let's make sure it is deleted.        
+        Collection rootElements = Model.getFacade().getRootElements();
+        for (Object rootElement : rootElements) {
+            if (Model.getFacade().isAModel(rootElement))  {
+                String name = Model.getFacade().getName(rootElement);
+                if ("displayName".equals(name)
+                        || "testLoadingConstructorProfile".equals(name)) {
+                    Model.getUmlFactory().deleteExtent(rootElement);
+                }
+            }
+        }
+
         ProfileFacade.reset();
         FileHelper.delete(testDir);
         super.tearDown();
