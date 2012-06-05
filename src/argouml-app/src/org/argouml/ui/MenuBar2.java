@@ -97,7 +97,7 @@ public class MenuBar2 extends GenericArgoMenuBar {
         
         JMenuItem stateDiagram =
             getCreateDiagramMenu().add(new ActionStateDiagram());
-        setMnemonic(stateDiagram, "Statechart Diagram");
+        setMnemonic(stateDiagram, "State Diagram");
         getCreateDiagramToolbar().add((new ActionStateDiagram()));
         ShortcutMgr.assignAccelerator(stateDiagram,
                 ShortcutMgr.ACTION_STATE_DIAGRAM);

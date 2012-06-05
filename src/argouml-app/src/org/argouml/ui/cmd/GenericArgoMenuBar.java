@@ -336,7 +336,6 @@ public class GenericArgoMenuBar extends JMenuBar implements
         ShortcutMgr.assignAccelerator(newItem, ShortcutMgr.ACTION_NEW_PROJECT);
         toolbarTools.add((new ActionNew()));
         JMenuItem newProfileItem = file.add(new ActionNewProfile());
-        setMnemonic(newProfileItem, "New Profile");
         ShortcutMgr.assignAccelerator(newProfileItem, null);
         toolbarTools.add((new ActionNewProfile()));
         openAction = new ActionOpenProject();
@@ -401,7 +400,6 @@ public class GenericArgoMenuBar extends JMenuBar implements
         setMnemonic(notation, "Notation");
 
         JMenuItem propertiesItem = file.add(new ActionProjectSettings());
-        setMnemonic(propertiesItem, "Properties");
         ShortcutMgr.assignAccelerator(propertiesItem,
                 ShortcutMgr.ACTION_PROJECT_SETTINGS);
 
@@ -558,7 +556,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         view.addSeparator();
         
         JMenu grid = (JMenu) view.add(new JMenu(menuLocalize("Adjust Grid")));
-        setMnemonic(grid, "Grid");
+        setMnemonic(grid, "Adjust Grid");
         List<Action> gridActions = 
             ActionAdjustGrid.createAdjustGridActions(false);
         ButtonGroup groupGrid = new ButtonGroup();
@@ -573,7 +571,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
         }
 
         JMenu snap = (JMenu) view.add(new JMenu(menuLocalize("Adjust Snap")));
-        setMnemonic(snap, "Snap");
+        setMnemonic(snap, "Adjust Snap");
         List<Action> snapActions = ActionAdjustSnap.createAdjustSnapActions();
         ButtonGroup groupSnap = new ButtonGroup();
         ActionAdjustSnap.setGroup(groupSnap);
@@ -647,7 +645,7 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
         JMenuItem stateDiagram =
             createDiagramMenu.add(new ActionStateDiagram());
-        setMnemonic(stateDiagram, "Statechart Diagram");
+        setMnemonic(stateDiagram, "State Diagram");
         toolbarTools.add((new ActionStateDiagram()));
         ShortcutMgr.assignAccelerator(stateDiagram,
                 ShortcutMgr.ACTION_STATE_DIAGRAM);
@@ -1060,14 +1058,14 @@ public class GenericArgoMenuBar extends JMenuBar implements
      * Prepares one part of the key for menu- or/and menuitem-mnemonics used in
      * menu.properties.
      * 
-     * The method changes the parameter str to lower cases. Spaces in the
-     * parameter str are changed to hyphens.
+     * The method changes the parameter key to lower cases. Spaces in the
+     * parameter key are changed to hyphens.
      * 
-     * @param str
-     * @return the prepared str
+     * @param key
+     * @return the prepared key
      */
-    private static String prepareKey(String str) {
-        return str.toLowerCase().replace(' ', '-');
+    private static String prepareKey(String key) {
+        return key.toLowerCase().replace(' ', '-');
     }
 
     /**
