@@ -70,7 +70,7 @@ visibility="<ocl ignoreNull>org.argouml.persistence.PgmlUtility.getVisibility(se
 <!DOCTYPE pgml SYSTEM "pgml.dtd">
 
 <pgml description="<ocl>self.classAndModelID</ocl>"
-
+      xmlns:argouml="http://argouml.tigris.org/pgml-extensions"
       name="<ocl>self.name</ocl>"
 
 >
