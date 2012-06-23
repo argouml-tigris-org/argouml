@@ -30,13 +30,23 @@ import org.junit.Test;
  * This is a test case for property files. 
  */
 public abstract class CheckKey {
+    public interface IgnoredKey {
+	public abstract boolean ignore(String theKey,
+				       Locale theLocale,
+				       ResourceBundle theLabels,
+				       ResourceBundle theRootLabels);
+    }
+
     /**
      * Create the list of objects to test.
      *
      * @param currentLocale the Locale to test.
+     * @param predicate an IgnoredKey that returns true for keys to ignore
      * @return a Collection of arrays of Objects.
      */
-    public static Collection<Object[]> getKeysFor(Locale currentLocale) {
+    public static Collection<Object[]> getKeysFor(
+            Locale currentLocale,
+	    IgnoredKey predicate) {
 	Collection<Object[]> retval = new ArrayList();
 	for (String bundleName : Arrays.asList(
 					       "aboutbox",
@@ -70,7 +80,19 @@ public abstract class CheckKey {
 		    ResourceBundle.getBundle("org.argouml.i18n." + bundleName,
 					     Locale.ROOT);
 		for (String key : labels.keySet()) {
-		    retval.add(new Object[] { key, currentLocale, labels, rootLabels });
+		    if (predicate.ignore(key,
+					 currentLocale,
+					 labels,
+					 rootLabels)) {
+			continue;
+		    }
+
+		    retval.add(new Object[] {
+				   key,
+				   currentLocale,
+				   labels,
+				   rootLabels
+			       });
 		}
 	    } catch (MissingResourceException e) {
 		// There is no such file.
@@ -78,6 +100,26 @@ public abstract class CheckKey {
 	}
 
 	return retval;
+    }
+
+    /**
+     * Create the list of objects to test.
+     *
+     * @param currentLocale the Locale to test.
+     * @return a Collection of arrays of Objects.
+     */
+    public static Collection<Object[]> getKeysFor(
+            Locale locale) {
+	return getKeysFor(locale,
+			  new IgnoredKey() {
+			      public boolean ignore(String theKey,
+						    Locale theLocale,
+						    ResourceBundle theLabels,
+						    ResourceBundle theRootLabels) {
+				  return false;
+			      };
+			  }
+			  );
     }
 
     private String key;
@@ -110,27 +152,40 @@ public abstract class CheckKey {
      * Check that the key is localized.
      */
     @Test public void keyIsLocalized() {
-	assertTrue("Key " + key + " localized for " + currentLocale + ".",
-		   labels.getString(key) != rootLabels.getString(key));
+	try {
+	    assertTrue("Key " + key + " localized for " + currentLocale + ".",
+		       labels.getString(key) != rootLabels.getString(key));
+	} catch (MissingResourceException e) {};
     }
 
     /**
-     * Check the validity of the localized contents.
+     * Check that the strings has the same formatted values.
      */
-    @Test public void valueValid() {
-	String str = labels.getString(key);
+    @Test public void checkMessageFormatValues() {
+	String i18nString = labels.getString(key);
+	String rootString;
+	try {
+	    rootString = rootLabels.getString(key);
+	} catch (MissingResourceException e) {
+	    return;
+	};
 
-	for (int i = 0; i < str.length(); i++) {
-	    if (str.charAt(i) == '\n') {
-		continue;
+	if (i18nString.equals(rootString)) {
+	    return;
+	}
+
+	for (int i = 0; ; i++) {
+	    String match = ".*[{]" + i + "[},].*";
+	    boolean i18nFound = i18nString.matches(match);
+	    boolean rootFound = rootString.matches(match);
+
+	    assertTrue("Key " + key + " use value " + i
+		       + " to the same extent",
+		       i18nFound == rootFound);
+
+	    if (!i18nFound && !rootFound) {
+		break;
 	    }
-	    if (str.charAt(i) >= 32 && str.charAt(i) < 128) {
-		continue;
-	    }
-	    fail("Char " + i + " of key " + key + " is " 
-		 + str.charAt(i)
-		 + " outside of allowed range in locale "
-		 + currentLocale + ".");
 	}
     }
 }
