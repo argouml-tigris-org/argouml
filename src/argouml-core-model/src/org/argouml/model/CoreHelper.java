@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009-2010 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -999,6 +999,7 @@ public interface CoreHelper {
      * @param concurrencyKind
      *            a {@link ConcurrencyKind} of Concurrent, Guarded, or
      *            Sequential returned from {@link Model#getConcurrencyKind()}.
+     *            null is allowed
      */
     void setConcurrency(Object handle, Object concurrencyKind);
 

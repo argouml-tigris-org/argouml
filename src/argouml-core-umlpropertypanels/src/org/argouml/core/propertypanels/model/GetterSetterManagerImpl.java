@@ -1,6 +1,6 @@
 /* $Id$
  *******************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,7 @@
  * Contributors:
  *    Bob Tarling - Original implementation
  *    Thomas Neustupny
+ *    Michiel van der Wulp
  *******************************************************************************
  */
 
@@ -623,17 +624,23 @@ class GetterSetterManagerImpl extends GetterSetterManager {
          */
         public static final String CONCURRENT = "concurrent";
 
+        /**
+         * Identifier for no defined concurrency.
+         */
+        public static final String UNDEFINED = "undefined";
+        
         public ConcurrencyGetterSetter() {
             setOptions(Arrays.asList(new String[] {
                     SEQUENTIAL,
                     GUARDED,
-                    CONCURRENT}));
+                    CONCURRENT,
+                    UNDEFINED}));
         }
         
         public Object get(Object modelElement, Class<?> type) {
             Object kind = Model.getFacade().getConcurrency(modelElement);
             if (kind == null) {
-                return null;
+                return UNDEFINED;
             } else if (kind.equals(Model.getConcurrencyKind().getSequential())) {
                 return SEQUENTIAL;
             } else if (kind.equals(Model.getConcurrencyKind().getGuarded())) {
@@ -641,7 +648,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
             } else if (kind.equals(Model.getConcurrencyKind().getConcurrent())) {
                 return CONCURRENT;
             } else {
-                return SEQUENTIAL;
+                return UNDEFINED;
             }
         }
         
@@ -651,7 +658,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
                 kind = Model.getConcurrencyKind().getSequential();
             } else if (value.equals(GUARDED)) {
                 kind = Model.getConcurrencyKind().getGuarded();
-            } else {
+            } else if (value.equals(CONCURRENT)) {
                 kind = Model.getConcurrencyKind().getConcurrent();
             }
             Model.getCoreHelper().setConcurrency(modelElement, kind);
@@ -663,7 +670,7 @@ class GetterSetterManagerImpl extends GetterSetterManager {
         
         /**
          * Identifier for addonly changeability.
-         * TODO: Note this should not be ni UML2 version
+         * TODO: Note this should not be in UML2 version
          */
         public static final String ADDONLY = "addonly";
 
