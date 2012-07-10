@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,6 +8,7 @@
  *
  * Contributors:
  *    bobtarling
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -84,7 +85,7 @@ import org.tigris.swidgets.Vertical;
  * <li>uses the new event pump introduced late 2002 by Jaap</ul><p>
  *
  * UMLModelElementTaggedValueDocument is used to access the tagged values of an
- * MModelElement.
+ * ModelElement.
  */
 public class TabDocumentation extends PropPanel implements TabModelTarget {
 
@@ -112,6 +113,9 @@ public class TabDocumentation extends PropPanel implements TabModelTarget {
 
         addField(Translator.localize("label.deprecated"),
                 new UMLDeprecatedCheckBox());
+
+        addField(Translator.localize("label.derived"),
+                new UMLDerivedCheckBox());
 
         UMLTextArea2 see = new UMLTextArea2(
                 new UMLModelElementTaggedValueDocument(Argo.SEE_TAG));
