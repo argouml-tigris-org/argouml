@@ -1,13 +1,13 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    mvw
+ *    Michiel van der Wulp
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -51,9 +51,9 @@ import org.argouml.uml.diagram.ui.FigCompartmentBox;
 
 /**
  * Stylepanel which adds an attributes and operations checkbox and depends on
- * FigClass.
+ * FigCompartmentBox (formerly FigClass, hence its name).
  *
- * @see FigClass
+ * @see FigCompartmentBox
  *
  */
 public class StylePanelFigClass extends StylePanelFigNodeModelElement {
@@ -142,10 +142,5 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
             }
         }
     }
-
-    /**
-     * The UID.
-     */
-    private static final long serialVersionUID = 4587367369055254943L;
 } /* end class StylePanelFigClass */
 
