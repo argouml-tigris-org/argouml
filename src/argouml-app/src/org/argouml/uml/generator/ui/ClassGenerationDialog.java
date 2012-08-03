@@ -41,7 +41,6 @@ package org.argouml.uml.generator.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -60,6 +59,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -71,10 +71,12 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.notation.Notation;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.generator.CodeGenerator;
 import org.argouml.uml.generator.GeneratorManager;
 import org.argouml.uml.generator.Language;
 import org.argouml.util.ArgoDialog;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Dialog;
 
 /**
@@ -171,13 +173,45 @@ public class ClassGenerationDialog extends ArgoDialog
                 classTable.repaint();
             }
         });
+        
+        JButton selectCurrentlySelectedButton = new JButton();
+        nameButton(selectCurrentlySelectedButton, "button.select-currently-selected");
+        selectCurrentlySelectedButton.addActionListener(new ActionListener() {
+           /**
+            * Action performed after clicking the button 
+            * @param e
+            * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+            */
+           public void actionPerformed(ActionEvent e) {
+               List classes = new ArrayList();
+               Collection targets = TargetManager.getInstance().getTargets();
+               
+               // TODO: Should be improved so that it's recognized whether there is something selected that can actually be generated
+               if (targets.size() < 1) { // Nothing selected in the diagram
+                   JOptionPane.showMessageDialog(null, Translator.localize("dialog.error.generator.nothing-selected"),
+                           Translator.localize("dialog.error.title"), JOptionPane.ERROR_MESSAGE);
+               }
+               for (Object target : targets) {
+                   if (target instanceof Fig) {
+                       target = ((Fig) target).getOwner();
+                   }
+                   if (Model.getFacade().isAClass(target)
+                       || Model.getFacade().isAInterface(target)) {
+                       classes.add(target);
+                   }
+               }
+               classTableModel.check(classes);
+               classTable.repaint();
+           }
+        });
 
-        JPanel selectPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        JPanel selectPanel = new JPanel(new BorderLayout());
         selectPanel.setBorder(BorderFactory.createEmptyBorder(8, 0, 0, 0));
         JPanel selectButtons = new JPanel(new BorderLayout(5, 0));
         selectButtons.add(selectAllButton, BorderLayout.CENTER);
         selectButtons.add(selectNoneButton, BorderLayout.EAST);
-        selectPanel.add(selectButtons);
+        selectPanel.add(selectCurrentlySelectedButton, BorderLayout.WEST);
+        selectPanel.add(selectButtons, BorderLayout.EAST);
 
         JPanel centerPanel = new JPanel(new BorderLayout(0, 2));
         centerPanel.add(new JLabel(Translator
@@ -695,6 +729,29 @@ public class ClassGenerationDialog extends ArgoDialog
                 }
             }
             getOkButton().setEnabled(value);
+        }
+        
+        /**
+         * Checks nodes
+         * @param nodes These will be checked
+         */
+        public void check(List nodes) {
+            int rows = getRowCount();
+            int checks = getLanguagesCount();
+
+            for (int i = 0; i < rows; ++i) {
+                Object cls = classes.get(i);
+                for (int j = 0; j < checks; ++j) {
+                    if (nodes.contains(cls)  && (j == languageHistory)) {
+                        checked[j].add(cls);
+                    } else {
+                        checked[j].remove(cls);
+                    }
+                }
+            }
+            if (++languageHistory >= checks) {
+                languageHistory = 0;
+            }
         }
 
         /**

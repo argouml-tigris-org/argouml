@@ -72,10 +72,10 @@ public class ActionGenerateAll extends UndoableAction {
      * Constructor.
      */
     public ActionGenerateAll() {
-        super(Translator.localize("action.generate-all-classes"), null);
+        super(Translator.localize("action.generate-code"), null);
         // Set the tooltip string:
         putValue(Action.SHORT_DESCRIPTION, 
-                Translator.localize("action.generate-all-classes"));
+                Translator.localize("action.generate-code"));
     }
 
 

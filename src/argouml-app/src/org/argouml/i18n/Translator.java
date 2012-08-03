@@ -378,6 +378,7 @@ public final class Translator {
      * @return the localized String with inserted arguments
      */
     public static String messageFormat(String key, Object[] args) {
-        return new MessageFormat(localize(key)).format(args);
+        String localized = localize(key);
+        return new MessageFormat(localized).format(args);
     }
 }

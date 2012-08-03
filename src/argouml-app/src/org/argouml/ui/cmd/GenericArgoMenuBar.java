@@ -81,7 +81,6 @@ import org.argouml.uml.ui.ActionCollaborationDiagram;
 import org.argouml.uml.ui.ActionDeleteModelElements;
 import org.argouml.uml.ui.ActionDeploymentDiagram;
 import org.argouml.uml.ui.ActionGenerateAll;
-import org.argouml.uml.ui.ActionGenerateOne;
 import org.argouml.uml.ui.ActionGenerateProjectCode;
 import org.argouml.uml.ui.ActionGenerationSettings;
 import org.argouml.uml.ui.ActionImportFromSources;
@@ -873,21 +872,18 @@ public class GenericArgoMenuBar extends JMenuBar implements
 
         generate = add(new JMenu(menuLocalize("Generation")));
         setMnemonic(generate, "Generation");
-        JMenuItem genOne = generate.add(new ActionGenerateOne());
-        setMnemonic(genOne, "Generate Selected Classes");
-        ShortcutMgr.assignAccelerator(genOne, ShortcutMgr.ACTION_GENERATE_ONE);
         JMenuItem genAllItem = generate.add(new ActionGenerateAll());
-        setMnemonic(genAllItem, "Generate all classes");
+        setMnemonic(genAllItem, "action.generate-code");
         ShortcutMgr.assignAccelerator(genAllItem,
                 ShortcutMgr.ACTION_GENERATE_ALL_CLASSES);
         generate.addSeparator();
         JMenuItem genProject = generate.add(new ActionGenerateProjectCode());
-        setMnemonic(genProject, "Generate code for project");
+        setMnemonic(genProject, "action.generate-code-for-project");
         ShortcutMgr.assignAccelerator(genProject,
                 ShortcutMgr.ACTION_GENERATE_PROJECT_CODE);
         JMenuItem generationSettings = generate
                 .add(new ActionGenerationSettings());
-        setMnemonic(generationSettings, "Settings for project code generation");
+        setMnemonic(generationSettings, "action.settings-for-project-code-generation");
         ShortcutMgr.assignAccelerator(generationSettings,
                 ShortcutMgr.ACTION_GENERATION_SETTINGS);
         // generate.add(Actions.GenerateWeb);
