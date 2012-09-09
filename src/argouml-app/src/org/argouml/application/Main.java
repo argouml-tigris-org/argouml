@@ -590,7 +590,7 @@ public class Main {
 
             System.err.println("You are using Java "
                     + JavaRuntimeUtility.getJreVersion()
-                    + ", Please use Java 5 (aka 1.5) or later"
+                    + ", Please use Java 6 (aka 1.6) or later"
                     + " with ArgoUML");
             System.exit(0);
         }
