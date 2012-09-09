@@ -103,7 +103,7 @@ public class ToolBarUtility {
         }
 
         if (defaultAction != null) {
-            defaultAction.putValue("isDefault", Boolean.valueOf(true));
+            defaultAction.putValue("isDefault", Boolean.TRUE);
         }
     }
 
@@ -132,7 +132,7 @@ public class ToolBarUtility {
                     /* Switch the value back off, so that we will
                      * get notified again next time.
                      */
-                    a.putValue("popped", Boolean.valueOf(false));
+                    a.putValue("popped", Boolean.FALSE);
                     blockEvents = false;
                     Configuration.setString(key,
                             (String) a.getValue(Action.NAME));
