@@ -60,19 +60,6 @@ public class JavaRuntimeUtility {
     }
         
     /**
-     * Determine if the java runtime found is JRE 5
-     * <p>Note that plugins should not rely on this method existing in
-     * it is likely to be removed without deprecation as soon as JRE 5 is
-     * no longer supported.
-     * 
-     * @return true if we're running on JRE 5
-     */
-    public static boolean isJre5() {
-        String javaVersion = System.getProperty("java.version", "");
-        return (javaVersion.startsWith("1.5"));
-    }
-    
-    /**
      * Get the JRE version described in system properties
      * @return the JRE version
      */

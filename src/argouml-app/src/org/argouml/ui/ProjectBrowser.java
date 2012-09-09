@@ -10,6 +10,7 @@
  *    Luis Sergio Oliveira
  *    Bob Tarling
  *    Michiel van der Wulp
+ *    Laurent Braud
  *****************************************************************************
  *
  * Some portions of this file was previously release using the BSD License:
@@ -57,8 +58,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.URI;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -117,7 +116,6 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.ui.ActionRemoveFromDiagram;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.util.ArgoFrame;
-import org.argouml.util.JavaRuntimeUtility;
 import org.argouml.util.ThreadUtils;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -363,37 +361,13 @@ public final class ProjectBrowser
         final ImageIcon argoImage16x16 =
             ResourceLoaderWrapper.lookupIconResource("ArgoIcon16x16");
         
-        // JREs pre 1.6.0 cannot handle multiple images using 
-        // setIconImages(), so use reflection to conditionally make the 
-        // call to this.setIconImages().
-        // TODO: We can remove all of this reflection code when we go to 
-        // Java 1.6 as a minimum JRE version, see issue 4989.
-        if (JavaRuntimeUtility.isJre5()) {
-            // With JRE < 1.6.0, do it the old way using 
-            // javax.swing.JFrame.setIconImage, and accept the blurry icon 
-            setIconImage(argoImage16x16.getImage());
-        } else {
-            final ImageIcon argoImage32x32 =
-                ResourceLoaderWrapper.lookupIconResource("ArgoIcon32x32");
-            final List<Image> argoImages = new ArrayList<Image>(2);
-            argoImages.add(argoImage16x16.getImage());
-            argoImages.add(argoImage32x32.getImage());
-            try {
-                // java.awt.Window.setIconImages is new in Java 6.
-                // check for it using reflection on current instance
-                final Method m = 
-                    getClass().getMethod("setIconImages", List.class);
-                m.invoke(this, argoImages);
-            } catch (InvocationTargetException e) {
-                LOG.error("Exception", e);
-            } catch (NoSuchMethodException e) {
-                LOG.error("Exception", e);
-            } catch (IllegalArgumentException e) {
-                LOG.error("Exception", e);
-            } catch (IllegalAccessException e) {
-                LOG.error("Exception", e);
-            }
-        }
+        final ImageIcon argoImage32x32 = ResourceLoaderWrapper
+                .lookupIconResource("ArgoIcon32x32");
+        final List<Image> argoImages = new ArrayList<Image>(2);
+        argoImages.add(argoImage16x16.getImage());
+        argoImages.add(argoImage32x32.getImage());
+        
+        setIconImages(argoImages);
     }
 
     /**
