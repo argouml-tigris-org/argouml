@@ -2929,7 +2929,7 @@ class CoreHelperMDRImpl implements CoreHelper {
         /*
          * <em>Warning: when changing the implementation of this method be
          * warned that the sequence of the if then else tree DOES matter.</em>
-         * Most notabely, do not move the setNamespace method any level up in
+         * Most notably, do not move the setNamespace method any level up in
          * the tree.<p>
          */
         if (handle instanceof Partition && container instanceof ActivityGraph) {
