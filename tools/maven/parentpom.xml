@@ -12,6 +12,7 @@
 		<groupId>org.sonatype.oss</groupId>
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
+		<relativePath/>
 	</parent>
 
 
@@ -21,7 +22,7 @@
 		included in the automatic updates of the version number. Until that is resolved 
 		references to this pom need to updated manually when this changes and no 
 		snapshot versions are possible. -->
-	<version>0.35.2</version>
+	<version>0.35.3</version>
 	<packaging>pom</packaging>
 	<name>parentpom</name>
 	<description>
@@ -100,6 +101,7 @@ that contains the common parts of all ArgoUML projects.
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>2.2.1</version>
 				<executions>
 					<execution>
 						<goals>
@@ -206,6 +208,27 @@ that contains the common parts of all ArgoUML projects.
         <version>2.1</version>
       </plugin>
 
+			<plugin>
+				<!-- The reason for having multiple copies of
+	                             the pmd configuration is that the solution
+				     to the Maven bug MSITE-443
+				     http://jira.codehaus.org/browse/MSITE-443
+				     doesn't work in Maven 3.0.4.
+	                             Linus Tolke 2012-12-27.
+				-->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.7.1</version>
+				<configuration>
+					<linkXref>true</linkXref>
+					<sourceEncoding>utf-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>${compileSource}</targetJdk>
+					<excludeRoots>
+						<excludeRoot>src_generated</excludeRoot>
+					</excludeRoots>
+				</configuration>
+			</plugin>
 		</plugins>
 
 
@@ -244,9 +267,16 @@ that contains the common parts of all ArgoUML projects.
 			</plugin>
 
 			<plugin>
+				<!-- The reason for having multiple copies of
+	                             the pmd configuration is that the solution
+				     to the Maven bug MSITE-443
+				     http://jira.codehaus.org/browse/MSITE-443
+				     doesn't work in Maven 3.0.4.
+	                             Linus Tolke 2012-12-27.
+				-->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
-				<version>2.5</version>
+				<version>2.7.1</version>
 				<configuration>
 					<linkXref>true</linkXref>
 					<sourceEncoding>utf-8</sourceEncoding>
