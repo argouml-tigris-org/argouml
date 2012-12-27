@@ -1,6 +1,6 @@
 /* $Id$
  *****************************************************************************
- * Copyright (c) 2009 Contributors - see below
+ * Copyright (c) 2009-2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,6 @@ import javax.swing.SwingConstants;
 
 import org.argouml.model.Model;
 import org.argouml.uml.StereotypeUtility;
-import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * The swing List Model for displaying stereotypes.
