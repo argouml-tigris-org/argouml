@@ -1,4 +1,4 @@
-/* $Id: AbstractActionAddModelElement2.java 17881 2010-01-12 21:09:28Z linus $
+/* $Id$
  *****************************************************************************
  * Copyright (c) 2009 Contributors - see below
  * All rights reserved. This program and the accompanying materials

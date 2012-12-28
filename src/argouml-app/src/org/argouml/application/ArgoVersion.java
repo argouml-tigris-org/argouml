@@ -1,4 +1,4 @@
-/* $Id: ArgoVersion.template 18387 2010-05-09 20:34:01Z linus $
+/* $Id$
  *******************************************************************************
  * Copyright (c) 2009 Contributors - see below
  * All rights reserved. This program and the accompanying materials

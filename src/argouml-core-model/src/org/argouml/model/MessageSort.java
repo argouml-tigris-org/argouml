@@ -1,4 +1,4 @@
-/* $Id: MessageKind.java 17747 2010-01-10 21:16:51Z linus $
+/* $Id$
  *******************************************************************************
  * Copyright (c) 2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials

@@ -1,4 +1,4 @@
-/* $Id: UMLStereotypeListModel.java 18588 2010-07-28 21:30:25Z bobtarling $
+/* $Id$
  *****************************************************************************
  * Copyright (c) 2009 Contributors - see below
  * All rights reserved. This program and the accompanying materials

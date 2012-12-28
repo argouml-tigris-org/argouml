@@ -1,4 +1,4 @@
-/* $Id: FigNotation.java $
+/* $Id$
  *****************************************************************************
  * Copyright (c) 20011 Contributors - see below
  * All rights reserved. This program and the accompanying materials

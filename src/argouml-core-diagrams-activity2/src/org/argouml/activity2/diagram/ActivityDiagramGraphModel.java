@@ -1,4 +1,4 @@
-/* $Id: ActivityDiagramGraphModel.java bobtarling $
+/* $Id$
  *****************************************************************************
  * Copyright (c) 2009 Contributors - see below
  * All rights reserved. This program and the accompanying materials

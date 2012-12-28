@@ -1,4 +1,4 @@
-/* $Id: EventPumpInspectorPanel.java 17807 2010-01-12 18:29:32Z linus $
+/* $Id$
  *****************************************************************************
  * Copyright (c) 2009 Contributors - see below
  * All rights reserved. This program and the accompanying materials

@@ -1,4 +1,4 @@
-// $Id: MessageSortEUMLImpl.java 18220 2010-04-08 20:37:15Z bobtarling $
+// $Id$
 /*******************************************************************************
  * Copyright (c) 2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials

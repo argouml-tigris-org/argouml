@@ -1,4 +1,4 @@
-/* $Id: InitializeModel.java 17766 2010-01-11 21:21:20Z linus $
+/* $Id$
  *****************************************************************************
  * Copyright (c) 2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials

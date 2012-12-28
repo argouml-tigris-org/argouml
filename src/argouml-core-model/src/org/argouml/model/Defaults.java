@@ -1,4 +1,4 @@
-/* $Id: org.eclipse.jdt.ui.prefs 17993 2010-02-11 21:46:56Z linus $
+/* $Id$
  *******************************************************************************
  * Copyright (c) 2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials

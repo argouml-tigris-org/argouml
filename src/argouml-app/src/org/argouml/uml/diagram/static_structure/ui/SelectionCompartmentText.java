@@ -1,4 +1,4 @@
-/* $Id: SelectionCompartmentText.java 19205 2011-04-10 21:31:56Z bobtarling $
+/* $Id$
  *****************************************************************************
  * Copyright (c) 2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials

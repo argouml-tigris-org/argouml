@@ -1,4 +1,4 @@
-/* $Id: StateDiagramGraphModel.java 19385 2011-05-09 19:41:39Z bobtarling $
+/* $Id$
  *****************************************************************************
  * Copyright (c) 2011 Contributors - see below
  * All rights reserved. This program and the accompanying materials

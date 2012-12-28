@@ -1,4 +1,4 @@
-/* $Id: MockModelImplementation.java 19137 2011-03-25 17:11:22Z bobtarling $
+/* $Id$
  *****************************************************************************
  * Copyright (c) 2012 Contributors - see below
  * All rights reserved. This program and the accompanying materials
